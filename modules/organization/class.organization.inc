@@ -75,7 +75,7 @@ class organization extends atkNode
     $projectnode = getNode("project.project");
     useattrib("project.filterprojectbyorganizationattrib");
     $projectnode->add(new filterProjectByOrganizationAttrib($record["id"]));
-    $recs = $projectnode->selectDb();
+    $recs = $projectnode->selectDb("", "", "", $projectnode->m_listExcludes);
     if (count($recs)>0)
     {
       return $projectnode->normalRecordList($recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
