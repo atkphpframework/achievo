@@ -46,15 +46,7 @@ class person extends atkNode
     $this->setIndex("lastname");
     atkdebug("person::person()");
   }
-/*
-  function email_display($record)
-  {
-    $email = $record["email"];
-    if (strlen($email)>0) return '<a href="mailto:'.$email.'">'.$email.'</a>';
-    return "";
-  }
-  */
-  /*
+  
   function lastname_display($record, $mode)
   {
     if ($mode=="list")
@@ -91,7 +83,7 @@ class person extends atkNode
       return $this->m_attribList["phone"]->display($record, $mode);
     }
   }
-*/
+
   function descriptor_def()
   {
     return "[lastname], [firstname] ([role])";
