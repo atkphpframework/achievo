@@ -33,7 +33,7 @@
   $txt_title_ratess_add   = "Rates Add";
   $txt_title_rates_edit  = "Rates Edit";
 	$txt_link_rates_add = "Add new rate";
-  $txt_userid = "User";
+  $txt_rates_userid = "User";
 	$txt_project_id = "Project";
 	$txt_activity_id = "Activity";
 	$txt_customer_id = "Customer";
