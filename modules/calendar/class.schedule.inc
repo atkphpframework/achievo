@@ -31,16 +31,16 @@
 
   class schedule extends atkNode
   {
-    var $m_viewdate; 
+    var $m_viewdate;
     var $m_user;
     var $m_view;
-  
+
     function schedule()
     {
       global $g_user, $g_sessionManager;
 
       $time = $g_sessionManager->stackVar("time");
-      
+
       if ($time!="")
       {
         $default_start_time = $time; // passed from the url.
@@ -71,23 +71,23 @@
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE|AF_HIDE_ADD, 50));
       $this->add(new atkBoolAttribute("publicitem", AF_HIDE_ADD));
       $this->add(new atkBoolAttribute("all_users", AF_HIDE_ADD));
-      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));      
+      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      
+
       $this->add(new atkDummyAttribute("hint", text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
       $this->add(new fuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", FSA_MULTISELECT));
       $this->add(new fuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
-      
+
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD, 15));
 
       $this->m_view     = $g_sessionManager->stackVar("view");
       if (trim($this->m_view) == "") { $this->m_view = "dayview"; }
-      
+
       $this->m_user     = $g_sessionManager->stackVar("user");
-      if ($this->m_user=="") $this->m_user = $g_user["id"];
-      
-      $this->m_viewdate = $g_sessionManager->stackVar("viewdate");      
+      if ($this->m_user=="") $this->m_user = $g_user["userid"];
+
+      $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
       if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
 
       $this->addAllowedAction("view");
@@ -174,8 +174,8 @@
       $employee_code='<OPTION VALUE="all">'.text("allusers");
       for($i=0;$i<count($records);$i++)
       {
-        if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
-        $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+        if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
+        $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
       }
       return $employee_code;
     }
@@ -284,7 +284,7 @@
     function employeeview($viewdate)
     {
       global $g_user, $g_db;
-      
+
       $selemployee = $_REQUEST["selemployee"];
 
       if (!is_array($viewdate))
@@ -418,19 +418,19 @@
 
       return $buff;
     }
-    
+
     function postAdd($rec, $mode)
     {
       // insert the owner as first attendee.
-      global $g_db;      
+      global $g_db;
       $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
     }
-    
+
     function storeAttendees($rec, $attendees)
-    {      
+    {
       global $g_db;
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
-      {        
+      {
         $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ('".$rec["id"]."', '".$attendees[$i]["id"]."')");
       }
     }

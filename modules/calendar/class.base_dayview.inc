@@ -388,7 +388,7 @@
        if ($this->allDayItems[$i]["all_users"]) $att .= text("all_users");
        for($k=0;$k<count($attendees);$k++)
        {
-         if ($attendees[$k]["userid"] == $g_user["id"]) $found = 1;
+         if ($attendees[$k]["userid"] == $g_user["userid"]) $found = 1;
          if ($k == 0 && !$this->allDayItems[$i]["all_users"])
          {
            $att .= $attendees[$k]["firstname"];
@@ -510,7 +510,7 @@
           if ($info["all_users"]) $att .= text("all_users");
           for($k=0;$k<count($attendees);$k++)
           {
-            if ($attendees[$k]["userid"] == $g_user["id"]) $found = 1;
+            if ($attendees[$k]["userid"] == $g_user["userid"]) $found = 1;
             if ($k == 0 && !$info["all_users"])
             {
               $att .= $attendees[$k]["firstname"];
