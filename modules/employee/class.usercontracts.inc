@@ -33,32 +33,59 @@ class usercontracts extends atkNode
                                   "day"=>date("d")));
   }
   
-  // We override the startdate edit, to set the initial date to 
-  // the enddate of the last contract of the selected employee (if any).
-  function startdate_edit(&$record, $prefix, $mode)
+  /**
+   * We override the hours edit, because it is the first field in the edit screen.
+   * This override is then used to set some values for various fields, depending
+   * on the previous contract of that employee (if any):
+   * - uc_hours is set to the uc_hours of the previous contract
+   * - workingdays is set to the workingdays of the previous contract
+   * - startdate is set to the enddate of the previous contract
+   * - enddate is set to startdate + 1 year.
+   */
+  function uc_hours_edit(&$record, $prefix, $mode)
   {
     if ($mode=="add")
     {
       if ($record["userid"]["id"]!="")
-      {
-        global $g_db;
-        $recs = $g_db->getrows("select max(enddate) as lastdate from usercontract where userid = ".$record["userid"]["id"]);
-        if (count($recs) && !empty($recs[0]["lastdate"]))
-        {
-          list($year, $month, $day) = explode("-", $recs[0]["lastdate"]);          
-          $record["startdate"] = array("year"=>$year,
-                                       "month"=>$month,
-                                       "day"=>$day);
-                                       
-          // We also set enddate now, to startdate+1 year.
-          $endstamp = mktime(12, 0, 0, $month, $day, $year+1);
-          $record["enddate"] = array("year"=>date("Y", $endstamp),
+      {        
+       $previous = $this->selectDb("userid=".$record["userid"]["id"], "enddate DESC", 1, "", array("enddate", "workingdays", "uc_hours"));
+       
+        if (count($previous))
+        {    
+        
+          if (is_array($previous[0]["enddate"]))
+          {            
+            $year = $previous[0]["enddate"]["year"];
+            $month = $previous[0]["enddate"]["month"];
+            $day = $previous[0]["enddate"]["day"];
+            $record["startdate"] = array("year"=>$year,
+                                         "month"=>$month,
+                                         "day"=>$day);
+                                         
+            // We also set enddate now, to startdate+1 year.
+            $endstamp = mktime(12, 0, 0, $month, $day, $year+1);
+            $record["enddate"] = array("year"=>date("Y", $endstamp),
                                        "month"=>date("m", $endstamp),
-                                       "day"=>date("d", $endstamp));                                       
+                                       "day"=>date("d", $endstamp)); 
+          }
+          // and while we're at it, we should also set the workingdays
+          // to the workingdays of the previous contract.
+          if (!empty($previous[0]["workingdays"]))
+          {
+            $record["workingdays"] = $previous[0]["workingdays"];
+          }
+          
+          // and also the uc_hours.
+          if (!empty($previous[0]["uc_hours"]))
+          {
+            $record["uc_hours"] = $previous[0]["uc_hours"];
+          }
         }        
       }
     }
-    return $this->m_attribList["startdate"]->edit($record, $prefix, $mode);
+    // We have only implemented this method to set some values. We should
+    // call the regular edit method now.
+    return $this->m_attribList["uc_hours"]->edit($record, $prefix, $mode);
   }
 
 }
