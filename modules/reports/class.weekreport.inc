@@ -59,7 +59,7 @@ class weekreport extends atkNode
   function get_employee($user_id)
   {
     global $g_db;
-    $sql = "SELECT * FROM person WHERE status='active' AND userid='$user_id'";
+    $sql = "SELECT * FROM person WHERE status='active' AND id='$user_id'";
     $record = $g_db->getrows($sql);
     return $record[0];
   }
@@ -68,7 +68,7 @@ class weekreport extends atkNode
   {
     global $g_db;
 
-    $sql = "SELECT lastname,firstname,userid
+    $sql = "SELECT id, lastname,firstname,userid
             FROM person
             WHERE status='active' AND role = 'employee'
             ORDER BY lastname
@@ -79,9 +79,9 @@ class weekreport extends atkNode
     $employee_code.='<OPTION VALUE="all">'.text("all_users").'</OPTION>';
     for($i=0;$i<count($records);$i++)
     {
-      if ($userid==$records[$i]["userid"]) $selected="selected";
+      if ($userid==$records[$i]["id"]) $selected="selected";
       else $selected="";
-      $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$selected.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+      $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$selected.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
     }
     return $employee_code;
   }
@@ -107,7 +107,7 @@ class weekreport extends atkNode
 
     if (!isset($atkorderby)||$atkorderby=="") $atkorderby = "week";
 
-    $view_all = $g_securityManager->allowed('weekreport','view_all');
+    $view_all = $g_securityManager->allowed('reports.weekreport','view_all');
 
     $startdate = $this->m_postvars["startdate"];
     $enddate = $this->m_postvars["enddate"];
@@ -139,7 +139,7 @@ class weekreport extends atkNode
 
     if (!isset($userid)||$userid=="")
     {
-      $userid=$g_user["name"];
+      $userid=$g_user["id"];
     }
 
     if (!isset($nameswitch)||$nameswitch=="")
@@ -180,8 +180,8 @@ class weekreport extends atkNode
       }
       else
       {
-        $userid = $g_user["name"];
-        $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
+        $userid = $g_user["id"];
+        $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
       }
 
       /*// TODO: Even if you don't have view_all right, you should still be able to view employees
@@ -281,9 +281,6 @@ class weekreport extends atkNode
     $report_start_week = weekstamp($startstamp);
     $report_end_week = weekstamp($endstamp);
 
-    $sql = "SELECT id FROM person WHERE userid ='".$userid."'";
-    $personid = $g_db->getRows($sql);
-
     // determine contracthours per week..
     $query = "SELECT
                 uc_hours, startdate, enddate, person.userid, lastname, firstname
@@ -292,11 +289,11 @@ class weekreport extends atkNode
               WHERE ";
     if ($nameswitch=="supervisor")
     {
-      if ($userid!="all") $query.= " person.supervisor = ".$personid[0]["id"]." AND ";
+      if ($userid!="all") $query.= " person.supervisor = ".$userid." AND ";
     }
     else
     {
-      if ($userid!="all") $query.= " usercontract.userid =".$personid[0]["id"]." AND ";
+      if ($userid!="all") $query.= " usercontract.userid =".$userid." AND ";
     }
     $query.= "  startdate <= '$enddate'
                 AND enddate >= '$startdate'
@@ -340,7 +337,7 @@ class weekreport extends atkNode
     }
     $query.= "  activitydate >= '$startdate'
                 AND activitydate <= '$enddate'
-                AND hours.userid = person.userid
+                AND hours.userid = person.id
               GROUP BY
                 hours.userid, activitydate";
 
@@ -374,8 +371,8 @@ class weekreport extends atkNode
                 FROM
                   hours_lock, person
                 WHERE
-                  ((hours_lock.userid = person.userid AND person.supervisor='$userid')
-                  OR hours_lock.userid = '*')
+                  ((hours_lock.userid = person.id AND person.supervisor='$userid')
+                  OR hours_lock.userid IS NULL OR hours_lock.userid='')
                   AND
                     week between '$report_start_week' and '$report_end_week' ";
     }
@@ -390,13 +387,13 @@ class weekreport extends atkNode
                   week between '$report_start_week' and '$report_end_week' ";
       if ($nameswitch=="name"&&$userid!="all")
       {
-        $query.="AND (userid = '$userid' OR userid = '*')";
+        $query.="AND (userid = '$userid' OR userid IS NULL OR userid = '')";
       }
     }
     $locks = $g_db->getrows($query);
     for ($i=0;$i<count($locks);$i++)
     {
-      if ($locks[$i]["userid"]=="*")
+      if ($locks[$i]["userid"]=="")
       {
         $weekdata[$locks[$i]["week"]]["status"]="locked";
       }
@@ -466,7 +463,7 @@ class weekreport extends atkNode
     if ($outputType=="0")
     {
       $g_layout->ui_bottom();
-      $g_layout->ui_top(text("title_weekreport")." ".text("of")." ".$userid." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
+      $g_layout->ui_top(text("title_weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
 
       if ($userid!="all")
       {

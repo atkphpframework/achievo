@@ -172,7 +172,7 @@
         else
         {
           $userid = $g_user["id"];
-          $g_layout->td($g_user["id"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
+          $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
         }
         $g_layout->output('</tr><tr>');
 
