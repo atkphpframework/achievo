@@ -8,7 +8,7 @@
 
   global $g_projectnamesize; // must declare global. this piece of code might
                              // be executed somewhere in a local function scope.
-  $g_projectnamesize = 25;
+  $g_projectnamesize = 20;
 
   function updateSelectedProjects()
   {
@@ -113,9 +113,8 @@
     global $g_db, $g_user, $g_projectnamesize;
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
-    // 100 should be enough to get 5 unique recent projects.
-    $query.= "ORDER BY projectname DESC";
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";    
+    $query.= "ORDER BY projectname";
 
     $arr = $g_db->getrows($query,'0','100');
         
@@ -125,7 +124,7 @@
     // do a 'select distinct'!)
     // I fail to see why, but I'll work around it by checking for doubles.
     $alreadyhad = array();    
-    for ($i=0, $_i=count($arr); $i<$_i ;$i++)
+    for ($i=0, $_i=count($arr); $i<$_i;$i++)
     {                    
       if (!in_array($arr[$i]['projectid'], $alreadyhad))
       {
