@@ -203,10 +203,10 @@ if(!empty($convert)&&$convert==1)
   handleError($sql);
 
   //insert roles in table role
-  $sql = "INSERT INTO role (id, name) VALUES (1, 'developer')";
+  $sql = "INSERT INTO role (id, name) VALUES (1, 'Developer')";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "INSERT INTO role (id, name) VALUES (2, 'employer')";
+  $sql = "INSERT INTO role (id, name) VALUES (2, 'Customer')";
   $res = $g_db->query($sql);
   handleError($sql);
   $sql = "INSERT INTO db_sequence (seq_name, nextid) VALUES ('role', 2)";
