@@ -46,7 +46,6 @@
   // include_once($config_atkroot."atk/attributes/class.atkmlnumberattribute.inc");
   // include_once($config_atkroot."atk/attributes/class.atkmlhtmlattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atkcolorpickerattribute.inc"); 
-  include_once($config_atkroot."atk/attributes/class.atktimeattribute.inc");  
   /** 
    * The relations. All relations that you don't use in your application 
    * can be stripped out.
