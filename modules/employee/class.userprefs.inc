@@ -52,10 +52,15 @@ class userprefs extends atkNode
 
   function postUpdate($record)
   {
-    global $g_user;
+    global $g_user, $g_sessionManager;    
 
     if($record["userid"]==$g_user["name"])
     {
+      // If the theme was updated, we must change it in the session (or you won't
+      // see the update.
+      $g_sessionManager->globalVar("atkTheme", $record["theme"], true);
+      
+      // Also, we must refresh the screen.    
       echo '<script language="javascript">';
       echo 'parent.location = "index.php"';
       echo '</script>';
