@@ -341,8 +341,8 @@
   $txt_zipcode = "Postcode";
   
   $txt_todocheck_mail_subject = "Todo herinnering";
-  $txt_todocheck_mail_header = "Een of meer todo's die aan jouw geassigned zijn hebben je aandacht nodig.";
-  $txt_todocheck_mail_duetoday = "De volgende todo's moeten vandaag af zijn:";
+  $txt_todocheck_mail_assigned_toyou = "Todo's aan jou toegewezen";
+  $txt_todocheck_mail_assigned_byyou = "Todo's door jou toegewezen";
   $txt_todocheck_mail_late = "De volgende todo's hadden al voor vandaag af moeten zijn:";
 
 ?>

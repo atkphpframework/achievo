@@ -341,7 +341,8 @@
   $txt_zipcode = "Zipcode";
   
   $txt_todocheck_mail_subject = "Todo reminder";
-  $txt_todocheck_mail_header = "One or more todo's that have been assigned to you need your attention.";
+  $txt_todocheck_mail_assigned_toyou = "Todo's assigned to you";
+  $txt_todocheck_mail_assigned_byyou = "Todo's you assigned";
   $txt_todocheck_mail_duetoday = "The following todo's must be completed today:";
   $txt_todocheck_mail_late = "The following todo's should have been already completed before today:";
 

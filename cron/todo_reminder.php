@@ -46,93 +46,97 @@
                              todo.title");
   
   // We sent as little mail as possible. For each todo, there are two people
-  // being mailed: the owner, and the assignee. If multiple todos have the
-  // same owner and assignee, we can group them into one mail.
+  // being mailed: the owner, and the assignee. We group todos such, that each 
+  // user only gets one email.
   
   $mails = array();
   $today = date("Y-m-d");
   
   for ($i=0, $_i=count($todos); $i<$_i; $i++)
-  {
-    $grouping = $todos[$i]["assigned_email"]."|".$todos[$i]["owner_email"];
-    $mails[$grouping]["owner_name"] = $todos[$i]["owner_name"];
-    $mails[$grouping]["owner_email"] = $todos[$i]["owner_email"];
-    $mails[$grouping]["assigned_name"] = $todos[$i]["assigned_name"];
-    $mails[$grouping]["assigned_email"] = $todos[$i]["assigned_email"];
+  {    
+    $assignee = $todos[$i]["assigned_email"];
+    $owner = $todos[$i]["owner_email"];
     
-    $todo = array("title"=>$todos[$i]["title"],
-                  "description"=>$todos[$i]["description"],
-                  "duedate"=>$todos[$i]["duedate"],
-                  "project"=>$todos[$i]["project_name"]);
+    $lookup[$owner] = $todos[$i]["owner_name"];    
+    $lookup[$assignee] = $todos[$i]["assigned_name"];    
+            
+    $due = ($todos[$i]["duedate"]==$today?"today":"late");
     
-    if ($todos[$i]["duedate"]==$today)
+    if ($todos[$i]["assigned_email"]!=$todos[$i]["owner_email"])    
     {
-      $mails[$grouping]["todos_today"][] = $todo;
+      // Assignee and owner are 2 separate people. They should both get mail.      
+      if ($owner!="") $mails[$owner]["byyou"][$due][] = $todos[$i];
     }
-    else
-    {
-      $mails[$grouping]["todos_late"][] = $todo;
-    }
+    if ($assignee!="") $mails[$assignee]["toyou"][$due][] = $todos[$i];
   }
  
-  foreach ($mails as $grouping => $todos)
+  foreach ($mails as $to => $todometa)
   {
-    $body = "";
-    $to = "";
-    $cc = "";
-    if ($todos["assigned_email"] != "") $to = $todos["assigned_email"];      
-    if ($todos["owner_email"] != "" && $todos["owner_email"]!=$todos["assigned_email"]) 
-    {
-      $cc = $todos["owner_email"];
-    }
+    $body = "";    
+    $cc = "";    
     
-    if ($to=="") // No to address.. 
-    {
-      $to = $cc; // mail at least to the owner.
-      $cc = "";
-    }        
-        
-    if ($to!="") // If we don't have a $to by now, we can't mail anything.
-    {
-      $body.=text("todocheck_mail_header")."\n\n";
-      $body.=text("owner").": ".$todos["owner_name"]." <".$todos["owner_email"].">\n";
-      $body.=text("assigned_to").": ".$todos["assigned_name"]." <".$todos["assigned_email"].">\n\n\n";
-    
-      $today = $todos["todos_today"];
+    $whos = array("toyou", "byyou");
+    for ($j=0;$j<2;$j++) // small manual loop, to ensure that toyou is 
+                         // displayed before byyou (if we would use a foreach, 
+                         // the order could be random).
+    {        
+      $who = $whos[$j];
+      $todos=$todometa[$who];
+      $body.=text("todocheck_mail_assigned_$who")."\n";
+      $body.=str_repeat("-", 70)."\n\n";
+      
+      $today = $todos["today"];
       if (count($today)>0)
       {
         $body.=text("todocheck_mail_duetoday")."\n\n";
         for ($i=0, $_i=count($today);$i<$_i;$i++)
         {
-          $body.="  ".$today[$i]["title"];
-          if ($today[$i]["project"]!="") $body.= " (".$today[$i]["project"].")";
-          $body.="\n    ".$today[$i]["description"]."\n\n";
+          $body.="  - ".$today[$i]["title"];          
+          if ($today[$i]["project_name"]!="") $body.= " (".$today[$i]["project_name"].")";
+
+          // Display owner if this todo is assigned to you by somebody else then you.
+          if ($who=="toyou" && $today[$i]["owner_email"]!=$to) 
+          {
+            $body.="\n    ".text("owner").": ".$today[$i]["owner_name"]." <".$today[$i]["owner_email"].">";
+          }
+          // always show assigned_to. (bugs assigned to ourselve don't show up as a byyou, only as a toyou)
+          else if ($who=="byyou")
+          {
+            $body.="\n    ".text("assigned_to").": ".$today[$i]["assigned_name"]." <".$today[$i]["assigned_email"].">";
+          }          
+          $body.="\n\n    ".str_replace("\n","\n    ",$today[$i]["description"])."\n\n";
         }
-      }
-      
-      $body.="\n";
-            
-      $late = $todos["todos_late"];
+        $body.="\n";
+      }            
+           
+      $late = $todos["late"];
       if (count($late)>0)
       {
         $body.=text("todocheck_mail_late")."\n\n";
         for ($i=0, $_i=count($late);$i<$_i;$i++)
         {  
-          $body.="  ".$late[$i]["duedate"]." - ".$late[$i]["title"];
-          if ($late[$i]["project"]!="") $body.= " (".text(project).": ".$late[$i]["project"].")";
-          $body.="\n".str_repeat(" ",15).$late[$i]["description"]."\n\n";
+          $body.="  - ".$late[$i]["title"];          
+          if ($late[$i]["project_name"]!="") $body.= " (".text("project").": ".$late[$i]["project_name"].")\n";
+          $body.="    ".text("duedate").": ".$late[$i]["duedate"];          
+          // Display owner if this todo is assigned to you by somebody else then you.
+          if ($who=="toyou" && $late[$i]["owner_email"]!=$to) 
+          {
+            $body.="\n    ".text("owner").": ".$late[$i]["owner_name"]." <".$late[$i]["owner_email"].">";
+          }
+          // always show assigned_to. (bugs assigned to ourselve don't show up as a byyou, only as a toyou)
+          else if ($who=="byyou")
+          {
+            $body.="\n    ".text("assigned_to").": ".$late[$i]["assigned_name"]." <".$late[$i]["assigned_email"].">";
+          }                    
+          $body.="\n\n    ".str_replace("\n", "\n    ",$late[$i]["description"])."\n\n";
         }
       }
-      
-      usermail($to,text("todocheck_mail_subject"),$body,($cc!=""?"Cc: $cc\n":""));
-      echo "sent mail to $to";
-      if ($cc!="") echo " and a cc to $cc";
-      echo "\n";
+      $body.="\n";
     }
-    else
-    {
-      echo "couldn't sent mail for user '".$todos["assigned_name"]."' (no email)";
-    }
+    usermail($to,text("todocheck_mail_subject"),$body);
+    echo "sent mail to $to";      
+    echo "\n";
+
   }
   
 ?>
