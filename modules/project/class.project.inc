@@ -39,8 +39,12 @@
         $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE, 15));
         $this->addFilter("project.status","active");
       }
-
-      $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST));
+	
+		  if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && $this->m_contact_obligatory)
+		  {
+		  	$flags = AF_OBLIGATORY;
+	  	}
+      $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
       $this->add(new atkOneToManyRelation("employees","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       
       $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");      
@@ -67,7 +71,7 @@
       $this->setIndex("name");
     
       atkdebug("project::project()");
-    }
+    }   
     
     // We override the dispatch function, to intercept projectid's. We use this
     // to update the list of recent projects etc. So whatever action you perform
