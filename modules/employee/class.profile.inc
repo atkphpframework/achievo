@@ -7,7 +7,7 @@ class profile extends atkNode
 {
   function profile()
   {
-    $this->atkNode("profile", NF_EDITAFTERADD);
+    $this->atkNode("profile", NF_EDITAFTERADD|NF_NO_VIEW); // view disabled as long as profileattribute does not support display
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE, 50));      
