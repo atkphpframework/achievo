@@ -53,7 +53,10 @@
       $this->setOrder("name");
       $this->setIndex("name");
 
-  //    updateSelectedProjects();
+      //When a new project is selected add it to the selectedprj array
+      //in stack
+      if ($ATK_VARS!='add' || $ATK_VARS!='delete' || $ATK_VARS!='select')
+        updateSelectedProjects();
       atkdebug("project::project()");
     }
 
@@ -75,12 +78,12 @@
 
     function action_stats()
     {
-      include_once 'projectstats.inc';   // MILESTONES FUNCTIONS
+      include_once moduleDir('project').'projectstats.inc';   // MILESTONES FUNCTIONS
     }
 
     function action_planning()
     {
-      include_once 'projectplanning.inc';   // MILESTONES FUNCTIONS
+      include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
     }
 
     function action_billsetup()
