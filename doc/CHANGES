@@ -2,6 +2,13 @@
 - : deprecated feature
 * : bugfix or changed code
 
+Changes in Achievo 0.7.1
+------------------------
+* Fixed a bug in postgresql support (outer joins).
+* Fixed a few bugs in the database install and demo files.
+* Fixed a bug in the frameset that confused Achievo's session manager.
++ New feature for themes: alternating row backgroundcolors.
+
 Changes in Achievo 0.7
 ----------------------
 + Added support for the PostgreSQL database server.

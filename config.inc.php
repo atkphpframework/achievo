@@ -14,7 +14,7 @@
   //
   $config_databasehost = "localhost";
   $config_databasename = "achievo_0_7";
-  $config_databaseuser = "demo";
+  $config_databaseuser = "achievo";
   $config_databasepassword = "demo";
   
   // In admin pages, Achievo shows you a number of records with previous and
@@ -26,7 +26,7 @@
   // themes there are in the directory themes. Users can choose their own 
   // theme in the user preferences section.
   //
-  $config_defaulttheme = "slash";
+  $config_defaulttheme = "moronic";
   
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
