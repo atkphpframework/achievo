@@ -143,7 +143,6 @@
   
   $txt_title_license = $txt_app_shorttitle." license";
   $txt_title_manual = "Online documentation";
-  $txt_title_homepage = $txt_app_shorttitle." homepage";
   
   $txt_customer = "Customer";
   
@@ -249,4 +248,15 @@
   // --------==== Strings that were introduced in version 0.6.3: ====---------
   $txt_orderby = "Order by";
 
+  // --------==== Strings that were introduced in version 0.7: ====---------
+  $txt_menu = "Main menu";
+  $txt_menu_employeemanagement = "Manage Employees";  
+  $txt_menu_projectmanagement = "Manage Projects";
+  $txt_menu_project_stats = "Project Statistics";
+  $txt_menu_project_planning = "Project Planning";
+  $txt_menu_setup = "Setup";
+  $txt_menu_support = "Support"; 
+  $txt_menu_achievo_license = $txt_app_shorttitle." license";
+  $txt_menu_achievo_docs = "Online documentation";
+  $txt_menu_achievo_home = $txt_app_shorttitle." homepage";
 ?>

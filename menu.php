@@ -8,10 +8,13 @@
   $config_atkroot = "./";
   require_once($config_atkroot."atk/class.atknode.inc");
   require_once($config_atkroot."atk/atkmenutools.inc");
-  include_once($config_atkroot."config.menu.inc");
   
   atksecure();
+  
   include_once("./theme.inc");
+  
+  /* get main menuitems */
+  include_once($config_atkroot."config.menu.inc");  
 
   /* first add module menuitems */
   for ($i = 0; $i < count($g_modules); $i++)
@@ -47,7 +50,7 @@
       
     /* normal menu item */
     else if ($enable) $menu .= href($url,text("menu_$name"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
-    else $menu .= text("title_$name").$config_menu_delimiter;    
+    else $menu .= text("menu_$name").$config_menu_delimiter;    
   }
   
   /* previous */
