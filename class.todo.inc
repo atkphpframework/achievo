@@ -18,12 +18,13 @@ class todo extends atkNode
     global $atkaction, $g_user;
 
     $this->atkNode("todo", NF_TRACK_CHANGES);
+
     $this->add(new atkAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
     $this->add(new atkManyToOneRelation("projectid"    , "project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY));
     $this->add(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
-    $this->add(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
+    $this->add(new atkDateAttribute("entrydate"        , "F d Y", "d F Y", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD));
     $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
@@ -39,7 +40,7 @@ class todo extends atkNode
   function initial_values()
   {
     global $g_user;
-    
+   
     $date = array("year"=>date("Y"),
                   "month"=>date("m"),
                   "day"=>date("d"),
@@ -48,6 +49,7 @@ class todo extends atkNode
                   "seconds"=>date("s"));
     return array("owner"=>$g_user["name"],                 
                  "entrydate"=>$date,
+                 "duedate"=>$date,
                  "updated"=>$date,
                  "priority"=>3);
   }    
