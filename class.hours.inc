@@ -3,12 +3,6 @@
 include_once "class.projectphaseattrib.inc";
 include_once "class.projectattrib.inc";
 include_once "achievotools.inc";
-
-function time_format($time)
-{
-  if ($time==0) return "&nbsp;";
-  return sprintf("%02d",floor($time/60)).':'.sprintf("%02d",$time%60);
-}    
   
 function date_format($datestamp)
 {

@@ -91,7 +91,7 @@
 
   function getRecentProjects()   
   {
-    global $g_db, $g_user;
+    global $g_db, $g_user, $projectnamesize;
      
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
@@ -174,6 +174,25 @@
     if ($weekday==0) $weekday=7;
     return date("Y-m-d" ,$viewtime-(86400*($weekday-7)));
   }
+  
+  function usermail($to, $subject, $body, $add_header="")
+  {
+    if ($to!="" && $subject!="")
+    {
+      mail($to,"[achievo notice] ".$subject,$body,"From: achievo\n".$add_header);
+      atkdebug("Sent mail to $to");
+    }
+    else
+    {
+      atkdebug("No mail sent, missing to or subject");
+    }
+  }
+    
+  function time_format($time)
+  {
+    return floor($time/60).":".sprintf("%02d",($time%60));
+  }
+
 
 
 ?>

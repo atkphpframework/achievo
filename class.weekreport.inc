@@ -38,15 +38,15 @@ class weekreport extends atkNode
   {              
     $this->atkNode("weekreport",NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT); // node() constructor is *not* called automatically!
     $this->addAttribute(new atkAttribute("week"));
-    $this->addAttribute(new atkAttribute("start"));
-    $this->addAttribute(new atkAttribute("end"));
-    $this->addAttribute(new timeDisplayAttribute("mo"));
-    $this->addAttribute(new timeDisplayAttribute("tu"));
-    $this->addAttribute(new timeDisplayAttribute("we"));
-    $this->addAttribute(new timeDisplayAttribute("th"));
-    $this->addAttribute(new timeDisplayAttribute("fr"));
-    $this->addAttribute(new timeDisplayAttribute("sa"));
-    $this->addAttribute(new timeDisplayAttribute("su"));
+    $this->addAttribute(new atkAttribute("startdate"));
+    $this->addAttribute(new atkAttribute("enddate"));
+    $this->addAttribute(new timeDisplayAttribute("mon"));
+    $this->addAttribute(new timeDisplayAttribute("tue"));
+    $this->addAttribute(new timeDisplayAttribute("wed"));
+    $this->addAttribute(new timeDisplayAttribute("thu"));
+    $this->addAttribute(new timeDisplayAttribute("fri"));
+    $this->addAttribute(new timeDisplayAttribute("sat"));
+    $this->addAttribute(new timeDisplayAttribute("sun"));
     $this->addAttribute(new timeDisplayAttribute("total",AF_TOTAL));
     $this->addAttribute(new timeDisplayAttribute("contract",AF_TOTAL));
     $this->addAttribute(new timeDisplayAttribute("overtime",AF_TOTAL));
@@ -232,8 +232,8 @@ class weekreport extends atkNode
       {
         $key = weekstamp($curstamp);      
         $weekdata[$key]["week"] = $key;
-        $weekdata[$key]["start"] = strftime("%d-%m-%Y",$curstamp);
-        $weekdata[$key]["end"] = strftime("%d-%m-%Y",$curstamp+(6*24*60*60));
+        $weekdata[$key]["startdate"] = strftime("%d-%m-%Y",$curstamp);
+        $weekdata[$key]["enddate"] = strftime("%d-%m-%Y",$curstamp+(6*24*60*60));
         $i+=6;
       }
     }
@@ -286,7 +286,7 @@ class weekreport extends atkNode
                 
     $raw = $g_db->getrows($query);
     
-    $strdow = array("su","mo","tu","we","th","fr","sa");
+    $strdow = array("sun","mon","tue","wed","thu","fri","sat");
     
     for ($i=0;$i<count($raw);$i++)
     {
@@ -344,19 +344,14 @@ class weekreport extends atkNode
     if ($outputType=="0")
     {
       $g_layout->ui_bottom();
-      $g_layout->ui_top(text("title_weekreport")." ".text("of")." ".$userid." ".text("title_weekreport_intimespan")." ".$startdate." t/m ".$enddate);
+      $g_layout->ui_top(text("title_weekreport")." ".text("of")." ".$userid." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
       
       $emprec = $this->get_employee($userid);      ;
       $employeedata = '<br>'.$g_layout->ret_table_simple().'<tr>';
-      $employeedata.= $g_layout->ret_td(text("employee_number").": ");
-      $employeedata.= $g_layout->ret_td($emprec["employee_number"]);
-      $employeedata.= '</tr><tr>';
+                  
       $employeedata.= $g_layout->ret_td(text("name").": ");
       $employeedata.= $g_layout->ret_td($emprec["name"]);
-      $employeedata.= '</tr><tr>';
-      $employeedata.= $g_layout->ret_td(text("employment").": ");
-      $employeedata.= $g_layout->ret_td($emprec["employment"]);
-      $employeedata.= '</tr><tr>';
+      $employeedata.= '</tr><tr>';      
       $employeedata.= $g_layout->ret_td(text("email").": ");
       $employeedata.= $g_layout->ret_td($emprec["email"]);
       $employeedata.= '</tr></table>';

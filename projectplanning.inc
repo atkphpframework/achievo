@@ -5,10 +5,7 @@
 
 global $g_layout, $g_db, $selectedprojectid;
 
-function time_format($time)
-{
-  return sprintf("%02d",floor($time/60)).":".sprintf("%02d",($time%60));
-}
+include_once("achievotools.inc");
 
 function load_dependencies($phase_record,$dep_record)
 {  

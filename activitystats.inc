@@ -1,10 +1,7 @@
  <?php
  
-  function time_format($time)
-  {
-    return floor($time/60).":".sprintf("%02d",($time%60));
-  }
-  
+  include_once("achievotools.inc");
+
   global $g_layout;
   global $g_securityManager;
   global $startdate;

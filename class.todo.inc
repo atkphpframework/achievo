@@ -1,5 +1,7 @@
 <?
 
+require_once("achievotools.inc");
+
 class todo extends atkNode
 {
  var $prioId   = array(1,2,3,4,5);
@@ -122,7 +124,7 @@ class todo extends atkNode
    $emails  = $g_db->getrows($q);   
    
    // now assemble the mail body
-   $subj  = "[achievo notice] ".text("todoadded").": ".$rec["title"];
+   $subj  = text("todoadded").": ".$rec["title"];
     
    $body = text("todo").": ".$rec["title"]."\n";     
    $body.= text("description").": \n".$rec["description"]."\n\n";
@@ -142,10 +144,9 @@ class todo extends atkNode
      $to[] = $emails[$i]["email"];
    }           
 
-   // send mail
-   $header  = "From: achievo\n";
-   $header .= $this->prioHeader($rec["priority"]); 
-   mail(implode(",",$to), $subj, $body, $header);  
+   // send mail   
+   $header = $this->prioHeader($rec["priority"]); 
+   usermail(implode(",",$to), $subj, $body, $header);  
   }
   
   function todoChanged($new, $old)
@@ -204,10 +205,9 @@ class todo extends atkNode
        $to[] = $emails[$i]["email"];
      }           
  
-     // send mail
-     $header  = "From: achievo\n";
-     $header .= $this->prioHeader($rec["priority"]);
-     mail(implode(",",$to),"[achievo notice] ".text("todochanged"), $body, $header);    
+     // send mail     
+     $header = $this->prioHeader($rec["priority"]);
+     usermail(implode(",",$to),text("todochanged"), $body, $header);    
    }
   }
 

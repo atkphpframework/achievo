@@ -7,7 +7,7 @@
 
   include_once("atk.inc");
   
-  atksession();  
+  atksession("atkmenu");  
   atksecure();
   
   include_once("./theme.inc");
@@ -45,16 +45,16 @@
  
   usort($g_menu[$atkmenutop],"menu_cmp");   
   
-?>
-    <script language="JavaScript">
+
+  $g_layout->output('<script language="JavaScript">
     
     function reloadProjects(el)
     {
       var id = el.options[el.selectedIndex].value;      
       window.location= "menu.php?atkmenutop=projectmanagement&selectedproject="+id;                
     }
-    </script>
-<?
+    </script>');
+
   /* DIRTY HACK: drop down in projectmanagement */
   if ($atkmenutop == "projectmanagement")
   { 

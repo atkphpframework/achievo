@@ -1,9 +1,6 @@
 <?php
-  function time_format($time)
-  {
-    return floor($time/60).":".sprintf("%02d",($time%60));
-  }
-  
+  include_once("achievotools.inc");
+
   global $g_layout;  
   global $startdate;
   global $enddate;  
@@ -163,9 +160,10 @@
   $g_layout->output($g_layout->data_bottom());
 
   $g_layout->output('<br><b>'.text("title_projectstats_peractivity") . '</b><br><br>');
-  
+
   $g_layout->output($g_layout->data_top());  
   $g_layout->output($g_layout->tr_top());  
+
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  

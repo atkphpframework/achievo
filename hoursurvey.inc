@@ -198,21 +198,10 @@
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
               
-    $g_layout->td('<b>'.text("hoursurvey_output_options").'</b>','colspan="2"');
+    $g_layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
     
     $g_layout->output('</tr><tr>');  
-    
-/*
-    $g_layout->td(text("hoursurvey_output_printable"));
-    $g_layout->td('<input type="checkbox" name="printable" value="1">');
-    
-    $g_layout->output('</tr><tr>');  
-    
-    $g_layout->td(text("hoursurvey_export"));
-    $g_layout->td('<input type="checkbox" name="export" value="1">');
-*/
-
-    
+       
     $g_layout->td(text("report_output_type"));
     $g_layout->td('<select name="outputType">
                      <option VALUE="0" selected>'.text("report_output_standard").'
@@ -228,7 +217,7 @@
     //$g_layout->td('<input type="checkbox" name="pdf" value="1">');
     //$g_layout->output('</tr><tr>');  
 
-    $g_layout->td(text("hoursurvey_output_showcollumns"));
+    $g_layout->td(text("report_output_showcollumns"));
     
     $cell="";
     for ($i=0;$i<count($arr_col);$i++)
@@ -277,7 +266,7 @@
   if ($outputType=="0")
   {
     $g_layout->ui_bottom();
-    $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("title_hoursurvey_of")." ".$userid." ".text("title_hoursurvey_intimespan")." ".$startdate." t/m ".$enddate);
+    $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("of")." ".$userid." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
     $g_layout->output('<br><br>');
     $g_layout->output($this->recordList($data, array(""),true,$suppress));
     $g_layout->output('<br><br>');

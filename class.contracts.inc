@@ -6,24 +6,23 @@ class contracts extends atkNode
   {
     $this->atkNode("contracts",NF_ADD_LINK);
 
-    $this->addAttribute(new atkAttribute("contract_id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("contract_desc",AF_OBLIGATORY|AF_HIDE_LIST));    
+    $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->addAttribute(new atkAttribute("description",AF_OBLIGATORY|AF_HIDE_LIST));    
     $this->addAttribute(new atkAttribute("contract_period_price",AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->addAttribute(new atkManyToOneRelation("contract_type","contracttype",AF_SEARCHABLE|AF_OBLIGATORY));    
+    $this->addAttribute(new atkManyToOneRelation("contracttype","contracttype",AF_SEARCHABLE|AF_OBLIGATORY));    
     $this->addAttribute(new atkListAttribute("contract_billing_period",array(text("monthly"),text("Quarterly"),text("yearly"),text("per_incident")),array(),AF_OBLIGATORY|AF_HIDE_LIST));
     $this->addAttribute(new atkDateAttribute("contract_startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
     $this->addAttribute(new atkDateAttribute("contract_enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));    
     $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY));    
     
-    $this->setTable("contracts","contract_id");
-    $this->setOrder("contract_type");
+    $this->setTable("contract","contract");
+    $this->setOrder("contract_startdate");
    }
 
    function contract_period_price_edit($rec)
-	 {
-	   return $this->m_attribList["contract_period_price"]->edit($rec)." ".atkconfig("currency_symbol");
-	 }
-
+   {
+     return $this->m_attribList["contract_period_price"]->edit($rec)." ".atkconfig("currency_symbol");
+   }
   
 }
 ?>
