@@ -184,10 +184,9 @@ for ($i=1;$i<=7;$i++)
             // If the date of the printed day is smaller the the date now the planned item can only be viewed (no changes are allowed)
             // because you allways plan in the future
             if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
-            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[7]'"));
+            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[project_id]'"));
 
             // If the project has no abbreviation the first 10 characters of the name of the project will be shown
-            atk_var_dump($item);
             if ($item[project_abbreviation]!='') $abbreviation = $item[project_abbreviation];
             else $abbreviation = substr($item[project_name], 0, 10);
 
@@ -195,8 +194,8 @@ for ($i=1;$i<=7;$i++)
             $times.=time_format($item[planning_time]).'<br>';
             $daytotals[$w] += $item[planning_time];
           }
-          $g_layout->td($projects, 'valign="top"');
-          $g_layout->td($times, 'valign="top"');
+          $g_layout->td($projects, 'valign="top" nowrap');
+          $g_layout->td($times, 'valign="top" nowrap');
         }
         else
         {
