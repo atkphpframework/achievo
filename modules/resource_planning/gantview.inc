@@ -34,7 +34,7 @@ if (isset($selectedprojectid)&&$selectedprojectid!="")
  $projectid=$selectedprojectid;
 }
 
-$view_all = $g_securityManager->allowed('resource_planning','view_all');
+$view_all = $g_securityManager->allowed('resource_planning','vie');
 
 if ($outputType==0)
 {
@@ -67,6 +67,6 @@ if ($outputType==0)
 }
 
 $g_layout->ui_top(text('Gant view planning'));
-$g_layout->output('<br><img src="modules/resource_planning/gantchart.php?projectid='.$projectid.'?" border=0 align=center>');
+$g_layout->output('<br><center><img src="modules/resource_planning/gantchart.php?projectid='.$projectid.'?" border=0 align=center><br><br>');
 $g_layout->ui_bottom();
 ?>
