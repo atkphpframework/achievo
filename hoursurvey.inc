@@ -1,5 +1,7 @@
 <?php
 
+  userelation("atkmanytoonerelation");
+
   global $g_layout;
   global $g_securityManager;
 //  global $startdate;
@@ -33,7 +35,11 @@
   $startdate = $this->m_postvars["startdate"];
   $enddate = $this->m_postvars["enddate"];
   $col = $this->m_postvars["col"];
-
+  
+  // the selected customer_id is found as "customer.id='3'" in the postvars
+  $customerarr = decodeKeyValuePair($this->m_postvars["customerid"]);
+  $customerid = $customerarr["customer.id"];
+  
   function get_activities($act_id)
   {
     global $g_db;
@@ -45,7 +51,7 @@
     $records = $g_db->getrows($sql);
     if($act_id==-1) { $sel="SELECTED"; } else { $sel=""; }
     $activity_code='<OPTION VALUE="" '.$sel.'>'.text('allactivities').'</OPTION>';
-    for($i=0;$i<count($records);$i++)
+    for($i=0,$_i=count($records);$i<$_i;$i++)
     { 
       if($act_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
       $activity_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["name"].'</OPTION>';
@@ -65,7 +71,7 @@
 
     $records = $g_db->getrows($sql);
     $employee_code='<OPTION VALUE="all">'.text("allusers");
-    for($i=0;$i<count($records);$i++)
+    for($i=0,$_i=count($records);$i<$_i;$i++)
     { 
       if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
       $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$sel.'>'.$records[$i]["name"].'</OPTION>';
@@ -81,12 +87,12 @@
   if (!is_array($col)||count($col)==0)
   {
     // No collumns selected. Default->select all.
-    for ($i=0;$i<count($arr_col);$i++)
+    for($i=0,$_i=count($arr_col);$i<$_i;$i++)
     {
       $col[]=$arr_col[$i];
     }
   }
-  for ($i=0;$i<count($arr_col);$i++)
+  for($i=0,$_i=count($arr_col);$i<$_i;$i++)
   {
     if (!in_array($arr_col[$i],$col)) $suppress[]= $arr_col[$i];
   }
@@ -143,10 +149,11 @@
     $g_layout->td('<hr>'.text('searchbyprojectorphase').':','colspan="2"');
     $g_layout->output('</tr><tr>');
     $g_layout->td(text('project').':');
-    $projectatt = new atkProjectAttribute('projectid');
+    $projectatt = new atkProjectAttribute('projectid');    
 
     // we have to pass a 'dummy' record to the attributes to set their default value.
     $dummyrec = Array("projectid"=>$projectid,
+                      "customerid"=>array("id"=>$customerid), // manytoonerelation needs subarray
                       "phaseid"=>Array("phaseid"=>$phaseid), // is implemented as an array in projphaseattrib.
                       "startdate"=>array("year"=>substr($startdate,0,4),
                                          "month"=>substr($startdate,5,2),
@@ -158,11 +165,17 @@
                                          
     $g_layout->td($projectatt->edit($dummyrec));
     $g_layout->output('</tr><tr>');
-    $g_layout->td('Or','colspan="2"');
+    $g_layout->td(text('or'),'colspan="2"');
     $g_layout->output('</tr><tr>');
     $g_layout->td(text('phase').':');
     $phaseatt = $this->m_attribList["phaseid"];
     $g_layout->td($phaseatt->edit($dummyrec));
+    $g_layout->output('</tr><tr>');  
+    $g_layout->td(text('or'),'colspan="2"');
+    $g_layout->output('</tr><tr>');
+    $g_layout->td(text('customer').':');
+    $customeratt = new atkManyToOneRelation("customerid", "customer");
+    $g_layout->td($customeratt->edit($dummyrec));
     $g_layout->output('</tr><tr>');  
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
@@ -177,6 +190,7 @@
       $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
     }
     $g_layout->output('</tr><tr>');  
+    
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
     $g_layout->td(text('activity').': ');
@@ -220,7 +234,7 @@
     $g_layout->td(text("report_output_showcollumns"));
     
     $cell="";
-    for ($i=0;$i<count($arr_col);$i++)
+    for($i=0,$_i=count($arr_col);$i<$_i;$i++)
     {
       $checked = (in_array($arr_col[$i],$col) ? "checked" : "");
       $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.text($arr_col[$i]).'&nbsp;';
@@ -232,7 +246,7 @@
     $g_layout->td(text("orderby").': ');
     
     $listcol = array();
-    for ($i=0;$i<count($arr_col);$i++) $listcol[] = "hours.".$arr_col[$i];
+    for($i=0,$_i=count($arr_col);$i<$_i;$i++) $listcol[] = "hours.".$arr_col[$i];
   
     $orderatt = new atkListAttribute("atkorderby",$arr_col, $listcol);
           
@@ -247,6 +261,7 @@
   if(!empty($activity_id)&&$activity_id!="") $filter.=" AND hours.activityid=".$activity_id;
   if(!empty($phaseid)&&$phaseid!="") $filter.=" AND hours.phaseid=".$phaseid;
   if(!empty($projectid)&&$projectid!="") $filter.=" AND A.projectid=".$projectid;
+  if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
    
   if (!$view_all)
   {

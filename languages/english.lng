@@ -184,7 +184,7 @@
   $txt_report_output_standard = "Standard output";
   $txt_report_output_type = "Output type";
   $txt_report_show_details = "Show details";
-  $txt_searchbyprojectorphase = "You can search by projects, or within a phase of a project";
+  $txt_searchbyprojectorphase = "You can search by projects, or within a phase of a project, or all projects of a customer";
   $txt_setcostsfilter = "Select which costs you want to view:";
   $txt_sethoursfilter = "Select which hours you want to view:";
   $txt_specrequired = "Specification required";
