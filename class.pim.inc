@@ -85,8 +85,7 @@
       $res.= '</tr></table>';
 
       //PLANNING
-
-      $datenow=date("Y-m-d");
+      
       $res.='<br><br><b>'.text(resource_planning_your_planning).':</b><br><br>';
 
       $planningsnode = getNode("resource_planning.resource_planning");
@@ -94,7 +93,7 @@
       $actions = array();
 
       $userid=$g_user['userid'];
-      $recs = $planningsnode->selectDb("planning.employeeid = '$userid' AND planning.date='$datenow'", "planning.phaseid", ' ', "planning.date");//"planning.employeeid = 'ivo' AND planning.date = $datenow");
+      $recs = $planningsnode->selectDb("planning.employeeid = '$userid' AND planning.plandate=now()", "planning.phaseid", ' ', "planning.plandate");
 
       if (count($recs)>0)
       {
