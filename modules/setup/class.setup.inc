@@ -245,7 +245,7 @@
           // several Achievo versions.
           $version = "";
           
-          if (in_array("projectactivity", $tablenames) && in_array("templateactivity"))
+          if (in_array("projectactivity", $tablenames) && in_array("templateactivity", $tablenames))
           {
             // If these two tables exist, this is a 0.4 database.
             $version = "0.4";
@@ -701,7 +701,7 @@
     
       $sql = "ALTER TABLE $table ADD $col $type";
       if (!$nullable) $sql.=" NOT NULL";
-      if ($default!="") $sql.= " DEFAULT $default";
+      if ($default!="") $sql.= " DEFAULT '$default'";
       $g_db->query($sql);        
     }
     
@@ -710,7 +710,7 @@
       global $g_db;
       $sql = "ALTER TABLE $table CHANGE $col $newname $type";
       if (!$nullable) $sql.=" NOT NULL";
-      if ($default!="") $sql.= " DEFAULT $default";
+      if ($default!="") $sql.= " DEFAULT '$default'";
       $g_db->query($sql);
     }
     
@@ -807,9 +807,9 @@
       {
       }
       
-      $this->setupscreen("Upgrade result",
-                         "Upgraded from version $version.
-                         <br>".$output,
+      $this->setupscreen("Upgrading from version $version",
+                         "Below is the result of the conversion. Please review if there are any errors.
+                          <br>Also take note of any important messages.".$output,
                          "achievostart");
       
     }
