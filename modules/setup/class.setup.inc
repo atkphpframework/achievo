@@ -250,9 +250,6 @@
           {
             // If these two tables exist, this is a 0.4 database.
             $version = "0.4";
-            // TODO FIXME: the 0.4 -> 0.6 conversion script works completely different
-            // from the others, in that it reads from db 1 and inserts in another database.
-            // We'll have to rewrite this script.
           }
           else if (in_array("todo_history", $tablenames) && in_array("employee_project", $tablenames))
           {
@@ -901,6 +898,29 @@
         else
         {
           // module is installed. Check if we need to patch.
+          $availablepatches = array();
+          if ($handle=@opendir($moduledir."install"))
+          {
+            while ($file = readdir($handle))
+            {            
+              if (substr($file,0,5)=="patch")
+              {            
+                $patchno = substr($file, 6, -4); // Patchnumber is between 'patch-' and '.inc'
+                if ($patchno>$installedmodules[$modname])
+                {
+                  $availablepatches[] = $patchno;
+                }
+              }
+            }
+            closedir($handle);
+            
+            if (count($availablepatches))
+            {
+              // We need to install patches.
+              natcasesort($availablepatches); // We must install patches in the correct order.
+              $patches[$modname] = $availablepatches;
+            }
+          }
         }
       }
       
@@ -919,15 +939,15 @@
           $output.= $g_layout->ret_td("Install");
           $output.= $g_layout->tr_bottom();
         }
-        foreach ($patches as $modname)
+        foreach ($patches as $modname=>$modpatches)
         {
           $output.= $g_layout->tr_top();
           $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td("Patch");
+          $output.= $g_layout->ret_td(count($modpatches)." patch".(count($modpatches)>1?"es":""));
           $output.= $g_layout->tr_bottom();
         }
         $output.= $g_layout->data_bottom();
-        return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output, "upgradedb");          
+        return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output, "upgradedb");
       }
       else      
       {    
