@@ -79,6 +79,11 @@
   //
   $config_administratorpassword = "demo";
 
+  // If you set $config_auth_dropdown to true, the login screen will contain
+  // a list of available usernames. If you set it to false, there will be
+  // an input box to manually enter the userid. Use the dropdown only if
+  // the number of users is small.
+  $config_auth_dropdown = false;
 
   // -------------------------------------------
   //            TIME REGISTRATION
