@@ -2,6 +2,19 @@
 - : deprecated feature
 * : bugfix or changed code
 
+Changes in Achievo 0.8.RC2
+--------------------------
+* Updated Czech language file.
+* Updated Hungarian language file.
+* Updated Dutch language file.
+* Updated Spanish language file (now contains correct accents)
+  (not yet up to date with 0.8 strings though).
+* Fixed a bug where empty dates would not get stored correctly.
+* Workaround for bug in some Internet Explorer 5.5SP1 versions that have
+  security patch q299618.exe installed (which caused some urls to be
+  processed incorrectly).
+* Bugfix in achievo_mysql.sql: phase status now has a default status.
+
 Changes in Achievo 0.8.RC1
 --------------------------
 + Added supervisor to employees.
@@ -229,14 +242,14 @@ Changes in Achievo 0.5
 
 Changes in Achievo 0.4.2
 ------------------------
-* Fixed some localization bugs (Jason Kohles)
-* Achievo now works under PHP4 (some incompatibilityproblems) (Ivo Jansch)
+* Fixed some localization bugs 
+* Achievo now works under PHP4 (some incompatibilityproblems)
 
 Changes in Achievo 0.4.1
 ------------------------
-+ Added german language file (Michael Gaehwiler)
-* Users were unable to change their password. Fixed. (Jason Kohles)
-* Fixed an untranslated button (Jason Kohles)
++ Added german language file 
+* Users were unable to change their password. Fixed. 
+* Fixed an untranslated button 
 
 Changes in Achievo 0.4
 ----------------------

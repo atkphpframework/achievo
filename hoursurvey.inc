@@ -187,8 +187,8 @@
      
     $g_layout->td(text("timespan").': ');
   
-    $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
-    $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
+    $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
+    $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
       
     $g_layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
                     text("until").

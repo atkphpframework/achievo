@@ -2,89 +2,90 @@
   // To keep language files up to date, all strings that are introduced in a new version
   // Have to be kept in a separate section, so we can easily see which strings need to be
   // translated when a new version comes out.
-  
+  // Hungarian translation by Miklos Bagi Jr. (joschy@mailbox.hu)
+
   // --------==== Strings that were there from the beginning: ====---------
 
-  $txt_app_title = "Achievo Intranet System";
+  $txt_app_title = "Achievo Intranet Rendszer";
   $txt_app_shorttitle = "Achievo";
 
-  $txt_startdate = "Indulas datuma"; 
-  $txt_name = "Nev";
+  $txt_startdate = "Indulás dátuma"; 
+  $txt_name = "Név";
   $txt_project = "Projekt";
-  $txt_activity = "Aktivitas";
-  $txt_remark = "Eszrevetel";
+  $txt_activity = "Aktivitás";
+  $txt_remark = "Észrevétel";
   $txt_employee = "Alkalmazott";
-  $txt_coordinator = "Koordinator";
+  $txt_coordinator = "Koordinátor";
   $txt_email = "E-mail";
-  $txt_time = "Ido";
-  $txt_hours = "Ora";
+  $txt_time = "Ido"";
+  $txt_hours = "Óra";
   $txt_minutes = "Perc";
-  $txt_date = "Datum";
-  $txt_percentage = "Szazalek";
+  $txt_date = "Dátum";
+  $txt_percentage = "Százalék";
   $txt_total = "Teljes";
-  $txt_description = "Leiras";
-  $txt_specrequired = "Reszletezes szukseges";
-  $txt_timespan = "Idotartam";
-  $txt_bill = "Szamla";
+  $txt_description = "Leírás";
+  $txt_specrequired = "Részletezés szükséges";
+  $txt_timespan = "Ido"tartam";
+  $txt_bill = "Számla";
   $txt_uptoandincluding = "t/m";
-  $txt_continue = "Folytatas";
-  $txt_userid = "Azonosito";
-  $txt_password = "Jelszo";
-  $txt_details = "reszletek";
-  $txt_refresh = "Frissites";
-  $txt_login = "Belepes";
-  $txt_logout = "Kilepes";  
+  $txt_continue = "Folytatás";
+  $txt_userid = "Azonosító";
+  $txt_password = "Jelszó";
+  $txt_details = "részletek";
+  $txt_refresh = "Frissítés";
+  $txt_login = "Belépés";
+  $txt_logout = "Kilépés";  
   $txt_id = "ID";
-  $txt_activitytemplate = "Aktivitas sablon";
-  $txt_activitydate = "Datum";
-  $txt_status = "Statusz";
-  $txt_active = "Aktiv";
-  $txt_nonactive = "Nem-aktiv";
-  $txt_archived = "Archivalt";  
+  $txt_activitytemplate = "Aktivitás sablon";
+  $txt_activitydate = "Dátum";
+  $txt_status = "Státusz";
+  $txt_active = "Aktív";
+  $txt_nonactive = "Inaktív";
+  $txt_archived = "Archivált";  
   
-  $txt_logout_loggedinuser = "Aktualis felhasznalo";
+  $txt_logout_loggedinuser = "Aktuális felhasználó";
   
-  $txt_title_activitystats = "Activitasi statisztika";
+  $txt_title_activitystats = "Aktivitási statisztika";
   $txt_title_activitystats_totals = "Teljes statisztika ";
-  $txt_title_activitystats_peremployee = "A kovetkezo alkalmazottak regisztraltak magukat erre az aktivitasra";
-  $txt_title_activitystats_perproject = "Ez az aktivitas a kovetkezo projekteknel volt hasznalatos";
-  $txt_title_employeestats = "Alkalmazottak statisztikaja";
+  $txt_title_activitystats_peremployee = "A következo" alkalmazottak regisztrálták magukat erre az aktivitásra";
+  $txt_title_activitystats_perproject = "Ez az aktivitás a következo" projekteknél szerepelt";
+  $txt_title_employeestats = "Alkalmazottak statisztikája";
   $txt_title_employeestats_totals = "Teljes statisztika ";
-  $txt_title_employeestats_perproject = "Az alkalmazott a kovetkezo projektekre regisztralt idot";
-  $txt_title_employeestats_peractivity = "Az alkalmazott a kovetkezo aktivitasokra regisztralt idot";
-  $txt_title_employeestats_details_hoursof = "Eltoltott orak ";
+  $txt_title_employeestats_perproject = "Az alkalmazott a következo" projektekre regisztrált ido"t";
+  $txt_title_employeestats_peractivity = "Az alkalmazott a következo" aktivitásokra regisztrált ido"t";
+  $txt_title_employeestats_details_hoursof = "Eltöltött orák ";
   $txt_title_employeestats_details_onproject = " a projekten ";
-  $txt_stats_chooseactivity = "Valaszd ki azt az aktivitast, a nevere torteno kattintassal, melyrol statisztikakat akarsz latni.";
-  $txt_stats_chooseemployee = "Valaszd ki azt az alkalmazottat, a nevere torteno kattintassal, akinek a statisztikait akarod latni.";
-  $txt_title_billing = "Szamlazas";
+  $txt_stats_chooseactivity = "Válassza ki azt az aktivitást annak nevére kattintásával, melyro"l statisztikát szeretné látni.";
+  $txt_stats_chooseemployee = "Válassza ki azt az alkalmazottat, annak nevére kattintásával, akinek a statisztikáját szeretné látni.";
+  $txt_title_billing = "Számlázás";
 
-  $txt_title_houradmin_weekview = "Heti feljegyzesek ";
-  $txt_title_houradmin_dayview = "Feljegyzesek ";
+  $txt_title_houradmin_weekview = "Heti feljegyzések ";
+  $txt_title_houradmin_dayview = "Feljegyzések ";
 
-  $txt_houradmin_previousweek = "Elozo het";
-  $txt_houradmin_nextweek = "Kovetkezo het";
-  $txt_houradmin_firstselectproject = "(Elobb valassz allapotot)";
-  $txt_houradmin_gotoweekview = "Heti nezet";
-  $txt_houradmin_searchallprojects = "Kereses az osszes projektben";
-  $txt_houradmin_searchallprojectsphases = "Kereses az osszes projektben es allapotban"; 
+  $txt_houradmin_previousweek = "Elo"zo" hét";
+  $txt_houradmin_nextweek = "Következo" hét";
+  $txt_houradmin_firstselectproject = "(Elo"bb válasszon állapotot)";
+  $txt_houradmin_gotoweekview = "Heti nézet";
+  $txt_houradmin_searchallprojects = "Keresés az összes projektben";
+  $txt_houradmin_searchallprojectsphases = "Keresés az összes projektben és állapotban"; 
   
-  $txt_title_hoursurvey_hours = "Ora ";
+  $txt_title_hoursurvey_hours = "Óra ";
   $txt_of = "of ";
   $txt_title_hoursurvey_onproject = "projekten ";
-  $txt_report_intimespan = "ido alatt ";
+  $txt_report_intimespan = "ido" alatt ";
       
-  $txt_title_projectstats = "Projekt Statistisztikak";
+  $txt_title_projectstats = "Projekt Statistisztika";
   
-  $txt_title_projectstats_totals = "Teljes statisztika for ";
-  $txt_title_projectstats_peremployee = "A kovetkezo alkalmazottak regisztraltak idot ezen a projekten";
-  $txt_title_projectstats_peractivity = "A kovetkezo aktivitasok tortentek a projekten";
+  $txt_title_projectstats_totals = "Teljes statisztika ";
+  $txt_title_projectstats_peremployee = "A következo" alkalmazottak regisztráltak ido"t";
+  $txt_title_projectstats_peractivity = "A következo" aktivitások történtek";
   
 
   // --------==== Strings that were introduced in version 0.4: ====---------    
-  $txt_title_hoursurvey_onactivity = "aktivitaskor ";
+  $txt_title_hoursurvey_onactivity = "aktivitáskor ";
   $txt_allusers = "Mindenki";  
   $txt_allprojects = "Minden projekt";
-  $txt_allactivities = "Minden aktivitas";
+  $txt_allactivities = "Minden aktivitás";
 
   // --------==== Strings that were introduced in version 0.5: ====---------
 
@@ -93,174 +94,324 @@
   // Probably each module should have its own language file, but with 
   // one general file. 
 
-  $txt_phone = "Telefonszam";
-  $txt_address = "Cim";
-  $txt_number = "Szam";
-  $txt_fax = "Fax szam";
-  $txt_remarkrequired = "Reszletezes szukseges";
-  $txt_title_activity_add = "Aktivitas hozzaadasa";
-  $txt_title_activity_admin = "Aktivitas megvaltoztatasa";
-  $txt_title_activity_edit = "Letezo aktivitas modositasa";  
+  $txt_phone = "Telefon";
+  $txt_address = "Cím";
+  $txt_number = "Szám";
+  $txt_fax = "Fax";
+  $txt_remarkrequired = "Részletezés szükséges";
+  $txt_title_activity_add = "Aktivitás hozzáadása";
+  $txt_title_activity_admin = "Aktivitás megváltoztatása";
+  $txt_title_activity_edit = "Létezo" aktivitás módosítasa";  
       
   // --------==== Strings that were introduced in version 0.5.2: ====---------
-  $txt_project_select = "Eloszor valassz egy projektet";
-  $txt_phase_select = "Valassz allapotot";
-  $txt_code = "Kod";
-  $txt_title_project_select = "Valassz projektet";
+  $txt_project_select = "Elo"ször valasszon projektet";
+  $txt_phase_select = "Válasszon állapotot";
+  $txt_code = "Kód";
+  $txt_title_project_select = "Válasszon projektet";
          
-  $txt_tpl_project_phase = "Allapot";
-  $txt_tpl_dependency = "Fuggoseg";
-  $txt_tpl_phase_activity = "allapot aktivitas";
+  $txt_tpl_project_phase = "Állapot";
+  $txt_tpl_dependency = "Függo"ség";
+  $txt_tpl_phase_activity = "állapot aktivitás";
   
-  $txt_title_tpl_project_add = "Uj projektsablon hozzaadasa";
-  $txt_title_tpl_project_edit = "Projektsablon modositasa";  
-  $txt_title_tpl_project_admin = "Letezo projektsablonok menedzselese";
+  $txt_title_tpl_project_add = "Új projektsablon hozzáadása";
+  $txt_title_tpl_project_edit = "Projektsablon módosítasa";  
+  $txt_title_tpl_project_admin = "Létezo" projektsablonok menedzselése";
   
-  $txt_title_tpl_phase_add = "Uj allapotsablon hozzaadasa";
-  $txt_title_tpl_phase_edit = "Allapotsablon modositasa";  
-  $txt_title_tpl_phase_admin = "Letezo allapotsablonok menedzselese";
+  $txt_title_tpl_phase_add = "Új állapotsablon hozzáadása";
+  $txt_title_tpl_phase_edit = "Állapotsablon modosítása";  
+  $txt_title_tpl_phase_admin = "Létezo" állapotsablonok menedzselése";
   
-  $txt_phase = "Allapot";
+  $txt_phase = "Állapot";
   
   // --------==== Strings that were introduced in version 0.5.4: ====---------
   
-  $txt_phaseid = "Projekt/Allapot";
-  $txt_activityid = "Aktivitas";
+  $txt_phaseid = "Projekt/Állapot";
+  $txt_activityid = "Aktivitás";
   $txt_contactperson = "Kapcsolat";
-  $txt_company = "Ceg";
-  $txt_bankaccount = "Bank szamla";  
-  $txt_zipcode = "Iranyitoszam";
-  $txt_city = "Varos";
-  $txt_country = "Orszag";
+  $txt_company = "Cég";
+  $txt_bankaccount = "Bank számla";  
+  $txt_zipcode = "Iranyítószám";
+  $txt_city = "Város";
+  $txt_country = "Ország";
     
-  $txt_title_hours_add = "Uj feljegyzes";
-  $txt_title_hours_edit = "Feljegyzes modositasa";
-  $txt_title_hours_admin = "Feljegyzesi ora-adminisztracio";
-  $txt_title_hours_stats = "Kivalasztas finomitasa ";
+  $txt_title_hours_add = "Új feljegyzés";
+  $txt_title_hours_edit = "Feljegyzés módosítása";
+  $txt_title_hours_admin = "Feljegyzési ido" adminisztráció";
+  $txt_title_hours_stats = "Kivalasztás finomítása ";
   
-  $txt_title_customer_add = "Uj ceg hozzaadasa";
-  $txt_title_customer_admin = "Meglevo cegek menedzselese";
-  $txt_title_customer_edit = "Ceg modositasa";
+  $txt_title_customer_add = "Új cég hozzáadása";
+  $txt_title_customer_admin = "Meglévo" cégek menedzselése";
+  $txt_title_customer_edit = "Cég módosítása";
   
   $txt_title_license = $txt_app_shorttitle." licensz";
-  $txt_title_manual = "Dokumentacio";
-  $txt_title_homepage = $txt_app_shorttitle." nevjegy";
+  $txt_title_manual = "Dokumentáció";
+  $txt_title_homepage = $txt_app_shorttitle." névjegy";
   
-  $txt_customer = "Ceg";
+  $txt_customer = "Cég";
   
-  $txt_title_profile_add = "Uj profil krealasa";
-  $txt_title_profile_admin = "Meglevo profilok menedzselese";
-  $txt_title_profile_edit = "Profil modositasa";
+  $txt_title_profile_add = "Új profil létrehozása";
+  $txt_title_profile_admin = "Meglévo" profilok menedzselése";
+  $txt_title_profile_edit = "Profil módosítása";
   
-  $txt_password_leaveblankifunchanged = "Hagyd mindket jelszo mezot szabadon, ha meg akarod tartani az eredeti jelszot.";
+  $txt_password_leaveblankifunchanged = "Hagyja mindkét jelszó mezo"t szabadon, ha meg akarja tartani az eredeti jelszót.";
 
-  $txt_userprefs = "Felhszanaloi beallitasok";
-  $txt_profile = "Biztonsagi Profilok";
+  $txt_userprefs = "Felhasználói beallitasok";
+  $txt_profile = "Biztonsági Profilok";
  
   $txt_menu_tpl_project_admin = "Projektsablonok";
-  $txt_menu_tpl_phase_admin = "Allapotsablonok";
+  $txt_menu_tpl_phase_admin = "Állapotsablonok";
 
-  $txt_title_userprefs_edit = "Felhasznaloi beallitasok";
+  $txt_title_userprefs_edit = "Felhasználói beállítások";
 
-  $txt_profile_explanation = "<br>Megadhatod, hogy mit tehet egy alkalmazott es mit nem.<br><br>";
+  $txt_profile_explanation = "<br>Megadhatja, hogy mit tehet egy alkalmazott és mit nem.<br><br>";
 
   $txt_entity = "Profil";
 
-  $txt_personalstats = "Szemelyes Statisztika";
+  $txt_personalstats = "Személyes Statisztika";
   
-  $txt_menu_hours_admin = "Ido Regisztracio";
-  $txt_menu_hours_hoursurvey = "Ido felulvizsgalat";
-  $txt_menu_customer_admin = "Ceg Adminisztracio";
-  $txt_menu_project_admin = "Projekt Adminisztracio";
-  $txt_menu_activity_admin = "Aktivitas Adminisztracio";
-  $txt_menu_employee_admin = "Alkalmazott Adminisztracio";
-  $txt_menu_employee_personalstats = "Szemelyes Statisztika";
-  $txt_menu_profile_admin = "Biztonsagi Profilok";  
+  $txt_menu_hours_admin = "Ido" Regisztráció";
+  $txt_menu_hours_hoursurvey = "Ido" felülvizsgálat";
+  $txt_menu_customer_admin = "Cég Adminisztráció";
+  $txt_menu_project_admin = "Projekt Adminisztráció";
+  $txt_menu_activity_admin = "Aktivitás Adminisztráció";
+  $txt_menu_employee_admin = "Alkalmazott Adminisztráció";
+  $txt_menu_employee_personalstats = "Személyes Statisztika";
+  $txt_menu_profile_admin = "Biztonsági Profilok";  
   
-  $txt_title_employee_add = "Alkalmazott hozzaadasa";
-  $txt_title_employee_edit = "Alkalmazott modositasa";
-  $txt_title_employee_admin = "Meglevo alkalmazottak menedzselese";  
+  $txt_title_employee_add = "Alkalmazott hozzáadása";
+  $txt_title_employee_edit = "Alkalmazott módosítasa";
+  $txt_title_employee_admin = "Meglévo" alkalmazottak menedzselése";  
   
-  $txt_title_project_add = "Uj Projekt hozzaadasa";
-  $txt_title_project_edit = "Project modositasa";
-  $txt_title_project_admin = "Meglevo projektek menedzselese";
+  $txt_title_project_add = "Új Projekt hozzáadása";
+  $txt_title_project_edit = "Projekt módosítása";
+  $txt_title_project_admin = "Meglévo" projektek menedzselése";
   
-  $txt_title_activity_select = "Valassz aktivitast";
-  $txt_activity_select = "Elobb valassz aktivitast";
-  $txt_title_phase_select = "Valassz allapotot";
+  $txt_title_activity_select = "Válasszon aktivitást";
+  $txt_activity_select = "Elo"bb válasszon aktivitást";
+  $txt_title_phase_select = "Válasszon állapotot";
   
-  $txt_title_employee_stats = "Alkalmazott Statisztikaja";
+  $txt_title_employee_stats = "Alkalmazott Statisztikája";
   
-  $txt_title_employee_select = "Valassz alkalmazottat";
-  $txt_employee_select = "Valassz alkalmazottat";
+  $txt_title_employee_select = "Válasszon alkalmazottat";
+  $txt_employee_select = "Válasszon alkalmazottat";
   
   $txt_template = "Sablon";
   
-  $txt_sethoursfilter = "Valassz orat:";
+  $txt_sethoursfilter = "Válasszon órát:";
 
-  $txt_searchbyprojectorphase = "Kereshetsz projekt szerint, vagy projekt allapot szerint";
+  $txt_searchbyprojectorphase = "Kereshet projekt-, vagy projekt állapot szerint";
   
-  $txt_view_all = "Minden felhasznalo mutatasa";
-  $txt_hoursurvey = "Ido felulvizsgalat";
+  $txt_view_all = "Minden felhasznaló mutatása";
+  $txt_hoursurvey = "Ido" felülvizsgálat";
   $txt_stats = "Statisztika";
   $txt_tpl_project = "Projekt Sablonok";
-  $txt_tpl_phase = "Allapot Sablonok";  
+  $txt_tpl_phase = "Állapot Sablonok";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_report_output_options = "Kiiratas beallitasa:";
-  $txt_report_output_printable = "Nyomtato-barat kiiratas";
+  $txt_report_output_options = "Kiiratás beállítása:";
+  $txt_report_output_printable = "Nyomtató-barát kiiratás";
   $txt_report_output_showcollumns = "Csak ezeket mutassa:";
-  $txt_menu_activity_stats = "Aktivitas Statisztika";
-  $txt_menu_employee_stats = "Aktivitas Statisztika";
-  $txt_lastname = "Vezeteknev";
-  $txt_firstname = "Keresztnev";
-  $txt_title_contact_edit = "Kontaktszemely modositasa";
-  $txt_contact = "Kontaktszemely";
+  $txt_menu_activity_stats = "Aktivitás Statisztika";
+  $txt_menu_employee_stats = "Aktivitás Statisztika";
+  $txt_lastname = "Vezetéknév";
+  $txt_firstname = "Keresztnév";
+  $txt_title_contact_edit = "Kontakt módosítasa";
+  $txt_contact = "Kontakt";
   
   // --------==== Strings that were introduced in version 0.5.8: ====---------
-  $txt_houradmin_previousday = "Elozo nap";
-  $txt_houradmin_nextday = "Kovetkezo nap";
-  $txt_link_phase_add = "Allapot hozzaadasa";
-  $txt_dependencies = "Fuggosegek";
-  $txt_addnewdependency = "Uj fuggoseg hozzaadasa";
-  $txt_mustbecompletedbeforephase = "a kovetkezo allapot elott befejezendo";
-  $txt_link_tpl_project_phase_add = "Uj allapot hozzaadasa ehez a projekthez";
-  $txt_title_projectstats_perphase = "A kovetkezo allapotokon mar dolgoztak ebben a projektben";
-  $txt_title_projectplanning = "Projekt Tervezes";
-  $txt_milestones = "Merfoldkovek";
-  $txt_deadline = "Hatarido";
-  $txt_booked = "Elojegyzett";
+  $txt_houradmin_previousday = "Elo"zo" nap";
+  $txt_houradmin_nextday = "Következo" nap";
+  $txt_link_phase_add = "Állapot hozzáadása";
+  $txt_dependencies = "Függo"ségek";
+  $txt_addnewdependency = "Új függo"ség hozzáadása";
+  $txt_mustbecompletedbeforephase = "a következo" állapot elo"tt befejezendo"";
+  $txt_link_tpl_project_phase_add = "Új állapot hozzáadása a projekthez";
+  $txt_title_projectstats_perphase = "A következo" állapotokon már dolgoztak";
+  $txt_title_projectplanning = "Projekt Tervezés";
+  $txt_milestones = "Mérföldkövek";
+  $txt_deadline = "Határido"";
+  $txt_booked = "Elo"jegyzett";
   $txt_planned = "Tervezett";
-  $txt_nophasesdefined = "A projektnek nincsenek allapotai!";
-  $txt_title_phase_edit = "Allapot modositasa";
-  $txt_title_phase_add = "Uj allapot hozzaadasa";
-  $txt_max_phasetime = "Varhato befejezes (napok)";
-  $txt_max_hours = "Varhato ido (orak)";
-  $txt_phase_activity = "Aktivitasok";
-  $txt_planning = "Tervezes";
+  $txt_nophasesdefined = "Nincsenek projekt-állapotok!";
+  $txt_title_phase_edit = "Állapot módosítása";
+  $txt_title_phase_add = "Új állapot hozzáadása";
+  $txt_max_phasetime = "Várható befejezés (napok)";
+  $txt_max_hours = "Várható ido"tartam (órák)";
+  $txt_phase_activity = "Aktivitások";
+  $txt_planning = "Tervezés";
   
   // --------==== Strings that were introduced in version 0.5.10: ====---------
-  $txt_link_contact_add = "Uj kontaktszemely hozzaadasa";
+  $txt_link_contact_add = "Új kontakt hozzáadása";
   
   // --------==== Strings that were introduced in version 0.6: ====---------
-  $txt_title_contact_add = "Uj kontaktszemely hozzaadasa";
-  $txt_theme = "Felulet";
-  $txt_title_tpl_project_phase_add = "Uj allapot hozzaadasa a projekthez";
+  $txt_title_contact_add = "Új kontakt hozzáadasa";
+  $txt_theme = "Felület";
+  $txt_title_tpl_project_phase_add = "Új állapot hozzáadása a projekthez";
   
   // --------==== Strings that were introduced in version 0.6.3: ====---------
-  $txt_orderby = "Rendezes";
+  $txt_orderby = "Rendezés";
 
   // --------==== Strings that were introduced in version 0.7: ===----------
 
-  $txt_menu = "Fomenu";
+  $txt_menu = "Fo"menü";
   $txt_menu_employeemanagement = "Alkalmazott-menedzsment";
   $txt_menu_projectmanagement = "Projekt-menedzsment";
   $txt_menu_project_stats = "Projekt Statisztika";
-  $txt_menu_project_planning = "Projekt-tervezes";
-  $txt_menu_setup = "Beallitasok";
-  $txt_menu_support = "Tamogatas";
+  $txt_menu_project_planning = "Projekt-tervezés";
+  $txt_menu_setup = "Beállítasok";
+  $txt_menu_support = "Támogatás";
   $txt_menu_achievo_license = $txt_app_shorttitle." licensz";
-  $txt_menu_achievo_docs = "Online dokumentacio";
+  $txt_menu_achievo_docs = "Online dokumentáció";
   $txt_menu_achievo_home = $txt_app_shorttitle." honlap";
+
+  // --------==== Strings that were introduced in version 0.7.3: ====---------
+
+  $txt_menu_project_todoview             = "Projekt todo";
+  $txt_title_project_todoview_admin      = "Projekt választó";
+  $txt_title_project_todoview_edit       = "Project todo megtekintése";
+  $txt_link_todo_add                     = "Új todo elem";
+  $txt_title_todo_add                    = "Új todo elem";
+  $txt_title_todo_edit                   = "Todo elem módosítása";
+  $txt_title_todo_delete                 = "Todo elem törlése";
+
+  $txt_menu_project_notesview            = "Projekt notesz";
+  $txt_title_project_notesview_admin     = "Projekt választó";
+  $txt_title_project_notesview_edit      = "Projekt notesz megtekintése";
+  $txt_link_project_notes_add            = "Új bejegyzés";
+  $txt_title_project_notes_add           = "Új bejegyzés";
+  $txt_title_project_notes_delete        = "Bejegyzés törlése";
+  $txt_title_project_notes_edit          = "Bejegyzés módosítása";
+
+  $txt_menu_schedule                     = "Ütemezés";
+  $txt_menu_schedule_types               = "Ütemezés";
+  $txt_title_schedule_types_admin        = "Megbeszélés típusok";
+  $txt_title_schedule_types_add          = "Új típus";
+  $txt_title_schedule_types_edit         = "Típus módosítása";
+  $txt_title_schedule_types_delete       = "Típus törlése";
+
+  $txt_timeguard_mail = "'[userid]' [hours] órát nem regisztrált a következo" héten: [week] ([startdate] - [enddate]-ig).";
+  $txt_timeguard_mail_subject = "Ido"regisztráció - fejlesztés alatt";
+
+  $txt_menu_holiday_admin = "Munkaszünet";
+  $txt_holiday_date = "Dátum";
+
+  $txt_title_holidays_admin = "Munkaszünet";
+  $txt_title_holidays_add = "Új munkaszünet";
+  $txt_title_holidays_edit = "Munkaszünet módosítása";
+  $txt_title_holidays_delete = "Munkaszünet törlése";
+
+  $txt_uc_hours = "Óra per hét";
+
+  $txt_link_usercontracts_add = "Új szerzo"sés";
+  $txt_title_usercontracts_add = "Új szerzo"dés";
+  $txt_title_usercontracts_edit = "Szerzo"dés módosítása";
+  $txt_title_usercontracts_delete = "Szerzo"dés törlése";
+
+  $txt_todochanged = "Todo elem megváltozott";
+  $txt_todoadded = "Új todo elem";
+  $txt_duedate = "Meddig";
+  $txt_todo_ownedby = "Tulajdonos:";
+  $txt_todo_changedby = "Módosító:";
+  $txt_todo_assignedto = "Átruházva:";
+  $txt_todo_previouslyassignedto = "Elo"zo"leg átruházva:";
+
+  $txt_project_select = "Válasszon projektet";
+  $txt_project_select_none = "Nincs kiválasztott projekt";
+  $txt_menu_selectedprojectmanagement = "Projektket menedszelése";
+
+  $txt_menu_contracts = "Céges szerzo"dések";
+  $txt_title_contracts_admin = "Szerzo"dések menedzselése";
+  $txt_title_contracts_add = "Új szerzo"dés";
+  $txt_title_contracts_edit = "Szerzo"dés módosítása";
+  $txt_title_contracts_delete = "Szerzo"dés törlése";
+  $txt_link_contracts_add = "Új szerzo"dés";
+
+  $txt_monthly = "Hónap";
+  $txt_quaterly = "Negyed";
+  $txt_yearly = "Év";
+  $txt_per_incident = "Incidens";
+
+  $txt_menu_contracttype = "Céges szerzo"dések";
+  $txt_title_contracttype_admin = "Szerzo"déstípusok menedzselése";
+  $txt_title_contracttype_add = "Új szerzo"déstípus";
+  $txt_title_contracttype_edit = "Szerzo"déstípus módosítása";
+  $txt_title_contracttype_delete = "Szerzo"déstípus törlése";
+
+  $txt_contracttype = "Szerzo"dés Laírás";
+
+  $txt_menu_costregistration_admin = "Költség regisztráció";
+  $txt_title_costregistration_admin = "Költség adminisztrálása";
+  $txt_title_costregistration_add = "Új bejegyzés";
+  $txt_title_costregistration_edit = "Bejegyzés módosítása";
+  $txt_title_costregistration_delete = "Bejegyzés törlése";
+
+  $txt_menu_customermanagement = "Cégek menedzselése";
+
+  $txt_report_output_type = "Kimenet típusa";
+  $txt_report_output_standard = "Normál kimenet";
+  $txt_report_output_export = "Kimenet állományba";
+
+  $txt_menu_weekreport = "Alkalmazott heti jelenése";
+  $txt_title_employee_weekreport = "Alkalmazott heti jelentése";
+
+  $txt_menu_time_registration = "Ido" regisztráció";
+  $txt_menu_hours_lock = "Órák blokkolása";
+  $txt_lock = "Blokkol";
+  $txt_unlock = "Felold";
+  $txt_hourlock_week_explanation = "Irjon be egy 4 számjegyu" évszámot, utánna pedig egy 2 számjegyu" hetet (pl. 200234)";
+  $txt_all_users = "Mindenki";
+  $txt_title_hours_lock_admin = "Blokkolás menedzselése";
+  $txt_title_hours_lock_add = "Új blokk";
+  $txt_title_hours_lock_delete = "Feloldás";
+
+  $txt_overtime = "Túlóra";
+
+  $txt_enddate = "Záródátum";
+
+  $txt_menu_reports = "Jelentések";
+
+  $txt_uc_contract = "Szerzo"dések";
+
+  $txt_title_projectstats_costsperemp = "A következo" alkalmazottak költöttek a projektre";
+
+  $txt_hours_lock = "Órák blokkolása";
+  $txt_holidays = "Munkaszünet";
+  $txt_contracts = "Céges szerzo"dések";
+  $txt_usercontracts = "Alkalmazottak szerzo"dései";
+
+  $txt_both = "Mindketto"";
+
+  $txt_report_show_details = "Részletek";
+
+  $txt_houradmin_weeklocked = "Blokkolt hét";
+
+  $txt_title_employeestats_costs = "Ez az alkalmazott regisztrált költséget a következo" projektre";
+
+  $txt_bgcolor = "Háttérszín";
+  $txt_fgcolor = "Szöveg színe";
+
+  $txt_period_price = "Ár per periódus";
+  $txt_billing_period = "Számlázás per";
+  $txt_cellular = "Mobil";
+
+  $txt_projectid = "Projekt";
+  $txt_customerid = "Cég";
+  $txt_priority = "Prioritás";
+
+  $txt_menu_schedule = "Ütemezo" (fejlesztés alatt!)";
+
+  $txt_costdate = "Költség dátuma";
+  $txt_paymethod = "Kifizetés módja";
+
+  // --------==== Strings that were introduced in version 0.8.RC1: ====---------
+
+  $txt_todo_new = "Új";
+  $txt_todo_rejected = "Elutasítva";
+  $txt_todo_in_progress = "Feldolgozás alatt";
+  $txt_todo_on_hold = "On hold";
+  $txt_todo_completed = "Befejezett";
+  $txt_mailnotification = "Küldjön mailt ha a todo változik";
+
+  $txt_link_project_add = "Projekt hozzáadása";
 
 ?>

@@ -5,7 +5,7 @@
   
   // --------==== Strings that were there from the beginning: ====---------
 
-  $txt_app_title = "Achievo Intranet System";
+  $txt_app_title = "Achievo Intranetový systém";
   $txt_app_shorttitle = "Achievo";
 
   $txt_startdate = "Poèáteèní datum"; 
@@ -45,7 +45,8 @@
   
   $txt_title_activitystats = "Statistiky èinností";
   $txt_title_activitystats_totals = "Celkové statistiky pro: ";
-  $txt_title_activitystats_peremployee = "Následující zamìstnanci mají registrovány hodiny na tìchto èinnostech";
+  $txt_title_activitystats_peremployee = "Následující zamìstnanci mají
+  zaznamenány hodiny na tìchto èinnostech";
   $txt_title_activitystats_perproject = "Tato èinnost byla provádìna na následujících projektech";
   $txt_title_employeestats = "Statistika zamìstnancù";
   $txt_title_employeestats_totals = "Celková statistika pro ";
@@ -151,7 +152,8 @@
   $txt_title_profile_admin = "Spravovat existující profily";
   $txt_title_profile_edit = "Editovat profil";
   
-  $txt_password_leaveblankifunchanged = "Pro zanechání souèasného hesla zanechte obì pole prázdná";
+  $txt_password_leaveblankifunchanged = "Pro zanechání souèasného hesla
+  zanechte v¹echna pole prázdná";
 
   $txt_userprefs = "U¾ivatelské nastavení";
   $txt_profile = "Bezpeènostní profily";
@@ -248,5 +250,168 @@
   
   // --------==== Strings that were introduced in version 0.6.3: ====---------
   $txt_orderby = "Seøadit podle";  
+  
+  // --------==== Strings that were introduced in version 0.7: ====---------
+  $txt_menu = "Hlavní menu";
+  $txt_menu_employeemanagement = "Správa zamìstnancù";  
+  $txt_menu_projectmanagement = "Správa projektù";
+  $txt_menu_project_stats = "Projektové statistiky";
+  $txt_menu_project_planning = "Plánováni projektù";
+  $txt_menu_setup = "Nastavení";
+  $txt_menu_support = "Podpora"; 
+  $txt_menu_achievo_license = $txt_app_shorttitle." licence";
+  $txt_menu_achievo_docs = "Online dokumentace";
+  $txt_menu_achievo_home = $txt_app_shorttitle." domácí stránka";
+  
+  // --------==== Strings that were introduced in version 0.7.3: ====---------
+  
+  $txt_menu_project_todoview             = "Projektové 'todo'";
+  $txt_title_project_todoview_admin      = "Výbìr projektu";
+  $txt_title_project_todoview_edit       = "Pøehled projektových 'todo'";
+  $txt_link_todo_add                     = "Pøidat 'todo' polo¾ku";
+  $txt_title_todo_add                    = "Pøidat 'todo' polo¾ku";
+  $txt_title_todo_edit                   = "Zmìnit 'todo' polo¾ku";
+  $txt_title_todo_delete                 = "Smazat 'todo' polo¾ku";
+  
+  $txt_menu_project_notesview            = "Poznámky k projektu";
+  $txt_title_project_notesview_admin     = "Výbìr projektu";
+  $txt_title_project_notesview_edit      = "Pøehled poznámek k projektu";
+  $txt_link_project_notes_add            = "Pøidat novou poznámku"; 
+  $txt_title_project_notes_add           = "Pøidat novou poznámku";  
+  $txt_title_project_notes_delete        = "Smazat poznámky";  
+  $txt_title_project_notes_edit          = "Zmìnit poznámku";  
+  
+  $txt_menu_schedule                     = "Harmonogram";
+  $txt_menu_schedule_types               = "Harmonogram";
+  $txt_title_schedule_types_admin        = "Spravovat schùzky";
+  $txt_title_schedule_types_add          = "Pøidat schùzku";
+  $txt_title_schedule_types_edit         = "Zmìnit schùzku";
+  $txt_title_schedule_types_delete       = "Smazat schùzku";  
+ 
+  $txt_timeguard_mail = "There are [hours] hours not registered for user '[userid]' in week [week] ([startdate] to [enddate]).";
+  $txt_timeguard_mail_subject = "Registrace èasu je nekompletní";  
+
+  $txt_menu_holiday_admin = "Dovolená";
+  $txt_holiday_date = "Datum";
+  
+  $txt_title_holidays_admin = "Dovolená";
+  $txt_title_holidays_add = "Pøidat dovolenou";
+  $txt_title_holidays_edit = "Zmìnit dovolenou";
+  $txt_title_holidays_delete = "Smazat dovolenou";
+
+  $txt_uc_hours = "Hodin za týden";
+
+  $txt_link_usercontracts_add = "Pøidat smlouvu";
+  $txt_title_usercontracts_add = "Pøidat smlouvu";
+  $txt_title_usercontracts_edit = "Zmìnit smlouvu";
+  $txt_title_usercontracts_delete = "Smazat smlouvu";
+  
+  $txt_todochanged = "Polo¾ka 'todo' byl zmìnìna";
+  $txt_todoadded = "Nová 'todo' polo¾ka";
+  $txt_duedate = "Datum splatnosti";
+  $txt_todo_ownedby = "Vlastník";
+  $txt_todo_changedby = "Zmìnìno";
+  $txt_todo_assignedto = "Pøiøazeno";
+  $txt_todo_previouslyassignedto = "Pøedchozí pøiøazení";
+
+  $txt_project_select = "Vybraný projekt";
+  $txt_project_select_none = "Nebyl vybrán ¾ádný projekt";
+  $txt_menu_selectedprojectmanagement = "Spravovat projekty";
+
+  $txt_menu_contracts = "Zákaznické smlouvy";
+  $txt_title_contracts_admin = "Spravovat stávající smlouvy";
+  $txt_title_contracts_add = "Pøidat smlouvu";
+  $txt_title_contracts_edit = "Zmìnit smlouvy";
+  $txt_title_contracts_delete = "Smazat smlouvu";
+  $txt_link_contracts_add = "Pøidat smlouvu";
+  
+  $txt_monthly = "Mìsíènì";
+  $txt_quarterly = "Ètvrtletnì";
+  $txt_yearly = "Roènì";
+  $txt_per_incident = "Nepravidelnì";
+  
+  $txt_menu_contracttype = "Typy zákaznických smluv";
+  $txt_title_contracttype_admin = "Spravovat typy smluv";
+  $txt_title_contracttype_add = "Pøidat typ smlouvy";
+  $txt_title_contracttype_edit = "Zmìnit typ smlouvy";
+  $txt_title_contracttype_delete = "Smazat typ smlouvy";
+
+  $txt_contracttype = "Popis smlouvy";
+
+  $txt_menu_costregistration_admin = "Cena registrace";
+  $txt_title_costregistration_admin = "Administrate costs made in projects";
+  $txt_title_costregistration_add = "Nový záznam";
+  $txt_title_costregistration_edit = "Zmìnit záznam";
+  $txt_title_costregistration_delete = "Smazat záznam";  
+  
+  $txt_menu_customermanagement = "Správa zákazníkù";
+        
+  $txt_report_output_type = "Typ výstupu";
+  $txt_report_output_standard = "Standardní výstup";
+  $txt_report_output_export = "Výstup do souboru";
+  
+  $txt_menu_weekreport = "Týdenní report zamìstnance";
+  $txt_title_employee_weekreport = "Týdenní report zamìstnance";
+    
+  $txt_menu_time_registration = "Zaznamenání èasu";
+  $txt_menu_hours_lock = "Zamknout hodiny";
+  $txt_lock = "Zamknout";
+  $txt_unlock = "Odemknout";
+  $txt_hourlock_week_explanation = "Zadejte èíslo roku (YYYY) a týdne (TT) (napø. 200234)";
+  $txt_all_users = "V¹ichni u¾ivateleé";
+  $txt_title_hours_lock_admin = "Spravovat zámky";  
+  $txt_title_hours_lock_add = "Pøidat zámek";
+  $txt_title_hours_lock_delete = "Smazat zámek";  
+  
+  $txt_overtime = "Pøesèas";
+  
+  $txt_enddate = "Koneèné datum";
+  
+  $txt_menu_reports = "Reporty";
+  
+  $txt_uc_contract = "Kontrakty";
+  
+  $txt_title_projectstats_costsperemp = "The following employees made expenses for this project";
+
+  $txt_hours_lock = "Zamèené hodiny";
+  $txt_holidays = "Dovolené";
+  $txt_contracts = "Zákaznické kontrakty";
+  $txt_usercontracts = "Zamìstnanecké kontrakty";
+
+  $txt_both = "Oba";
+
+  $txt_report_show_details = "Zobrazit detail";
+  
+  $txt_houradmin_weeklocked = "Týden je zamèený";
+  
+  $txt_title_employeestats_costs = "This employee registered costs on the following projects";
+  
+  $txt_bgcolor = "Barva pozadí";
+  $txt_fgcolor = "Barva textu";
+  
+  $txt_period_price = "Cena za periodu";
+  $txt_billing_period = "Placení za";  
+  $txt_cellular = "Cellular";
+  
+  $txt_projectid = "Projekt";
+  $txt_customerid = "Zákazník";
+  $txt_priority = "Priorita";
+  
+  $txt_menu_schedule = "Plánovaè (nekompletní!)";
+  
+  $txt_costdate = "Datum odmìny";
+  $txt_paymethod = "Metoda placení";
+
+  // --------==== Strings that were introduced in version 0.8.RC1: ====---------
+  
+  $txt_todo_new = "Nový";
+  $txt_todo_rejected = "Vráceno";
+  $txt_todo_in_progress = "Ve vývoji";
+  $txt_todo_on_hold = "Pozastaveno";
+  $txt_todo_completed = "Dokonèeno";
+  $txt_mailnotification = "Poslat email pøi zmìnách todo";
+  
+  $txt_link_project_add = "Pøidat projekt";
+
   
 ?>

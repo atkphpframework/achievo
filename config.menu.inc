@@ -28,9 +28,9 @@
       $target_stats = "dispatch.php?atknodetype=project&atkaction=stats&selectedprojectid=[id]";      
       $target_planning = "dispatch.php?atknodetype=project&atkaction=planning&selectedprojectid=[id]";        
       menuitem("project_admin", dispatch_url("project", "admin"), "projectmanagement", array("project", "admin"));
-      menuitem("project_planning",  dispatch_url("project", "select", array("atktarget" => $target_planning)), "projectmanagement", array("project", "planning"));    
+      menuitem("project_planning",  dispatch_url("project", "select", array("atktarget" => atkurlencode($target_planning))), "projectmanagement", array("project", "planning"));    
       menuitem("-","","projectmanagement");
-      menuitem("project_stats", dispatch_url("project", "select", array("atktarget" => $target_stats)), "projectmanagement", array("project", "stats"));
+      menuitem("project_stats", dispatch_url("project", "select", array("atktarget" => atkurlencode($target_stats))), "projectmanagement", array("project", "stats"));
       menuitem("activity_stats", dispatch_url("activity", "stats"), "projectmanagement", array("activity", "stats"));     
       menuitem("employee_stats", dispatch_url("employee", "stats"), "projectmanagement", array("employee", "stats"));     
       menuitem("-","","projectmanagement");

@@ -104,8 +104,8 @@ class atkProjectPhaseAttribute extends atkAttribute
       $targeturl_houradmin = dispatch_url("hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
     }
     
-    $targeturl_phase = dispatch_url("phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => $targeturl_houradmin));
-    $result .= href(dispatch_url("project", "select", array("atktarget" => $targeturl_phase)), text("houradmin_searchallprojectsphases"), SESSION_NESTED,$saveform);
+    $targeturl_phase = dispatch_url("phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => atkurlencode($targeturl_houradmin)));
+    $result .= href(dispatch_url("project", "select", array("atktarget" => atkurlencode($targeturl_phase))), text("houradmin_searchallprojectsphases"), SESSION_NESTED,$saveform);
 
     // dirty trick: the dummy attribute which starts the javascript for the 
     // correct activities must be notified of the currentphase.

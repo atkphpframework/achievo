@@ -410,6 +410,16 @@
   $txt_costdate = "Datum uitgave";
   $txt_paymethod = "Betaalmethode";
   
+  // --------==== Strings that were introduced in version 0.8.RC1: ====---------
+  
+  $txt_todo_new = "Nieuw";
+  $txt_todo_rejected = "Afgekeurd";
+  $txt_todo_in_progress = "Wordt uitgevoerd";
+  $txt_todo_on_hold = "Uitgesteld";
+  $txt_todo_completed = "Afgerond";
+  $txt_mailnotification = "Mail als todo wijzigt";
+  
+  $txt_link_project_add = "Add a project";
     
   // --------==== Strings that were introduced in version 0.9: ====---------
   
