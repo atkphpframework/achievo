@@ -4,21 +4,25 @@ class contracts extends atkNode
 {
   function contracts()
   {
-    $this->atkNode("contracts");
+    $this->atkNode("contracts",NF_ADD_LINK);
 
     $this->addAttribute(new atkAttribute("contract_id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("contract_desc",AF_OBLIGATORY));    
-    $this->addAttribute(new atkAttribute("period_price",AF_OBLIGATORY));
-    $this->addAttribute(new atkDummyAttribute("test",atkconfig("currency_symbol"),AF_HIDE_LIST));     
-    $this->addAttribute(new atkManyToOneRelation("contract_type","contracttype","type_id",AF_HIDE_LIST));    
-    $this->addAttribute(new atkListAttribute("billing_period",array("Maandelijks","Kwartaal","Half Jaar","Jaar","Per incident"),array(),AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd")));
-    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd")));    
-    $this->addAttribute(new atkManyToOneRelation("customer","customer","id",AF_HIDE_LIST));    
+    $this->addAttribute(new atkAttribute("contract_desc",AF_OBLIGATORY|AF_HIDE_LIST));    
+    $this->addAttribute(new atkAttribute("contract_period_price",AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->addAttribute(new atkManyToOneRelation("contract_type","contracttype",AF_SEARCHABLE|AF_OBLIGATORY));    
+    $this->addAttribute(new atkListAttribute("contract_billing_period",array(text("monthly"),text("Quarterly"),text("yearly"),text("per_incident")),array(),AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->addAttribute(new atkDateAttribute("contract_startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("contract_enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));    
+    $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY));    
     
     $this->setTable("contracts","contract_id");
     $this->setOrder("contract_type");
    }
+
+   function contract_period_price_edit($rec)
+	 {
+	   return $this->m_attribList["contract_period_price"]->edit($rec)." ".atkconfig("currency_symbol");
+	 }
 
   
 }
