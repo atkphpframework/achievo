@@ -116,14 +116,52 @@
 
   //copy contact of a project into project_person
   $sql = "SELECT project.* FROM project";
-  $projects = $g_db->getRows($sql);
+  $projects = $g_db->getrows($sql);
+ 
+  $customer_defaultcontacts = array(); 
+  
   for ($i=0;$i<count($projects);$i++)
-  {
-    iF ($projects[$i]["contact"] != 0)
-    {
+  {  
+    if ($projects[$i]["contact"] != 0)
+    {     
       $g_db->query("INSERT INTO project_person (personid, projectid, role)
                          VALUES ('".$projects[$i]["contact"]."', '".$projects[$i]["id"]."', 2)");      
     }
+    else
+    {    
+      if ($projects[$i]["customer"]!=0) // if customer is not set, we don't need to convert
+      {
+        // project has a customer, but a contact person was not set. Create a default contact person.        
+        if (empty($customer_defaultcontacts[$projects[$i]["customer"]])) // check if we already added a default contact for this customer.
+        {
+        
+          $id = $g_db->nextid("person");
+          $g_db->query("INSERT INTO person (id, 
+                                            firstname,
+                                            lastname, 
+                                            company, 
+                                            role)
+                                    VALUES ('$id', 
+                                            '(please update)',
+                                            'Auto-generated default contact', 
+                                            '".$projects[$i]["customer"]."', 
+                                            'contact')");      
+          $customer_defaultcontacts[$projects[$i]["customer"]] = $id;          
+        }
+        $g_db->query("INSERT INTO project_person (personid, projectid, role)
+                       VALUES ('".$customer_defaultcontacts[$projects[$i]["customer"]]."', '".$projects[$i]["id"]."', 2)");          
+      }      
+    }
+  }
+  
+  $defaultcnt = count($customer_defaultcontacts);
+  if ($defaultcnt>0)
+  {  
+    $setup->report("For ".$defaultcnt." customer".($defaultcnt>1?"s":"")." a 
+                    new auto-generated contact person was added to be part of 
+                    projects that did not have a contactperson yet. These 
+                    contacts have been named  'Auto-generated default 
+                    contact'. Please update these to real contacts.", "warning");
   }
 
   $setup->dropColumn("project", "contact");
@@ -135,7 +173,7 @@
   $setup->renameTable("schedule_attendees", "schedule_attendee");
   
   $setup->alterColumn("schedule_attendee", "scheduleid", "schedule_id", "int(10)", false);
-  $setup->alterColumn("schedule_attendee", "userid", "person_id", "int(10)", false);  
+  $setup->alterColumn("schedule_attendee", "userid", "person_id", "int(10)", false);    
 
   $setup->renameTable("schedule_types", "schedule_type");
     
@@ -226,8 +264,6 @@
   $setup->setVersion("1", "search");
   $setup->setVersion("1", "setup");
   $setup->setVersion("1", "timereg");
-  $setup->setVersion("1", "todo");
-  
-  $setup->report("In Achievo 0.9.1 projects are linked to contactpersons instead of customers. Projects that did not have a contactperson set, have lost their link to customer. Please review these projects after the conversion.", "warning");
+  $setup->setVersion("1", "todo");  
   
 ?>
