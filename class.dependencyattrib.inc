@@ -1,5 +1,7 @@
 <?php
 
+useattrib("atklistattribute");
+
 class dependencyAttribute extends atkAttribute
 {
   /**
