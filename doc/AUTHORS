@@ -38,9 +38,9 @@ Martin Pruijssers
 Wayne T. Ethier           <wte@websynergyinternet.com>
 Michel Marti              <michel.marti@ubs.com>
 Lucas Smith               <smith@dybnet.de>
+Daniel Frame              <dframe@tampabay.rr.com>
 
-Achievo uses a modified version of db_mysql.inc for mysql database access. 
-db_mysql.inc is part of PHPLIB (http://phplib.netuse.de) 
-Copyright (c) 1998,1999 SH Online Dienst GmbH. db_mysql.inc is made available 
-under the Library General Public License (LGPL).
-
+Achievo uses a modified version of PHPLIB's database abstraction classes for
+database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
+SH Online Dienst GmbH and made available under the Library General Public 
+License (LGPL).

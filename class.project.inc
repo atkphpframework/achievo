@@ -36,7 +36,7 @@ class projecttemplateAttribute extends atkManyToOneRelation
          $id_table[$phases[$i]['id']] = $new_id;
       
          $query = "INSERT INTO phase (id, name, projectid, description) 
-                   VALUES ('".$new_id."','".$phases[$i]['name']."','".$record['id']."','".$phases[$i]['description']."')";
+                   VALUES ('".$new_id."','".addslashes($phases[$i]['name'])."','".$record['id']."','".addslashes($phases[$i]['description'])."')";
          atkdebug($query);
          $db->query($query);
          
