@@ -381,4 +381,6 @@
 
   $txt_report_show_details = "Toon details";
   
+  $txt_houradmin_weeklocked = "Week is geblokkeerd";
+  
 ?>

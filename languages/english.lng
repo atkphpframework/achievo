@@ -371,4 +371,16 @@
   $txt_menu_reports = "Reports";
   
   $txt_uc_contract = "Contracts";
+  
+  $txt_hours_lock = "Lock hours";
+  $txt_holidays = "Holidays";
+  $txt_contracts = "Customer contracts";
+  $txt_usercontracts = "Employee contracts";
+
+  $txt_both = "Both";
+
+  $txt_report_show_details = "Show details";
+  
+  $txt_houradmin_weeklocked = "Week is locked";
+  
 ?>
