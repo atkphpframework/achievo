@@ -5,10 +5,9 @@
    *
    * This class makes it possible to plan hours for employees en to view the personal planning for employees.
    *
-   * $Id$
-   *
+   * $Id
    * @author Ludo M. Beumer  <ludo@ibuildings.nl>
-   * @version $Revision$
+   * @version $Revision
    *
    */
   include_once $config_atkroot."/modules/resource_planning/class.planprojectattrib.inc";
@@ -38,15 +37,17 @@
       $this->m_securityMap["view"] = "myplanning";
       $this->m_securityMap["list"] = "myplanning";
 
+      $this->m_securityMap["gantview"] = "gant";
+
       $this->add(new atkAttribute("id" ,AF_AUTOKEY));
 
       $phase = new atkManytoOneRelation("phaseid","phase", AF_OBLIGATORY);
       $phase->m_destinationFilter = $ATK_VARS["projectfilter"];
-      $this->add($phase);
+      $this->add(&$phase);
 
       $employee = new atkManytoOneRelation("employeeid","employee", AF_OBLIGATORY);
       $employee->m_destinationFilter = $ATK_VARS["employeefilter"];
-      $this->add($employee);
+      $this->add(&$employee);
 
       $this->add(new atkDateAttribute("plandate",AF_OBLIGATORY));
       $this->add(new atkTextAttribute("description"));
@@ -71,6 +72,12 @@
     {
       global $config_atkroot;
       include $config_atkroot.'modules/resource_planning/planweekviewempl.inc';
+    }
+
+    function action_gantview()
+    {
+      global $config_atkroot;
+      include $config_atkroot.'modules/resource_planning/gantview.inc';
     }
 
     function recordActions($record, &$actions)

@@ -18,7 +18,7 @@
   {
     function getNodes()
     {
-      registerNode("resource_planning.resource_planning", array("add", "resplanning", "myplanning"));
+      registerNode("resource_planning.resource_planning", array("add", "resplanning", "myplanning", "gant"));
     }
 
     function getMenuItems()
@@ -29,6 +29,7 @@
 
       menuitem("resource_planning_planweekview", dispatch_url("resource_planning.resource_planning", "planweekview"), "resource_planning", array("resource_planning.resource_planning", "resplanning"));
       menuitem("resource_planning_planweekviewempl", dispatch_url("resource_planning.resource_planning", "planweekviewempl"), "resource_planning", array("resource_planning.resource_planning", "myplanning"));
+      menuitem("resource_planning_gantview", dispatch_url("resource_planning.resource_planning", "gantview"), "resource_planning", array("resource_planning.resource_planning", "gant"));
     }
 
     function project_modifier(&$node)
