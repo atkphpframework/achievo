@@ -153,7 +153,7 @@
   $txt_menu_project_todoview = "Project todo's";
   $txt_menu_reports = "Rapporten";
   $txt_menu_role_admin = "Rollen";
-  $txt_menu_schedule = "Agenda (incomplete!)";
+  $txt_menu_schedule = "Agenda";
   $txt_menu_schedule_types = "Agenda";
   $txt_menu_selectedprojectmanagement = "Projectbeheer";
   $txt_menu_setup = "Instellingen";
