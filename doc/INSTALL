@@ -39,7 +39,8 @@ have a working webserver with PHP support and a MySQL database installed.
 
    example:
 
-   $ cd /usr/local/apache/htdocs              # change to a web accessible directory
+   $ cd /usr/local/apache/htdocs              # change to a web accessible 
+                                              # directory
    $ tar xzvf ~user/achievo_x.x.tar.gz        # unpack the tar.gz file
 
    optional:
@@ -64,7 +65,6 @@ have a working webserver with PHP support and a MySQL database installed.
    (Note: the create and alter privileges are only needed during installation
    and upgrades. You can revoke these privileges once the installation is 
    complete.)
-     
 
 3) Edit the file config.inc.php in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
@@ -84,7 +84,6 @@ have a working webserver with PHP support and a MySQL database installed.
    
    There are some other things in the config-file that you can change, but 
    for your first configuration, you can leave those settings to the default.      
-   
 5) After editing the configuration file, point your browser to the setup.php
    script in the Achievo directory. For example:
    
