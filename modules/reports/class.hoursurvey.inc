@@ -43,9 +43,9 @@
 
       $hoursnode = &getNode("timereg.hours");
 
-
-      // Determine collumn suppresslist:
-      $arr_col = array("activitydate","userid","phaseid","activityid","remark","time");
+      
+      // Determine collumn suppresslist:  
+      $arr_col = $this->getHourSurveyColumns();
 
       $suppress = array();
       if (!is_array($col)||count($col)==0)
@@ -293,6 +293,11 @@
          $hoursnode->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
        }
 
+    }
+    
+    function getHourSurveyColumns()
+    {
+      return array("activitydate","userid","phaseid","activityid","remark","time");
     }
 
     function get_activities($act_id)
