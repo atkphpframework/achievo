@@ -131,10 +131,10 @@ INSERT INTO hours (id, entrydate, activitydate, phaseid, activityid, remark, tim
 
 INSERT INTO hours_lock (week, userid) VALUES ( '200133', '*');
 
-INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '1', 'Main phase', '1', '', '', '20', '20');
-INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '2', 'Specification/Design', '2', '', '', '0', '0');
-INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '3', 'Realisation', '2', '', '', '0', '0');
-INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '4', 'Support', '2', '', '', '0', '0');
+INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '1', 'Main phase', '1', 'active', '', '20', '20');
+INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '2', 'Specification/Design', '2', 'active', '', '0', '0');
+INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '3', 'Realisation', '2', 'active', '', '0', '0');
+INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '4', 'Support', '2', 'active', '', '0', '0');
 
 INSERT INTO phase_activity (phaseid, activityid, billable) VALUES ( '1', '1', '0');
 INSERT INTO phase_activity (phaseid, activityid, billable) VALUES ( '1', '2', '0');
