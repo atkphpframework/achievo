@@ -71,3 +71,9 @@ the terms might be different.
         http://bugzilla.mozilla.org/show_bug.cgi?id=86659
         There is currently no workaround for this bug.
 
+ 3.3. When I edit an entry, the activity is not set correctly. (Mozilla/
+      Netscape 6)
+
+        This is caused by the same Mozilla bug that causes the problem from 
+        question 3.2.
+

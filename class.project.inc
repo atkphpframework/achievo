@@ -99,7 +99,7 @@ class project extends atkNode
     }
 
     $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid", AF_HIDE_LIST));
-    $this->addAttribute(new atkOneToManyRelation("Todo","todo","project_id", AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST));
 
     $this->addAttribute(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
     $this->addAttribute(new projecttemplateAttribute("template","tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
