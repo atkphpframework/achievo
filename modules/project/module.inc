@@ -34,7 +34,7 @@
         menuitem("project_edit", dispatch_url("project.project", "edit", array("atkselector" => "project.id='".$selectedproject."'")), "projectmanagement", array("project.project", "edit"));
         menuitem("project_planning",  dispatch_url("project.project", "planning", array("selectedprojectid" => $selectedproject)), "projectmanagement", array("project.project", "planning"));
         menuitem("-","","projectmanagement");
-        menuitem("project_stats", dispatch_url("project.project", "stats", array("selectedprojectid" => $selectedproject)), "projectmanagement", array("project.project", "stats"));
+        menuitem("project_stats", dispatch_url("project.projectstats", "stats", array("projectid" => $selectedproject)), "projectmanagement", array("project.project", "stats"));
       }
       menuitem("activity_admin", dispatch_url("project.activity", "admin"), "setup", array("project.activity", "admin"));
       menuitem("tpl_phase_admin", dispatch_url("project.tpl_phase", "admin"), "setup", array("project.tpl_phase", "admin"));

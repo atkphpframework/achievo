@@ -53,7 +53,9 @@
       
       $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
       
-      $this->add(new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]"), "line", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
+      $timeline = &new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]", "resolution"=>"auto"), "line", AF_HIDE_ADD|AF_HIDE_LIST);
+      $timeline->addDynamicParam("resolution", array("day", "week", "month", "auto"));
+      $this->add($timeline, "stats");
       $this->add(new dataGraphAttribute("phasetimedistribution", "phasetime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
       $this->add(new dataGraphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
       $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");      
@@ -133,9 +135,7 @@
     }
     
     function graph_phasetime($params)
-    {      
-      usegraph("pie");
-
+    {          
       global $g_db;
       $data = $g_db->getrows("SELECT 
                                 phase.name, SUM(time) as total
@@ -143,8 +143,10 @@
                                 hours, phase
                               WHERE 
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"]."
-                              GROUP BY 
+                                AND phase.projectid = ".$params["projectid"].
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                            " GROUP BY 
                                 phase.name
                               ORDER BY 
                                 phase.name");
@@ -169,8 +171,10 @@
                               WHERE 
                                 hours.phaseid = phase.id
                                 AND hours.userid = person.id
-                                AND phase.projectid = ".$params["projectid"]."
-                              GROUP BY 
+                                AND phase.projectid = ".$params["projectid"].
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                            " GROUP BY 
                                 person.id
                               ORDER BY 
                                 person.lastname");
@@ -194,8 +198,10 @@
                                 hours, phase, activity
                               WHERE 
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"]."
-                                AND hours.activityid = activity.id
+                                AND phase.projectid = ".$params["projectid"].
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                            "   AND hours.activityid = activity.id
                               GROUP BY 
                                 activity.name
                               ORDER BY 
@@ -225,33 +231,45 @@
                                  hours, phase
                                WHERE 
                                  hours.phaseid = phase.id
-                                 AND phase.projectid = ".$params["projectid"]);      
+                                 AND phase.projectid = ".$params["projectid"].
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));      
       $maxdate = array();
       $mindate = array();
       list ($maxyear, $maxmonth, $maxday) = explode("-", $range[0]["maximum"]);
       list ($minyear, $minmonth, $minday) = explode("-", $range[0]["minimum"]);      
       
-      $secondsinaday = 24*60*60;
-      $daysbetween = (mktime(12,0,0,$maxmonth,$maxday,$maxyear)-mktime(12,0,0,$minmonth,$minday,$minyear))/$secondsinaday;      
+      $secondsinaday = 24*60*60;      
       
-      if ($daysbetween <= 31)
+      $resolution = $params["resolution"];
+   
+      // Do we need to autodetect a resolution?
+      if ($resolution=="auto"||$resolution=="")
       {
-        // one month range. Daybased stat makes the most sense.
-        $groupbybystmt = "";
-        $scale="day";
-      }
-      else if ($daysbetween <= 5*31)
+        $daysbetween = (mktime(12,0,0,$maxmonth,$maxday,$maxyear)-mktime(12,0,0,$minmonth,$minday,$minyear))/$secondsinaday;      
+        if ($daysbetween <= 31)
+        {
+          // one month range. Daybased stat makes the most sense.          
+          $resolution="day";
+        } 
+        else if ($daysbetween <= 5*31)
+        {
+          // five month range. Week based stat makes the most sense.        
+          $resolution="week";
+        }
+        else
+        { 
+          // > 5 month range. Month based stat makes most sense.       
+          $resolution="month";
+        }                        
+      }    
+      
+      switch ($resolution)
       {
-        // five month range. Week based stat makes the most sense.
-        $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')";
-        $scale="week";
+        case "month": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')"; break;
+        case "week": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')"; break;
+        default: $groupbybystmt = "";
       }
-      else
-      { 
-        // > 5 month range. Month based stat makes most sense.
-        $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')";
-        $scale="month";
-      }                        
       
       $query = "SELECT
                   ".($groupbystmt==""?"activitydate":$groupbystmt)." as label, sum(time) as total
@@ -259,19 +277,21 @@
                   hours, phase
                 WHERE 
                   hours.phaseid = phase.id
-                  AND phase.projectid = ".$params["projectid"]."
-                GROUP BY
+                  AND phase.projectid = ".$params["projectid"].
+                  ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                  ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").      
+              " GROUP BY
                   ".($groupbystmt==""?"activitydate":$groupbystmt);                
       $data = $g_db->getrows($query);
-      
+            
       // convert records to graph-compatible array.
       $dataset = array();       
       for ($i=0, $_i=count($data); $i<$_i; $i++)
       {        
-        $dataset[$this->_graphLabel($data[$i]["label"], $scale)] = sprintf("%.2f", ($data[$i]["total"]/60));
+        $dataset[$this->_graphLabel($data[$i]["label"], $resolution)] = sprintf("%.2f", ($data[$i]["total"]/60));
       }
       
-      return array("registeredtimeper".$scale=>$dataset);
+      return array("registeredtimeper".$resolution=>$dataset);
       
     }
     
