@@ -4,6 +4,8 @@
   registerNode("weekreport", array("admin","add","edit","delete","hoursurvey","view_all"));
   registerNode("customer", array("admin", "add", "edit", "delete"));
   registerNode("contact", array("add","edit","delete"));
+  registerNode("contracts", array("admin","add","edit","delete"));
+  registerNode("contracttype", array("admin","add","edit","delete"));
   registerNode("project", array("*admin", "add", "edit", "delete", "stats","planning"));
   registerNode("phase", array("add", "edit", "delete"));
   registerNode("userprefs", array("edit"));

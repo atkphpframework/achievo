@@ -75,6 +75,11 @@
   // considered overtime. 
   $config_overtimethreshold = 480;
 
+
+  // Default currency
+  $config_currency = "Euro";
+  $config_currency_symbol = "EU";
+
   // allow hour entry's on weekends?
   // set to true, if the employee is allowed to book hours on weekends
   $config_hourweekend = "true";

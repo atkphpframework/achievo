@@ -258,6 +258,29 @@
   $txt_menu_achievo_license = $txt_app_shorttitle." license";
   $txt_menu_achievo_docs = "Online documentation";
   $txt_menu_achievo_home = $txt_app_shorttitle." homepage";
+
+  $txt_menu_contracts = "Contracts";
+  $txt_title_contracts_admin = "List contracts";
+  $txt_title_contracts_add = "Add contract";
+  $txt_title_contracts_edit = "Edit contract";
+  $txt_title_contracts_delete = "Delete contracts";
+
+  $txt_period_price = "Price per period";
+  $txt_billing_period = "Billing once every";
+  $txt_contract_type = "Contract type";
+  $txt_contract_desc = "Contract Description";
+  $txt_startdate = "Contract starts on";
+  $txt_enddate = "Contract ends on";
+  
+  $txt_menu_contracttype = "Contract types";
+  $txt_title_contracttype_admin = "List contract types";
+  $txt_title_contracttype_add = "Add contract type";
+  $txt_title_contracttype_edit = "Edit contract type ";
+  $txt_title_contracttype_delete = "Delete contract type";
+  $txt_contracttype = "Contract Description";
+
+
+
   
   // --------==== Strings that were introduced in version 0.7.3: ====---------
   

@@ -1,0 +1,3 @@
+<?php
+  registerModule("finance");
+?>

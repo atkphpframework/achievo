@@ -51,11 +51,11 @@ class hours extends atkNode
                 
     if($atkaction=="hoursurvey"||$weekview==1)
     {
-      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd")));
+      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
     }
     else
     {
-      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
+      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_HIDE_LIST));
     }
     
     if ($atkaction=="hoursurvey")

@@ -45,6 +45,8 @@
      menuitem("achievo_docs", "manual.php", "support");
      menuitem("achievo_license", "license.php", "support");
      menuitem("achievo_home", "http://www.achievo.com","support");
-
+  menuitem("-");  
+  menuitem("contracts", dispatch_url("contracts","admin"));
+  menuitem("contracttype", dispatch_url("contracttype","admin"));    
 
 ?>
