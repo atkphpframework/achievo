@@ -7,7 +7,7 @@
    
    // This variable indicates where to get all the includes. Usually, this is 
    // the current dir.
-   if ($config_atkroot=="")
+   if (!isset($config_atkroot)||$config_atkroot=="")
    {
      $config_atkroot = "./";      
    }
