@@ -1,10 +1,19 @@
 <?php
   /* menu items */
 
+  menuitem("hours_admin", dispatch_url("hours", "admin"));
+  menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"));
+  menuitem("costregistration_admin", dispatch_url("costregistration", "admin"));
+  menuitem("weekreport", dispatch_url("weekreport", "admin"));
+
+  menuitem("-");
+  menuitem("schedule", dispatch_url("schedule","admin"));
+  menuitem("schedule_types", dispatch_url("schedule_types","admin"));
   menuitem("time_registration", "","main",true,100);
-    menuitem("hours_admin", dispatch_url("hours", "admin"),"time_registration",true);
-    menuitem("-","","time_registration");
-    menuitem("hours_lock", dispatch_url("hours_lock", "admin"),"time_registration",array("hours_lock","admin"));
+  menuitem("hours_admin", dispatch_url("hours", "admin"),"time_registration",true);
+  menuitem("-","","time_registration");
+  menuitem("hours_lock", dispatch_url("hours_lock", "admin"),"time_registration",array("hours_lock","admin"));
+
   
   //menuitem("weekreport", dispatch_url("weekreport", "admin"));
   menuitem("-","","main",true,120);
