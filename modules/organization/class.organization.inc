@@ -11,9 +11,33 @@
  * @version $Revision$
  *
  */
+  
 
 useattrib("atktextattribute");
+useattrib("atkparserattribute");
+useattrib("atkdummyattribute");
 userelation("atkonetomanyrelation");
+
+class customerFilteredProjectAttrib extends atkDummyAttribute
+{
+  var $m_customerid = NULL;
+  
+  function customerFilteredProjectAttrib($customerid)
+  {
+    $this->atkDummyAttribute("custfilter", "", AF_HIDE);
+    $this->m_customerid = $customerid;
+  }
+ 
+  function addToQuery(&$query, $table="", $aliasprefix="", $rec="", $level, $mode)
+  {
+    if ($this->m_customerid != NULL)
+    {
+      $query->addJoin("project_person", "projectmembers", "project.id = projectmembers.projectid", false);
+      $query->addJoin("person", "person", "person.id = projectmembers.personid AND person.company='".$this->m_customerid."'", false);      
+      $query->setDistinct(true); // the join we perform could lead to duplicate records.
+    }
+  }
+}
 
 class organization extends atkNode
 {
@@ -36,6 +60,7 @@ class organization extends atkNode
     $this->addAttribute(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
     $this->addAttribute(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
     //$this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
+    $this->addAttribute(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setIndex("name");
@@ -54,5 +79,28 @@ class organization extends atkNode
   {
     return "[name], [city]";
   }
+  
+  function projects_edit($record)
+  {
+    return $this->showProjects($record, "relation");
+  }
+  
+  function projects_display($record)
+  {
+    return $this->showProjects($record, "view");
+  }
+  
+  function showProjects($record, $mode)
+  {
+    $projectnode = getNode("project.project");
+    $projectnode->add(new customerFilteredProjectAttrib($record["id"]));
+    $recs = $projectnode->selectDb();
+    if (count($recs)>0)
+    {
+      return $projectnode->normalRecordList($recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
+    }
+    return text("none");
+  }
+  
 }
 ?>
