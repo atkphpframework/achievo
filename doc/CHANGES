@@ -4,11 +4,17 @@
 
 Changes in Achievo 0.7
 ----------------------
-* Fixed a bug with templates that contained quotes.
-* Replaced all '<?' tags with '<?php' for setups that don't support '<?'.
 * Improvements to the atk backend: major performance improvements, 
   a new module system and session support.
 - Achievo is now PHP4 based. PHP3 is no longer supported.
+
+Changes in Achievo 0.6.4
+------------------------
+* Fixed a bug with phase templates that contained quotes.
+* Replaced all '<?' tags with '<?php' for setups that don't support '<?'.
++ Added Czech language file.
+* Updated French language file
++ Added support for other than western-european character sets.
 
 Changes in Achievo 0.6.3
 ------------------------
