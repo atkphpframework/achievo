@@ -55,6 +55,8 @@
     function getSearchModes() {}
     function searchCondition() {}
     function fetchMeta() {}
+    function dbFieldSize() {}
+    function dbFieldType() {}
   }
 
 ?>
