@@ -24,8 +24,7 @@
                           <ul>
                             <li>I can check for new versions of Achievo or one of your installed modules. 
                             <li>I can install an Achievo database if you don't already have one.
-                            <li>I can upgrade an existing Achievo database if necessary.
-                            <li>I can do a sanity check on the Achievo database (not yet implemented).                            
+                            <li>I can upgrade an existing Achievo database if necessary.                            
                           </ul>
                           <br>I will try to do my job with as little input as possible. I will make
                           educated guesses about what I need to do, based on your current database
@@ -234,8 +233,8 @@
         }
         if (in_array("versioninfo", $tablenames))
         {
-          return $this->setupScreen(">=0.9.2", "Hi, you have a db that's 0.9.2 or higher");
-          // TODO: read versioninformation and perform upgrades
+          return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart");
+          // TODO: read versioninformation and perform upgrades for versions > 0.9.2
         }
         else
         {
