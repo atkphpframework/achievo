@@ -3,6 +3,7 @@
 useattrib("project.phasetemplateattribute");
 useattrib("atktextattribute");
 useattrib("atklistattribute");
+useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 userelation("atkmanyboolrelation");
 
