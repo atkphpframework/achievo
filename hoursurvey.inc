@@ -268,7 +268,7 @@
     $g_layout->ui_bottom();
     $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("of")." ".$userid." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
     $g_layout->output('<br><br>');
-    $g_layout->output($this->recordList($data, array(""),true,$suppress));
+    $g_layout->output($this->recordList($data, array(),true,$suppress));
     $g_layout->output('<br><br>');
     $g_layout->ui_bottom(); 
    }
