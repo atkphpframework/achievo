@@ -741,8 +741,9 @@
           $scriptname = "upgrade/convert-".$history[$script]."-to-".$history[$script+1].".inc";
           $output.="<br><br>Start of conversion from ".$history[$script]." to ".$history[$script+1].".";
           
-          // Upgrade scripts might take a while. We'll set the timelimit to something big.
-          set_time_limit(180); // 3 minutes should be enough.
+          // Upgrade scripts might take a while. We'll set the timelimit to 0, 
+          // so the script can run as long as it takes.
+          set_time_limit(0); 
           
           // Like with install db, we pass the upgrade scripts a pointer
           // to $setup and $g_db.
