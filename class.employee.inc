@@ -9,8 +9,11 @@ class employee extends atkNode
     $this->addAttribute(new atkAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
-    $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
-    $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
+    if (atkconfig("authentication")=="db")
+    {
+      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
+    }
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
       
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.      

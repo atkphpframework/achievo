@@ -28,8 +28,11 @@ class userprefs extends atkNode
     $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE); 
 
     $this->addAttribute(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
-    $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
-    $this->addAttribute(new atkPasswordAttribute("password",AF_OBLIGATORY));
+    if (atkconfig("authentication")=="db")
+    {
+      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->addAttribute(new atkPasswordAttribute("password",AF_OBLIGATORY));
+    }
     $this->addAttribute(new atkListAttribute("theme",getThemes(),getThemes(),AF_HIDE_ADD));      
     $this->setTable("employee");      
   }

@@ -34,28 +34,31 @@
   // 
   $config_languagefile="english.lng";
   
-  // The method to use for password validation.
+  // The method to use for user/password validation.
   // Currently supported are:
-  // - db: the passwords are stored in the Achievo database.
-  // - pop3: the passwords are validated against a pop3 server.
+  // - "db"  : the passwords are stored in the Achievo database.
+  // - "pop3": the passwords are validated against a pop3 server.
   // Note that if you validate passwords using pop3, you still have to add
   // useraccounts in Achievo. If you don't, users can login, but won't 
   // have permission to do anything.
+  //
   $config_authentication = "db";
   
   // If you set $config_authentication to "pop3", you must configure 
-  // which server to use with the following line:
+  // which server to use:
+  // 
   $config_auth_mail_server = "localhost";
   
-  // The Achievo administrator password. The password of all users is read from the 
-  // database, except the administrator password. This is useful when 
-  // you have an empty or corrupt database. 
+  // The Achievo administrator password. 
+  // Regardless of the authentication method chosen above, this password
+  // will always allow you to login with userid 'administrator'. This is 
+  // useful when you have an empty or corrupt database. 
   // Note that it has no effect when you use the 'user preferences' screen
   // to change the administrator password, since the administrator password
   // is fixed in this file.
   //
   // Note: As an extra security measure you could disable this once you have
-  // set up the entire system and enable it again once you need it.
+  // set up the entire system and enable it only when you need it.
   // (disable it by putting // in front of it)
   //
   $config_administratorpassword = "demo";  
@@ -74,6 +77,5 @@
   // Also, you should not change the atkconf.inc file, since that would 
   // break Achievo.
   include "atkconf.inc";
-  
-  $config_logging = 2;  
+
 ?>
