@@ -34,7 +34,7 @@ class weekreport extends atkNode
   function weekreport()
   {              
     $this->atkNode("weekreport",NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT); // node() constructor is *not* called automatically!
-    $this->addAttribute(new atkAttribute("userid"));
+    $this->addAttribute(new atkAttribute("userid"));    
     $this->addAttribute(new atkAttribute("week"));    
     $this->addAttribute(new atkAttribute("startdate"));
     $this->addAttribute(new atkAttribute("enddate"));
@@ -63,7 +63,7 @@ class weekreport extends atkNode
     $record = $g_db->getrows($sql);
     return $record[0];
   }
-		 
+   
   function get_employees($userid)
   {
     global $g_db;
@@ -95,6 +95,7 @@ class weekreport extends atkNode
     global $atkorderby;
     global $g_db;    
     global $userid;
+    global $nameswitch;
     global $showdetails;
     global $showstatus;
     
@@ -147,6 +148,11 @@ class weekreport extends atkNode
       $userid=$g_user["name"];
     }    
     
+    if (!isset($nameswitch)||$nameswitch=="")
+    {
+      $nameswitch="name";
+    }    
+    
     if (!isset($showstatus)||$showstatus=="") $showstatus = "both";
     
     if ($outputType==0)
@@ -170,19 +176,29 @@ class weekreport extends atkNode
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));                    
                                          
-      $g_layout->td(text("name").':</b> ');   
+      //$g_layout->td(text("name").':</b> ');   
+      $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');   
   
       if($view_all)
       {  
-        $g_layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
+        $g_layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');        
       }
       else
       {
         $userid = $g_user["name"];
         $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
-      }
-    
-      $g_layout->output('</tr><tr>');      
+      }          
+  
+      /*// TODO: Even if you don't have view_all right, you should still be able to view employees
+      // that you supervise.
+      if($view_all)
+      {
+        $g_layout->output('</tr><tr>');      
+        $g_layout->td(text("supervisor").':</b> ');   
+        $g_layout->td('<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');        
+      }    */
+      
+      $g_layout->output('</tr><tr>');          
      
       $g_layout->td(text("timespan").': ');
    
@@ -276,7 +292,14 @@ class weekreport extends atkNode
               FROM
                  usercontract, employee
               WHERE ";
-    if ($userid!="all") $query.= " usercontract.userid ='$userid' AND ";
+    if ($nameswitch=="supervisor")
+    {      
+      if ($userid!="all") $query.= " employee.supervisor = '$userid' AND ";
+    }
+    else
+    {
+      if ($userid!="all") $query.= " usercontract.userid ='$userid' AND "; 
+    }
     $query.= "  startdate <= '$enddate'
                 AND enddate >= '$startdate'
                 AND usercontract.userid = employee.userid
@@ -309,7 +332,14 @@ class weekreport extends atkNode
               FROM
                 hours, employee
               WHERE ";
-    if ($userid!="all") $query.= " hours.userid ='$userid' AND ";
+    if ($nameswitch=="supervisor")
+    {
+      if ($userid!="all") $query.= " employee.supervisor = '$userid' AND ";
+    }
+    else
+    {  
+      if ($userid!="all") $query.= " hours.userid ='$userid' AND ";
+    }    
     $query.= "  activitydate >= '$startdate' 
                 AND activitydate <= '$enddate'
                 AND hours.userid = employee.userid
@@ -339,16 +369,31 @@ class weekreport extends atkNode
       // beginning of a week here.
     }
     
-    // Collect locks..
-    $query = "SELECT 
-                week, userid
-              FROM 
-                hours_lock
-              WHERE
-                week between '$report_start_week' and '$report_end_week' ";
-    if ($userid!="all")
-    {      
-      $query.="AND (userid = '$userid' OR userid = '*')";
+    if ($nameswitch=="supervisor" && $userid!='all')
+    {
+      $query = "SELECT 
+                  week, hours_lock.userid
+                FROM
+                  hours_lock, employee
+                WHERE
+                  ((hours_lock.userid = employee.userid AND employee.supervisor='$userid')
+                  OR hours_lock.userid = '*')
+                  AND
+                    week between '$report_start_week' and '$report_end_week' ";
+    }
+    else
+    {
+      // Collect locks..
+      $query = "SELECT 
+                  week, userid
+                FROM 
+                  hours_lock
+                WHERE
+                  week between '$report_start_week' and '$report_end_week' ";
+      if ($nameswitch=="name"&&$userid!="all")
+      {      
+        $query.="AND (userid = '$userid' OR userid = '*')";
+      }
     }
     $locks = $g_db->getrows($query);
     for ($i=0;$i<count($locks);$i++)
@@ -362,7 +407,7 @@ class weekreport extends atkNode
         $weekdata[$locks[$i]["week"]]["userdata"][$locks[$i]["userid"]]["status"]="locked";      
       }
     }
-    
+
     // weekdata is an associative array, indexed by weeknumber.
     // it must be converted to a normal array in order to be usable
     // by recordlist functions.
@@ -418,7 +463,7 @@ class weekreport extends atkNode
       $suppress[] = "startdate";
       $suppress[] = "enddate";
     }
-    if ($userid!="all") $suppress[] = "userid";
+    if ($nameswitch=="name" && $userid!="all") $suppress[] = "userid";
 
     if ($outputType=="0")
     {
@@ -431,7 +476,15 @@ class weekreport extends atkNode
       
         $employeedata = '<br>'.$g_layout->ret_table_simple().'<tr>';
                   
-        $employeedata.= $g_layout->ret_td(text("name").": ");
+        if ($nameswitch=="supervisor")
+        {
+          $label = text("supervisor");
+        }
+        else
+        {
+          $label = text("name");
+        }
+        $employeedata.= $g_layout->ret_td($label.": ");
         $employeedata.= $g_layout->ret_td($emprec["name"]);
         $employeedata.= '</tr><tr>';      
         $employeedata.= $g_layout->ret_td(text("email").": ");
