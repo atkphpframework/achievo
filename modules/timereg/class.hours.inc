@@ -322,9 +322,10 @@ class hours extends atkNode
 
     $g_layout->output($g_layout->tr_bottom());
 
+    $row = 0;
     while (list($proj, $times)=each($week))
     {
-      $g_layout->output($g_layout->tr_top());
+      $g_layout->output($g_layout->tr_top((++$row)%2==0));
       $g_layout->td($proj);
       for ($i=1;$i<=7;$i++)
       {
