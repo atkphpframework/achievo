@@ -115,13 +115,16 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE contact RENAME person";
   $res = $g_db->query($sql);
   handleError($sql);
+  $sql = "ALTER TABLE person ADD state VARCHAR(100) DEFAULT NULL";
+  $res = $g_db->query($sql);
+  handleError($sql);
   $sql = "ALTER TABLE person ADD userid VARCHAR(20) DEFAULT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
   $sql = "ALTER TABLE person ADD password VARCHAR(50) DEFAULT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "ALTER TABLE person ADD function VARCHAR(25) DEFAULT NULL";
+  $sql = "ALTER TABLE person ADD function VARCHAR(50) DEFAULT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
   $sql = "ALTER TABLE person ADD supervisor VARCHAR(50) DEFAULT NULL";
@@ -136,7 +139,7 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE person ADD entity INT(10) DEFAULT 0";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "ALTER TABLE person ADD role VARCHAR(15) NOT NULL";
+  $sql = "ALTER TABLE person ADD role VARCHAR(25) NOT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
   $sql = "ALTER TABLE usercontract ADD workingdays VARCHAR(15) NOT NULL";
