@@ -177,7 +177,7 @@
     $date     = $this->year."-".$this->month."-".$this->day;
     $this->title = "<font size='-1'><b>".text("week")."&nbsp;".strftime("%V", mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text('houradmin_previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('houradmin_nextweek'))."</font>";
+    return "<font size='-1'>".href($prevUrl, text('previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('nextweek'))."</font>";
    }
 
   /**
