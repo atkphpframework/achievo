@@ -53,9 +53,11 @@ class hours extends atkNode
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
 
-    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|($this->m_weekview?0:AF_HIDE_LIST)));
+    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
 
-    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE));
+    // force_load flag is set for userid, since several features rely on the 
+    // userid, even if it's not displayed on screen.
+    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD));
 
     $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
     $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
@@ -120,10 +122,22 @@ class hours extends atkNode
 
   function action_edit()
   {
-    global $g_user;
-    $this->setLock();
-    $this->addFilter("hours.userid",strtolower($g_user["id"]));
-    return parent::action_edit();
+    $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));        
+    
+    $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],
+                      sprintf("%02d-%02d-%02d", $recs[0]["activitydate"]["year"], 
+                                                $recs[0]["activitydate"]["month"],
+                                                $recs[0]["activitydate"]["day"]));
+    if ($this->m_lock=="")
+    {
+      $this->addFilter("hours.userid",strtolower($g_user["id"]));
+      return parent::action_edit();
+    }
+    else
+    {
+      // Week is locked. We may not edit, only view.
+      return $this->action_view();
+    }
   }
 
   function javascript_edit($rec)
@@ -144,7 +158,7 @@ class hours extends atkNode
 
     $this->setLock();
 
-    $this->addFilter("userid",$g_user["id"]);
+    $this->addFilter("hours.userid",$g_user["id"]);
 
     if ($this->m_weekview!=1)
     {
@@ -366,13 +380,13 @@ class hours extends atkNode
               FROM
                 hours_lock
               WHERE
-                (userid = '$userid' OR userid = '*')
+                (userid = '$userid' OR userid IS NULL OR userid='')
               AND
                 week = '$week'";
     $res = $g_db->getrows($query);
     for ($i=0;$i<count($res);$i++)
     {
-      if ($res[$i]["userid"] == '*') return "all";
+      if (empty($res[$i]["userid"])) return "all";
     }
 
     // apparently not locked for everybody.
@@ -497,7 +511,7 @@ class hours extends atkNode
       $activitydate = sprintf("%04d-%02d-%02d", $record["activitydate"]["year"], $record["activitydate"]["month"], $record["activitydate"]["day"]);
       $new_minutes = $record["time"]["hours"]*60 + $record["time"]["minutes"];
 
-      if ($this->exceed_hrs_in_day($record["userid"], $activitydate, $new_minutes, $record["id"]))
+      if ($this->exceed_hrs_in_day($record["userid"]["id"], $activitydate, $new_minutes, $record["id"]))
       {
         triggerError($record, "time", "error_hoursindayexceeded");
       }
@@ -666,6 +680,33 @@ class hours extends atkNode
     else
     {
       parent::addDb($record, $exectrigger);
+    }
+  }
+ 
+  /**
+   * This method is called by the framework to determine the allowed actions on 
+   * the hours node.
+   * In this case, the edit and delete actions are disabled if the record does
+   * not belong to the current user.
+   * TODO/FIXME: add some supervisor right so some users may edit other users' 
+   * entries.
+   */
+  function recordActions($rec, &$actions, &$mraactions)
+  {
+    $user = getUser();        
+    if ($user["id"]=="" || $rec["userid"]["id"]!=$user["id"] 
+        || $this->getLockType($rec["userid"]["id"],
+                              sprintf("%02d-%02d-%02d", $rec["activitydate"]["year"], 
+                                                        $rec["activitydate"]["month"],
+                                                        $rec["activitydate"]["day"]))!="")
+    {
+      unset($actions["edit"]);
+      unset($actions["delete"]);
+      $idx = array_search("delete", $mraactions);
+      if ($idx!==false)
+      {
+        unset($mraactions[$idx]);
+      }
     }
   }
 }
