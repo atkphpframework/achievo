@@ -106,7 +106,7 @@ CREATE TABLE project (
    status varchar(9) DEFAULT 'active' NOT NULL,
    description text NOT NULL,
    startdate varchar(20) NOT NULL,
-   customer varchar(100),
+   customer integer DEFAULT '0' NOT NULL,
    PRIMARY KEY (id),
    CHECK (status = 'active' OR status = 'nonactive' OR status = 'archived')
 );
