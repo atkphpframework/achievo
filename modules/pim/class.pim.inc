@@ -32,7 +32,6 @@
 
       $g_layout->ui_bottom();
 
-      $g_layout->page("PIM");
     }
     
     function action_adminpim()
@@ -64,7 +63,6 @@
       
       $g_layout->ui_bottom();
 
-      $g_layout->page("PIM");
     }
   }
 
