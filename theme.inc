@@ -18,7 +18,10 @@
     {
       $g_theme["Name"] = $result[0]["theme"];    
     }
-    $g_sessionManager->globalVar("atkTheme", $g_theme["Name"], true);
+    if (is_object($g_sessionManager))
+    {
+      $g_sessionManager->globalVar("atkTheme", $g_theme["Name"], true);
+    }
   }
   $g_layout->initTheme();
   $g_layout->import_layout();
