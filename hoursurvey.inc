@@ -14,6 +14,7 @@
   global $selectedprojectid;
   global $phaseid;
   global $userid;
+  global $nameswitch;
 
 //  global $printable;
 //  global $export;
@@ -125,6 +126,11 @@
     $userid=$g_user["name"];
   }
   
+  if (!isset($nameswitch)||$nameswitch=="")
+  {
+    $nameswitch="name";
+  }    
+  
   // If we came from 'search all projects', a selectedprojectid var is filled.
   if (isset($selectedprojectid)&&$selectedprojectid!="")
   {
@@ -179,14 +185,15 @@
     $g_layout->output('</tr><tr>');  
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
-    $g_layout->td(text("name").':</b> ');   
+    $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');     
   
     if($view_all)
     {
-      $g_layout->td('<SELECT name="userid">'.get_employees($userid).'</SELECT>');
+      $g_layout->td('<SELECT name="userid">'.get_employees($userid).'</SELECT>');      
     }
     else
     {
+      $userid = $g_user["name"];
       $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
     }
     $g_layout->output('</tr><tr>');  
@@ -222,9 +229,7 @@
                      <option value="1">'.text("report_output_printable").'
                      <option value="2">'.text("report_output_export").'
                      </select>');                     
-    
 
-    
     $g_layout->output('</tr><tr>');  
 
     //$g_layout->td(text("PDF"));
@@ -263,20 +268,23 @@
   if(!empty($projectid)&&$projectid!="") $filter.=" AND A.projectid=".$projectid;
   if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
    
-  if (!$view_all)
-  {
-    $filter.=" AND hours.userid='".$g_user["name"]."'";    
+  // employee table is not yet added to the query. Force that by adding a manytoonerel,
+  // so we display a users name.
+  $this->add(new atkManyToOneRelation("userid", "employee"));
+  
+  if ($nameswitch=="supervisor")
+  {      
+    if ($userid!="all") 
+    {      
+      $filter.= " AND userid.supervisor = '$userid' ";
+    }
   }
   else
   {
-    if ($userid!="all")
-    {
-      $filter.=" AND hours.userid='".$userid."'";
-    }
-  }  
-  
-   $data = $this->selectDb($filter,$atkorderby);
-
+    if ($userid!="all") $filter.= " AND hours.userid ='$userid' "; 
+  }
+      
+  $data = $this->selectDb($filter,$atkorderby);
 
   if ($outputType=="0")
   {

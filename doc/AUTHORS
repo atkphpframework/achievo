@@ -33,6 +33,7 @@ development of new features.
   - CSV export function
   - employee contracts
   - timereg_check cron script
+  - hoursurvey improvements
 
 * S&W Consultancy BV, Netherlands (http://www.s-w.nl) sponsored the following
   enhancements:
@@ -66,6 +67,7 @@ German          : Bastian Kleineidam   <bastian.kleineidam@triplex.de>
                   Michael Gaehwiler    <pegatron@gmx.net>
                   Lucas Smith          <smith@dybnet.de>
                   Dirk Weigenand       <Dirk.Weigenand@smb-tec.com>
+                  Rainer Wedrich       <rainer.wedrich@ebd-networks.de>
 Hungarian       : Miklos Bagi Jr.      <bagim@muszakikiado.hu>
 Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
                   Luca Pescatore       <l.pescatore@network.it>
@@ -118,6 +120,7 @@ T. Luyben                             <tycho@e-lab.nl>
 Martin Pruijssers
 Wayne T. Ethier                       <wte@websynergyinternet.com>
 Michel Marti                          <michel.marti@ubs.com>
+Paul Verhoeff                         <paul@ibuildings.nl>
 Lucas Smith                           <smith@dybnet.de>
 Daniel Frame                          <dframe@tampabay.rr.com>
 Jakub Kahovec                         <jakub.kahovec@newton.cz>

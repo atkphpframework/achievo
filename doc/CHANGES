@@ -9,6 +9,7 @@ Changes in Achievo 0.9.2
 * You can now no longer register time on nonactive project phases  (bug #51)
 * Security bugfix: Achievo releases 0.7.0 to 0.9.2 contain a vulnerability 
   that allows users to execute arbitrary code on any Achievo installation.
+* Updated German and Dutch language files.
 
 Changes in Achievo 0.9.1
 ------------------------
@@ -47,6 +48,11 @@ Changes in Achievo 0.9.0
 * Bugfixes to the billing section (still broken though).
 * Improvements to the ATK backend.
 * Made Achievo more 'session timeout' resistant.
+
+Changes in Achievo 0.8.2.tryllian
+---------------------------------
++ Hoursurvey now displays usernames in addition to userid's.
++ New feature in hoursurvey: select by supervisor.
 
 Changes in Achievo 0.8.2
 ------------------------
