@@ -154,7 +154,7 @@
     global $g_db;
 
     // get the defined colors for each scheduler-type
-    $q = "SELECT * FROM schedule_types ORDER BY id";
+    $q = "SELECT * FROM schedule_type ORDER BY id";
     $r = $g_db->getRows($q);
 
     $colors  = array();

@@ -25,7 +25,6 @@
   $txt_resplanning = "Resource planning";
   $txt_pim_no_planning = "Geen planning voor vandaag";
   $txt_pim_planning = "Je planning voor vandaag";
-  $txt_link_employee_project_add = "Toevoegen medewerker";
   $txt_weektotal = "Weektotaal";
 
 ?>

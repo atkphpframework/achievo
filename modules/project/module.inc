@@ -10,7 +10,9 @@
       registerNode("project.activity", array("admin", "add", "edit", "delete", "stats"));
       registerNode("project.tpl_phase", array("admin", "add", "edit", "delete"));
       registerNode("project.tpl_project", array("admin", "add", "edit", "delete"));
-      registerNode("project.employee_project", array("admin", "add", "edit", "delete"));
+      registerNode("project.role", array("admin", "add", "edit"));
+      registerNode("project.project_personcontact", array("admin", "add", "edit", "delete"));
+      registerNode("project.project_personemployee", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
@@ -38,7 +40,7 @@
       menuitem("activity_admin", dispatch_url("project.activity", "admin"), "setup", array("project.activity", "admin"));
       menuitem("tpl_phase_admin", dispatch_url("project.tpl_phase", "admin"), "setup", array("project.tpl_phase", "admin"));
       menuitem("tpl_project_admin", dispatch_url("project.tpl_project", "admin"), "setup", array("project.tpl_project", "admin"));
-
+      menuitem("role_admin", dispatch_url("project.role", "admin"), "setup", array("project.role", "admin"));
     }
 
     function search($expression)

@@ -26,7 +26,7 @@ class contact extends person
 
   function action_view()
   {
-    // view not only contactperson information but also meetings (including attendees of meetings)
+    // view not only contactperson information but also meetings (including attendees of meetings) and projects
     global $g_layout, $g_db, $g_theme;
 
     list($field, $personid2) = explode("=", $this->m_postvars["atkselector"]);
@@ -34,7 +34,7 @@ class contact extends person
     $query = "SELECT * FROM person WHERE id=".$personid;
     $contact = $g_db->getRows($query);
 
-    $query = "SELECT schedule.*, schedule_type.description as schedulename FROM schedule
+    $query = "SELECT schedule.*, schedule_type.description as scheduletype FROM schedule
               LEFT JOIN schedule_attendee ON schedule_attendee.schedule_id = schedule.id
               LEFT JOIN schedule_type ON schedule.scheduletype = schedule_type.id
               WHERE schedule_attendee.person_id =".$personid;
@@ -87,7 +87,7 @@ class contact extends person
     $g_layout->td(text("appointments").": ", 'valign="top"');
     $g_layout->output('<td class="table" colspan="1" valign="top"><table border="0" cellspacing="0" cellpadding="0"><tr>');
     $g_layout->output('<td align="left"><table border="0" cellspacing="0" cellpadding="0" class="backtable"><tr>');
-    $g_layout->output('<td><table border="0" cellspacing="2" cellpadding="3"><tr>');
+    $g_layout->output('<td><table border="0" cellspacing="1" cellpadding="3"><tr>');
     $g_layout->output('<td class="tableheader" >'.text("startdate").'</td>');
     $g_layout->output('<td class="tableheader" >'.text("enddate").'</td>');
     $g_layout->output('<td class="tableheader" >'.text("starttime").'</td>');
@@ -115,11 +115,20 @@ class contact extends person
       $g_layout->output('<td class="table" >'.$appointments[$i]["starttime"].'</td>');
       $g_layout->output('<td class="table" >'.$appointments[$i]["endtime"].'</td>');
       $g_layout->output('<td class="table" >'.$appointments[$i]["title"].'</td>');
-      $g_layout->output('<td class="table" >'.$appointments[$i]["schedulename"].'</td>');
+      $g_layout->output('<td class="table" >'.$appointments[$i]["scheduletype"].'</td>');
       $g_layout->output('<td class="table" ><a href="'.session_url(dispatch_url("calendar.schedule", "view", array("atkselector" => "schedule.id=".$appointments[$i]["id"])),SESSION_NESTED).'">'.text("view").'</td></tr>');
     }
 
     $g_layout->output('</table></td></tr></table></td></tr></table>');
+
+    $node = &getNode("project.project_personcontact");
+    $node->m_attribList["personid"]->m_flags |= AF_HIDE_LIST;
+    $node->m_attribList["projectid"]->m_flags = $node->m_attribList["projectid"]->m_flags&(~AF_HIDE);
+    $data = $node->selectDb("personid=".$personid);
+    $g_layout->output('</tr><tr>');
+    $g_layout->td(text("projects").": ", 'valign="top"');
+    if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
     $g_layout->output('<br></tr></table>');
 
     $g_layout->output('<br><form method="get">');

@@ -100,9 +100,9 @@ for ($i=0; $i<=8;$i++)
 // Building the query for the list with the planning for a week for employees who are related to the selected project above
 $name = "atk".atkconfig("database")."query";
 $query = new $name();
-$query->addTable('employee_project');
-$query->addJoin('person', '', 'person.id=employee_project.employeeid', FALSE);
-$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
+$query->addTable('project_person');
+$query->addJoin('person', '', 'person.id=project_person.personid', FALSE);
+$query->addJoin('planning', '', "planning.employeeid=project_person.personid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
@@ -120,7 +120,8 @@ $query->addField('id', ' ', 'project', 'project_');
 // If in the listbox above all projects is selected the planning for a week for all employees will be selected.
 // TO DO: It is not possible to make a planning for people because no project is selected en achievo does not know what project the
 // planned hours should be booked on.
-if(isset($projectid)&&$projectid!='-1') $query->addCondition("employee_project.projectid='".$projectid."'");
+$query->addCondition("person.role='employee'");
+if(isset($projectid)&&$projectid!='-1') $query->addCondition("project_person.projectid='".$projectid."'");
 
 $query->addOrderBy('person.lastname');
 $query->addOrderBy('plandate');

@@ -39,14 +39,13 @@
         $this->addFilter("project.status","active");
       }
 
-      $this->add(new atkOneToManyRelation("proj_org","organization.project_organization", "projectid", AF_HIDE_LIST));
+      $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST));
+      $this->add(new atkOneToManyRelation("employees","project.project_personemployee", "projectid", AF_HIDE_LIST));
 
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW));
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
-
-      $this->add(new atkOneToManyRelation("employees","project.employee_project", "projectid", AF_HIDE_LIST));
 
       $this->setTable("project","project");
 
@@ -155,12 +154,19 @@
       $g_layout->td($project[0]["template"]);
       $g_layout->output('</tr><tr>');
 
-      $node = &getNode("organization.project_organization");
+      $node = &getNode("project.project_personcontact");
       $node->m_attribList["projectid"]->m_flags |= AF_HIDE_LIST;
       $node->m_flags |= NF_NO_VIEW;
       $data = $node->selectDb("projectid=".$projectid);
       $g_layout->output('</tr><tr>');
-      $g_layout->td(text("proj_org").": ", 'valign="top"');
+      $g_layout->td(text("contacts").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $node = &getNode("project.project_personemployee");
+      $node->m_attribList["projectid"]->m_flags |= AF_HIDE_LIST;
+      $data = $node->selectDb("projectid=".$projectid);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("employees").": ", 'valign="top"');
       if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
 
       $node = &getNode("project.phase");
@@ -168,13 +174,6 @@
       $data = $node->selectDb("projectid=".$projectid);
       $g_layout->output('</tr><tr>');
       $g_layout->td(text("phase").": ", 'valign="top"');
-      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
-
-      $node = &getNode("project.employee_project");
-      $node->m_attribList["projectid"]->m_flags |= AF_HIDE_LIST;
-      $data = $node->selectDb("projectid=".$projectid);
-      $g_layout->output('</tr><tr>');
-      $g_layout->td(text("employees").": ", 'valign="top"');
       if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
 
       $node = &getNode("document.document");

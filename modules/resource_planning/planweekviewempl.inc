@@ -60,9 +60,9 @@ for ($i=0; $i<=8;$i++)
 // Building the query for the list with the planning for a week for an employee
 $name = "atk".atkconfig("database")."query";
 $query = new $name();
-$query->addTable('employee_project');
-$query->addJoin('person', '', 'person.id=employee_project.employeeid', FALSE);
-$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
+$query->addTable('project_person');
+$query->addJoin('person', '', 'person.id=project_person.personid', FALSE);
+$query->addJoin('planning', '', "planning.employeeid=project_person.personid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
@@ -77,7 +77,7 @@ $query->addField('id', ' ', 'person', 'employee_');
 $query->addField('abbreviation', ' ', 'project', 'project_');
 $query->addField('id', ' ', 'project', 'project_');
 
-$query->addCondition("person.userid='".$userid."'");
+$query->addCondition("person.userid='".$userid."' AND person.role = 'employee'");
 
 $query->addOrderBy('plandate');
 

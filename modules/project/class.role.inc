@@ -4,8 +4,8 @@
  * Module Organization
  * Class role
  *
- * This class is used to define roles for organizations.
- * At this moment it is not possible to add, edit and delete roles, we only use the roles that are in the database.
+ * This class is used to define roles for persons.
+ * At this moment it is not possible to delete roles.
  *
  * $Id$
  * @author L. Willems  <lineke@ibuildings.nl>
@@ -17,7 +17,7 @@ class role extends atkNode
 {
   function role()
   {
-    $this->atkNode("role");
+    $this->atkNode("role", NF_NO_DELETE);
 
     $this->add(new atkAttribute("id", AF_PRIMARY));
     $this->add(new atkAttribute("name"));

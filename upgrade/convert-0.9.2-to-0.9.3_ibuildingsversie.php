@@ -181,13 +181,12 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->query($sql);
   handleError($sql);
 
-  //create table project_organization
-  $sql = "CREATE TABLE project_organization (
-            organizationid INT(10) NOT NULL,
+  //create table project_person
+  $sql = "CREATE TABLE project_person (
+            personid INT(10) NOT NULL,
             projectid INT(10) NOT NULL,
             role INT(10) NOT NULL,
-            contact INT(10) NOT NULL,
-            PRIMARY KEY(organizationid, projectid, role)
+            PRIMARY KEY(personid, projectid, role)
           )";
   $res = $g_db->query($sql);
   handleError($sql);
@@ -201,19 +200,10 @@ if(!empty($convert)&&$convert==1)
   handleError($sql);
 
   //insert roles in table role
-  $sql = "INSERT INTO role (id, name) VALUES (1, 'enduser')";
+  $sql = "INSERT INTO role (id, name) VALUES (1, 'developer')";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "INSERT INTO role (id, name) VALUES (2, 'reseller')";
-  $res = $g_db->query($sql);
-  handleError($sql);
-  $sql = "INSERT INTO role (id, name) VALUES (3, 'supplier')";
-  $res = $g_db->query($sql);
-  handleError($sql);
-  $sql = "INSERT INTO role (id, name) VALUES (4, 'partner')";
-  $res = $g_db->query($sql);
-  handleError($sql);
-  $sql = "INSERT INTO role (id, name) VALUES (5, 'employer')";
+  $sql = "INSERT INTO role (id, name) VALUES (2, 'employer')";
   $res = $g_db->query($sql);
   handleError($sql);
 
@@ -222,8 +212,8 @@ if(!empty($convert)&&$convert==1)
   $projects = $g_db->getRows($sql);
   for ($i=0;$i<count($projects);$i++)
   {
-    $sql = "INSERT INTO project_organization (organizationid, projectid, role, contact)
-            VALUES ('".$projects[$i]["customer"]."', '".$projects[$i]["id"]."', 1, '".$projects[$i]["contact"]."')";
+    $sql = "INSERT INTO project_person (personid, projectid, role)
+            VALUES ('".$projects[$i]["contact"]."', '".$projects[$i]["id"]."', 2)";
     $res = $g_db->query($sql);
     handleError($sql);
   }
@@ -334,7 +324,19 @@ if(!empty($convert)&&$convert==1)
       handleError($sql);
     }
   }
-  $sql = "ALTER TABLE employee_project CHANGE employeeid employeeid INT(10) NOT NULL DEFAULT 0";
+
+  //copy all employees to the project_person table
+  $sql = "SELECT * FROM employee_project";
+  $projects = $g_db->getRows($sql);
+  for ($i=0;$i<count($projects);$i++)
+  {
+    $sql = "INSERT INTO project_person (personid, projectid, role)
+            VALUES ('".$projects[$i]["employeeid"]."', '".$projects[$i]["projectid"]."', 1)";
+    $res = $g_db->query($sql);
+    handleError($sql);
+  }
+
+  $sql = "DROP TABLE employee_project";
   $res = $g_db->query($sql);
   handleError($sql);
 
