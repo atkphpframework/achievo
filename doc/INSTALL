@@ -25,11 +25,9 @@ Requirements
 
 - A webserver capable of running php4 scripts
   (Apache is a good choice, http://www.apache.org)
-- PHP4 (http://www.php.net) 
+- PHP4 (http://www.php.net, version 4.1 or greater)
 - MySQL (http://www.mysql.org) 
 
-Note: Achievo currently requires that PHP is compiled as a module, it does
-not work when PHP is compiled as a CGI binary. We will fix this in the future.
 
 Installation Procedure
 ----------------------
@@ -51,34 +49,25 @@ have a working webserver with PHP support and a MySQL database installed.
 
    $ ln -s achievo_x.x achievo                # make a symbolic link 
 
-2a) Create an empty database in mysql and a user that has select, insert,
-    update and delete-access on the database.
+2) Create an empty database in mysql and a user that has create, alter, 
+   select, insert, update and delete-access on the database.
 
-    example (assuming your mysql root password is 'secret'):
+   example (assuming your mysql root password is 'secret'):
    
-    $ mysql -u root --password=secret mysql
+   $ mysql -u root --password=secret mysql
 
-    mysql> create database achievo_0_9;
-    mysql> grant select,insert,update,delete on achievo_0_9.* to achievo@localhost identified by 'secret';
-    mysql> quit;
+   mysql> create database achievo_0_9;
+   mysql> grant create,alter,select,insert,update,delete on achievo_0_9.*  
+                                  to achievo@localhost identified by 'secret';
+   mysql> quit;
 
-    This creates a database named 'achievo_0_9', and a user with username 
-    'achievo' and password 'secret'.
+   This creates a database named 'achievo_0_9', and a user with username 
+   'achievo' and password 'secret'.
+    
+   (Note: the create and alter privileges are only needed during installation
+   and upgrades. You can revoke these privileges once the installation is 
+   complete.)
      
-
-2b) Use the db/achievo_mysql.sql script to create the tables. 
-
-    example:
-
-    $ cd achievo/db
-    $ mysql -u root --password=secret achievo_0_9 < achievo_mysql.sql
-
-    (You can also use the just created user 'achievo', but then you must 
-    also grant the 'create' privilige in step 2)
-
-    If you want to install some Achievo demo content, insert
-    the 'demo_mysql.sql' file as well (in the same way).
-
 
 3) Edit the file config.inc.php in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
@@ -92,14 +81,31 @@ have a working webserver with PHP support and a MySQL database installed.
     $config_databasepassword = "secret";
     $config_database         = "mysql";
 
-5) In the same configuration file there is a variable 
+4) In the same configuration file there is a variable 
    $config_administratorpassword. This is the password you need on your 
    first login. You might want to change this password.
    
    There are some other things in the config-file that you can change, but 
    for your first configuration, you can leave those settings to the default.      
+   
+5) After editing the configuration file, point your browser to the setup.php
+   script in the Achievo directory. For example:
+   
+   http://yourserver/achievo/setup.php
+   
+   You'll be prompted to login. Enter 'administrator' as username and the 
+   password you've set in step 4. 
+   
+6) Follow the instructions. Achievo will first perform some system checks, to
+   see if your PHP configuration is up to date. If it discovers any problems,
+   it will tell you how to solve them. If everything is ok, it will install 
+   the database for you.
 
-6) Now you're ready to run Achievo. Just point your favorite browser to the
-   directory where you installed Achievo. Login as 'administrator' with the
-   password you set in the configfile ('demo' if you left it to the default)
+7) Once the setup.php script is completed, you'll be ready to run Achievo.
+   You can point your browser to the Achievo directory, like this:
+   
+   http://yourserver/achievo/
 
+   If this is the first time you're using Achievo, you might want to take the 
+   Guided Tour on http://(TODO!), which will show you everything you should
+   do to make Achievo useable for your users.
