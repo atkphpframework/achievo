@@ -174,8 +174,27 @@
   
   // Add new id field to hours_lock table.
   $setup->addColumn("hours_lock", "id", "int(10)", false);
-  $g_db->query("ALTER TABLE hours_lock DROP PRIMARY KEY, ADD PRIMARY KEY(id)");
-
+ 
+  // We must give all records a unique value to be able to use the id
+  // field as a primary key.
+  $recs = $g_db->getrows("SELECT * FROM hours_lock");
+  for ($i=0, $_i=count($recs); $i<$_i; $i++)
+  {
+    $g_db->query("UPDATE hours_lock 
+                     SET id=".($i+1)." 
+                   WHERE userid='".$recs[$i]["userid"]."' 
+                     AND week='".$recs[$i]["week"]."'");
+  }
+  $res = $g_db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('hours_lock', $i)");  
+  
+  $g_db->query("ALTER TABLE hours_lock DROP PRIMARY KEY, ADD PRIMARY KEY(id)");  
+  $g_db->query("UPDATE hours_lock SET userid = '' WHERE userid='*'"); // We can't set it to null
+                                                                      // yet, but we must remove
+                                                                      // the '*' values to be
+                                                                      // able to convert it to int
+  useridConvert("hours_lock", "userid", $setup);    
+  $setup->alterColumn("hours_lock", "userid", "userid", "int(10)", true); // for hours_lock, the userid field may be null  
+  $g_db->query("UPDATE hours_lock SET userid = NULL WHERE userid=''");
   
  
   //change the node rights in the accessright table to this format: modulename.nodename
@@ -208,6 +227,6 @@
   $setup->setVersion("1", "timereg");
   $setup->setVersion("1", "todo");
   
-  $setup->report("In Achievo 0.9.1 projects are linked to contactpersons instead of customers. All project-customer links are lost (TODO/FIXME!!).", "warning");
+  $setup->report("In Achievo 0.9.1 projects are linked to contactpersons instead of customers. Projects that did not have a contactperson set, have lost their link to customer. Please review these projects after the conversion.", "warning");
   
 ?>
