@@ -14,6 +14,9 @@
   $config_auth_passwordfield = "password";
   $config_auth_leveltable  = "employee";
   $config_auth_levelfield  = "entity";
+  $config_max_loginattempts = 0;
+  $config_auth_loginform = true;
+  $config_auth_userdescriptor = "[name]";
   $config_authentication_md5 = true;
   $config_securityscheme = "group";
   $config_debug = 0;
