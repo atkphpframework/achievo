@@ -87,13 +87,13 @@
     global $PHP_SELF;
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-1, $this->year));
-    $prevUrl  = $PHP_SELF."?view=dayview&viewdate=$prevTime&dayview=".$this->showGlobal;
+    $prevUrl  = $PHP_SELF."?view=dayview&viewdate=$prevTime&user=".$this->showGlobal;
 
     $thisTime = date("Y-m-d");
-    $thisUrl  = $PHP_SELF."?view=dayview&viewdate=$thisTime&dayview=".$this->showGlobal;
+    $thisUrl  = $PHP_SELF."?view=dayview&viewdate=$thisTime&user=".$this->showGlobal;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
-    $nextUrl  = $PHP_SELF."?view=dayview&viewdate=$nextTime&dayview=".$this->showGlobal;
+    $nextUrl  = $PHP_SELF."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
     return href($prevUrl, text("Previous day"))."&nbsp;".href($thisUrl, text("Today"))."&nbsp;".href($nextUrl, text("Next day"));
    }
