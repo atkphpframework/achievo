@@ -3,8 +3,9 @@
   // This configures the atk backend for use with Achievo.
   // Do *NOT* change this file, ever!
   //
-  // If you want to configure Achievo, edit the config.inc.php3 file.
+  // If you want to configure Achievo, edit the config.inc.php file.
   
+  $config_identifier = "achievo";
   $config_top_frame = 1;
   $config_authorization = "db";  
   $config_auth_usertable = "employee";
