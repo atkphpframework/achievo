@@ -75,8 +75,8 @@
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       
       $this->add(new atkDummyAttribute("hint", text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
-      $this->add(new fuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees"));
-      $this->add(new fuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees"));
+      $this->add(new fuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", FSA_MULTISELECT));
+      $this->add(new fuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
       
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD, 15));
@@ -426,16 +426,12 @@
       $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
     }
     
-    function storeAttendees($rec, $recs)
+    function storeAttendees($rec, $attendees)
     {      
       global $g_db;
-      foreach ($recs as $keyword=>$attendees)
-      {
-        // Add the first found match as attendee.
-        if (count($attendees))
-        {
-          $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ('".$rec["id"]."', '".$attendees[0]["id"]."')");
-        }
+      for ($i=0, $_i=count($attendees); $i<$_i; $i++)
+      {        
+        $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ('".$rec["id"]."', '".$attendees[$i]["id"]."')");
       }
     }
   }
