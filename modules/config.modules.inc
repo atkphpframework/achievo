@@ -2,12 +2,12 @@
   module("setup");
   module("employee");
   module("person");
+  module("timereg");
   module("project");
   module("organization");
   module("notes");
   module("calendar");
   module("todo");
-  module("timereg");
   module("costreg");
   module("finance");
   module("reports");

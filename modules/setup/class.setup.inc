@@ -195,12 +195,189 @@
     
     function action_installdb()
     {
-      global $g_modules;
-      foreach ($g_modules as $modname=>$moduledir)
+      global $g_modules, $g_layout;
+      
+      $resultmsg = array("ok" => "Installation completed",
+                         "failed" => "Installation failed",
+                         "faileddep" => "Not installed (dependencies could not be resolved)",
+                         "cyclicdep" => "Not installed (Cyclic dependency detected)",
+                         "alreadyinstalled" => "No installation necessary, module was already installed",
+                         "notfound" => "Not installed (Module could not be found)");
+                         
+      
+      // We loop through the modules to install them. 
+      // The setup module contains essential table needed for the installation process,
+      // so we install this first.
+      $result = array();
+      
+      if ($this->installModule("setup", $result))
       {
-        $output.=$modname."<br>";
+      
+        foreach ($g_modules as $modname=>$moduledir)
+        {
+          if ($modname!="setup") // we already installed setup when we started.
+          {
+            if (!$this->installModule($modname, $result, true))
+            {
+              atkdebug("Installation failed.");
+              break;
+            }
+          }
+        }        
+      }
+      else
+      {
+        $output = "I was unable to install the system table, so I cannot continue with the installation. Please verify your database setup and try again.";
+      }
+      
+      if (count($result)>0)
+      {
+        $g_layout->initGui();
+        $output = $g_layout->data_top();
+        $output.= $g_layout->tr_top();
+        $output.= $g_layout->ret_td_datatitle("Module");
+        $output.= $g_layout->ret_td_datatitle("Result");
+        $output.= $g_layout->tr_bottom();
+        foreach ($result as $modname => $result)
+        {
+          $output.= $g_layout->tr_top();
+          $output.= $g_layout->ret_td($modname);          
+          $output.= $g_layout->ret_td((!empty($resultmsg[$result])?$resultmsg[$result]:$result));
+          $output.= $g_layout->tr_bottom();
+        }
+        $output.= $g_layout->data_bottom();
       }
       return $this->setupScreen("Installation result", $output);
+    }
+    
+    /**
+     * Install a module, and if dependencies on other modules exist, install
+     * those modules as well or fail with an error message.
+     *
+     * @param $modname The name of the module to install.
+     * @param $result  This is an array in which the method will store the
+     *                 result of the installation, using the modulename as
+     *                 array key.
+     * @param $resolvedeps If set to false, the installModule function will
+     *                     break if dependencies are not met. If set to true
+     *                     It will try to install the modules the requested
+     *                     module depends on.
+     */
+    function installModule($modname, &$result, $resolvedeps=false)
+    {
+      atkdebug("installModule call for $modname");
+      // Cycle protection.
+      if ($result[$modname]=="ok")
+      {
+        // Module is already installed. 
+        atkdebug("Module ".$modname." already installed in this run.");
+        return true;
+      }
+      else if ($result[$modname]=="faileddep")
+      {
+        // Module failed dependencies before, and now apparently, during the 
+        // resolvement of its dependencies, some other module requested it
+        // to be installed again. This will lead to a loop, so we must
+        // stop the installation.
+        $result[$modname] = "cyclicdep";
+        atkdebug("Module ".$modname." has cyclical dependency.");
+        return false;
+      }
+    
+      // Retrieve already installed modules. We are currently only interested
+      // in the names of the installed modules, not the versions.
+      $installed_mods = array_keys($this->getInstalledModules());
+      
+      // Yet another check. The requested module may already have been
+      // installed before. 
+      if (in_array($modname, $installed_mods))
+      {
+        $result[$modname] = "allreadyinstalled";
+        atkdebug("Module ".$modname." already installed in previous run.");
+        return true;
+      }
+      
+      $module = getModule($modname); 
+      if (!is_object($module))
+      {
+        $result[$modname] = "notfound";
+        atkdebug("Module ".$modname." could not be found.");
+        return false;
+      }
+      
+      $deps = array();
+      
+      // if method doesn't exist, assume that there are no dependencies.
+      // Note that everything derived from achievoModule should have this 
+      // method. Therefor, absence indicates that this module might not be
+      // an achievo module.
+      if (method_exists($module, "getDependencies"))       
+      {
+        $deps = $module->getDependencies(DEP_INSTALL);
+      }
+      else
+      {
+        atkdebug("Warning: $modname might not be an Achievo module.");
+      }
+      
+      for ($i=0, $_i=count($deps); $i<$_i; $i++)
+      {
+        if (!in_array($deps[$i], $installed_mods))
+        {
+          // Dependency not met.
+          atkdebug("Resolving dependency ".$deps[$i]." for $modname");
+          $result[$modname] = "faileddep";
+          if ($resolvedeps)
+          {
+            if (!$this->installModule($deps[$i], $result, true))
+            {
+              atkdebug("Stopping install of $modname. Resolving dependencies failed");
+              return false; // dependencies coult not be resolved. Give up.
+            }
+          }
+          else
+          {
+            atkdebug("Stopping install of $modname. Dependencies not met");
+            return false;
+          }
+        }
+      }
+      
+      // if we get here, all dependencies are either resolved, or we have given up already
+      // and returned false.      
+      
+      // if we get here, everything should be installed.
+      atkdebug("Installed $modname");
+      $result[$modname] = "ok";
+      return true;
+    }
+    
+    /**
+     * This function retrieves the list of installed modules. 
+     *
+     * @return An array, where the modulename is the key, and the current
+     *         installed version of the module is the value.
+     */
+    function getInstalledModules()
+    {
+      // (Ivo) Mental note: I originally had in mind to cache the result of the 
+      // query, so subsequent calls would not need to perform a query. 
+      // But I didn't implement this, since modules may be installed or
+      // deinstalled between 2 calls.
+      $result = array();
+      $versioninfo = getNode("setup.versioninfo");
+      
+      if (is_object($versioninfo)) // If this object doesn't exist, we don't have
+                                   // a correct installer, so we can only return 
+                                   // an empty  result.
+      {       
+        $rows = $versioninfo->selectDb();
+        for ($i=0, $_i=count($rows); $i<$_i; $i++)
+        {
+          $result[$rows[$i]["module"]] = $rows[$i]["version"];
+        }
+      }
+      return $result;
     }
         
   }
