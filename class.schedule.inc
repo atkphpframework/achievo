@@ -147,7 +147,8 @@
     $dummy = new weekView($day, $month, $year);
     $dummy->viewerWidth = "600";
     $dummy->generate();
-    $buff = $dummy->dumpMatrix();
+    $buff  = "<br><br>".$dummy->weekNav()."<br>";
+    $buff .= $dummy->dumpMatrix();
 
     return $buff;
    }

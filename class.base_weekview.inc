@@ -32,6 +32,22 @@
     $this->items = $items;
    }
 
+   function weekNav()
+   {
+    global $PHP_SELF;
+
+    $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-7, $this->year));
+    $prevUrl  = $PHP_SELF."?view=weekview&viewdate=$prevTime";  
+
+    $thisTime = date("Y-m-d");
+    $thisUrl  = $PHP_SELF."?view=weekview&viewdate=$thisTime";      
+
+    $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+7, $this->year));
+    $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime";
+
+    return href($prevUrl, text("Previous week"))."&nbsp;".href($thisUrl, text("This week"))."&nbsp;".href($nextUrl, text("Next week"));
+   }
+
    function dumpMatrix()
    {
     global $PHP_SELF;
@@ -39,6 +55,8 @@
     $buff  = $this->fancyBegin."<td><table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1' border='0'>\n";
 
     $buff .= "<tr bgcolor='#D0D0D0'>\n";
+    $buff .= "<td>&nbsp;</td>";
+
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $text  = text($this->items[$i]["day"])."<br>".substr($this->items[$i]["date"],8,2)."-".substr($this->items[$i]["date"],5,2);
@@ -48,6 +66,39 @@
     $buff .= "</tr>";
 
     $buff .= "<tr bgcolor='#FFFFFF'>";
+    $buff .= "<td>Allday<nobr> events</td>";   
+    for ($i=1;$i<=count($this->items)-2;$i++)
+    {
+     $buff .= "<td><br><br><br></td>";
+    }
+    $buff .= "</tr>";
+
+    $buff .= "<tr bgcolor='#FFFFFF'>";
+    $buff .= "<td>00:00 - 08:00</td>";   
+    for ($i=1;$i<=count($this->items)-2;$i++)
+    {
+     $buff .= "<td><br><br><br></td>";
+    }
+    $buff .= "</tr>";
+
+    $buff .= "<tr bgcolor='#FFFFFF'>";
+    $buff .= "<td>08:00 - 12:00</td>";   
+    for ($i=1;$i<=count($this->items)-2;$i++)
+    {
+     $buff .= "<td><br><br><br></td>";
+    }
+    $buff .= "</tr>";
+
+    $buff .= "<tr bgcolor='#FFFFFF'>";
+    $buff .= "<td>12:00 - 17:00</td>";   
+    for ($i=1;$i<=count($this->items)-2;$i++)
+    {
+     $buff .= "<td><br><br><br></td>";
+    }
+    $buff .= "</tr>";
+
+    $buff .= "<tr bgcolor='#FFFFFF'>";
+    $buff .= "<td>17:00 - 24:00</td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";
@@ -55,6 +106,7 @@
     $buff .= "</tr>";
 
     $buff .= "<tr bgcolor='#D0D0D0'>\n";
+    $buff .= "<td>&nbsp;</td>";
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $text  = text("New item");
