@@ -29,8 +29,7 @@
     $query->addField('publicitem', ' ', 'schedule');
     $query->addField('owner', ' ', 'schedule');
     $query->addField('status', ' ', 'schedule');
-    $query->addField('scheduletype', ' ', 'schedule');
-    $query->addField('all_users', ' ', 'schedule');
+    $query->addField('scheduletype', ' ', 'schedule');    
 
     $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
     $query->addCondition("(schedule.owner='".$me."' OR person.userid='".$me."' OR schedule.all_users = 1)");
@@ -54,7 +53,7 @@
 
     if (count($recs)>0)
     {
-      $todayschedule = $schedulenode->recordList($recs,$actions,false, array('publicitem','allday','location','scheduletype','enddate'));
+      $todayschedule = $schedulenode->recordList($recs,$actions,false, array('publicitem','allday','location','scheduletype','enddate','all_users'));
     }
     else
     {
