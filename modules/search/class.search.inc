@@ -53,7 +53,7 @@
       
         if (!$hasresults)
         {  
-          $res = '<br>'.stringparse(text("search_noresults"), array("expression"=>$searchstring));
+          $res = '<br>'.sprintf(text("search_noresults"), $searchstring);
         }  
       }
       else
