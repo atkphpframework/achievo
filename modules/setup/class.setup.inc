@@ -183,8 +183,19 @@
         }
         else
         {
-          return $this->setupScreen("There is a database, go check which version",
-                                    "lalala");
+          return $this->setupScreen("Database exists and is not empty",
+                                    "In a future release, I will be able to upgrade this database automatically.
+                                    <br>But I can't do that yet.                                     
+                                    <br>I'm also not yet able to determine what version you are currently running.
+                                    <br>I can't even see if this database is up to date or not. Poor me.
+                                    <br>
+                                    <br>But I'll give you some pointers to help you upgrade the database manually.
+                                    <br>(Be sure to backup your database beforehand!)
+                                    <br>
+                                    <br>If you were using a database from version <b>0.9.1</b>, you can use <b><a href=\"upgrade/convert-0.9.1-to-0.9.2.php\">this upgrade-script</a></b> to upgrade to 0.9.2.
+                                    <br><br>If you are running a different version, please check Achievo's upgrade directory and run all
+                                        necessary patches. The .sql files need to be executed in mysql. The .php files can be run through your browser.
+                                        Please be sure to apply the upgrade scripts in the correct order.");
         }                
       }
       else

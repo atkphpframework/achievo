@@ -1,7 +1,8 @@
 <?php
 
-chdir("../");
-include_once("atk.inc");
+$config_atkroot = "../";
+
+include_once($config_atkroot."atk.inc");
 
 /*
 * Achievo Convert Script
@@ -85,8 +86,10 @@ function update_sequence($seq_name,$new_name)
 $errors = false;
 
 $g_layout->output("<html>");
+$g_layout->initGui();
 $g_layout->head("Achievo Convert Script");
 $g_layout->body();
+
 
 if(!empty($convert)&&$convert==1)
 {
@@ -494,7 +497,9 @@ if(!empty($convert)&&$convert==1)
 else
 {
   $g_layout->ui_top("Achievo Convert Script");
-  $g_layout->output("This script will convert database <b>".$config_databasename."</b>.<br>This could take a while for large databases.<br><br>Press the 'Convert' button to start the procedure.<br>");
+  $g_layout->output("This script will convert database <b>".$config_databasename."</b> from version 0.9.1 to 0.9.2.
+                     <br><br><b>If you're database is not version 0.9.1, do not run this script!</b>
+                     <br><br>The script might take a while for large databases.<br><br>Press the 'Convert' button to start the procedure.<br>");
   $g_layout->output('<form name="convert" action="'.$_SERVER["PHP_SELF"].'" method="post">');
   $g_layout->output('<input type="hidden" name="convert" value="1">');
   $g_layout->output('<input type="submit" name="submit" value="Convert">');
