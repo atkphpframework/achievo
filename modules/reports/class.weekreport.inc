@@ -155,7 +155,7 @@ class weekreport extends atkNode
     if ($outputType==0)
     {
       $g_layout->initGUI();
-      $g_layout->ui_top(text("title_employee_weekreport"));
+      $g_layout->ui_top(text("parameters", $this->m_type, $this->m_module));
 
       $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');
 
@@ -470,7 +470,7 @@ class weekreport extends atkNode
   
       if ($outputType=="0")
       {      
-        $g_layout->ui_top(text("title_weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
+        $g_layout->ui_top(text("weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
   
         if ($userid!="all")
         {

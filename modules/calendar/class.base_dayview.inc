@@ -95,7 +95,7 @@
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".text(strtolower(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year))))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
     return "<font size='-1'>".href($prevUrl, text("previous_day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_day"))."</font>";
    }

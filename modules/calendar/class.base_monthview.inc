@@ -51,7 +51,7 @@
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month+1, 1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".date("M", mktime(0,0,0,$this->month,1,$this->year))." ".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".text(strtolower(date("F", mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
 
     return "<font size='-1'>".href($prevUrl, text("previous_month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("this_month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_month"))."</font>";
    }

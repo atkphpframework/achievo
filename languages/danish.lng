@@ -12,6 +12,7 @@
   // translations@achievo.org or request an account for the Achievo
   // Translation Tool.
   //
+  $txt_abbreviation = "Abbreviation"; // Missing string!!!
   $txt_active = "Aktiv";
   $txt_activity = "Aktivitet";
   $txt_activitydate = "Dato";
@@ -21,6 +22,7 @@
   $txt_activity_select = "Vælg først en aktivitet";
   $txt_addnewdependency = "Tilføj ny afhængighed";
   $txt_address = "Adresse";
+  $txt_afternoon = "Afternoon"; // Missing string!!!
   $txt_allactivities = "Alle aktiviteter";
   $txt_allday = "All day"; // Missing string!!!
   $txt_allprojects = "Alle projekter";
@@ -56,7 +58,9 @@
   $txt_country = "Land";
   $txt_customer = "Kunde";
   $txt_customerid = "Kunde";
+  $txt_day = "Day"; // Missing string!!!
   $txt_dayview = "Dayview"; // Missing string!!!
+  $txt_deactivate = "Deactivate"; // Missing string!!!
   $txt_deadline = "Tidsfrist";
   $txt_dependencies = "Afhængigheder";
   $txt_description = "Beskrivelse";
@@ -78,9 +82,15 @@
   $txt_error_hoursindayexceeded = "You can't book more than 24 hours in one day"; // Missing string!!!
   $txt_error_startbiggerthanend = "The start-date must be before the end-date"; // Missing string!!!
   $txt_error_time = "Endtime must be later than starttime"; // Missing string!!!
+  $txt_evening = "Evening"; // Missing string!!!
   $txt_fax = "Faxnummer";
   $txt_fgcolor = "Tekstfarve";
   $txt_firstname = "Fornavn";
+  $txt_fixed_price = "Fixed price"; // Missing string!!!
+  $txt_function = "Job title"; // Missing string!!!
+  $txt_high = "High"; // Missing string!!!
+  $txt_highest = "Highest"; // Missing string!!!
+  $txt_history = "History"; // Missing string!!!
   $txt_holidays = "Ferier";
   $txt_holiday_date = "Dato";
   $txt_houradmin_firstselectproject = "(Vælg først en fase)";
@@ -93,8 +103,6 @@
   $txt_houradmin_searchallprojects = "Søg i alle projekter";
   $txt_houradmin_searchallprojectsphases = "Søg i alle projekter og faser";
   $txt_houradmin_thisweek = "This week"; // Missing string!!!
-  $txt_houradmin_today = "Today"; // Missing string!!!
-  $txt_houradmin_week = "Week"; // Missing string!!!
   $txt_houradmin_weeklocked = "Ugen er låst";
   $txt_hourlock_userid_explanation = "Select the user that you wish to lock, or select 'None' to lock all users"; // Missing string!!!
   $txt_hourlock_week_explanation = "Skriv et år med 4 decimaler fulgt af et ugenummer med 2 dicimaler ind (fx 200234)";
@@ -120,6 +128,8 @@
   $txt_login = "Login";
   $txt_logout = "Log af";
   $txt_logout_loggedinuser = "Bruger der er logget på";
+  $txt_low = "Low"; // Missing string!!!
+  $txt_lowest = "Lowest"; // Missing string!!!
   $txt_mailnotification = "Send mail hvis der er ændringer i opgaver";
   $txt_max_hours = "Timeoverslag";
   $txt_max_phasetime = "Est. fuldførelse (dage)";
@@ -157,7 +167,6 @@
   $txt_menu_role_admin = "Roles"; // Missing string!!!
   $txt_menu_schedule = "Program (ufuldendt!)";
   $txt_menu_schedule_types = "Program";
-  $txt_menu_selectedprojectmanagement = "Håndter projekter";
   $txt_menu_setup = "Opsætning";
   $txt_menu_support = "Hjælp";
   $txt_menu_time_registration = "Timeregistrering";
@@ -166,8 +175,10 @@
   $txt_menu_weekreport = "Ugerapport for ansatte";
   $txt_milestones = "Milepæle";
   $txt_minutes = "Minutter";
+  $txt_month = "Month"; // Missing string!!!
   $txt_monthly = "Måned";
   $txt_monthview = "Monthview"; // Missing string!!!
+  $txt_morning = "Morning"; // Missing string!!!
   $txt_mustbecompletedbeforephase = "skal fuldendes før fase";
   $txt_name = "Navn";
   $txt_new = "Ny";
@@ -175,6 +186,8 @@
   $txt_next_month = "Next month"; // Missing string!!!
   $txt_nonactive = "Ikke-aktiv";
   $txt_nophasesdefined = "Projektet har ikke nogen faser!";
+  $txt_normal = "Normal"; // Missing string!!!
+  $txt_notes = "Notes"; // Missing string!!!
   $txt_no_appointments = "No appointments"; // Missing string!!!
   $txt_number = "Nr";
   $txt_of = "af";
@@ -184,12 +197,14 @@
   $txt_organizationid = "Organization"; // Missing string!!!
   $txt_overtime = "Overtid";
   $txt_owner = "Owner"; // Missing string!!!
+  $txt_parameters = "Parameters"; // Missing string!!!
   $txt_password = "Adgangskode";
   $txt_password_leaveblankifunchanged = "Ønsker du at beholde eksisterende adgangskode, skal du efterlade begge felter tomme.";
   $txt_paymethod = "Betalingsmetode";
   $txt_percentage = "Procentdel";
   $txt_period_price = "Pris per periode";
   $txt_permission_admin = "Access"; // Missing string!!!
+  $txt_permission_report = "Access"; // Missing string!!!
   $txt_personalstats = "Personstatistik";
   $txt_personid = "Person"; // Missing string!!!
   $txt_person_id = "Person"; // Missing string!!!
@@ -221,12 +236,16 @@
   $txt_project = "Projekt";
   $txt_projectid = "Projekt";
   $txt_projects = "Projekter";
+  $txt_project_notes = "Project notes"; // Missing string!!!
+  $txt_project_notesview = "Project notes"; // Missing string!!!
   $txt_project_select = "Valgte projekt";
   $txt_project_select_none = "Der er ikke valgt projekt";
   $txt_project_tab_default = "General"; // Missing string!!!
   $txt_project_tab_documents = "Documents"; // Missing string!!!
   $txt_project_tab_planning = "Planning"; // Missing string!!!
   $txt_project_tab_todos = "Todo's"; // Missing string!!!
+  $txt_project_title_select = "Select a project"; // Missing string!!!
+  $txt_project_todoview = "Project todo's"; // Missing string!!!
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Kvartalsvis";
   $txt_refresh = "Opdater";
@@ -238,6 +257,7 @@
   $txt_registeredtimeperweek = "Registered time per week"; // Missing string!!!
   $txt_remark = "Bemærkning";
   $txt_remarkrequired = "Bemærkning kræves";
+  $txt_report = "Report"; // Missing string!!!
   $txt_report_intimespan = "i perioden";
   $txt_report_output_export = "Send til fil";
   $txt_report_output_options = "Tilpas output:";
@@ -246,10 +266,17 @@
   $txt_report_output_standard = "Standard output";
   $txt_report_output_type = "Output type";
   $txt_report_show_details = "Vis detaljer";
+  $txt_resolution = "Resolution"; // Missing string!!!
   $txt_role = "Role"; // Missing string!!!
+  $txt_schedule = "Schedule"; // Missing string!!!
   $txt_scheduletype = "Schedule type"; // Missing string!!!
+  $txt_schedule_attendees = "Attendees"; // Missing string!!!
+  $txt_schedule_notes = "Appointment notes"; // Missing string!!!
   $txt_schedule_person_role = "Role"; // Missing string!!!
+  $txt_schedule_types = "Appointment types"; // Missing string!!!
   $txt_searchbyprojectorphase = "Du kan søge på projekter eller i en fase i et projekt";
+  $txt_search_again = "Search again"; // Missing string!!!
+  $txt_search_emptysearchstring = "No keyword entered."; // Missing string!!!
   $txt_search_noresults = "Your search for '%s' did not yield any results."; // Missing string!!!
   $txt_seluserdate = "Select employees and a date to compare schedules"; // Missing string!!!
   $txt_setcostsfilter = "Vælg hvilken betaling du vil se:";
@@ -257,10 +284,12 @@
   $txt_specrequired = "Specifikation kræves";
   $txt_startdate = "Start dato";
   $txt_starttime = "Starttime"; // Missing string!!!
+  $txt_state = "State/Province"; // Missing string!!!
   $txt_stats = "Statistik";
   $txt_stats_chooseactivity = "Vælg den aktivitet som du vil se statistik på ved at klikke på aktivitetens navn.";
   $txt_stats_chooseemployee = "Vælg den ansatte som du vil se statistik på ved at klikke på hans/hendes navn.";
   $txt_status = "Status";
+  $txt_supervisor = "Supervisor"; // Missing string!!!
   $txt_tab_contact_appointments_projects = "Contacts, appointments & projects"; // Missing string!!!
   $txt_tab_contract = "Contracts"; // Missing string!!!
   $txt_tab_organization_details = "Organization details"; // Missing string!!!
@@ -283,6 +312,8 @@
   $txt_title_activitystats_perproject = "Denne aktivitet har været udført i følgende projekter";
   $txt_title_activitystats_totals = "Samlede statistik for";
   $txt_title_billing = "Regning";
+  $txt_title_calendar = "Schedule"; // Missing string!!!
+  $txt_title_employee = "Employee management"; // Missing string!!!
   $txt_title_employeestats = "Ansatte statistik";
   $txt_title_employeestats_costs = "Denne ansatte registrerede omkostninger på følgende projekter";
   $txt_title_employeestats_details_hoursof = "Timer af";
@@ -297,8 +328,11 @@
   $txt_title_hoursurvey_onproject = "på projekt";
   $txt_title_license = "Achievo licens";
   $txt_title_manual = "Online dokumentation";
+  $txt_title_notes = "Notes"; // Missing string!!!
+  $txt_title_organization = "Organization management"; // Missing string!!!
   $txt_title_pim = "Personlig informationshåndtering";
   $txt_title_pim_pim = "Hjem";
+  $txt_title_project = "Project management"; // Missing string!!!
   $txt_title_projectplanning = "Projektplanlægning";
   $txt_title_projectstats = "Projektstatistik";
   $txt_title_projectstats_costsperemp = "Følgende ansatte var en udgift for dette projekt";
@@ -307,7 +341,9 @@
   $txt_title_projectstats_perphase = "Folk arbejdede på følgende faser på dette projekt";
   $txt_title_projectstats_totals = "Samlede statistik for";
   $txt_title_reportorganization_view = "Organization archive"; // Missing string!!!
+  $txt_title_reports = "Reports"; // Missing string!!!
   $txt_title_setup_setup = "Achievo Setup"; // Missing string!!!
+  $txt_title_timereg = "Time registration"; // Missing string!!!
   $txt_today = "Today"; // Missing string!!!
   $txt_today_and_appointments = "Today & appointments"; // Missing string!!!
   $txt_todoadded = "Ny opgave";
@@ -320,6 +356,7 @@
   $txt_todo_assignedto = "Tildelt til";
   $txt_todo_changedby = "Ændret af";
   $txt_todo_completed = "Fuldendt";
+  $txt_todo_history_updated = "Updated"; // Missing string!!!
   $txt_todo_in_progress = "Igangværende";
   $txt_todo_new = "Ny";
   $txt_todo_on_hold = "I bero";
@@ -347,7 +384,10 @@
   $txt_warning_fixedprice2 = " og";
   $txt_warning_fixedprice3 = "er allerede blevet afregnet med kunden, af hvem";
   $txt_warning_fixedprice4 = "på denne regning.";
+  $txt_week = "Week"; // Missing string!!!
+  $txt_weekreport = "Weekreport"; // Missing string!!!
   $txt_weekview = "Weekview"; // Missing string!!!
+  $txt_workingdays = "Workingdays"; // Missing string!!!
   $txt_yearly = "År";
   $txt_zipcode = "Postnummer";
 

@@ -209,7 +209,7 @@
       }
 
       $g_layout->initGUI();
-      $g_layout->ui_top(text("Achievo scheduler / ".$this->m_view));
+      $g_layout->ui_top(text($this->m_type)." - ".text($this->m_view));
       $g_layout->output($this->statusbar());
       $g_layout->output($result);
       $g_layout->ui_bottom();

@@ -12,6 +12,7 @@
   // translations@achievo.org or request an account for the Achievo
   // Translation Tool.
   //
+  $txt_abbreviation = "Abbreviation"; // Missing string!!!
   $txt_active = "Активный";
   $txt_activity = "Деятельность";
   $txt_activitydate = "Дата";
@@ -21,6 +22,7 @@
   $txt_activity_select = "Вначале выберите деятельность";
   $txt_addnewdependency = "Добавить новую зависимость";
   $txt_address = "Адрес";
+  $txt_afternoon = "Afternoon"; // Missing string!!!
   $txt_allactivities = "Все виды деятельности";
   $txt_allday = "All day"; // Missing string!!!
   $txt_allprojects = "Все проекты";
@@ -56,7 +58,9 @@
   $txt_country = "Страна";
   $txt_customer = "Клиент";
   $txt_customerid = "Клиент";
+  $txt_day = "Day"; // Missing string!!!
   $txt_dayview = "Dayview"; // Missing string!!!
+  $txt_deactivate = "Deactivate"; // Missing string!!!
   $txt_deadline = "Конечный срок";
   $txt_dependencies = "Зависимости";
   $txt_description = "Описание";
@@ -78,9 +82,15 @@
   $txt_error_hoursindayexceeded = "You can't book more than 24 hours in one day"; // Missing string!!!
   $txt_error_startbiggerthanend = "The start-date must be before the end-date"; // Missing string!!!
   $txt_error_time = "Endtime must be later than starttime"; // Missing string!!!
+  $txt_evening = "Evening"; // Missing string!!!
   $txt_fax = "Номер факса";
   $txt_fgcolor = "Цвет текста";
   $txt_firstname = "Имя";
+  $txt_fixed_price = "Fixed price"; // Missing string!!!
+  $txt_function = "Job title"; // Missing string!!!
+  $txt_high = "High"; // Missing string!!!
+  $txt_highest = "Highest"; // Missing string!!!
+  $txt_history = "History"; // Missing string!!!
   $txt_holidays = "Праздники";
   $txt_holiday_date = "Дата";
   $txt_houradmin_firstselectproject = "(Вначале выберите этап)";
@@ -93,8 +103,6 @@
   $txt_houradmin_searchallprojects = "Искать во всех проектах";
   $txt_houradmin_searchallprojectsphases = "Искать во всех проектах и этапах";
   $txt_houradmin_thisweek = "This week"; // Missing string!!!
-  $txt_houradmin_today = "Today"; // Missing string!!!
-  $txt_houradmin_week = "Week"; // Missing string!!!
   $txt_houradmin_weeklocked = "Неделя заблокирована";
   $txt_hourlock_userid_explanation = "Select the user that you wish to lock, or select 'None' to lock all users"; // Missing string!!!
   $txt_hourlock_week_explanation = "Введите 4 цифры года, затем 2 цифры номера недели (как 200234)";
@@ -120,6 +128,8 @@
   $txt_login = "Логин";
   $txt_logout = "Выйти";
   $txt_logout_loggedinuser = "В системе";
+  $txt_low = "Low"; // Missing string!!!
+  $txt_lowest = "Lowest"; // Missing string!!!
   $txt_mailnotification = "Отправить e-mail если изменился";
   $txt_max_hours = "Оценочно часов";
   $txt_max_phasetime = "Оценочно время завершения (дни)";
@@ -157,7 +167,6 @@
   $txt_menu_role_admin = "Roles"; // Missing string!!!
   $txt_menu_schedule = "Планировщик (незавершен!)";
   $txt_menu_schedule_types = "Расписание";
-  $txt_menu_selectedprojectmanagement = "Управление проектами";
   $txt_menu_setup = "Настройки";
   $txt_menu_support = "Поддержка";
   $txt_menu_time_registration = "Регистрация времени";
@@ -166,8 +175,10 @@
   $txt_menu_weekreport = "Недельный отчет по сотруднику";
   $txt_milestones = "Контрольные даты";
   $txt_minutes = "Минут";
+  $txt_month = "Month"; // Missing string!!!
   $txt_monthly = "Месяц";
   $txt_monthview = "Monthview"; // Missing string!!!
+  $txt_morning = "Morning"; // Missing string!!!
   $txt_mustbecompletedbeforephase = "должен быть закончен перед этапом";
   $txt_name = "Имя";
   $txt_new = "New"; // Missing string!!!
@@ -175,6 +186,8 @@
   $txt_next_month = "Next month"; // Missing string!!!
   $txt_nonactive = "Неактивный";
   $txt_nophasesdefined = "У проекта отсутствуют этапы!";
+  $txt_normal = "Normal"; // Missing string!!!
+  $txt_notes = "Notes"; // Missing string!!!
   $txt_no_appointments = "No appointments"; // Missing string!!!
   $txt_number = "╧";
   $txt_of = "of"; // Missing string!!!
@@ -184,12 +197,14 @@
   $txt_organizationid = "Organization"; // Missing string!!!
   $txt_overtime = "Переработка";
   $txt_owner = "Owner"; // Missing string!!!
+  $txt_parameters = "Parameters"; // Missing string!!!
   $txt_password = "Пароль";
   $txt_password_leaveblankifunchanged = "Оставьте оба поля пароля пустыми если не собираетесь менять пароль.";
   $txt_paymethod = "Метод платежа";
   $txt_percentage = "Процент";
   $txt_period_price = "Цена за период";
   $txt_permission_admin = "Access"; // Missing string!!!
+  $txt_permission_report = "Access"; // Missing string!!!
   $txt_personalstats = "Персональная статистика";
   $txt_personid = "Person"; // Missing string!!!
   $txt_person_id = "Person"; // Missing string!!!
@@ -221,12 +236,16 @@
   $txt_project = "Проект";
   $txt_projectid = "Проект";
   $txt_projects = "Projects"; // Missing string!!!
+  $txt_project_notes = "Project notes"; // Missing string!!!
+  $txt_project_notesview = "Project notes"; // Missing string!!!
   $txt_project_select = "Выбранный проект";
   $txt_project_select_none = "Проект не выбран";
   $txt_project_tab_default = "General"; // Missing string!!!
   $txt_project_tab_documents = "Documents"; // Missing string!!!
   $txt_project_tab_planning = "Planning"; // Missing string!!!
   $txt_project_tab_todos = "Todo's"; // Missing string!!!
+  $txt_project_title_select = "Select a project"; // Missing string!!!
+  $txt_project_todoview = "Project todo's"; // Missing string!!!
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Квартал";
   $txt_refresh = "Обновить";
@@ -238,6 +257,7 @@
   $txt_registeredtimeperweek = "Registered time per week"; // Missing string!!!
   $txt_remark = "Заметка";
   $txt_remarkrequired = "Требуется спецификация";
+  $txt_report = "Report"; // Missing string!!!
   $txt_report_intimespan = "в период";
   $txt_report_output_export = "Вывод в файл";
   $txt_report_output_options = "Подберите вывод:";
@@ -246,10 +266,17 @@
   $txt_report_output_standard = "Стандартный вывод";
   $txt_report_output_type = "Тип вывода";
   $txt_report_show_details = "Показать детали";
+  $txt_resolution = "Resolution"; // Missing string!!!
   $txt_role = "Role"; // Missing string!!!
+  $txt_schedule = "Schedule"; // Missing string!!!
   $txt_scheduletype = "Schedule type"; // Missing string!!!
+  $txt_schedule_attendees = "Attendees"; // Missing string!!!
+  $txt_schedule_notes = "Appointment notes"; // Missing string!!!
   $txt_schedule_person_role = "Role"; // Missing string!!!
+  $txt_schedule_types = "Appointment types"; // Missing string!!!
   $txt_searchbyprojectorphase = "Вы можете искать по проекту или внутри этапа проекта";
+  $txt_search_again = "Search again"; // Missing string!!!
+  $txt_search_emptysearchstring = "No keyword entered."; // Missing string!!!
   $txt_search_noresults = "Your search for '%s' did not yield any results."; // Missing string!!!
   $txt_seluserdate = "Select employees and a date to compare schedules"; // Missing string!!!
   $txt_setcostsfilter = "Выберите, какие затраты вы хотите видеть:";
@@ -257,10 +284,12 @@
   $txt_specrequired = "Требуется спецификация";
   $txt_startdate = "Дата начала";
   $txt_starttime = "Starttime"; // Missing string!!!
+  $txt_state = "State/Province"; // Missing string!!!
   $txt_stats = "Статистика";
   $txt_stats_chooseactivity = "Чтобы выбрать вид деятельности, по которому хотите получить статистику, кликните на названии вида деятельности.";
   $txt_stats_chooseemployee = "Чтобы выбрать сотрудника, по которому хотите получить статистику, кликните на его имени.";
   $txt_status = "Статус";
+  $txt_supervisor = "Supervisor"; // Missing string!!!
   $txt_tab_contact_appointments_projects = "Contacts, appointments & projects"; // Missing string!!!
   $txt_tab_contract = "Contracts"; // Missing string!!!
   $txt_tab_organization_details = "Organization details"; // Missing string!!!
@@ -283,6 +312,8 @@
   $txt_title_activitystats_perproject = "Этот вид деятельности был использован для следующих проектов";
   $txt_title_activitystats_totals = "Полная статистика для";
   $txt_title_billing = "Выставление счетов";
+  $txt_title_calendar = "Schedule"; // Missing string!!!
+  $txt_title_employee = "Employee management"; // Missing string!!!
   $txt_title_employeestats = "Статистика по сотруднику";
   $txt_title_employeestats_costs = "Этот сотрудник регистрировал затраты по следующим проектам";
   $txt_title_employeestats_details_hoursof = "Час ";
@@ -297,8 +328,11 @@
   $txt_title_hoursurvey_onproject = "по проекту";
   $txt_title_license = "Achievo лицензия";
   $txt_title_manual = "Online документация";
+  $txt_title_notes = "Notes"; // Missing string!!!
+  $txt_title_organization = "Organization management"; // Missing string!!!
   $txt_title_pim = "Персональная информационная система";
   $txt_title_pim_pim = "Pim"; // Missing string!!!
+  $txt_title_project = "Project management"; // Missing string!!!
   $txt_title_projectplanning = "Планирование проекта";
   $txt_title_projectstats = "Статистика по проекту";
   $txt_title_projectstats_costsperemp = "Следующие сотрудники производили затраты для этого проекта";
@@ -307,7 +341,9 @@
   $txt_title_projectstats_perphase = "Сотрудники работали по следующим этапам для этого проекта";
   $txt_title_projectstats_totals = "Полная статистика для";
   $txt_title_reportorganization_view = "Organization archive"; // Missing string!!!
+  $txt_title_reports = "Reports"; // Missing string!!!
   $txt_title_setup_setup = "Achievo Setup"; // Missing string!!!
+  $txt_title_timereg = "Time registration"; // Missing string!!!
   $txt_today = "Today"; // Missing string!!!
   $txt_today_and_appointments = "Today & appointments"; // Missing string!!!
   $txt_todoadded = "Новая задача";
@@ -320,6 +356,7 @@
   $txt_todo_assignedto = "Назначена";
   $txt_todo_changedby = "Изменена";
   $txt_todo_completed = "Завершена";
+  $txt_todo_history_updated = "Updated"; // Missing string!!!
   $txt_todo_in_progress = "В работе";
   $txt_todo_new = "Новая";
   $txt_todo_on_hold = "Удержана";
@@ -347,7 +384,10 @@
   $txt_warning_fixedprice2 = " и";
   $txt_warning_fixedprice3 = "уже был выставлен счет клиенту, который";
   $txt_warning_fixedprice4 = "на этом счете.";
+  $txt_week = "Week"; // Missing string!!!
+  $txt_weekreport = "Weekreport"; // Missing string!!!
   $txt_weekview = "Weekview"; // Missing string!!!
+  $txt_workingdays = "Workingdays"; // Missing string!!!
   $txt_yearly = "Год";
   $txt_zipcode = "Почтовый индекс";
 

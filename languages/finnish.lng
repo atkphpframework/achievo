@@ -13,6 +13,7 @@
   // translations@achievo.org or request an account for the Achievo
   // Translation Tool.
   //
+  $txt_abbreviation = "Abbreviation"; // Missing string!!!
   $txt_active = "Aktiivinen";
   $txt_activity = "Aktiviteetti";
   $txt_activitydate = "P&auml;iv&auml;";
@@ -22,6 +23,7 @@
   $txt_activity_select = "Valitse ensin toiminto";
   $txt_addnewdependency = "Lis&auml;&auml; uusi riippuvuus";
   $txt_address = "Osoite";
+  $txt_afternoon = "Afternoon"; // Missing string!!!
   $txt_allactivities = "Kaikki toiminnot";
   $txt_allday = "All day"; // Missing string!!!
   $txt_allprojects = "Kaikki projektit";
@@ -57,7 +59,9 @@
   $txt_country = "Valtio";
   $txt_customer = "Asiakas";
   $txt_customerid = "Asiakas";
+  $txt_day = "Day"; // Missing string!!!
   $txt_dayview = "Dayview"; // Missing string!!!
+  $txt_deactivate = "Deactivate"; // Missing string!!!
   $txt_deadline = "Aikaraja";
   $txt_dependencies = "Riippuvuudet";
   $txt_description = "Kuvaus";
@@ -79,9 +83,15 @@
   $txt_error_hoursindayexceeded = "You can't book more than 24 hours in one day"; // Missing string!!!
   $txt_error_startbiggerthanend = "The start-date must be before the end-date"; // Missing string!!!
   $txt_error_time = "Endtime must be later than starttime"; // Missing string!!!
+  $txt_evening = "Evening"; // Missing string!!!
   $txt_fax = "Faksinumero";
   $txt_fgcolor = "Tekstin v&auml;ri";
   $txt_firstname = "Etunimi";
+  $txt_fixed_price = "Fixed price"; // Missing string!!!
+  $txt_function = "Job title"; // Missing string!!!
+  $txt_high = "High"; // Missing string!!!
+  $txt_highest = "Highest"; // Missing string!!!
+  $txt_history = "History"; // Missing string!!!
   $txt_holidays = "Lomat";
   $txt_holiday_date = "P&auml;iv&auml;";
   $txt_houradmin_firstselectproject = "(Valitse ensin jakso)";
@@ -94,8 +104,6 @@
   $txt_houradmin_searchallprojects = "Etsi kaikista projekteista";
   $txt_houradmin_searchallprojectsphases = "Etsi kaikista projekteista ja jaksoista";
   $txt_houradmin_thisweek = "This week"; // Missing string!!!
-  $txt_houradmin_today = "Today"; // Missing string!!!
-  $txt_houradmin_week = "Week"; // Missing string!!!
   $txt_houradmin_weeklocked = "Viikko on lukittu";
   $txt_hourlock_userid_explanation = "Select the user that you wish to lock, or select 'None' to lock all users"; // Missing string!!!
   $txt_hourlock_week_explanation = "Sy&ouml;t&auml; vuoden 4 numeron j&auml;lkeen 2 viikkonumeroa (e.g. 200234)";
@@ -121,6 +129,8 @@
   $txt_login = "Tunnus";
   $txt_logout = "Kirjaudu ulos";
   $txt_logout_loggedinuser = "Kirjautunut k&auml;ytt&auml;j&auml;";
+  $txt_low = "Low"; // Missing string!!!
+  $txt_lowest = "Lowest"; // Missing string!!!
   $txt_mailnotification = "S&auml;hk&ouml;posti jos teht&auml;v&auml; muuttuu";
   $txt_max_hours = "Tuntiarvio";
   $txt_max_phasetime = "Arvioitu valmistumisaika (pv)";
@@ -158,7 +168,6 @@
   $txt_menu_role_admin = "Roles"; // Missing string!!!
   $txt_menu_schedule = "Ajoittaja (keskener&auml;inen!)";
   $txt_menu_schedule_types = "Aikataulu";
-  $txt_menu_selectedprojectmanagement = "Projektien hallinta";
   $txt_menu_setup = "Asenna";
   $txt_menu_support = "Yll&auml;pito";
   $txt_menu_time_registration = "Ajan kirjaus";
@@ -167,8 +176,10 @@
   $txt_menu_weekreport = "Henkil&ouml;n viikkoraportti";
   $txt_milestones = "V&auml;litavoitteet";
   $txt_minutes = "Minuuttia";
+  $txt_month = "Month"; // Missing string!!!
   $txt_monthly = "Kuukausi";
   $txt_monthview = "Monthview"; // Missing string!!!
+  $txt_morning = "Morning"; // Missing string!!!
   $txt_mustbecompletedbeforephase = "pit&auml;&auml; valmistua ennen jaksoa";
   $txt_name = "Nimi";
   $txt_new = "New"; // Missing string!!!
@@ -176,6 +187,8 @@
   $txt_next_month = "Next month"; // Missing string!!!
   $txt_nonactive = "Ei-aktiivinen";
   $txt_nophasesdefined = "Projektissa ei ole jaksoja!";
+  $txt_normal = "Normal"; // Missing string!!!
+  $txt_notes = "Notes"; // Missing string!!!
   $txt_no_appointments = "No appointments"; // Missing string!!!
   $txt_number = "Nro";
   $txt_of = "of"; // Missing string!!!
@@ -185,12 +198,14 @@
   $txt_organizationid = "Organization"; // Missing string!!!
   $txt_overtime = "Ylity&ouml;";
   $txt_owner = "Owner"; // Missing string!!!
+  $txt_parameters = "Parameters"; // Missing string!!!
   $txt_password = "Salasana";
   $txt_password_leaveblankifunchanged = "J&auml;t&auml; molemmat salasanakent&auml;t tyhj&auml;ksi jos haluat s&auml;ilytt&auml;&auml; nykyisen salasanan.";
   $txt_paymethod = "Maksutapa";
   $txt_percentage = "Prosenttia";
   $txt_period_price = "Jakson hinta";
   $txt_permission_admin = "Access"; // Missing string!!!
+  $txt_permission_report = "Access"; // Missing string!!!
   $txt_personalstats = "Henkil&ouml;tilastot";
   $txt_personid = "Person"; // Missing string!!!
   $txt_person_id = "Person"; // Missing string!!!
@@ -222,12 +237,16 @@
   $txt_project = "Projekti";
   $txt_projectid = "Projekti";
   $txt_projects = "Projects"; // Missing string!!!
+  $txt_project_notes = "Project notes"; // Missing string!!!
+  $txt_project_notesview = "Project notes"; // Missing string!!!
   $txt_project_select = "Valittu projekti";
   $txt_project_select_none = "Ei valittuja projekteja";
   $txt_project_tab_default = "General"; // Missing string!!!
   $txt_project_tab_documents = "Documents"; // Missing string!!!
   $txt_project_tab_planning = "Planning"; // Missing string!!!
   $txt_project_tab_todos = "Todo's"; // Missing string!!!
+  $txt_project_title_select = "Select a project"; // Missing string!!!
+  $txt_project_todoview = "Project todo's"; // Missing string!!!
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Nelj&auml;nnes";
   $txt_refresh = "P&auml;ivit&auml;";
@@ -239,6 +258,7 @@
   $txt_registeredtimeperweek = "Registered time per week"; // Missing string!!!
   $txt_remark = "Muistutus";
   $txt_remarkrequired = "Erittely vaaditaan";
+  $txt_report = "Report"; // Missing string!!!
   $txt_report_intimespan = "jaksossa ";
   $txt_report_output_export = "Tulostus tiedostoon";
   $txt_report_output_options = "Oletusn&auml;kym&auml;:";
@@ -247,10 +267,17 @@
   $txt_report_output_standard = "Oletustulostus";
   $txt_report_output_type = "Tulostusmalli";
   $txt_report_show_details = "N&auml;yt&auml; yksityiskohdat";
+  $txt_resolution = "Resolution"; // Missing string!!!
   $txt_role = "Role"; // Missing string!!!
+  $txt_schedule = "Schedule"; // Missing string!!!
   $txt_scheduletype = "Schedule type"; // Missing string!!!
+  $txt_schedule_attendees = "Attendees"; // Missing string!!!
+  $txt_schedule_notes = "Appointment notes"; // Missing string!!!
   $txt_schedule_person_role = "Role"; // Missing string!!!
+  $txt_schedule_types = "Appointment types"; // Missing string!!!
   $txt_searchbyprojectorphase = "Voit etsi&auml; projekteista tai projektin jaksoista";
+  $txt_search_again = "Search again"; // Missing string!!!
+  $txt_search_emptysearchstring = "No keyword entered."; // Missing string!!!
   $txt_search_noresults = "Your search for '%s' did not yield any results."; // Missing string!!!
   $txt_seluserdate = "Select employees and a date to compare schedules"; // Missing string!!!
   $txt_setcostsfilter = "Valitse mitk&auml; kustannukset haluat n&auml;hd&auml;:";
@@ -258,10 +285,12 @@
   $txt_specrequired = "Erittely tarpeen";
   $txt_startdate = "Aloitusp&auml;iv&auml;";
   $txt_starttime = "Starttime"; // Missing string!!!
+  $txt_state = "State/Province"; // Missing string!!!
   $txt_stats = "Tilastot";
   $txt_stats_chooseactivity = "Toimintotilastot.";
   $txt_stats_chooseemployee = "Henkil&ouml;tilastot.";
   $txt_status = "Tila";
+  $txt_supervisor = "Supervisor"; // Missing string!!!
   $txt_tab_contact_appointments_projects = "Contacts, appointments & projects"; // Missing string!!!
   $txt_tab_contract = "Contracts"; // Missing string!!!
   $txt_tab_organization_details = "Organization details"; // Missing string!!!
@@ -284,6 +313,8 @@
   $txt_title_activitystats_perproject = "T&auml;t&auml; toimintoa k&auml;ytettiin seuraaviin projekteihin";
   $txt_title_activitystats_totals = "Lopputilastot ";
   $txt_title_billing = "Laskutus";
+  $txt_title_calendar = "Schedule"; // Missing string!!!
+  $txt_title_employee = "Employee management"; // Missing string!!!
   $txt_title_employeestats = "Henkil&ouml;tilastot";
   $txt_title_employeestats_costs = "T&auml;m&auml; henkil&ouml; merkitsi kustannuksia t&auml;h&auml;n projektiin";
   $txt_title_employeestats_details_hoursof = "Tunnit ";
@@ -298,8 +329,11 @@
   $txt_title_hoursurvey_onproject = "projektissa ";
   $txt_title_license = "Achievo license";
   $txt_title_manual = "Online dokumentointi";
+  $txt_title_notes = "Notes"; // Missing string!!!
+  $txt_title_organization = "Organization management"; // Missing string!!!
   $txt_title_pim = "Personal Information Manager"; // Missing string!!!
   $txt_title_pim_pim = "Pim"; // Missing string!!!
+  $txt_title_project = "Project management"; // Missing string!!!
   $txt_title_projectplanning = "Projektisuunitelma";
   $txt_title_projectstats = "Projektitilastot";
   $txt_title_projectstats_costsperemp = "N&auml;m&auml; henkil&ouml;t tekiv&auml;t kustannuksia t&auml;h&auml;n projektiin";
@@ -308,7 +342,9 @@
   $txt_title_projectstats_perphase = "T&auml;ss&auml; projektissa ty&ouml;skenneltiin seuraavissa jaksoissa";
   $txt_title_projectstats_totals = "Kokonaistilastot ";
   $txt_title_reportorganization_view = "Organization archive"; // Missing string!!!
+  $txt_title_reports = "Reports"; // Missing string!!!
   $txt_title_setup_setup = "Achievo Setup"; // Missing string!!!
+  $txt_title_timereg = "Time registration"; // Missing string!!!
   $txt_today = "Today"; // Missing string!!!
   $txt_today_and_appointments = "Today & appointments"; // Missing string!!!
   $txt_todoadded = "Uusi teht&auml;v&auml;";
@@ -321,6 +357,7 @@
   $txt_todo_assignedto = "Osoitettu";
   $txt_todo_changedby = "Vaihdettu";
   $txt_todo_completed = "Valmis";
+  $txt_todo_history_updated = "Updated"; // Missing string!!!
   $txt_todo_in_progress = "Etenem&auml;ss&auml;";
   $txt_todo_new = "Uusi teht&auml;v&auml;";
   $txt_todo_on_hold = "Pidossa";
@@ -348,7 +385,10 @@
   $txt_warning_fixedprice2 = " ja ";
   $txt_warning_fixedprice3 = "on laskutettu asiakkaalta joka";
   $txt_warning_fixedprice4 = "t&auml;ss&auml; laskussa.";
+  $txt_week = "Week"; // Missing string!!!
+  $txt_weekreport = "Weekreport"; // Missing string!!!
   $txt_weekview = "Weekview"; // Missing string!!!
+  $txt_workingdays = "Workingdays"; // Missing string!!!
   $txt_yearly = "Vuosi";
   $txt_zipcode = "Postinumero";
 

@@ -15,6 +15,7 @@
   // translations@achievo.org or request an account for the Achievo
   // Translation Tool.
   //
+  $txt_abbreviation = "Abbreviation"; // Missing string!!!
   $txt_active = "Attivo";
   $txt_activity = "Attività";
   $txt_activitydate = "Data";
@@ -24,6 +25,7 @@
   $txt_activity_select = "Seleziona prima una Attività";
   $txt_addnewdependency = "Aggiungi una nuova dipendenza";
   $txt_address = "Indirizzo";
+  $txt_afternoon = "Afternoon"; // Missing string!!!
   $txt_allactivities = "Tutte le Attività";
   $txt_allday = "All day"; // Missing string!!!
   $txt_allprojects = "Tutti i Progetti";
@@ -59,7 +61,9 @@
   $txt_country = "Stato";
   $txt_customer = "Cliente";
   $txt_customerid = "Cliente";
+  $txt_day = "Day"; // Missing string!!!
   $txt_dayview = "Dayview"; // Missing string!!!
+  $txt_deactivate = "Deactivate"; // Missing string!!!
   $txt_deadline = "Scadenza";
   $txt_dependencies = "Dipendenze";
   $txt_description = "Descrizione";
@@ -81,9 +85,15 @@
   $txt_error_hoursindayexceeded = "You can't book more than 24 hours in one day"; // Missing string!!!
   $txt_error_startbiggerthanend = "The start-date must be before the end-date"; // Missing string!!!
   $txt_error_time = "Endtime must be later than starttime"; // Missing string!!!
+  $txt_evening = "Evening"; // Missing string!!!
   $txt_fax = "Fax";
   $txt_fgcolor = "Colore Testo";
   $txt_firstname = "Cognome";
+  $txt_fixed_price = "Fixed price"; // Missing string!!!
+  $txt_function = "Job title"; // Missing string!!!
+  $txt_high = "High"; // Missing string!!!
+  $txt_highest = "Highest"; // Missing string!!!
+  $txt_history = "History"; // Missing string!!!
   $txt_holidays = "Vacanze";
   $txt_holiday_date = "Data";
   $txt_houradmin_firstselectproject = "(Seleziona prima una fase)";
@@ -96,8 +106,6 @@
   $txt_houradmin_searchallprojects = "Ricerca in tutti i Progetti";
   $txt_houradmin_searchallprojectsphases = "Ricerca in tutte le Fasi/Progetti";
   $txt_houradmin_thisweek = "This week"; // Missing string!!!
-  $txt_houradmin_today = "Today"; // Missing string!!!
-  $txt_houradmin_week = "Week"; // Missing string!!!
   $txt_houradmin_weeklocked = "Settimana bloccata";
   $txt_hourlock_userid_explanation = "Select the user that you wish to lock, or select 'None' to lock all users"; // Missing string!!!
   $txt_hourlock_week_explanation = "Inserisci l'anno in 4 cifre seguito dal numero della settimana (es. 200234)";
@@ -123,6 +131,8 @@
   $txt_login = "Login";
   $txt_logout = "Logout";
   $txt_logout_loggedinuser = "Nome Utente";
+  $txt_low = "Low"; // Missing string!!!
+  $txt_lowest = "Lowest"; // Missing string!!!
   $txt_mailnotification = "Invia email se To Do cambia";
   $txt_max_hours = "Ore stimate";
   $txt_max_phasetime = "Giorni stimati per il completamento";
@@ -160,7 +170,6 @@
   $txt_menu_role_admin = "Roles"; // Missing string!!!
   $txt_menu_schedule = "Scadenzario (incompleto!)";
   $txt_menu_schedule_types = "Scadenza";
-  $txt_menu_selectedprojectmanagement = "Gestione Progetti";
   $txt_menu_setup = "Configurazione";
   $txt_menu_support = "Supporto";
   $txt_menu_time_registration = "Registrazione Ore";
@@ -169,8 +178,10 @@
   $txt_menu_weekreport = "Report Settimanale";
   $txt_milestones = "Milestones";
   $txt_minutes = "Minuti";
+  $txt_month = "Month"; // Missing string!!!
   $txt_monthly = "Mese";
   $txt_monthview = "Monthview"; // Missing string!!!
+  $txt_morning = "Morning"; // Missing string!!!
   $txt_mustbecompletedbeforephase = "Da completarsi prima della Fase";
   $txt_name = "Nome";
   $txt_new = "New"; // Missing string!!!
@@ -178,6 +189,8 @@
   $txt_next_month = "Next month"; // Missing string!!!
   $txt_nonactive = "Inattivo";
   $txt_nophasesdefined = "Il progetto non ha nessuna Fase!";
+  $txt_normal = "Normal"; // Missing string!!!
+  $txt_notes = "Notes"; // Missing string!!!
   $txt_no_appointments = "No appointments"; // Missing string!!!
   $txt_number = "Num";
   $txt_of = "di";
@@ -187,12 +200,14 @@
   $txt_organizationid = "Organization"; // Missing string!!!
   $txt_overtime = "Overtime";
   $txt_owner = "Owner"; // Missing string!!!
+  $txt_parameters = "Parameters"; // Missing string!!!
   $txt_password = "Password";
   $txt_password_leaveblankifunchanged = "Lascia entrambe i campi vuoti per mantenere la password attuale.";
   $txt_paymethod = "Metodo di pagamento";
   $txt_percentage = "Percentuale";
   $txt_period_price = "Prezzo per periodo";
   $txt_permission_admin = "Access"; // Missing string!!!
+  $txt_permission_report = "Access"; // Missing string!!!
   $txt_personalstats = "Statistiche Personali";
   $txt_personid = "Person"; // Missing string!!!
   $txt_person_id = "Person"; // Missing string!!!
@@ -224,12 +239,16 @@
   $txt_project = "Progetto";
   $txt_projectid = "Progetto";
   $txt_projects = "Projects"; // Missing string!!!
+  $txt_project_notes = "Project notes"; // Missing string!!!
+  $txt_project_notesview = "Project notes"; // Missing string!!!
   $txt_project_select = "Seleziona prima un Progetto";
   $txt_project_select_none = "Nessun Progetto selezionato";
   $txt_project_tab_default = "General"; // Missing string!!!
   $txt_project_tab_documents = "Documents"; // Missing string!!!
   $txt_project_tab_planning = "Planning"; // Missing string!!!
   $txt_project_tab_todos = "Todo's"; // Missing string!!!
+  $txt_project_title_select = "Select a project"; // Missing string!!!
+  $txt_project_todoview = "Project todo's"; // Missing string!!!
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Trimestrale";
   $txt_refresh = "Aggiorna";
@@ -241,6 +260,7 @@
   $txt_registeredtimeperweek = "Registered time per week"; // Missing string!!!
   $txt_remark = "Nota";
   $txt_remarkrequired = "Specifiche richieste";
+  $txt_report = "Report"; // Missing string!!!
   $txt_report_intimespan = "nel periodo";
   $txt_report_output_export = "File CSV delimitato";
   $txt_report_output_options = "Personalizza l'output:";
@@ -249,10 +269,17 @@
   $txt_report_output_standard = "Output a monitor";
   $txt_report_output_type = "Tipo di output";
   $txt_report_show_details = "Mostra dettagli";
+  $txt_resolution = "Resolution"; // Missing string!!!
   $txt_role = "Role"; // Missing string!!!
+  $txt_schedule = "Schedule"; // Missing string!!!
   $txt_scheduletype = "Schedule type"; // Missing string!!!
+  $txt_schedule_attendees = "Attendees"; // Missing string!!!
+  $txt_schedule_notes = "Appointment notes"; // Missing string!!!
   $txt_schedule_person_role = "Role"; // Missing string!!!
+  $txt_schedule_types = "Appointment types"; // Missing string!!!
   $txt_searchbyprojectorphase = "Puoi cercare per Progetto oppure per Fasi";
+  $txt_search_again = "Search again"; // Missing string!!!
+  $txt_search_emptysearchstring = "No keyword entered."; // Missing string!!!
   $txt_search_noresults = "Your search for '%s' did not yield any results."; // Missing string!!!
   $txt_seluserdate = "Select employees and a date to compare schedules"; // Missing string!!!
   $txt_setcostsfilter = "Seleziona il tipo di Costo:";
@@ -260,10 +287,12 @@
   $txt_specrequired = "Specifica Richiesta";
   $txt_startdate = "Data Inizio";
   $txt_starttime = "Starttime"; // Missing string!!!
+  $txt_state = "State/Province"; // Missing string!!!
   $txt_stats = "Statistiche";
   $txt_stats_chooseactivity = "Seleziona l'Attività per visualizzarne le statistiche.";
   $txt_stats_chooseemployee = "Seleziona un Dipendente per visualizzarne le statistiche.";
   $txt_status = "Stato";
+  $txt_supervisor = "Supervisor"; // Missing string!!!
   $txt_tab_contact_appointments_projects = "Contacts, appointments & projects"; // Missing string!!!
   $txt_tab_contract = "Contracts"; // Missing string!!!
   $txt_tab_organization_details = "Organization details"; // Missing string!!!
@@ -286,6 +315,8 @@
   $txt_title_activitystats_perproject = "Questa Attività è stata usata nei seguenti Progetti";
   $txt_title_activitystats_totals = "Totale statistiche per";
   $txt_title_billing = "Fatturazione";
+  $txt_title_calendar = "Schedule"; // Missing string!!!
+  $txt_title_employee = "Employee management"; // Missing string!!!
   $txt_title_employeestats = "Statistiche Dipendenti";
   $txt_title_employeestats_costs = "Questo Dipendente ha registrato i seguenti Costi nei seguenti Progetti";
   $txt_title_employeestats_details_hoursof = "Ore per";
@@ -300,8 +331,11 @@
   $txt_title_hoursurvey_onproject = "sul progetto";
   $txt_title_license = "Licenza di Achievo";
   $txt_title_manual = "Documentazione Online";
+  $txt_title_notes = "Notes"; // Missing string!!!
+  $txt_title_organization = "Organization management"; // Missing string!!!
   $txt_title_pim = "Gestione Info Personali";
   $txt_title_pim_pim = "Pim"; // Missing string!!!
+  $txt_title_project = "Project management"; // Missing string!!!
   $txt_title_projectplanning = "Report Progetto";
   $txt_title_projectstats = "Statistiche Progetto";
   $txt_title_projectstats_costsperemp = "Questi Dipendenti hanno effettuato le seguenti spese per questo Progetto";
@@ -310,7 +344,9 @@
   $txt_title_projectstats_perphase = "Queste persone hanno lavorato sulle seguenti Fasi per questo Progetto";
   $txt_title_projectstats_totals = "Totale Statistiche per";
   $txt_title_reportorganization_view = "Organization archive"; // Missing string!!!
+  $txt_title_reports = "Reports"; // Missing string!!!
   $txt_title_setup_setup = "Achievo Setup"; // Missing string!!!
+  $txt_title_timereg = "Time registration"; // Missing string!!!
   $txt_today = "Today"; // Missing string!!!
   $txt_today_and_appointments = "Today & appointments"; // Missing string!!!
   $txt_todoadded = "Nuovo To Do";
@@ -323,6 +359,7 @@
   $txt_todo_assignedto = "Assegnato a";
   $txt_todo_changedby = "Modificato da";
   $txt_todo_completed = "Completato";
+  $txt_todo_history_updated = "Updated"; // Missing string!!!
   $txt_todo_in_progress = "In lavorazione";
   $txt_todo_new = "Nuovo";
   $txt_todo_on_hold = "In sospeso";
@@ -350,7 +387,10 @@
   $txt_warning_fixedprice2 = " e";
   $txt_warning_fixedprice3 = "sono già stati fatturati al Cliente, dei quali";
   $txt_warning_fixedprice4 = "su questa fattura.";
+  $txt_week = "Week"; // Missing string!!!
+  $txt_weekreport = "Weekreport"; // Missing string!!!
   $txt_weekview = "Weekview"; // Missing string!!!
+  $txt_workingdays = "Workingdays"; // Missing string!!!
   $txt_yearly = "Anno";
   $txt_zipcode = "CAP";
 

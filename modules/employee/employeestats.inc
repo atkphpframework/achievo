@@ -65,7 +65,7 @@
   $view_all = $g_securityManager->allowed('employee.employee','view_all');
 
   $g_layout->initGUI();
-  $g_layout->ui_top(text("title_hours_stats"));
+  $g_layout->ui_top(text("parameters", 'employee', 'employee'));
 
   $g_layout->output('<form action="dispatch.php" method="get">');
   $g_layout->output('<input type="hidden" name="atknodetype" value="employee.employee">');
@@ -138,7 +138,7 @@
       $total += $records[$i]["time"];
     }
   
-    $g_layout->ui_top(text("title_employee_stats")." - ".$userid);
+    $g_layout->ui_top($g_layout->title('employee', 'employee', 'stats')." - ".$userid);
   
     $g_layout->output('<br><b>'.text("title_employeestats_perproject").'</b><br><br>');
   

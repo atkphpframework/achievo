@@ -28,6 +28,7 @@ Changes in Achievo 0.9.4
 * Added current record indication to the title of view-/edit- and delete 
   screens. (bug #138) [Ivo]
 * Bugfixes for bugs #121, #128, #135, #136 and #137. [Ivo]
+* Updated English and Dutch languagefiles. [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------
