@@ -38,7 +38,6 @@ class organization extends atkNode
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
     $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
-    //$this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
     $this->add(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
     
     $this->setTable("organization", "organization");

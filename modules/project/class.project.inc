@@ -79,7 +79,7 @@
       {
         updateSelectedProjects();
       }
-      parent::dispatch($postvars, $fullpage);
+      return parent::dispatch($postvars, $fullpage);
     }
 
     function descriptor_def()
@@ -144,7 +144,7 @@
       // At the moment a project is also permanently deleted. This wil corrupt de hours survey.
       // Therefore NF_DELETED_FLAG should be realised for hours, projects and
       // employees.
-
+      return true;
     }
 
     function fixed_price_edit($rec)
