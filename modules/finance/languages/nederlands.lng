@@ -1,0 +1,30 @@
+<?php
+  $txt_menu_finance = "Financieel";
+  $txt_menu_currency = "Wisselkoersen";
+  $txt_value = "Waarde";
+  $txt_symbol = "Symbool";
+  $txt_title_currency_admin = "Wisselkoersen beheren";
+  $txt_title_currency_add = "Wisselkoers toevoegen";
+  $txt_title_currency_delete = "Wisselkoers verwijderen";
+  $txt_title_currency_edit = "Wisselkoers bewerken";
+  $txt_menu_rates = "Tarieven";
+  $txt_menu_finance_customer = "Financiele data klanten";
+  $txt_menu_finance_project = "Financiele data projecten";
+  $txt_menu_billing_project = "Facturering (incomplete!)";  
+  $txt_isworth = "is waard";  
+  $txt_title_rates_admin = "Tarieven beheren";
+  $txt_title_rates_add = "Tarief toevoegen";
+  $txt_title_rates_edit = "Tarief bewerken";
+  $txt_title_rates_delete = "Tarief verwijderen";  
+  $txt_rate = "Tarief";
+  $txt_currency = "Munteenheid";  
+  $txt_link_rates_add = "Speciaal tarief toevoegen";
+  $txt_rates = "Tarieven";
+  $txt_title_finance_customer_admin = "Financiele gegevens klanten beheren";
+  $txt_title_finance_customer_edit = "Financiele gegevens klant bewerken";
+  $txt_title_finance_project_admin = "Financiele gegevens projecten beheren";
+  $txt_title_finance_project_edit = "Financiele gegevens project bewerken";  
+  $txt_fixed_price = "Vaste offerteprijs";
+  $txt_fixed_price_explain = "Vaste offerteprijs is in %s. Wanneer geen prijs is ingevuld, zijn de uurtarieven van toepassing";
+  
+?>

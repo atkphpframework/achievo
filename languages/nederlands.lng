@@ -8,7 +8,7 @@
   $txt_app_title = "Achievo Intranet Systeem";
   $txt_app_shorttitle = "Achievo";
 
-  $txt_startdate = "Start datum"; 
+  $txt_startdate = "Startdatum"; 
   $txt_name = "Naam";
   $txt_project = "Project";
   $txt_activity = "Activiteit";
@@ -32,8 +32,8 @@
   $txt_password = "Wachtwoord";
   $txt_details = "Details";
   $txt_refresh = "Verversen";
-  $txt_login = "Login";
-  $txt_logout = "Logout";
+  $txt_login = "Inloggen";
+  $txt_logout = "Uitloggen";
   $txt_id = "ID";
   $txt_activitytemplate = "Activiteiten template";
   $txt_status = "Status";
@@ -277,8 +277,7 @@
   $txt_title_project_notes_add           = "Notitie toevoegen";  
   $txt_title_project_notes_delete        = "Notitie verwijderen";  
   $txt_title_project_notes_edit          = "Notitie bewerken";  
-  
-  $txt_menu_schedule                     = "Agenda";
+    
   $txt_menu_schedule_types               = "Agenda";
   $txt_title_schedule_types_admin        = "Afspraak typen beheren";
   $txt_title_schedule_types_add          = "Afspraak type toevoegen";
@@ -321,9 +320,7 @@
   $txt_title_contracts_edit = "Contract bewerken";
   $txt_title_contracts_delete = "Contract verwijderen";
   $txt_link_contracts_add = "Contract toevoegen";
-
-  $txt_contract_period_price = "Prijs per periode";
-  $txt_contract_billing_period = "Facturatie per";  
+  
   $txt_monthly = "Maand";
   $txt_quaterly = "Kwartaal";
   $txt_yearly = "Jaar";
@@ -336,16 +333,14 @@
   $txt_title_contracttype_delete = "Contract type verwijderen";
   $txt_contracttype = "Contract omschrijving";  
   
-  $txt_menu_costregistration_admin = "Kosten registratie";
+  $txt_menu_costregistration_admin = "Kostenregistratie";
   $txt_title_costregistration_admin = "Administreer kosten gemaakt voor een project";
   $txt_title_costregistration_add = "Nieuwe entry";
   $txt_title_costregistration_edit = "Entry bewerken";
   $txt_title_costregistration_delete = "Entry verwijderen";  
   
   $txt_menu_customermanagement = "Klantbeheer";
-  
-  $txt_menu_finance = "Financieel";
-    
+   
   $txt_report_output_type = "Uitvoer type";
   $txt_report_output_standard = "Standaard uitvoer";
   $txt_report_output_export = "Uitvoer naar file";
@@ -384,4 +379,21 @@
   $txt_houradmin_weeklocked = "Week is geblokkeerd";
   $txt_title_projectstats_costsperemp = "De volgende medewerkers hebben kosten geboekt op dit project";
   $txt_title_employeestats_costs = "Deze werknemer heeft kosten geregistreerd op de volgende projecten";
+  
+  $txt_bgcolor = "Achtergrondkleur";
+  $txt_fgcolor = "Tekstkleur";
+  
+  $txt_period_price = "Prijs per periode";
+  $txt_billing_period = "Facturatie per";  
+  $txt_cellular = "Mobiel";
+  
+  $txt_projectid = "Project";
+  $txt_customerid = "Klant";
+  $txt_priority = "Prioriteit";
+  
+  $txt_menu_schedule = "Agenda (incomplete!)";
+  
+  $txt_costdate = "Datum uitgave";
+  $txt_paymethod = "Betaalmethode";
+  
 ?>

@@ -9,11 +9,11 @@
     function getNodes()
     {
       /* register nodes */
-      registerNode("rates", array("admin", "add", "edit", "delete"));
-      registerNode("finance_customer", array("admin", "add", "edit", "delete"));
-      registerNode("finance_project", array("admin", "add", "edit", "delete"));
-      registerNode("billing_project", array("admin", "add", "edit", "delete"));
-      registerNode("currency", array("admin", "add", "edit", "delete"));
+      registerNode("finance.rates", array("admin", "add", "edit", "delete"));
+      registerNode("finance.finance_customer", array("admin", "add", "edit", "delete"));
+      registerNode("finance.finance_project", array("admin", "add", "edit", "delete"));
+      registerNode("finance.billing_project", array("admin", "add", "edit", "delete"));
+      registerNode("finance.currency", array("admin", "add", "edit", "delete"));
     }
     
     function getMenuItems()

@@ -143,7 +143,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
   
   $echo.= $g_layout->data_top();
   
-  $echo.= "<tr>";
+  $echo.= $g_layout->tr_top();
   
   $echo .= $g_layout->ret_td_datatitle(text("deadline").' <img src="images/arrow_right.gif">','colspan="2" align="right"');
   
@@ -154,7 +154,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
   }
   $echo.= $g_layout->ret_td_datatitle(text('time'));
   
-  $echo.= "</tr><tr>";
+  $echo.= $g_layout->tr_bottom().$g_layout->tr_top();
   
   $echo.= $g_layout->ret_td_datatitle(text("phase").' <img src="images/arrow_down.gif">');
   $echo.= $g_layout->ret_td_datatitle(text("milestones").' <img src="images/arrow_right.gif">','align="right"');
@@ -164,20 +164,20 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
     $echo.= $g_layout->ret_td("m".$counter.'<br><img src="images/arrow_down.gif">','colspan="2" align="center"');   
   }  
   $echo.= $g_layout->ret_td_datatitle(text("booked")."/".text("planned"));
-  $echo.= "</tr>";
+  $echo.= $g_layout->tr_bottom();
   
   $totalbooked=0;
   $totalplanned=0;
 
   for($i=0;$i<count($phase_ids);$i++)
   { 
-    $echo.= "<tr>";
+    $echo.= $g_layout->tr_top();
     $echo.= $g_layout->ret_td($phase_names[$i],'colspan="2"');
     $bgcolor='black';
    
     $number_cols = count($m)*2;
     
-    $cell = '<table width="100%" cellspacing="0" cellspacing="0" border="0"><tr>';
+    $cell = '<table width="100%" cellspacing="0" cellspacing="0" border="0">'.$g_layout->tr_top();
    
     for($j=0;$j<count($m);$j++)
     { 
@@ -201,7 +201,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
       }
     }
    
-    $cell.= "</tr></table>";
+    $cell.= $g_layout->tr_bottom()."</table>";
     
     $echo.= $g_layout->ret_td($cell, 'colspan="'.$number_cols.'" bgcolor="#555555"');
         
@@ -212,13 +212,13 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
     if ($booked_time > $planned_time) $text_color='ff0000'; else $text_color='000000';
    
     $echo.= $g_layout->ret_td('<font color="#'.$text_color.'"> '.time_format($booked_time)." / ".time_format($planned_time)." </font>");
-    $echo.= "</tr>";
+    $echo.= $g_layout->tr_bottom();
   }
   
-  $echo.="<tr>";
+  $echo.=$g_layout->tr_top();
   $echo.=$g_layout->ret_td_datatitle(text(total).':','align="right" colspan="'.($number_cols+2).'"');
   $echo.=$g_layout->ret_td_datatitle(time_format($totalbooked)." / ".time_format($totalplanned));
-  $echo.="</tr>";
+  $echo.=$g_layout->tr_bottom();
 
   $echo.= $g_layout->data_bottom();  
 

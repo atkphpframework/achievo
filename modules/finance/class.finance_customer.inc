@@ -18,8 +18,8 @@ class finance_customer extends atkNode
     $this->addAttribute(new atkAttribute("email",AF_HIDE_LIST|AF_READONLY));
     $this->addAttribute(new atkAttribute("bankaccount", AF_SEARCHABLE));
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_READONLY)); 
-		$this->addAttribute(new atkManyToOneRelation("currency","finance.currency",AF_SEARCHABLE));
-		$this->addAttribute(new atkOneToManyRelation("Ratings","finance.rates","customer_id",AF_HIDE_LIST));
+    $this->addAttribute(new atkManyToOneRelation("currency","finance.currency",AF_SEARCHABLE));
+    $this->addAttribute(new atkOneToManyRelation("rates","finance.rates","customerid",AF_HIDE_LIST));
     $this->setTable("customer", "customer");
     $this->setOrder("customer.name");
     $this->setIndex("name");

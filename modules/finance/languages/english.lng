@@ -1,43 +1,30 @@
 <?php
-  /* menu */
   $txt_menu_finance = "Finance";
-	$txt_menu_rates = "Rates";
-	$txt_menu_finance_customer = "Customer";
-	$txt_menu_currency = "Currency";
-	$txt_menu_finance_project = "Projects";
-	$txt_menu_billing_project = "Billing Projects";
-
-  
-  /* Rates */
-
-  $txt_title_rates_admin = "Rates Admin";  
-  $txt_title_ratess_add   = "Rates Add";
-  $txt_title_rates_edit  = "Rates Edit";
-	$txt_link_rates_add = "Add new rate";
-  $txt_userid = "User";
-	$txt_project_id = "Project";
-	$txt_activity_id = "Activity";
-	$txt_customer_id = "Customer";
-  $txt_priority = "Priority";
-	$txt_rate = "Rate";
-	$txt_end_date = "End Date";
-	$txt_start_date = "Start Date";
-	$txt_description = "Description";
-	
-	/* Customer */
-  
-	//$txt_menu_customer_admin = "Customer Administration";
-
-  /* Currency */
-	
-	$txt_title_currency_admin = "Currency Admin";
-	$txt_title_currency_add = "Currency Add";
-	$txt_title_currency_edit = "Currency Edit";
-	$txt_title_currency_delete = "Currency Delete";
-	
-	$txt_name = "Name";
-	$txt_value = "Value";
-	$txt_symbol = "Currency Symbol";
-
+  $txt_menu_currency = "Currencies";
+  $txt_value = "Value";
+  $txt_symbol = "Symbol";
+  $txt_title_currency_admin = "Currency administration";
+  $txt_title_currency_add = "Add a currency";
+  $txt_title_currency_delete = "Delete a currency";
+  $txt_title_currency_edit = "Edit a currency";
+  $txt_menu_rates = "Rates";
+  $txt_menu_finance_customer = "Financial data customers";
+  $txt_menu_finance_project = "Financial data projects";
+  $txt_menu_billing_project = "Billing (incomplete!)";  
+  $txt_isworth = "is worth";
+  $txt_title_rates_admin = "Administrate rates";
+  $txt_title_rates_add = "Add a rate";
+  $txt_title_rates_edit = "Edit a rate";
+  $txt_title_rates_delete = "Delete a rate";  
+  $txt_rate = "Rate";
+  $txt_currency = "Currency";
+  $txt_link_rates_add = "Add a special rate";
+  $txt_rates = "Rates";
+  $txt_title_finance_customer_admin = "Administrate financial customer data";
+  $txt_title_finance_customer_edit = "Edit financial customer data";
+  $txt_title_finance_project_admin = "Administrate financial project data";
+  $txt_title_finance_project_edit = "Edit financial project data";
+  $txt_fixed_price = "Fixed price";
+  $txt_fixed_price_explain = "Fixed price is in %s. When no price is entered, the hourly rates will apply";
 
 ?>

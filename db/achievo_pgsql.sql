@@ -9,18 +9,18 @@ CREATE TABLE activity (
    id integer DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
    description varchar(50),
-   remarkrequired tinyint(1) DEFAULT '0',
+   remarkrequired smallint(1) DEFAULT '0',
    PRIMARY KEY (id)
 );
 
-CREATE TABLE bills (
+CREATE TABLE bill (
    id integer DEFAULT '0' NOT NULL,
    projectid integer DEFAULT '0' NOT NULL,
    description text,
    create_date date DEFAULT '0000-00-00' NOT NULL,
    userid varchar(15) NOT NULL,
    status varchar(30) NOT NULL,
-   specify_hours tinyint(1) DEFAULT '0' NOT NULL,
+   specify_hours smallint(1) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE rate (
    enddate date DEFAULT '0000-00-00' NOT NULL,
    description text,
    rate decimal(13,5) DEFAULT '0.00000' NOT NULL,
-   priority tinyint(4) DEFAULT '0' NOT NULL,
+   priority smallint(4) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -51,6 +51,7 @@ CREATE TABLE customer (
    website varchar(100),
    bankaccount varchar(30),
    remark text,
+   currency varchar(10),
    PRIMARY KEY (id)
 );
 
@@ -158,7 +159,7 @@ CREATE TABLE phase (
 CREATE TABLE phase_activity (
    phaseid integer DEFAULT '0' NOT NULL,
    activityid integer DEFAULT '0' NOT NULL,
-   billable tinyint(1) DEFAULT '0' NOT NULL,
+   billable smallint(1) DEFAULT '0' NOT NULL,
    PRIMARY KEY (phaseid, activityid)
 );
 
@@ -232,10 +233,10 @@ CREATE TABLE schedule (
    title varchar(50) NOT NULL,
    description text,
    location varchar(50) DEFAULT '0',
-   allday tinyint(1) DEFAULT '0' NOT NULL,
-   publicitem tinyint(1) DEFAULT '0' NOT NULL,
+   allday smallint(1) DEFAULT '0' NOT NULL,
+   publicitem smallint(1) DEFAULT '0' NOT NULL,
    owner varchar(15) NOT NULL,
-   showowner tinyint(1) DEFAULT '0' NOT NULL,
+   showowner smallint(1) DEFAULT '0' NOT NULL,
    scheduletype integer DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
@@ -263,9 +264,9 @@ CREATE TABLE todo (
    duedate date DEFAULT '0000-00-00' NOT NULL,
    description text,
    title varchar(50) NOT NULL,
-   status tinyint(4) DEFAULT '0' NOT NULL,
-   priority tinyint(4) DEFAULT '0' NOT NULL,
-   mailnotification tinyint(1) DEFAULT '0' NOT NULL,
+   status smallint(4) DEFAULT '0' NOT NULL,
+   priority smallint(4) DEFAULT '0' NOT NULL,
+   mailnotification smallint(1) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -279,13 +280,11 @@ CREATE TABLE usercontract (
    PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE seq_node;
 CREATE SEQUENCE seq_hours;
 CREATE SEQUENCE seq_project;
 CREATE SEQUENCE seq_activity;
 CREATE SEQUENCE seq_customer;
 CREATE SEQUENCE seq_contact;
-CREATE SEQUENCE seq_employee;
 CREATE SEQUENCE seq_phase;
 CREATE SEQUENCE seq_profile;
 CREATE SEQUENCE seq_tpl_project;

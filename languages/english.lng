@@ -321,9 +321,7 @@
   $txt_title_contracts_edit = "Edit contract";
   $txt_title_contracts_delete = "Delete contracts";
   $txt_link_contracts_add = "Add contract";
-
-  $txt_contract_period_price = "Price per period";
-  $txt_contract_billing_period = "Billing per";    
+  
   $txt_monthly = "Month";
   $txt_quaterly = "Quater";
   $txt_yearly = "Year";
@@ -344,9 +342,7 @@
   $txt_title_costregistration_delete = "Delete entry";  
   
   $txt_menu_customermanagement = "Manage Customers";
-  
-  $txt_menu_finance = "Finance";
-    
+        
   $txt_report_output_type = "Output type";
   $txt_report_output_standard = "Standard output";
   $txt_report_output_export = "Output to file";
@@ -386,5 +382,21 @@
   $txt_houradmin_weeklocked = "Week is locked";
   
   $txt_title_employeestats_costs = "This employee registered costs on the following projects";
-
   
+  $txt_bgcolor = "Backgroundcolor";
+  $txt_fgcolor = "Textcolor";
+  
+  $txt_period_price = "Price per period";
+  $txt_billing_period = "Billing per";  
+  $txt_cellular = "Cellular";
+  
+  $txt_projectid = "Project";
+  $txt_customerid = "Customer";
+  $txt_priority = "Priority";
+  
+  $txt_menu_schedule = "Scheduler (incomplete!)";
+  
+  $txt_costdate = "Date of expense";
+  $txt_paymethod = "Payment method";
+
+?>

@@ -75,14 +75,14 @@ MySQL
     'achievo' and password 'secret'.
      
 
-2b) Use the db/achievo.sql script to create the tables. 
+2b) Use the db/achievo_mysql.sql script to create the tables. 
 
     example:
 
     $ cd achievo/db
     $ mysql -u root --password=secret achievo_0_7 < achievo_mysql.sql
 
-    If you want to install the Achievo demo content, insert
+    If you want to install some Achievo demo content, insert
     the 'demo_mysql.sql' file as well (in the same way).
 
     (You can also use the just created user 'achievo', but then you must 
@@ -106,7 +106,7 @@ PostgreSQL
      $ cd achievo/db
      $ psql -U pgsql achievo_0_7 < achievo_pgsql.sql
 
-    If you want to install the Achievo demo content, insert
+    If you want to install some Achievo demo content, insert
     the 'demo_pgsql.sql' file as well (in the same way).
 
 2c) Grant permissions to the created tables and sequences.
@@ -122,8 +122,9 @@ PostgreSQL
     'achievo_0_7' database for your achievo user.
 
     Another (more quick) way to do this is by using the db/grant_pgsql.sql script.
-    You may have to change the username which defaults to 'achievo'. In case you
-    make use of this script (recommended) follow the following procedure:
+    You may have to change the username, which defaults to 'achievo', in the 
+    grant_pgsql.sql file. In case you make use of this script (recommended) 
+    follow the following procedure:
 
     example:
 

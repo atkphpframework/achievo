@@ -4,23 +4,26 @@
 
 Changes in Achievo 0.7.3
 ------------------------
++ Added a scheduler/calendar (not fully functional yet).
++ Added todo functionality.
++ Added project notes.
++ Added cost registration feature.
 + Added hour locking feature.
 + Added employee week report.
 + Added configuration options for time registration.
 + Added CSV export function to hoursurvey.
-+ Added a Scheduler/Calendar (not fully functional yet).
-+ Added Todo functionality.
-+ Added project notes.
 + Added finance menu (not fully functional yet).
 + Added employee contracts. 
-+ Added cron script for checking for incomplete timregistration.
++ Added cron script for checking incomplete timeregistration.
 + Added customer contracts.
 + Added an extended search feature for all views. 
 + Added alphabetical indexes to employee, customer and project views.
++ Added external module API.
 + Added Hungarian language files.
-* Improved module support.
++ Added rainyd theme, which is now the default theme.
 * Updated German language files.
 * Replaced htmlentities() calls with htmlspecialchars().
+* Updated *.sql install and demo files.
 * Fixed some bugs.
 
 Changes in Achievo 0.7.2

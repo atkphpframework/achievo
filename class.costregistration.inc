@@ -12,14 +12,14 @@ include_once "class.projectattrib.inc";
       $this->addFilter("userid",strtolower($g_user["name"]));
   
       $this->add(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
-      $this->add(new atkAttribute("userid", AF_READONLY));
+      $this->add(new atkAttribute("userid", AF_READONLY|AF_HIDE));
+      $this->add(new atkAttribute("description", AF_OBLIGATORY|AF_SEARCHABLE));
       $this->add(new atkDateAttribute("costdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-      $this->add(new atkProjectAttribute("projectid", AF_OBLIGATORY|AF_SEARCHABLE));
+      $this->add(new atkProjectAttribute("projectid", AF_OBLIGATORY));
       
-      $this->add(new atkManyToOneRelation("currency","finance.currency"));
       $this->add(new atkAttribute("value", AF_OBLIGATORY));
-      $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));
-      $this->add(new atkAttribute("description", AF_OBLIGATORY));
+      $this->add(new atkManyToOneRelation("currency","finance.currency"));      
+      $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));      
       
       $this->setOrder("costdate");
             

@@ -17,18 +17,18 @@
    
     $this->atkNode("schedule", NF_ADD_LINK); 
 
-    $this->addAttribute(new atkAttribute("owner"           , AF_READONLY|AF_HIDE));
-    $this->addAttribute(new atkAttribute("id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
-    $this->addAttribute(new atkAttribute("title"           , AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->addAttribute(new atkAttribute("location"        , AF_SEARCHABLE));
-    $this->addAttribute(new atkTextAttribute("description" , AF_HIDE_LIST));
-    $this->addAttribute(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-    $this->addAttribute(new atkBoolAttribute("allday"      ));
-    $this->addAttribute(new atkBoolAttribute("publicitem"      ));
-    $this->addAttribute(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $time, 0));
-    $this->addAttribute(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $time, 0));
-    $this->addAttribute(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY));
+    $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE));
+    $this->add(new atkAttribute("id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
+    $this->add(new atkAttribute("title"           , AF_SEARCHABLE|AF_OBLIGATORY));
+    $this->add(new atkAttribute("location"        , AF_SEARCHABLE));
+    $this->add(new atkTextAttribute("description" , AF_HIDE_LIST));
+    $this->add(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
+    $this->add(new atkBoolAttribute("allday"      ));
+    $this->add(new atkBoolAttribute("publicitem"      ));
+    $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $time, 0));
+    $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $time, 0));
+    $this->add(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY));
   //  $this->addAttribute(new atkDummyAttribute("attendees"       , "", AF_HIDE_ADD|AF_HIDE_LIST));
 
     $view     = $g_sessionManager->stackVar("view");
@@ -47,8 +47,8 @@
 
    function initial_values()
    {
-    global $g_user, $viewdate, $hour;
-    return array("item_owner"=>$g_user["name"], "item_begin_time"=>$hour, "item_end_time"=>$hour, "item_begin_date"=>$viewdate);
+    global $g_user, $viewdate;
+    return array("owner"=>$g_user["name"], "startdate"=>$viewdate, "enddate"=>$viewdate);
    }
 
 

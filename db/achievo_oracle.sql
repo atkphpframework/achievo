@@ -13,7 +13,7 @@ CREATE TABLE activity (
    PRIMARY KEY (id)
 );
 
-CREATE TABLE bills (
+CREATE TABLE bill (
    id number(10) DEFAULT '0' NOT NULL,
    projectid number(10) DEFAULT '0' NOT NULL,
    description text,
@@ -51,6 +51,7 @@ CREATE TABLE customer (
    website varchar2(100),
    bankaccount varchar2(30),
    remark text,
+   currency varchar2(10),
    PRIMARY KEY (id)
 );
 

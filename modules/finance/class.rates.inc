@@ -33,20 +33,25 @@ class rates extends atkNode
 	  if(is_null($rec["userid"]["userid"]))  { return "-"; } else { return $this->m_attribList["userid"]->display($rec); } 
 	}
 
-  function project_id_display($rec)
+  function projectid_display($rec)
 	{ 
-	  if(is_null($rec["project_id"]["id"]))  { return "-"; } else { return $this->m_attribList["project_id"]->display($rec); } 
+	  if(is_null($rec["projectid"]["id"]))  { return "-"; } else { return $this->m_attribList["projectid"]->display($rec); } 
 	}
  
-  function activity_id_display($rec)
+  function activityid_display($rec)
 	{
-	  if(is_null($rec["activity_id"]["id"]))  { return "-"; } else { return $this->m_attribList["activity_id"]->display($rec); } 
+	  if(is_null($rec["activityid"]["id"]))  { return "-"; } else { return $this->m_attribList["activityid"]->display($rec); } 
 	}
 	
-  function customer_id_display($rec)
+  function customerid_display($rec)
 	{
-	  if(is_null($rec["customer_id"]["id"]))  { return "-"; } else { return $this->m_attribList["customer_id"]->display($rec); } 
+	  if(is_null($rec["customerid"]["id"]))  { return "-"; } else { return $this->m_attribList["customerid"]->display($rec); } 
 	}
+
+  function rate_edit($rec)
+  {
+    return $this->m_attribList["rate"]->edit($rec)." ".atkconfig("currency");
+  }
 	
 
   function descriptor_def()

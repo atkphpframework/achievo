@@ -20,9 +20,7 @@
   registerNode("tpl_project", array("admin", "add", "edit", "delete"));
  
   registerNode("todo", array("admin", "add", "edit", "delete"));
-  registerNode("project_todoview", array("admin", "add", "edit", "delete"));
   registerNode("project_notes", array("admin", "add", "edit", "delete"));
-  registerNode("project_notesview", array("admin", "add", "edit", "delete"));
 //  registerNode("holidays", array("admin","add","edit","delete"));  
   registerNode("schedule", array("admin", "add", "edit", "delete"));  
   registerNode("schedule_types", array("admin", "add", "edit", "delete"));

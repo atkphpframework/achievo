@@ -8,15 +8,15 @@ class schedule_types extends atkNode
 
     $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("description"                  , AF_OBLIGATORY));
-    $this->addAttribute(new atkColorPickerAttribute("bgcolor"        , "", AF_OBLIGATORY|AF_POPUP));
-    $this->addAttribute(new atkColorPickerAttribute("fgcolor"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));    
-    $this->addAttribute(new atkDummyAttribute("example"                      , "", AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->addAttribute(new atkColorPickerAttribute("bgcolor"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));
+    $this->addAttribute(new atkColorPickerAttribute("fgcolor"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_FORCE_LOAD|AF_POPUP));    
+    $this->addAttribute(new atkDummyAttribute("example"                      , "", AF_HIDE_ADD));
 
     $this->setTable("schedule_types", "schedule_types");         
     $this->setOrder("id");
   }
 
-  function item_background_display($record)
+  function example_display($record)
   {
    $bgcolor = $record["bgcolor"]; 
    $fgcolor = $record["fgcolor"];
@@ -29,13 +29,13 @@ class schedule_types extends atkNode
 
   function descriptor_def()
   {
-   return "[item_description]";
+   return "[description]";
   }
 
 
   function example_edit($record)
   {
-    return text("example").":".$this->item_background_display($record);
+    return text("example").":".$this->example_display($record);
   }
 
 

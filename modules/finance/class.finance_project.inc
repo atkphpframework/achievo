@@ -6,7 +6,7 @@ class finance_project extends atkNode
   {
    
     
-    $this->atkNode("finance_project",NF_NO_ADD);
+    $this->atkNode("finance_project",NF_NO_ADD|NF_NO_DELETE);
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
@@ -15,9 +15,9 @@ class finance_project extends atkNode
     $this->addAttribute(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD|AF_READONLY));
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_READONLY));    
     $this->addAttribute(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_READONLY));
-    $this->addAttribute(new atkDummyAttribute("comment","Fixed price is in ".atkconfig("currency").", when no fixed price is defined, hour rates will apply.",AF_HIDE_LIST));
+    $this->addAttribute(new atkDummyAttribute("comment",sprintf(text("fixed_price_explain"),atkconfig("currency")).".",AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("fixed_price"));
-    $this->addAttribute(new atkOneToManyRelation("Ratings","finance.rates","project_id",AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("rates","finance.rates","projectid",AF_HIDE_LIST));
 		
     //  $this->addFilter("project.status","active");
     

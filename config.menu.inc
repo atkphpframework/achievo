@@ -33,8 +33,8 @@
       menuitem("activity_stats", dispatch_url("activity", "stats"), "projectmanagement", array("activity", "stats"));     
       menuitem("employee_stats", dispatch_url("employee", "stats"), "projectmanagement", array("employee", "stats"));     
       menuitem("-","","projectmanagement");
-      menuitem("project_todoview", dispatch_url("project_todoview", "admin"), "projectmanagement", array("project_todoview", "admin"));
-      menuitem("project_notesview", dispatch_url("project_notesview", "admin"), "projectmanagement", array("project_notesview", "admin"));
+      menuitem("project_todoview", dispatch_url("project_todoview", "admin"), "projectmanagement", array("todo", "admin"));
+      menuitem("project_notesview", dispatch_url("project_notesview", "admin"), "projectmanagement", array("project_notes", "admin"));
   }
   else
   {

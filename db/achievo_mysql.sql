@@ -13,7 +13,7 @@ CREATE TABLE activity (
    PRIMARY KEY (id)
 );
 
-CREATE TABLE bills (
+CREATE TABLE bill (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    projectid int(10) DEFAULT '0' NOT NULL,
    description text,
@@ -51,6 +51,7 @@ CREATE TABLE customer (
    website varchar(100),
    bankaccount varchar(30),
    remark text,
+   currency varchar(10),
    PRIMARY KEY (id)
 );
 
@@ -285,23 +286,3 @@ CREATE TABLE db_sequence (
    PRIMARY KEY (seq_name)
 );
 
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("node",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("hours",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("project",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("activity",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("customer",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("contact",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("employee",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("phase",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("profile",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("tpl_project",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("tpl_phase",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("todo",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("project_notes",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("bill",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("schedule",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("schedule_types",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("contract",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("contracttype",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("usercontract",1);
-INSERT INTO db_sequence (seq_name,nextid) VALUES ("costregistration",1);

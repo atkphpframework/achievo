@@ -11,9 +11,9 @@ class contracts extends atkNode
     $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY));    
     $this->addAttribute(new atkListAttribute("billing_period",array(text("monthly"),text("quarterly"),text("yearly"),text("per_incident")),array(),AF_OBLIGATORY|AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("period_price",AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));    
-    $this->addAttribute(new atkTextAttribute("description",AF_OBLIGATORY|AF_HIDE_LIST));    
+    $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0,AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0,AF_OBLIGATORY));    
+    $this->addAttribute(new atkTextAttribute("description",AF_OBLIGATORY));    
     
     $this->setTable("contract","contract");
     $this->setOrder("startdate");

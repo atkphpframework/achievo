@@ -19,6 +19,7 @@ class project_todoview extends atkNode
     $this->addFilter("project.status","active");
     $this->setTable("project","project");
     $this->setOrder("name");
+    $this->setSecurityAlias("todo");
 
     atkdebug("project::project()");
   }

@@ -19,6 +19,7 @@ class project_notesview extends atkNode
     $this->addFilter("project.status","active");
     $this->setTable("project","project");
     $this->setOrder("name");
+    $this->setSecurityAlias("project_notes");
 
     atkdebug("project::project()");
   }
