@@ -36,7 +36,7 @@
                                       array($usernode->descriptor(getUser()), 
                                             "allusers"), 
                                       array("", 
-                                            "*")), "calendar");
+                                            "*"), AF_OBLIGATORY), "calendar");
     }
   }
 
