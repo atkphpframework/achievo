@@ -45,29 +45,29 @@ INSERT INTO activity VALUES ( '8', 'Implementation', '', '0');
 
 INSERT INTO customer VALUES ( 'Ibuildings.nl BV', '', '', '', '', '', '', 'info@ibuildings.nl', '', '2', '');
 
-DROP SEQUENCE node;
-DROP SEQUENCE hours;
-DROP SEQUENCE project;
-DROP SEQUENCE activity;
-DROP SEQUENCE customer;
-DROP SEQUENCE contact;
-DROP SEQUENCE employee;
-DROP SEQUENCE phase;
-DROP SEQUENCE profile;
-DROP SEQUENCE tpl_project;
-DROP SEQUENCE tpl_phase;
+DROP SEQUENCE seq_node;
+DROP SEQUENCE seq_hours;
+DROP SEQUENCE seq_project;
+DROP SEQUENCE seq_activity;
+DROP SEQUENCE seq_customer;
+DROP SEQUENCE seq_contact;
+DROP SEQUENCE seq_employee;
+DROP SEQUENCE seq_phase;
+DROP SEQUENCE seq_profile;
+DROP SEQUENCE seq_tpl_project;
+DROP SEQUENCE seq_tpl_phase;
 
-CREATE SEQUENCE node START 2;
-CREATE SEQUENCE hours START 3;
-CREATE SEQUENCE project START 3;
-CREATE SEQUENCE activity START 9;
-CREATE SEQUENCE customer START 3;
-CREATE SEQUENCE contact START 2;
-CREATE SEQUENCE employee START 2;
-CREATE SEQUENCE phase START 4;
-CREATE SEQUENCE profile START 4;
-CREATE SEQUENCE tpl_project START 2;
-CREATE SEQUENCE tpl_phase START 2;
+CREATE SEQUENCE seq_node START 2;
+CREATE SEQUENCE seq_hours START 3;
+CREATE SEQUENCE seq_project START 3;
+CREATE SEQUENCE seq_activity START 9;
+CREATE SEQUENCE seq_customer START 3;
+CREATE SEQUENCE seq_contact START 2;
+CREATE SEQUENCE seq_employee START 2;
+CREATE SEQUENCE seq_phase START 4;
+CREATE SEQUENCE seq_profile START 4;
+CREATE SEQUENCE seq_tpl_project START 2;
+CREATE SEQUENCE seq_tpl_phase START 2;
 
 
 INSERT INTO dependency VALUES ( '2', '3');

@@ -250,6 +250,18 @@
   $txt_title_tpl_project_phase_add = "Eine neue Phase zu diesem Projekt hinzuf&uuml;gen";
     
   // --------==== Strings that were introduced in version 0.6.3: ====---------
-  $txt_orderby = "Order by";
+  $txt_orderby = "Sortieren nach";
+  
+  // --------==== Strings that were introduced in version 0.7: ====---------
+  $txt_menu = "Hauptmen&uuml;";
+  $txt_menu_employeemanagement = "Mitarbeiterverwaltung";
+  $txt_menu_projectmanagement = "Projektverwaltung";
+  $txt_menu_project_stats = "Projektstatistiken";
+  $txt_menu_project_planning = "Projektplanung";
+  $txt_menu_setup = "Setup";
+  $txt_menu_support = "Support";
+  $txt_menu_achievo_license = $txt_app_shorttitle." Lizenz";
+  $txt_menu_achievo_docs = "Online Dokumentation";
+  $txt_menu_achievo_home = $txt_app_shorttitle." Homepage"; 
 
 ?>

@@ -56,7 +56,7 @@ class userprefs extends atkNode
       if($record["userid"]==$g_user["name"])
       {
         echo '<script language="javascript">';
-        echo 'parent.location = "."';
+        echo 'parent.location = "index.php"';
         echo '</script>';
         exit;
       }

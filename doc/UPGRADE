@@ -23,6 +23,15 @@ development release, here's some help on upgrading.
 
 IF IT FAILS, YOU'RE ON YOUR OWN. WE WARNED YOU.
 
+Upgrading from version 0.7.x -> 0.7.2
+-------------------------------------
+Due to compatibility problems with Oracle, we had to rename the column 'date' 
+in the hours table to 'activitydate'. If you want to use a database from 
+Achievo versions older than 0.7.2, you have to rename this column. You can do 
+this with your favorite sql tool. Just execute the following SQL statement 
+(make sure you have the priviliges to do this):
+
+ALTER TABLE hours CHANGE date activitydate DATE NOT NULL
 
 Upgrading from version 0.6.x -> 0.7
 -----------------------------------
@@ -42,10 +51,8 @@ the root of your fresh Achievo install.
 
 Upgrading from version 0.4.x -> 0.7
 -----------------------------------
-Note at this time there is no upgrade procedure available for upgrading
-an Achievo 0.4.x MySQL database to a new Achievo 0.7 PostgreSQL database.
-The following procedure only apply's when you want to upgrade your
-existing Achievo 0.4.x MySQL database to a new Achievo 0.7 MySQL database!
+(Note: at this time there is no upgrade procedure available for upgrading
+a MySQL database to a new PostgreSQL database.)
 
 The database structure has changed a lot between 0.4.x and 0.7, so there
 are a few steps that you need to do to convert your old database to be
