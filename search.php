@@ -10,7 +10,7 @@
   
   $g_layout->ui_top(text("search"));
   
-  $searchresults = "You're looking for '$searchstring'. But this is not yet implemented!";
+  $searchresults = "You're looking for '".$HTTP_GET_VARS["searchstring"]."'. But this is not yet implemented!";
   
   // Hmm.. how are we going to do this..
   
