@@ -145,9 +145,12 @@ class atkProjectPhaseAttribute extends atkAttribute
  
   function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
   {
-    if ($mode == "select")
+    if ($mode == "add" || $mode == "update")
     {
-      
+      $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));  
+    }
+    else    
+    {      
       $query->addField($this->fieldName(),"","hours",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));
       $query->addField("name","", "B", "proj_", false);
       $query->addField("name","", "A", "phase_", false);
@@ -155,11 +158,9 @@ class atkProjectPhaseAttribute extends atkAttribute
       $query->addJoin("activity", "C", "C.id=hours.activityid", false);       
       $query->addJoin("phase", "A","A.id=hours.phaseid", true);      
       $query->addJoin("project", "B","B.id=A.projectid", true);      
-
     }
 
-    else if ($mode == "add" || $mode == "edit")
-      $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));
+    
   } 
         
   function getRecentPhases()   
