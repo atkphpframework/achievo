@@ -22,4 +22,5 @@
   $txt_resplanning = "Resource planning";
   $txt_pim_no_planning = "No planning for today";
   $txt_resource_planning_your_planning = "Your planning";
+  $txt_link_employee_project_add = "Add employee";
 ?>
