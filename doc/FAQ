@@ -43,32 +43,14 @@ the terms might be different.
    
  2.4. How can I change the administrator password?
  
-        The administrator password is set in the config.inc.php3 file, not in
-        the database. See also question 5.     
+        The administrator password is set in the config.inc.php file, not in
+        the database.      
         
   
-3. User preferences
--------------------
-
- 3.1. When I use 'user preferences' for administrator, I get an error message
-      when I try to save.
-    
-        The administrator is not a real user. His account is set in the 
-        config.inc.php file. This is useful when your database is down or
-        corrupted but you still need to login.
-      
-        You can create a 'real' account for administrator if you want.
-        In the 'Security Profiles' section, create a profile that has
-        all access privileges. In the 'Employee Administration' section,
-        create a user with userid 'administrator' and whatever name and
-        password you like. Then disable the config account by putting //
-        in front of the line with $config_administratorpassword.
-
-
-4. Time Registration
+3. Time Registration
 --------------------
 
- 4.1. The dropdown for 'Project/Phase' is empty, but I am sure I created 
+ 3.1. The dropdown for 'Project/Phase' is empty, but I am sure I created 
       projects and phases.
     
         This is not a bug, this is a feature. The dropdown is like a 'recent 
@@ -77,7 +59,7 @@ the terms might be different.
         want to use is not in the dropdown, click the link 'Search all 
         projects and phases'.       
 
- 4.2. When I edit an entry, the activity is not set correctly. (Mozilla/
+ 3.2. When I edit an entry, the activity is not set correctly. (Mozilla/
       Netscape 6)
 
         There is a bug in some Mozilla 0.9.x and Netscape 6.x releases that
