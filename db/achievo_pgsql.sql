@@ -9,7 +9,7 @@ CREATE TABLE activity (
    id integer DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
    description varchar(50),
-   remarkrequired smallint(1) DEFAULT '0',
+   remarkrequired smallint DEFAULT '0',
    PRIMARY KEY (id)
 );
 
@@ -17,10 +17,10 @@ CREATE TABLE bill (
    id integer DEFAULT '0' NOT NULL,
    projectid integer DEFAULT '0' NOT NULL,
    description text,
-   create_date date DEFAULT '0000-00-00' NOT NULL,
+   create_date date DEFAULT now() NOT NULL,
    userid varchar(15) NOT NULL,
    status varchar(30) NOT NULL,
-   specify_hours smallint(1) DEFAULT '0' NOT NULL,
+   specify_hours smallint DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -30,11 +30,11 @@ CREATE TABLE rate (
    projectid integer,
    activityid integer,
    customerid integer,
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
+   startdate date DEFAULT now() NOT NULL,
+   enddate date DEFAULT now() NOT NULL,
    description text,
    rate decimal(13,5) DEFAULT '0.00000' NOT NULL,
-   priority smallint(4) DEFAULT '0' NOT NULL,
+   priority smallint DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -79,8 +79,8 @@ CREATE TABLE contract (
    period_price decimal(13,5) DEFAULT '0.00' NOT NULL,
    contracttype smallint DEFAULT '0' NOT NULL,
    customer integer DEFAULT '0' NOT NULL,
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
+   startdate date DEFAULT now() NOT NULL,
+   enddate date DEFAULT now() NOT NULL,
    description text,
    PRIMARY KEY (id)
 );
@@ -94,7 +94,7 @@ CREATE TABLE contracttype (
 CREATE TABLE costregistration (
    id integer DEFAULT '0' NOT NULL,
    userid varchar(15) NOT NULL,
-   costdate date DEFAULT '0000-00-00' NOT NULL,
+   costdate date DEFAULT now() NOT NULL,
    projectid integer DEFAULT '0' NOT NULL,
    value decimal(13,5) DEFAULT '0.00000' NOT NULL,
    description text,
@@ -129,8 +129,8 @@ CREATE TABLE employee (
 
 CREATE TABLE hours (
    id integer DEFAULT '0' NOT NULL,
-   entrydate date DEFAULT '0000-00-00' NOT NULL,
-   activitydate date DEFAULT '0000-00-00' NOT NULL,
+   entrydate date DEFAULT now() NOT NULL,
+   activitydate date DEFAULT now() NOT NULL,
    phaseid integer DEFAULT '0' NOT NULL,
    activityid integer DEFAULT '0' NOT NULL,
    remark text,
@@ -159,7 +159,7 @@ CREATE TABLE phase (
 CREATE TABLE phase_activity (
    phaseid integer DEFAULT '0' NOT NULL,
    activityid integer DEFAULT '0' NOT NULL,
-   billable smallint(1) DEFAULT '0' NOT NULL,
+   billable smallint DEFAULT '0' NOT NULL,
    PRIMARY KEY (phaseid, activityid)
 );
 
@@ -185,7 +185,7 @@ CREATE TABLE project_notes (
    id integer DEFAULT '0' NOT NULL,
    projectid integer DEFAULT '0' NOT NULL,
    owner varchar(15) NOT NULL,
-   entrydate date DEFAULT '0000-00-00' NOT NULL,
+   entrydate date DEFAULT now() NOT NULL,
    description text,
    title varchar(50) NOT NULL,
    PRIMARY KEY (id)
@@ -226,17 +226,17 @@ CREATE TABLE tpl_project_phase (
 
 CREATE TABLE schedule (
    id integer DEFAULT '0' NOT NULL,
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
+   startdate date DEFAULT now() NOT NULL,
+   enddate date DEFAULT now() NOT NULL,
    starttime time DEFAULT '00:00:00' NOT NULL,
    endtime time DEFAULT '00:00:00' NOT NULL,
    title varchar(50) NOT NULL,
    description text,
    location varchar(50) DEFAULT '0',
-   allday smallint(1) DEFAULT '0' NOT NULL,
-   publicitem smallint(1) DEFAULT '0' NOT NULL,
+   allday smallint DEFAULT '0' NOT NULL,
+   publicitem smallint DEFAULT '0' NOT NULL,
    owner varchar(15) NOT NULL,
-   showowner smallint(1) DEFAULT '0' NOT NULL,
+   showowner smallint DEFAULT '0' NOT NULL,
    scheduletype integer DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
@@ -260,21 +260,21 @@ CREATE TABLE todo (
    projectid integer DEFAULT '0' NOT NULL,
    owner varchar(15) NOT NULL,
    assigned_to varchar(100) NOT NULL,
-   entrydate date DEFAULT '0000-00-00' NOT NULL,
-   duedate date DEFAULT '0000-00-00' NOT NULL,
+   entrydate date DEFAULT now() NOT NULL,
+   duedate date DEFAULT now() NOT NULL,
    description text,
    title varchar(50) NOT NULL,
-   status smallint(4) DEFAULT '0' NOT NULL,
-   priority smallint(4) DEFAULT '0' NOT NULL,
-   mailnotification smallint(1) DEFAULT '0' NOT NULL,
+   status smallint DEFAULT '0' NOT NULL,
+   priority smallint DEFAULT '0' NOT NULL,
+   mailnotification smallint DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
 CREATE TABLE usercontract (
    id integer DEFAULT '0' NOT NULL,
    description text,
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
+   startdate date DEFAULT now() NOT NULL,
+   enddate date DEFAULT now() NOT NULL,
    userid varchar(15) NOT NULL,
    uc_hours smallint DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
