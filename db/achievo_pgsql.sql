@@ -144,14 +144,14 @@ CREATE TABLE tpl_project_phase (
    PRIMARY KEY (projectid, phaseid)
 );
 
-CREATE SEQUENCE seq_node;
-CREATE SEQUENCE seq_hours;
-CREATE SEQUENCE seq_project;
-CREATE SEQUENCE seq_activity;
-CREATE SEQUENCE seq_customer;
-CREATE SEQUENCE seq_contact;
-CREATE SEQUENCE seq_employee;
-CREATE SEQUENCE seq_phase;
-CREATE SEQUENCE seq_profile;
-CREATE SEQUENCE seq_tpl_project;
-CREATE SEQUENCE seq_tpl_phase;
+CREATE SEQUENCE node;
+CREATE SEQUENCE hours;
+CREATE SEQUENCE project;
+CREATE SEQUENCE activity;
+CREATE SEQUENCE customer;
+CREATE SEQUENCE contact;
+CREATE SEQUENCE employee;
+CREATE SEQUENCE phase;
+CREATE SEQUENCE profile;
+CREATE SEQUENCE tpl_project;
+CREATE SEQUENCE tpl_phase;
