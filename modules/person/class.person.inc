@@ -37,12 +37,12 @@ class person extends atkNode
     $this->add(new atkAttribute("fax"));
     $this->add(new atkEmailAttribute("email"));
     $this->add(new atkAttribute("function", AF_HIDE_LIST));
-    $this->add(new atkTextAttribute("remark", AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->add(new atkTextAttribute("remark", AF_HIDE_LIST));
     $this->add(new atkAttribute("role", AF_HIDE));
 
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");
-    $this->setIndex("person.lastname");
+    $this->setIndex("lastname");
     atkdebug("person::person()");
   }
 

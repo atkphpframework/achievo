@@ -118,9 +118,6 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE person ADD password VARCHAR(50) DEFAULT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "ALTER TABLE person ADD function VARCHAR(25) DEFAULT NULL";
-  $res = $g_db->query($sql);
-  handleError($sql);
   $sql = "ALTER TABLE person ADD supervisor VARCHAR(50) DEFAULT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
@@ -238,6 +235,12 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE project DROP customer";
   $res = $g_db->query($sql);
   handleError($sql);
+  $sql = "ALTER TABLE organization DROP is_supplier";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "ALTER TABLE organization DROP is_customer";
+  $res = $g_db->query($sql);
+  handleError($sql);
 
   //add status field to schedule table
   $sql = "ALTER TABLE schedule ADD status VARCHAR(20) NOT NULL";
@@ -252,10 +255,10 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE schedule_attendees RENAME schedule_attendee";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "ALTER TABLE schedule_attendee CHANGE scheduleid schedule_id INT(10) NOT NULL DEFAULT 0";
+  $sql = "ALTER TABLE schedule_attendee CHANGE schedule_id schedule_id INT(10) NOT NULL DEFAULT 0";
   $res = $g_db->query($sql);
   handleError($sql);
-  $sql = "ALTER TABLE schedule_attendee CHANGE userid person_id INT(10) NOT NULL DEFAULT 0";
+  $sql = "ALTER TABLE schedule_attendee CHANGE user_id person_id INT(10) NOT NULL DEFAULT 0";
   $res = $g_db->query($sql);
   handleError($sql);
 
@@ -387,6 +390,120 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->query($sql);
   handleError($sql);
 
+  // convert the tables: offerte, storingreport, host_account, changes, history and employee_activity
+  $sql = "SELECT id, owner FROM offerte";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["owner"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE offerte SET owner='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE offerte CHANGE owner owner INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT id, treated_by FROM storingreport";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["treated_by"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE storingreport SET treated_by='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE storingreport CHANGE treated_by treated_by INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT id, employee_id FROM host_account";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["employee_id"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE host_account SET employee_id='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE host_account CHANGE employee_id employee_id INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT changes_id, Your_name, Change_with FROM changes";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["Your_name"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql2 = "SELECT id FROM person WHERE userid ='".$res[$i]["Change_with"]."' AND role='employee'";
+      $result2 = $g_db->getrows($sql2);
+      $sql = "UPDATE changes SET Your_name='".$result[0]["id"]."', Change_with='".$result2[0]["id"]."' WHERE changes_id = ".$res[$i]["changes_id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE changes CHANGE Your_name Your_name INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "ALTER TABLE changes CHANGE Change_with Change_with INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT id, userid FROM history";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["userid"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE history SET userid='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE history CHANGE userid userid INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT id, userid FROM employee_activity";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["userid"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE employee_activity SET userid='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]." AND userid = '".$res[$i]["userid"]."'";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE employee_activity CHANGE userid userid INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
   write_log("Conversion complete!");
 
   if ($errors==true)
@@ -405,7 +522,7 @@ else
 {
   $g_layout->ui_top("Achievo Convert Script");
   $g_layout->output("This script will convert database <b>".$config_databasename."</b>.<br>This could take a while for large databases.<br><br>Press the 'Convert' button to start the procedure.<br>");
-  $g_layout->output('<form name="convert" action="convert-0.9.2-to-0.9.3.php" method="post">');
+  $g_layout->output('<form name="convert" action="convert-0.9.2-to-0.9.3_ibuildingsversie.php" method="post">');
   $g_layout->output('<input type="hidden" name="convert" value="1">');
   $g_layout->output('<input type="submit" name="submit" value="Convert">');
 

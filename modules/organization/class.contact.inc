@@ -9,7 +9,7 @@ class contact extends person
   {
     $this->person("contact");
     $this->addFilter("person.role='contact'");
-    $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE_LIST|AF_RELATION_AUTOLINK));
+    $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE));
     $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE));
   }
 

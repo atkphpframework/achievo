@@ -135,7 +135,7 @@ class todo extends atkNode
    $project = $r[0]["name"];
 
    // now get her/his email address
-   $q  = "SELECT email, name, userid FROM person WHERE userid IN ('$assignTo','".$assigner."')";
+   $q  = "SELECT email, lastname, firstname, userid FROM person WHERE userid IN ('$assignTo','".$assigner."')";
    $emails  = $g_db->getrows($q);
 
    // now assemble the mail body
@@ -153,9 +153,9 @@ class todo extends atkNode
    for ($i=0;$i<count($emails);$i++)
    {
      if ($emails[$i]["userid"]==$assigner)
-       $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n";
+       $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
      if ($emails[$i]["userid"]==$assignTo)
-       $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
+       $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
      $to[] = $emails[$i]["email"];
    }
 
@@ -197,7 +197,7 @@ class todo extends atkNode
      $oldassign = $rec["atkorgrec"]["assigned_to"]["userid"];
 
      // read all relevant emails.
-     $query = "SELECT DISTINCT name, email, userid
+     $query = "SELECT DISTINCT lastname, firstname, email, userid
                FROM person
                WHERE userid IN('$owner','".$g_user["name"]."','$newassign','$oldassign')";
      $emails    = $g_db->getrows($query);
@@ -218,13 +218,13 @@ class todo extends atkNode
      for ($i=0;$i<count($emails);$i++)
      {
        if ($emails[$i]["userid"]==$owner)
-         $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n";
+         $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["userid"]==$oldassign)
-         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["name"]."\n";
+         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["userid"]==$newassign)
-         $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
+         $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["userid"]==$g_user["name"])
-         $body.= text("todo_changedby").": ".$emails[$i]["name"]."\n";
+         $body.= text("todo_changedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        $to[] = $emails[$i]["email"];
      }
 

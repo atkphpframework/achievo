@@ -168,7 +168,7 @@
 
      $tmpLegend                    = "<TR bgcolor='#FFFFFF'><TD>\n";
      $tmpLegend                   .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='".$r[$i]["bgcolor"]."'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-     $tmpLegend                   .= "</TD><TD><font color='".$r[$i]["fgcolor"]."' face='verdana' size='-1'>".$r[$i]["description"]."</font></TD>";
+     $tmpLegend                   .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".$r[$i]["description"]."</font></TD>";
      $tmpLegend                   .= "</TR>";
      $legend                      .= $tmpLegend;
     }

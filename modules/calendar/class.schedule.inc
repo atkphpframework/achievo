@@ -121,8 +121,6 @@
 
       $records = $g_db->getrows($sql);
       $employee_code='<OPTION VALUE="all">'.text("allusers");
-      if ($user_id == "administrator") { $sel="SELECTED"; } else { $sel=""; }
-      $employee_code.='<OPTION VALUE="administrator"'.$sel.'>Administrator';
       for($i=0;$i<count($records);$i++)
       {
         if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
@@ -144,8 +142,6 @@
 
       if ($selemployee["all"] == "all") { $sel="CHECKED"; } else { $sel=""; }
       $employee_code='<INPUT TYPE="checkbox" VALUE="all" NAME="employee[]" '.$sel.'><font size="-1">'.text("allusers")."</font><br>";
-      if ($selemployee["administrator"] == "administrator") { $sel="CHECKED"; } else { $sel=""; }
-      $employee_code.='<INPUT TYPE="checkbox" VALUE="administrator" NAME="employee[]" '.$sel.'><font size="-1">Administrator (administrator)'."</font><br>";
       for($i=0;$i<count($records);$i++)
       {
         if($selemployee[$records[$i]["userid"]]==$records[$i]["userid"]) { $sel="CHECKED"; } else { $sel=""; }

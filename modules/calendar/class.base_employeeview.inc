@@ -64,12 +64,10 @@
              ";
       $records = $g_db->getrows($sql);
 
-      $employees[0] = "administrator";
-
-      $j = count($records) + 1;
+      $j = count($records);
       for ($i=1;$i<$j;$i++)
       {
-        $employees[$i] = $records[$i-1]["userid"];
+        $employees[$i] = $records[$i]["userid"];
       }
     }
     else

@@ -14,6 +14,7 @@
  */
 
 userelation("atkmanytoonerelation");
+useattrib("calendar.personattrib");
 
 class schedule_attendee extends atkNode
 {
@@ -22,7 +23,8 @@ class schedule_attendee extends atkNode
     $this->atkNode("schedule_attendee");
 
     $this->add(new atkManyToOneRelation("schedule_id", "calendar.schedule", AF_PRIMARY));
-    $this->add(new atkManyToOneRelation("person_id", "person.person", AF_PRIMARY));
+    $personrel = new atkManyToOneRelation("person_id", "calendar.schedule_person", AF_PRIMARY|AF_LARGE);
+    $this->add($personrel);
 
     $this->setTable("schedule_attendee", "schedule_attendee");
     $this->setSecurityAlias("calendar.schedule");

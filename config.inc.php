@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_lineketest";
+  $config_databasename = "achievo_test_lineke2";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
 

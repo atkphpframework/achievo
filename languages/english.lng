@@ -89,6 +89,7 @@
   $txt_link_project_add = "Add a project";
   $txt_link_project_notes_add = "Add a new note";
   $txt_link_project_organization_add = "Add organization";
+  $txt_link_select_schedule_person = "Select a attendee";
   $txt_link_todo_add = "Add a new todo item";
   $txt_link_tpl_project_phase_add = "Add a new phase to this project";
   $txt_link_usercontracts_add = "Add contract";
@@ -207,6 +208,7 @@
   $txt_report_show_details = "Show details";
   $txt_reseller = "Reseller";
   $txt_role = "Role";
+  $txt_schedule_person_role = "Role";
   $txt_searchbyprojectorphase = "You can search by projects, or within a phase of a project, or all projects of a organization";
   $txt_seluserdate = "Select employees and a date to compare schedules";
   $txt_setcostsfilter = "Select which costs you want to view:";
