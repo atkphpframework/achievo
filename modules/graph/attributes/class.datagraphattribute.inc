@@ -130,6 +130,12 @@
         return false;
       }        
       
+      if(!is_array($data) OR count($data)==0 OR $data===NULL)
+      {
+        atkerror("Graph: no graph data?!");
+        return false;
+      }
+      
       // If auto, determine suitable graph type.
       if ($graphtype=="auto" || $graphtype=="")
       {
@@ -156,9 +162,11 @@
     {  
       usegraph("line");
       
-      $graph = new  Graph(550,250,"auto");
+      $defcolors = array('red', 'blue', 'green', 'yellow', 'black');
       
-      global $g_theme;      
+      $graph = new  Graph(650,250,"auto");
+      
+      global $g_theme;
       $graph->SetMarginColor($g_theme["BgColor"]);
       
       
@@ -180,18 +188,22 @@
       $interv = floor(count($xlabels)/5);                   
       $graph->xaxis->SetTextLabelInterval(max(1,$interv+(5-($interv%5))));
       
+      $i=0;
       foreach ($data as $legend=>$values)
-      {
+      {              
         // Create a red line plot
         $p = new LinePlot(array_values($values));
-        $p->SetColor("red");
+        $col = $defcolors[$i%(count($defcolors))];
+        $p->SetColor($col);
         $p->SetLegend(text($legend));
         
-        $p->mark->SetType(MARK_FILLEDCIRCLE);
-        $p->mark->SetFillColor("red");
+        //$p->mark->SetType(MARK_FILLEDCIRCLE);
+        $p->mark->SetFillColor($col);
         $p->mark->SetWidth(4);
         
         $graph->Add($p);                
+        unset($p);
+        $i++;
 
       }
       
