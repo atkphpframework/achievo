@@ -32,7 +32,7 @@
       else
       {        
         menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
-        menuitem("project_admin", dispatch_url("project.project", "edit", array("atkselector" => "project.id='".$selectedproject."'")), "projectmanagement", array("project.project", "admin"));
+        menuitem("project_edit", dispatch_url("project.project", "edit", array("atkselector" => "project.id='".$selectedproject."'")), "projectmanagement", array("project.project", "edit"));
         menuitem("project_planning",  dispatch_url("project.project", "planning", array("selectedprojectid" => $selectedproject)), "projectmanagement", array("project.project", "planning"));
         menuitem("-","","projectmanagement");
         menuitem("project_stats", dispatch_url("project.project", "stats", array("selectedprojectid" => $selectedproject)), "projectmanagement", array("project.project", "stats"));

@@ -336,4 +336,6 @@
   $txt_yearly = "Year";
   $txt_zipcode = "Zipcode";
 
+  $txt_menu_project_edit = "Edit project";
+
 ?>
