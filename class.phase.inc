@@ -54,5 +54,12 @@ class phase extends atkNode
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
     $g_db->query($query);
   }
+  
+  function action_select()
+  {
+    // In select mode, we place a filter, because we may only select active phases.
+    $this->addFilter("status='active'");
+    return parent::action_select();
+  }
 }
 ?>
