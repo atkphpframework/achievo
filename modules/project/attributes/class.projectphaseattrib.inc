@@ -59,7 +59,16 @@ class atkProjectPhaseAttribute extends atkAttribute
     if (!$alreadyadded&&$currentphase!="")
     {
       $phase = $this->getPhase($currentphase);      
-      $phases[] = $phase;
+      if (is_array($phase)) // Phase might have been deleted.
+      {
+        $phases[] = $phase;
+      }
+      else
+      {
+        // Apparently currentphase is set to something that no longer exists.
+        // We must reset the value.
+        $currentphase = "";
+      }
     }    
     
     // Load Activities for each project
