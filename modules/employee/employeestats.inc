@@ -62,7 +62,7 @@
     $userid=$g_user["id"];
   }
 
-  $view_all = $g_securityManager->allowed('employee','view_all');
+  $view_all = $g_securityManager->allowed('employee.employee','view_all');
 
   $g_layout->initGUI();
   $g_layout->ui_top(text("title_hours_stats"));
