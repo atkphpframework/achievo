@@ -176,8 +176,10 @@ CREATE TABLE project (
    status varchar2(15) NOT NULL,
    description text,
    startdate varchar2(20) NULL,
+   enddate varchar2(20) NULL,
    customer number(10) DEFAULT '0' NULL,
    fixed_price number(13,5) DEFAULT '0.00000' NULL,
+   contact number(10)  DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 

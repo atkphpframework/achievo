@@ -176,7 +176,9 @@ CREATE TABLE project (
    status varchar(15) NOT NULL,
    description text,
    startdate varchar(20) NULL,
+   enddate varchar(20) NULL,
    customer integer DEFAULT '0' NULL,
+   contact integer DEFAULT '0' NULL,
    fixed_price decimal(13,5) DEFAULT '0.00000' NULL,
    PRIMARY KEY (id)
 );
