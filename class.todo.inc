@@ -14,12 +14,12 @@ class todo extends atkNode
     $this->addAttribute(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
     $this->addAttribute(new atkManyToOneRelation("projectid"    , "project",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("title"                , AF_OBLIGATORY));
-    $this->addAttribute(new atkManyToOneRelation("assigned_to"  , "employee", AF_OBLIGATORY|AF_SEARCHABLE));    
+    $this->addAttribute(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
     $this->addAttribute(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
     $this->addAttribute(new atkDateAttribute("duedate"          , "F d Y","d F Y", date("Ymd"), 0, AF_OBLIGATORY));
     $this->addAttribute(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->addAttribute(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->addAttribute(new atkListAttribute("status"           , array("Assigned","In progress","Awaiting external person","On hold","Done"), array(1,2,3,4,5),AF_SEARCHABLE));
+    $this->addAttribute(new atkListAttribute("status"           , array("New", "In progress","Awaiting external person","On hold","Done"), array(1,2,3,4,5),AF_SEARCHABLE));
     $this->addAttribute(new atkBoolAttribute("mail_on_change"   , AF_HIDE_LIST));
 
     $this->setTable("todo", "todo");         
@@ -31,10 +31,11 @@ class todo extends atkNode
   {
     global $g_user;
     return array("owner"=>$g_user["name"],
-                 "assigned_to"=>array("userid"=>$g_user["name"]),
+                 //"assigned_to"=>array("userid"=>$g_user["name"]),
                  "entrydate"=>array("year"=>date("Y"),
                                     "month"=>date("m"),
-                                    "day"=>date("d")));
+                                    "day"=>date("d")),
+                 "priority"=>2);
   }
 
   // overide display of priority (set high to a red font)
@@ -70,45 +71,85 @@ class todo extends atkNode
    $project = $r[0]["name"];
 
    // now get her/his email address
-   $q  = "SELECT email FROM employee WHERE userid='$assignTo'";
-   $r  = $g_db->getRows($q);
-   $to = $r[0]["email"];
+   $q  = "SELECT email, name, userid FROM employee WHERE userid IN ('$assignTo','".$assigner."')";
+   $emails  = $g_db->getrows($q);   
    
    // now assemble the mail body
-   $subj  = text("Todo").": ".$rec["title"];
-   $body  = $assigner." ".text("assigned a new task to you")."\n\n";
-   $body .= text("Project").":\t".$project."\n";
-   $body .= text("Priority")."\t".$this->prioName[$rec["priority"]-1]."\n";
-   $body .= text("Description").":\t".$rec["description"]."\n";
+   $subj  = "[achievo notice] ".text("newtodoassigned").": ".$rec["title"];
+    
+   $body = text("todo").": ".$rec["title"]."\n";     
+   $body.= text("description").": \n".$rec["description"]."\n\n";
+   $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+   if ($project!="") $body.= text("project").": ".$project."\n";
+   $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
+     
+   $body.= "\n";
+   
+   for ($i=0;$i<count($emails);$i++)
+   {
+     if ($emails[$i]["userid"]==$assigner) 
+       $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n"; 
+     if ($emails[$i]["userid"]==$assignTo) 
+       $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
+     $to[] = $emails[$i]["email"];
+   }           
 
    // send mail
-   mail($to, $subj, $body, "From: achievo@achievo.com\n");  
+   mail(implode(",",$to), $subj, $body, "From: achievo\n");  
+  }
+  
+  function todoChanged($new, $old)
+  {    
+    foreach (array_keys($this->m_attribList) as $attribname)
+    {
+      if ($new[$attribname]!=$old[$attribname]) return true;
+    }
+    return false;
   }
   
   function postUpdate($rec)
   {
-   global $g_db;
+   global $g_db, $g_user;
 
-   if ($rec["mail_on_change"] == 1)
-   {
-    // check if they match and if not mail the item owner
-    if ($rec["atkorgrec"]["status"] != $rec["status"])
-    {  
+   if ($rec["mail_on_change"] == 1 && $this->todoChanged($rec,$rec["atkorgrec"]))
+   {    
      $owner = $rec["owner"];
-     $q     = "SELECT email FROM employee WHERE userid='$owner'";
-     $r     = $g_db->getRows($q);
-     $to    = $r[0]["email"];
-     $pid   = $rec["projectid"]["id"];
-     $body  = $rec["assigned_to"]["userid"]." ".text("changed the status of item")." ".$rec["title"]."\n";
- 
+     $newassign = $rec["assigned_to"]["userid"];
+     $oldassign = $rec["atkorgrec"]["assigned_to"]["userid"];
+     
+     // read all relevant emails.
+     $query = "SELECT DISTINCT name, email, userid 
+               FROM employee 
+               WHERE userid IN('$owner','".$g_user["name"]."','$newassign','$oldassign')";
+     $emails    = $g_db->getrows($query);
+     $pid  = $rec["projectid"]["id"];
      // get project name
-     $q       = "SELECT name FROM project WHERE id=$pid";
-     $r       = $g_db->getRows($q);
-     $project = $r[0]["name"];
+     $query = "SELECT name FROM project WHERE id=$pid";
+     $res   = $g_db->getrows($query);
+     $project = $res[0]["name"];     
+     
+     $body = text("todo").": ".$rec["title"]."\n";     
+     $body.= text("description").": \n".$rec["description"]."\n\n";
+     $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+     if ($project!="") $body.= text("project").": ".$project."\n";
+     $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
+     
+     $body.= "\n";
+     for ($i=0;$i<count($emails);$i++)
+     {
+       if ($emails[$i]["userid"]==$owner) 
+         $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n";
+       if ($emails[$i]["userid"]==$oldassign) 
+         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["name"]."\n";         
+       if ($emails[$i]["userid"]==$newassign) 
+         $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
+       if ($emails[$i]["userid"]==$g_user["name"]) 
+         $body.= text("todo_changedby").": ".$emails[$i]["name"]."\n";
+       $to[] = $emails[$i]["email"];
+     }           
  
      // send mail
-     mail($to,$project." ".text("todo status"), $body, "From: achievo@achievo.com\n");
-    }
+     mail(implode(",",$to),"[achievo notice] ".text("todochanged"), $body, "From: achievo\n");    
    }
   }
 

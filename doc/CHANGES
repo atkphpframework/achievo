@@ -9,6 +9,7 @@ Changes in Achievo 0.7.3
 + Added project notes.
 + Added an extended search feature. 
 * Updated German language files.
+* Replaced htmlentities() calls with htmlspecialchars().
 * Fixed some bugs.
 
 Changes in Achievo 0.7.2
