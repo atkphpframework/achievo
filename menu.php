@@ -17,9 +17,9 @@
   include_once($config_atkroot."config.menu.inc");  
 
   /* first add module menuitems */
-  for ($i = 0; $i < count($g_modules); $i++)
+  foreach ($g_modules as $modname => $modpath)
   {
-    $module = new $g_modules[$i]();
+    $module = getModule($modname);
     menuitems($module->getMenuItems());
   }
 
@@ -34,6 +34,16 @@
   $g_layout->ui_top(text("menu_".$atkmenutop));
   $g_layout->output("<br>");
 
+  /* build menu */
+  $menu = "";  
+  
+  function menu_cmp($a,$b)
+  {
+    if ($a["order"] == $b["order"]) return 0;
+    return ($a["order"] < $b["order"]) ? -1 : 1;
+  }
+ 
+  usort($g_menu[$atkmenutop],"menu_cmp");   
   
 ?>
     <script language="JavaScript">
@@ -45,7 +55,7 @@
     }
     </script>
 <?
-  /*drop down in projectmanagement */
+  /* DIRTY HACK: drop down in projectmanagement */
   if ($atkmenutop == "projectmanagement")
   { 
     $projects = $g_sessionManager->getValue("recentprj");  
@@ -69,9 +79,6 @@
     
   }
   
-
-  /* build menu */
-  $menu = "";  
   for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++)
   {
     $name = $g_menu[$atkmenutop][$i]["name"];
@@ -81,9 +88,19 @@
     //if ($select != "") $url .= atkUrlEncode("'".$select."'");
     
     $enable = $g_menu[$atkmenutop][$i]["enable"];
+    
+    if (is_array($enable))
+    {
+      $enabled = false;
+      for ($j=0;$j<(count($enable)/2);$j++)
+      {
+        $enabled |= is_allowed($enable[(2*$j)],$enable[(2*$j)+1]);
+      }
+      $enable = $enabled;
+    }
 
     /* delimiter ? */
-    if ($g_menu[$atkmenutop][$i] == "-") $menu .= "<br>";
+    if ($g_menu[$atkmenutop][$i]["name"] == "-") $menu .= "<br>";
     
     /* submenu ? */
     else if (empty($url) && $enable) $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name")).$config_menu_delimiter;
