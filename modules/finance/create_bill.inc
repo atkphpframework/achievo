@@ -6,11 +6,6 @@
 * Show all ours of the project with a checkbox, default all hours on
 *
 */
-function time_format($time)
-{
-  if ($time==0) return "&nbsp;";
-  return sprintf("%02d",floor($time/60)).':'.sprintf("%02d",$time%60);
-}  
 
 function specify_hours($rec)
 {

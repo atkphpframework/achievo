@@ -6,28 +6,29 @@
 
   class finance extends atkModule
   {
-    function finance()
+    function getNodes()
     {
       /* register nodes */
-      $this->registerNode("rates", array("admin", "add", "edit", "delete"));
-      $this->registerNode("finance_customer", array("admin", "add", "edit", "delete"));
-      $this->registerNode("finance_project", array("admin", "add", "edit", "delete"));
-      $this->registerNode("billing_project", array("admin", "add", "edit", "delete"));
-      $this->registerNode("currency", array("admin", "add", "edit", "delete"));
-
-			
-      
+      registerNode("rates", array("admin", "add", "edit", "delete"));
+      registerNode("finance_customer", array("admin", "add", "edit", "delete"));
+      registerNode("finance_project", array("admin", "add", "edit", "delete"));
+      registerNode("billing_project", array("admin", "add", "edit", "delete"));
+      registerNode("currency", array("admin", "add", "edit", "delete"));
+    }
+    
+    function getMenuItems()
+    {			      
       /* add menuitems */
-      $this->menuitem("finance","","main",1,675);
-      $this->menuitem("-","","main",1,676);
+      menuitem("finance","","main",1,675);
+      menuitem("-","","main",1,676);
 
-      $this->menuitem("currency", dispatch_url("finance.currency", "admin"),"finance", 1);
-      $this->menuitem("-","","finance");      
-      $this->menuitem("rates", dispatch_url("finance.rates", "admin"),"finance", 1);
-      $this->menuitem("finance_customer", dispatch_url("finance.finance_customer", "admin"),"finance", 1);
-      $this->menuitem("finance_project", dispatch_url("finance.finance_project", "admin"),"finance", 1);
-      $this->menuitem("-","","finance");      
-      $this->menuitem("billing_project", dispatch_url("finance.billing_project", "admin"),"finance", 1);
+      menuitem("currency", dispatch_url("finance.currency", "admin"),"finance", 1);
+      menuitem("-","","finance");      
+      menuitem("rates", dispatch_url("finance.rates", "admin"),"finance", 1);
+      menuitem("finance_customer", dispatch_url("finance.finance_customer", "admin"),"finance", 1);
+      menuitem("finance_project", dispatch_url("finance.finance_project", "admin"),"finance", 1);
+      menuitem("-","","finance");      
+      menuitem("billing_project", dispatch_url("finance.billing_project", "admin"),"finance", 1);
 
     }
   }
