@@ -284,7 +284,8 @@
   $txt_title_schedule_types_edit         = "Afspraak type bewerken";
   $txt_title_schedule_types_delete       = "Afspraak type verwijderen";  
  
-  $txt_timeguard_mail = "Er zijn nog [hours] uren niet verantwoord voor gebruiker '[userid]' in week [week] ([startdate] tot [enddate]).";
+  $txt_timeguard_mail_header = "Controleperiode: [startdate] tot [enddate]\n\nVoor gebruiker '[userid]' zijn de volgende uren nog niet verantwoord:";
+  $txt_timeguard_mail_line = "In week [week] ([startdate] t/m [enddate]) ontbreken [hours] uren.";
   $txt_timeguard_mail_subject = "Urenregistratie niet compleet";
 
   $txt_menu_holiday_admin = "Feestdagen";

@@ -110,6 +110,10 @@
   // registration for weeks in which they have not entered 
   // all hours. 
   $config_timereg_incompleteweeklock = false;
+
+  // The next value indicates how many weeks back the timereg_check cron
+  // script searches for incomplete time registrations.
+  $config_timereg_checkweeks = 5;
   
   // -------------------------------------------
   //           FINANCIAL CONFIGURATION
