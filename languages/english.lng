@@ -73,6 +73,7 @@
   $txt_entity = "Profile";
   $txt_entrydate = "Entrydate";
   $txt_error_date = "Enddate must be later than startdate";
+  $txt_error_hoursindayexceeded = "You can't book more than 24 hours in one day";
   $txt_error_time = "Endtime must be later than starttime";
   $txt_fax = "Faxnumber";
   $txt_fgcolor = "Textcolor";

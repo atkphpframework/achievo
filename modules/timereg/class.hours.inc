@@ -426,6 +426,8 @@ class hours extends atkNode
       if ($act[0]["remarkrequired"]==1)
       {
         // Specification is required. So we set the obligatory flag.
+        // The validation of this flag is done later on by the default 
+        // ::validate() method of the base class.
         $this->m_attribList["remark"]->m_flags |= AF_OBLIGATORY;
       }
     }
@@ -434,9 +436,43 @@ class hours extends atkNode
     {
       triggerError($record, "activityid", "error_obligatoryfield");
     }
+    
+    $activitydate = sprintf("%04d-%02d-%02d", $record["activitydate"]["year"], $record["activitydate"]["month"], $record["activitydate"]["day"]);
+    $new_minutes = $record["time"]["hours"]*60 + $record["time"]["minutes"];
+
+    if ($this->exceed_hrs_in_day($record["userid"], $activitydate, $new_minutes, $record["id"]))
+    {
+      triggerError($record, "time", "error_hoursindayexceeded");
+    }
 
     // continue with original validation
     atkNode::validate($record, $mode);
+  }
+  
+  function exceed_hrs_in_day($userid, $date, $new_minutes, $recordid="")
+  {
+    global $g_db;
+
+    $query = "SELECT sum(time) + $new_minutes minutes_in_day
+              FROM hours 
+              WHERE 
+                userid = '$userid' 
+                AND activitydate = '$date'";
+                
+    // If we are editing a record, than the old value of the current record
+    // must not be counted, but the new value (which was already added as
+    // $new_minutes).
+    if ($recordid!="") $query.= " AND id <> $recordid";
+    $res = $g_db->getrows($query);
+    if (count($res)==0)
+    {
+      // no records for $date
+      return false;
+    }
+    else
+    {
+      return ($res[0]["minutes_in_day"] > 24*60 );
+    }
   }
 
 }
