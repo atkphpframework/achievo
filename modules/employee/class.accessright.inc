@@ -1,5 +1,7 @@
 <?php
 
+  useattrib("atknumberattribute");
+
   class accessright extends atkNode
   {
     function accessright()
@@ -14,7 +16,7 @@
       
       $this->add(new atkAttribute("node", AF_PRIMARY, 100));
       $this->add(new atkAttribute("action", AF_PRIMARY, 25));
-      $this->add(new atkAttribute("entity", AF_PRIMARY, 10));
+      $this->add(new atkNumberAttribute("entity", AF_PRIMARY, 10));
       
       $this->setTable("accessright");
     }
