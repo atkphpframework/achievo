@@ -339,5 +339,10 @@
   $txt_warning_fixedprice4 = "op deze factuur.";
   $txt_yearly = "Jaar";
   $txt_zipcode = "Postcode";
+  
+  $txt_todocheck_mail_subject = "Todo herinnering";
+  $txt_todocheck_mail_header = "Een of meer todo's die aan jouw geassigned zijn hebben je aandacht nodig.";
+  $txt_todocheck_mail_duetoday = "De volgende todo's moeten vandaag af zijn:";
+  $txt_todocheck_mail_late = "De volgende todo's hadden al voor vandaag af moeten zijn:";
 
 ?>
