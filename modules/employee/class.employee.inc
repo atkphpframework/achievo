@@ -81,14 +81,14 @@ class employee extends person
     return $view;
   }
   
-  function action_admin()
+  function action_admin($handler)
   {
     $view = $this->getView();
     if ($view=="active")
     {
       $this->addFilter("person.status","active");
     }
-    return parent::action_admin();
+    return $handler->action_admin();
   }
   
   function adminFooter()
