@@ -66,9 +66,9 @@
   $txt_houradmin_searchallprojectsphases = "Zoek in alle projecten en fasen"; 
     
   $txt_title_hoursurvey_hours = "Uren ";
-  $txt_title_hoursurvey_of = "van ";
+  $txt_of = "van ";
   $txt_title_hoursurvey_onproject = "op project ";
-  $txt_title_hoursurvey_intimespan = "in periode ";
+  $txt_report_intimespan = "in periode ";
       
   $txt_title_projectstats = "Project statistieken";
   
@@ -205,9 +205,9 @@
   $txt_tpl_phase = "Fase Templates";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Aanpassen van de uitvoer:";
-  $txt_hoursurvey_output_printable = "Printer-vriendelijk formaat";
-  $txt_hoursurvey_output_showcollumns = "Toon alleen deze kolommen:";
+  $txt_report_output_options = "Aanpassen van de uitvoer:";
+  $txt_report_output_printable = "Printer-vriendelijk formaat";
+  $txt_report_output_showcollumns = "Toon alleen deze kolommen:";
   $txt_menu_activity_stats = "Activiteit Statistieken";
   $txt_menu_employee_stats = "Gebruiker Statistieken";
   $txt_lastname = "Achternaam";
@@ -247,4 +247,131 @@
     
   // --------==== Strings that were introduced in version 0.6.3: ====---------
   $txt_orderby = "Sorteren op";
+  
+  // --------==== Strings that were introduced in version 0.7: ====---------
+  $txt_menu = "Main menu";
+  $txt_menu_employeemanagement = "Medewerkerbeheer";  
+  $txt_menu_projectmanagement = "Projectbeheer";
+  $txt_menu_project_stats = "Project Statistieken";
+  $txt_menu_project_planning = "Project Planning";
+  $txt_menu_setup = "Instellingen";
+  $txt_menu_support = "Ondersteuning"; 
+  $txt_menu_achievo_license = $txt_app_shorttitle." licentie";
+  $txt_menu_achievo_docs = "Online documentatie";
+  $txt_menu_achievo_home = $txt_app_shorttitle." homepage";
+  
+  // --------==== Strings that were introduced in version 0.7.3: ====---------
+  
+  $txt_menu_project_todoview             = "Project todo's";
+  $txt_title_project_todoview_admin      = "Kies een project";
+  $txt_title_project_todoview_edit       = "Overzicht project todo's";
+  $txt_link_todo_add                     = "Todo item toevoegen";
+  $txt_title_todo_add                    = "Todo item toevoegen";
+  $txt_title_todo_edit                   = "Todo item bewerken";
+  $txt_title_todo_delete                 = "Todo item verwijderen";
+  
+  $txt_menu_project_notesview            = "Project notities";
+  $txt_title_project_notesview_admin     = "Kies een project";
+  $txt_title_project_notesview_edit      = "Overzicht project notities";
+  $txt_link_project_notes_add            = "Notitie toevoegen"; 
+  $txt_title_project_notes_add           = "Notitie toevoegen";  
+  $txt_title_project_notes_delete        = "Notitie verwijderen";  
+  $txt_title_project_notes_edit          = "Notitie bewerken";  
+  
+  $txt_menu_schedule                     = "Agenda";
+  $txt_menu_schedule_types               = "Agenda";
+  $txt_title_schedule_types_admin        = "Afspraak typen beheren";
+  $txt_title_schedule_types_add          = "Afspraak type toevoegen";
+  $txt_title_schedule_types_edit         = "Afspraak type bewerken";
+  $txt_title_schedule_types_delete       = "Afspraak type verwijderen";  
+ 
+  $txt_timeguard_mail = "Er zijn nog [hours] uren niet verantwoord voor gebruiker '[userid]' in week [week] ([startdate] tot [enddate]).";
+  $txt_timeguard_mail_subject = "Urenregistratie niet compleet";
+
+  $txt_menu_holiday_admin = "Feestdagen";
+  $txt_holiday_date = "Datum";
+  
+  $txt_title_holidays_admin = "Feestdagen";
+  $txt_title_holidays_add = "Feestdag toevoegen";
+  $txt_title_holidays_edit = "Feestdag bewerken";
+  $txt_title_holidays_delete = "Feestdag verwijderen";
+  
+  $txt_uc_hours = "Uren per week";
+
+  $txt_link_usercontracts_add = "Contract toevoegen";
+  $txt_title_usercontracts_add = "Contract toevoegen";
+  $txt_title_usercontracts_edit = "Contract bewerken";
+  $txt_title_usercontracts_delete = "Contract verwijderen";
+  
+  $txt_todochanged = "Todo item is veranderd";
+  $txt_todoadded = "Nieuw todo item";
+  $txt_duedate = "Deadline";
+  $txt_todo_ownedby = "Eigenaar";
+  $txt_todo_changedby = "Veranderd door";
+  $txt_todo_assignedto = "Toegewezen aan";
+  $txt_todo_previouslyassignedto = "Voorheen toegewezen aan";
+
+  $txt_project_select = "Geselecteerd project";
+  $txt_project_select_none = "Geen project geselecteerd";
+  $txt_menu_selectedprojectmanagement = "Projectbeheer";
+
+  $txt_menu_contracts = "Klant contracten";
+  $txt_title_contracts_admin = "Contracten beheren";
+  $txt_title_contracts_add = "Contract toevoegen";
+  $txt_title_contracts_edit = "Contract bewerken";
+  $txt_title_contracts_delete = "Contract verwijderen";
+  $txt_link_contracts_add = "Contract toevoegen";
+
+  $txt_contract_period_price = "Prijs per periode";
+  $txt_contract_billing_period = "Facturatie per";  
+  $txt_contract_startdate = "Startdatum";
+  $txt_contract_enddate = "Einddatum";
+	$txt_monthly = "Maand";
+	$txt_quaterly = "Kwartaal";
+	$txt_yearly = "Jaar";
+	$txt_incident = "Incident";
+  
+  $txt_menu_contracttype = "Klant contracten";
+  $txt_title_contracttype_admin = "Contract typen beheren";
+  $txt_title_contracttype_add = "Contract type toevoegen";
+  $txt_title_contracttype_edit = "Contract type bewerken";
+  $txt_title_contracttype_delete = "Contract type verwijderen";
+  $txt_contracttype = "Contract omschrijving";  
+  
+  $txt_menu_costregistration_admin = "Kosten registratie";
+  $txt_title_costregistration_admin = "Administreer kosten gemaakt voor een project";
+  $txt_title_costregistration_add = "Nieuwe entry";
+  $txt_title_costregistration_edit = "Entry bewerken";
+  $txt_title_costregistration_delete = "Entry verwijderen";  
+  
+  $txt_menu_customermanagement = "Klantbeheer";
+  
+  $txt_menu_finance = "Financieel";
+    
+  $txt_report_output_type = "Uitvoer type";
+  $txt_report_output_standard = "Standaard uitvoer";
+  $txt_report_output_export = "Uitvoer naar file";
+  
+  $txt_menu_weekreport = "Werknemer week rapport";
+  $txt_title_weekreport = "Weekrapport";
+  $txt_title_employee_weekreport = "Werknemer week rapport";    
+  
+  $txt_menu_time_registration = "Tijdregistratie";
+  $txt_menu_hours_lock = "Uren blokkeren";
+  $txt_lock = "Blokkeren";
+  $txt_unlock = "Deblokkeren";
+  $txt_hourlock_week_explanation = "Vul 4 cijferig jaar gevolgd door 2 cijferig weeknummer in (bijv. 200234)";
+  $txt_all_users = "Alle gebruikers";
+  $txt_title_hours_lock_admin = "Blokkeringen beheren";  
+  $txt_title_hours_lock_add = "Blokkering toevoegen";
+  $txt_title_hours_lock_delete = "Blokkering opheffen";  
+  
+  $txt_overtime = "Overwerk";
+  
+  $txt_enddate = "Einddatum";
+  
+  $txt_menu_reports = "Rapporten";
+  
+  $txt_uc_contract = "Contracten";
+  
 ?>

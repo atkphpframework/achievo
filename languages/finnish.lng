@@ -68,9 +68,9 @@
   $txt_houradmin_searchallprojectsphases = "Etsi kaikista projekteista ja jaksoista"; 
     
   $txt_title_hoursurvey_hours = "Tunteja ";
-  $txt_title_hoursurvey_of = " ";
+  $txt_of = " ";
   $txt_title_hoursurvey_onproject = "projektissa ";
-  $txt_title_hoursurvey_intimespan = "jaksona ";
+  $txt_report_intimespan = "jaksona ";
       
   $txt_title_projectstats = "Projektien statistiikat";
   
@@ -206,9 +206,9 @@
   $txt_tpl_phase = "Jakso mallit";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Ulkoasun muokkaus:";
-  $txt_hoursurvey_output_printable = "Tulostus ystävällinen ulkoasu";
-  $txt_hoursurvey_output_showcollumns = "Näytä vain seuraavat solut:";
+  $txt_report_output_options = "Ulkoasun muokkaus:";
+  $txt_report_output_printable = "Tulostus ystävällinen ulkoasu";
+  $txt_report_output_showcollumns = "Näytä vain seuraavat solut:";
   $txt_menu_activity_stats = "Aktiviteettien statistiikat";
   $txt_menu_employee_stats = "Työntekijöiden statistiikat";
   $txt_lastname = "Sukunimi";

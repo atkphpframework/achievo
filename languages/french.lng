@@ -104,9 +104,9 @@
 
   $txt_title_hoursurvey = "Consultation du temps";
   $txt_title_hoursurvey_hours = "Heures ";
-  $txt_title_hoursurvey_of = "de ";
+  $txt_of = "de ";
   $txt_title_hoursurvey_onproject = "du projet ";
-  $txt_title_hoursurvey_intimespan = "pour la période du ";
+  $txt_report_intimespan = "pour la période du ";
 
   $txt_title_projectadmin = "Administration projet";
   $txt_title_projectadmin_newproject = "Nouveau projet";
@@ -295,9 +295,9 @@
   $txt_tpl_phase = "Profil de Phase";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Personaliser la sortie:";
-  $txt_hoursurvey_output_printable = "Sortie pour impression";
-  $txt_hoursurvey_output_showcollumns = "Montrer uniquement ces colonne:";
+  $txt_report_output_options = "Personaliser la sortie:";
+  $txt_report_output_printable = "Sortie pour impression";
+  $txt_report_output_showcollumns = "Montrer uniquement ces colonne:";
   $txt_menu_activity_stats = "Statistiques des Activités";
   $txt_menu_employee_stats = "Statistiques des Employés";
   $txt_lastname = "Nom de Famille";

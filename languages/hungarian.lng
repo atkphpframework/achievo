@@ -69,9 +69,9 @@
   $txt_houradmin_searchallprojectsphases = "Kereses az osszes projektben es allapotban"; 
   
   $txt_title_hoursurvey_hours = "Ora ";
-  $txt_title_hoursurvey_of = "of ";
+  $txt_of = "of ";
   $txt_title_hoursurvey_onproject = "projekten ";
-  $txt_title_hoursurvey_intimespan = "ido alatt ";
+  $txt_report_intimespan = "ido alatt ";
       
   $txt_title_projectstats = "Projekt Statistisztikak";
   
@@ -207,9 +207,9 @@
   $txt_tpl_phase = "Allapot Sablonok";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Kiiratas beallitasa:";
-  $txt_hoursurvey_output_printable = "Nyomtato-barat kiiratas";
-  $txt_hoursurvey_output_showcollumns = "Csak ezeket mutassa:";
+  $txt_report_output_options = "Kiiratas beallitasa:";
+  $txt_report_output_printable = "Nyomtato-barat kiiratas";
+  $txt_report_output_showcollumns = "Csak ezeket mutassa:";
   $txt_menu_activity_stats = "Aktivitas Statisztika";
   $txt_menu_employee_stats = "Aktivitas Statisztika";
   $txt_lastname = "Vezeteknev";

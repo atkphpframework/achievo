@@ -67,8 +67,8 @@
   $txt_houradmin_searchallprojects = "Search in all projects";
   $txt_houradmin_searchallprojectsphases = "Search in all projects & phases"; 
   
-  $txt_title_hoursurvey_hours = "Hours ";
-  $txt_title_hoursurvey_of = "of ";
+  $txt_title_hoursurvey_hours = "Hours ";  
+  $txt_of = "of";
   $txt_title_hoursurvey_onproject = "on project ";
   $txt_title_hoursurvey_intimespan = "in period ";
       
@@ -203,10 +203,11 @@
   $txt_tpl_project = "Project Templates";
   $txt_tpl_phase = "Phase Templates";  
   
-  // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Customise the output:";
-  $txt_hoursurvey_output_printable = "Printer friendly output";
-  $txt_hoursurvey_output_showcollumns = "Show only these columns:";
+  // --------==== Strings that were introduced in version 0.5.7: ====---------  
+  $txt_report_output_options = "Customise the output:";
+  $txt_report_output_printable = "Printer friendly output";
+  $txt_report_output_showcollumns = "Show only these columns:";
+  
   $txt_menu_activity_stats = "Activity Statistics";
   $txt_menu_employee_stats = "Employee Statistics";
   $txt_lastname = "Last name";
@@ -279,38 +280,33 @@
   
   $txt_menu_schedule                     = "Schedule";
   $txt_menu_schedule_types               = "Schedule";
-  $txt_title_schedule_types_admin        = "Manage schedule types";
-  $txt_title_schedule_types_add          = "Add a schedule type";
-  $txt_title_schedule_types_edit         = "Edit schedule type";
-  $txt_title_schedule_types_delete       = "Delete schedule types";  
+  $txt_title_schedule_types_admin        = "Manage appointment types";
+  $txt_title_schedule_types_add          = "Add an appointment type";
+  $txt_title_schedule_types_edit         = "Edit appointment type";
+  $txt_title_schedule_types_delete       = "Delete appointment type";  
  
-  $txt_timeguard_mail = "Hello [name],\n\nThis is the achievo timeguard, you seem to miss [hours] in your hour-administration.\n\n";
-  $txt_timeguard_mail_header = "Achievo Warning";
-  $txt_timeguard_mail_from = "timeguard@achievo.com";
+  $txt_timeguard_mail = "There are [hours] hours not registered for user '[userid]' in week [week] ([startdate] to [enddate]).";
+  $txt_timeguard_mail_subject = "Timeregistration incomplete";  
 
   $txt_menu_holiday_admin = "Holidays";
-  $txt_holiday_date = "Holiday date";
-  $txt_holiday_desc = "Holiday description";
-  $txt_holiday_work = "Normal workday";
+  $txt_holiday_date = "Date";
+  
   $txt_title_holidays_admin = "Holidays";
-  $txt_title_holidays_add = "Add an Holiday";
-  $txt_title_holidays_edit = "Edit an Holiday";
-  $txt_title_holidays_delete = "Delete an Holiday";
+  $txt_title_holidays_add = "Add a Holiday";
+  $txt_title_holidays_edit = "Edit a Holiday";
+  $txt_title_holidays_delete = "Delete a Holiday";
 
-  $txt_uc_descr = "Description";
   $txt_uc_hours = "Hours per week";
-  $txt_uc_startdate = "Startdate";
-  $txt_uc_enddate = "Enddate";
 
-  $txt_link_usercontracts_add = "Add an employee contract";
-  $txt_title_usercontracts_add = "Add employee contract";
-  $txt_title_usercontracts_edit = "Edit employee contract";
-  $txt_title_usercontracts_delete = "Delete employee contract";
+  $txt_link_usercontracts_add = "Add contract";
+  $txt_title_usercontracts_add = "Add contract";
+  $txt_title_usercontracts_edit = "Edit contract";
+  $txt_title_usercontracts_delete = "Delete contract";
   
   $txt_todochanged = "Todo item changed";
   $txt_todoadded = "New todo item";
   $txt_duedate = "Due date";
-  $txt_todo_ownedby = "Owned by";
+  $txt_todo_ownedby = "Owner";
   $txt_todo_changedby = "Changed by";
   $txt_todo_assignedto = "Assigned to";
   $txt_todo_previouslyassignedto = "Previously assigned to";
@@ -327,15 +323,13 @@
   $txt_link_contracts_add = "Add contract";
 
   $txt_contract_period_price = "Price per period";
-  $txt_contract_billing_period = "Billing once every";
-  $txt_contract_type = "Contract type";
-  $txt_contract_desc = "Contract Description";
+  $txt_contract_billing_period = "Billing per";    
   $txt_contract_startdate = "Contract starts on";
   $txt_contract_enddate = "Contract ends on";
-	$txt_monthly = "Monthly";
-	$txt_quaterly = "Quaterly";
-	$txt_yearly = "Yearly";
-	$txt_incident = "Per incident";
+  $txt_monthly = "Month";
+  $txt_quaterly = "Quater";
+  $txt_yearly = "Year";
+  $txt_incident = "Incident";
   
   $txt_menu_contracttype = "Customer contracts";
   $txt_title_contracttype_admin = "Manage contract types";
@@ -345,17 +339,38 @@
 
   $txt_contracttype = "Contract Description";
 
-  //Added by Marc for Costregistration
-
-  $txt_menu_costregistration_admin = "Cost Registration";
+  $txt_menu_costregistration_admin = "Cost registration";
   $txt_title_costregistration_admin = "Administrate costs made in projects";
   $txt_title_costregistration_add = "New entry";
   $txt_title_costregistration_edit = "Edit entry";
-
-  $txt_contracttype = "Contract Description";  
+  $txt_title_costregistration_delete = "Delete entry";  
   
   $txt_menu_customermanagement = "Manage Customers";
   
   $txt_menu_finance = "Finance";
-
+    
+  $txt_report_output_type = "Output type";
+  $txt_report_output_standard = "Standard output";
+  $txt_report_output_export = "Output to file";
+  
+  $txt_menu_weekreport = "Employee week report";
+  $txt_title_employee_weekreport = "Employee week report";
+    
+  $txt_menu_time_registration = "Time registration";
+  $txt_menu_hours_lock = "Lock hours";
+  $txt_lock = "Lock";
+  $txt_unlock = "Unlock";
+  $txt_hourlock_week_explanation = "Enter 4 digit year followed by 2 digit weeknumber in (e.g. 200234)";
+  $txt_all_users = "All users";
+  $txt_title_hours_lock_admin = "Manage locks";  
+  $txt_title_hours_lock_add = "Add lock";
+  $txt_title_hours_lock_delete = "Release lock";  
+  
+  $txt_overtime = "Overtime";
+  
+  $txt_enddate = "Enddate";
+  
+  $txt_menu_reports = "Reports";
+  
+  $txt_uc_contract = "Contracts";
 ?>

@@ -68,9 +68,9 @@
   $txt_houradmin_searchallprojectsphases = "Buscar en todos los proyectos y fases"; 
   
   $txt_title_hoursurvey_hours = "Horas ";
-  $txt_title_hoursurvey_of = "de ";
+  $txt_of = "de ";
   $txt_title_hoursurvey_onproject = "en el proyecto ";
-  $txt_title_hoursurvey_intimespan = "en el periodo ";
+  $txt_report_intimespan = "en el periodo ";
       
   $txt_title_projectstats = "Estadisticas de Proyecto";
   
@@ -207,9 +207,9 @@
   $txt_tpl_phase = "Plantillas para fases";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Personalizar la salida:";
-  $txt_hoursurvey_output_printable = "Salida simple para impresora";
-  $txt_hoursurvey_output_showcollumns = "Muestre solo estas columnas:";
+  $txt_report_output_options = "Personalizar la salida:";
+  $txt_report_output_printable = "Salida simple para impresora";
+  $txt_report_output_showcollumns = "Muestre solo estas columnas:";
   $txt_menu_activity_stats = "Estadisticas por Actividad";
   $txt_menu_employee_stats = "Estadisticas por Empleado";
   $txt_lastname = "Apellido";

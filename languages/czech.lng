@@ -68,9 +68,9 @@
   $txt_houradmin_searchallprojectsphases = "Vyhledat ve v¹ech projektech a fázích"; 
   
   $txt_title_hoursurvey_hours = "Hodiny ";
-  $txt_title_hoursurvey_of = "z ";
+  $txt_of = "z ";
   $txt_title_hoursurvey_onproject = "na projektu ";
-  $txt_title_hoursurvey_intimespan = "v období ";
+  $txt_report_intimespan = "v období ";
       
   $txt_title_projectstats = "Statistika projektù";
   
@@ -206,9 +206,9 @@
   $txt_tpl_phase = "©ablony fází";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Upravit výstup";
-  $txt_hoursurvey_output_printable = "Výstup pøizpùsobený pro tisk";
-  $txt_hoursurvey_output_showcollumns = "Ukázat pouze tyto sloupce:";
+  $txt_report_output_options = "Upravit výstup";
+  $txt_report_output_printable = "Výstup pøizpùsobený pro tisk";
+  $txt_report_output_showcollumns = "Ukázat pouze tyto sloupce:";
   $txt_menu_activity_stats = "Statistika èinností";
   $txt_menu_employee_stats = "Statistika zamìstnancù";
   $txt_lastname = "Pøíjmení";

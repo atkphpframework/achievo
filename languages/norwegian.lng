@@ -69,9 +69,9 @@
   $txt_houradmin_searchallprojectsphases = "Søk i alle prosjekter og faser"; 
   
   $txt_title_hoursurvey_hours = "Timer ";
-  $txt_title_hoursurvey_of = "for ";
+  $txt_of = "for ";
   $txt_title_hoursurvey_onproject = "på prosjekt ";
-  $txt_title_hoursurvey_intimespan = "i perioden ";
+  $txt_report_intimespan = "i perioden ";
       
   $txt_title_projectstats = "Prosjektrapportering";
   
@@ -207,9 +207,9 @@
   $txt_tpl_phase = "Fasemaler";  
   
   // --------==== Strings that were introduced in version 0.5.7: ====---------
-  $txt_hoursurvey_output_options = "Tilpass visning:";
-  $txt_hoursurvey_output_printable = "Utskriftsvennlig visning";
-  $txt_hoursurvey_output_showcollumns = "Vis bare disse kolonnene:";
+  $txt_report_output_options = "Tilpass visning:";
+  $txt_report_output_printable = "Utskriftsvennlig visning";
+  $txt_report_output_showcollumns = "Vis bare disse kolonnene:";
   $txt_menu_activity_stats = "Aktivitetsrapportering";
   $txt_menu_employee_stats = "Brukerrapportering";
   $txt_lastname = "Etternavn";
