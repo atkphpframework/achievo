@@ -14,7 +14,7 @@ class todo extends atkNode
     $this->atkNode("todo", NF_TRACK_CHANGES);
     $this->addAttribute(new atkAttribute("id"                   , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
-    $this->addAttribute(new atkManyToOneRelation("projectid"    , "project",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->addAttribute(new atkManyToOneRelation("projectid"    , "project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("title"                , AF_OBLIGATORY));
     $this->addAttribute(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
     $this->addAttribute(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
@@ -24,7 +24,7 @@ class todo extends atkNode
     $this->addAttribute(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
 
     $this->setTable("todo", "todo");         
-    $this->setOrder("duedate");
+    $this->setOrder("duedate, priority");
 
   }
 

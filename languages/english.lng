@@ -421,5 +421,19 @@
   $txt_mailnotification = "Mail if todo changes";
   
   $txt_link_project_add = "Add a project";
+  
+  // --------==== Strings that were introduced in version 0.9: ====---------
+  
+  $txt_title_pim = "Personal Information Manager";
+  $txt_pim_schedule = "Your appointments for today";
+  $txt_pim_gotoschedule = "Go to Scheduler";
+  $txt_pim_todos = "Your todo's";
+  $txt_pim_assignedtoyou = "Assigned to you";
+  $txt_pim_assignedbyyou = "Assigned to others by you";
+  $txt_pim_timeregistration = "Your time registration for today";
+  $txt_pim_gototimeregistration = "Go to Time Registration";
+  $txt_pim_timeregistration_empty = "No time registered yet";
+  $txt_pim_schedule_empty = "No appointments for today";
+  $txt_pim_todo_empty = "No todo's available";
 
 ?>

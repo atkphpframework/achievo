@@ -11,8 +11,8 @@
     
 //  menuitem("-","","main",true,220);
   
-//  menuitem("schedule", dispatch_url("schedule","admin"),"main",true,300);  
-//  menuitem("-","","main",true,320);
+  menuitem("schedule", dispatch_url("schedule","admin"),"main",true,300);  
+  menuitem("-","","main",true,320);
   
   menuitem("reports", "","main",true,370);
     menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"),"reports");    
@@ -66,7 +66,7 @@
      menuitem("tpl_project_admin", dispatch_url("tpl_project", "admin"), "setup", array("tpl_project", "admin"));    
      //menuitem("holiday_admin", dispatch_url("holidays", "admin"), "setup", array("activity", "admin"));
      menuitem("contracttype", dispatch_url("contracttype","admin"),"setup", array("contracttype","admin"));      
-//     menuitem("schedule_types", dispatch_url("schedule_types","admin"),"setup");
+     menuitem("schedule_types", dispatch_url("schedule_types","admin"),"setup");
   menuitem("-","","main",true,720);         
   
   menuitem("support","","main",true,800);

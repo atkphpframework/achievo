@@ -19,15 +19,15 @@
 
     $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE));
     $this->add(new atkAttribute("id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
-    $this->add(new atkAttribute("title"           , AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->add(new atkAttribute("location"        , AF_SEARCHABLE));
-    $this->add(new atkTextAttribute("description" , AF_HIDE_LIST));
     $this->add(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
     $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
-    $this->add(new atkBoolAttribute("allday"      ));
-    $this->add(new atkBoolAttribute("publicitem"      ));
     $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $time, 0));
     $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $time, 0));
+    $this->add(new atkAttribute("title"           , AF_SEARCHABLE|AF_OBLIGATORY));    
+    $this->add(new atkTextAttribute("description"));
+    $this->add(new atkAttribute("location"        , AF_SEARCHABLE));    
+    $this->add(new atkBoolAttribute("allday"      ));
+    $this->add(new atkBoolAttribute("publicitem"      ));    
     $this->add(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY));
   //  $this->addAttribute(new atkDummyAttribute("attendees"       , "", AF_HIDE_ADD|AF_HIDE_LIST));
 
@@ -98,6 +98,7 @@
     }
 
     $g_layout->ui_top(text("Achievo scheduler / ".$view));
+    $g_layout->output($this->statusbar());
     $g_layout->output(href($PHP_SELF."?view=weekview&weekview=$user&viewdate=$viewdate","Weekview") ."&nbsp;". href($PHP_SELF."?view=monthview&viewdate=$viewdate","Monthview"));
     $g_layout->output($result);
     $g_layout->ui_bottom();    
