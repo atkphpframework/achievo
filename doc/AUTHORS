@@ -1,6 +1,6 @@
 Author
 ------
-Ivo Jansch         <ivo@achievo.org> 
+Ivo Jansch         <ivo@achievo.org>
 
 
 Additional Development
@@ -21,10 +21,10 @@ Jeroen Stephan      <jeroen@ibuildings.nl>
 Sponsors
 --------
 Achievo grows not only through contributions from the Open Source community,
-but also through financial donations from sponsors, who finance the 
+but also through financial donations from sponsors, who finance the
 development of new features.
 
-* Tryllian BV, Netherlands (http://www.tryllian.nl) sponsored the following 
+* Tryllian BV, Netherlands (http://www.tryllian.nl) sponsored the following
   developments:
 
   - hourlocking feature
@@ -41,9 +41,9 @@ development of new features.
   - improvements to the extended search feature
   - additional fields to customers and projects
 
-* Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of 
+* Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
   the billing feature.
-  
+
 To become a sponsor, please read http://www.ibuildings.nl/en/sponsor/achievo.
 
 
@@ -68,7 +68,7 @@ Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
                   Christophe Vallet    <chris@prismanet.com>
                   Nicola Busetto       <nicola@cnbtech.it>
 Norwegian       : Stein Bjorndal       <stein@proact.no>
-                  Tommy Stiansen       <Tommy@tradeit.as>                   
+                  Tommy Stiansen       <Tommy@tradeit.as>
 Spanish         : Jorge Ibsen          <jibsen@eso.org>
                   Armando Montiel Caba <amontiel@mpsnet.net.mx>
                   Oswaldo Gómez        <odgomez@cantv.net>
@@ -81,7 +81,7 @@ significant contributions to the Achievo project.
 
 Stefan Niederhauser <sn@atelier-w.ch>
 
-  Stefan came up with the aditional idea and design of the 'node' 
+  Stefan came up with the aditional idea and design of the 'node'
   concept, which later became the basis of the ATK backend.
 
 William Rhee <willrhee@umich.edu>
@@ -94,17 +94,22 @@ Marc van Agteren <mva@buzzmachines.com>
   Marc developed the initial version of the finance menu, during
   an internship at ibuildings.nl.
 
+Ludo Beumer <l.m.beumer@home.nl>
+
+  Ludo developed the initial version of the resource planning feature,
+  during an internship at ibuildings.nl.
+
 
 Other Contributors
 ------------------
 We received bugfixes and other contributions from the following people:
 
-Alexandre Carmel-Veilleux             <saruman@mondo-live.com>	
+Alexandre Carmel-Veilleux             <saruman@mondo-live.com>
 Jan Peter Hecking                     <jhecking@informatik.uni-rostock.de>
-Jason Kohles                          <jason@mediabang.com>      
-Javier Ledesma                        <javier.ledesma@ubs.com> 
+Jason Kohles                          <jason@mediabang.com>
+Javier Ledesma                        <javier.ledesma@ubs.com>
 T. Luyben                             <tycho@e-lab.nl>
-Martin Pruijssers                       
+Martin Pruijssers
 Wayne T. Ethier                       <wte@websynergyinternet.com>
 Michel Marti                          <michel.marti@ubs.com>
 Lucas Smith                           <smith@dybnet.de>
