@@ -13,6 +13,10 @@
 
   class project extends atkNode
   {
+  	// when set to true the contact relation will be obligatory in the edit screen
+  	// but not in the add screen (because it is hidden there)
+  	var $m_contact_obligatory = true;
+  	
     function project()
     {
       global $ATK_VARS, $g_sessionManager;
