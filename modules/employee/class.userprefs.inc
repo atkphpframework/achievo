@@ -54,7 +54,7 @@ class userprefs extends atkNode
   {
     global $g_user, $g_sessionManager;    
 
-    if($record["userid"]==$g_user["name"])
+    if($record["id"]==$g_user["id"])
     {
       // If the theme was updated, we must change it in the session (or you won't
       // see the update.
