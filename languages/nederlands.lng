@@ -382,5 +382,6 @@
   $txt_report_show_details = "Toon details";
   
   $txt_houradmin_weeklocked = "Week is geblokkeerd";
-  
+  $txt_title_projectstats_costsperemp = "De volgende medewerkers hebben kosten geboekt op dit project";
+  $txt_title_employeestats_costs = "Deze werknemer heeft kosten geregistreerd op de volgende projecten";
 ?>

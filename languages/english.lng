@@ -372,6 +372,8 @@
   
   $txt_uc_contract = "Contracts";
   
+  $txt_title_projectstats_costsperemp = "The following employees made expenses for this project";
+
   $txt_hours_lock = "Lock hours";
   $txt_holidays = "Holidays";
   $txt_contracts = "Customer contracts";
@@ -383,4 +385,6 @@
   
   $txt_houradmin_weeklocked = "Week is locked";
   
-?>
+  $txt_title_employeestats_costs = "This employee registered costs on the following projects";
+
+  
