@@ -6,6 +6,7 @@
   $sql = "SELECT theme from person where userid='".$g_user["name"]."'";
   $result = $g_db->getrows($sql);
 
+  $g_theme["Name"] = atkconfig("defaulttheme");
   if(count($result)==1&&$result[0]["theme"]!="")
   {
     $g_theme["Name"] = $result[0]["theme"];
