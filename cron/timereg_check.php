@@ -1,11 +1,11 @@
 <?php
- /*  
+ /*
   * @version $Revision$
   * @Author Ivo Jansch <ivo@achievo.org>
   *
-  * Sends an email reminder if someone did not enter all of his hours in 
+  * Sends an email reminder if someone did not enter all of his hours in
   * the previous week.
-  * 
+  *
   * $Id$
   *
   */
@@ -13,88 +13,89 @@
   // work from achievo dir. .
   chdir("../");
   include_once("atk.inc");
-  include_once("achievotools.inc");    
-  
+  include_once("achievotools.inc");
+
   $today = date("Y-m-d");
   $year = substr($today,0,4);
   $month = substr($today,5,2);
   $day = substr($today,8,2);
   $incomplete_weeks = array();
-  
-  // get emailaddresses for all users and presort them 
+
+  // get emailaddresses for all users and presort them
   $query = "SELECT
               userid, email
             FROM
-              employee
-            WHERE               
-              status = 'active'
+              person
+            WHERE
+              status = 'active' AND role='employee'
            ";
-              
+
   $users = $g_db->getrows($query);
   for ($i=0;$i<count($users);$i++)
   {
     $userMail[$users[$i]["userid"]] = $users[$i]["email"];
   }
-    
+
   $weekcheck = atkconfig("timereg_checkweeks");
   if ($weekcheck=="") $weekcheck=1;
   for ($weekloop=1;$weekloop<=$weekcheck;$weekloop++)
   {
     // generate a date in the correct week (doesn't matter which, so day-7 should
     // always work.
-    $prevweekstamp = mktime(12,12,12,$month,$day-($weekloop*7),$year);    
-    
+    $prevweekstamp = mktime(12,12,12,$month,$day-($weekloop*7),$year);
+
     $startdate = startOfWeek(date("Y-m-d",$prevweekstamp));
     $enddate =  endOfWeek(date("Y-m-d",$prevweekstamp));
-    
+
     // remember total checking period
     if ($weekloop==1) $globalend = $enddate;
     if ($weekloop==$weekcheck) $globalstart = $startdate;
-  
+
     // reset time array.
     $time = array();
-    
+
     $week = strftime("%V",$prevweekstamp);
-        
+
     // get all contracts.
     $query = "SELECT
-                uc_hours, usercontract.userid, email, supervisor
+                uc_hours, person.userid, email, supervisor
               FROM
-                usercontract, employee
-              WHERE               
+                usercontract, person
+              WHERE
                 startdate <= '$startdate'
                 AND enddate > '$startdate'
-                AND usercontract.userid = employee.userid
-                AND employee.status='active'";
-                
+                AND usercontract.userid = person.id
+                AND person.status='active' AND person.role = 'employee'";
+
     $contracts = $g_db->getrows($query);
-    
+
     for ($i=0;$i<count($contracts);$i++)
-    { 
+    {
       $time[$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
       $time[$contracts[$i]["userid"]]["email"] = $contracts[$i]["email"];
       $time[$contracts[$i]["userid"]]["supervisor"] = $contracts[$i]["supervisor"];
     }
-  
+
     // get working hours
-    $query = "SELECT 
+    $query = "SELECT
                 sum(time) as time, hours.userid
               FROM
-                hours, employee
-              WHERE 
-                hours.userid = employee.userid
-                AND employee.status = 'active'
+                hours, person
+              WHERE
+                hours.userid = person.userid
+                AND person.status = 'active'
+                AND person.role='employee'
                 AND activitydate between '$startdate' and '$enddate'
               GROUP BY hours.userid";
-    
-    $hours = $g_db->getrows($query);    
+
+    $hours = $g_db->getrows($query);
     for ($i=0;$i<count($hours);$i++)
     {
       $user = $hours[$i]["userid"];
       $hoursthisweek = $hours[$i]["time"];
-      $time[$user]["time"] = $hoursthisweek;            
+      $time[$user]["time"] = $hoursthisweek;
     }
-    
+
     // mail people who have entered less time than their contract
     if (is_array($time))
     {
@@ -105,18 +106,18 @@
           $incomplete_weeks[$user][] = array("week"=>$week,
                                              "missing"=>time_format($data["contract"]-$data["time"]),
                                              "startdate"=>$startdate,
-                                             "enddate"=>$enddate);     
+                                             "enddate"=>$enddate);
         }
       }
     }
-  }    
-  
+  }
+
   foreach ($incomplete_weeks as $user => $data)
   {
     $body = stringparse(text("timeguard_mail_header"),array("userid"=>$user,
                                                      "startdate"=>$globalstart,
                                                      "enddate"=>$globalend))."\n";
-                                                     
+
     for ($i=0;$i<count($data);$i++)
     {
       $body.= "\n".stringparse(text("timeguard_mail_line"),array("hours"=>$data[$i]["missing"],
@@ -124,13 +125,13 @@
                                                             "startdate"=>$data[$i]["startdate"],
                                                             "enddate"=>$data[$i]["enddate"]));
     }
-  
-    $to = $userMail[$user];        
+
+    $to = $userMail[$user];
     $cc = "";
     $supervisormail = $userMail[$time[$user]["supervisor"]];
-    if ($supervisormail !="")        
-    {           
-      $cc = "Cc: ".$supervisormail."\r\n";      
+    if ($supervisormail !="")
+    {
+      $cc = "Cc: ".$supervisormail."\r\n";
     }
     if ($to!="")
     {
@@ -140,7 +141,7 @@
       echo "\n";
     }
     else
-    {      
+    {
       if ($cc=="")
       {
         echo "would've sent mail to $user, but he doesn't have an email address\n";
@@ -152,5 +153,5 @@
       }
     }
   }
-  
+
 ?>
