@@ -4,7 +4,7 @@
    * Example module.
    */
 
-  class mod_finance extends atkModule
+  class mod_finance extends achievoModule
   {
     function getNodes()
     {
