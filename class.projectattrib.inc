@@ -12,12 +12,7 @@ class atkProjectAttribute extends atkAttribute
     /* base class constructor */
     $this->atkAttribute($name, $flags);
   }
-/*  
-  function fetchValue($rec)
-  {
-    return Array("projectid"=>$rec["projectid"]);
-  } 
-*/
+
   /**
    * Returns a piece of html code that can be used in a form to edit this
    * attribute's value.
@@ -77,55 +72,8 @@ class atkProjectAttribute extends atkAttribute
     $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"),SESSION_NESTED);
 
     return $result;
-  }
+  }    
   
-  /*function display($rec)
-  {    
-    return $rec[$this->fieldName()]["name"];
-  } */
-
-  /**
-   * We don't support searching 
-   * @param $record array with fields
-   * @return search field
-   */
-/*  function search($record="")
-  {
-    return "&nbsp;";
-  }
-  
-  function db2value($rec)
-  {
-    return Array("projname"=>$rec["proj_name"],
-                 "phaseid"=>$rec["phaseid"],
-                 "phasename"=>$rec["phase_name"],
-                 "activityname"=>$rec["activity_name"]);
-  }  
-  
-  function value2db($rec)
-  {
-    return $rec[$this->fieldName()]["phaseid"];
-  }
- 
-  function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
-  {
-    if ($mode == "select")
-    {
-      
-      $query->addField($this->fieldName(),"","hours",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));
-      $query->addField("name","", "B", "proj_", false);
-      $query->addField("name","", "A", "phase_", false);
-      $query->addField("name","", "C", "activity_", false);
-      $query->addJoin("phase", "A","A.id=hours.phaseid", true);      
-      $query->addJoin("project", "B","B.id=A.projectid", true);      
-      $query->addTable("activity", "C");
-      $query->addCondition("C.id=hours.activityid");            
-    }
-
-    else if ($mode == "add" || $mode == "edit")
-      $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));
-  } 
-   */     
   function getRecentProjects()   
   {
     global $g_db, $g_user;
@@ -160,9 +108,7 @@ class atkProjectAttribute extends atkAttribute
     global $g_db, $g_user;
      
     $query = "SELECT id,name FROM project ";
-    $query.= "WHERE id = $projectid";    
-    
-    atkdebug($query);
+    $query.= "WHERE id = $projectid";            
     
     $arr = $g_db->getrows($query);
     

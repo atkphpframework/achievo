@@ -119,8 +119,6 @@
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id";
   if ($userid!="all") $query.= " AND hours.userid = '$userid'";
-              
-  atkdebug($query);
   
   $records = $g_db->getrows($query);
   

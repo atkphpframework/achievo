@@ -106,7 +106,7 @@ class dependencyAttribute extends atkAttribute
                 phase
               WHERE                
                 projectid = ".$projectid." ORDER BY name";
-    atkdebug("dependency edit query: $query");
+    
     $recs = $g_db->getrows($query);
     return $recs;
   }
@@ -143,7 +143,7 @@ class dependencyAttribute extends atkAttribute
                 AND (ROW.projectid = ".$rec["id"]." OR COL.projectid = ".$rec["id"].")
                 ORDER BY phaseid_row";
     
-    atkdebug("dependency load query: $query");
+    
     return array("deps"=>$g_db->getrows($query));
   }
   
@@ -165,7 +165,7 @@ class dependencyAttribute extends atkAttribute
                      WHERE 
                        phaseid_row = ".$delarr[$i]["first"]."
                        AND phaseid_col = ".$delarr[$i]["last"];
-        atkdebug($delquery);
+        
         $g_db->query($delquery);
       }
     }
@@ -176,7 +176,7 @@ class dependencyAttribute extends atkAttribute
       $query = "INSERT 
                   INTO dependency (phaseid_row,phaseid_col)
                   VALUES (".$values["first"].",".$values["last"].")";
-      atkdebug($query);
+      
       $g_db->query($query);
     }
   }

@@ -71,7 +71,6 @@ class phase extends atkNode
     
     // delete dependencies for this phase./
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
-    atkdebug($query);
     $g_db->query($query);
   }
 }

@@ -154,7 +154,8 @@ class atkProjectPhaseAttribute extends atkAttribute
       $query->addField("name","", "C", "activity_", false);
       $query->addJoin("phase", "A","A.id=hours.phaseid", true);      
       $query->addJoin("project", "B","B.id=A.projectid", true);      
-      $query->addJoin("activity", "C","C.id=hours.activityid", true);      
+      $query->addTable("activity", "C");
+      $query->addCondition("C.id=hours.activityid"); 
       
     }
 
@@ -169,10 +170,9 @@ class atkProjectPhaseAttribute extends atkAttribute
     $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     // 100 should be enough to get 5 unique recent projects.
-    $query.= "ORDER BY hours.entrydate DESC LIMIT 100";
-    atkdebug($query);
+    $query.= "ORDER BY hours.entrydate DESC";
     
-    $arr = $g_db->getrows($query);
+    $arr = $g_db->getrows($query,'0','100');
     $j=0;
     $alreadyhad = Array();
     $newarr = Array();
@@ -195,9 +195,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     global $g_db, $g_user;
      
     $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase ";
-    $query.= "WHERE phase.projectid=project.id AND phase.id = $phaseid";    
-    
-    atkdebug($query);
+    $query.= "WHERE phase.projectid=project.id AND phase.id = $phaseid";            
     
     $arr = $g_db->getrows($query);
     

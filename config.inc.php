@@ -8,13 +8,13 @@
   // The database to use. Default is MySQL. If you want to use PostgreSQL,
   // change this value to "pgsql". For Oracle, use "oci8".
   //
-  $config_database = "mysql";
+  $config_database = "oci8";
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_0_7";
+  $config_databasename = "cdb";
   $config_databaseuser = "achievo";
   $config_databasepassword = "demo";
   

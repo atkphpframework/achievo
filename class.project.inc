@@ -26,7 +26,7 @@ class projecttemplateAttribute extends atkManyToOneRelation
       // phase templates
       $query = "SELECT tpl_phase.id, tpl_phase.name, tpl_phase.description FROM tpl_phase,tpl_project_phase
                 WHERE tpl_phase.id = tpl_project_phase.phaseid AND tpl_project_phase.projectid = ".$record['template']['id'];
-      atkdebug($query);
+
       $phases = $db->getRows($query);
               
       // loop to insert phases , create reference table
@@ -36,8 +36,8 @@ class projecttemplateAttribute extends atkManyToOneRelation
          $id_table[$phases[$i]['id']] = $new_id;
       
          $query = "INSERT INTO phase (id, name, projectid, description) 
-                   VALUES ('".$new_id."','".addslashes($phases[$i]['name'])."','".$record['id']."','".addslashes($phases[$i]['description'])."')";
-         atkdebug($query);
+                   VALUES ('".$new_id."','".escapeSQL($phases[$i]['name'])."','".$record['id']."','".escapeSQL($phases[$i]['description'])."')"; 
+
          $db->query($query);
          
          //activities per phase 
@@ -45,7 +45,7 @@ class projecttemplateAttribute extends atkManyToOneRelation
                    SELECT activityid, ".$new_id." 
                    FROM tpl_phase_activity 
                    WHERE phaseid = ".$phases[$i]['id'];
-         atkdebug($query);
+
          $db->query($query);
       }
          

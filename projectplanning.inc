@@ -476,7 +476,6 @@ function get_phase_pos($path,$phase)
                  GROUP BY 
                    phase.id";
   
-  atkdebug($hoursquery);
   $recs = $g_db->getrows($hoursquery);  
   for ($i=0;$i<count($recs);$i++)
   {

@@ -26,7 +26,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
               WHERE
                 id = phaseid
                 AND projectid = ".$projectid." ORDER BY name";
-    atkdebug("dependency edit query: $query");
+
     $recs = $g_db->getrows($query);
     return $recs;
   }
@@ -48,7 +48,6 @@ class tpl_dependencyAttribute extends dependencyAttribute
                 AND COL.id = phaseid_col
                 ORDER BY phaseid_row";
     
-    atkdebug("dependency load query: $query");
     return array("deps"=>$g_db->getrows($query));
   }
   
@@ -70,7 +69,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
                      WHERE projectid = ".$rec["id"]."
                        AND phaseid_row = ".$delarr[$i]["first"]."
                        AND phaseid_col = ".$delarr[$i]["last"];
-        atkdebug($delquery);
+        
         $g_db->query($delquery);
       }
     }
@@ -81,7 +80,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
       $query = "INSERT 
                   INTO tpl_dependency (projectid,phaseid_row,phaseid_col)
                   VALUES (".$rec["id"].",".$values["first"].",".$values["last"].")";
-      atkdebug($query);
+
       $g_db->query($query);
     }
   }

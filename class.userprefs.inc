@@ -46,8 +46,10 @@ class userprefs extends atkNode
     global $g_layout;
     global $g_theme;
 
-    if($atknoclose=="")
-    {
+    // The new session management disables the saveandclose button, so
+    // the next commented lines of code no longer worked.
+    //if($atknoclose=="")
+    //{
       if($record["userid"]==$g_user["name"])
       {
         echo '<script language="javascript">';
@@ -55,13 +57,13 @@ class userprefs extends atkNode
         echo '</script>';
         exit;
       }
-    }
-    else
-    {
-      $g_theme["Name"] = $record["theme"];
-      $g_layout->initTheme();
-      $g_layout->import_layout();
-    }
+    //}
+    //else
+    //{
+//      $g_theme["Name"] = $record["theme"];
+      //$g_layout->initTheme();
+      //$g_layout->import_layout();
+    //}
   }
 }   
 ?>

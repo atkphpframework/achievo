@@ -82,9 +82,7 @@
               AND hours.userid = employee.userid
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id
-              AND project.id = ".$selectedprojectid;  
-              
-  atkdebug($query);
+              AND project.id = ".$selectedprojectid;                
   
   $records = $g_db->getrows($query);
   

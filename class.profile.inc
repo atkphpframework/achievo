@@ -14,7 +14,7 @@ class profileAttribute extends atkAttribute
   function load($db, $record)
   {
     $query = "SELECT * FROM accessright WHERE entity='".$record["id"]."'";
-    atkdebug($query);
+    
     $result = Array();
     $rows = $db->getrows($query);
     for ($i=0;$i<count($rows);$i++)
@@ -27,7 +27,7 @@ class profileAttribute extends atkAttribute
   function store($db, $record, $mode)
   {
     $delquery = "DELETE FROM accessright WHERE entity='".$record["id"]."'";
-    atkdebug($delquery);
+    
     $db->query($delquery);
     
     $checked = $record[$this->fieldName()];
@@ -37,7 +37,7 @@ class profileAttribute extends atkAttribute
       {
         $query = "INSERT INTO accessright (node, action, entity) ";
         $query.= "VALUES ('".$node."','".$actions[$i]."','".$record["id"]."')";
-        atkdebug($query);
+        
         $db->query($query);
       }
     }

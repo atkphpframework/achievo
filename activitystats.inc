@@ -119,9 +119,7 @@
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id
               AND hours.activityid = $activityid";
-              
-  atkdebug($query);
-  
+                
   $records = $g_db->getrows($query);
   
   $hoursperemp = Array();

@@ -29,7 +29,7 @@ class tpl_project_phase extends atkNode
                WHERE 
                  projectid = ".$rec["projectid"]["id"]."
                  AND (phaseid_row = ".$rec["phaseid"]["id"]." OR phaseid_col = ".$rec["phaseid"]["id"].")";
-    atkdebug($delquery);
+
     $g_db->query($delquery);
   }    
 }
