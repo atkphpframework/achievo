@@ -64,8 +64,8 @@
       $this->add(new atkBoolAttribute("all_users"));
       $this->add(new atkListAttribute("status", array(text("confirmed"), text("unconfirmed"), text("cancelled"))));
       $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-      $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
+      $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD));
 
       $view     = $g_sessionManager->stackVar("view");
