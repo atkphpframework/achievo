@@ -54,6 +54,8 @@
   $txt_duedate = "Deadline";
   $txt_email = "Email";
   $txt_employee = "Gebruiker";
+  $txt_employeeid = "Medewerker";
+  $txt_employees = "Medewerkers";
   $txt_employee_select = "Selecteer een gebruiker";
   $txt_enddate = "Einddatum";
   $txt_entity = "Profiel";
@@ -80,6 +82,7 @@
   $txt_link_contact_add = "Voeg een nieuwe contactpersoon toe";
   $txt_link_contracts_add = "Contract toevoegen";
   $txt_link_phase_add = "Fase toevoegen";
+  $txt_link_employee_project_add = "Medewerker toevoegen";
   $txt_link_project_add = "Add a project";
   $txt_link_project_notes_add = "Notitie toevoegen";
   $txt_link_todo_add = "Todo item toevoegen";
@@ -156,6 +159,7 @@
   $txt_pim_assignedtoyou = "Toegewezen aan jou";
   $txt_pim_gotoschedule = "Ga naar agenda";
   $txt_pim_gototimeregistration = "Ga naar tijdregistratie";
+  $txt_pim_gotoweekview = "Ga naar weekoverzicht";
   $txt_pim_schedule = "Je afspraken voor vandaag";
   $txt_pim_schedule_empty = "Nog geen afspraken voor vandaag";
   $txt_pim_timeregistration = "Je tijdregistratie voor vandaag";
@@ -333,5 +337,27 @@
   $txt_warning_fixedprice4 = "op deze factuur.";
   $txt_yearly = "Jaar";
   $txt_zipcode = "Postcode";
+
+  // --------==== Strings that were introduced in version 0.9: ====---------
+
+  $txt_title_pim = "Personal Information Manager";
+  $txt_pim_schedule = "Je afspraken voor vandaag";
+  $txt_pim_gotoschedule = "Ga naar agenda";
+  $txt_pim_todos = "Je todo's";
+  $txt_pim_assignedtoyou = "Toegewezen aan jou";
+  $txt_pim_assignedbyyou = "Door jou toegewezen aan anderen";
+  $txt_pim_timeregistration = "Je tijdregistratie voor vandaag";
+  $txt_pim_gototimeregistration = "Ga naar tijdregistratie";
+  $txt_pim_timeregistration_empty = "Nog geen tijd geregistreerd";
+  $txt_pim_schedule_empty = "Nog geen afspraken voor vandaag";
+  $txt_pim_todo_empty = "Geen todo's aanwezig";
+
+//=======
+
+  // --------==== Strings that were introduced in version 0.9.1: ====---------
+
+  $txt_pim_resplanning = "Resource planning";
+
+//=======
 
 ?>

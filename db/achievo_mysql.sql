@@ -13,17 +13,17 @@ CREATE TABLE activity (
    PRIMARY KEY (id)
 );
 
-CREATE TABLE bill (      
-   id int(10) unsigned DEFAULT '0' NOT NULL,      
-   projectid int(10) DEFAULT '0' NOT NULL,      
-   description text,      
-   create_date date DEFAULT '0000-00-00' NOT NULL,      
-   userid varchar(15) NOT NULL,      
-   status varchar(30) NOT NULL,      
-   specify_hours tinyint(1) DEFAULT '0' NOT NULL,      
+CREATE TABLE bill (
+   id int(10) unsigned DEFAULT '0' NOT NULL,
+   projectid int(10) DEFAULT '0' NOT NULL,
+   description text,
+   create_date date DEFAULT '0000-00-00' NOT NULL,
+   userid varchar(15) NOT NULL,
+   status varchar(30) NOT NULL,
+   specify_hours tinyint(1) DEFAULT '0' NOT NULL,
    contactperson int(10) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)   
- );      
+   PRIMARY KEY (id)
+ );
 
 CREATE TABLE bill_line (
   id int(10) unsigned DEFAULT '0' NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE discount (
   apply_on varchar(10) NOT NULL default '',
   PRIMARY KEY  (id)
 );
- 
+
 CREATE TABLE rate (
   id int(10) unsigned DEFAULT '0' NOT NULL,
   userid varchar(15),
@@ -55,7 +55,7 @@ CREATE TABLE rate (
   description text,
   rate decimal(13,5) DEFAULT '0.00000' NOT NULL,
   priority tinyint(4) DEFAULT '0' NOT NULL,
-  PRIMARY KEY (id)   
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE customer (
@@ -121,14 +121,14 @@ CREATE TABLE costregistration (
    paymethod varchar(30) NOT NULL,
    currency varchar(30),
    bill_line_id int(10) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)   
+   PRIMARY KEY (id)
 );
 
 CREATE TABLE currency (
    name varchar(30) DEFAULT '0' NOT NULL,
    value decimal(13,5) DEFAULT '0.00000' NOT NULL,
    symbol varchar(10) NOT NULL,
-   PRIMARY KEY (symbol)   
+   PRIMARY KEY (symbol)
 );
 
 CREATE TABLE dependency (
@@ -140,7 +140,7 @@ CREATE TABLE dependency (
 CREATE TABLE employee (
    userid varchar(15) NOT NULL,
    supervisor varchar(15),
-   name varchar(40),   
+   name varchar(40),
    email varchar(100),
    password varchar(40),
    status varchar(15) NOT NULL,
@@ -267,15 +267,15 @@ CREATE TABLE schedule (
    owner varchar(15) NOT NULL,
    showowner tinyint(1) DEFAULT '0' NOT NULL,
    scheduletype int(10) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)   
-);      
+   PRIMARY KEY (id)
+);
 
 CREATE TABLE schedule_attendees (
    scheduleid int(10) DEFAULT '0' NOT NULL,
    userid varchar(15) NOT NULL,
-   PRIMARY KEY (scheduleid, userid)   
- );      
- 
+   PRIMARY KEY (scheduleid, userid)
+ );
+
 CREATE TABLE schedule_types (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    description varchar(50) NOT NULL,
@@ -294,7 +294,7 @@ CREATE TABLE todo (
    description text,
    title varchar(50) NOT NULL,
    status tinyint(4) DEFAULT '0' NOT NULL,
-   priority tinyint(4) DEFAULT '0' NOT NULL, 
+   priority tinyint(4) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
@@ -314,3 +314,5 @@ CREATE TABLE db_sequence (
    PRIMARY KEY (seq_name)
 );
 
+ ALTER TABLE project ADD abbreviation VARCHAR(10) NOT NULL;
+ ALTER TABLE accessright CHANGE node node VARCHAR(50) NOT NULL;
