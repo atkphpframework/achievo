@@ -22,10 +22,5 @@ class employee_project extends atkNode
     $this->add(new atkManyToOneRelation("projectid","project",AF_PRIMARY));
     $this->setTable("employee_project");
   }
-
-  function descriptor_def()
-  {
-    return "[employeeid]";
-  }
 }
 ?>
