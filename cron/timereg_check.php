@@ -75,9 +75,16 @@
                                                          "startdate"=>$startdate,
                                                          "week"=>$week,
                                                          "enddate"=>$enddate));
-       $to = $data["email"];
-        usermail($to,text("timeguard_mail_subject"),$body);
-        echo "send mail to $to\n";
+        $to = $data["email"];
+        if ($to!="")
+        {
+          usermail($to,text("timeguard_mail_subject"),$body);
+          echo "sent mail to $to\n";
+        }
+        else
+        {
+          echo "would've sent mail to $user, but he doesn't have an email address\n";
+        }
       }
     }
   }
