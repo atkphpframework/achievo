@@ -19,7 +19,7 @@ include_once "class.projectattrib.inc";
       
       $this->add(new atkAttribute("value", AF_OBLIGATORY));
       $this->add(new atkManyToOneRelation("currency","finance.currency"));      
-      $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));      
+      $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditcard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));      
       
       $this->setOrder("costdate");
             
