@@ -7,6 +7,18 @@ useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 userelation("atkmanyboolrelation");
 
+/** 
+ * Override of default atkManyBoolRelation because isEmpty depends not only on
+ * setting of phase_activity but also of template.
+ */
+class phaseManyBoolRelation extends atkManyBoolRelation 
+{
+  function isEmpty($record)
+  {    
+    return (parent::isEmpty($record) && $record["template"]["id"]=="");
+  }
+}
+
 class phase extends atkNode
 {
   function phase()
@@ -23,7 +35,7 @@ class phase extends atkNode
     $this->add(new atkNumberAttribute("max_phasetime"));
     $this->add(new atkNumberAttribute("max_hours"));
 
-    $tmp = new atkManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST);
+    $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY);
     $tmp->m_localKey = "phaseid";
     $tmp->m_remoteKey = "activityid";
     $this->add($tmp);
@@ -54,7 +66,7 @@ class phase extends atkNode
     // delete dependencies for this phase./
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
     $g_db->query($query);
-  }
+  }  
 
   function action_select()
   {

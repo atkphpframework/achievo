@@ -411,15 +411,13 @@ class hours extends atkNode
 
   function action_lock()
   {
-    global $g_db;
-
     $viewdate = $this->m_postvars["viewdate"];
-    $userid = $this->m_postvars["userid"];
-    $week = weekstamp(mktime(0,0,0,substr($viewdate,5,2),
+    $record["userid"]["id"] = $this->m_postvars["userid"];
+    $record["week"] = weekstamp(mktime(0,0,0,substr($viewdate,5,2),
                                    substr($viewdate,8,2),
                                    substr($viewdate,0,4)));
-    $query = "INSERT INTO hours_lock (week, userid) VALUES ('$week','$userid')";
-    $g_db->query($query);
+    $locknode = &getNode("timereg.hours_lock");
+    $locknode->addDb($record);
     $this->redirect();
   }
 

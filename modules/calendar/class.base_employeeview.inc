@@ -62,14 +62,15 @@
       $sql = "SELECT userid,  id
               FROM person
               WHERE status='active' AND role='employee'
-              ORDER BY lastname
-             ";
+              ORDER BY lastname";
       $employees = $g_db->getrows($sql);
-            
     }
     else
     {
-      $employees = $selemployee;
+      for ($i=0;$i<count($selemployee);$i++)
+      {
+        $employees[$i]["userid"] = $selemployee[$i];
+      }
     }
 
     for ($i=0;$i<count($employees);$i++)
@@ -84,7 +85,7 @@
 
       // get all items for this workhour
       //if there are items then change the background color to yellow
-      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]["id"]);
+      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]["userid"]);
       if (count($allItems) > 0) { $bgcolor = "#FFFF00"; }
 
       $buff .= "<td bgcolor='$bgcolor' valign='top' align='left'></td>";

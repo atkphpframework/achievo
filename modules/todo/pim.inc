@@ -22,7 +22,7 @@
     {
       $todo_assignedtome.= text("pim_todo_empty")."<br>";
     }
-    $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.userid='$userid'"),text('add'),SESSION_NESTED);
+    $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.id='$userid'"),text('add'),SESSION_NESTED);
 
     $todo_assignedbyme = text("pim_assignedbyyou").":<br>";
     $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");

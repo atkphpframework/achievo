@@ -17,7 +17,7 @@ class role extends atkNode
 {
   function role()
   {
-    $this->atkNode("role", NF_NO_DELETE);
+    $this->atkNode("role");
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
     $this->add(new atkAttribute("name"));
@@ -34,6 +34,18 @@ class role extends atkNode
   function descriptor($record)
   {
     return text($record["name"]);
+  }
+  
+  function recordActions($record, &$actions)
+  {
+    global $g_db;
+    $role_id = $record["id"];
+    // Check if role is being used.
+    $recs = $g_db->getrows("select count(1) as cnt from project_person where role='".$role_id."'");
+    if ($recs[0]["cnt"]>0)
+    {
+      unset($actions["delete"]);
+    }
   }
 }
 

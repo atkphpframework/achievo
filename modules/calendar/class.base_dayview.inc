@@ -384,7 +384,7 @@
        $attendees = $this->get_attendees($this->allDayItems[$i]["id"]);
        $found = 0;
 
-       $att = "Attendees: ";
+       $att = text("schedule_attendees").": ";
        if ($this->allDayItems[$i]["all_users"]) $att .= text("all_users");
        for($k=0;$k<count($attendees);$k++)
        {
@@ -484,7 +484,7 @@
            $bgcolor = $colors[$info["scheduletype"]]["back"];
            $fgcolor = $colors[$info["scheduletype"]]["fore"];
            $descr   = $info["description"];
-           $status  = " [".$info["status"]."]";
+           $status  = " [".text($info["status"])."]";
           }
 
           // if viewing public items for all users
@@ -506,7 +506,7 @@
           $attendees = $this->get_attendees($info["id"]);
           $found = 0;
 
-          $att = "Attendees: ";
+          $att = text("schedule_attendees").": ";
           if ($info["all_users"]) $att .= text("all_users");
           for($k=0;$k<count($attendees);$k++)
           {

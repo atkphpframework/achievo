@@ -47,6 +47,8 @@
       $recs[$i]["starttime"] = $attribute->db2value($recs[$i]);
       $attribute = &$schedulenode->m_attribList["endtime"];
       $recs[$i]["endtime"] = $attribute->db2value($recs[$i]);
+      $attribute = &$schedulenode->m_attribList["owner"];
+      $recs[$i]["owner"] = $attribute->db2value($recs[$i]);
     }
 
     if (count($recs)>0)

@@ -31,6 +31,17 @@ class hours_lock extends atkNode
     }
   }
   
+  function week_validate(&$record, $mode)
+  {
+    $value = $record["week"];
+    $week = substr($value,4,2);
+    $year = substr($value,0,4);
+    if (strlen($value)!=6 || !is_numeric($value) || $week<0 || $week>53 || $year<1970)
+    {
+      triggerError($record, "week", "error_invalidweek");
+    }
+  }
+  
   function userid_display($rec, $mode)
   {
     if ($this->m_attribList["userid"]->isEmpty($rec))

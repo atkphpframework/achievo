@@ -244,7 +244,8 @@
                                      contain an Achievo database. This database probably belongs to a different application.
                                      <br>It is strongly recommended to install Achievo to a new, empty database.
                                      <br><br>If you are intentionally installing Achievo into a non-empty database, you can 
-                                     continue, but keep this in mind: The installation process may fail if there are conflicting tables                                      already present in the database, and it might even try to modify or drop existing tables. 
+                                     continue, but keep this in mind: The installation process may fail if there are conflicting tables
+                                     already present in the database, and it might even try to modify or drop existing tables. 
                                      <br><br><b>Continue at your own risk</b>.",
                                      "installdb");
         }
@@ -324,7 +325,14 @@
     
     function action_installdb()
     {
-      global $g_modules, $g_layout;
+      global $g_modules, $g_layout, $g_modifiers;
+      
+      // We must clear the modifiers. Modifiers will cause extra fields to be
+      // installed, but this should be done by the extension modules
+      // themselves. Not clearing the modifiers will lead to 'column already
+      // exists' errors.
+      $old_modifiers = $g_modifiers;
+      $g_modifiers = array();
       
       $g_layout->initGui();                                     
       
@@ -362,6 +370,9 @@
       {
         $ok = false;
       }
+      
+      // Restore modifiers.
+      $g_modifiers = $old_modifiers;
       
       if ($ok)
       {
@@ -917,6 +928,7 @@
         if ($this->upgradedb($result))
         {
           $output.=$this->renderResult($result);
+          $this->renderReport($output);
         }
       } 
       $this->setupscreen("Upgrading from version $orgversion",
@@ -963,6 +975,7 @@
       {
         // things have been installed. Show result.
         $output = $this->renderResult($result);     
+        $this->renderReport($output);
 
         if ($this->m_cancontinue)
         {

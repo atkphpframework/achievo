@@ -10,7 +10,7 @@
       registerNode("project.activity", array("admin", "add", "edit", "delete", "stats"));
       registerNode("project.tpl_phase", array("admin", "add", "edit", "delete"));
       registerNode("project.tpl_project", array("admin", "add", "edit", "delete"));
-      registerNode("project.role", array("admin", "add", "edit"));
+      registerNode("project.role", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
