@@ -228,7 +228,7 @@
   $dbs = array("mysql"=>"mysql_pconnect",
                "oci8"=>"OCILogon",
                "oci9"=>"OCILogin",
-               "pgsql"=>"pf_connect");
+               "pgsql"=>"pg_connect");
   if (!function_exists($dbs[atkconfig("database")]))
   {
     $errors[] = "Your PHP installation seems to be compiled without <b>".atkconfig("database")."</b> 

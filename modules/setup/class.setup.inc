@@ -72,7 +72,7 @@
       
       $res = $g_db->connect();
       
-      if ($res==DB_SUCCESS)
+      if ($res==DB_SUCCESS && atkconfig("database") == "mysql")
       {        
         // This can't be trusted. Mysql returns DB_SUCCESS even
         // if the user doesn't have access to the database. We only get an
@@ -205,6 +205,7 @@
       
       $tablenames=array();
       $tables = $g_db->table_names();
+      atk_var_dump($tables);
       for ($i=0, $_i=count($tables); $i<$_i; $i++)
       {
         $tablenames[] = $tables[$i]["table_name"];
@@ -625,6 +626,7 @@
         // add columns to it.
         global $g_db;        
         $meta = $g_db->metadata($node->m_table, true);                
+        atk_var_dump($meta, 'metadata '.$this->m_table);
         
         if ((!is_array($meta)||count($meta)<=0) && in_array($node->m_table, $this->getTableNames()))
         {

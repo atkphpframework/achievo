@@ -15,15 +15,15 @@
   // MySQL is currently the only officially supported database.
   // Experimental: If you want to use PostgreSQL, change this value to 
   // "pgsql". For Oracle, use "oci8" or "oci9".
-  $config_database = "mysql";
+  $config_database = "pgsql";
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_1_1";  
-  $config_databaseuser = "demo";
-  $config_databasepassword = "demo";
+  $config_databasename = "achievo";  
+  $config_databaseuser = "achievo";
+  $config_databasepassword = "achievo";
 
 
   // -------------------------------------------
