@@ -17,7 +17,7 @@ Changes in Achievo 0.9.2
 + Added a possibility to add contacts to a project in a certain role. Roles can 
   be defined.
 + Employees now have a role in a project.
-+ Added a report for organizations which contains all infomration regarding the 
++ Added a report for organizations which contains all information regarding the 
   organization and the contacts.
 * Reorganised Achievo codebase. Everything is now located in modules.
 * You can now no longer register time on nonactive project phases. (bug #51)
@@ -29,7 +29,14 @@ Changes in Achievo 0.9.2
   planning a meeting.
 * Renamed customer to organization. Organization has a wider range than just
   customers.
-* Changed database structure of Achievo.
+* Changed database structure of Achievo to reflect new module approach. Contacts 
+  and employees are now saved in one tabel called person. Also the person tabel   
+  uses not the userid as primary key, but uses a number (auto increment) as 
+  primary key. Employees and contacts of a project are also saved in one table, 
+  project_person. The customer table is now called organization (see above). For 
+  this changes there is a convert script available. This also converts current 
+  tables to use the numeric key of a person, but used to use the userid of an 
+  employee as referential key.
 
 Changes in Achievo 0.9.1
 ------------------------
