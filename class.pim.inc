@@ -97,7 +97,8 @@
 
       if (count($recs)>0)
       {
-        $plannedhours.= $planningsnode->recordList($recs,$actions,false, array("employeeid", "plandate"));
+        $suppressList = array("employeeid", "plandate");
+        $plannedhours.= $planningsnode->recordList($recs,$actions,false, $suppressList);
       }
       else
       {
