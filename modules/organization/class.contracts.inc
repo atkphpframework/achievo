@@ -4,6 +4,7 @@ userelation("atkmanytoonerelation");
 useattrib("atklistattribute");
 useattrib("atkdateattribute");
 useattrib("atktextattribute");
+useattrib("atknumberattribute");
 
 class contracts extends atkNode
 {
