@@ -16,7 +16,8 @@
     function action_search()
     {
       global $g_layout, $g_sessionManager;
-      
+
+      $g_layout->initGui();
       $g_layout->ui_top(text("search"));  
       
       // Searchstring is a stackvar. We get it through the post_vars, 
