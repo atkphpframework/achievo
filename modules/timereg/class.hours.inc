@@ -21,8 +21,7 @@ class hours extends atkNode
 {
   var $m_lock = "";
   var $m_viewdate = "";
-  var $m_weekview = "";
-  var $m_initial_date = array();
+  var $m_weekview = "";  
   var $m_insertmode = ""; // can be set to 'day' or 'multi'
   var $m_jump_date = "";
 
@@ -31,8 +30,8 @@ class hours extends atkNode
     global $g_sessionManager,$ATK_VARS;
 
     // weekview and viewdate are variables that we need to remember..
-    $this->m_weekview = $g_sessionManager->stackVar("weekview");
-    $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
+    $this->m_weekview = $g_sessionManager->pageVar("weekview");
+    $this->m_viewdate = $g_sessionManager->pageVar("viewdate");
     $this->m_jump_date = $_POST["jump_date"];
     if(is_array($this->m_jump_date))
     {
@@ -81,29 +80,34 @@ class hours extends atkNode
       $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
     }
   }
+  
+  function getInitialDate()
+  {
+    if ($this->m_viewdate!="")
+    {
+       $initial_date = Array("year"=>substr($this->m_viewdate,0,4),
+                             "month"=>substr($this->m_viewdate,5,2),
+                             "day"=>substr($this->m_viewdate,8,2));
+    }
+    else
+    {
+      $initial_date = Array("year"=>date("Y"),
+                            "month"=>date("m"),
+                            "day"=>date("d"));
+    }
+    return $initial_date;
+   
+  }
 
   function initial_values()
   {
-     global $g_user;
-
-     if ($this->m_viewdate!="")
-     {
-       $this->m_initial_date = Array("year"=>substr($this->m_viewdate,0,4),
-                             "month"=>substr($this->m_viewdate,5,2),
-                             "day"=>substr($this->m_viewdate,8,2));
-     }
-     else
-     {
-       $this->m_initial_date = Array("year"=>date("Y"),
-                             "month"=>date("m"),
-                             "day"=>date("d"));
-     }
+     global $g_user;   
      
      return array("userid"=>strtolower($g_user["name"]),
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d")),
-                  "activitydate"=>$this->m_initial_date
+                  "activitydate"=>$this->getInitialDate()
                   );
   }
 
@@ -181,7 +185,7 @@ class hours extends atkNode
       $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$this->m_viewdate.'&weekview=1', text("houradmin_gotoweekview"));
       $res.='</td><td align="right" valign="top">';
       $res.=session_form();
-      $dummy_rec = array("jump_date"=>$this->m_initial_date);
+      $dummy_rec = array("jump_date"=>$this->getInitialDate());
       $datebox = new atkDateAttribute("jump_date","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
       $res.=$datebox->edit($dummy_rec);
       $res.='&nbsp;<input type="submit" value="'.text("houradmin_goto").'">';
@@ -261,7 +265,7 @@ class hours extends atkNode
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("lock").'</b>');
     }
     $prevnextlinks.='</td><td valign="top" align="right">';
-    $dummy_rec = array("jump_date"=>$this->m_initial_date);
+    $dummy_rec = array("jump_date"=>$this->getInitialDate());
     $datebox = new atkDateAttribute("jump_date","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
     $prevnextlinks.=$datebox->edit($dummy_rec);
     $prevnextlinks.='&nbsp;<input type="submit" value="'.text("houradmin_goto").'">';
