@@ -13,10 +13,4 @@
   module("resource_planning");
   module("pim");
   module("search");
-  module("mod_offerte");
-  module("storing");
-  module("athos");
-  module("secrets");
-  module("corvee");
-  module("ibuildings");
 ?>
