@@ -6,11 +6,14 @@ include_once "class.projectattrib.inc";
   {
     function costregistration()
     {
-      $this->atkNode("costregistration"); // node() constructor is *not* called automatically!
-     
+      global $g_user;
+
+      $this->atkNode("costregistration"); // node() constructor is *not* called automatically!      
+      $this->addFilter("userid",strtolower($g_user["name"]));
+  
       $this->addAttribute(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
       $this->add(new atkAttribute("userid", AF_READONLY));
-      	$this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+      $this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
       $this->addAttribute(new atkProjectAttribute("projectid", AF_OBLIGATORY|AF_SEARCHABLE));
       
       //$this->addAttribute(new atkManytoOneRelation("project_id","project", AF_OBLIGATORY|AF_SEARCHABLE));
@@ -34,9 +37,8 @@ include_once "class.projectattrib.inc";
       
       atkdebug("costregistration::costregistration()");
       
-      $this->setOrder("id");
-      //$this->setFilter("test='test'");
-      
+      $this->setOrder("date");
+            
       $this->setTable("costregistration", "costregistration");
     }
 
@@ -58,7 +60,6 @@ include_once "class.projectattrib.inc";
        atkdebug("EDIT VALUES");
        return Array("hits"=>100);
     }
-
 
     function descriptor_def()
     {
