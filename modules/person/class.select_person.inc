@@ -7,7 +7,9 @@ class select_person extends person
   function select_person()
   {
     $this->person("select_person");
-    $this->addFilter("person.status <> 'nonactive' AND (person.role = 'contact' OR person.role = 'employee')");
+    
+    // for employees the nonactive ones must be filtered out.
+    $this->addFilter("person.status <> 'nonactive' OR person.role <> 'employee'");
 
     $this->remove("role");
     $this->remove("fax");
