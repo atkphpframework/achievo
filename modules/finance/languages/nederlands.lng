@@ -27,4 +27,66 @@
   $txt_fixed_price = "Vaste offerteprijs";
   $txt_fixed_price_explain = "Vaste offerteprijs is in %s. Wanneer geen prijs is ingevuld, zijn de uurtarieven van toepassing";
   
+  $txt_title_hourspecify = "Specificeer uren";
+        $txt_bill_reghours = "Laat alle niet geregistreerde uren zien";
+	$txt_title_selecthours = "Selecteer uren";
+
+        $txt_warning_fixedprice1 = "Dit project heeft een vaste prijs van ";
+	$txt_warning_fixedprice2 = "staat al op de factuur.";
+	
+	$txt_fixed_billed = "Factuur Waarde";
+	$txt_aftercalc = "Na Calculatie";
+	$txt_fixedcalc = "Vasteprijs Calculatie";
+	$txt_discount = "Korting";
+	$txt_costs = "Kosten";
+	$txt_calcoption = "Factuurregel gebaseerd op";
+	$txt_title_discount = "Korting op de factuur";
+	$txt_title_costsbill = "Kosten op de factuur";
+	$txt_entirebill = "Totale factuur";
+	$txt_shortdescription = "Korte omschrijving";
+	$txt_fixedamount = "Alleen voor vaste prijs calculatie:";
+	$txt_checktext = "U moet een waarde kiezen tussen 0% en 100%";
+	$txt_checktext1 = "U moet een waarde invoeren";
+	$txt_error_billamount_tohigh = "De waarde van de factuur is te hoog";
+	$txt_title_generatebill = "Genereer Factuur";
+	$txt_choose_contact = "Selecteer een contactpersoon:";
+	$txt_input_contact = "Of type een andere:";
+	$txt_generate_bill = "Genereer Factuur";
+	$txt_customer_info = "Klant Informatie:";
+	$txt_company_info = "Bedrijf Informatie:";
+	$txt_company_info_checkbox = "Het bedrijfsadres op de factuur?";
+	$txt_billinfo_change = "De factuur aanpassen";
+	$txt_billlines_change = "De factuurregels aanpassen";
+	$txt_Fixed_billline = "vaste prijs factuurregel ";
+	$txt_calc_billline = "Na calculatie factuurregel ";
+	$txt_billed_hours = "Gefactureerde uren: ";
+	$txt_billlines_amount = "Factuurregel Bedrag:";
+	$txt_costs_billline = "Kosten Factuurregel ";
+	$txt_bill_date = "Datum factuur:";
+	$txt_bill_expiredate = "Factuur vervaldatum:";
+	$txt_bill_number = "Factuurnummer:";
+	$txt_bill_discount = "Korting:";
+	$txt_entire_bill_discount = "korting over de totale factuur.";
+	$txt_display_discount = "Korting: ";
+	$txt_outputbill_bill = "Factuur";
+	$txt_outputbill_billto = "Factuur aan:";
+	$txt_outputbill_contact = "T.a.v ";
+	$txt_outputbill_billnr = "Factuurnummer:";
+	$txt_outputbill_billdate = "Factuurdatum:";
+	$txt_outputbill_billexpiredate = "Vervaldatum:";
+	$txt_outputbill_description = "Omschrijving";
+	$txt_outputbill_amount = "Bedrag";
+	$txt_outputbill_entirediscount = "korting over de totale factuur.";
+	$txt_outputbill_totalexcl = "Subtotaal excl. ";
+	$txt_outputbill_totalpay = "Totaal Bedrag";
+	$txt_bill_line_no = "Er zijn geen factuurregels toegevoegd aan deze factuur, dus er kan geen factuur gegenereerd worden";
+	$txt_bill_status_final = "Deze factuur is al een keer genereerd. Hij kan niet nog een keer gegenereerd worden.";
+	$txt_bill_knob_cancel = "Cancel";
+	$txt_bill_knob_goback = "Terug naar uren";
+	$txt_title_nohours = "Er zijn geen uren geselecteerd!";
+	$txt_bill_nohours = "U heeft geen uren geselecteerd. Druk op 'Terug naar uren' om uren te selecteren of druk op 'cancel' op de factuurregel te verwijderen.";
+	$txt_title_error = "Fout";
+	$txt_bill_print = "Print";
+	$txt_bill_edit = "Bewerk";
+  
 ?>

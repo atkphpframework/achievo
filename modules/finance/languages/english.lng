@@ -27,4 +27,100 @@
   $txt_fixed_price = "Fixed price";
   $txt_fixed_price_explain = "Fixed price is in %s. When no price is entered, the hourly rates will apply";
 
+  /* Rates */
+
+  $txt_title_rates_admin = "Rates Admin";  
+  $txt_title_ratess_add   = "Rates Add";
+  $txt_title_rates_edit  = "Rates Edit";
+	$txt_link_rates_add = "Add new rate";
+  $txt_userid = "User";
+	$txt_project_id = "Project";
+	$txt_activity_id = "Activity";
+	$txt_customer_id = "Customer";
+  $txt_priority = "Priority";
+	$txt_rate = "Rate";
+	$txt_end_date = "End Date";
+	$txt_start_date = "Start Date";
+	$txt_description = "Description";
+	
+	/* Customer */
+  
+	//$txt_menu_customer_admin = "Customer Administration";
+
+  /* Currency */
+	
+	$txt_title_currency_admin = "Currency Admin";
+	$txt_title_currency_add = "Currency Add";
+	$txt_title_currency_edit = "Currency Edit";
+	$txt_title_currency_delete = "Currency Delete";
+	
+	$txt_name = "Name";
+	$txt_value = "Value";
+	$txt_symbol = "Currency Symbol";
+        
+        $txt_menu_bill = "Bill Admin";
+        $txt_link_bill_add = "Add Bill";
+        
+        $txt_title_hourspecify = "Specify hours";
+        $txt_bill_reghours = "Show all unregistered hours";
+	$txt_title_selecthours = "Select hours";
+
+        $txt_warning_fixedprice1 = "This project has a fixed price of ";
+	$txt_warning_fixedprice2 = "is allready billed.";
+	
+	$txt_fixed_billed = "Bill Amount";
+	$txt_aftercalc = "After Calculation";
+	$txt_fixedcalc = "Fixed Calculation";
+	$txt_discount = "Discount";
+	$txt_costs = "Costs";
+	$txt_calcoption = "Bill Line based on";
+	$txt_title_discount = "Discount on Bill";
+	$txt_title_costsbill = "Costs on Bill";
+	$txt_entirebill = "Entire Bill";
+	$txt_shortdescription = "Short Discription";
+	$txt_fixedamount = "For fixed calculation only:";
+	$txt_checktext = "You have to choose a value between 0% and 100%";
+	$txt_checktext1 = "You have to fill in an amount";
+	$txt_error_billamount_tohigh = "Bill amount to high";
+	$txt_title_generatebill = "Generate Bill";
+	$txt_choose_contact = "Choose a contactsperson:";
+	$txt_input_contact = "Or type another one:";
+	$txt_generate_bill = "Generate Bill";
+	$txt_customer_info = "Customer Information:";
+	$txt_company_info = "Company Information:";
+	$txt_company_info_checkbox = "Company adress on the Bill?";
+	$txt_billinfo_change = "Customize the bill";
+	$txt_billlines_change = "Customize the bill lines";
+	$txt_Fixed_billline = "Fixed Billline ";
+	$txt_calc_billline = "After Calculation Billline ";
+	$txt_billed_hours = "Billed hours: ";
+	$txt_billlines_amount = "Bill Line Amount:";
+	$txt_costs_billline = "Cost Bill Line ";
+	$txt_bill_date = "Bill date:";
+	$txt_bill_expiredate = "Bill expire date:";
+	$txt_bill_number = "Bill number:";
+	$txt_bill_discount = "Discount:";
+	$txt_entire_bill_discount = "discount on the entire bill.";
+	$txt_display_discount = "Discount: ";
+	$txt_outputbill_bill = "Bill";
+	$txt_outputbill_billto = "Bill to:";
+	$txt_outputbill_contact = "To. ";
+	$txt_outputbill_billnr = "Bill number:";
+	$txt_outputbill_billdate = "Bill date:";
+	$txt_outputbill_billexpiredate = "Expiredate:";
+	$txt_outputbill_description = "Description";
+	$txt_outputbill_amount = "Amount";
+	$txt_outputbill_entirediscount = "discount on the entire bill.";
+	$txt_outputbill_totalexcl = "Subtotal excl. ";
+	$txt_outputbill_totalpay = "Total amount";
+	$txt_bill_line_no = "There are no bill lines on this bill, so you can't generate a bill";
+	$txt_bill_status_final = "This bill is allready generated. You can't generate it again.";
+	$txt_bill_knob_cancel = "Cancel";
+	$txt_bill_knob_goback = "Back to hours";
+	$txt_title_nohours = "No hours selected!";
+	$txt_bill_nohours = "You didn't select any hours. Press 'Back to hours' to select hours or press 'cancel' to delete the bill line.";
+	$txt_title_error = "Error";
+	$txt_bill_print = "Print";
+	$txt_bill_edit = "Edit";
+
 ?>

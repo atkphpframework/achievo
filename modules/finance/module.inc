@@ -19,6 +19,7 @@
     function getMenuItems()
     {			      
       /* add menuitems */
+      //$target_bill = "dispatch.php?atknodetype=finance.bill&atkaction=admin&selectedprojectid=[id]";
       menuitem("finance","","main",1,675);
       menuitem("-","","main",1,676);
 
@@ -28,8 +29,8 @@
       menuitem("finance_customer", dispatch_url("finance.finance_customer", "admin"),"finance", 1);
       menuitem("finance_project", dispatch_url("finance.finance_project", "admin"),"finance", 1);
       menuitem("-","","finance");      
-      menuitem("billing_project", dispatch_url("finance.billing_project", "admin"),"finance", 1);
-
+      menuitem("bill", dispatch_url("finance.bill", "admin"),"finance", 1);
+      
     }
   }
 
