@@ -52,32 +52,59 @@ class profileAttribute extends atkAttribute
     /* get permissions */
     $checked = $record[$this->fieldName()];
     
-    /* what nodes? global app and modules! */
+    /***  main application ***/
     $nodes = $GLOBALS["g_nodes"];
+    if (count($nodes) > 0)
+    {
+      $result .= "<b><u>".text("app_title")."</u></b><br><br>";
+      while (list($node, $actionarr) = each($nodes))
+      {
+        $checked_actions = $checked[$node];
+        if (is_array($actionarr))
+        {
+          $result.="<b>".text(getNodeType($node))."</b><br>";
+          for ($i=0;$i<count($actionarr);$i++)
+          {
+            $action = $actionarr[$i];
+            if (substr($action,0,1)=="*") $action=substr($action,1);
+            $result.='<input type="checkbox" name="'.$this->formName().'[]" value="'.$node.".".$action.'" ';
+            if (is_array($checked_actions)&&in_array($action, $checked_actions)) $result.=" checked";
+            $result.='> '.text($action).'&nbsp;&nbsp;&nbsp;';
+          }
+          $result.="<br><br>";
+        }
+      }
+    }
+ 
+    /*** per module ***/
     foreach ($GLOBALS["g_modules"] as $module)
     {
       $mod_inst = new $module();
-      foreach ($mod_inst->getNodes() as $node => $actionarr) $nodes["$module.$node"] = $actionarr;
-    }
-    
-    /* build edit screen */
-    while (list($node, $actionarr) = each($nodes))
-    {
-      $checked_actions = $checked[$node];
-      if (is_array($actionarr))
+      $nodes = $mod_inst->getNodes();
+      if (count($nodes) > 0)
       {
-        $result.="<b>".text(getNodeType($node))."</b><br>";
-        for ($i=0;$i<count($actionarr);$i++)
+        $result .= "<br><b><u>".text("title_$module")."</u></b><br><br>";      
+        while (list($node, $actionarr) = each($nodes))
         {
-          $action = $actionarr[$i];
-          if (substr($action,0,1)=="*") $action=substr($action,1);
-          $result.='<input type="checkbox" name="'.$this->formName().'[]" value="'.$node.".".$action.'" ';
-          if (is_array($checked_actions)&&in_array($action, $checked_actions)) $result.=" checked";
-          $result.='> '.text($action).'&nbsp;&nbsp;&nbsp;';
+          $checked_actions = $checked["$module.$node"];
+          if (is_array($actionarr))
+          {
+            $result.="<b>".text(getNodeType($node))."</b><br>";
+            for ($i=0;$i<count($actionarr);$i++)
+            {
+              $action = $actionarr[$i];
+              if (substr($action,0,1)=="*") $action=substr($action,1);
+              $result.='<input type="checkbox" name="'.$this->formName().'[]" value="'.$module.".".$node.".".$action.'" ';
+              if (is_array($checked_actions)&&in_array($action, $checked_actions)) $result.=" checked";
+              $result.='> '.text($action).'&nbsp;&nbsp;&nbsp;';
+            }
+            $result.="<br><br>";
+          }
         }
-        $result.="<br><br>";
       }
     }
+    
+    /* return html */
     return $result;
   }
   
