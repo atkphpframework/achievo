@@ -189,6 +189,7 @@
      return $res;
     }
 
+
   /**
    * filterItems
    * seperates the items for allday events and normal appointments
@@ -229,6 +230,7 @@
     
      return $items;
     }
+
 
   /**
    * isColFree
@@ -330,21 +332,53 @@
      }
 
      $buff .= "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
-     $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='".$this->viewerWidth."'>\n";
 
-     for ($i=0;$i<=count($this->allDayItems)-1;$i++)
+     // if we have allday items show 'em in a seperate table
+     if (count($this->allDayItems) > 0)
      {
-      $type    = $this->allDayItems[$i]["item_type"];
-      $title   = $this->allDayItems[$i]["item_title"];
-      $bgcolor = $colors[$type]["back"];
-      $fgcolor = $colors[$type]["fore"];
-
+      $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='".$this->viewerWidth."'>\n";
       $buff .= "<tr>\n";
-      $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
-      $buff .= "<font face='verdana' size='-1' color='$fgcolor'><b>".$title."</b></font>";     
-      $buff .= "</td>";
-      $buff .= "</tr>";
-     } 
+      $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'><font color='#000000' size='-1'><b>".text("allday_appointments")."</b></font></td>\n";
+      $buff .= "</tr>\n";
+
+      for ($i=0;$i<=count($this->allDayItems)-1;$i++)
+      {
+       $type    = $this->allDayItems[$i]["item_type"];
+       $title   = $this->allDayItems[$i]["item_title"];
+       $bgcolor = $colors[$type]["back"];
+       $fgcolor = $colors[$type]["fore"];
+
+       $buff .= "<tr>\n";
+       $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
+
+       $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
+       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["item_owner"].")</b></font></td>";
+       $header .= "<td valign='top' align='right'>";
+ 
+       if ($this->allDayItems[$i]["item_owner"] == $this->owner)
+       {
+        $url     = "javascript:open_appointment(".$this->allDayItems[$i]["item_id"].", 1, 600, 450, 'no','no',0,0)";
+        $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("Edit")."</font></a>&nbsp;";
+       }
+       else
+       {   
+        if ($this->allDayItems[$i]["item_public"] == 1)
+        {
+         $url     = "javascript:open_appointment(".$this->allDayItems[$i]["item_id"].", 0, 600, 250, 'no','no',0,0)";
+         $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
+        }
+       } 
+       $header .= "</tr></table>";
+
+       $buff .= $header;
+       $buff .= "</td>";
+       $buff .= "</tr>";
+      }  
+      $buff .= "</table><br>";
+     }
+
+    // normal appointments
+     $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='".$this->viewerWidth."'>\n";
 
      for ($i=0;$i<=count($this->workHours)-1;$i++)
      {

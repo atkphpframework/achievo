@@ -78,10 +78,11 @@
    {
     global $g_sessionManager, $view, $PHP_SELF;
     global $g_layout, $dayview, $g_user;
+    global $viewdate;
 
     if (method_exists($this, $view))
     {
-     $result = $this->$view();
+     $result = $this->$view($viewdate);
     }
     else
     {
@@ -98,14 +99,14 @@
     }
 
     $g_layout->ui_top(text("Achievo scheduler / ".$view));
-    $g_layout->output(href($PHP_SELF."?view=weekview&weekview=$user","Weekview") ."&nbsp;". href($PHP_SELF."?view=monthview","Monthview"));
+    $g_layout->output(href($PHP_SELF."?view=weekview&weekview=$user&viewdate=$viewdate","Weekview") ."&nbsp;". href($PHP_SELF."?view=monthview&viewdate=$viewdate","Monthview"));
     $g_layout->output($result);
     $g_layout->ui_bottom();    
    }
 
-   function monthview()
+   function monthview($viewdate)
    {
-    global $g_layout, $viewdate, $g_user, $g_db, $dayview, $PHP_SELF;
+    global $g_layout, $g_user, $g_db, $dayview, $PHP_SELF;
 
     // viewdate is something like 2001-07-23
     $month = substr($viewdate, 5,2);
@@ -125,9 +126,9 @@
    }
 
 
-   function dayview()
+   function dayview($viewdate)
    {
-    global $g_layout, $viewdate, $g_user, $g_db, $dayview, $PHP_SELF;
+    global $g_layout, $g_user, $g_db, $dayview, $PHP_SELF;
 
     // viewdate is something like 2001-07-23
     $day   = substr($viewdate, 8,2);
@@ -175,11 +176,9 @@
     return $buff;
    }
 
-
-
-   function weekview()
+   function weekview($viewdate)
    {
-    global $g_layout, $viewdate, $g_user, $g_db, $weekview, $PHP_SELF;
+    global $g_layout, $g_user, $g_db, $weekview, $PHP_SELF;
 
     // viewdate is something like 2001-07-23
     $day   = substr($viewdate, 8,2);

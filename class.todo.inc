@@ -2,8 +2,8 @@
 
 class todo extends atkNode
 {
- var $prioId   = array(1,2,3);
- var $prioName = array("High","Normal","Low");
+ var $prioId   = array(1,2,3,4,5);
+ var $prioName = array("Highest","High","Normal","Low","Lowest");
 
   function todo()
   {
@@ -41,14 +41,24 @@ class todo extends atkNode
   // overide display of priority (set high to a red font)
   function priority_display($rec)
   {
-   if ($rec["priority"] == 1)
+   $dummy  = $rec["priority"];
+   $result = "";
+
+   switch ($dummy)
    {
-    return "<font color='#FF0000'>".$this->prioName[$rec["priority"]-1]."</font>";
-   } 
-   else
-   {
-    return $this->prioName[$rec["priority"]-1];
+    case 1:
+     $dummy = "<font color='#FF0000'>".$this->prioName[$dummy-1]."</font>";
+     break;
+
+    case 2:
+     $dummy = "<font color='#A00000'>".$this->prioName[$dummy-1]."</font>";
+     break;
+
+    default:
+     $dummy = $this->prioName[$rec["priority"]-1];
+     break;
    }
+   return $dummy;
   }
 
   function descriptor_def()
@@ -68,16 +78,23 @@ class todo extends atkNode
      break;
 
     case 2:    
-     $mslevel = "Normal";
+     $mslevel = "High";
      break;
 
     case 3:
-     $level   = 5;
+     $mslevel = "Normal";
+     break;
+
+    case 4:
+     $mslevel = "Low";
+     break;
+
+    case 5:
      $mslevel = "Low";
      break;
 
     default:
-     $level   = 2;
+     $level   = 3;
      $mslevel = "Normal";
    }
 
