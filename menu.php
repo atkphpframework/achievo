@@ -58,7 +58,7 @@
   {
     $parent = $g_menu_parent[$atkmenutop];
     $menu .= $config_menu_delimiter;
-    $menu .= href('menu.php?atkmenutop='.$parent,'<< '.text("menu_$parent"),SESSION_NEW).'<br>';  
+    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to").' '.text("menu_$parent"),SESSION_NEW).'<br>';  
   }
 
   /* bottom */

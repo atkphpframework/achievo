@@ -14,7 +14,7 @@
   //
   $config_databasehost = "localhost";
   $config_databasename = "achievo_0_7";
-  $config_databaseuser = "achievo";
+  $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
   // In admin pages, Achievo shows you a number of records with previous and
