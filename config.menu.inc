@@ -17,7 +17,8 @@
   menuitem("reports", "","main",true,370);
     menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"),"reports");    
     menuitem("weekreport", dispatch_url("weekreport", "report"),"reports",array("weekreport","report"));    
-  
+    menuitem("costregistration_costreport", dispatch_url("costregistration", "costreport"),"reports");
+
   menuitem("-", "","main",true,372);
    
   if ($selectedproject == 0)

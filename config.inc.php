@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_0_8";
+  $config_databasename = "achievo_0_7";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -122,8 +122,23 @@
   // Default currency and symbol to use.
   //
   $config_currency = "Euro";
-  $config_currency_symbol = "EUR";    
+  $config_currency_symbol = "EU";
+  $config_tax_symbol = "BTW";
+  $config_tax_rate = "19.00";
+  $config_bill_bankaccount = "58.78.14.305";
   
+  // -------------------------------------------
+  //           COMPANY CONFIGURATION
+  //--------------------------------------------
+  
+  //This vars have to be filled if you want your company on your bill
+  //
+  $config_company_name = "Ibuildings";
+  $config_company_adress = "Post-Post straat 10";
+  $config_company_zipcode = "1232 DB";
+  $config_company_city = "Sittard";
+  $config_company_country = "Nederland";
+
   // -------------------------------------------
   //            EXTERNAL MODULES
   // -------------------------------------------
@@ -132,7 +147,10 @@
   // Specify the module name as first parameter, and the path where
   // it can be found as the second parameter.
   //
+  
   // module("somemodule","../achievo_modules/somemodule");
+  // module("sw","../achievo_modules/sw");  
+  // module("tryllian","../achievo_modules/tryllian");  
 
   // -------------------------------------------
   //            END OF CONFIGURATION

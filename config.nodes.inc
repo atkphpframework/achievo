@@ -21,8 +21,22 @@
  
   registerNode("todo", array("admin", "add", "edit", "delete"));
   registerNode("project_notes", array("admin", "add", "edit", "delete"));
+
+  registerNode("project_notesview", array("admin", "add", "edit", "delete"));
+  registerNode("holidays", array("admin","add","edit","delete"));  
+
 //  registerNode("holidays", array("admin","add","edit","delete"));  
-//  registerNode("schedule", array("admin", "add", "edit", "delete"));  
-//  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
-//  registerNode("costregistration", array("admin", "add", "edit", "delete"));
+ 
+  registerNode("schedule", array("admin", "add", "edit", "delete"));  
+  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
+  registerNode("costregistration", array("admin", "add", "edit", "delete", "costreport", "view_all"));
+  registerNode("finance.currency", array("admin", "add", "edit", "delete"));
+  registerNode("finance.rates", array("admin", "add", "edit", "delete"));
+  registerNode("finance.currency", array("admin", "add", "edit", "delete"));
+  registerNode("finance.finance_customer", array("admin", "add", "edit", "delete"));
+  registerNode("finance.finance_project", array("admin", "add", "edit", "delete"));
+  registerNode("finance.bill", array("admin", "add", "edit", "delete", "generatebill", "viewbill"));
+  registerNode("finance.bill_line", array("admin", "add", "edit", "delete", "createbill"));
+
+
 ?>

@@ -6,10 +6,14 @@ include_once "class.projectattrib.inc";
   {
     function costregistration()
     {
-      global $g_user, $config_currency_symbol;
+      global $g_user, $config_currency_symbol, $atkaction;
 
       $this->atkNode("costregistration"); // node() constructor is *not* called automatically!      
-      $this->addFilter("userid",strtolower($g_user["name"]));
+      
+      if($atkaction!='costreport')
+      {
+        $this->addFilter("userid",strtolower($g_user["name"]));
+      }
   
       $this->add(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
       $this->add(new atkAttribute("userid", AF_READONLY|AF_HIDE));
@@ -18,9 +22,10 @@ include_once "class.projectattrib.inc";
       $this->add(new atkProjectAttribute("projectid", AF_OBLIGATORY));
       
       $this->add(new atkAttribute("value", AF_OBLIGATORY));
+      $this->add(new atkAttribute("description", AF_OBLIGATORY));
       $this->add(new atkManyToOneRelation("currency","finance.currency"));      
       $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditcard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));      
-      
+     
       $this->setOrder("costdate");
             
       $this->setTable("costregistration", "costregistration");
@@ -51,6 +56,11 @@ include_once "class.projectattrib.inc";
         $cur = $rec["currency"]["name"];
       }
       return "$cur";
+    }
+    
+    function action_costreport()
+    {      
+      include 'costreport.inc';
     }
 
     function descriptor_def()
