@@ -32,18 +32,22 @@
     $this->items = $items;
    }
 
+   function getItems()
+   {
+   }
+
    function weekNav()
    {
     global $PHP_SELF;
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-7, $this->year));
-    $prevUrl  = $PHP_SELF."?view=weekview&viewdate=$prevTime";  
+    $prevUrl  = $PHP_SELF."?view=weekview&viewdate=$prevTime&weekview=".$this->showGlobal;  
 
     $thisTime = date("Y-m-d");
-    $thisUrl  = $PHP_SELF."?view=weekview&viewdate=$thisTime";      
+    $thisUrl  = $PHP_SELF."?view=weekview&viewdate=$thisTime&weekview=".$this->showGlobal;    
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+7, $this->year));
-    $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime";
+    $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime&weekview=".$this->showGlobal; ;
 
     return href($prevUrl, text("Previous week"))."&nbsp;".href($thisUrl, text("This week"))."&nbsp;".href($nextUrl, text("Next week"));
    }
@@ -60,45 +64,50 @@
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $text  = text($this->items[$i]["day"])."<br>".substr($this->items[$i]["date"],8,2)."-".substr($this->items[$i]["date"],5,2);
-     $href  = $PHP_SELF."?view=dayview&viewdate=".$this->items[$i]["date"];
+     $href  = $PHP_SELF."?view=dayview&viewdate=".$this->items[$i]["date"]."&dayview=".$this->showGlobal;
      $buff .= "<td>".href($href, $text)."</td>";
     }
     $buff .= "</tr>";
 
+    // allday events
     $buff .= "<tr bgcolor='#FFFFFF'>";
-    $buff .= "<td>Allday<nobr> events</td>";   
+    $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>Allday<nobr> events</font></td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";
     }
     $buff .= "</tr>";
 
+    // midnight till 08:00
     $buff .= "<tr bgcolor='#FFFFFF'>";
-    $buff .= "<td>00:00 - 08:00</td>";   
+    $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>00:00<nobr> - 08:00</font></td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";
     }
     $buff .= "</tr>";
 
+    // morning
     $buff .= "<tr bgcolor='#FFFFFF'>";
-    $buff .= "<td>08:00 - 12:00</td>";   
+    $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>08:00<nobr> - 12:00</font></td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";
     }
     $buff .= "</tr>";
 
+    // afternoon
     $buff .= "<tr bgcolor='#FFFFFF'>";
-    $buff .= "<td>12:00 - 17:00</td>";   
+    $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>12:00<nobr> - 17:00</font></td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";
     }
     $buff .= "</tr>";
 
+    // evening
     $buff .= "<tr bgcolor='#FFFFFF'>";
-    $buff .= "<td>17:00 - 24:00</td>";   
+    $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>17:00<nobr> - 24:00</font></td>";   
     for ($i=1;$i<=count($this->items)-2;$i++)
     {
      $buff .= "<td><br><br><br></td>";

@@ -66,7 +66,7 @@
    function adminPage()
    {
     global $g_sessionManager, $view, $PHP_SELF;
-    global $g_layout;
+    global $g_layout, $dayview, $g_user;
 
     if (method_exists($this, $view))
     {
@@ -77,8 +77,17 @@
      $result = "Niet bestaande view ($view)";
     }
 
+    if (trim($dayview) == "")
+    {
+     $user = $g_user["name"];
+    }
+    else
+    {   
+     $user = $dayview;
+    }
+
     $g_layout->ui_top(text("Achievo scheduler / ".$view));
-    $g_layout->output(href($PHP_SELF."?view=weekview","Weekview") ."&nbsp;". href($PHP_SELF."?view=monthview","Monthview"));
+    $g_layout->output(href($PHP_SELF."?view=weekview&weekview=$user","Weekview") ."&nbsp;". href($PHP_SELF."?view=monthview","Monthview"));
     $g_layout->output($result);
     $g_layout->ui_bottom();    
    }
@@ -106,11 +115,10 @@
     $form  = "<FORM method='post' action='$PHP_SELF'>\n";
     $form .= session_form();	
     $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
-    $form .= "<input type='hidden' name='user' value='$user'>\n";
     $form .= "<SELECT name='dayview'>\n";
     $form .= $this->get_employees($user);
     $form .= "</SELECT>\n";
-    $form .= "<br><br><input type='submit' name='submit_dayview' value='".text("Change view")."'>\n";
+    $form .= "&nbsp;<input type='submit' name='submit_dayview' value='".text("Refresh")."'>\n";
     $form .= "</FORM>\n";
 
     // get the rendered matrix
@@ -124,10 +132,10 @@
     $legend .= $dummy->legend;
 
     // assign our output buffer
-    $buff  = "<table width='".$dummy->viewerWidth."'><tr>";
-    $buff .= "<td valign='top' align='left'>$legend</td>";
+    $buff  = "<br><br><table width='".$dummy->viewerWidth."'><tr>";
+    $buff .= "<td valign='top' align='left'>".$dummy->dayNav()."</td>";
     $buff .= "<td valign='top' align='right'>$form</td>";
-    $buff .= "</tr></table><br>";
+    $buff .= "</tr></table>";
     $buff .= $dummy->dumpMatrix();
  
     return $buff;
@@ -137,17 +145,42 @@
 
    function weekview()
    {
-    global $g_layout, $viewdate, $g_user, $g_db, $dayview, $PHP_SELF;
+    global $g_layout, $viewdate, $g_user, $g_db, $weekview, $PHP_SELF;
 
     // viewdate is something like 2001-07-23
     $day   = substr($viewdate, 8,2);
     $month = substr($viewdate, 5,2);
     $year  = substr($viewdate, 0,4);
 
+   // set default view
+    if (trim($weekview) == "")
+    {
+     $user = $g_user["name"];
+    }
+    else
+    {   
+     $user = $weekview;
+    }
+
+    $form  = "<FORM method='post' action='$PHP_SELF'>\n";
+    $form .= session_form();    
+    $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
+    $form .= "<SELECT name='weekview'>\n";
+    $form .= $this->get_employees($user);
+    $form .= "</SELECT>\n";
+    $form .= "&nbsp;<input type='submit' name='submit_dayview' value='".text("Refresh")."'>\n";
+    $form .= "</FORM>\n";
+
     $dummy = new weekView($day, $month, $year);
     $dummy->viewerWidth = "600";
+    $dummy->owner       = $g_user["name"];
+    $dummy->showGlobal  = $user;
     $dummy->generate();
-    $buff  = "<br><br>".$dummy->weekNav()."<br>";
+
+    $buff  = "<br><br><table width='".$dummy->viewerWidth."'><tr>";
+    $buff .= "<td valign='top' align='left'>".$dummy->weekNav()."</td>";
+    $buff .= "<td valign='top' align='right'>$form</td>";
+    $buff .= "</tr></table>"; 
     $buff .= $dummy->dumpMatrix();
 
     return $buff;

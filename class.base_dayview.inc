@@ -66,6 +66,26 @@
      $this->colors = $this->getColors();
     }
 
+  /**
+   * dayNav
+   * navigate through days using prev/next day link
+   * @returns html code containing links for previous day, today and next day
+   */
+   function dayNav()
+   {
+    global $PHP_SELF;
+
+    $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-1, $this->year));
+    $prevUrl  = $PHP_SELF."?view=dayview&viewdate=$prevTime&dayview=".$this->showGlobal;
+
+    $thisTime = date("Y-m-d");
+    $thisUrl  = $PHP_SELF."?view=dayview&viewdate=$thisTime&dayview=".$this->showGlobal;
+
+    $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
+    $nextUrl  = $PHP_SELF."?view=dayview&viewdate=$nextTime&dayview=".$this->showGlobal;
+
+    return href($prevUrl, text("Previous day"))."&nbsp;".href($thisUrl, text("Today"))."&nbsp;".href($nextUrl, text("Next day"));
+   }
 
   /**
    * get the items for the specified date
@@ -290,18 +310,7 @@
       $aCols  = $cols+1;
      }
 
-     $buff .= "<b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b>";
-
-     if (date("Y") != $this->year || date("m") != $this->month || date("d") != $this->day)
-     {
-      $today = date("Y-m-d");
-      $buff .= "&nbsp;<a href='$PHP_SELF?view=dayview&viewdate=$today'>".text("today")."</a>";
-     }
-     else
-     {
-      $buff .= "<br>";
-     }
-
+     $buff .= "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
      $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='".$this->viewerWidth."'>\n";
 
      for ($i=0;$i<=count($this->allDayItems)-1;$i++)
