@@ -12,7 +12,7 @@ class bill extends atkNode
   {
     $this->atkNode("bill", NF_EDITAFTERADD);
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkManytoOneRelation("projectid","project", AF_OBLIGATORY));
+    $this->add(new atkManytoOneRelation("projectid","project.project", AF_OBLIGATORY));
     $this->add(new atkDateAttribute("create_date",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
     $this->add(new atkAttribute("userid",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
     $this->add(new atkTextAttribute("description", AF_HIDE_ADD|AF_HIDE_LIST));

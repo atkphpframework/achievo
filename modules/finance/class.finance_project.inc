@@ -14,8 +14,8 @@ class finance_project extends atkNode
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
-    $this->add(new atkManyToOneRelation("customer","customer",AF_HIDE_SELECT|AF_READONLY));
-    $this->add(new atkManyToOneRelation("coordinator","employee",AF_SEARCHABLE|AF_READONLY));
+    $this->add(new atkManyToOneRelation("customer","organization.customer",AF_HIDE_SELECT|AF_READONLY));
+    $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_READONLY));
     $this->add(new atkAttribute("description",AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_READONLY));    
     $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_READONLY));

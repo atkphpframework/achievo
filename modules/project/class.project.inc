@@ -20,9 +20,9 @@
       $this->add(new atkAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST));
-      $this->add(new atkManyToOneRelation("customer","customer",AF_HIDE_SELECT|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("customer","organization.customer",AF_HIDE_SELECT|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
 
-      $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
+      $preFilter = new atkManyToOneRelation("contact","organization.contact",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
       $preFilter->m_destinationFilter = "company='[customer.id]'";
       $this->add($preFilter);
 

@@ -180,7 +180,7 @@
     $g_layout->td(text('or'),'colspan="2"');
     $g_layout->output('</tr><tr>');
     $g_layout->td(text('customer').':');
-    $customeratt = new atkManyToOneRelation("customerid", "customer");
+    $customeratt = new atkManyToOneRelation("customerid", "organization.customer");
     $g_layout->td($customeratt->edit($dummyrec));
     $g_layout->output('</tr><tr>');  
     $g_layout->td('<hr>','colspan="2"');

@@ -17,10 +17,10 @@ class rates extends atkNode
     $this->add(new atkDateAttribute("enddate",AF_OBLIGATORY));
     $this->add(new atkAttribute("rate",AF_OBLIGATORY));
     $this->add(new atkNumberAttribute("priority",AF_OBLIGATORY));
-		$this->add(new atkManytoOneRelation("userid","employee", AF_RELATION_AUTOLINK));
-		$this->add(new atkManytoOneRelation("projectid","project", AF_RELATION_AUTOLINK));
-		$this->add(new atkManytoOneRelation("activityid","activity", AF_RELATION_AUTOLINK));
-		$this->add(new atkManytoOneRelation("customerid","customer", AF_RELATION_AUTOLINK));		
+		$this->add(new atkManytoOneRelation("userid","employee.employee", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("projectid","project.project", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("activityid","project.activity", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("customerid","organization.customer", AF_RELATION_AUTOLINK));		
 
     $this->setTable("rate","rate");
     $this->setOrder("id");

@@ -15,7 +15,7 @@ class project_todoview extends atkNode
 
     $this->add(new atkAttribute("id"                                , AF_AUTOKEY));
     $this->add(new atkAttribute("name"                              , AF_READONLY));
-    $this->add(new atkManyToOneRelation("customer","customer"       , AF_READONLY|AF_HIDE_LIST));
+    $this->add(new atkManyToOneRelation("customer","organization.customer"       , AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description"                   , AF_READONLY));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0 , AF_READONLY|AF_HIDE_LIST));    

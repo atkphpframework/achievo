@@ -1,6 +1,7 @@
 <?php
   module("employee");
   module("project");
+  module("organization");
   module("timereg");
   module("costreg");
   module("notes");

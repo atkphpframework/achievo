@@ -11,7 +11,7 @@ class finance_customer extends atkNode
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_READONLY));
-    $this->add(new atkOneToManyRelation("contactperson","contact","company",AF_HIDE_LIST|AF_READONLY));
+    $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkAttribute("address", AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkAttribute("zipcode", AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkAttribute("city", AF_HIDE_LIST|AF_READONLY));
