@@ -38,6 +38,8 @@ Changes in Achievo 0.9.2
   has been renamed to 'Access'. (bug #100) [Ivo]
 + All screens have now default 'view' links for readonly access to the data,
   which is enabled if the user has the 'Access' right. (bug #41) [Ivo]
++ In the employee contracts, you can now configure on which day people 
+  work. [Ivo]
 + Added PIM API. All modules can now add information to the PIM screen. [Ivo]
 + Added Search API. All modules can now return searchresults when using the 
   search feature from the topframe.  [Ivo]

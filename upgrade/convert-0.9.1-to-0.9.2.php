@@ -136,6 +136,9 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE person ADD role VARCHAR(15) NOT NULL";
   $res = $g_db->query($sql);
   handleError($sql);
+  $sql = "ALTER TABLE usercontract ADD workingdays VARCHAR(15) NOT NULL";
+  $res = $g_db->query($sql);
+  handleError($sql);
 
   //set role = "contact" for all persons in person table
   //these persons are only contacts at this moment
