@@ -1,5 +1,7 @@
 <?php
 
+define("AF_FORMSUBMIT", AF_SPECIFIC_1);
+
 class atkProjectAttribute extends atkAttribute
 {
   /**
@@ -26,7 +28,7 @@ class atkProjectAttribute extends atkAttribute
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
     if (is_array($currentproject)) $currentproject = $currentproject["projectid"];
-     
+
     // The current value might be overriden by use of the 'search all phases' button
     if (isset($selectedprojectid)&&$selectedprojectid!="")
     {
@@ -70,7 +72,9 @@ class atkProjectAttribute extends atkAttribute
     $result .= '</select>&nbsp';
 
     $targeturl = $PHP_SELF."?selectedprojectid=[id]&atklevel=$atklevel";
-    $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED);
+
+    if ($this->hasFlag(AF_FORMSUBMIT)) $submit = true; else $submit = false;
+    $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED, $submit);
 
     return $result;
   }

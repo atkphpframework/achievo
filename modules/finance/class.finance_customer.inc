@@ -7,7 +7,7 @@ class finance_customer extends atkNode
 {
   function finance_customer()
   {
-    $this->atkNode("finance_customer", NF_NO_ADD|NF_NO_DELETE); 
+    $this->atkNode("finance_customer", NF_NO_ADD|NF_NO_DELETE);
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_READONLY));
@@ -20,13 +20,13 @@ class finance_customer extends atkNode
     $this->add(new atkAttribute("fax",AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkAttribute("email",AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkAttribute("bankaccount", AF_SEARCHABLE));
-    $this->add(new atkAttribute("remark", AF_HIDE_LIST|AF_READONLY)); 
+    $this->add(new atkAttribute("remark", AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkManyToOneRelation("currency","finance.currency",AF_SEARCHABLE));
     $this->add(new atkOneToManyRelation("rates","finance.rates","customerid",AF_HIDE_LIST));
-    $this->setTable("customer", "customer");
-    $this->setOrder("customer.name");
+    $this->setTable("organization", "organization");
+    $this->setOrder("organization.name");
     $this->setIndex("name");
-        
+
   }
 
   function email_display($record)
@@ -35,19 +35,19 @@ class finance_customer extends atkNode
     if (strlen($email)>0) return '<a href="mailto:'.$email.'">'.$email.'</a>';
     return "";
   }
-	
+
 	function currency_display($rec)
 	{
 	  //var_dump($rec);
 		//echo "<hr>";
-	  if(is_null($rec["currency"]["name"]))  
-		{ 
+	  if(is_null($rec["currency"]["name"]))
+		{
 		  return atkconfig("currency")." (".atkconfig("currency_symbol").")";
 	  }
-		else 
-		{ 
-		  return $this->m_attribList["currency"]->display($rec); 
-		} 
+		else
+		{
+		  return $this->m_attribList["currency"]->display($rec);
+		}
 	}
 
   function descriptor_def()

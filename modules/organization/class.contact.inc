@@ -1,38 +1,22 @@
 <?php
 
 userelation("atkmanytoonerelation");
-useattrib("atkemailattribute");
-useattrib("atktextattribute");
+include_once ("./modules/person/class.person.inc");
 
-class contact extends atkNode
+class contact extends person
 {
   function contact()
-  {      
-    $this->atkNode("contact", NF_ADD_LINK); 
-
-    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+  {
+    $this->person("contact");
+    $this->addFilter("person.role='contact'");
     $this->add(new atkManyToOneRelation("company","organization.customer",AF_HIDE_LIST|AF_RELATION_AUTOLINK));
-    $this->add(new atkAttribute("lastname",AF_SEARCHABLE));
-    $this->add(new atkAttribute("firstname",AF_SEARCHABLE));
-    $this->add(new atkAttribute("address",AF_HIDE_LIST));
-    $this->add(new atkAttribute("zipcode",AF_HIDE_LIST));
-    $this->add(new atkAttribute("city",AF_HIDE_LIST));
-    $this->add(new atkAttribute("country",AF_HIDE_LIST));
-    $this->add(new atkAttribute("phone"));
-    $this->add(new atkAttribute("cellular"));
-    $this->add(new atkAttribute("fax"));
-    $this->add(new atkEmailAttribute("email"));
-    $this->add(new atkTextAttribute("remark", AF_HIDE_LIST)); 
-
-    $this->setTable("contact", "contact");
-    $this->setOrder("contact.lastname");
+    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE));
   }
 
-  function email_display($record)
+  function initial_values()
   {
-    $email = $record["email"];
-    if (strlen($email)>0) return '<a href="mailto:'.$email.'">'.$email.'</a>';
-    return "";
+    $initial["role"] = "contact";
+    return $initial;
   }
 
   function descriptor_def()

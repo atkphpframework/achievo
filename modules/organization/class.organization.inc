@@ -1,13 +1,25 @@
 <?php
 
+/**
+ * Module Organization
+ * Class organization
+ *
+ * This class makes it possible to add, edit and delete organizations.
+ *
+ * $Id$
+ * @author L. Willems  <lineke@ibuildings.nl>
+ * @version $Revision$
+ *
+ */
+
 useattrib("atktextattribute");
 userelation("atkonetomanyrelation");
 
-class customer extends atkNode
+class organization extends atkNode
 {
-  function customer()
+  function organization()
   {
-    $this->atkNode("customer", NF_EDITAFTERADD); 
+    $this->atkNode("organization", NF_EDITAFTERADD);
 
     $this->addAttribute(new atkAttribute("id" ,AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
     $this->addAttribute(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY));
@@ -20,15 +32,15 @@ class customer extends atkNode
     $this->addAttribute(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD)); 
+    $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
-    $this->addAttribute(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));    
-    $this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
-    $this->setTable("customer", "customer");
-    $this->setOrder("customer.name");
+    $this->addAttribute(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    //$this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
+    $this->setTable("organization", "organization");
+    $this->setOrder("organization.name");
     $this->setIndex("name");
-    
-    atkdebug("customer::customer()");    
+
+    atkdebug("organization::organization()");
   }
 
   function email_display($record)

@@ -60,26 +60,35 @@ for ($i=0; $i<=8;$i++)
 $name = "atk".atkconfig("database")."query";
 $query = new $name();
 $query->addTable('employee_project');
-$query->addJoin('employee', '', 'employee.userid=employee_project.employeeid', FALSE);
+$query->addJoin('person', '', 'person.id=employee_project.employeeid', FALSE);
 $query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
-$query->addField('id', ' ', 'planning', 'planningid');
-$query->addField('plandate', ' ', 'planning');
-$query->addField('time', ' ', 'planning');
-$query->addField('name', ' ', 'project', 'projectname');
-$query->addField('name', ' ', 'employee', 'employeename');
-$query->addField('userid', ' ', 'employee', 'userid');
-$query->addField('abbreviation', ' ', 'project', 'projectab');
-$query->addField('id', ' ', 'project', 'qprojectid');
+$query->addField('id', ' ', 'planning', 'planning_');
+$query->addField('plandate', ' ', 'planning', 'planning_');
+$query->addField('time', ' ', 'planning', 'planning_');
+$query->addField('name', ' ', 'project', 'project_');
+$query->addField('lastname', ' ', 'person', 'employee_');
+$query->addField('firstname', ' ', 'person', 'employee_');
+$query->addField('userid', ' ', 'person', 'employee_');
+$query->addField('id', ' ', 'person', 'employee_');
+$query->addField('abbreviation', ' ', 'project', 'project_');
+$query->addField('id', ' ', 'project', 'project_');
 
-$query->addCondition("employee.userid='".$userid."'");
+$query->addCondition("person.userid='".$userid."'");
 
 $query->addOrderBy('plandate');
 
 $querystring = $query->buildSelect(TRUE);
 $dbrecords = $g_db->getrows($querystring);
+
+// Call to function deAlias for every item in the result of the query, so we can see the aliasnames as defined by addField
+$cntrec=count($dbrecords);
+for ($i=0;$i<$cntrec;$i++)
+{
+  $query->deAlias($dbrecords[$i]);
+}
 
 // First a line with previous and next week links containing the viewdate 1 day before the first day of the week that is viewed
 // or 1 day after the last day of the week that is viewed
@@ -103,12 +112,13 @@ for ($i=1;$i<=7;$i++)
   {
     for ($i = 0; $i < count($dbrecords); $i++)
     {
-      $employee = $dbrecords[$i][4];
-      $day = date("w",strtotime($dbrecords[$i][1]));
+      $employee = $dbrecords[$i]['employee_lastname'].", ".$dbrecords[$i]['employee_firstname'];
+      $day = date("w",strtotime($dbrecords[$i]['planning_plandate']));
       if ($day==0) $day=7;
       $result[$employee][$day][] = $dbrecords[$i];
-      $result[$employee][0]=$dbrecords[$i][5];
+      $result[$employee][0]=$dbrecords[$i]['employee_id'];
     }
+
     // For each employee the planning for the whole week will be shown
     foreach($result as $employee => $day)
     {
@@ -120,14 +130,19 @@ for ($i=1;$i<=7;$i++)
       {
         if (isset($day[$w]))
         {
-          $projects='';
-          $times='';
+          $projects = '';
+          $times = '';
           foreach($day[$w] as $item)
           {
             $linkdate=$weekdates[$w]['date'];
-            $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[0]", "employeefilter" => "employee.userid='$item[5]'", "projectfilter" => "projectid='$item[7]'"));
-            $projects.=href($url, $item[6], SESSION_NESTED).'<br>';
-            $times.=time_format($item[2]).'<br>';
+            $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
+
+            // If the project has no abbreviation the first 10 characters of the name of the project will be shown
+            if ($item['project_abbreviation']!='') $abbreviation = $item['project_abbreviation'];
+            else $abbreviation = substr($item['project_name'], 0, 10);
+
+            $projects.=href($url, $abbreviation, SESSION_NESTED).'<br>';
+            $times.=time_format($item['planning_time']).'<br>';
           }
           $g_layout->td($projects, 'valign="top"');
           $g_layout->td($times, 'valign="top"');
@@ -147,7 +162,7 @@ for ($i=1;$i<=7;$i++)
         $linkdate=$weekdates[$w]['date'];
         $linkname=$day[0];
         $datenow=date("Y-m-d");
-        $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
+        $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.id='$linkname'", "noactions" => "1"));
         $g_layout->td('&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.href($urla, text(view), SESSION_NESTED), 'colspan="2" align="left"');
       }
       $g_layout->output($g_layout->tr_bottom());

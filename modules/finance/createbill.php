@@ -9,14 +9,14 @@ $g_layout->register_script("javascript/check.js");
     global $g_db, $activityid;
     // Get the activities
     $sql = "SELECT id,name
-            FROM activity 
-            ORDER BY name 
+            FROM activity
+            ORDER BY name
            ";
     $records = $g_db->getrows($sql);
    	if($act_id==-1) { $sel="SELECTED"; } else { $sel=""; }
     $activity_code='<OPTION VALUE="all" SELECTED>'.text("allactivities");
     for($i=0;$i<count($records);$i++)
-    { 
+    {
       $activity_code.='<OPTION VALUE="'.$records[$i]["id"].'"'.$sel.'>'.$records[$i]["name"].'</OPTION>';
     }
     return $activity_code;
@@ -26,10 +26,10 @@ $g_layout->register_script("javascript/check.js");
   {
     global $g_db;
 
-    $sql = "SELECT name,userid
-            FROM employee
-            WHERE status='active'
-            ORDER BY name
+    $sql = "SELECT lastname,userid,firstname
+            FROM person
+            WHERE status='active' AND role='employee'
+            ORDER BY lastname
            ";
 
     $records = $g_db->getrows($sql);
@@ -37,17 +37,17 @@ $g_layout->register_script("javascript/check.js");
     for($i=0;$i<count($records);$i++)
     {
       if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else {$sel=""; }
-	$employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'"'.$sel.'>'.$records[$i]["name"].'</OPTION>';
+	$employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'"'.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
     }
     return $employee_code;
   }
-  
+
   function time_format($time)
   {
     if ($time==0) return "&nbsp;";
     return sprintf("%02d",floor($time/60)).':'.sprintf("%02d",$time%60);
   }
-    
+
   //Query to get projectid
   if ($bill_id == "") {
     $sql = "SELECT projectid FROM bill where id = " .$rec["billid"]["id"];
@@ -58,7 +58,7 @@ $g_layout->register_script("javascript/check.js");
   else {
     $sql = "SELECT projectid FROM bill where id = " .$bill_id;
   }
-  
+
   $projectrec=$g_db->getrows($sql);
 
   $g_layout->ui_top(text("title_hourspecify"));
@@ -67,7 +67,7 @@ $g_layout->register_script("javascript/check.js");
   $g_layout->output('<input type="hidden" name="atknodetype" value="finance.bill_line">');
   $g_layout->output('<input type="hidden" name="atkaction" value="createbill">');
   $g_layout->output('<input type="hidden" name="bill_line_id" value="'.$bill_line_id.'">');
-  
+
   if ($bill_id == "") {
     $g_layout->output('<input type="hidden" name="bill_id" value='.$rec["billid"]["id"].'>');
     $g_layout->output('<input type="hidden" name="calcoption" value='.$rec["calcoption"].'>');
@@ -79,27 +79,27 @@ $g_layout->register_script("javascript/check.js");
   $g_layout->table_simple();
   $g_layout->output('<tr>');
   $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
-  $g_layout->output('</tr><tr>');  
-  
+  $g_layout->output('</tr><tr>');
+
     // we have to pass a 'dummy' record to the attributes to set their default value.
   $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
                                        "month"=>substr($startdate,5,2),
-                                       "day"=>substr($startdate,8,2)), 
+                                       "day"=>substr($startdate,8,2)),
                     "enddate"=>array("year"=>substr($enddate,0,4),
                                      "month"=>substr($enddate,5,2),
                                      "day"=>substr($enddate,8,2)));
-                                                   
-  $g_layout->td(text("activity").':</b> ');            
+
+  $g_layout->td(text("activity").':</b> ');
   $g_layout->td('<SELECT name="activityid">'.get_activities($activityid).'</SELECT>');
   $g_layout->output('</tr><tr>');
   $g_layout->td(text("name").':</br> ');
   $g_layout->td('<SELECT name="userid">'.get_employees($userid).'</SELECT>');
   $g_layout->output('</tr><tr>');
-  
+
   $g_layout->td(text("timespan").': ');
   $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
   $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
-  
+
   $g_layout->td($startdateatt->edit($dummyrec).' &nbsp;'.text("until").'&nbsp; '.$enddateatt->edit($dummyrec));
   $g_layout->output('</tr><tr>');
   $g_layout->td('<INPUT TYPE="checkbox" NAME="reghours" VALUE="yes">'.'</br>');
@@ -108,14 +108,14 @@ $g_layout->register_script("javascript/check.js");
 
   $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
   $g_layout->ui_bottom();
-  
+
   $start_date = $startdate["year"]."-".$startdate["month"]."-".$startdate["day"];
   $end_date = $enddate["year"]."-".$enddate["month"]."-".$enddate["day"];
-  
+
   //Query to get all the hours with there rates
-    
+
   if ($reghours == "yes") {
-   $sql = "SELECT   
+   $sql = "SELECT
             hours.id AS hoursid,
 	    hours.remark,
 	    hours.userid AS user,
@@ -123,26 +123,26 @@ $g_layout->register_script("javascript/check.js");
 	    hours.time,
 	    rate.*,
  	    activity.name AS activityname
-	  FROM    
+	  FROM
    	    hours,
-	    rate, 	
-	    phase, 
+	    rate,
+	    phase,
 	    project
           LEFT JOIN customer ON project.customer = customer.id
 	  LEFT JOIN activity ON hours.activityid = activity.id
-	  WHERE                                                 
-   	    hours.phaseid = phase.id                              
+	  WHERE
+   	    hours.phaseid = phase.id
    	    AND project.id = phase.projectid
 	    AND phase.projectid = " .$projectrec["0"]["projectid"];
-   $sql.= " AND hours.registered != 1";  
-   $sql.= " AND (rate.userid = hours.userid                     
-              OR rate.activityid = hours.activityid       	
-              OR rate.projectid = project.id                 
+   $sql.= " AND hours.registered != 1";
+   $sql.= " AND (rate.userid = hours.userid
+              OR rate.activityid = hours.activityid
+              OR rate.projectid = project.id
               OR rate.customerid = customer.id)";
     $sql.= " ORDER BY hours.id, rate.priority DESC, rate.rate DESC";
   }
   else {
-    $sql = "SELECT   
+    $sql = "SELECT
             hours.id AS hoursid,
 	    hours.remark,
 	    hours.userid AS user,
@@ -150,23 +150,23 @@ $g_layout->register_script("javascript/check.js");
 	    hours.time,
 	    rate.*,
  	    activity.name AS activityname
-	  FROM    
+	  FROM
    	    hours,
-	    rate, 	
-	    phase, 
+	    rate,
+	    phase,
 	    project
           LEFT JOIN customer ON project.customer = customer.id
 	  LEFT JOIN activity ON hours.activityid = activity.id
-	  WHERE                                                 
-   	    hours.phaseid = phase.id                              
+	  WHERE
+   	    hours.phaseid = phase.id
    	    AND project.id = phase.projectid
 	    AND phase.projectid = " .$projectrec["0"]["projectid"];
     $sql.= " AND hours.activitydate >= '$start_date'
 	    AND hours.activitydate <= '$end_date'";
-   $sql.= " AND hours.registered != 1";  
-   $sql.= " AND (rate.userid = hours.userid                     
-              OR rate.activityid = hours.activityid       	
-              OR rate.projectid = project.id                 
+   $sql.= " AND hours.registered != 1";
+   $sql.= " AND (rate.userid = hours.userid
+              OR rate.activityid = hours.activityid
+              OR rate.projectid = project.id
               OR rate.customerid = customer.id)";
     if ($userid!="all") $sql.= " AND hours.userid = '$userid'";
     if ($activityid!="all") $sql.= " AND hours.activityid = '$activityid'";
@@ -207,7 +207,7 @@ for ($i=0;$i<count($hourrec);$i++)
   {
   }
   else
-  {  
+  {
     $g_layout->output($g_layout->tr_top());
     $g_layout->td($hourrec[$i]["entrydate"]);
     $g_layout->td($hourrec[$i]["user"]);
@@ -251,7 +251,7 @@ $g_layout->td("");
 
 if ($calcoption == 'calc')
 {
-  $g_layout->td("<CENTER>".'<input type="checkbox" name="A" onClick="checkallA()"'."<CENTER>"); 
+  $g_layout->td("<CENTER>".'<input type="checkbox" name="A" onClick="checkallA()"'."<CENTER>");
 }
 else
 {

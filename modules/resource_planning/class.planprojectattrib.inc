@@ -86,7 +86,7 @@ class atkPlanProjectAttribute extends atkAttribute
     $result .= '</select>&nbsp';
 
     $targeturl = $PHP_SELF."?selectedprojectid=[id]&atklevel=$atklevel";
-    $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED);
+    $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED);
 
     return $result;
   }

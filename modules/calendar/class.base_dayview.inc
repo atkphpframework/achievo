@@ -99,7 +99,7 @@
 
     $this->title = "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text("Previous day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("Today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("Next day"))."</font>";
+    return "<font size='-1'>".href($prevUrl, text("previous_day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_day"))."</font>";
    }
 
   /**
@@ -111,34 +111,39 @@
      global $g_db;
 
      $date = $this->year."-".$this->month."-".$this->day;
-     $q    = "SELECT * FROM schedule WHERE startdate <='$date' AND enddate >= '$date' ";
 
-     if ($this->showGlobal == "all")
+     $name = "atk".atkconfig("database")."query";
+     $query = new $name();
+     $query->addTable('schedule');
+     $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
+     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+
+     $query->addField('id', ' ', 'schedule');
+     $query->addField('startdate', ' ', 'schedule');
+     $query->addField('enddate', ' ', 'schedule');
+     $query->addField('starttime', ' ', 'schedule');
+     $query->addField('endtime', ' ', 'schedule');
+     $query->addField('title', ' ', 'schedule');
+     $query->addField('description', ' ', 'schedule');
+     $query->addField('location', ' ', 'schedule');
+     $query->addField('allday', ' ', 'schedule');
+     $query->addField('publicitem', ' ', 'schedule');
+     $query->addField('owner', ' ', 'schedule');
+     $query->addField('status', ' ', 'schedule');
+     $query->addField('all_users', ' ', 'schedule');
+     $query->addField('scheduletype', ' ', 'schedule');
+
+     $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
+
+     if ($this->showGlobal != "all")
      {
-       //$q .= "AND publicitem=1";
-     }
-     else
-     {
-       $q .= "AND owner='".$this->showGlobal."'";
+       $query->addCondition("(schedule.owner='".$this->showGlobal."' OR person.userid='".$this->showGlobal."' OR schedule.all_users = 1)");
      }
 
-     $q .= " ORDER BY starttime";
-     return $g_db->getRows($q);
+     $query->addOrderBy('starttime');
+     $querystring = $query->buildSelect(TRUE);
+     return $g_db->getRows($querystring);
     }
-
-
-  /**
-   * getAttendees()
-   * get all attendees for a specified item
-   */
-    function getAttendees($id)
-    {
-     global $g_db;
-
-     $q = "SELECT userid FROM schedule_attendees WHERE scheduleid=$id ORDER BY userid";
-     return $g_db->getRows($q);
-    }
-
 
   /**
    * getColors
@@ -312,13 +317,33 @@
     }
 
 
+    function get_attendees($scheduleid)
+    {
+      global $g_db;
+
+     $name = "atk".atkconfig("database")."query";
+     $query = new $name();
+     $query->addTable('schedule_attendee');
+     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+
+     $query->addField('userid', ' ', 'person');
+     $query->addField('lastname', ' ', 'person');
+     $query->addField('firstname', ' ', 'person');
+     $query->addField('role', ' ', 'person');
+
+     $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
+
+     $querystring = $query->buildSelect(TRUE);
+     return $g_db->getRows($querystring);
+    }
+
   /**
    * dumpMatrix
    * the actual displaying function
    */
     function dumpMatrix()
     {
-     global $PHP_SELF;
+     global $PHP_SELF, $g_user;
 
      $buff   = "";
      $cols   = $this->getCols();
@@ -350,25 +375,49 @@
        $bgcolor = $colors[$type]["back"];
        $fgcolor = $colors[$type]["fore"];
 
+       $attendees = $this->get_attendees($this->allDayItems[$i]["id"]);
+       $found = 0;
+
+       $att = "Attendees: ";
+       if ($this->allDayItems[$i]["all_users"]) $att .= text("all_users");
+       for($k=0;$k<count($attendees);$k++)
+       {
+         if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+         if ($k == 0 && !$this->allDayItems[$i]["all_users"])
+         {
+           $att .= $attendees[$k]["firstname"];
+           if ($attendees[$k]["firstname"]!= "") $att .= " ";
+           $att .= $attendees[$k]["lastname"];
+           $att .= " (".$attendees[$k]["role"].")";
+         }
+         else
+         {
+           $att .= ", ".$attendees[$k]["firstname"];
+           if ($attendees[$k]["firstname"]!= "") $att .= " ";
+           $att .=$attendees[$k]["lastname"];
+           $att .= " (".$attendees[$k]["role"].")";
+         }
+       }
+
        $buff .= "<tr>\n";
        $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
 
        $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
-       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owner"].")</b></font></td>";
+       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owner"].")</b></font>";
+       if (count($attendees) > 0 || $this->allDayItems[$i]["all_users"]) $header .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$att."</font></td>";
        $header .= "<td valign='top' align='right'>";
+
+       if ($this->allDayItems[$i]["publicitem"] == 1)
+       {
+         $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
+       }
 
        if ($this->allDayItems[$i]["owner"] == $this->owner)
        {
-        $header .= href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
         $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
        }
-       else
-       {
-        if ($this->allDayItems[$i]["publicitem"] == 1)
-        {
-         $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
-        }
-       }
+
        $header .= "</tr></table>";
 
        $buff .= $header;
@@ -430,28 +479,58 @@
            $bgcolor = $colors[$info["scheduletype"]]["back"];
            $fgcolor = $colors[$info["scheduletype"]]["fore"];
            $descr   = $info["description"];
+           $status  = " [".$info["status"]."]";
           }
 
           // if viewing public items for all users
           // it might be handy to see the item's owner
-          if ($this->showGlobal=="all") $dspOwner = " (".$info["owner"].")";
-
-          // generate header (contains title, info and link to edit/view item)
-          $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
-          $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title.$dspOwner."</b></font></td>\n";
-          $header .= "<td valign='top' align='right'>";
-
-          if ($info["owner"] == $this->owner)
+          if ($this->showGlobal!=$info["owner"])
           {
-           $header .= href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
-           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
+            $dspOwner = " (".$info["owner"].")";
           }
           else
           {
-           if ($info["publicitem"] == 1)
-           {
+            $dspOwner = "";
+          }
+
+          // generate header (contains title, info and link to edit/view item)
+          $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
+          $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title.$dspOwner.$status."</b></font></td>\n";
+          $header .= "<td valign='top' align='right'>";
+
+          $attendees = $this->get_attendees($info["id"]);
+          $found = 0;
+
+          $att = "Attendees: ";
+          if ($info["all_users"]) $att .= text("all_users");
+          for($k=0;$k<count($attendees);$k++)
+          {
+            if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+            if ($k == 0 && !$info["all_users"])
+            {
+              $att .= $attendees[$k]["firstname"];
+              if ($attendees[$k]["firstname"]!= "") $att .= " ";
+              $att .= $attendees[$k]["lastname"];
+              $att .= " (".$attendees[$k]["role"].")";
+            }
+            else
+            {
+              $att .= ", ".$attendees[$k]["firstname"];
+              if ($attendees[$k]["firstname"]!= "") $att .= " ";
+              $att .=$attendees[$k]["lastname"];
+              $att .= " (".$attendees[$k]["role"].")";
+            }
+          }
+
+          if ($info["publicitem"] == 1)
+          {
             $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
-           }
+          }
+
+          if ($info["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
+          {
+           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
           }
 
           $header .= "</td>\n";
@@ -461,11 +540,11 @@
           {
            $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' bgcolor='".$bgcolor."'>";
            $buff .= $header;
-
            if ($timeLap > 1)
            {
-            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>";
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."<br></font>";
            }
+           if (count($attendees) > 0 || $info["all_users"]) $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$att."</font>";
 
            $buff .= "</td>";
           }
@@ -478,8 +557,9 @@
 
            if ($timeLap > 1)
            {
-            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>";
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."<br></font>";
            }
+           if (count($attendees) > 0 || $info["all_users"]) $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$att."<br></font>";
 
            $buff .= "</td>\n";
            $buff .= $this->fancyEnd;

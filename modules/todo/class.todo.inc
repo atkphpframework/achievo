@@ -23,16 +23,16 @@ class todo extends atkNode
     $this->add(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
     $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));    
+    $this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
     $this->add(new atkDateAttribute("entrydate"        , "F d Y", "d F Y", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD));
     $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->add(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
+    $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));
     $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
-    $this->setTable("todo", "todo");         
+    $this->setTable("todo", "todo");
     $this->setOrder("duedate, priority");
 
   }
@@ -40,7 +40,7 @@ class todo extends atkNode
   function initial_values()
   {
     global $g_user;
-    
+
     $entrydate = array("year"=>date("Y"),
                     "month"=>date("m"),
                     "day"=>date("d"));
@@ -48,12 +48,12 @@ class todo extends atkNode
     $duedate = array("year"=>$nextweek['year'],
                   "month"=>$nextweek['mon'],
                   "day"=>$nextweek['mday']);
-    return array("owner"=>$g_user["name"],                 
+    return array("owner"=>$g_user["name"],
                  "entrydate"=>$entrydate,
                  "duedate"=>$duedate,
                  "updated"=>$date,
                  "priority"=>3);
-  }    
+  }
 
   // overide display of priority (set high to a red font)
   function priority_display($rec)
@@ -87,14 +87,14 @@ class todo extends atkNode
   function prioHeader($level)
   {
    $cr = chr(13).chr(10);
-   
+
    switch ($level)
    {
     case 1:
      $mslevel = "High";
      break;
 
-    case 2:    
+    case 2:
      $mslevel = "High";
      break;
 
@@ -116,17 +116,17 @@ class todo extends atkNode
    }
 
    $header  = "X-Priority: ".$level.$cr;
-   $header .= "X-MSMail-Priority: ".$mslevel.$cr;  
+   $header .= "X-MSMail-Priority: ".$mslevel.$cr;
    return $header;
   }
-  
+
   function postAdd($rec)
   {
    global $g_db;
 
    // obtain some project info
    $assignTo = $rec["assigned_to"]["userid"];
-   $assigner = $rec["owner"]; 
+   $assigner = $rec["owner"];
    $pid      = $rec["projectid"]["id"];
 
    // get project name
@@ -135,44 +135,44 @@ class todo extends atkNode
    $project = $r[0]["name"];
 
    // now get her/his email address
-   $q  = "SELECT email, name, userid FROM employee WHERE userid IN ('$assignTo','".$assigner."')";
-   $emails  = $g_db->getrows($q);   
-   
+   $q  = "SELECT email, name, userid FROM person WHERE userid IN ('$assignTo','".$assigner."')";
+   $emails  = $g_db->getrows($q);
+
    // now assemble the mail body
    $subj  = text("todoadded").": ".$rec["title"];
-    
-   $body = text("todo").": ".$rec["title"]."\n";     
+
+   $body = text("todo").": ".$rec["title"]."\n";
    $body.= text("description").": \n".$rec["description"]."\n\n";
    $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
    $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
    if ($project!="") $body.= text("project").": ".$project."\n";
    $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
-     
+
    $body.= "\n";
-   
+
    for ($i=0;$i<count($emails);$i++)
    {
-     if ($emails[$i]["userid"]==$assigner) 
-       $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n"; 
-     if ($emails[$i]["userid"]==$assignTo) 
+     if ($emails[$i]["userid"]==$assigner)
+       $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n";
+     if ($emails[$i]["userid"]==$assignTo)
        $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
      $to[] = $emails[$i]["email"];
-   }           
+   }
 
-   // send mail   
-   $header = $this->prioHeader($rec["priority"]); 
+   // send mail
+   $header = $this->prioHeader($rec["priority"]);
    if (is_array($to) && count($to)!="")
    {
-     usermail(implode(",",$to), $subj, $body, $header);  
+     usermail(implode(",",$to), $subj, $body, $header);
    }
   }
-  
+
   function todoChanged($new, $old)
-  {        
+  {
     foreach (array_keys($this->m_attribList) as $attribname)
     {
       if ($attribname!="updated") // leave out the updated attrib, for it always
-                                  // changes, but that doesn't mean a change in 
+                                  // changes, but that doesn't mean a change in
                                   // the record.
       {
         $p_attrib = &$this->m_attribList[$attribname];
@@ -185,53 +185,53 @@ class todo extends atkNode
     }
     return false;
   }
-  
+
   function postUpdate($rec)
   {
    global $g_db, $g_user;
 
    if ($this->todoChanged($rec,$rec["atkorgrec"]))
-   {    
+   {
      $owner = $rec["owner"];
      $newassign = $rec["assigned_to"]["userid"];
      $oldassign = $rec["atkorgrec"]["assigned_to"]["userid"];
-     
+
      // read all relevant emails.
-     $query = "SELECT DISTINCT name, email, userid 
-               FROM employee 
+     $query = "SELECT DISTINCT name, email, userid
+               FROM person
                WHERE userid IN('$owner','".$g_user["name"]."','$newassign','$oldassign')";
      $emails    = $g_db->getrows($query);
      $pid  = $rec["projectid"]["id"];
      // get project name
      $query = "SELECT name FROM project WHERE id=$pid";
      $res   = $g_db->getrows($query);
-     $project = $res[0]["name"];     
-     
-     $body = text("todo").": ".$rec["title"]."\n";     
+     $project = $res[0]["name"];
+
+     $body = text("todo").": ".$rec["title"]."\n";
      $body.= text("description").": \n".$rec["description"]."\n\n";
      $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
      $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
      if ($project!="") $body.= text("project").": ".$project."\n";
      $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
-     
+
      $body.= "\n";
      for ($i=0;$i<count($emails);$i++)
      {
-       if ($emails[$i]["userid"]==$owner) 
+       if ($emails[$i]["userid"]==$owner)
          $body.= text("todo_ownedby").": ".$emails[$i]["name"]."\n";
-       if ($emails[$i]["userid"]==$oldassign) 
-         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["name"]."\n";         
-       if ($emails[$i]["userid"]==$newassign) 
+       if ($emails[$i]["userid"]==$oldassign)
+         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["name"]."\n";
+       if ($emails[$i]["userid"]==$newassign)
          $body.= text("todo_assignedto").": ".$emails[$i]["name"]."\n";
-       if ($emails[$i]["userid"]==$g_user["name"]) 
+       if ($emails[$i]["userid"]==$g_user["name"])
          $body.= text("todo_changedby").": ".$emails[$i]["name"]."\n";
        $to[] = $emails[$i]["email"];
-     }           
- 
-     // send mail     
+     }
+
+     // send mail
      $header = $this->prioHeader($rec["priority"]);
-     usermail(implode(",",$to),text("todochanged"), $body, $header);    
-     
+     usermail(implode(",",$to),text("todochanged"), $body, $header);
+
      // also store the old todo in the history table.
      $historynode = getNode("todo.todo_history");
      $rec["atkorgrec"]["todoid"]["id"] = $rec["id"]; // the todoid in the historytable

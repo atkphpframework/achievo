@@ -1,11 +1,10 @@
 <?
-  // class to generate a weekview
+  // class to generate a monthview
   //
   // typical usage:
   //
-  // $dummy = new weekview(25,7,2001);     // show July 25th 2001
+  // $dummy = new monthview(25,7,2001);     // show July 25th 2001
   // $dummy->showGlobal  = "wim";          // for user wim
-  // $dummy->owner = $g_user["name"];     // remember who is currently logged in
   // $dummy->generate();                  // generate the matrix
   // $dummy->dumpMatrix();                // show it to the audience ....
   //
@@ -55,7 +54,7 @@
 
     $this->title = "<font size='-1'><b>".date("M", mktime(0,0,0,$this->month,1,$this->year))." ".$this->year."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text("Previous month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("This month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("Next month"))."</font>";
+    return "<font size='-1'>".href($prevUrl, text("previous_month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("this_month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_month"))."</font>";
    }
 
   /**
@@ -114,14 +113,14 @@
 
     $buff .= "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
     $buff .= "<tr>\n";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Week")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Mon")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Tue")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Wed")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Thu")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Fri")."</font></td>";
-    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("Sat")."</font></td>";
-    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("Sun")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("week")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("mon")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("tue")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("wed")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("thu")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("fri")."</font></td>";
+    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("sat")."</font></td>";
+    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("sun")."</font></td>";
     $buff .= "</tr>\n";
 
     $w = 0;
@@ -147,7 +146,7 @@
       $allItems = $this->getItems($this->items[$item]["date"]);
       if (count($allItems) > 0) { $bgcolor = "#FFFF00"; }
 
-      //if date is today set text bold
+      //if date is today set background color to orange or red depends on appointments
       if ($this->items[$item]["date"] == $today)
       {
         if (count($allItems) == 0) { $bgcolor = "#FFCC33"; } else { $bgcolor = "FF0000"; }
@@ -169,15 +168,39 @@
   */
    function getItems($date)
    {
-    global $g_db;
+     global $g_db;
 
-    $q    = "SELECT * FROM schedule WHERE startdate <='$date' AND enddate >= '$date' ";
+     $name = "atk".atkconfig("database")."query";
+     $query = new $name();
+     $query->addTable('schedule');
+     $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
+     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
 
-    if ($this->showGlobal != "all") { $q .= "AND owner='".$this->showGlobal."'"; }
+     $query->addField('id', ' ', 'schedule');
+     $query->addField('startdate', ' ', 'schedule');
+     $query->addField('enddate', ' ', 'schedule');
+     $query->addField('starttime', ' ', 'schedule');
+     $query->addField('endtime', ' ', 'schedule');
+     $query->addField('title', ' ', 'schedule');
+     $query->addField('description', ' ', 'schedule');
+     $query->addField('location', ' ', 'schedule');
+     $query->addField('allday', ' ', 'schedule');
+     $query->addField('publicitem', ' ', 'schedule');
+     $query->addField('owner', ' ', 'schedule');
+     $query->addField('status', ' ', 'schedule');
+     $query->addField('scheduletype', ' ', 'schedule');
+     $query->addField('all_users', ' ', 'schedule');
 
-    $q .= " ORDER BY starttime";
+     $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
 
-    return $g_db->getRows($q);
+     if ($this->showGlobal != "all")
+     {
+       $query->addCondition("(schedule.owner='".$this->showGlobal."' OR person.userid='".$this->showGlobal."' OR schedule.all_users=1)");
+     }
+
+     $query->addOrderBy('starttime');
+     $querystring = $query->buildSelect(TRUE);
+     return $g_db->getRows($querystring);
    }
 
   }

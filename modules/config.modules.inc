@@ -1,5 +1,6 @@
 <?php
   module("employee");
+  module("person");
   module("project");
   module("organization");
   module("notes");

@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Module Calendar
+ * Class schedule_types
+ *
+ * This class makes it possible to define schedule_types like sales appointment, meeting, etc with their own
+ * background and foreground color.
+ *
+ * $Id$
+ * @author L. Willems  <lineke@ibuildings.nl>
+ * @version $Revision$
+ *
+ */
+
 useattrib("atkcolorpickerattribute");
 useattrib("atkdummyattribute");
 

@@ -1,7 +1,7 @@
 <?
 
 /**
-* This file get all the bill line information and then get all the billed hours, costs and discounts out of the database 
+* This file get all the bill line information and then get all the billed hours, costs and discounts out of the database
 * and generates a nice Bill of it.
 * Author: Marc van Agteren (Nov. 2001)
 */
@@ -12,15 +12,15 @@ global $contactinfo, $viewdate, $contactpers, $edit1;
 $bill_expiredate = $this->m_postvars["bill_expiredate"];
 
 //query to get the projectid out of the database
-$sql = "SELECT 
-	  projectid, status 
-	FROM bill 
+$sql = "SELECT
+	  projectid, status
+	FROM bill
 	WHERE id = ".$billid;
 
 $projectid=$g_db->getrows($sql);
 
 //query to get project and cutomer information.
-$sql = "SELECT 
+$sql = "SELECT
 	  project.name,
 	  project.fixed_price,
 	  customer.id,
@@ -29,13 +29,13 @@ $sql = "SELECT
 	  customer.zipcode,
 	  customer.city,
 	  customer.country
-	FROM 
-	  project, 
-	  customer 
-	WHERE 
+	FROM
+	  project,
+	  customer
+	WHERE
 	  project.id = ".$projectid[0]["projectid"];
 $sql .= " AND project.customer = customer.id";
-	  
+
 $projectinfo=$g_db->getrows($sql);
 
 //get all the contact person info
@@ -44,9 +44,9 @@ $sql = "SELECT
 	 firstname,
 	 lastname
 	FROM
-	  contact
+	  person
 	WHERE
-	  company = ".$projectinfo[0]["id"];
+	  company = ".$projectinfo[0]["id"]." AND role='contact'";
 
 $contactinfo=$g_db->getrows($sql);
 
@@ -60,7 +60,7 @@ if ($edit == 1)
     function get_contacts()
     {
       global $contactinfo, $contactpers, $edit1;
-      
+
       for ($x=0;$x<count($contactinfo);$x++)
       {
 	if ($edit1 == 1)
@@ -69,7 +69,7 @@ if ($edit == 1)
 	  if ($contactpers["0"]["contactperson"] == $contactname)
 	  {
 	    $select = "selected";
-	    
+
 	  }
 	  else
 	  {
@@ -93,9 +93,9 @@ $sql = "SELECT
 $bill_lineinfo=$g_db->getrows($sql);
 
 for ($x=0;$x<count($bill_lineinfo);$x++)
-{  
+{
   $billlineid[] = $bill_lineinfo[$x]["id"];
-  
+
   $bill_line_id = $bill_lineinfo[$x]["id"];
   //put calcoption in the calc_bill_line array
   $calcoption = $bill_lineinfo[$x]["calcoption"];
@@ -108,11 +108,11 @@ for ($x=0;$x<count($bill_lineinfo);$x++)
   $calc_bill_line[$bill_line_id]["description"] = $description;
   //put final description in the calc_bill_line array
   if ($edit == 1)
-  {  
+  {
     $description_final = $bill_lineinfo[$x]["description_final"];
     $calc_bill_line[$bill_line_id]["description_final"] = $description_final;
   }
-  
+
   if ($bill_lineinfo[$x]["calcoption"] == "fixed")
   {
     $value = $bill_lineinfo[$x]["fixed_billed"];
@@ -148,13 +148,13 @@ else
 		  registered,
 		  onbill,
 		  hour_rate
-		FROM 
-		  hours 
-		WHERE 
+		FROM
+		  hours
+		WHERE
 		  bill_line_id IN (".implode(",",$billlineid).") ";
-		  
+
 	$hourinfo=$g_db->getrows($sql);
-	
+
 	//make a selection between the hours that are fixed and those which need to be calculated.
 	for ($x=0;$x<count($hourinfo);$x++)
 	{
@@ -164,43 +164,43 @@ else
 	    $hour_value = ($hourinfo[$x]["time"] / 60) * $hourinfo[$x]["hour_rate"];
 	    $hours = ($hourinfo[$x]["time"] / 60);
 	    $bill_line_id = $hourinfo[$x]["bill_line_id"];
-	    
+
 	    $calc_bill_line[$bill_line_id]["value"] += $hour_value;
 	    $calc_bill_line[$bill_line_id]["totalhours"] += $hours;
 	  }
 	}
-	
+
 	//query to get all the costs that are part of the bill lines.
 	$sql = "SELECT
 		  bill_line_id,
 		  costamount
-		FROM 
+		FROM
 		  costregistration
 		WHERE
 		  bill_line_id IN (".implode(",",$billlineid).") ";
-		  
+
 	$costinfo=$g_db->getrows($sql);
-	
+
 	for ($x=0;$x<count($costinfo);$x++)
 	{
 	  $cost_value = $costinfo[$x]["costamount"];
 	  $bill_line_id = $costinfo[$x]["bill_line_id"];
 	  $calc_bill_line[$bill_line_id]["value"] += $cost_value;
 	}
-	
+
 	//query to get all the discounts that are part of the bill lines.
 	$sql = "SELECT
 		  type,
 		  amount,
 		  bill_line_id,
 		  apply_on
-		FROM 
+		FROM
 		  discount
 		WHERE
 		  bill_line_id IN (".implode(",",$billlineid).") ";
-	
+
 	$discountinfo=$g_db->getrows($sql);
-	
+
 	for ($x=0;$x<count($discountinfo);$x++)
 	{
 	  if ($discountinfo[$x]["apply_on"] == "bill")
@@ -223,16 +223,16 @@ else
 	    $calc_bill_line[$bill_line_id]["value"] = $value;
 	  }
 	}
-	
+
 	//BEGINNING OF OUTPUT CODE
-	
+
 	$g_layout->ui_top(text("title_generatebill"));
 	$g_layout->output('<form action="dispatch.php" method="post" name="generatebillform">');
 	$g_layout->output(session_form());
 	$g_layout->output('<input type="hidden" name="atknodetype" value="finance.bill">');
 	$g_layout->output('<input type="hidden" name="atkaction" value="billonscreen">');
 	$g_layout->output('<input type="hidden" name="bill_id" value="'.$billid.'">');
-	    
+
 	$g_layout->output('<BR><BR>');
 	$g_layout->table_simple();
 	$g_layout->output('<tr>');
@@ -252,7 +252,7 @@ else
 	$g_layout->output('</tr><tr>');
 	  $now = mktime (0,0,0,$today["mon"],$today["mday"],$today["year"]);
 	  $bill_expiredate = date("Y-m-d",$now+1209600);
-	  $dummyrec = Array("bill_expiredate"=>array("year"=>substr($bill_expiredate,0,4), 
+	  $dummyrec = Array("bill_expiredate"=>array("year"=>substr($bill_expiredate,0,4),
 					       "month"=>substr($bill_expiredate,5,2),
 					       "day"=>substr($bill_expiredate,8,2)));
 	  $startdateatt = new atkDateAttribute("bill_expiredate","F d Y","d F Y", 0, date("YMd"));
@@ -265,7 +265,7 @@ else
 	if ($edit == 1)
 	{
 	  $sql = "SELECT customer_info, company_onbill FROM bill WHERE id = ".$billid;
-	  $billinfo=$g_db->getrows($sql);	  
+	  $billinfo=$g_db->getrows($sql);
 	}
 	$g_layout->td('<BR>','colspan="3"');
 	$g_layout->output('</tr><tr>');
@@ -277,7 +277,7 @@ else
 	else
 	{
 	  $g_layout->td('<TEXTAREA rows="6" cols="30" name="customerinfo">'.$projectinfo["0"]["name"]."\n".$projectinfo["0"]["address"]."\n".$projectinfo["0"]["zipcode"]." ".$projectinfo["0"]["city"]."\n".$projectinfo["0"]["country"].'</TEXTAREA>','colspan="1"');
-	}  
+	}
 	$g_layout->output('</tr><tr>');
 	$g_layout->td(text("company_info"));
 	if (($edit == 1) & ($billinfo["0"]["company_onbill"] == 1))
@@ -293,7 +293,7 @@ else
 	$g_layout->td('<BR><BR><B>'.text("billlines_change").'<B><BR>','colspan="2"');
 	$g_layout->td('<BR><BR><B>'.text("billlines_amount").'<B><BR>');
 	$g_layout->output('</tr>');
-	  
+
 	  //display fixedbill_lines
 	  $x=0;
 	  foreach($calc_bill_line as $key => $value)
@@ -313,11 +313,11 @@ else
 		      $display_discount = text("display_discount").$config_currency_symbol." ".$discountvalue["value"];
 		    }
 		    else
-		    {	    
+		    {
 		      $display_discount = text("display_discount").$discountvalue["value"]."%";
-		    }  
+		    }
 		  }
-		}   
+		}
 	      }
 	      $x++;
 	      $g_layout->output('<tr>');
@@ -342,7 +342,7 @@ else
 	    }
 	  }
 	  $g_layout->output('<INPUT type="hidden" name="fixed_count" value="'.$x.'">');
-	  
+
 	  //display aftercalculation bill_lines
 	  $x=0;
 	  foreach($calc_bill_line as $key => $value)
@@ -362,11 +362,11 @@ else
 		      $display_discount = text("display_discount").$config_currency_symbol." ".$discountvalue["value"];
 		    }
 		    else
-		    {	    
+		    {
 		      $display_discount = text("display_discount").$discountvalue["value"]."%";
 		    }
 		  }
-		}   
+		}
 	      }
 	      $x++;
 	      $g_layout->output('<tr>');
@@ -378,7 +378,7 @@ else
 	      else
 	      {
 	        $g_layout->td('<TEXTAREA rows="3" cols="40" name="calc_description'.$x.'">'.text("billed_hours").$value["totalhours"]." - ".$value["description"]."\n".$display_discount.'</TEXTAREA>');
-	      }	
+	      }
 	      $g_layout->td($config_currency_symbol." ".number_format($value["value"], 2,",","."));
 	      $g_layout->output('<INPUT type="hidden" name="calc'.$x.'" value="'.$value["value"].'">');
 	      $g_layout->output('<INPUT type="hidden" name="calc_discount_type'.$x.'" value="'.$discount_type.'">');
@@ -388,10 +388,10 @@ else
 	      $display_discount = "";
 	      $discount_value = "";
 	      $discount_type = "";
-	    }  
+	    }
 	  }
 	  $g_layout->output('<INPUT type="hidden" name="calc_count" value="'.$x.'">');
-	  
+
 	  //display aftercalculation bill_lines
 	  $x=0;
 	  foreach($calc_bill_line as $key => $value)
@@ -408,15 +408,15 @@ else
 	      else
 	      {
 	        $g_layout->td('<TEXTAREA rows="3" cols="40" name="costs_description'.$x.'">'.$value["description"].'</TEXTAREA>');
-	      } 	
+	      }
 	      $g_layout->td($config_currency_symbol." ".number_format($value["value"], 2,",","."));
 	      $g_layout->output('<INPUT type="hidden" name="costs'.$x.'" value="'.$value["value"].'">');
 	      $g_layout->output('<INPUT type="hidden" name="costs_id'.$x.'" value="'.$key.'">');
 	      $g_layout->output('</tr>');
-	    }  
+	    }
 	  }
 	  $g_layout->output('<INPUT type="hidden" name="costs_count" value="'.$x.'">');
-	  
+
 	  //display aftercalculation bill_lines
 	  $x=0;
 	  foreach($calc_bill_line as $key => $value)
@@ -435,13 +435,13 @@ else
 		  $g_layout->output('<INPUT type="hidden" name="entire_id'.$x.'" value="'.$key.'">');
 		  $g_layout->output('</tr>');
 	      }
-	    }  
+	    }
 	  }
 	  $g_layout->output('<INPUT type="hidden" name="entirediscount_count" value="'.$x.'">');
-	
+
 	//$g_layout->output('</tr>');
 	$g_layout->output('</table>');
-	
+
 	$g_layout->table_simple();
 	$g_layout->output('<tr>');
 	$g_layout->td('<BR><BR><input type="submit" value="'.text("generate_bill").'" >');

@@ -3,9 +3,9 @@
   function pimTodos()
   {
     global $g_user, $g_layout;
-    
+
     $me = $g_user["name"];
-    
+
     $todonode = getNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
     $todonode->addFilter("todo.status NOT IN (5,2)");
@@ -25,7 +25,7 @@
     $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.userid='$me'"),text('add'),SESSION_NESTED);
 
     $todo_assignedbyme = text("pim_assignedbyyou").":<br>";
-    $recs = $todonode->selectDb("owner='$me' AND assigned_to<>'$me'");
+    $recs = $todonode->selectDb("todo.owner='$me' AND assigned_to<>'$me'");
     if (count($recs)>0)
     {
       $todo_assignedbyme.= $todonode->recordList($recs,$actions,false, array('entrydate','projectid'));
@@ -45,5 +45,5 @@
     $res.= '</tr></table>';
     return $res;
   }
-  
+
 ?>

@@ -18,7 +18,7 @@ class usercontracts extends atkNode
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0, AF_OBLIGATORY));
     $this->add(new atkDateAttribute("enddate", "F d Y","d F Y",0,0, AF_OBLIGATORY));
     $this->add(new atkTextAttribute("description"));
-    $this->setTable("usercontract", "usercontract");         
+    $this->setTable("usercontract", "usercontract");
     $this->setOrder("id");
   }
 

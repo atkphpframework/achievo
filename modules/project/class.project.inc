@@ -1,13 +1,13 @@
 <?php
 
-  include_once("achievotools.inc");  
+  include_once("achievotools.inc");
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
   useattrib("atktextattribute");
   useattrib("atkdateattribute");
   useattrib("atklistattribute");
   useattrib("project.dependencyattrib");
-  useattrib("project.projecttemplateattribute");  
+  useattrib("project.projecttemplateattribute");
 
   class project extends atkNode
   {
@@ -20,11 +20,6 @@
       $this->add(new atkAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST));
-      $this->add(new atkManyToOneRelation("customer","organization.customer",AF_HIDE_SELECT|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
-
-      $preFilter = new atkManyToOneRelation("contact","organization.contact",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
-      $preFilter->m_destinationFilter = "company='[customer.id]'";
-      $this->add($preFilter);
 
       $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $this->add(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
@@ -44,15 +39,17 @@
         $this->addFilter("project.status","active");
       }
 
+      $this->add(new atkOneToManyRelation("proj_org","organization.project_organization", "projectid", AF_HIDE_LIST));
+
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
-      
+
       $this->add(new atkOneToManyRelation("employees","project.employee_project", "projectid", AF_HIDE_LIST));
 
       $this->setTable("project","project");
-      
+
       $this->setOrder("name");
       $this->setIndex("name");
 

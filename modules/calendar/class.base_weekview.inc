@@ -74,19 +74,49 @@
     function getAppointments($user, $begindate, $enddate)
     {
       // crosscomparison to match all appointments in range.
-      $filter = "startdate<='$enddate' AND enddate>='$begindate'";
-      if ($user!="all")
+      global $g_db;
+
+      $date = $this->year."-".$this->month."-".$this->day;
+
+      $name = "atk".atkconfig("database")."query";
+      $query = new $name();
+      $query->addTable('schedule');
+      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
+      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+
+      $query->addField('id', ' ', 'schedule');
+      $query->addField('startdate', ' ', 'schedule');
+      $query->addField('enddate', ' ', 'schedule');
+      $query->addField('starttime', ' ', 'schedule');
+      $query->addField('endtime', ' ', 'schedule');
+      $query->addField('title', ' ', 'schedule');
+      $query->addField('description', ' ', 'schedule');
+      $query->addField('location', ' ', 'schedule');
+      $query->addField('allday', ' ', 'schedule');
+      $query->addField('publicitem', ' ', 'schedule');
+      $query->addField('owner', ' ', 'schedule');
+      $query->addField('status', ' ', 'schedule');
+      $query->addField('scheduletype', ' ', 'schedule');
+      $query->addField('all_users', ' ', 'schedule');
+
+      $query->addCondition("schedule.startdate <='$enddate' AND schedule.enddate >= '$begindate'");
+
+      if ($this->showGlobal != "all")
       {
-        $filter.= " AND owner='$user'";
+        $query->addCondition("(schedule.owner='".$this->showGlobal."' OR person.userid='".$this->showGlobal."' OR schedule.all_users = 1)");
       }
 
-      $schedule = &getNode("calendar.schedule");
-      $recs = $schedule->selectDb($filter, "", "", "", "", "admin");
+      $query->addOrderBy('starttime');
+      $querystring = $query->buildSelect(TRUE);
+      $recs = $g_db->getRows($querystring);
 
       // now add them to a nice array
       for ($i=0;$i<count($recs);$i++)
       {
-        $date = sprintf("%d-%02d-%02d",$recs[$i]["startdate"]["year"],$recs[$i]["startdate"]["month"],$recs[$i]["startdate"]["day"]);
+        $year = substr($recs[$i]["startdate"],0,4);
+        $month = substr($recs[$i]["startdate"],5,2);
+        $day = substr($recs[$i]["startdate"],8,2);
+        $date = $year."-".$month."-".$day;
 
         if ($recs[$i]["allday"] != 1)
         {
@@ -140,7 +170,7 @@
     $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime&user=".$this->showGlobal;
 
     $date     = $this->year."-".$this->month."-".$this->day;
-    $this->title = "<font size='-1'><b>Week ".strftime("%W", mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
+    $this->title = "<font size='-1'><b>".text("week")."&nbsp;".strftime("%W", mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
 
     return "<font size='-1'>".href($prevUrl, text('houradmin_previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('houradmin_nextweek'))."</font>";
    }
@@ -203,12 +233,12 @@
 
             if ($daypart_name!="allday")
             {
-              $str.= "[".$dayappointments[$j]["starttime"]["hours"].":".$dayappointments[$j]["starttime"]["minutes"];
-              $str.= "-".$dayappointments[$j]["endtime"]["hours"].":".$dayappointments[$j]["endtime"]["minutes"];
+              $str.= "[".substr($dayappointments[$j]["starttime"],0,2).":".substr($dayappointments[$j]["starttime"],3,2);
+              $str.= "-".substr($dayappointments[$j]["endtime"],0,2).":".substr($dayappointments[$j]["endtime"],3,2);
               $str.="] ";
             }
             $str.= $link;
-            if ($this->showGlobal=="all") $str.=" (".$dayappointments[$j]["owner"].")";
+            if ($this->showGlobal!=$dayappointments[$j]["owner"]) $str.=" (".$dayappointments[$j]["owner"].")";
 
             if ($j!=count($dayappointments)-1) $str.="<br>";
           }

@@ -100,7 +100,7 @@ for ($i=0; $i<=8;$i++)
 $name = "atk".atkconfig("database")."query";
 $query = new $name();
 $query->addTable('employee_project');
-$query->addJoin('employee', '', 'employee.userid=employee_project.employeeid', FALSE);
+$query->addJoin('person', '', 'person.id=employee_project.employeeid', FALSE);
 $query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
@@ -109,8 +109,10 @@ $query->addField('id', ' ', 'planning', 'planning_');
 $query->addField('plandate', ' ', 'planning', 'planning_');
 $query->addField('time', ' ', 'planning', 'planning_');
 $query->addField('name', ' ', 'project', 'project_');
-$query->addField('name', ' ', 'employee', 'employee_');
-$query->addField('userid', ' ', 'employee', 'employee_');
+$query->addField('lastname', ' ', 'person', 'employee_');
+$query->addField('firstname', ' ', 'person', 'employee_');
+$query->addField('userid', ' ', 'person', 'employee_');
+$query->addField('id', ' ', 'person', 'employee_');
 $query->addField('abbreviation', ' ', 'project', 'project_');
 $query->addField('id', ' ', 'project', 'project_');
 
@@ -119,7 +121,7 @@ $query->addField('id', ' ', 'project', 'project_');
 // planned hours should be booked on.
 if(isset($projectid)&&$projectid!='-1') $query->addCondition("employee_project.projectid='".$projectid."'");
 
-$query->addOrderBy('employee.name');
+$query->addOrderBy('person.lastname');
 $query->addOrderBy('plandate');
 
 $querystring = $query->buildSelect(TRUE);
@@ -154,11 +156,11 @@ for ($i=1;$i<=7;$i++)
   {
     for ($i = 0; $i < count($dbrecords); $i++)
     {
-      $employee = $dbrecords[$i]['employee_name'];
+      $employee = $dbrecords[$i]['employee_lastname'].", ".$dbrecords[$i]['employee_firstname'];
       $day = date("w",strtotime($dbrecords[$i]['planning_plandate']));
       if ($day==0) $day=7;
       $result[$employee][$day][] = $dbrecords[$i];
-      $result[$employee][0]=$dbrecords[$i]['employee_userid'];
+      $result[$employee][0]=$dbrecords[$i]['employee_id'];
     }
 
      // For each employee the planning for the whole week will be shown
@@ -184,7 +186,7 @@ for ($i=1;$i<=7;$i++)
             // If the date of the printed day is smaller the the date now the planned item can only be viewed (no changes are allowed)
             // because you allways plan in the future
             if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
-            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[project_id]'"));
+            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "person.id=$item[employee_id]", "projectfilter" => "projectid='$item[project_id]'"));
 
             // If the project has no abbreviation the first 10 characters of the name of the project will be shown
             if ($item[project_abbreviation]!='') $abbreviation = $item[project_abbreviation];
@@ -239,7 +241,7 @@ for ($i=1;$i<=7;$i++)
         // If the date of the printed day is smaller then the date now there will be no add link available because you allways plan in the future
           if ($linkdate<$datenow)
         {
-          $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
+          $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.id='$linkname'", "noactions" => "1"));
           $g_layout->td('&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.href($urla, text(view), SESSION_NESTED), 'colspan="2" align="left"');
         }
         else
@@ -247,13 +249,13 @@ for ($i=1;$i<=7;$i++)
           // If there is no project selected (notset or -1) there will be no add link available because achievo doesn't know which project to plan on
           if (!isset($projectid) || $projectid==-1)
           {
-            $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'"));
+            $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.id='$linkname'"));
             $g_layout->td((href($urla, text(view), SESSION_NESTED)), 'colspan="2" align="center" nowrap');
           }
           else
           {
-            $urla=dispatch_url('resource_planning.resource_planning', 'add', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "projectfilter" => "projectid='$projectid'"));
-            $urlb=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'"));
+            $urla=dispatch_url('resource_planning.resource_planning', 'add', array("atkfilter" => "plandate='$linkdate' AND employeeid.id='$linkname'", "projectfilter" => "projectid='$projectid'"));
+            $urlb=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.id='$linkname'"));
             $g_layout->td((href($urla, text(resource_planning_addplan), SESSION_NESTED)).' '.(href($urlb, text(view), SESSION_NESTED)), 'colspan="2" align="center" nowrap');
           }
         }
