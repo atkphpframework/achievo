@@ -208,4 +208,6 @@
   $setup->setVersion("1", "timereg");
   $setup->setVersion("1", "todo");
   
+  $setup->report("In Achievo 0.9.1 projects are linked to contactpersons instead of customers. All project-customer links are lost (TODO/FIXME!!).", "warning");
+  
 ?>
