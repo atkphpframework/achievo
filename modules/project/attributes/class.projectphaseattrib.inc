@@ -228,7 +228,7 @@ class atkProjectPhaseAttribute extends atkAttribute
   {
     global $g_db;
     
-    $query = "SELECT phase_activity.phaseid, id, name, description, remarkrequired, billable FROM activity, phase_activity ";
+    $query = "SELECT phase_activity.phaseid, id, name, description, remarkrequired FROM activity, phase_activity ";
     $query.= "WHERE phase_activity.phaseid IN (".implode(",",$phaseid_arr).") AND activity.id = phase_activity.activityid ";
     $query.= "ORDER BY name";
   
