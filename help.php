@@ -10,6 +10,9 @@
 *
 * $Id$
 * $Log$
+* Revision 4.2  2001/07/17 11:14:19  ivo
+* Upgraded Achievo to atk 4.2
+*
 * Revision 4.1  2001/07/09 15:56:22  ivo
 * Added pop3 authentication support.
 * Fixed a bug in projectplanning when projects have no phases.
@@ -22,10 +25,11 @@
 *
 *
 */
-
-  chdir("../");    
-  include("atk/class.atknode.inc");  
   
+  include("atk.inc");  
+  
+  atksession();
+  atksecure();  
   require "theme.inc";
 
 //  Renders the help screen

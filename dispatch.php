@@ -1,25 +1,12 @@
-<?php
-  /* Setup the system */
-  $config_atkroot = "./";
-  require_once($config_atkroot."atk/class.atknode.inc");
-  atksession();  
+<?php   
 
-  if (count($HTTP_POST_VARS)>0)
-  {  
-    atkDataDecode(&$HTTP_POST_VARS);   
-    $ATK_VARS = $HTTP_POST_VARS;
-  }
-  else
-  {
-    atkDataDecode(&$HTTP_GET_VARS);   
-    $ATK_VARS = $HTTP_GET_VARS;
-  }
-   
-  $g_sessionManager->session_read(&$ATK_VARS);
-  
+  /* Setup the system */    
+  include_once("atk.inc");    
+    
+  atksession();
   atksecure();
-
-  include_once("./theme.inc");
+  
+  include_once("theme.inc");
      
   // Create node
   $obj = getNode($ATK_VARS["atknodetype"]); 
@@ -34,4 +21,5 @@
   }
 
   $g_layout->outputFlush();
+  
 ?>

@@ -5,10 +5,8 @@
  * contains an extra line that includes the theme.inc file!
  */
 
-  $config_atkroot = "./";
-  require_once($config_atkroot."atk/class.atknode.inc");
-  require_once($config_atkroot."atk/atkmenutools.inc");
-
+  include_once("atk.inc");
+  
   atksession();  
   atksecure();
   
@@ -46,7 +44,7 @@
     if ($g_menu[$atkmenutop][$i] == "-") $menu .= "<br>";
     
     /* submenu ? */
-    else if (empty($url) && $enable) $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name"),SESSION_NEW).$config_menu_delimiter;
+    else if (empty($url) && $enable) $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name")).$config_menu_delimiter;
     else if (empty($url) && !$enable) $menu .=text("menu_$name").$config_menu_delimiter;
       
     /* normal menu item */
@@ -59,7 +57,7 @@
   {
     $parent = $g_menu_parent[$atkmenutop];
     $menu .= $config_menu_delimiter;
-    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to").' '.text("menu_$parent"),SESSION_NEW).'<br>';  
+    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to").' '.text("menu_$parent")).'<br>';  
   }
 
   /* bottom */

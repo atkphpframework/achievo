@@ -75,6 +75,8 @@ class project extends atkNode
 {
   function project()
   {
+    global $ATK_VARS;
+    
     $this->atkNode("project",NF_EDITAFTERADD);
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
@@ -85,8 +87,8 @@ class project extends atkNode
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD));    
     
     // If we are in project administration mode, we show all projects. Otherwise, we only
-    // show active projects.      
-    if ($GLOBALS["atknodetype"]=="project"&& in_array($GLOBALS["atkaction"],array("admin","add","update","edit")))
+    // show active projects.         
+    if ($ATK_VARS["atknodetype"]=="project"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit","search")))
     {          
       $this->addAttribute(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE_ADD|AF_SEARCHABLE));
     }
@@ -98,7 +100,7 @@ class project extends atkNode
 
     $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid", AF_HIDE_LIST));
     $this->addAttribute(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
-    $this->addAttribute(new projecttemplateAttribute("template","tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT));
+    $this->addAttribute(new projecttemplateAttribute("template","tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
 
     $this->setTable("project","project");
     $this->setOrder("name");

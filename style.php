@@ -1,6 +1,9 @@
-<?php
-  include_once("atk/class.atknode.inc");
-  atksession();
+<?php  
+  include_once("atk.inc");
+  
+  // dummy namespace. if we don't use dummy here, the session is corrupted
+  // because style.php is loaded between two dispatch.php calls.
+  atksession("dummy");
   atksecure();
   include_once("./theme.inc");      
 ?>

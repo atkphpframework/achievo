@@ -1,6 +1,6 @@
 <?php
   
-  require "atk/class.atknode.inc";
+  include_once("atk.inc");  
   atksession();
   atksecure();
   require "theme.inc";

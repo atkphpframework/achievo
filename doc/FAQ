@@ -63,4 +63,11 @@ the terms might be different.
         want to use is not in the dropdown, click the link 'Search all 
         projects and phases'.
       
-      
+ 3.2. When I change the date, the date jumps to january and I am unable 
+      to change it. (Mozilla/Netscape 6)
+
+        There is a bug in some Mozilla 0.9.x and Netscape 6.x releases that
+        causes this behaviour:
+        http://bugzilla.mozilla.org/show_bug.cgi?id=86659
+        There is currently no workaround for this bug.
+

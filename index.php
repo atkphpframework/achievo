@@ -1,8 +1,7 @@
 <?php
-
-  $config_atkroot = "./";
-  require_once($config_atkroot."atk/class.atknode.inc");
- 
+  
+  include_once("atk.inc");
+    
   atksession(); 
   atksecure();
  
