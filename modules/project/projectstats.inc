@@ -77,7 +77,7 @@
               hours.activitydate >= '$startdate'
               AND hours.activitydate <= '$enddate'
               AND hours.activityid = activity.id
-              AND hours.userid = person.userid
+              AND hours.userid = person.id
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id
 	      AND project.id = ".$selectedprojectid;
@@ -209,7 +209,7 @@
             WHERE
               costregistration.costdate >= '$startdate'
               AND costregistration.costdate <= '$enddate'
-              AND costregistration.userid = person.userid
+              AND costregistration.userid = person.id
               AND costregistration.projectid = project.id
               AND project.id = ".$selectedprojectid;
 

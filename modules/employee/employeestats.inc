@@ -17,7 +17,7 @@
   {
     global $g_db;
 
-    $sql = "SELECT lastname,userid,firstname
+    $sql = "SELECT id,lastname,userid,firstname
             FROM person
             WHERE status='active' AND role='employee'
             ORDER BY lastname
@@ -27,8 +27,8 @@
     $employee_code='<OPTION VALUE="all">'.text("allusers");
     for($i=0;$i<count($records);$i++)
     {
-      if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
-      $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+      if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
+      $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
     }
     return $employee_code;
 
@@ -59,7 +59,7 @@
 
   if (!isset($userid)||$userid=="")
   {
-    $userid=$g_user["name"];
+    $userid=$g_user["id"];
   }
 
   $view_all = $g_securityManager->allowed('employee','view_all');
@@ -91,7 +91,7 @@
   }
   else
   {
-    $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
+    $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
   }
   $g_layout->output('</tr><tr>');
 

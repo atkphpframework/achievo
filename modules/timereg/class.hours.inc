@@ -122,7 +122,7 @@ class hours extends atkNode
   {
     global $g_user;
     $this->setLock();
-    $this->addFilter("userid",strtolower($g_user["id"]));
+    $this->addFilter("hours.userid",strtolower($g_user["id"]));
     return parent::action_edit();
   }
 

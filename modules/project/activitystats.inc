@@ -112,7 +112,7 @@
             WHERE
               hours.activitydate >= '$startdate'
               AND hours.activitydate <= '$enddate'
-              AND hours.userid = person.userid
+              AND hours.userid = person.id
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id
               AND hours.activityid = $activityid";

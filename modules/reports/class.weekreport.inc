@@ -283,7 +283,7 @@ class weekreport extends atkNode
 
     // determine contracthours per week..
     $query = "SELECT
-                uc_hours, startdate, enddate, person.userid, lastname, firstname
+                uc_hours, startdate, enddate, person.id, lastname, firstname
               FROM
                  usercontract, person
               WHERE ";
@@ -315,8 +315,8 @@ class weekreport extends atkNode
         if ($j>=$report_start_week && $j<=$report_end_week && substr($j,4)<=52)
         {
           $weekdata[$j]["week"] = $j;
-          $weekdata[$j]["userdata"][$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
-          $weekdata[$j]["userdata"][$contracts[$i]["userid"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
+          $weekdata[$j]["userdata"][$contracts[$i]["id"]]["contract"] = $contracts[$i]["uc_hours"]*60;
+          $weekdata[$j]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
     }

@@ -5,6 +5,7 @@
   userelation("atkonetomanyrelation");
   useattrib("atktextattribute");
   useattrib("atkdateattribute");
+  useattrib("atkcalendarattribute");
   useattrib("atklistattribute");
   useattrib("project.dependencyattrib");
   useattrib("project.projecttemplateattribute");
@@ -41,8 +42,10 @@
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST));
       $this->add(new atkOneToManyRelation("employees","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       
-      $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
+      //$this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
+      $this->add(new atkCalendarAttribute("startdate", 0, 0, AF_HIDE_ADD), "planning");
       $this->add(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_HIDE_LIST), "planning");
+      //$this->add(new atkCalendarAttribute("enddate", 0, 0, AF_HIDE_ADD), "planning");
 
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE), "planning");
 
