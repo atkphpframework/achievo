@@ -177,6 +177,7 @@
   $txt_paymethod = "Payment method";
   $txt_percentage = "Percentage";
   $txt_period_price = "Price per period";
+  $txt_permission_admin = "Access";
   $txt_personalstats = "Personal Statistics";
   $txt_personid = "Person";
   $txt_person_id = "Person";
