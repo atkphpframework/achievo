@@ -40,7 +40,7 @@ Changes in Achievo 0.9.2
   one table now)
 * Database now uses numerical ID as referential key to user. Module
   developers should take note of this! 
-* Bugfix for bug #56. 
+* Bugfixes for bugs #9 and #56. 
 - Removed about 80 unnecessary strings from the language files. In some
   cases this unfortunately means that some strings have to be retranslated.
 

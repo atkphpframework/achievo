@@ -10,7 +10,7 @@
   
 
   $g_layout->output('
-        <frameset rows="70,*" frameborder="0" border="0">
+        <frameset rows="73,*" frameborder="0" border="0">
           <frame name="top" scrolling="no" noresize src="top.php" marginwidth="0" marginheight="0">
        ');    
     
