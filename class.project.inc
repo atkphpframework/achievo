@@ -129,7 +129,13 @@ class project extends atkNode
   
   function initial_values()
   {
-    return array("startdate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"enddate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"status"=>"active");
+    return array("startdate"=>array("year"=>date(Y),
+                                    "month"=>date(m),
+                                    "day"=>date(d)),
+                 "enddate"=>array("year"=>(date(Y)+1),
+                                  "month"=>date(m),
+                                  "day"=>date(d)),
+                 "status"=>"active");
   }
 
   function action_stats()
