@@ -191,6 +191,11 @@
     $g_layout->td(text("hoursurvey_output_printable"));
     $g_layout->td('<input type="checkbox" name="printable" value="1">');
     $g_layout->output('</tr><tr>');  
+
+    $g_layout->td(text("PDF"));
+    $g_layout->td('<input type="checkbox" name="pdf" value="1">');
+    $g_layout->output('</tr><tr>');  
+
     $g_layout->td(text("hoursurvey_output_showcollumns"));
     
     $cell="";

@@ -77,7 +77,22 @@
   $txt_title_projectstats_totals = "Total statistics for ";
   $txt_title_projectstats_peremployee = "The following employees have registered hours on this project";
   $txt_title_projectstats_peractivity = "People worked on the following activities for this project";
-  
+
+  // -- Todo stuff --
+  $txt_menu_todomanagement   = "Manage todo Item's";
+  $txt_menu_project_todoview = "Project todo items";
+  $txt_menu_todo             = "Project todo's";
+  $txt_title_todo_admin      = "Project todo list";
+  $txt_title_todo_edit       = "Edit project todo";
+  $txt_title_todo_add        = "Add project todo";
+  $txt_link_todo_add         = "Add project todo";
+
+  // -- Notes stuff
+  $txt_menu_project_notesview        = "Project notes";
+  $txt_title_project_notesview_admin = "Project selector";
+  $txt_title_project_notes_add       = "Add a project note";
+  $txt_title_project_notesview_edit  = "Edit a project note";
+
 
   // --------==== Strings that were introduced in version 0.4: ====---------    
   $txt_title_hoursurvey_onactivity = "on activity ";
@@ -174,7 +189,7 @@
   $txt_menu_employee_admin = "Employee Administration";
   $txt_menu_employee_personalstats = "Personal Statistics";
   $txt_menu_profile_admin = "Security Profiles";  
-  
+
   $txt_title_employee_add = "Add employee";
   $txt_title_employee_edit = "Edit employee";
   $txt_title_employee_admin = "Manage existing employees";  
