@@ -21,7 +21,7 @@ class atkPlanProjectAttribute extends atkAttribute
    * @param $name Name of the attribute
    * @param $flags Flags for this attribute
    */
-  function atkProjectAttribute($name, $flags=0)
+  function atkPlanProjectAttribute($name, $flags=0)
   {
     /* base class constructor */
     $this->atkAttribute($name, $flags);
