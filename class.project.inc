@@ -81,13 +81,18 @@ class project extends atkNode
     global $ATK_VARS, $g_sessionManager;
     
     $this->atkNode("project",NF_EDITAFTERADD);
+    $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD);
+    $preFilter->m_destinationFilter = "company=[customer.id]";
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
     $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_HIDE_SELECT|AF_HIDE_ADD));
+    $this->addAttribute($preFilter);
     $this->addAttribute(new atkManyToOneRelation("coordinator","employee",AF_SEARCHABLE|AF_HIDE_ADD));
     $this->addAttribute(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->addAttribute(new atkAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD));    
+    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD));    
     
     // If we are in project administration mode, we show all projects. Otherwise, we only
     // show active projects.         
@@ -101,7 +106,7 @@ class project extends atkNode
       $this->addFilter("project.status","active");
     }
 
-    $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+  //  $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
     // $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST|AF_CASCADE_DELETE));
     // $this->addAttribute(new atkOneToManyRelation("project_notes","project_notes","projectid", AF_HIDE|AF_CASCADE_DELETE));
 
@@ -116,7 +121,7 @@ class project extends atkNode
 
     atkdebug("project::project()");
   }
-
+  
   function descriptor_def()
   {
     return "[name]";
@@ -124,7 +129,7 @@ class project extends atkNode
   
   function initial_values()
   {
-    return array("startdate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"status"=>"active");
+    return array("startdate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"enddate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"status"=>"active");
   }
 
   function action_stats()
@@ -157,5 +162,7 @@ class project extends atkNode
     // employees.
      
   }
+ 
+  
 }
 ?>
