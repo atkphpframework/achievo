@@ -257,7 +257,7 @@
           {
             $version = "0.9.1";
           }
-          else if (in_array("schedule", $tablenames) && in_array("schedule_types"))
+          else if (in_array("schedule", $tablenames) && in_array("schedule_types", $tablenames))
           {
             $version = "0.9";
           }
