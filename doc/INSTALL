@@ -62,9 +62,12 @@ have a working webserver with PHP support and a MySQL database installed.
    This creates a database named 'achievo_0_9', and a user with username 
    'achievo' and password 'secret'.
     
-   (Note: the create and alter privileges are only needed during installation
+   Note: the create and alter privileges are only needed during installation
    and upgrades. You can revoke these privileges once the installation is 
-   complete.)
+   complete.
+ 
+   Note 2: if you are using MySQL 4, you must also grant the 'lock tables' 
+   privilege to the user.
 
 3) Edit the file config.inc.php in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
