@@ -113,7 +113,7 @@
     {
       return $this->m_attribList["fixed_price"]->edit($rec)." ".atkconfig("currency_symbol");
     }
-
+/*
     function action_view()
     {
       global $g_layout, $g_db;
@@ -210,7 +210,7 @@
       $g_layout->output(session_form(SESSION_BACK));
       $g_layout->output('<input type="submit" value="&lt;&lt; '.text("back").'"></form>');
       $g_layout->ui_bottom();
-    }
+    } */
   }
 
 ?>
