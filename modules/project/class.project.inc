@@ -52,10 +52,11 @@
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
       
       $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
-            
+      
+      $this->add(new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]"), "line", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
       $this->add(new dataGraphAttribute("phasetimedistribution", "phasetime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
       $this->add(new dataGraphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
-      $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
+      $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");      
 
       $this->setTable("project","project");
 
@@ -208,6 +209,70 @@
       }
       
       return array("registeredtimeperactivity"=>$dataset);
+    }
+    
+    function graph_timeline($params)
+    {
+      global $g_db;
+   
+      // First find out if a timeline would make more sense per week, per 
+      // month or per day. This all depends on the amount of time between the 
+      // first and last time entry.
+      $range = $g_db->getrows("SELECT 
+                                 min(activitydate) as minimum, 
+                                 max(activitydate) as maximum
+                               FROM 
+                                 hours, phase
+                               WHERE 
+                                 hours.phaseid = phase.id
+                                 AND phase.projectid = ".$params["projectid"]);      
+      $maxdate = array();
+      $mindate = array();
+      list ($maxyear, $maxmonth, $maxday) = explode("-", $range[0]["maximum"]);
+      list ($minyear, $minmonth, $minday) = explode("-", $range[0]["minimum"]);      
+      
+      $secondsinaday = 24*60*60;
+      $daysbetween = (mktime(12,0,0,$maxmonth,$maxday,$maxyear)-mktime(12,0,0,$minmonth,$minday,$minyear))/$secondsinaday;      
+      
+      if ($daysbetween <= 31)
+      {
+        // one month range. Daybased stat makes the most sense.
+        $groupbybystmt = "";
+        $scale="day";
+      }
+      else if ($daysbetween <= 5*31)
+      {
+        // five month range. Week based stat makes the most sense.
+        $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')";
+        $scale="week";
+      }
+      else
+      { 
+        // > 5 month range. Month based stat makes most sense.
+        $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')";
+        $scale="month";
+      }                        
+      
+      $query = "SELECT
+                  ".($groupbystmt==""?"activitydate":$groupbystmt)." as label, sum(time) as total
+                FROM
+                  hours, phase
+                WHERE 
+                  hours.phaseid = phase.id
+                  AND phase.projectid = ".$params["projectid"]."
+                GROUP BY
+                  ".($groupbystmt==""?"activitydate":$groupbystmt);                
+      $data = $g_db->getrows($query);
+      
+      // convert records to graph-compatible array.
+      $dataset = array();       
+      for ($i=0, $_i=count($data); $i<$_i; $i++)
+      {        
+        $dataset[$data[$i]["label"]] = sprintf("%.2f", ($data[$i]["total"]/60));
+      }
+      
+      return array("registeredtimeper".$scale=>$dataset);
+      
     }
   }
 
