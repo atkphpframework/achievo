@@ -192,6 +192,16 @@
         return $this->handleDbStatus($res);
       }
     }
+    
+    function action_installdb()
+    {
+      global $g_modules;
+      foreach ($g_modules as $modname=>$moduledir)
+      {
+        $output.=$modname."<br>";
+      }
+      return $this->setupScreen("Installation result", $output);
+    }
         
   }
   
