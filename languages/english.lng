@@ -342,6 +342,16 @@
   $txt_title_contracttype_add = "Add contract type";
   $txt_title_contracttype_edit = "Edit contract type";
   $txt_title_contracttype_delete = "Delete contract type";
+
+  $txt_contracttype = "Contract Description";
+
+  //Added by Marc for Costregistration
+
+  $txt_menu_costregistration_admin = "Cost Registration";
+  $txt_title_costregistration_admin = "Administrate costs made in projects";
+  $txt_title_costregistration_add = "New entry";
+  $txt_title_costregistration_edit = "Edit entry";
+
   $txt_contracttype = "Contract Description";  
   
   $txt_menu_customermanagement = "Manage Customers";
