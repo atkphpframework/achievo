@@ -147,6 +147,7 @@ for ($i=1;$i<=7;$i++)
 {
   // Printing the days of the week and their dates
   $g_layout->td_datatitle(text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','colspan="2" align="center"');    }
+  $g_layout->td_datatitle(text(weektotal));
   $g_layout->output($g_layout->tr_bottom());
   if ($cntrec>0)
   {
@@ -160,18 +161,20 @@ for ($i=1;$i<=7;$i++)
     }
 
      // For each employee the planning for the whole week will be shown
+    $daytotals = array();
     foreach($result as $employee => $day)
     {
       $g_layout->output($g_layout->tr_top('1','onmouseover="if (typeof(this.style) != \'undefined\') this.style.backgroundColor = \''.$g_theme["RowMouseOver"].'\'" onmouseout="if (typeof(this.style) != \'undefined\') this.style.backgroundColor = \'\'"'));
-      $g_layout->td($employee, 'rowspan="2"');
+      $g_layout->td($employee, 'rowspan="3"');
 
       //For every day will be looked if there are planned items, if so they will be printed on the screen
       for ($w = 1; $w <= 7; $w++)
       {
+        unset($daytotals[$w]);
         if (isset($day[$w]))
         {
-          $projects='';
-          $times='';
+          $projects = '';
+          $times = '';
           foreach($day[$w] as $item)
           {
             $linkdate=$weekdates[$w][date];
@@ -181,8 +184,9 @@ for ($i=1;$i<=7;$i++)
             // because you allways plan in the future
             if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
             else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[7]'"));
-            $projects.=href($url, $item[6], SESSION_NESTED).'<br>';
-            $times.=time_format($item[2]).'<br>';
+            $projects.=href($url, $item[project_abbreviation], SESSION_NESTED).'<br>';
+            $times.=time_format($item[planning_time]).'<br>';
+            $daytotals[$w] += $item[planning_time];
           }
           $g_layout->td($projects, 'valign="top"');
           $g_layout->td($times, 'valign="top"');
@@ -193,8 +197,32 @@ for ($i=1;$i<=7;$i++)
           $g_layout->td('');
         }
       }
+      $g_layout->td();
       $g_layout->output($g_layout->tr_bottom());
       $g_layout->output($g_layout->tr_top());
+
+      //Now the daytotals will be displayed
+
+      for ($w = 1; $w <= 7;$w++)
+      {
+        $g_layout->td();
+        if (isset($daytotals[$w]))
+        {
+          $overtime = atkconfig("overtimethreshold");
+          if ($daytotals[$w]>$overtime) $g_layout->td(time_format($daytotals[$w]), '<b><font color="#FF0000"');
+          else
+          {
+            if ($daytotals[$w]==$overtime) $g_layout->td(time_format($daytotals[$w]), '<b><font color="#0000FF"');
+            else $g_layout->td(time_format($daytotals[$w]), '<b><font color="#009900"');
+          }
+        }
+        else $g_layout->td();
+      }
+      $weektotal = array_sum($daytotals);
+      $g_layout->td(time_format($weektotal));
+      $g_layout->output($g_layout->tr_bottom());
+      $g_layout->output($g_layout->tr_top());
+
 
       //Now the add and view links will be added under the planned items
       for ($w = 1; $w <= 7;$w++)
@@ -224,6 +252,7 @@ for ($i=1;$i<=7;$i++)
           }
         }
       }
+      $g_layout->td();
       $g_layout->output($g_layout->tr_bottom());
     }
   }
