@@ -222,9 +222,9 @@
       
       if ($res == DB_SUCCESS)
       {
-        $tablenames = $this->getTableNames();      
+        $tablenames = $this->getTableNames();                      
     
-        if (count($tables)==0)
+        if (count($tablenames)==0)
         {
           return $this->setupScreen("Database appears to be empty",
                                     "Your database connection is working. However, the specified database ('".atkconfig("databasename")."') seems to be empty.
