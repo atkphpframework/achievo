@@ -24,6 +24,7 @@ global $viewdate;
 global $g_sessionManager;
 global $g_theme;
 
+
 // weekview and viewdate are variables that we need to remember..
 $weekview = $g_sessionManager->stackVar("weekview");
 $viewdate = $g_sessionManager->stackVar("viewdate");
@@ -184,7 +185,13 @@ for ($i=1;$i<=7;$i++)
             // because you allways plan in the future
             if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
             else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[7]'"));
-            $projects.=href($url, $item[project_abbreviation], SESSION_NESTED).'<br>';
+
+            // If the project has no abbreviation the first 10 characters of the name of the project will be shown
+            atk_var_dump($item);
+            if ($item[project_abbreviation]!='') $abbreviation = $item[project_abbreviation];
+            else $abbreviation = substr($item[project_name], 0, 10);
+
+            $projects.=href($url, $abbreviation, SESSION_NESTED).'<br>';
             $times.=time_format($item[planning_time]).'<br>';
             $daytotals[$w] += $item[planning_time];
           }
