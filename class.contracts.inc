@@ -17,17 +17,25 @@ class contracts extends atkNode
     
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
-   }
+  }
 
-   function contract_period_price_edit($rec)
-   {
-     return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
-   }
+  function contract_period_price_edit($rec)
+  {
+    return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
+  }
 
-    function descriptor_def()
-    {
-      return "[description]";
-    }
+  function descriptor_def()
+  {
+    return "[description]";
+  }
+  
+  function initial_values()
+  {
+    return array("enddate"=>array("year"=>(date("Y")+1),
+                                  "month"=>date("m"),
+                                  "day"=>date("d")));
+  }
+
   
 }
 ?>
