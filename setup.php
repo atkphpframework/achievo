@@ -72,7 +72,7 @@
   // validating the PHP configuration.
   
   // Some defines we need
-  define("REQUIRED_PHP", "4.0.0");
+  define("REQUIRED_PHP", "4.1.0");
   
   /** 
    * Function for checking php version.
@@ -136,7 +136,7 @@
   // Some versions of PHP contain bugs and behave badly when running Achievo. 
   // Therefore, we check for known buggy versions.
   $version = phpversion();
-  if ($version=="4.0.4pl1" || $version=="4.1.2") 
+  if ($version=="4.1.2") 
   {
     $errors[] = "The PHP version you are using ($version) is known to have some 
                  bugs that prevent Achievo from running properly. 
