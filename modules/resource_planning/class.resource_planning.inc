@@ -29,21 +29,7 @@ function action_planweekviewempl()
    include $config_atkroot.'modules/resource_planning/planweekviewempl.inc';
  }
 
-function action_admin()
-  {
-    global $g_layout;
-
-    if ($this->hasFlag(NF_NO_ADD)==false&&$this->allowed("add"))
-    {
-      if (!$this->hasFlag(NF_ADD_LINK)) // otherwise, in adminPage, an add link will be added.
-      {
-        $this->addPage();
-      }
-    }
-    $this->adminPage();
-  }
-
-  function resource_planning()
+function resource_planning()
   {
     global $ATK_VARS;
     $this->atkNode("resource_planning");
@@ -81,15 +67,11 @@ function action_list()
   $this->adminPage();
 }
 
-function descriptor_def()
+function recordActions($record, &$actions)
 {
-  return "[description] ([rate_id])";
+  if (!empty($this->m_postvars["noactions"]))
+  $actions = array();
 }
 
-    function recordActions($record, &$actions)
-    {
-      if (!empty($this->m_postvars["noactions"]))
-        $actions = array();
-    }
 }
 ?>
