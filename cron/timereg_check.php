@@ -74,11 +74,10 @@
                                                        "startdate"=>$startdate,
                                                        "week"=>$week,
                                                        "enddate"=>$enddate));
-      $to = "ivo@i7.nl";  
-      usermail($to,text("timeguard_mail_subject"),$body."\n".$data["email"]);
+      $to = $data["email"];
+      usermail($to,text("timeguard_mail_subject"),$body);
       echo "send mail to $to\n";
     }
   }
             
 ?>
-
