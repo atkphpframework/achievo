@@ -6,9 +6,11 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 0.9.4
 ------------------------
-* Fixed bug in 'recent projects' dropdown in projects menu (bug #122) [Ivo]
++ Hour entries can now be edited directly from the time survey (only your own
+  hours and only if the entries are not from locked weeks) (bug #22) [Ivo]
 * Achievo should no longer generate notices when php error_reporting is set to
   E_ALL. (bug #74) [Ivo]
+* Fixed bug in 'recent projects' dropdown in projects menu (bug #122) [Ivo]
 * Fixed php error message when deleting todo's (bug #71) [Ivo]
 
 Changes in Achievo 0.9.3
