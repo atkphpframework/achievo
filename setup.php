@@ -223,7 +223,7 @@
     
   // Create node
   $obj = getNode("setup.setup"); 
-  if ($ATK_VARS["atkaction"]=="") $ATK_VARS["atkaction"] = "setup";
+  if ($ATK_VARS["atkaction"]=="") $ATK_VARS["atkaction"] = "intro";
     
   if (is_object($obj))
   {
