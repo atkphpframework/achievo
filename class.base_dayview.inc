@@ -52,7 +52,7 @@
      $this->day      = ($day   == 0) ? date("d") : $day;    
 
      // TEMPORARY FIX FOR NETSCAPE
-     // Netscape seems to have a problem
+     // Netscape/Mozilla seems to have a problem
      // with filling a table to a certain height
      // If this is a Netscape browser, force none-fancy layout
      if (!eregi("msie", $HTTP_USER_AGENT))

@@ -55,6 +55,36 @@ class todo extends atkNode
   {
    return "[title]";
   }
+
+  // support function to add the priority header to a mail message
+  function prioHeader($level)
+  {
+   $cr = chr(13).chr(10);
+   
+   switch ($level)
+   {
+    case 1:
+     $mslevel = "High";
+     break;
+
+    case 2:    
+     $mslevel = "Normal";
+     break;
+
+    case 3:
+     $level   = 5;
+     $mslevel = "Low";
+     break;
+
+    default:
+     $level   = 2;
+     $mslevel = "Normal";
+   }
+
+   $header  = "X-Priority: ".$level.$cr;
+   $header .= "X-MSMail-Priority: ".$mslevel.$cr;  
+   return $header;
+  }
   
   function postAdd($rec)
   {
@@ -95,7 +125,9 @@ class todo extends atkNode
    }           
 
    // send mail
-   mail(implode(",",$to), $subj, $body, "From: achievo\n");  
+   $header  = "From: achievo\n";
+   $header .= $this->prioHeader($rec["priority"]); 
+   mail(implode(",",$to), $subj, $body, $header);  
   }
   
   function todoChanged($new, $old)
@@ -149,7 +181,9 @@ class todo extends atkNode
      }           
  
      // send mail
-     mail(implode(",",$to),"[achievo notice] ".text("todochanged"), $body, "From: achievo\n");    
+     $header  = "From: achievo\n";
+     $header .= $this->prioHeader($rec["priority"]);
+     mail(implode(",",$to),"[achievo notice] ".text("todochanged"), $body, $header);    
    }
   }
 

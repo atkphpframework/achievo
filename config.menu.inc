@@ -2,9 +2,9 @@
   /* menu items */
 
   menuitem("hours_admin",  dispatch_url("hours", "admin"));
-  
   menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"));
 
+  menuitem("-");
   menuitem("schedule", dispatch_url("schedule","admin"));
   menuitem("schedule_types", dispatch_url("schedule_types","admin"));
   
