@@ -110,6 +110,7 @@ class todo extends atkNode
    $body = text("todo").": ".$rec["title"]."\n";     
    $body.= text("description").": \n".$rec["description"]."\n\n";
    $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+   $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
    if ($project!="") $body.= text("project").": ".$project."\n";
    $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
      
@@ -131,10 +132,15 @@ class todo extends atkNode
   }
   
   function todoChanged($new, $old)
-  {    
+  {        
     foreach (array_keys($this->m_attribList) as $attribname)
     {
-      if ($new[$attribname]!=$old[$attribname]) return true;
+      $p_attrib = &$this->m_attribList[$attribname];
+      if (!$p_attrib->equal($new,$old))
+      {
+        atkdebug($attribname." changed");
+        return true;
+      }
     }
     return false;
   }
@@ -163,6 +169,7 @@ class todo extends atkNode
      $body = text("todo").": ".$rec["title"]."\n";     
      $body.= text("description").": \n".$rec["description"]."\n\n";
      $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+     $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
      if ($project!="") $body.= text("project").": ".$project."\n";
      $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
      
