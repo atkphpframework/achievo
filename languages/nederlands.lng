@@ -70,7 +70,7 @@
   $txt_details = "Details";
   $txt_documents = "Documenten";
   $txt_duedate = "Deadline";
-  $txt_edit_attendee = "Elke genodigde mag bewerken";
+  $txt_edit_all = "Alle agenda's bewerken";
   $txt_email = "Email";
   $txt_employee = "Medewerker";
   $txt_employees = "Medewerkers";

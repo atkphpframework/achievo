@@ -45,7 +45,7 @@
    * @param $year  (if 0, then current year)
    */
     function dayView($day=0, $month=0, $year=0)
-    {     
+    {
 
      $this->year      = ($year  == 0) ? date("Y") : $year;
      $this->month     = ($month == 0) ? date("m") : $month;
@@ -413,15 +413,14 @@
        if (count($attendees) > 0 || $this->allDayItems[$i]["all_users"]) $header .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$att."</font></td>";
        $header .= "<td valign='top' align='right'>";
 
-       if ($this->allDayItems[$i]["owner"] == $this->owner || $found == 1 || $info["all_users"])
+       if ($this->allDayItems[$i]["publicitem"])
        {
          $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("view")."</font>", SESSION_NESTED);
        }
-
-       if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && ($found == 1 || $info["all_users"])))
+       if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_all") || ($found == 1 || $this->allDayItems[$i]["all_users"])))
        {
-        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
-        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("edit")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("delete")."</font>", SESSION_NESTED);
        }
 
        $header .= "</tr></table>";
@@ -486,7 +485,7 @@
            $fgcolor = $colors[$info["scheduletype"]]["fore"];
            $descr   = $info["description"];
            $status  = " [".$info["status"]."]";
-          }                    
+          }
 
           // if viewing public items for all users
           // it might be handy to see the item's owner
@@ -528,15 +527,16 @@
             }
           }
 
-          if ($this->allDayItems[$i]["owner"] == $this->owner || $found == 1 || $info["all_users"])
+          // you may view every calendaritem if it is a publicitem
+          if ($info["publicitem"])
           {
-            $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
+            $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("view")."</font>", SESSION_NESTED);
           }
-
-          if ($info["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && ($found == 1 || $info["all_users"])))
+          // you may only edit and delete a calendaritem if you are the owner, an attendee or have the right to edit and delete all calendaritems
+          if ($info["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_all") || ($found == 1 || $info["all_users"])))
           {
-           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
-           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("edit")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("delete")."</font>", SESSION_NESTED);
           }
 
           $header .= "</td>\n";

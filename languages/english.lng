@@ -70,7 +70,7 @@
   $txt_details = "details";
   $txt_documents = "Documents";
   $txt_duedate = "Due date";
-  $txt_edit_attendee = "Edit while attendee";
+  $txt_edit_all = "Edit all calendars";
   $txt_email = "Email";
   $txt_employee = "Employee";
   $txt_employees = "Employees";
@@ -395,7 +395,7 @@
   $txt_workingdays = "Workingdays";
   $txt_yearly = "Year";
   $txt_zipcode = "Zipcode";
-  
+
   $txt_attendee_empsearch = "Add employees";
   $txt_attendee_contactsearch = "Add contacts";
   $txt_attendee_fuzzyhint = "Add a comma-separated list of names below. The database will be searched for matches which will be added as attendees.";

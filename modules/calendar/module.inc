@@ -4,7 +4,7 @@
   {
     function getNodes()
     {
-      registerNode("calendar.schedule", array("admin", "add", "edit", "delete", "edit_attendee"));
+      registerNode("calendar.schedule", array("admin", "add", "edit", "delete", "edit_all"));
       registerNode("calendar.schedule_types", array("admin", "add", "edit", "delete"));
     }
 
@@ -20,7 +20,7 @@
       include_once(moduleDir("calendar")."pim.inc");
       return array("schedule"=>pimSchedule());
     }
-    
+
     function getDependencies($mode)
     {
       return array("person");
