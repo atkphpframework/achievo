@@ -23,6 +23,11 @@
       include_once(moduleDir("timereg")."pim.inc");
       return array("timeregistration"=>pimTimeReg());
     }  
+    
+    function getDependencies($mode)
+    {
+      return array("project", "employee");
+    }
   }
   
 ?>
