@@ -74,7 +74,7 @@ class atkProjectAttribute extends atkAttribute
     $result .= '</select>&nbsp';
     
     $targeturl_hourstats = dispatch_url("hours", "hoursurvey",  array("selectedprojectid" => "[id]"));
-    $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"));
+    $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"),SESSION_NESTED);
 
     return $result;
   }

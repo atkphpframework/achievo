@@ -1,6 +1,4 @@
 <?
-  /* Achievo theme */
-  include_once("./theme.inc");
 
   /* Setup the system */
   $config_atkroot = "./";
@@ -18,6 +16,10 @@
   }
    
   $g_sessionManager->session_read(&$ATK_VARS);
+  
+  atksecure();
+
+  include_once("./theme.inc");
      
   // Create node
   $obj = getNode($ATK_VARS["atknodetype"]); 

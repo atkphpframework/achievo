@@ -1,7 +1,7 @@
 <?php
   /* Setup the system */
-  $config_atkroot = "./";
-  require_once($config_atkroot."atk/class.atknode.inc");
+//  $config_atkroot = "./";
+//  require_once($config_atkroot."atk/class.atknode.inc");
 
   $sql = "SELECT theme from employee where userid='".$g_user["name"]."'";
   $result = $g_db->getrows($sql);

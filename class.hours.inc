@@ -18,15 +18,17 @@ class hours extends atkNode
 {
   function hours()
   {
-    global $g_user,$atkaction,$atkorderby, $weekview, $viewdate; 
+    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate; 
     
-    // weekview and viewdate are variables that we need to remember..
-    $this->addStickyVar(Array("weekview","viewdate"));      
+    // weekview and viewdate are variables that we need to remember..    
+    $weekview = $g_sessionManager->stackVar("weekview");
+    $viewdate = $g_sessionManager->stackVar("viewdate");
     
     // hoursurvey has extra sticky vars..
     if ($atkaction=="hoursurvey")
     {
-      $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));
+      // TODO: this doesn't work any more with the new session management code.
+      // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));    
     }
     
     $this->atkNode("hours"); // node() constructor is *not* called automatically!
@@ -38,7 +40,7 @@ class hours extends atkNode
     }
     if($atkaction!='hoursurvey'&&$atkaction!='edit')
     {
-      if ($weekview=="")
+      if ($weekview!=1)
       {
         if ($viewdate=="") $viewdate = strftime("%Y-%m-%d");
         $this->addFilter("date",$viewdate); 
@@ -47,7 +49,7 @@ class hours extends atkNode
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
                 
-    if($atkaction=="hoursurvey"||$weekview!="")
+    if($atkaction=="hoursurvey"||$weekview==1)
     {
       $this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd")));
     }
@@ -135,17 +137,7 @@ class hours extends atkNode
     if (!isset($currentphase)||$currentphase=="") $currentphase=0;
     if (!isset($currentactivity)||$currentactivity=="") $currentactivity =0;
     $result = '<script language="javascript"> set_activities('.$currentphase.','.$currentactivity.'); </script>';
-    
-    // we also use this dummy attribute to add some extra hidden variables 
-    // to the form.
-    if ($weekview!="")
-    {
-      $result .= '<input type="hidden" name="weekview" value="'.$weekview.'">';
-    }
-    if ($viewdate!="")
-    {
-      $result .= '<input type="hidden" name="viewdate" value="'.$viewdate.'">';
-    }
+        
     return $result;
   }
    
@@ -154,7 +146,7 @@ class hours extends atkNode
   {      
     global $weekview;
     $this->addPage();
-    if ($weekview=="")
+    if ($weekview!=1)
     {
       $this->adminPage();
     }
@@ -167,7 +159,7 @@ class hours extends atkNode
   function adminHeader()
   {
     global $weekview, $viewdate;
-    if ($weekview=="")
+    if ($weekview!=1)
     {
       $viewdatestamp = mktime(0,0,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
       $yesterday = date('Y-m-d',$viewdatestamp-86400);
@@ -213,8 +205,10 @@ class hours extends atkNode
     $daytotals = Array();
 
     $data = $this->selectDb("date >= '".$weekdates[1]['date']."' AND date <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);
-    while(list($rec) = each($data))
+    
+    for ($i=0;$i<count($data);$i++)
     {
+      $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
       $date = $rec["date"]["year"]."-".$rec["date"]["month"]."-".$rec["date"]["day"]; 
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
@@ -243,7 +237,7 @@ class hours extends atkNode
     {        
       if ($weekdates[$i]['date'] <= date("Y-m-d"))
       {
-        $url = 'dispatch.php?viewdate='.$weekdates[$i]['date'];
+        $url = 'dispatch.php?viewdate='.$weekdates[$i]['date']."&weekview=0";
         $g_layout->td_datatitle(href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
       }
       else
@@ -297,6 +291,8 @@ class hours extends atkNode
   {
     // if we add a record on a date that is not the currently viewed date, we jump
     // to that date.
+    // TODO this doesn't work anymore due to the fact that we move down in the session stack
+    // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_postvars["viewdate"]=$rec["date"]["year"]."-".sprintf("%02d",$rec["date"]["month"])."-".sprintf("%02d",$rec["date"]["day"]);
   }
   
@@ -304,6 +300,8 @@ class hours extends atkNode
   {
     // if we edit a record and set it to a date that is not the currently viewed date, we jump
     // to that date.
+    // TODO this doesn't work anymore due to the fact that we move down in the session stack
+    // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_postvars["viewdate"]=$rec["date"]["year"]."-".sprintf("%02d",$rec["date"]["month"])."-".sprintf("%02d",$rec["date"]["day"]);
   }
       

@@ -40,6 +40,8 @@ set_time_limit("180"); // 3 minutes should be enough..
 //For the new database we use the config settings from achievo
 include "atk/class.atknode.inc";
 
+atksecure();
+
 // Check of the administrator is logged in
 if($g_user["name"]<>"administrator")
 {

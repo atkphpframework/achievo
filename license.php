@@ -1,6 +1,7 @@
 <?php
 
   require "atk/class.atknode.inc";
+  atksecure();
   require "theme.inc";
 
   $g_layout->output("<html>");

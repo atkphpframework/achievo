@@ -26,7 +26,7 @@ class atkProjectPhaseAttribute extends atkAttribute
    */
   function edit($record="")
   {    
-    global $selectedphaseid, $atkaction;     
+    global $selectedphaseid, $atkaction, $atklevel;
     
     // The current phase (in case of edit of an existing record)
     $currentphase = $record[$this->fieldName()]["phaseid"];
@@ -89,21 +89,23 @@ class atkProjectPhaseAttribute extends atkAttribute
     
     $result .= '</select>&nbsp';
     
+    $saveform = true; // keep form in session..
     if ($atkaction=="edit")
     {
-      $targeturl_houradmin = dispatch_url("hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]"));
+      $targeturl_houradmin = dispatch_url("hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]", "atklevel"=>$atklevel));      
     }
     elseif($atkaction=="hoursurvey")
     {
-      $targeturl_houradmin = dispatch_url("hours", "hoursurvey", array("selectedphaseid" => "[id]"));
+      $targeturl_houradmin = dispatch_url("hours", "hoursurvey", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
+      $saveform = false; // hoursurvey doesn't support session save..
     }
     else
     {
-      $targeturl_houradmin = dispatch_url("hours", "admin", array("selectedphaseid" => "[id]"));
+      $targeturl_houradmin = dispatch_url("hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
     }
     
     $targeturl_phase = dispatch_url("phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => $targeturl_houradmin));
-    $result .= href(dispatch_url("project", "select", array("atktarget" => $targeturl_phase)), text("houradmin_searchallprojectsphases"));
+    $result .= href(dispatch_url("project", "select", array("atktarget" => $targeturl_phase)), text("houradmin_searchallprojectsphases"), SESSION_NESTED,$saveform);
 
     // dirty trick: the dummy attribute which starts the javascript for the 
     // correct activities must be notified of the currentphase.

@@ -13,6 +13,10 @@
    *
    * $Id$   
    * $Log$
+   * Revision 4.2  2001/05/23 09:43:57  ivo
+   * Created submenu's.
+   * Updated code to new atk4 session management features.
+   *
    * Revision 4.1  2001/05/11 15:23:03  peter
    * Revision number update.
    *
@@ -55,13 +59,13 @@
    *
    */
 
-  /* achievo theme */
-  include_once("./theme.inc");
-
   $config_atkroot = "./";
   require_once($config_atkroot."atk/class.atknode.inc");
   require_once($config_atkroot."atk/atkmenutools.inc");
   include_once($config_atkroot."config.menu.inc");
+  
+  atksecure();
+  include_once("./theme.inc");
 
   /* first add module menuitems */
   for ($i = 0; $i < count($g_modules); $i++)

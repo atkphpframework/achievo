@@ -115,7 +115,8 @@
   { 
     $g_layout->ui_top(text("title_hours_stats")); 
 
-    $g_layout->output('<form action="dispatch.php" method="get">');
+    $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');    
+        
     $g_layout->output('<input type="hidden" name="atknodetype" value="hours">');
     $g_layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
     $g_layout->table_simple();
