@@ -115,10 +115,15 @@ class employee extends person
   
   function recordActions($rec, &$actions, &$mraactions)
   {
-    if ($rec["status"] == "active")
+    $user = getUser();
+    if ($rec["status"] == "active" && $rec["id"]!=$user["id"])
     {
+      // Actve users may be deactivated, but not the logged in user.
       $actions["deactivate"] = session_url("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=deactivate&atkselector=[pk]", SESSION_NESTED);
     }
+  
+    // Prevent users from deleting themselves when they are logged in.
+    if($rec["id"]==$user["id"]) unset($actions["delete"]);
   }
   
   function action_deactivate()
