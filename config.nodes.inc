@@ -13,7 +13,7 @@
   registerNode("employee", array("admin", "add", "edit", "delete", "stats", "view_all"));
   registerNode("usercontracts", array("admin", "add", "edit", "delete"));
 
-  registerNode("project", array("*admin", "add", "edit", "delete", "stats","planning"));
+  registerNode("project", array("admin", "add", "edit", "delete", "stats","planning"));
   registerNode("phase", array("add", "edit", "delete"));
   registerNode("activity", array("admin", "add", "edit", "delete", "stats"));
   registerNode("tpl_phase", array("admin", "add", "edit", "delete"));
