@@ -27,6 +27,7 @@
    */
   $config_atkroot = "./";
   include_once("atk.inc"); 
+  include("version.inc");
 
   atksession();
   atksecure();   
@@ -41,8 +42,8 @@
   $page->register_style($theme->stylePath("top.css"));
   
   //Backwards compatible $content, that is what will render when the box.tpl is used instead of a top.tpl
-  $loggedin = text("logged_in_as", "", "atk").": <b>".$g_user["name"]."</b>";  
-  $content = '<br>'.$loggedin.' &nbsp; <a href="app.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).' </a>&nbsp;';
+  $loggedin = atktext("logged_in_as").": <b>".$g_user["name"]."</b>";  
+  $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).' </a>&nbsp;';
 
   if ($g_user["name"]!="administrator")
   {
@@ -60,14 +61,17 @@
   $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
   $content.="&nbsp;&nbsp;&nbsp; ".$searchpiece;
   
+  $title = text("app_title","","core")." ".$achievo_version;
+  ($achievo_state!=="stable")?$title.=" ($achievo_state)":"";
+  
   $top = $ui->renderTop(array("content"=> $content,
   							  "logintext" => atktext("logged_in_as"),
-                              "logouttext" => ucfirst(atktext("atk")),
-                              "logoutlink" => "",
+                              "logouttext" => ucfirst(atktext("logout")),
+                              "logoutlink" => "index.php?atklogout=1",
                               "logouttarget"=>"_top",
                               "centerpiece"=>$centerpiece,
                               "searchpiece"=>$searchpiece,
-                              "title" => atktext("app_title"),
+                              "title" => $title,
   							  "user"   => $g_user["name"]));
  
   $page->addContent($top);
