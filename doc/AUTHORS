@@ -11,13 +11,16 @@ Tom M. Schenkenberg <tom@achievo.com>
 
 Translators
 -----------
+The following people contributed a translation or updated an existing one:
+
 Braz. Portuguese: Armando M. Baratti   <ambaratti@aduaneiras.com.br>
 Dutch           : Ivo Jansch           <ivo@achievo.com>
 Czech           : Jakub Kahovec        <jakub.kahovec@newton.cz>
 Finnish         : Skyttä Kari          <kari.skytta@koskisen.fi>
 French          : Benoit des Ligneris  <benoit.des.ligneris@physique.usherb.ca>
                   Olivier Fourdan      <fourdan@xfce.org>
-German          : Lars Martin          <lars@smb-tec.com>
+German          : Bastian Kleineidam   <bastian.kleineidam@triplex.de>
+                  Lars Martin          <lars@smb-tec.com>
                   Michael Gaehwiler    <pegatron@gmx.net>
 Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
                   Luca Pescatore       <l.pescatore@network.it>                   
@@ -57,9 +60,8 @@ Wayne T. Ethier                       <wte@websynergyinternet.com>
 Michel Marti                          <michel.marti@ubs.com>
 Lucas Smith                           <smith@dybnet.de>
 Daniel Frame                          <dframe@tampabay.rr.com>
-Jakub Kahovec		                      <jakub.kahovec@newton.cz>
+Jakub Kahovec                         <jakub.kahovec@newton.cz>
 Rene Bakx                             <rene@ibuildings.nl>
-Bastian Kleineidam                    <bastian.kleineidam@triplex.de>
 
 
 Achievo uses modified versions of PHPLIB's database abstraction classes for

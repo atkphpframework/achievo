@@ -2,6 +2,15 @@
 - : deprecated feature
 * : bugfix or changed code
 
+Changes in Achievo 0.7.3
+------------------------
++ Added a Scheduler/Calendar. 
++ Added Todo functionality.
++ Added project notes.
++ Added an extended search feature. 
+* Updated German language files.
+* Fixed some bugs.
+
 Changes in Achievo 0.7.2
 ------------------------
 + Added support voor Oracle 8i databases.
