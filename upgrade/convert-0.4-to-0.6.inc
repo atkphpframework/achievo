@@ -66,7 +66,7 @@
   $setup->dropColumn("employee", "prefs_fontsize");
   $setup->dropColumn("employee", "prefs_titlefontcolor");
   $setup->addColumn("employee", "theme", "varchar(50)");
-  $setup->addColumn("employe", "entity", "int(10)");
+  $setup->addColumn("employee", "entity", "int(10)");
   
   $g_db->query("ALTER TABLE employee DROP PRIMARY KEY, ADD PRIMARY KEY(userid)");
   
@@ -83,7 +83,7 @@
                   Users should change their password after they first log in.", 
                  "important");                
  
-  $g_db->query("UPDATE employee SET password='".md5('default')."', theme='achievo', entity=1");
+  $g_db->query("UPDATE employee SET password='".md5('default')."', theme='outlook', entity=1");
   
   $setup->addColumn("project", "startdate", "date");
   $setup->addColumn("project", "customer", "int(10)");
@@ -196,8 +196,8 @@
                          VALUES ('$pid','".addslashes($tpls[$i]["name"])."','')");        
 
     $phid = $g_db->nextid("tpl_phase");
-    $sql = "INSERT INTO tpl_phase (id,name,description)
-           VALUES ('$phid','Main phase for ".addslashes($tpls[$i]["name"])."','Default phase')";
+    $g_db->query("INSERT INTO tpl_phase (id,name,description)
+           VALUES ('$phid','Main phase for ".addslashes($tpls[$i]["name"])."','Default phase')");
     
     $g_db->query("INSERT INTO tpl_project_phase (projectid,phaseid)
                          VALUES ('$pid','$phid')");    

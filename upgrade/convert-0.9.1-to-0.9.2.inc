@@ -164,12 +164,18 @@
   
   //convert planning, employee_project, rate, usercontract, person, todo, todo_history and project table because this version
   //does not use userid as primary key for employees    
+  useridConvert("hours", "userid", $setup);
   useridConvert("project", "coordinator", $setup);
   useridConvert("project_person", "personid", $setup);
   useridConvert("usercontract", "userid", $setup);  
   useridConvert("person", "supervisor", $setup); 
   useridConvert("todo", "assigned_to", $setup);  
   useridConvert("todo_history", "assigned_to", $setup);
+  
+  // Add new id field to hours_lock table.
+  $setup->addColumn("hours_lock", "id", "int(10)", false);
+  $g_db->query("ALTER TABLE hours_lock DROP PRIMARY KEY, ADD PRIMARY KEY(id)");
+
   
  
   //change the node rights in the accessright table to this format: modulename.nodename
