@@ -412,20 +412,27 @@ class hours extends atkNode
     
     $start = startOfWeek($date);
     $end = endOfWeek($date);
-  // HIER GEBLEVEN TODO ENZO
-    $query = "SELECT uc_hours-sum(time) as leftover 
+  
+    $query = "SELECT (uc_hours*60)-sum(time) as leftover 
               FROM 
                 hours LEFT JOIN usercontract
                 ON userid = uc_userid
               WHERE
                 uc_startdate <= '$start'
-                AND uc_enddate >= '$start'
+                AND uc_enddate > '$start'
                 AND userid = '$userid'
                 AND activitydate between '$start' and '$end'
               GROUP BY userid";
     $res = $g_db->getrows($query);
-  var_dump($res);
-    return false;
+    if (count($res)==0)
+    {
+      // either no contract in this period, or no hours booked at all..
+      return false;
+    }
+    else
+    {
+      return ($res[0]["leftover"]<=0);
+    }
   }
   
 }

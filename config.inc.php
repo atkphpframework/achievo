@@ -125,7 +125,7 @@
   // Specify the module name as first parameter, and the path where
   // it can be found as the second parameter.
   //
-  module("tryllian","../mod_tryllian");
+  module("tryllian","../achievo_modules/tryllian");
   
   // -------------------------------------------
   //            END OF CONFIGURATION
