@@ -5,7 +5,7 @@
     function getNodes()
     {
       registerNode("organization.organization", array("admin", "add", "edit", "delete")); // niet
-      registerNode("organization.contact", array("add","edit","delete"));
+      registerNode("organization.contact", array("admin", "add","edit","delete"));
       registerNode("organization.contracts", array("admin","add","edit","delete"));
       registerNode("organization.contracttype", array("admin","add","edit","delete"));
     }
