@@ -6,11 +6,11 @@ class schedule_types extends atkNode
   {
     $this->atkNode("schedule_types");
 
-    $this->addAttribute(new atkAttribute("id"                   , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("item_description"     , AF_OBLIGATORY));
-    $this->addAttribute(new atkAttribute("item_background"      , AF_OBLIGATORY));
-    $this->addAttribute(new atkAttribute("item_foreground"      , AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD));    
-    $this->addAttribute(new atkDummyAttribute("example"     , "", AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->addAttribute(new atkAttribute("item_description"                  , AF_OBLIGATORY));
+    $this->addAttribute(new atkColorPickerAttribute("item_background"        , "", AF_OBLIGATORY|AF_POPUP));
+    $this->addAttribute(new atkColorPickerAttribute("item_foreground"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));    
+    $this->addAttribute(new atkDummyAttribute("example"                      , "", AF_HIDE_ADD|AF_HIDE_LIST));
 
     $this->setTable("schedule_types", "schedule_types");         
     $this->setOrder("id");

@@ -277,6 +277,8 @@
   $txt_title_project_notes_delete        = "Delete a project note";  
   $txt_title_project_notes_edit          = "Edit a project note";  
   
-  $txt_menu_schedule = "Schedule";
+  $txt_menu_schedule                     = "Schedule";
+
+  $txt_colorpicker_label                 = "Choose a color";
 
 ?>

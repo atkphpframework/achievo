@@ -32,6 +32,10 @@
     var $fancyBegin   = "<TABLE height='100%' width='100%' border='0' cellPadding='2'><TBODY><TR><TD height='100%' bgColor='#000000'><TABLE width='100%' height='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY><TR height='100%'>";
     var $fancyEnd     = "</TR></TBODY></TABLE></TD></TR></TBODY></TABLE>"; 
     var $showGlobal;
+    var $busyBgColor  = "#D0D0D0";
+    var $busyFgColor  = "#000000";
+    var $busyTitle    = "Occupied";
+
 
   /**
    * constructor
@@ -71,26 +75,24 @@
     {
      global $g_db;
 
+     // $showGlobal = "all"               -> all public items for all users
+     // $showGlobal = $owner              -> all items (public/personal items) for current user
+     // $showGlobal != "all" && != $owner -> all public items for specified user + all none-public items as grey 'busy' boxes
+
      $date = $this->year."-".$this->month."-".$this->day;
-     $q    = "SELECT * FROM schedule WHERE item_date='$date' ";
+     $q    = "SELECT * FROM schedule WHERE item_begin_date <='$date' AND item_end_date >= '$date' ";
 
      if ($this->showGlobal == "all")
      {
-      $q .= "AND (item_public=1 OR item_owner='".$this->owner."')";
+//      $q .= "AND (item_public=1 OR item_owner='".$this->owner."')";
+      $q .= "AND item_public=1";
      }
      else
      {
-      if ($this->showGlobal == $this->owner)
-      {
-       $q .= "AND item_owner='".$this->owner."'";
-      }
-      else
-      {
-       $q .= "AND (item_public=1 AND item_owner='".$this->showGlobal."')";
-      }
+      $q .= "AND item_owner='".$this->showGlobal."'";
      }
 
-     $q .= " ORDER BY item_begin";
+     $q .= " ORDER BY item_begin_time";
      return $g_db->getRows($q);
     }
 
@@ -214,8 +216,8 @@
    */
     function setMatrix($item)
     {
-     $begin    = substr($item["item_begin"],0,5);
-     $einde    = substr($item["item_end"],0,5);     
+     $begin    = substr($item["item_begin_time"],0,5);
+     $einde    = substr($item["item_end_time"],0,5);     
      $duration = $this->duration($begin, $einde);
      $appoints = count($this->itemMatrix[$begin]);
 
@@ -337,8 +339,6 @@
         $item    = $items[$j];
         $timeLap = $this->matrixInfo[$time][$j]["duration"];
         $info    = $this->matrixInfo[$time][$j]["info"];
-        $bgcolor = $colors[$info["item_type"]]["back"];
-        $fgcolor = $colors[$info["item_type"]]["fore"];
  
         if (trim($item) != "")
         { 
@@ -353,21 +353,36 @@
           {
            $rowspan = "rowspan='$timeLap'";
           }
+
+          if ($info["item_global"] == 0 && $info["item_owner"] != $this->owner)
+          {
+           $title   = $this->busyTitle;
+           $bgcolor = $this->busyBgColor;
+           $fgcolor = $this->busyFgColor;
+           $descr   = "";
+          }
+          else
+          {
+           $title   = $item;
+           $bgcolor = $colors[$info["item_type"]]["back"];
+           $fgcolor = $colors[$info["item_type"]]["fore"];
+           $descr   = $info["item_description"];
+          }
  
           if ($this->fancy != "1")
           {
-           $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' bgcolor='".$bgcolor."'><font color='$fgcolor'><center>".$item."</center></font></td>\n";
+           $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' bgcolor='".$bgcolor."'><font color='$fgcolor'><center>".$title."</center></font></td>\n";
           }
           else
           {
            $buff .= "<td height='100%' $rowspan valign='top' width='$cWidth'>";
            $buff .= $this->fancyBegin;
            $buff .= "<td height='100%' bgcolor='$bgcolor' valign='top' align='left'>";
-           $buff .= "<font face='verdana' size='-1' color='$fgcolor'><b>".$item."</b></font>";
+           $buff .= "<font face='verdana' size='-1' color='$fgcolor'><b>".$title."</b></font>";
  
            if ($timeLap > 1)
            {
-            $buff .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$info["item_description"]."</font>"; 	
+            $buff .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>"; 	
            }
  
            $buff .= "</td>\n";
