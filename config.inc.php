@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_tryllian";
+  $config_databasename = "marc";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -125,7 +125,8 @@
   // Specify the module name as first parameter, and the path where
   // it can be found as the second parameter.
   //
-  module("tryllian","../achievo_modules/tryllian");
+
+  //module("tryllian","../mod_tryllian");
   
   // -------------------------------------------
   //            END OF CONFIGURATION

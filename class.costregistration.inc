@@ -11,7 +11,7 @@ include_once "class.projectattrib.inc";
       $this->addAttribute(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
       $this->add(new atkAttribute("userid", AF_READONLY));
       	$this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-      $this->addAttribute(new atkProjectAttribute("project_id", AF_OBLIGATORY|AF_SEARCHABLE));
+      $this->addAttribute(new atkProjectAttribute("projectid", AF_OBLIGATORY|AF_SEARCHABLE));
       
       //$this->addAttribute(new atkManytoOneRelation("project_id","project", AF_OBLIGATORY|AF_SEARCHABLE));
       //$this->add(new atkDateAttribute("date", "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
@@ -34,10 +34,10 @@ include_once "class.projectattrib.inc";
       
       atkdebug("costregistration::costregistration()");
       
-      //$this->setOrder("news_id");
+      $this->setOrder("id");
       //$this->setFilter("test='test'");
       
-      $this->setTable("costregistration");
+      $this->setTable("costregistration", "costregistration");
     }
 
     function initial_values()

@@ -35,6 +35,8 @@ class hours extends atkNode
       // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));    
     }
     
+    $this->atkNode("hours"); // node() constructor is *not* called automatically!
+    
     $flags=NF_NO_VIEW;    
     if ($atkaction!='hoursurvey')
     {
@@ -48,7 +50,8 @@ class hours extends atkNode
     }
     
     $this->atkNode("hours",$flags); // node() constructor is *not* called automatically!
-    
+   
+    $this->addAttribute(new atkDateAttribute("activitydate"));
     // default view if none is set
     if (!isset($weekview)||$weekview=="")
     {
@@ -56,6 +59,7 @@ class hours extends atkNode
     }
     
     //$this->addAttribute(new atkDateAttribute("activitydate"));
+
     if($atkaction!='hoursurvey')
     {
       $this->addFilter("userid",strtolower($g_user["name"])); 
@@ -138,13 +142,12 @@ class hours extends atkNode
                              "day"=>date("d")),
                   "activitydate"=>$initial_date);
   }
-  
+    
   function activityid_display($rec)
   {
     // activityname is loaded in the phaseid join, so we get the info from there..
     return $rec["phaseid"]["activityname"];
   }
-  
      
   function action_hoursurvey()
   {      
