@@ -1,4 +1,5 @@
 <?php  
+  header("Content-Type: text/css");
   include_once("atk.inc");
   
   // dummy namespace. if we don't use dummy here, the session is corrupted
