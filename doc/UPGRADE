@@ -45,11 +45,11 @@ extension of the patch. If it is '.sql', you can apply the patch using a
 databaseclient, for example like this:
 
 $ cd achievo/upgrade
-$ mysql -u root --password=secret achievo_0_8 < convert-0.6-to-0.8.sql
+$ mysql -u root --password=secret achievo_0_x < convert-0.x-to-0.y.sql
 
-If the extension is '.php' however, you must view the file using your
-browser. 
-For example, browse to: http://achievo-server/upgrade/convert-0.4-to-0.6.php
+If the file extension of the patch is '.php' however, you must execute the 
+script by requesting it with your browser. For example, browse to: 
+http://achievo-server/upgrade/convert-0.x-to-0.y.php
 and follow the instructions.
 
 Make sure you apply all patches in the correct order. For example, if you need 

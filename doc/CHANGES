@@ -1,6 +1,7 @@
 + : new feature
 - : deprecated feature
 * : bugfix or changed code
+Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 0.9.0
 ------------------------
@@ -12,16 +13,21 @@ Changes in Achievo 0.9.0
   postgres/oracle database install files.
 + Added a Personal Information Manager which is now the default startup 
   screen.
-* Bugfixes to the scheduler
+* Bugfixes to the scheduler.
 * Bugfixes to the billing section (still broken though)
-* Improvements to the ATK backend
-* Made Achievo more 'session timeout' resistant
+* Improvements to the ATK backend.
+* Made Achievo more 'session timeout' resistant.
 
 Changes in Achievo 0.8.1
 ------------------------
-* Updated German language file.
-* Updated Finnish language file.
-* Updated Italian language file.
++ Added contrib/ directory for (unsupported) user contributed scripts and
+  utilities.
++ Added phase_convert.pl to contribs. (bug #19)
+* Updated Dutch, Finnish, German and Hungarian language files.
+* Time survey no longer forgets selected project (bugs #12 and #16)
+* Improved upgrade instructions (bug #7).
+* Fixed typo in languagefile keys (bug #10).
+* Fixed minor layout issue in project planning (bug #8)
 
 Changes in Achievo 0.8.0
 ------------------------

@@ -211,13 +211,13 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
     $totalplanned += $planned_time;
     if ($booked_time > $planned_time) $text_color='ff0000'; else $text_color='000000';
    
-    $echo.= $g_layout->ret_td('<font color="#'.$text_color.'"> '.time_format($booked_time)." / ".time_format($planned_time)." </font>");
+    $echo.= $g_layout->ret_td('<font color="#'.$text_color.'"> '.time_format($booked_time, true)." / ".time_format($planned_time, true)." </font>");
     $echo.= $g_layout->tr_bottom();
   }
   
   $echo.=$g_layout->tr_top();
   $echo.=$g_layout->ret_td_datatitle(text(total).':','align="right" colspan="'.($number_cols+2).'"');
-  $echo.=$g_layout->ret_td_datatitle(time_format($totalbooked)." / ".time_format($totalplanned));
+  $echo.=$g_layout->ret_td_datatitle(time_format($totalbooked, true)." / ".time_format($totalplanned, true));
   $echo.=$g_layout->tr_bottom();
 
   $echo.= $g_layout->data_bottom();  

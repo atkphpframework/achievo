@@ -188,9 +188,13 @@
     }
   }
     
-  function time_format($time)
+  function time_format($time, $displayzero=false)
   {
-    if ($time==0) return "&nbsp;";
+    if ($time==0) 
+    {
+      if ($displayzero) return "00:00";
+      return "&nbsp;";
+    }
     return floor($time/60).":".sprintf("%02d",($time%60));
   }
 
