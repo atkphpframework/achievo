@@ -24,6 +24,9 @@ Changes in Achievo 0.9.4
 * Fixed bug in project filter (non-active projects were not editable). [Ivo]
 * Fixed bug in timreg_check cron script. [Ivo]
 * Fixed bug where scheduler could add wrong attendees. (bug #133) [Ivo]
+* Cleaned up project menu. (bug #138) [Ivo]
+* Added current record indication to the title of view-/edit- and delete 
+  screens. (bug #138) [Ivo]
 * Bugfixes for bugs #121, #128, #135, #136 and #137. [Ivo]
 
 Changes in Achievo 0.9.3
