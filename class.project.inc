@@ -81,7 +81,7 @@ class project extends atkNode
     global $ATK_VARS, $g_sessionManager;
     
     $this->atkNode("project",NF_EDITAFTERADD);
-    $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD);
+    $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD|AF_HIDE_LIST);
     $preFilter->m_destinationFilter = "company='[customer.id]'";
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
@@ -92,7 +92,7 @@ class project extends atkNode
     $this->addAttribute(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD));    
-    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD));    
+    $this->addAttribute(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_HIDE_LIST));    
     
     // If we are in project administration mode, we show all projects. Otherwise, we only
     // show active projects.         
