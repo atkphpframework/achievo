@@ -39,12 +39,12 @@
   $g_layout->output('<input type="hidden" name="atknodetype" value="project">');
   $g_layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
   $g_layout->table_simple();
-  $g_layout->output('<tr>');
+  $g_layout->output($g_layout->tr_top());
   $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
   
   $g_layout->td('<input type="hidden" name="selectedprojectid" value="'.$selectedprojectid.'">');
   
-  $g_layout->output('</tr><tr>');  
+  $g_layout->output($g_layout->tr_bottom() . $g_layout->tr_top());  
   
     // we have to pass a 'dummy' record to the attributes to set their default value.
   $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
@@ -63,9 +63,7 @@
                   text("until").
                   '&nbsp; '.$enddateatt->edit($dummyrec));
                                 
-  $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
-  
-  $g_layout->ui_bottom();
+  $g_layout->output($g_layout->tr_bottom() . '</table><input type="submit" value="'.text("refresh").'"></form><br>');
       
   $query = "SELECT 
               hours.time as time,              
@@ -110,28 +108,28 @@
   
   $g_layout->output($g_layout->data_top());
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   while (list($phasename, $time) = each ($hoursperphase))
   {    
-    $g_layout->output('<tr>');
+    $g_layout->output($g_layout->tr_top());
     $g_layout->td($phasename);
     $g_layout->td(time_format($time));
     $percentage = round(($time/$total)*100);
     $imgwidth = max(1,($percentage*3));
     $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
-    $g_layout->output('</tr>');
+    $g_layout->output($g_layout->tr_bottom());
   }
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("total"));
   $g_layout->td_datatitle(time_format($total));
   $g_layout->td_datatitle('&nbsp;');  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
 
@@ -139,57 +137,56 @@
   
   $g_layout->output($g_layout->data_top());
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   while (list($empname, $time) = each ($hoursperemp))
   {    
-    $g_layout->output('<tr>');
+    $g_layout->output($g_layout->tr_top());
     $g_layout->td($empname);
     $g_layout->td(time_format($time));    
     $percentage = round(($time/$total)*100);
     $imgwidth = max(1,($percentage*3));
     $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
-    $g_layout->output('</tr>');
+    $g_layout->output($g_layout->tr_bottom());
   }
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("total"));
   $g_layout->td_datatitle(time_format($total));
   $g_layout->td_datatitle('&nbsp;');  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
 
-  $g_layout->output('<br><b>'.text("title_projectstats_peractivity").'</b><br><br>');
+  $g_layout->output('<br><b>'.text("title_projectstats_peractivity") . '</b><br><br>');
   
-  $g_layout->output($g_layout->data_top());
-  
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->data_top());  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   while (list($actname, $time) = each ($hoursperact))
   {    
-    $g_layout->output('<tr>');
+    $g_layout->output($g_layout->tr_top());
     $g_layout->td($actname);
     $g_layout->td(time_format($time));        
     $percentage = round(($time/$total)*100);
     $imgwidth = max(1,($percentage*3));
     $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
-    $g_layout->output('</tr>');
+    $g_layout->output($g_layout->tr_bottom());
   }
-  
-  $g_layout->output("<tr>");  
+   
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("total"));
   $g_layout->td_datatitle(time_format($total));
   $g_layout->td_datatitle('&nbsp;');  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
   
