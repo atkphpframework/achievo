@@ -4,9 +4,8 @@ class employee extends atkNode
 {
   function employee()
   {
-    global $ATK_VARS;
+    global $ATK_VARS,$g_user;
     $this->atkNode("employee",NF_EDITAFTERADD);
-
     $this->addAttribute(new atkAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
 
@@ -17,7 +16,13 @@ class employee extends atkNode
       $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
     }
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
+    // you can't be your own supervisor neither can a nonactive employee be a superviros
+ 
+    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD);
+
+    $preFilter->m_destinationFilter = "userid !='[userid]' && status ='active'";
       
+    $this->addAttribute($preFilter,AF_HIDE_ADD);
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.      
     if ($ATK_VARS["atknodetype"]=="employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
     {        
@@ -29,7 +34,7 @@ class employee extends atkNode
       $this->addFilter("status","active");        
     }
     $this->addAttribute(new atkOneToManyRelation("contract","usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
-
+    
     $this->setTable("employee","employee");
     $this->setOrder("name");
     $this->setIndex("name");

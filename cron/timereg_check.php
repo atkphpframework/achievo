@@ -29,9 +29,23 @@
   
   $week = strftime("%V",$prevweekstamp);
     
+  // get's all users who can be a supervisor and presort them 
+  $query = "SELECT
+              userid, email
+            FROM
+              employee
+            WHERE               
+              status = 'active'
+           ";
+              
+  $users = $g_db->getrows($query);
+  for ($i=0;$i<count($users);$i++)
+  {
+  $userMail[$users[$i]["userid"]] = $users[$i]["email"];
+  }
   // get all contracts.
   $query = "SELECT
-              uc_hours, usercontract.userid, email
+              uc_hours, usercontract.userid, email, supervisor
             FROM
               usercontract, employee
             WHERE               
@@ -45,6 +59,7 @@
   { 
     $time[$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
     $time[$contracts[$i]["userid"]]["email"] = $contracts[$i]["email"];
+    $time[$contracts[$i]["userid"]]["supervisor"] = $contracts[$i]["supervisor"];
   }
   
   // get working hours
@@ -57,7 +72,7 @@
             GROUP BY userid";
   
   $hours = $g_db->getrows($query);
-  
+  $bcc   = "Bcc: ".$userMail[$userid]."\r\n";
   for ($i=0;$i<count($hours);$i++)
   {
     $time[$hours[$i]["userid"]]["time"] = $hours[$i]["time"];
@@ -76,10 +91,15 @@
                                                          "week"=>$week,
                                                          "enddate"=>$enddate));
         $to = $data["email"];
+        
+        if ($userMail[$data["supervisor"]] !="")        
+        {
+         $cc = "Cc: ".$userMail[$data["supervisor"]]."\r\n";
+        }
         if ($to!="")
         {
-          usermail($to,text("timeguard_mail_subject"),$body);
-          echo "sent mail to $to\n";
+          usermail($to,text("timeguard_mail_subject"),$body,$cc);
+          echo "sent mail to $to\n and a cc to $cc\n";
         }
         else
         {
