@@ -5,6 +5,7 @@
   include_once("./theme.inc");
   include_once("./version.inc");
 
+  $g_layout->initGUI();
   $g_layout->output('<html>');
   $g_layout->head($txt_app_title);
   $g_layout->body();

@@ -43,10 +43,11 @@
 
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
-      $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
+      $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW));
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
 
       $this->add(new atkOneToManyRelation("employees","project.employee_project", "projectid", AF_HIDE_LIST));
+      $this->add(new atkOneToManyRelation("documents","project.document", "project_id", AF_HIDE_LIST));
 
       $this->setTable("project","project");
 
@@ -112,7 +113,103 @@
       return $this->m_attribList["fixed_price"]->edit($rec)." ".atkconfig("currency_symbol");
     }
 
+    function action_view()
+    {
+      global $g_layout, $g_db;
 
+      $query = "SELECT project.*, person.lastname, person.firstname FROM project
+                LEFT JOIN person ON person.id = project.coordinator
+                WHERE ".$this->m_postvars["atkselector"];
+      $project = $g_db->getRows($query);
+
+      list($dummy, $projectid) = explode("=", $this->m_postvars["atkselector"]);
+
+      $g_layout->initGUI();
+      $g_layout->ui_top(text("project").' - '.text("view"));
+      $g_layout->output($this->statusbar());
+      $g_layout->output('<br>');
+
+      $g_layout->table_simple();
+      $g_layout->output('<tr>');
+      $g_layout->td(text("name").": ");
+      $g_layout->td($project[0]["name"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("abbreviation").": ");
+      $g_layout->td($project[0]["abbreviation"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("coordinator").": ");
+      $g_layout->td($project[0]["lastname"].", ".$project[0]["firstname"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("description").": ");
+      $g_layout->td($project[0]["description"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("fixed_price").": ");
+      $g_layout->td($project[0]["fixed_price"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("startdate").": ");
+      $g_layout->td($project[0]["startdate"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("enddate").": ");
+      $g_layout->td($project[0]["enddate"]);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("template").": ");
+      $g_layout->td($project[0]["template"]);
+      $g_layout->output('</tr><tr>');
+
+      $node = &getNode("organization.project_organization");
+      $node->m_attribList["projectid"]->m_flags |= AF_HIDE_LIST;
+      $node->m_flags |= NF_NO_VIEW;
+      $data = $node->selectDb("projectid=".$projectid);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("proj_org").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $node = &getNode("project.phase");
+      $node->m_flags |= NF_NO_SEARCH;
+      $data = $node->selectDb("projectid=".$projectid);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("phase").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $node = &getNode("project.employee_project");
+      $node->m_attribList["projectid"]->m_flags |= AF_HIDE_LIST;
+      $data = $node->selectDb("projectid=".$projectid);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("employees").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $node = &getNode("project.document");
+      $data = $node->selectDb("project_id=".$projectid);
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("documents").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $node = &getNode("timereg.hours");
+      $node->m_attribList["activityid"]->m_flags |= AF_HIDE_LIST;
+      $node->m_attribList["remark"]->m_flags |= AF_HIDE_LIST;
+      $query = "SELECT phase.id, phase.name, project.name as projname FROM phase LEFT JOIN project ON phase.projectid = project.id WHERE phase.projectid = ".$projectid;
+      $phases = $g_db->getRows($query);
+      $data = array();
+      for ($i=0;$i<count($phases);$i++)
+      {
+        $sql = "SELECT sum(time) as sumtime FROM hours WHERE phaseid = ".$phases[$i]["id"];
+        $res = $g_db->getRows($sql);
+        $data[$i]["phaseid"]["phaseid"] = $phases[$i]["id"];
+        $data[$i]["phaseid"]["phasename"] = $phases[$i]["name"];
+        $data[$i]["phaseid"]["projname"] = $phases[$i]["projname"];
+        $data[$i]["time"]["hours"] = floor($res[0]["sumtime"]/60);
+        $data[$i]["time"]["minutes"] = $res[0]["sumtime"] - ($data[$i]["time"]["hours"]*60);
+      }
+      $g_layout->output('</tr><tr>');
+      $g_layout->td(text("hours").": ", 'valign="top"');
+      if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
+
+      $g_layout->output('<br></tr></table>');
+      $g_layout->output('<br><form method="get">');
+      $g_layout->output(session_form(SESSION_BACK));
+      $g_layout->output('<input type="submit" value="&lt;&lt; '.text("back").'"></form>');
+      $g_layout->ui_bottom();
+    }
   }
 
 ?>

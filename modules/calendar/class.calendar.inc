@@ -1,13 +1,13 @@
-<?
-  class achievoCalendar 
-  { 
+<?php
+  class achievoCalendar
+  {
    var $displayDay     = 0;          // displayed day
    var $displayMonth   = 0;          // displayed month
    var $displayYear    = 0;          // displayed year
    var $calRows        = array();
    var $totalDays      = 0;
 
-   // constructor function 
+   // constructor function
    function achievoCalendar($month=0, $year=0, $day = 0)
    {
     $this->displayMonth = ($month == 0) ? date("m") : $month;
@@ -15,14 +15,14 @@
     $this->displayDay   = ($day   == 0) ? date("d") : $day;  // only used in week views
    }
 
-   
+
    // determine number of days in a month
    function daysInMonth()
    {
-    $totalDays = 0; 
+    $totalDays = 0;
     while (checkdate($this->displayMonth, $totalDays+1, $this->displayYear))
     {
-     $totalDays++; 
+     $totalDays++;
     }
     return $totalDays;
    }
@@ -40,7 +40,7 @@
     else
     {
      return array($month+1, $year);
-    }   
+    }
    }
 
 
@@ -54,7 +54,7 @@
 
     $emptyOffset = date("w", mktime( 0, 0, 0, $this->displayMonth, 1, $this->displayYear));
     for ($i = 0;$i<$emptyOffset;$i++)
-    { 
+    {
      $this->calRows[$item] = "&nbsp;";
      $item++;
     }
@@ -62,19 +62,19 @@
     for ($dag = 1;$dag<=$totalDays; $dag++ )
     {
      $this->calRows[$item] = $dag;
-     $emptyOffset++; 
+     $emptyOffset++;
 
      if ($emptyOffset > 6)
-     { 
+     {
       $emptyOffset = 0;
      }
 
-     $item++; 
-    } 
-    
+     $item++;
+    }
+
     if ($emptyOffset > 0)
     {
-     $emptyOffset = 7 - $emptyOffset; 
+     $emptyOffset = 7 - $emptyOffset;
     }
 
     for ( $i = 0; $i <$emptyOffset; $i++ )
@@ -104,7 +104,7 @@
     $this->displayMonth = $tmp[0];
     $this->displayYear  = $tmp[1];
     $items[3]           = $this->monthItems();
-    
+
     return $items;
    }
 
@@ -118,9 +118,9 @@
     for ($i=1;$i<=12;$i++)
     {
      $this->displayMonth = $i;
-     $items[$i]          = $this->monthItems();     
+     $items[$i]          = $this->monthItems();
     }
-    
+
     return $items;
    }
 
@@ -133,7 +133,7 @@
   {
    $viewtime = mktime(0,0,0,$this->displayMonth, $this->displayDay, $this->displayYear);
    $weekday  = strftime("%w",$viewtime);
- 
+
    if ($weekday==0) $weekday=7;
 
    for ($i=0; $i<=8;$i++)
@@ -143,7 +143,7 @@
     $items[$i]['stamp'] = $viewtime-(86400*($weekday-$i));
    }
    return $items;
-  } 
+  }
 
  }
 ?>

@@ -28,7 +28,7 @@ class hours extends atkNode
     $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
 
-    $flags=NF_NO_VIEW;    
+    $flags=NF_NO_VIEW;
 
     $this->atkNode("hours",$flags|NF_MRA); // node() constructor is *not* called automatically!
 
@@ -39,7 +39,7 @@ class hours extends atkNode
     }
 
     $this->add(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    
+
     $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|($this->m_weekview?0:AF_HIDE_LIST)));
 
     $this->add(new atkAttribute("userid",AF_HIDE));
@@ -51,12 +51,12 @@ class hours extends atkNode
     $this->add(new atkDateAttribute("entrydate",AF_HIDE));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
-    $this->setOrder("id"); // Sort by order of input..    
+    $this->setOrder("id"); // Sort by order of input..
 
     $this->setTable("hours","hours");
 
   }
-  
+
   function setLock()
   {
     global $g_user;
@@ -120,11 +120,11 @@ class hours extends atkNode
 
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin()
-  {    
+  {
     global $g_user;
-    
+
     $this->setLock();
-    
+
     $this->addFilter("userid",strtolower($g_user["name"]));
 
     if ($this->m_weekview!=1)
@@ -141,7 +141,7 @@ class hours extends atkNode
   }
 
   function adminHeader()
-  {    
+  {
     if ($this->m_weekview!=1)
     {
       $viewdatestamp = mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
@@ -174,7 +174,7 @@ class hours extends atkNode
       $this->m_viewdate = date("Y-m-d");
       $viewtime = time();
     }
-
+    $g_layout->initGUI();
     $g_layout->ui_top(text('title_houradmin_weekview').' '.strftime('%V',$viewtime));
 
     $weekday = strftime("%w",$viewtime);
@@ -191,13 +191,13 @@ class hours extends atkNode
     $projtotals = Array();
     $daytotals = Array();
 
-    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);        
-        
+    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);
+
     for ($i=0;$i<count($data);$i++)
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];      
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
       $week[$key][$date] += $time;
       $projtotals[$key] += $time;
@@ -248,7 +248,7 @@ class hours extends atkNode
     $g_layout->td_datatitle(text('total'));
 
     $g_layout->output($g_layout->tr_bottom());
-        
+
     while (list($proj, $times)=each($week))
     {
       $g_layout->output($g_layout->tr_top());

@@ -140,6 +140,7 @@ function deadline_calc($startdate,$workdays)
 function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_record)
 {
   global $g_layout;
+  $g_layout->initGUI();
 
   $echo.= $g_layout->data_top();
 

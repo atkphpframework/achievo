@@ -1,4 +1,4 @@
-<?
+<?php
   // class to generate a monthview
   //
   // typical usage:

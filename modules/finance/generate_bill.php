@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
 * This file get all the bill line information and then get all the billed hours, costs and discounts out of the database
@@ -123,6 +123,7 @@ for ($x=0;$x<count($bill_lineinfo);$x++)
 //checking if there are some bill lines
 if ($billlineid == NULL)
 {
+  $g_layout->initGUI();
   $g_layout->ui_top(text("title_error"));
   $g_layout->output('<BR>');
   $g_layout->output(text("bill_line_no"));

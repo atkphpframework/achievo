@@ -31,6 +31,7 @@
     }
   }
 
+  $g_layout->initGUI();
   $g_layout->ui_top(text("title_projectstats"));
 
   $g_layout->output('<form action="dispatch.php" method="get">');

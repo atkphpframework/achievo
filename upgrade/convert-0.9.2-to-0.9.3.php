@@ -97,7 +97,7 @@ if(!empty($convert)&&$convert==1)
   //first execute the sql queries to make the database up to date
 
   //create table schedule_notes
-  $sql = "CREATE TABLE schedule_notes (
+  $sql = "CREATE TABLE schedule_note (
             id int(10) PRIMARY KEY NOT NULL,
             title varchar(50) NOT NULL,
             description text NOT NULL,
@@ -256,6 +256,26 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->query($sql);
   handleError($sql);
   $sql = "ALTER TABLE schedule_attendee CHANGE userid person_id INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  //rename schedule_types to schedule_type
+  $sql = "ALTER TABLE schedule_types RENAME schedule_type";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  //add table document
+  $sql = "CREATE TABLE document (
+            id INT(10) NOT NULL,
+            name VARCHAR(50) NOT NULL,
+            filename VARCHAR(255) NOT NULL,
+            owner VARCHAR(50) NOT NULL,
+            entrydate DATE NOT NULL,
+            version VARCHAR(10) NOT NULL DEFAULT '0',
+            status VARCHAR(25) NOT NULL,
+            project_id INT(10) NOT NULL,
+            PRIMARY KEY (id)
+          );";
   $res = $g_db->query($sql);
   handleError($sql);
 

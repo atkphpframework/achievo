@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once("achievotools.inc");
 userelation("atkmanytoonerelation");

@@ -1,4 +1,4 @@
-<?
+<?php
   // class to generate a weekview
    //
    // typical usage:
@@ -183,7 +183,7 @@
     {
      global $PHP_SELF, $g_layout, $g_user;
 
-      $buff   = "";
+      $buff   = $g_layout->initGUI();
       $buff .= $g_layout->data_top();
 
       $buff .= $g_layout->tr_top();

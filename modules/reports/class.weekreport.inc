@@ -158,6 +158,7 @@ class weekreport extends atkNode
 
     if ($outputType==0)
     {
+      $g_layout->initGUI();
       $g_layout->ui_top(text("title_employee_weekreport"));
 
       $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');

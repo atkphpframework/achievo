@@ -43,6 +43,7 @@ else
   $viewdate = date("Y-m-d");
   $viewtime = time();
 }
+$g_layout->initGUI();
 $g_layout->ui_top(text('title_resource_planning_planweekviewempl').' '.strftime('%V',$viewtime));
 
 $weekday = strftime("%w",$viewtime);

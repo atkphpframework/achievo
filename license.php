@@ -1,10 +1,11 @@
 <?php
 
-  include_once("atk.inc");  
+  include_once("atk.inc");
   atksession();
   atksecure();
   require "theme.inc";
 
+  $g_layout->initGUI();
   $g_layout->output("<html>");
   $g_layout->head($txt_title_license);
   $g_layout->body();

@@ -27,6 +27,7 @@
 
   if (!isset($atkmenutop)||$atkmenutop=="") $atkmenutop = "main";
 
+  $g_layout->initGUI();
   $g_layout->register_script("javascript/menuload.js");
 
   /* output html */

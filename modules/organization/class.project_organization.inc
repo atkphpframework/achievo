@@ -26,6 +26,12 @@ class project_organization extends atkNode
     $this->add(new atkManyToOneRelation("contact", "organization.contact", AF_OBLIGATORY));
 
     $this->setTable("project_organization", "project_organization");
+    $this->setSecurityAlias("project.project");
+  }
+
+  function recordActions($record, &$actions)
+  {
+    if (!$this->hasFlag(NF_NO_VIEW)) $actions["view"] = session_url(dispatch_url("project.project", "view", array("atkselector" => "project.id=".$record["projectid"]["id"])),SESSION_NESTED);
   }
 }
 

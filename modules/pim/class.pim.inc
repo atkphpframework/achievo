@@ -13,18 +13,19 @@
 
       $me = $g_user["name"];
 
+      $g_layout->initGUI();
       $g_layout->ui_top(text("title_pim"));
-      $res = '<br>';      
-      
+      $res = '<br>';
+
       $pimItems = atkHarvestModules("getPimItems");
-      
+
       foreach ($pimItems as $name => $contents)
       {
         $res.= '<b>'.text('pim_'.$name).'</b><br><br>';
         $res.= $contents;
         $res.= '<br><br>';
       }
-                
+
       $res.='<br>';
 
       $g_layout->output($res);

@@ -53,14 +53,17 @@
   $txt_dependencies = "Afhankelijkheden";
   $txt_description = "Omschrijving";
   $txt_details = "Details";
+  $txt_documents = "Documenten";
   $txt_duedate = "Deadline";
   $txt_edit_attendee = "Bewerken als attendee";
   $txt_email = "Email";
   $txt_employee = "Gebruiker";
+  $txt_employees = "Gebruikers";
   $txt_employeeview = "Vergelijk agenda's";
   $txt_employee_select = "Selecteer een gebruiker";
   $txt_enddate = "Einddatum";
   $txt_entity = "Profiel";
+  $txt_entrydate = "Invoerdatum";
   $txt_fax = "Fax";
   $txt_fgcolor = "Tekstkleur";
   $txt_firstname = "Voornaam";
@@ -116,6 +119,7 @@
   $txt_menu_hours_admin = "Tijd Registratie";
   $txt_menu_hours_hoursurvey = "Uren overzicht";
   $txt_menu_hours_lock = "Uren blokkeren";
+  $txt_menu_organizationreport = "Organisatie archief";
   $txt_menu_profile_admin = "Beveiligings Profielen";
   $txt_menu_projectmanagement = "Projectbeheer";
   $txt_menu_project_admin = "Projecten";
@@ -151,6 +155,7 @@
   $txt_orderby = "Sorteren op";
   $txt_organization = "Organisatie";
   $txt_overtime = "Overwerk";
+  $txt_owner = "Eigenaar";
   $txt_password = "Wachtwoord";
   $txt_password_leaveblankifunchanged = "Laat beide wachtwoord velden leeg als u het huidige wachtwoord wilt houden.";
   $txt_paymethod = "Betaalmethode";
@@ -209,6 +214,9 @@
   $txt_stats_chooseactivity = "Kies de activiteit waarvan u statistieken wilt zien door op de activiteitnaam te klikken.";
   $txt_stats_chooseemployee = "Kies de medewerker waarvan u statistieken wilt zien door op zijn/haar naam te klikken.";
   $txt_status = "Status";
+  $txt_tab_contact_appointments = "Contactpersonen & afspraken";
+  $txt_tab_contract = "Contracten";
+  $txt_tab_project = "Projecten";
   $txt_template = "Template";
   $txt_theme = "Thema";
   $txt_this_month = "Huidige maand";
@@ -245,6 +253,9 @@
   $txt_title_customer_add = "Organisatie toevoegen";
   $txt_title_customer_admin = "Organisaties beheren";
   $txt_title_customer_edit = "Organisatie bewerken";
+  $txt_title_document_add = "Document toevoegen";
+  $txt_title_document_edit = "Document bewerken";
+  $txt_title_document_delete = "Document verwijderen";
   $txt_title_employeestats = "Medewerker Statistieken";
   $txt_title_employeestats_costs = "Deze werknemer heeft kosten geregistreerd op de volgende projecten";
   $txt_title_employeestats_details_hoursof = "Uren van";
@@ -277,6 +288,7 @@
   $txt_title_hours_stats = "Selectie verfijnen";
   $txt_title_license = "Achievo licentie";
   $txt_title_manual = "Online documentatie";
+  $txt_title_organization_select = "Selecteer een organisatie";
   $txt_title_phase_add = "Fase toevoegen";
   $txt_title_phase_edit = "Fase bewerken";
   $txt_title_phase_select = "Selecteer een fase";
@@ -303,6 +315,7 @@
   $txt_title_project_select = "Selecteer een project";
   $txt_title_project_todoview_admin = "Kies een project";
   $txt_title_project_todoview_edit = "Overzicht project todo's";
+  $txt_title_reportorganization_view = "Organisatie archief";
   $txt_title_schedule_types_add = "Afspraak type toevoegen";
   $txt_title_schedule_types_admin = "Afspraak typen beheren";
   $txt_title_schedule_types_delete = "Afspraak type verwijderen";
@@ -352,6 +365,7 @@
   $txt_usercontracts = "Werknemer contracten";
   $txt_userid = "Gebruikernaam";
   $txt_userprefs = "Gebruikersinstellingen";
+  $txt_version = "Versie";
   $txt_view_all = "Alle gebruikers bekijken";
   $txt_warning_fixedprice1 = "Dit project heeft een vaste prijs van";
   $txt_warning_fixedprice2 = " en";

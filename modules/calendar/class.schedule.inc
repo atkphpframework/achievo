@@ -31,7 +31,7 @@
   {
     function schedule()
     {
-      global $g_user, $g_sessionManager, $view, $viewdate, $user, $time, $ATK_VARS;
+      global $g_user, $g_sessionManager, $view, $viewdate, $user, $time;
 
       if ($time!="")
       {
@@ -163,6 +163,7 @@
         $result = "Niet bestaande view ($view)";
       }
 
+      $g_layout->initGUI();
       $g_layout->ui_top(text("Achievo scheduler / ".$view));
       $g_layout->output($this->statusbar());
       $g_layout->output($result);
@@ -171,7 +172,7 @@
 
     function monthview($viewdate)
     {
-      global $g_layout, $g_user, $g_db, $user, $PHP_SELF;
+      global $g_user, $g_db, $user, $PHP_SELF;
 
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
@@ -230,7 +231,7 @@
 
     function employeeview($viewdate)
     {
-      global $g_layout, $g_user, $g_db, $user, $PHP_SELF, $selemployee;
+      global $g_user, $g_db, $user, $PHP_SELF, $selemployee;
 
       if (!is_array($viewdate))
       {
@@ -284,7 +285,7 @@
 
     function dayview($viewdate)
     {
-      global $g_layout, $g_user, $g_db, $PHP_SELF, $user;
+      global $g_user, $g_db, $PHP_SELF, $user;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
@@ -331,7 +332,7 @@
 
     function weekview($viewdate)
     {
-      global $g_layout, $g_user, $g_db, $PHP_SELF, $user;
+      global $g_user, $g_db, $PHP_SELF, $user;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);

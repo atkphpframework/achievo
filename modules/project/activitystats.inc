@@ -66,6 +66,7 @@
     }
   }
 
+  $g_layout->initGUI();
   $g_layout->ui_top(text("title_hours_stats"));
 
   $g_layout->output('<form action="dispatch.php" method="get">');

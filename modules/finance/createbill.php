@@ -61,6 +61,7 @@ $g_layout->register_script("javascript/check.js");
 
   $projectrec=$g_db->getrows($sql);
 
+  $g_layout->initGUI();
   $g_layout->ui_top(text("title_hourspecify"));
   $g_layout->output('<form action="dispatch.php" method="get">');
   $g_layout->output(session_form());

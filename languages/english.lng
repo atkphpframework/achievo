@@ -53,16 +53,19 @@
   $txt_dependencies = "Dependencies";
   $txt_description = "Description";
   $txt_details = "details";
+  $txt_documents = "Documents";
   $txt_duedate = "Due date";
   $txt_edit_attendee = "Edit while attendee";
   $txt_email = "Email";
   $txt_employee = "Employee";
+  $txt_employees = "Employees";
   $txt_employeeview = "Compare schedules";
   $txt_employee_select = "Select an employee";
   $txt_employer = "Employer";
   $txt_enddate = "Enddate";
   $txt_enduser = "Enduser";
   $txt_entity = "Profile";
+  $txt_entrydate = "Entrydate";
   $txt_fax = "Faxnumber";
   $txt_fgcolor = "Textcolor";
   $txt_firstname = "First name";
@@ -120,6 +123,7 @@
   $txt_menu_hours_lock = "Lock hours";
   $txt_menu_organizationmanagement = "Manage Organizations";
   $txt_menu_organization_admin = "Organization administration";
+  $txt_menu_organizationreport = "Organization archive";
   $txt_menu_profile_admin = "Security Profiles";
   $txt_menu_projectmanagement = "Manage Projects";
   $txt_menu_project_admin = "Project Administration";
@@ -156,6 +160,7 @@
   $txt_organization = "Organization";
   $txt_organizationid = "Organization";
   $txt_overtime = "Overtime";
+  $txt_owner = "Owner";
   $txt_partner = "Partner";
   $txt_password = "Password";
   $txt_password_leaveblankifunchanged = "Leave both password fields blank if want to keep the current password.";
@@ -220,6 +225,9 @@
   $txt_stats_chooseemployee = "Choose the employee that you want to view statistics about by clicking on his/her name.";
   $txt_status = "Status";
   $txt_supplier = "Supplier";
+  $txt_tab_contact_appointments = "Contacts & appointments";
+  $txt_tab_contract = "Contracts";
+  $txt_tab_project = "Projects";
   $txt_template = "Template";
   $txt_theme = "Theme";
   $txt_this_month = "This month";
@@ -253,6 +261,9 @@
   $txt_title_costregistration_delete = "Delete entry";
   $txt_title_costregistration_edit = "Edit entry";
   $txt_title_costregistration_stats = "Cost Report";
+  $txt_title_document_add = "Add document";
+  $txt_title_document_edit = "Edit document";
+  $txt_title_document_delete = "Delete document";
   $txt_title_employeestats = "Employee statistics";
   $txt_title_employeestats_costs = "This employee registered costs on the following projects";
   $txt_title_employeestats_details_hoursof = "Hours of";
@@ -289,6 +300,7 @@
   $txt_title_organization_admin = "Manage existing organizations";
   $txt_title_organization_edit = "Edit organization";
   $txt_title_organization_delete = "Delete organization";
+  $txt_title_organization_select = "Select organization";
   $txt_title_phase_add = "Add a phase";
   $txt_title_phase_edit = "Edit phase";
   $txt_title_phase_select = "Select a phase";
@@ -315,6 +327,7 @@
   $txt_title_project_select = "Select a project";
   $txt_title_project_todoview_admin = "Project selector";
   $txt_title_project_todoview_edit = "Overview project todo's";
+  $txt_title_reportorganization_view = "Organization archive";
   $txt_title_schedule_types_add = "Add an appointment type";
   $txt_title_schedule_types_admin = "Manage appointment types";
   $txt_title_schedule_types_delete = "Delete appointment type";
@@ -364,6 +377,7 @@
   $txt_usercontracts = "Employee contracts";
   $txt_userid = "User-id";
   $txt_userprefs = "User preferences";
+  $txt_version = "Version";
   $txt_view_all = "View all users";
   $txt_warning_fixedprice1 = "This project has a fixed price of";
   $txt_warning_fixedprice2 = " and";

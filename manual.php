@@ -1,6 +1,6 @@
 <?php
-  
-  include_once("atk.inc");  
+
+  include_once("atk.inc");
   atksession();
   atksecure();
   require "theme.inc";
@@ -18,7 +18,7 @@ At some point, in the very, very distant future, a complete annotated reference 
 <br><br>For now, you can use <a href="manual/guide.html">this Achievo Guide</a>, graciously contributed by Greg Louis.
 <br><br><br><br><br>
 
- '); 
+ ');
 
 $g_layout->ui_bottom();
 $g_layout->output("</body>");

@@ -28,7 +28,7 @@ class schedule_types extends atkNode
     $this->add(new atkColorPickerAttribute("fgcolor" , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_FORCE_LOAD|AF_POPUP));
     $this->add(new atkDummyAttribute("example"       , "", AF_HIDE_ADD));
 
-    $this->setTable("schedule_types", "schedule_types");
+    $this->setTable("schedule_type", "schedule_type");
     $this->setOrder("id");
   }
 

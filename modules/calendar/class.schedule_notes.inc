@@ -29,7 +29,7 @@ class schedule_notes extends atkNode
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkTextAttribute("description"      , AF_OBLIGATORY));
 
-    $this->setTable("schedule_notes", "schedule_notes");
+    $this->setTable("schedule_note", "schedule_note");
     $this->setOrder("id");
     $this->setSecurityAlias("calendar.schedule");
   }

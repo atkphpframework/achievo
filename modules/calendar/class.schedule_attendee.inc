@@ -14,7 +14,6 @@
  */
 
 userelation("atkmanytoonerelation");
-useattrib("calendar.personattrib");
 
 class schedule_attendee extends atkNode
 {

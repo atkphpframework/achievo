@@ -1,5 +1,5 @@
 <?php
-  include_once("atk.inc");  
+  include_once("atk.inc");
   include_once("./theme.inc");
 
   $g_layout->output('<html>');
@@ -13,6 +13,6 @@
   $g_layout->ui_bottom();
   $g_layout->output('</body>');
   $g_layout->output('</html>');
-  
+
   $g_layout->outputFlush();
 ?>

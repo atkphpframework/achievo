@@ -43,6 +43,7 @@ $view_all = $g_securityManager->allowed('resource_planning','view_all');
 
 if ($outputType==0)
 {
+  $g_layout->initGUI();
   $g_layout->ui_top(text("title_hours_stats"));
   $g_layout->output('<center>');
   $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');

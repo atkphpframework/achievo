@@ -158,6 +158,16 @@
   // module("tryllian","../achievo_modules/tryllian");
 
   // -------------------------------------------
+  //                FILES UPLOAD
+  // -------------------------------------------
+
+  // specify the directory in which files will be uploaded
+  // path can be relative to the achievo directory
+  // make sure the directory exists
+  // NOTE: the webserver must be able to read from and write to this directory
+  $config_documentpath = "./modules/project/uploaded_files";
+
+  // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------
 

@@ -5,7 +5,7 @@
     function getNodes()
     {
       /* register nodes */
-      registerNode("project.project", array("admin", "add", "edit", "delete", "stats","planning"));
+      registerNode("project.project", array("admin", "add", "edit", "delete", "stats","planning", "view"));
       registerNode("project.phase", array("add", "edit", "delete"));
       registerNode("project.activity", array("admin", "add", "edit", "delete", "stats"));
       registerNode("project.tpl_phase", array("admin", "add", "edit", "delete"));
