@@ -2,6 +2,13 @@
 - : deprecated feature
 * : bugfix or changed code
 
+Changes in Achievo 0.7.4
+------------------------
++ Added supervisor to employees.
++ Added a few fields to customers and projects.
++ Added a contactperson per project.
+* Fixed a Daylight Savings Time bug in hourregistration.
+
 Changes in Achievo 0.7.3
 ------------------------
 + Added a scheduler/calendar (not fully functional yet).

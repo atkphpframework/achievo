@@ -180,8 +180,12 @@ class hours extends atkNode
     if ($weekview!=1)
     {
       $viewdatestamp = mktime(0,0,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
-      $yesterday = date('Y-m-d',$viewdatestamp-86400);
-      $tomorrow = date('Y-m-d',$viewdatestamp+86400);
+      
+      // we substract 3601 seconds to account for Daylight Savings Time
+      $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
+      
+      // we add 3601 seconds to account for Daylight Savings Time
+      $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
     
       $res = href('dispatch.php?viewdate='.$yesterday, text("houradmin_previousday"));
       $res.='&nbsp;&nbsp;<b>'.date_format($viewdatestamp).'</b>';
@@ -198,7 +202,7 @@ class hours extends atkNode
     
     if ($viewdate!="")
     {
-      $viewtime = mktime(0,0,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
+      $viewtime = mktime(12,12,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
     }
     else
     {
