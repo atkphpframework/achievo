@@ -105,7 +105,22 @@
 
     function action_planning()
     {
-      include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
+      //include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
+      global $g_layout;            
+      $prjid = $this->m_postvars["selectedprojectid"];
+      $imgurl = moduleDir("project")."ganttchart.php?projectid=".$prjid;
+      
+      $records = $this->selectDb("project.id=".$prjid);
+      $record = $records[0];
+      
+      $projectinfo = '<br><table border=0>';
+      $projectinfo.= '<tr><td align="right"><b>'.text("name").': </b></td><td>'.$record['name'].'</td></tr>';
+      $projectinfo.= '<tr><td align="right"><b>'.text("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
+      $projectinfo.= '</table><br>';   
+      
+      $g_layout->ui_top(text("title_projectplanning"));
+      $g_layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>');
+      $g_layout->ui_bottom();
     }
 
     function action_billsetup()
