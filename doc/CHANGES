@@ -8,13 +8,19 @@ Changes in Achievo 0.9.4
 ------------------------
 + Added jpGraph graphs support. [Ivo]
 + Hour entries can now be edited directly from the time survey (only your own
-  hours and only if the entries are not from locked weeks) (bug #22) [Ivo]
+  hours and only if the entries are not from locked weeks) (bug #22). [Ivo]  
+* Fixed bug in 'recent projects' dropdown in projects menu. (bug #122) [Ivo]
+* Fixed php error message when deleting todo's. (bug #71) [Ivo]
+* When converting from an older version than 0.9.2, projects without a 
+  contact person now automatically get an auto-generated contact-person.
+  (bug #110) [Ivo]
+* Fixed sql error in weekreport when user was administrator. (bug #123) [Ivo]
+* Fixed minor bug in theme support. (bug #121) [Ivo]
+* Fixed bug in userpreferences. [Ivo]
+* Fixed bug that corrupted time registration enties for users with id's of
+  more than 1 digit. [Ivo]
 * Achievo should no longer generate notices when php error_reporting is set to
   E_ALL. (bug #74) [Ivo]
-* Fixed bug in 'recent projects' dropdown in projects menu (bug #122) [Ivo]
-* Fixed php error message when deleting todo's (bug #71) [Ivo]
-* Fixed sql error in weekreport when user was administrator (bug #123) [Ivo]
-* Fixed minor bug in theme support (bug #121) [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------
