@@ -25,6 +25,7 @@ class atkProjectAttribute extends atkAttribute
 
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
+    if (is_array($currentproject)) $currentproject = $currentproject["projectid"];
      
     // The current value might be overriden by use of the 'search all phases' button
     if (isset($selectedprojectid)&&$selectedprojectid!="")
@@ -86,7 +87,7 @@ class atkProjectAttribute extends atkAttribute
 
   function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
   {
-    if ($mode == "select")
+    if ($mode == "select" || $mode == "admin")
     {
       //$query->addField($this->fieldName(),"","hours",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));
       $query->addField("name","", "B", "proj_", false);
