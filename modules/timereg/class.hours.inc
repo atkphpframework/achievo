@@ -201,7 +201,7 @@ class hours extends atkNode
       $res.=$this->getDateJumper();
       $res.='&nbsp;<input type="submit" value="'.text("goto").'">';
       $res.='</td></tr></table></form>';
-      $res.='<b>'.text(strtolower(date("l", $viewdatestamp)))." ".text(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>';
+      $res.='<b>'.text(strtolower(date("l", $viewdatestamp)))." ".text(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>'.$this->getLockIcon();
     }
     return $res;
   }
@@ -297,7 +297,7 @@ class hours extends atkNode
     $prevnextlinks.='&nbsp;<input type="submit" value="'.text("goto").'">';
     $prevnextlinks.='</td></tr></table></form>';
 
-    $prevnextlinks.='<b>'.text("week").' '.strftime('%V, %Y',$viewtime).'</b><br><br><br>';
+    $prevnextlinks.='<b>'.text("week").' '.strftime('%V, %Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
 
     $g_layout->output($prevnextlinks);
     $g_layout->output($g_layout->data_top());
@@ -719,6 +719,15 @@ class hours extends atkNode
       {
         unset($mraactions[$idx]);
       }
+    }
+  }
+  
+  function getLockIcon()
+  {
+    if ($this->m_lock!="")
+    {
+      // Week is locked
+      return ' <img src="'.atkconfig("atkroot").'atk/images/lock.gif" border="0">';
     }
   }
 }
