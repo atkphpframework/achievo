@@ -6,8 +6,11 @@
    */
    
    // This variable indicates where to get all the includes. Usually, this is 
-   // the current pc.
-   $config_atkroot = "./";      
+   // the current dir.
+   if ($config_atkroot=="")
+   {
+     $config_atkroot = "./";      
+   }
   
   // Atknode is required. Don't remove it.
   include_once($config_atkroot."atk/modules/class.atkmodule.inc"); // need to include this file
