@@ -12,8 +12,8 @@ the terms might be different.
 ---------------
 
  1.1. I have installed Achievo, and I am getting the following error:
-      Fatal error: Call to unsupported or undefined function 
-      mysql_pconnect()      
+      "Fatal error: Call to unsupported or undefined function 
+       mysql_pconnect()"
 
         Make sure you installed MySQL, and check if you enabled MySQL 
         support in PHP. If you built PHP from source, this means you have
@@ -21,6 +21,19 @@ the terms might be different.
         instructions on how to do this). 
         If you installed PHP from rpms, you have to install the corresponding 
         php-mysql rpm.
+
+ 1.2. I have installed Achievo, and I am getting the following error:
+      "Warning: open(/tmp\sess_22a61bffada1208843753014b4d6f0ac, O_RDWR) 
+       failed: No such file or directory (2) in 
+       c:\path_to_achievo\atk\session\class.atksessionmanager.inc on line 14"
+      (or something very similar)
+      
+       This could be caused by two things, either of which is a PHP 
+       misconfiguration:
+       - the session.save_path directory in php.ini is set to a directory
+         that doesn't exist, or
+       - the dir pointed to by session.save_path is not readable and writable
+         by the webserver.
         
         
 2. Logging in to Achievo
