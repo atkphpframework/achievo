@@ -1,4 +1,4 @@
-<?
+<?php
  /*  
   * @version $Revision$
   * @Author Ivo Jansch <ivo@achievo.org>
