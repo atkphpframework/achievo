@@ -8,6 +8,7 @@ Changes in Achievo 0.9.5
 ------------------------
 + In employee management, inactive employees are now hidden by default. [Ivo]
 + Added fuzzy search box to the scheduler, to quickly add attendees. [Ivo]
++ The setup.php script now detects and installs newly added modules. [Ivo]
 
 Changes in Achievo 0.9.4
 ------------------------
