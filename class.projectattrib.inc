@@ -20,75 +20,65 @@ class atkProjectAttribute extends atkAttribute
    * @return piece of html code with a textarea
    */
   function edit($record="")
-  {    
-    global $selectedprojectid, $atkaction, $atklevel;
-    
+  {
+    global $selectedprojectid, $atkaction, $atklevel, $PHP_SELF;
+
     // The current phase (in case of edit of an existing record)
-    
+
     $currentproject = $record[$this->fieldName()]['projectid'];
-     
+
     // The current value might be overriden by use of the 'search all phases' button
     if (isset($selectedprojectid)&&$selectedprojectid!="")
     {
       $currentproject = $selectedprojectid;
     }
-  
-    $projects = $this->getRecentProjects();   
+
+    $projects = $this->getRecentProjects();
     $projectarray = Array();
-    
+
     $alreadyadded = false;
-    
+
     // Check if the currently selected project is already in the recent list.
     for ($i=0;$i<count($projects);$i++)
     {
       if ($projects[$i]['id']==$currentproject)
       {
         $alreadyadded = true;
-      }      
+      }
     }
-    
+
     // if not already added (by the recent list), we have to load it manually.
     if (!$alreadyadded&&$currentproject!="")
     {
-      $project = $this->getProject($currentproject);      
+      $project = $this->getProject($currentproject);
       $projects[] = $project;
-    }    
-    
-    $result.= '<select name="projectid">';   
-    $result.= '<option value="">---';  
-    
+    }
+
+    $result.= '<select name="projectid">';
+    $result.= '<option value="">---';
+
     for ($i=0;$i<count($projects);$i++)
     {
       $result .= '<option value="'.$projects[$i]["id"].'" ';
-      
+
       // de juiste default selecteren
       if ($projects[$i]["id"]==$currentproject) $result.="selected";
-      
+
       $result .= '>'.$projects[$i]["name"];
     }
-    
+
     $result .= '</select>&nbsp';
 
-    // if statement to see with redirection is needed.
+    $targeturl = $PHP_SELF."?selectedprojectid=[id]&atklevel=$atklevel";
+    $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED);
 
-    if ($this->m_owner == 'costregistration') {  
-      $targeturl_hourstats = dispatch_url("costregistration", "admin",  array("selectedprojectid" => "[id]", "atklevel" => $atklevel));
-      $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"),SESSION_NESTED);
-      return $result;
-    }
-    else {
-      $targeturl_hourstats = dispatch_url("hours", "hoursurvey", array("selectedprojectid" => "[id]", "atklevel" => $atklevel));
-      $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"),SESSION_NESTED);
-      return $result;
+    return $result;
+  }
 
-    }
-
-  }    
-  
   function display($rec)
-  {  
+  {
     return $rec[$this->fieldName()]["projname"];
-  } 
+  }
 
   function db2value($rec)
   {
@@ -109,24 +99,24 @@ class atkProjectAttribute extends atkAttribute
       $query->addJoin("project", "B","B.id=costregistration.projectid", true);
 
     }
-     
+
     else if ($mode == "add" || $mode == "edit")
       $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));
-  } 
-  
-  function getRecentProjects()   
+  }
+
+  function getRecentProjects()
   {
     global $g_db, $g_user;
-     
+
     $query = "SELECT project.name as name, project.id as id FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' 
-                AND phase.status='active' 
-                AND project.status='active' 
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."'
+                AND phase.status='active'
+                AND project.status='active'
                 AND phase.projectid=project.id ";
     $query.= "ORDER BY hours.entrydate DESC";
 
     // 100 should be enough to get 5 unique recent projects.
-    $arr = $g_db->getrows($query,'0','100'); 
+    $arr = $g_db->getrows($query,'0','100');
     $j=0;
     $alreadyhad = Array();
     $newarr = Array();
@@ -142,19 +132,19 @@ class atkProjectAttribute extends atkAttribute
     }
    return $newarr;
   }
-  
+
   function getProject($projectid)
   {
-    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate, $g_db; 
-     
+    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate, $g_db;
+
     $query = "SELECT id,name FROM project ";
-    $query.= "WHERE id = $projectid ";            
-    
+    $query.= "WHERE id = $projectid ";
+
     $arr = $g_db->getrows($query);
-    
-    $project = $arr[0];  
+
+    $project = $arr[0];
     return $project;
   }
- 
+
 }
 ?>
