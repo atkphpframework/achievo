@@ -152,11 +152,10 @@ class atkProjectPhaseAttribute extends atkAttribute
       $query->addField("name","", "B", "proj_", false);
       $query->addField("name","", "A", "phase_", false);
       $query->addField("name","", "C", "activity_", false);
+      $query->addJoin("activity", "C", "C.id=hours.activityid", false);       
       $query->addJoin("phase", "A","A.id=hours.phaseid", true);      
       $query->addJoin("project", "B","B.id=A.projectid", true);      
-      $query->addTable("activity", "C");
-      $query->addCondition("C.id=hours.activityid"); 
-      
+
     }
 
     else if ($mode == "add" || $mode == "edit")
