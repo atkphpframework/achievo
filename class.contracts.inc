@@ -16,7 +16,7 @@ class contracts extends atkNode
     $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY));    
     
     $this->setTable("contract","contract");
-    $this->setOrder("contract_startdate");
+    $this->setOrder("startdate");
    }
 
    function contract_period_price_edit($rec)

@@ -202,10 +202,10 @@
               currency.value as value,
               project.name as project
             FROM 
-              costregistration LEFT JOIN currency ON costregistration.currency = currency.name, project
+              costregistration LEFT JOIN currency ON costregistration.currency = currency.symbol, project
             WHERE
-              costregistration.date >= '$startdate'
-              AND costregistration.date <= '$enddate'
+              costregistration.costdate >= '$startdate'
+              AND costregistration.costdate <= '$enddate'
               AND costregistration.projectid = project.id";
             if ($userid!="all") $query.= " AND costregistration.userid = '$userid'";
 

@@ -11,33 +11,17 @@ include_once "class.projectattrib.inc";
       $this->atkNode("costregistration"); // node() constructor is *not* called automatically!      
       $this->addFilter("userid",strtolower($g_user["name"]));
   
-      $this->addAttribute(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
+      $this->add(new atkAttribute("id", AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
       $this->add(new atkAttribute("userid", AF_READONLY));
-      $this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-      $this->addAttribute(new atkProjectAttribute("projectid", AF_OBLIGATORY|AF_SEARCHABLE));
+      $this->add(new atkDateAttribute("costdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+      $this->add(new atkProjectAttribute("projectid", AF_OBLIGATORY|AF_SEARCHABLE));
       
-      //$this->addAttribute(new atkManytoOneRelation("project_id","project", AF_OBLIGATORY|AF_SEARCHABLE));
-      //$this->add(new atkDateAttribute("date", "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
-      $this->addAttribute(new atkManyToOneRelation("currency","finance.currency"));
-      $this->addAttribute(new atkAttribute("value", AF_OBLIGATORY));
-      $this->add(new atkListAttribute("Paymethod",array("Cash","Electronic Payment","Creditard"), array("Cash","Electronic Payment","CreditCard"), AF_OBLIGATORY));
+      $this->add(new atkManyToOneRelation("currency","finance.currency"));
+      $this->add(new atkAttribute("value", AF_OBLIGATORY));
+      $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));
       $this->add(new atkAttribute("description", AF_OBLIGATORY));
       
-      //$this->add(new atkDummyAttribute("This is a dummy attribute"));
-      //$this->add(new atkFileAttribute("File",array("themes","http://localhost/themes")));
-      //$this->add(new atkHtmlAttribute("HTML"));
-      //$this->add(new atkLimitedTextAttribute("LimitedText"));
-      //$this->add(new atkRadioAttribute("Radio",array("Option 1","Option 2","Option 3"),array("option1","option2","option3")));
-      //$this->add(new atkMultipleFileAttribute("MultipleFile",array("themes","http://locahost/themes")));
-      //$this->add(new atkNumberAttribute("Number"));
-      //$this->add(new atkParserAttribute("Parser","Test"));
-      //$this->add(new atkPasswordAttribute("Password"));
-      //$this->add(new atkTextAttribute("Text",AF_LIST_HIDE));
-      //$this->add(new atkTimeAttribute("Time"));
-      
-      atkdebug("costregistration::costregistration()");
-      
-      $this->setOrder("date");
+      $this->setOrder("costdate");
             
       $this->setTable("costregistration", "costregistration");
     }
@@ -55,15 +39,9 @@ include_once "class.projectattrib.inc";
       return "$value";
     }
 
-    function edit_values($record)
-    {
-       atkdebug("EDIT VALUES");
-       return Array("hits"=>100);
-    }
-
     function descriptor_def()
     {
-      return "[heading]";
+      return "[description]";
     }
   }
 

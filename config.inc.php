@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "tryllian_test";
+  $config_databasename = "achievo_0_7";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -97,14 +97,14 @@
   
   // Default view in time registration. Can be "week" or "day"
   //
-  $config_timereg_defaultview = "week";
+  $config_timereg_defaultview = "day";
   
   // This variable indicates whether the user may directly register
   // time on each day in a week when he is in weekview. 
   // If set to false, the user must first go to the dayview of a day, 
   // before he may register time.
   //
-  $config_timereg_week_bookable = false;
+  $config_timereg_week_bookable = true;
 
   // This variable indicates wheter users may lock their time 
   // registration for weeks in which they have not entered 
