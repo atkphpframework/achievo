@@ -189,7 +189,7 @@ CREATE TABLE project (
    status enum('active','nonactive','archived') DEFAULT 'active' NOT NULL,
    description text NOT NULL,
    startdate varchar(20) NOT NULL,
-   customer varchar(100),
+   customer int(11) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
 );
 
