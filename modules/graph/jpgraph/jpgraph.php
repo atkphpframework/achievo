@@ -319,7 +319,7 @@ DEFINE('AXSTYLE_YBOXOUT',5);
 // Get hold of gradient class (In Verions 2.x)
 // A client of the library has to manually include this
 //
-include "jpgraph_gradient.php";
+include moduleDir("graph")."jpgraph/jpgraph_gradient.php";
 
 //
 // First of all set up a default error handler

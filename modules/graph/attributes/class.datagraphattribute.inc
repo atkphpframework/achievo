@@ -155,6 +155,50 @@
     {
     }
     
+    function linePlot($data)
+    {  
+      usegraph("line");
+      
+      $graph = new  Graph(550,250,"auto");
+      
+      global $g_theme;      
+      $graph->SetMarginColor($g_theme["BgColor"]);
+      
+      
+      // Use an integer X-scale
+      $graph->SetScale("textlin");
+      
+      // Use built in font
+      $graph->title->SetFont(FF_FONT1,FS_BOLD);
+      
+      $xlabels = array_keys(reset($data));
+      $graph->xaxis->SetTickLabels($xlabels);
+      $graph->xaxis->SetTextTickInterval(1);
+      
+      // We can place about 5 labels on the x-axis, so we 
+      // calculate how big the interval should be.
+      // To prevent weird unreadable intervals, we round
+      // to the nearest multiple of 5 bigger than what we
+      // calculated (to prevent label overlaps).
+      $interv = floor(count($xlabels)/5);                   
+      $graph->xaxis->SetTextLabelInterval(max(1,$interv+(5-($interv%5))));
+      
+      foreach ($data as $legend=>$values)
+      {
+        // Create a red line plot
+        $p = new LinePlot(array_values($values));
+        $p->SetColor("red");
+        $p->SetLegend(text($legend));
+        
+        $graph->Add($p);                
+
+      }
+      
+      $graph->Stroke();
+      return true;
+
+    }
+    
     function piePlot($data)
     {
       usegraph("pie");
