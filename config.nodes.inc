@@ -1,6 +1,7 @@
 <?php
   /* register nodes */
   registerNode("hours", array("admin","add","edit","delete","hoursurvey","view_all"));
+  registerNode("weekreport", array("admin","add","edit","delete","hoursurvey","view_all"));
   registerNode("customer", array("admin", "add", "edit", "delete"));
   registerNode("contact", array("add","edit","delete"));
   registerNode("project", array("*admin", "add", "edit", "delete", "stats","planning"));

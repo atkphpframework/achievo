@@ -14,7 +14,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_0_7";
+  $config_databasename = "achievo_tryllian";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -27,12 +27,14 @@
   // themes there are in the directory themes. Users can choose their own 
   // theme in the user preferences section.
   //
-  $config_defaulttheme = "moronic";
+  $config_defaulttheme = "rainyd";
   
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   // 
   $config_languagefile="english.lng";
+
+//$config_languagefile="nederlands.lng";
   
   // The method to use for user/password validation.
   // Currently supported are:

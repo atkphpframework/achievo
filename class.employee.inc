@@ -8,6 +8,9 @@ class employee extends atkNode
 
     $this->addAttribute(new atkAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
+
+    $this->addAttribute(new atkAttribute("employee_number"  ,AF_HIDE_ADD|AF_HIDE_LIST));
+
     $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
     if (atkconfig("authentication")=="db")
     {
@@ -27,6 +30,9 @@ class employee extends atkNode
       $this->addFilter("status","active");        
     }
     $this->addAttribute(new AtkOneToManyRelation("uc_contract","usercontracts","uc_userid",AF_HIDE_ADD|AF_HIDE_LIST));
+
+    $this->addAttribute(new atkListAttribute("employment",array("intern","extern"),array("intern","extern"),AF_HIDE_ADD));
+    
     $this->setTable("employee","employee");
     $this->setOrder("name");
     

@@ -212,7 +212,7 @@ class hours extends atkNode
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
       $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"]; 
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
-      $week[$key][$date] += $time;      
+      $week[$key][$date] += $time;
       $projtotals[$key] += $time;
       $daytotals[$date] += $time;
       $total += $time;
@@ -226,9 +226,7 @@ class hours extends atkNode
     }
     
     $g_layout->output($prevnextlinks);
-    
     $g_layout->output($g_layout->data_top());
-    
     $g_layout->output('<tr>');
     
     $g_layout->td_datatitle(text('project').'/'.text('phase'));
@@ -248,7 +246,7 @@ class hours extends atkNode
     $g_layout->td_datatitle(text('total'));
     
     $g_layout->output('</tr>');
-    
+
     while (list($proj, $times)=each($week))
     {      
       $g_layout->output('<tr>');
@@ -264,6 +262,7 @@ class hours extends atkNode
     $g_layout->output('<tr>');
     
     $g_layout->td_datatitle(text('total'));
+
     for ($i=1;$i<=7;$i++)
     {        
       if ($daytotals[$weekdates[$i]['date']]>$config_overtimethreshold)
@@ -275,16 +274,13 @@ class hours extends atkNode
         $color = "#009900";
       }
       $g_layout->td_datatitle('<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>','align="center"');
-      
     }
     $g_layout->td_datatitle(time_format($total), 'align="center"');
-    
+		
     $g_layout->output('</tr>');
-    
     $g_layout->output($g_layout->data_bottom());
-    
     $g_layout->ui_bottom();
-  } 
+  }
   
   function postAdd($rec)
   {
@@ -303,6 +299,6 @@ class hours extends atkNode
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
-      
+  
 }
 ?>

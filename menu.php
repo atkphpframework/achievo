@@ -27,6 +27,7 @@
   /* output html */
   $g_layout->output("<html>");
   $g_layout->head($txt_app_title);
+
   $g_layout->body();
   $g_layout->output("<div align='center'>"); 
   $g_layout->ui_top(text("menu_".$atkmenutop));

@@ -12,7 +12,22 @@
   global $selectedprojectid;
   global $phaseid;
   global $userid;
-  global $printable;
+
+//  global $printable;
+//  global $export;
+  
+  /** $outputType gives control over the kind of output: 
+  *        0 standard(onscreen in compliance with theme, default) 
+  *        1 printable (onscreen in a format that easily can be printed on paper))
+  *             [was $printable]
+  *        2 export ( to a file on local computer ex. achievo.csv)
+  */
+  global $outputType;
+  if (!isset($outputType))
+  {
+  $outputType==0;   //default=standard
+  }
+  
 //  global $col;
   
   $startdate = $this->m_postvars["startdate"];
@@ -57,6 +72,7 @@
     }
     return $employee_code;
   }
+
   
   // Determine collumn suppresslist:
   $arr_col = array("activitydate","userid","phaseid","activityid","remark","time");
@@ -97,7 +113,7 @@
       $enddate = date('Y-m-d');
     }
   }
-  
+
   if (!isset($userid)||$userid=="")
   {
     $userid=$g_user["name"];
@@ -111,8 +127,9 @@
   
   $view_all = $g_securityManager->allowed('hours','view_all');
   
-  if (!$printable)
-  { 
+ if ($outputType==0)
+  {  
+
     $g_layout->ui_top(text("title_hours_stats")); 
 
     $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');    
@@ -146,11 +163,9 @@
     $g_layout->td(text('phase').':');
     $phaseatt = $this->m_attribList["phaseid"];
     $g_layout->td($phaseatt->edit($dummyrec));
-  
     $g_layout->output('</tr><tr>');  
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
-  
     $g_layout->td(text("name").':</b> ');   
   
     if($view_all)
@@ -164,10 +179,8 @@
     $g_layout->output('</tr><tr>');  
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
-     
     $g_layout->td(text('activity').': ');
     $g_layout->td('<SELECT name="activity_id">'.get_activities($activity_id).'</SELECT>');
-  
     $g_layout->output('</tr><tr>');
     $g_layout->td('<hr>','colspan="2"');
     $g_layout->output('</tr><tr>');
@@ -188,8 +201,32 @@
     $g_layout->td('<b>'.text("hoursurvey_output_options").'</b>','colspan="2"');
     
     $g_layout->output('</tr><tr>');  
+    
+/*
     $g_layout->td(text("hoursurvey_output_printable"));
     $g_layout->td('<input type="checkbox" name="printable" value="1">');
+    
+    $g_layout->output('</tr><tr>');  
+    
+    $g_layout->td(text("hoursurvey_export"));
+    $g_layout->td('<input type="checkbox" name="export" value="1">');
+*/
+
+    $g_layout->td(text("hoursurvey_output_standard"));
+    $g_layout->td('<INPUT TYPE="radio" NAME="outputType" VALUE="0" CHECKED>');
+    
+    $g_layout->output('</tr><tr>');  
+    
+    $g_layout->td(text("hoursurvey_output_printable"));
+    $g_layout->td('<input type="radio" name="outputType" value="1">');
+    
+    $g_layout->output('</tr><tr>');  
+    
+    $g_layout->td(text("hoursurvey_export"));
+    $g_layout->td('<input type="radio" name="outputType" value="2">');
+    
+
+    
     $g_layout->output('</tr><tr>');  
 
     //$g_layout->td(text("PDF"));
@@ -218,7 +255,7 @@
     $g_layout->td($orderatt->edit($dummyrec));
     
     $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
-  
+   
   }
   
   // Create Filter
@@ -239,9 +276,10 @@
     }
   }  
   
-  $data = $this->selectDb($filter,$atkorderby);
+   $data = $this->selectDb($filter,$atkorderby);
 
-  if (!$printable)
+
+  if ($outputType=="0")
   {
     $g_layout->ui_bottom();
     $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("title_hoursurvey_of")." ".$userid." ".text("title_hoursurvey_intimespan")." ".$startdate." t/m ".$enddate);
@@ -249,9 +287,15 @@
     $g_layout->output($this->recordList($data, array(""),true,$suppress));
     $g_layout->output('<br><br>');
     $g_layout->ui_bottom(); 
-  }
-  else
-  { 
-    $g_layout->output($this->printableRecordList($data, $suppress));    
-  }
+   }
+  if ($outputType=="1")
+    { 
+    $g_layout->output($this->specialRecordList($data,"<tr>","<td >","</td>","</tr>", "0",$suppress));
+    }
+   if ($outputType=="2")
+   {
+    // specail RecordList can export to file
+     $this->specialRecordList($data, "", "", ";", "\r\n", "1", $suppress);
+   }
+
 ?>

@@ -1,6 +1,6 @@
 <?
   /*
-   * 
+  * 
   *  version 0.5 Rene Bakx (rene@ibuildings.nl)
   *  Run this once everyweek with a cronjob or at-command
   *  Sends an employee an email with non-booked hours based on a simple formula
@@ -8,7 +8,6 @@
   * 
   * employees need to book free days, and administrators have to make sure that holidays or other non work days are entered in the system
   * All calculations are made in MINUTES!
- 
   */
 
   include_once("atk.inc");
@@ -117,7 +116,5 @@
       sendmail($r_users[$i]["email"],$r_users[$i]["name"],$missedHours);
      }
    }
-
-
 ?>
 

@@ -105,7 +105,7 @@ class atkProjectAttribute extends atkAttribute
   
   function getProject($projectid)
   {
-    global $g_db, $g_user;
+    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate; 
      
     $query = "SELECT id,name FROM project ";
     $query.= "WHERE id = $projectid";            
