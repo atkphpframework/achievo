@@ -1,5 +1,5 @@
 CREATE TABLE accessright (
-   node varchar(25) NOT NULL,
+   node varchar(50) NOT NULL,
    action varchar(25) NOT NULL,
    entity int(10) DEFAULT '0' NOT NULL,
    PRIMARY KEY (node, action, entity)
@@ -199,6 +199,7 @@ CREATE TABLE profile (
 CREATE TABLE project (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
+   abbreviation VARCHAR(10) NOT NULL,
    coordinator varchar(20),
    status varchar(15) NOT NULL,
    description text,
@@ -313,6 +314,3 @@ CREATE TABLE db_sequence (
    nextid int(10) unsigned DEFAULT '0' NOT NULL,
    PRIMARY KEY (seq_name)
 );
-
- ALTER TABLE project ADD abbreviation VARCHAR(10) NOT NULL;
- ALTER TABLE accessright CHANGE node node VARCHAR(50) NOT NULL;
