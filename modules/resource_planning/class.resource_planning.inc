@@ -43,11 +43,11 @@
 
       $phase = new atkManytoOneRelation("phaseid","phase", AF_OBLIGATORY);
       $phase->m_destinationFilter = $ATK_VARS["projectfilter"];
-      $this->add(&$phase);
+      $this->add($phase);
 
       $employee = new atkManytoOneRelation("employeeid","employee", AF_OBLIGATORY);
       $employee->m_destinationFilter = $ATK_VARS["employeefilter"];
-      $this->add(&$employee);
+      $this->add($employee);
 
       $this->add(new atkDateAttribute("plandate",AF_OBLIGATORY));
       $this->add(new atkTextAttribute("description"));
