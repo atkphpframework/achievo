@@ -8,8 +8,12 @@ useattrib("atklistattribute");
 useattrib("atkdurationattribute");
 useattrib("atkdummyattribute");
 
-function date_format($datestamp)
-{
+function date_format($datestamp,$dateformat)
+{ 
+  if($dateformat!="")
+  {
+    return date($dateformat,$datestamp);
+  }
   return date("m-d",$datestamp)." (".text(strtolower(date("D",$datestamp))).")";
 }
 
@@ -18,17 +22,25 @@ class hours extends atkNode
   var $m_lock = "";
   var $m_viewdate = "";
   var $m_weekview = "";
+  var $m_initial_date = array();
   var $m_insertmode = ""; // can be set to 'day' or 'multi'
+  var $m_jump_date = "";
 
   function hours()
   {
-    global $g_sessionManager;
+    global $g_sessionManager,$ATK_VARS;
 
     // weekview and viewdate are variables that we need to remember..
     $this->m_weekview = $g_sessionManager->stackVar("weekview");
     $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
+    $this->m_jump_date = $_POST["jump_date"];
+    if(is_array($this->m_jump_date))
+    {
+      $g_sessionManager->stackVar("jump_date","");
+      $this->m_viewdate = $this->m_jump_date["year"]."-".str_pad($this->m_jump_date["month"],2, "0", STR_PAD_LEFT)."-".$this->m_jump_date["day"];
+    }
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
-
+   
     $flags=NF_NO_VIEW;
 
     $this->atkNode("hours",$flags|NF_MRA); // node() constructor is *not* called automatically!
@@ -73,25 +85,26 @@ class hours extends atkNode
   function initial_values()
   {
      global $g_user;
-     $initial_date = Array();
 
      if ($this->m_viewdate!="")
      {
-       $initial_date = Array("year"=>substr($this->m_viewdate,0,4),
+       $this->m_initial_date = Array("year"=>substr($this->m_viewdate,0,4),
                              "month"=>substr($this->m_viewdate,5,2),
                              "day"=>substr($this->m_viewdate,8,2));
      }
      else
      {
-       $initial_date = Array("year"=>date("Y"),
+       $this->m_initial_date = Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d"));
      }
+     
      return array("userid"=>strtolower($g_user["name"]),
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d")),
-                  "activitydate"=>$initial_date);
+                  "activitydate"=>$this->m_initial_date
+                  );
   }
 
   function activityid_display($rec)
@@ -145,6 +158,9 @@ class hours extends atkNode
   {
     if ($this->m_weekview!=1)
     {
+      $res='<form name="dayview" method="post" action="dispatch.php">';
+      $res.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
+      $res.='<tr><td align="left" valign="top">';
       $viewdatestamp = mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
 
       // we substract 3601 seconds to account for Daylight Savings Time
@@ -152,12 +168,25 @@ class hours extends atkNode
 
       // we add 3601 seconds to account for Daylight Savings Time
       $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
+      
+      $today = date('Y-m-d');
 
-      $res = href('dispatch.php?viewdate='.$yesterday, text("houradmin_previousday"));
-      $res.='&nbsp;&nbsp;<b>'.date_format($viewdatestamp).'</b>';
-      if ($this->m_viewdate<date('Y-m-d')) // If current is not today we can also move forward
+      $res.= href('dispatch.php?viewdate='.$yesterday, text("houradmin_previousday"));
+      if ($this->m_viewdate<date('Y-m-d')) 
+      { 
+        // If current is not today we can also move forward
         $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$tomorrow, text("houradmin_nextday"));
-      $res.= '<br><br>'.href('dispatch.php?viewdate='.$this->m_viewdate.'&weekview=1', text("houradmin_gotoweekview"));
+        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$today, text("houradmin_today"));
+      }
+      $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$this->m_viewdate.'&weekview=1', text("houradmin_gotoweekview"));
+      $res.='</td><td align="right" valign="top">';
+      $res.=session_form();
+      $dummy_rec = array("jump_date"=>$this->m_initial_date);
+      $datebox = new atkDateAttribute("jump_date","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
+      $res.=$datebox->edit($dummy_rec);
+      $res.='&nbsp;<input type="submit" value="'.text("houradmin_goto").'">';
+      $res.='</td></tr></table></form>';
+      $res.='<b>'.date_format($viewdatestamp,"l F d, Y").'</b>';
     }
     return $res;
   }
@@ -165,7 +194,8 @@ class hours extends atkNode
   function weekview()
   {
     global $g_layout, $g_user;
-
+    atkdebug("SANDY");
+    atkdebug($this->m_viewdate);
     if ($this->m_viewdate!="")
     {
       $viewtime = mktime(12,12,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
@@ -176,7 +206,7 @@ class hours extends atkNode
       $viewtime = time();
     }
     $g_layout->initGUI();
-    $g_layout->ui_top(text('title_houradmin_weekview').' '.strftime('%V',$viewtime));
+    $g_layout->ui_top(text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime));
 
     $weekday = strftime("%w",$viewtime);
     if ($weekday==0) $weekday=7;
@@ -209,12 +239,17 @@ class hours extends atkNode
     $userid = $g_user["name"];
 
     // First a line with previous and next week links..
-    $prevnextlinks = '<br>'.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], text('houradmin_previousweek'));
+    $prevnextlinks='<form name="weekview" method="post" action="dispatch.php">';
+    $prevnextlinks.=session_form();
+    $prevnextlinks.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
+    $prevnextlinks.='<tr><td valign="top" align="left">';
+    $prevnextlinks.= ''.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], text('houradmin_previousweek'));
     if ($weekdates[8]['date'] <= date("Y-m-d"))
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],text('houradmin_nextweek'));
     }
-
+    $prevnextlinks.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.date("Y-m-d"), text('houradmin_thisweek'));
+    
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("unlock").'</b>');
@@ -225,8 +260,14 @@ class hours extends atkNode
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("lock").'</b>');
     }
+    $prevnextlinks.='</td><td valign="top" align="right">';
+    $dummy_rec = array("jump_date"=>$this->m_initial_date);
+    $datebox = new atkDateAttribute("jump_date","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
+    $prevnextlinks.=$datebox->edit($dummy_rec);
+    $prevnextlinks.='&nbsp;<input type="submit" value="'.text("houradmin_goto").'">';
+    $prevnextlinks.='</td></tr></table></form>';
 
-    $prevnextlinks.='<br><br>';
+    $prevnextlinks.='<b>'.text("houradmin_week").' '.strftime('%V, %Y',$viewtime).'</b><br><br><br>';
 
     $g_layout->output($prevnextlinks);
     $g_layout->output($g_layout->data_top());
