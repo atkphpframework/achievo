@@ -15,7 +15,6 @@ Changes in Achievo 0.9.4
   contact person now automatically get an auto-generated contact-person.
   (bug #110) [Ivo]
 * Fixed sql error in weekreport when user was administrator. (bug #123) [Ivo]
-* Fixed minor bug in theme support. (bug #121) [Ivo]
 * Fixed bug in userpreferences. [Ivo]
 * Fixed bug that corrupted time registration enties for users with id's of
   more than 1 digit. [Ivo]
@@ -24,7 +23,7 @@ Changes in Achievo 0.9.4
 * Fixed bug in project filter (non-active projects were not editable). [Ivo]
 * Fixed bug in timreg_check cron script. [Ivo]
 * Fixed bug where scheduler could add wrong attendees. (bug #133) [Ivo]
-* Bugfixes for bugs #128 and #136. [Ivo]
+* Bugfixes for bugs #121, #128, #136 and #137. [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------
