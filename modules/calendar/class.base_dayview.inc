@@ -45,8 +45,7 @@
    * @param $year  (if 0, then current year)
    */
     function dayView($day=0, $month=0, $year=0)
-    {
-     global $HTTP_USER_AGENT;
+    {     
 
      $this->year      = ($year  == 0) ? date("Y") : $year;
      $this->month     = ($month == 0) ? date("m") : $month;
@@ -57,7 +56,7 @@
      // Netscape/Mozilla seems to have a problem
      // with filling a table to a certain height
      // If this is a Netscape browser, force none-fancy layout
-     if (!eregi("msie", $HTTP_USER_AGENT))
+     if (!eregi("msie", $_SERVER["HTTP_USER_AGENT"]))
      {
       $this->fancy = 0;
      }

@@ -24,7 +24,7 @@
     if (method_exists($mod,"getMenuItems")) $mod->getMenuItems();
   }
 
-  $atkmenutop = $HTTP_GET_VARS["atkmenutop"];
+  $atkmenutop = $_GET["atkmenutop"];
 
   if (!isset($atkmenutop)||$atkmenutop=="") $atkmenutop = "main";
 
