@@ -12,9 +12,9 @@
 
 <br><br><br><br><br>
 
-At some point, in the very, very distant future, a manual will be present on this page.
+At some point, in the very, very distant future, a complete annotated reference manual will be present on this page.
 
-<br><br>Until such time arrives, you are left on your own.
+<br><br>For now, you can use <a href="manual/guide.html">this Achievo Guide</a>, graciously contributed by Greg Louis.
 <br><br><br><br><br>
 
  '); 

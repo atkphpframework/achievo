@@ -1,0 +1,252 @@
+<?php
+  // To keep language files up to date, all strings that are introduced in a new version
+  // Have to be kept in a separate section, so we can easily see which strings need to be
+  // translated when a new version comes out.
+  
+  // --------==== Strings that were there from the beginning: ====---------
+
+  $txt_app_title = "Achievo Intranet System";
+  $txt_app_shorttitle = "Achievo";
+
+  $txt_startdate = "Poèáteèní datum"; 
+  $txt_name = "Název";
+  $txt_project = "Projekt";
+  $txt_activity = "Èinnost";
+  $txt_remark = "Poznámka";
+  $txt_employee = "Zemìstnanec";
+  $txt_coordinator = "Koordinátor";
+  $txt_email = "Email";
+  $txt_time = "Èas";
+  $txt_hours = "Hodiny";
+  $txt_minutes = "Minuty";
+  $txt_date = "Datum";
+  $txt_percentage = "Procenta";
+  $txt_total = "Celkovì";
+  $txt_description = "Popis";
+  $txt_specrequired = "Nutná specifikace";
+  $txt_timespan = "Období";
+  $txt_bill = "Úèet";
+  $txt_uptoandincluding = "t/m";
+  $txt_continue = "Pokraèování";
+  $txt_userid = "U¾ivatelské-id";
+  $txt_password = "Heslo";
+  $txt_details = "Podrobnosti";
+  $txt_refresh = "Obnovit";
+  $txt_login = "Pøihlásit";
+  $txt_logout = "Odhlásit";  
+  $txt_id = "ID";
+  $txt_activitytemplate = "©ablona èinnosti";
+  $txt_status = "Stav";
+  $txt_active = "Aktivní";
+  $txt_nonactive = "Neaktivní";
+  $txt_archived = "Archivován";  
+  
+  $txt_logout_loggedinuser = "Pøihlá¹ený u¾ivatel";
+  
+  $txt_title_activitystats = "Statistiky èinností";
+  $txt_title_activitystats_totals = "Celkové statistiky pro: ";
+  $txt_title_activitystats_peremployee = "Následující zamìstnanci mají registrovány hodiny na tìchto èinnostech";
+  $txt_title_activitystats_perproject = "Tato èinnost byla provádìna na následujících projektech";
+  $txt_title_employeestats = "Statistika zamìstnancù";
+  $txt_title_employeestats_totals = "Celková statistika pro ";
+  $txt_title_employeestats_perproject = "Tento zamìstnanec má odpracovány hodiny na následujících projektech";
+  $txt_title_employeestats_peractivity = "Tento zamìstnanec má odpracovány hodiny na následujících èinnostech";
+  $txt_title_employeestats_details_hoursof = "Hodiny";
+  $txt_title_employeestats_details_onproject = " na projektu ";
+  $txt_stats_chooseactivity = "Kliknutím na název èinnosti získate její statistiku.";
+  $txt_stats_chooseemployee = "Kliknutím na jméno zamìstnance získáte jeho statistiku.";
+  $txt_title_billing = "Platba";
+
+  $txt_title_houradmin_weekview = "Záznamy pro týden ";
+  $txt_title_houradmin_dayview = "Záznamy pro ";
+
+  $txt_houradmin_previousweek = "Pøedchozí týden";
+  $txt_houradmin_nextweek = "Následující týden";
+  $txt_houradmin_firstselectproject = "(Nejprve vyberte fázi)";
+  $txt_houradmin_gotoweekview = "Týdenní pøehled";
+  $txt_houradmin_searchallprojects = "Vyhledat ve v¹ech projektech";
+  $txt_houradmin_searchallprojectsphases = "Vyhledat ve v¹ech projektech a fázích"; 
+  
+  $txt_title_hoursurvey_hours = "Hodiny ";
+  $txt_title_hoursurvey_of = "z ";
+  $txt_title_hoursurvey_onproject = "na projektu ";
+  $txt_title_hoursurvey_intimespan = "v období ";
+      
+  $txt_title_projectstats = "Statistika projektù";
+  
+  $txt_title_projectstats_totals = "Celková statistika pro ";
+  $txt_title_projectstats_peremployee = "Èas, který na projektu strávili jednotliví zamìstnanci";
+  $txt_title_projectstats_peractivity = "Èas strávený na jednotlivých èinnostech";
+  
+
+  // --------==== Strings that were introduced in version 0.4: ====---------    
+  $txt_title_hoursurvey_onactivity = "na èinnosti ";
+  $txt_allusers = "V¹ichni u¾ivatelé";  
+  $txt_allprojects = "V¹echny projekty";
+  $txt_allactivities = "V¹echny èinnosti";
+
+  // --------==== Strings that were introduced in version 0.5: ====---------
+
+  // TODO: find a solution for the 'one big language file' problem. It's 
+  // unworkable to have such a big file, while Achievo is so modularized.
+  // Probably each module should have its own language file, but with 
+  // one general file. 
+
+  $txt_phone = "Telefoní èíslo";
+  $txt_address = "Adresa";
+  $txt_number = "È.";
+  $txt_fax = "Faxové èíslo";
+  $txt_remarkrequired = "Nutná specifikace";
+  $txt_title_activity_add = "Pøidat èinnost";
+  $txt_title_activity_admin = "Zmìnit existující èinnosti";
+  $txt_title_activity_edit = "Editovat existující èinnost";  
+      
+  // --------==== Strings that were introduced in version 0.5.2: ====---------
+  $txt_project_select = "Nejprve vyberte projekt";
+  $txt_phase_select = "Výbìr fáze";
+  $txt_code = "Kód";
+  $txt_title_project_select = "Výbìr projektu";
+         
+  $txt_tpl_project_phase = "Fáze";
+  $txt_tpl_dependency = "Závislost";
+  $txt_tpl_phase_activity = "Fáze èinnosti";
+  
+  $txt_title_tpl_project_add = "Pøidat novou ¹ablonu projektu";
+  $txt_title_tpl_project_edit = "Editovat ¹ablonu projektu";  
+  $txt_title_tpl_project_admin = "Spravovat existující ¹ablony projektù";
+  
+  $txt_title_tpl_phase_add = "Pøidat novou ¹ablonu fáze";
+  $txt_title_tpl_phase_edit = "Editovat ¹ablonu fáze";  
+  $txt_title_tpl_phase_admin = "Spravovat existující ¹ablony fází";
+  
+  $txt_phase = "Fáze";
+  
+  // --------==== Strings that were introduced in version 0.5.4: ====---------
+  
+  $txt_phaseid = "Projekt/Fáze";
+  $txt_activityid = "Èinnosti";
+  $txt_contactperson = "Kontaktní osoba";
+  $txt_company = "Spoleènost";
+  $txt_bankaccount = "Bankovní konto";  
+  $txt_zipcode = "PSÈ";
+  $txt_city = "Mìsto";
+  $txt_country = "Zemì";
+    
+  $txt_title_hours_add = "Nový záznam";
+  $txt_title_hours_edit = "Editovat záznam";
+  $txt_title_hours_admin = "Administrace zaznamenaných hodin";
+  $txt_title_hours_stats = "Upøesnit výbìr ";
+  
+  $txt_title_customer_add = "Pøidat nového zákazníka ";
+  $txt_title_customer_admin = "Spravovat existující zákazníky";
+  $txt_title_customer_edit = "Editovat údaje zákazníka";
+  
+  $txt_title_license = $txt_app_shorttitle." license";
+  $txt_title_manual = "Online dokumentace";
+  $txt_title_homepage = $txt_app_shorttitle." homepage";
+  
+  $txt_customer = "Zákazník";
+  
+  $txt_title_profile_add = "Vytvoøit nový profil";
+  $txt_title_profile_admin = "Spravovat existující profily";
+  $txt_title_profile_edit = "Editovat profil";
+  
+  $txt_password_leaveblankifunchanged = "Pro zanechání souèasného hesla zanechte obì pole prázdná";
+
+  $txt_userprefs = "U¾ivatelské nastavení";
+  $txt_profile = "Bezpeènostní profily";
+ 
+  $txt_menu_tpl_project_admin = "©ablony projektù";
+  $txt_menu_tpl_phase_admin = "©ablony fází";
+
+  $txt_title_userprefs_edit = "Editovat osobní nastavení";
+
+  $txt_profile_explanation = "<br>Ní¾e je mo¾né oznaèit, co zamìstnanec v tomto profilu mù¾e a nemù¾e dìlat<br><br>";
+
+  $txt_entity = "Profil";
+
+  $txt_personalstats = "Osobní statistika";
+  
+  $txt_menu_hours_admin = "Zaznamenání èasu";
+  $txt_menu_hours_hoursurvey = "Prohlí¾et èasy";
+  $txt_menu_customer_admin = "Administrace zákazníkù";
+  $txt_menu_project_admin = "Administrace projektù";
+  $txt_menu_activity_admin = "Administrace èinností";
+  $txt_menu_employee_admin = "Administrace zamìstnancù";
+  $txt_menu_employee_personalstats = "Osobní statistika";
+  $txt_menu_profile_admin = "Bezpeènostní profily";  
+  
+  $txt_title_employee_add = "Pøidat zamìstnance";
+  $txt_title_employee_edit = "Editovat údaje zamìstnance";
+  $txt_title_employee_admin = "Spravovat existující zamìstnance";  
+  
+  $txt_title_project_add = "Pøidat projekt ";
+  $txt_title_project_edit = "Editovat údaje projektu";
+  $txt_title_project_admin = "Spravovat existující projekty";
+  
+  $txt_title_activity_select = "Výbìr èinnosti";
+  $txt_activity_select = "Nejprve je nutné vybrat fázi";
+  $txt_title_phase_select = "Výbìr fáze";
+  
+  $txt_title_employee_stats = "Statistiky zamìstnancù";
+  
+  $txt_title_employee_select = "Výbìr zamìstnance";
+  $txt_employee_select = "Výbìr zamìstnance";
+  
+  $txt_template = "©ablona";
+  
+  $txt_sethoursfilter = "Vyberte období které chcete zobrazit";
+
+  $txt_searchbyprojectorphase = "Je mo¾né hledat v projektech nebo fázích projektù";
+  
+  $txt_view_all = "Zobrazit v¹echny u¾ivatele";
+  $txt_hoursurvey = "Prohlí¾ení èasù";
+  $txt_stats = "Statistika";
+  $txt_tpl_project = "©ablony projektù";
+  $txt_tpl_phase = "©ablony fází";  
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_hoursurvey_output_options = "Upravit výstup";
+  $txt_hoursurvey_output_printable = "Výstup pøizpùsobený pro tisk";
+  $txt_hoursurvey_output_showcollumns = "Ukázat pouze tyto sloupce:";
+  $txt_menu_activity_stats = "Statistika èinností";
+  $txt_menu_employee_stats = "Statistika zamìstnancù";
+  $txt_lastname = "Pøíjmení";
+  $txt_firstname = "Jméno";
+  $txt_title_contact_edit = "Editovat kontaktní osobu";
+  $txt_contact = "Kontaktní osoba";
+  
+  // --------==== Strings that were introduced in version 0.5.8: ====---------
+  $txt_houradmin_previousday = "Pøedchozí den";
+  $txt_houradmin_nextday = "Následující den";
+  $txt_link_phase_add = "Pøidat fázi";
+  $txt_dependencies = "Závislosti";
+  $txt_addnewdependency = "Pøidat novou závislost";
+  $txt_mustbecompletedbeforephase = "musí být dokonèena pøed fází";
+  $txt_link_tpl_project_phase_add = "Pøidat novou fázi do projektu";
+  $txt_title_projectstats_perphase = "Èas strávený na jednotlivých fázích projektu";
+  $txt_title_projectplanning = "Plánování projektu";
+  $txt_milestones = "Milníky";
+  $txt_deadline = "Deadline";
+  $txt_booked = "Odpracováno";
+  $txt_planned = "Plánováno";
+  $txt_nophasesdefined = "Tento projekt nemá ¾ádné fáze";
+  $txt_title_phase_edit = "Zmìnit fázi";
+  $txt_title_phase_add = "Pøidat fázi";
+  $txt_max_phasetime = "Odhadovaný èas dokonèení (dny)";
+  $txt_max_hours = "Hodinový odhad";
+  $txt_phase_activity = "Èinnosti";
+  $txt_planning = "Plánování";
+  
+  // --------==== Strings that were introduced in version 0.5.10: ====---------
+  $txt_link_contact_add = "Pøidat novou kontaktní osobu";
+  
+  // --------==== Strings that were introduced in version 0.6: ====---------
+  $txt_title_contact_add = "Pøidat novou kontaktní osobu";
+  $txt_theme = "Schéma";
+  $txt_title_tpl_project_phase_add = "Pøidat novou fázi do projektu";
+  
+  // --------==== Strings that were introduced in version 0.6.3: ====---------
+  $txt_orderby = "Seøadit podle";  
+  
+?>

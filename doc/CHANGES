@@ -10,6 +10,13 @@ Changes in Achievo 0.7
 + Support for submenu's. 
 - Achievo is now PHP4 based. PHP3 is no longer supported.
 
+Changes in Achievo 0.6.5
+------------------------
++ Added a user manual (first draft).
+* Removed a whitespace from the configfile that caused errors on some
+  systems.
+* Updated french language file.
+
 Changes in Achievo 0.6.4
 ------------------------
 * Fixed a bug with phase templates that contained quotes.

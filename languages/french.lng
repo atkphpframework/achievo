@@ -96,6 +96,7 @@
   $txt_houradmin_firstselectproject = "(Sélectionner d'abord un projet)";
   $txt_houradmin_gotoweekview = "Visualisation par semaine";
   $txt_houradmin_searchallprojects = "Rechercher tous les projets";
+  $txt_houradmin_searchallprojectsphases="Rechercher dans tous les projets & phases.";
 
   $txt_hourprocess_fail_zerotime = "Echec sauvegarde: 0 heures, 0 minutes!";
   $txt_hourprocess_fail_remarkrequired = "Echec sauvegarde: Le champ suivant l'activité doît être renseigné pour cette activité.";
@@ -171,5 +172,170 @@
   $txt_title_projectdelete = "Supprimer un projet";
   $txt_delete_button = "Effacer";
   $txt_cancel_button = "Annuler";
-  $txt_confirm_delete = "Etes-vous certain de vouloir supprimer cet objet ?";
+  $txt_confirm_delete = "Êtes-vous certain de vouloir supprimer cet objet ?";
+
+  // --------==== Strings that were introduced in version 0.5: ====---------
+
+  // TODO: find a solution for the 'one big language file' problem. It's 
+  // unworkable to have such a big file, while Achievo is so modularized.
+  // Probably each module should have its own language file, but with 
+  // one general file. 
+
+  $txt_phone = "Numéro de téléphone";
+  $txt_address = "Addresse";
+  $txt_number = "Numéro";
+  $txt_fax = "Numéro de Fax";
+  $txt_remarkrequired = "Specification requise";
+  $txt_title_activity_add = "Ajouter une activité";
+  $txt_title_activity_admin = "Changer une activité existante";
+  $txt_title_activity_edit = "Éditer une activité existante";  
+      
+  // --------==== Strings that were introduced in version 0.5.2: ====---------
+  $txt_project_select = "Premièrement, sélectionnez un projet";
+  $txt_phase_select = "Maintenant sélectionner une phase";
+  $txt_code = "Code";
+  $txt_title_project_select = "Sélectionnez un projet";
+        
+  $txt_tpl_project_phase = "Phase";
+  $txt_tpl_dependency = "Dépendance";
+  $txt_tpl_phase_activity = "Activité de cette phase";
+  
+  $txt_title_tpl_project_add = "Ajouter une nouveau modèle de projet";
+  $txt_title_tpl_project_edit = "Éditer un modèle de projet";  
+  $txt_title_tpl_project_admin = "Gérer un modèle de projet existant";
+  
+  $txt_title_tpl_phase_add = "Ajouter un modèle de phase";
+  $txt_title_tpl_phase_edit = "Éditer un modèle de phase";  
+  $txt_title_tpl_phase_admin = "Gérer un modèle de phase existant";
+  
+  $txt_phase = "Phase";
+  
+  // --------==== Strings that were introduced in version 0.5.4: ====---------
+  
+  $txt_phaseid = "Project/Phase";
+  $txt_activityid = "Activité";
+  $txt_contactperson = "Personne Contact";
+  $txt_company = "Entreprise";
+  $txt_bankaccount = "Compte en Banque";  
+  $txt_zipcode = "Code Postal";
+  $txt_city = "Cité";
+  $txt_country = "Pays";
+    
+  $txt_title_hours_add = "Nouvelle Entrée";
+  $txt_title_hours_edit = "Éditer une entrée";
+  $txt_title_hours_admin = "Administrer les entrées horaires";
+  $txt_title_hours_stats = "Rafiner la sélection";
+  
+  $txt_title_customer_add = "Ajouter un nouveau client";
+  $txt_title_customer_admin = "Gérer les clients existants";
+  $txt_title_customer_edit = "Éditer un client";
+  
+  $txt_title_license = "Licence".$txt_app_shorttitle;
+  $txt_title_manual = "Documentation en ligne";
+  $txt_title_homepage = "Page d'accueil ".$txt_app_shorttitle;
+  
+  $txt_customer = "Client";
+  
+  $txt_title_profile_add = "Créer un nouveau profil";
+  $txt_title_profile_admin = "Gérer un profil existant";
+  $txt_title_profile_edit = "Editer un profil";
+  
+  $txt_password_leaveblankifunchanged = "Laisser les deux champs de saisie de mot de passe vide si vous voulez conserver le même mot de passe.";
+
+  $txt_userprefs = "Préférences de l'utilisateur";
+  $txt_profile = "Profils de Sécurité";
+ 
+  $txt_menu_tpl_project_admin = "Modèle de Projet";
+  $txt_menu_tpl_phase_admin = "Modèle de Phase";
+
+  $txt_title_userprefs_edit = "Editer les préférences utilisateur";
+
+  $txt_profile_explanation = "<br>Vous pouvez indiquez ci-dessous les droits des employés dans ce profil.<br><br>";
+
+  $txt_entity = "Profil";
+
+  $txt_personalstats = "Statistiques Personnelles";
+  
+  $txt_menu_hours_admin = "Enregistrement de Tâche";
+  $txt_menu_hours_hoursurvey = "Utilisation du Temps";
+  $txt_menu_customer_admin = "Gestion de Client";
+  $txt_menu_project_admin = "Gestion de Projet";
+  $txt_menu_activity_admin = "Gestion d'Activité";
+  $txt_menu_employee_admin = "Gestion d'Employés";
+  $txt_menu_employee_personalstats = "Statistiques Personnelles";
+  $txt_menu_profile_admin = "Profils de Sécurité";  
+  
+  $txt_title_employee_add = "Ajoure un Employé";
+  $txt_title_employee_edit = "Éditer un Employé";
+  $txt_title_employee_admin = "Gérer un Employé Existant";  
+  
+  $txt_title_project_add = "Ajourer un projet";
+  $txt_title_project_edit = "Éditer un projet";
+  $txt_title_project_admin = "Gérer un projet existant";
+  
+  $txt_title_activity_select = "Sélectionner une activité";
+  $txt_activity_select = "Premièrement, sélectionnez une activité";
+  $txt_title_phase_select = "Sélectionnez une phase";
+  
+  $txt_title_employee_stats = "Statistiques des Employés";
+  
+  $txt_title_employee_select = "Sélectionnez un Employé";
+  $txt_employee_select = "Sélectionnez un Employé";
+  
+  $txt_template = "Profil";
+  
+  $txt_sethoursfilter = "Sélectionnez les heures que vous souhaitez voir:";
+
+  $txt_searchbyprojectorphase = "Vous pouvez effectuer une recherche par projet ou dans la phase d'un projet";
+  
+  $txt_view_all = "Voir tous les usagers";
+  $txt_hoursurvey = "Rapport d'utilisation du temps";
+  $txt_stats = "Statistiques";
+  $txt_tpl_project = "Profil de Projet";
+  $txt_tpl_phase = "Profil de Phase";  
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_hoursurvey_output_options = "Personaliser la sortie:";
+  $txt_hoursurvey_output_printable = "Sortie pour impression";
+  $txt_hoursurvey_output_showcollumns = "Montrer uniquement ces colonne:";
+  $txt_menu_activity_stats = "Statistiques des Activités";
+  $txt_menu_employee_stats = "Statistiques des Employés";
+  $txt_lastname = "Nom de Famille";
+  $txt_firstname = "Prénom";
+  $txt_title_contact_edit = "Éditer une personne contact";
+  $txt_contact = "Personne Contact";
+  
+  // --------==== Strings that were introduced in version 0.5.8: ====---------
+  $txt_houradmin_previousday = "Jour Précédent";
+  $txt_houradmin_nextday = "Jour Suivant";
+  $txt_link_phase_add = "Ajouter une Phase";
+  $txt_dependencies = "Dependances";
+  $txt_addnewdependency = "Ajouter une Nouvelle Dépendance";
+  $txt_mustbecompletedbeforephase = "doit être complété avant la phase";
+  $txt_link_tpl_project_phase_add = "Ajouter une nouvelle phase à ce projet.";
+  $txt_title_projectstats_perphase = "Les personnes ayant travaillé sur ce projet sont :";
+  $txt_title_projectplanning = "Planification de Projet";
+  $txt_milestones = "Étapes";
+  $txt_deadline = "Date Limite";
+  $txt_booked = "Surchargé";
+  $txt_planned = "Planifié";
+  $txt_nophasesdefined = "Ce projet n'a pas de phases !";
+  $txt_title_phase_edit = "Éditer une phase";
+  $txt_title_phase_add = "Ajouter une phase";
+  $txt_max_phasetime = "Estimation de finalisation (jours)";
+  $txt_max_hours = "Estimation horaire";
+  $txt_phase_activity = "Activités";
+  $txt_planning = "Planification";
+  
+  // --------==== Strings that were introduced in version 0.5.10: ====---------
+  $txt_link_contact_add = "Ajouter un nouveau contact";
+  
+  // --------==== Strings that were introduced in version 0.6: ====---------
+  $txt_title_contact_add = "Ajouter un nouveau contact";
+  $txt_theme = "Thème";
+  $txt_title_tpl_project_phase_add = "Ajouter une nouvelle phase à ce projet";
+  
+  // --------==== Strings that were introduced in version 0.6.3: ====---------
+  $txt_orderby = "Demandé Par";
+
 ?>
