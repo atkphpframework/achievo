@@ -4,6 +4,9 @@ include_once("achievotools.inc");
 
 useattrib("atkdateattribute");
 
+define("ONEDAY", 24*60*60);
+define("ONEWEEK", 7*ONEDAY);
+
 class timeDisplayAttribute extends atkAttribute
 {
   function display($rec)
@@ -254,30 +257,30 @@ class weekreport extends atkNode
       $weekdata = array();
   
       // first fill the weeks and start/end dates..
-      $startstamp = mktime(0,0,0,substr($startdate,5,2),
+      $startstamp = mktime(12,0,0,substr($startdate,5,2),
                                  substr($startdate,8,2),
                                  substr($startdate,0,4));
-      $endstamp = mktime(0,0,0,substr($enddate,5,2),
+      $endstamp = mktime(12,0,0,substr($enddate,5,2),
                                substr($enddate,8,2),
                                substr($enddate,0,4));
   
       // overzicht moet beginnen op de eerste dag van de week van de gekozen datum.
       $realweekstart = startOfWeek($startdate);
-      $realstartstamp = mktime(0,0,0,substr($realweekstart,5,2),
+      $realstartstamp = mktime(12,0,0,substr($realweekstart,5,2),
                                      substr($realweekstart,8,2),
                                      substr($realweekstart,0,4));
   
-      $nrofdays = ceil(($endstamp-$realstartstamp)/(24*60*60));
+      $nrofdays = ceil(($endstamp-$realstartstamp)/(ONEDAY));
   
       for ($i=0;$i<=$nrofdays;$i++)
       {
-        $curstamp = $realstartstamp + ((24*60*60)*$i);
+        $curstamp = $realstartstamp + (ONEDAY*$i);
         if (strftime("%w",$curstamp)==1)
         {
           $key = weekstamp($curstamp);
-          $weekdata[$key]["week"] = $key;
+          $weekdata[$key]["week"] = $key;          
           $weekdata[$key]["startdate"] = strftime("%d-%m-%Y",$curstamp);
-          $weekdata[$key]["enddate"] = strftime("%d-%m-%Y",$curstamp+(6*24*60*60));
+          $weekdata[$key]["enddate"] = strftime("%d-%m-%Y",$curstamp+(6*ONEDAY));
           $i+=6;
         }
       }
@@ -308,19 +311,21 @@ class weekreport extends atkNode
   
       for ($i=0;$i<count($contracts);$i++)
       {
-        $start_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["startdate"],5,2),
-                                               substr($contracts[$i]["startdate"],8,2),
-                                               substr($contracts[$i]["startdate"],0,4)));
-        $end_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["enddate"],5,2),
-                                             substr($contracts[$i]["enddate"],8,2),
-                                             substr($contracts[$i]["enddate"],0,4)));
-        for ($j=$start_week;$j<=$end_week;$j++)
-        {
-          if ($j>=$report_start_week && $j<=$report_end_week && substr($j,4)<=52)
-          {
-            $weekdata[$j]["week"] = $j;
-            $weekdata[$j]["userdata"][$contracts[$i]["id"]]["contract"] = $contracts[$i]["uc_hours"]*60;
-            $weekdata[$j]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
+        $start_week = mktime(0,0,0,substr($contracts[$i]["startdate"],5,2),
+                                   substr($contracts[$i]["startdate"],8,2),
+                                   substr($contracts[$i]["startdate"],0,4));
+        $end_week = mktime(0,0,0,substr($contracts[$i]["enddate"],5,2),
+                                 substr($contracts[$i]["enddate"],8,2),
+                                 substr($contracts[$i]["enddate"],0,4));        
+        
+        for ($j=$start_week;$j<=$end_week;$j+=ONEWEEK)
+        {          
+          $weekstamp = weekstamp($j);
+          if ($weekstamp>=$report_start_week && $weekstamp <= $report_end_week) // check if week is within report boundary.
+          {        
+            $weekdata[$weekstamp]["week"] = $weekstamp;            
+            $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["contract"] = $contracts[$i]["uc_hours"]*60;
+            $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
           }
         }
       }
@@ -353,8 +358,7 @@ class weekreport extends atkNode
       {
         $stamp = mktime(0,0,0,substr($raw[$i]["activitydate"],5,2),
                               substr($raw[$i]["activitydate"],8,2),
-                              substr($raw[$i]["activitydate"],0,4));
-        $weeknr = strftime("%V",$stamp);
+                              substr($raw[$i]["activitydate"],0,4));        
         $dow = strftime("%w",$stamp);
         $key = weekstamp($stamp);
         $weekdata[$key]["week"] = $key;
