@@ -5,7 +5,7 @@
     global $g_user, $g_layout, $g_db;
 
     $userid = $g_user["id"];
-
+    $rl = &atknew("atk.recordlist.atkrecordlist");
     $todonode = getNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
     $todonode->addFilter("todo.status NOT IN (5,2)");
@@ -16,7 +16,7 @@
     $todo_assignedtome = text("pim_assignedtoyou").":<br>";
     if (count($recs)>0)
     {
-      $todo_assignedtome.= $todonode->recordList($recs,$actions,false, array('assigned_to','entrydate','projectid'));
+      $todo_assignedtome.= $rl->render($todonode,$recs,$actions,false, array('assigned_to','entrydate','projectid'));
     }
     else
     {
@@ -28,7 +28,7 @@
     $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");
     if (count($recs)>0)
     {
-      $todo_assignedbyme.= $todonode->recordList($recs,$actions,false, array('entrydate','projectid'));
+      $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,false, array('entrydate','projectid'));
     }
     else
     {
