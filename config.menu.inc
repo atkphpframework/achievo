@@ -1,7 +1,7 @@
 <?php
   /* menu items */
   
-  menuitem("time_registration", "","main",true,100);
+  menuitem("time_registration", dispatch_url("hours", "admin"), "main",true,100);
     menuitem("hours_admin", dispatch_url("hours", "admin"),"time_registration",true);
     menuitem("-","","time_registration");
     menuitem("hours_lock", dispatch_url("hours_lock", "admin"),"time_registration",array("hours_lock","admin"));
@@ -50,11 +50,11 @@
       menuitem("project_notesview", dispatch_url("project_notesview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("project_notesview", "admin"));   
   }   
 
-  menuitem("customermanagement","","main",true,500);
+  menuitem("customermanagement",dispatch_url("customer", "admin"),"main",array("customer","admin"),500);
     menuitem("customer_admin", dispatch_url("customer", "admin"),"customermanagement", array("customer","admin"));
     menuitem("contracts", dispatch_url("contracts","admin"),"customermanagement", array("contracts","admin"));
 
-  menuitem("employeemanagement","","main",true,600);
+  menuitem("employeemanagement",dispatch_url("employee", "admin"),"main",array("employee", "admin"),600);
      menuitem("profile_admin", dispatch_url("profile", "admin"), "employeemanagement", array("profile", "admin"));
      menuitem("employee_admin", dispatch_url("employee", "admin"), "employeemanagement", array("employee", "admin"));    
 

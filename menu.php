@@ -22,13 +22,18 @@
     $mod = getModule($modname);
     if (method_exists($mod,"getMenuItems")) $mod->getMenuItems();
   }
+  
+  $atkmenutop = $HTTP_GET_VARS["atkmenutop"];
 
   if (!isset($atkmenutop)||$atkmenutop=="") $atkmenutop = "main";
+  
+  $g_layout->register_script("javascript/menuload.js");
 
   /* output html */
   $g_layout->output("<html>");
   $g_layout->head($txt_app_title);
-
+  
+    
   $g_layout->body();
   $g_layout->output("<div align='center'>"); 
   $g_layout->ui_top(text("menu_".$atkmenutop));
@@ -98,17 +103,35 @@
       }
       $enable = $enabled;
     }
-
+          
     /* delimiter ? */
+    
     if ($g_menu[$atkmenutop][$i]["name"] == "-") $menu .= "<br>";
     
-    /* submenu ? */
-    else if (empty($url) && $enable) $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name")).$config_menu_delimiter;
-    else if (empty($url) && !$enable) $menu .=text("menu_$name").$config_menu_delimiter;
-      
-    /* normal menu item */
-    else if ($enable) $menu .= href($url,text("menu_$name"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
-    else $menu .= text("menu_$name").$config_menu_delimiter;    
+    else if ($enable) // don't show menu items we don't have access to.
+    {   
+          
+      $hassub = (is_array($g_menu[$g_menu[$atkmenutop][$i]["name"]]));  
+    
+      /* submenu ? */    
+      if ($hassub)
+      {  
+        if (empty($url)) // normal submenu
+        {
+          $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name")).$config_menu_delimiter;
+        }
+        else // submenu AND a default url.
+        {
+          $menuurl = session_url('menu.php?atkmenutop='.$name);
+          $mainurl = session_url($url,SESSION_NEW);
+          $menu.= '<a href="javascript:menuload(\''.$menuurl.'\', \''.$mainurl.'\');">'.text("menu_$name").'</a>'.$config_menu_delimiter;
+        }           
+      }
+      else // normal menuitem
+      {                            
+        $menu .= href($url,text("menu_$name"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
+      }
+    }
   }
   
   /* previous */
