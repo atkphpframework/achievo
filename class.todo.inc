@@ -1,6 +1,8 @@
 <?
 
 require_once("achievotools.inc");
+useattrib("atkupdatestampattribute");
+
 
 class todo extends atkNode
 {
@@ -12,16 +14,18 @@ class todo extends atkNode
     global $atkaction, $g_user;
 
     $this->atkNode("todo", NF_TRACK_CHANGES);
-    $this->addAttribute(new atkAttribute("id"                   , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
-    $this->addAttribute(new atkManyToOneRelation("projectid"    , "project",AF_OBLIGATORY|AF_SEARCHABLE));
-    $this->addAttribute(new atkAttribute("title"                , AF_OBLIGATORY));
-    $this->addAttribute(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
-    $this->addAttribute(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
-    $this->addAttribute(new atkDateAttribute("duedate"          , "F d Y","d F Y", date("Ymd"), 0, AF_OBLIGATORY));
-    $this->addAttribute(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
-    $this->addAttribute(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->addAttribute(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
+    $this->add(new atkAttribute("id"                   , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->add(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
+    $this->add(new atkManyToOneRelation("projectid"    , "project",AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->add(new atkAttribute("title"                , AF_OBLIGATORY));
+    $this->add(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
+    $this->add(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
+    $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkUpdateStampAttribute("updated", AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
+    $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
+    $this->add(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
+    $this->add(new atkOneToManyRelation("history","todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
     $this->setTable("todo", "todo");         
     $this->setOrder("duedate, priority");
@@ -31,13 +35,18 @@ class todo extends atkNode
   function initial_values()
   {
     global $g_user;
-    return array("owner"=>$g_user["name"],
-                 //"assigned_to"=>array("userid"=>$g_user["name"]),
-                 "entrydate"=>array("year"=>date("Y"),
-                                    "month"=>date("m"),
-                                    "day"=>date("d")),
+    
+    $date = array("year"=>date("Y"),
+                  "month"=>date("m"),
+                  "day"=>date("d"),
+                  "hours"=>date("H"),
+                  "minutes"=>date("i"),
+                  "seconds"=>date("s"));
+    return array("owner"=>$g_user["name"],                 
+                 "entrydate"=>$date,
+                 "updated"=>$date,
                  "priority"=>3);
-  }
+  }    
 
   // overide display of priority (set high to a red font)
   function priority_display($rec)
@@ -155,11 +164,16 @@ class todo extends atkNode
   {        
     foreach (array_keys($this->m_attribList) as $attribname)
     {
-      $p_attrib = &$this->m_attribList[$attribname];
-      if (!$p_attrib->equal($new,$old))
+      if ($attribname!="updated") // leave out the updated attrib, for it always
+                                  // changes, but that doesn't mean a change in 
+                                  // the record.
       {
-        atkdebug($attribname." changed");
-        return true;
+        $p_attrib = &$this->m_attribList[$attribname];
+        if (!$p_attrib->equal($new,$old))
+        {
+          atkdebug($attribname." changed");
+          return true;
+        }
       }
     }
     return false;
@@ -210,6 +224,12 @@ class todo extends atkNode
      // send mail     
      $header = $this->prioHeader($rec["priority"]);
      usermail(implode(",",$to),text("todochanged"), $body, $header);    
+     
+     // also store the old todo in the history table.
+     $historynode = getNode("todo_history");
+     $rec["atkorgrec"]["todoid"]["id"] = $rec["id"]; // the todoid in the historytable
+                                               // points to the current todoid.
+     $historynode->addDb($rec["atkorgrec"]);
    }
   }
 

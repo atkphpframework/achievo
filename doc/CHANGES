@@ -3,6 +3,12 @@
 * : bugfix or changed code
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
+Changes in Achievo 0.9.1
+------------------------
++ Added todo history.
++ Added initial version of resource planning feature.
+* Several bugfixes.
+
 Changes in Achievo 0.9.0
 ------------------------
 + Re-enabled all 0.7.3 unstable features that were turned off for the stable
@@ -14,7 +20,7 @@ Changes in Achievo 0.9.0
 + Added a Personal Information Manager which is now the default startup 
   screen.
 * Bugfixes to the scheduler.
-* Bugfixes to the billing section (still broken though)
+* Bugfixes to the billing section (still broken though).
 * Improvements to the ATK backend.
 * Made Achievo more 'session timeout' resistant.
 
