@@ -311,10 +311,10 @@ class weekreport extends atkNode
   
       for ($i=0;$i<count($contracts);$i++)
       {
-        $start_week = mktime(0,0,0,substr($contracts[$i]["startdate"],5,2),
+        $start_week = mktime(12,0,0,substr($contracts[$i]["startdate"],5,2),
                                    substr($contracts[$i]["startdate"],8,2),
                                    substr($contracts[$i]["startdate"],0,4));
-        $end_week = mktime(0,0,0,substr($contracts[$i]["enddate"],5,2),
+        $end_week = mktime(12,0,0,substr($contracts[$i]["enddate"],5,2),
                                  substr($contracts[$i]["enddate"],8,2),
                                  substr($contracts[$i]["enddate"],0,4));        
         
@@ -356,7 +356,7 @@ class weekreport extends atkNode
   
       for ($i=0;$i<count($raw);$i++)
       {
-        $stamp = mktime(0,0,0,substr($raw[$i]["activitydate"],5,2),
+        $stamp = mktime(12,0,0,substr($raw[$i]["activitydate"],5,2),
                               substr($raw[$i]["activitydate"],8,2),
                               substr($raw[$i]["activitydate"],0,4));        
         $dow = strftime("%w",$stamp);
