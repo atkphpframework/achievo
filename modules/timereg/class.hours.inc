@@ -204,6 +204,18 @@ class hours extends atkNode
     }
     return $res;
   }
+
+  function adminFooter()
+  {
+    if ($this->m_weekview!=1)
+    {
+      $res.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
+      $res.='<tr><td align="left" valign="top">';
+      $res.= href('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate='.$this->m_viewdate, text("viewschedule"), SESSION_NESTED);
+      $res.='</td></tr></table>';
+      return $res;
+    }
+  }
   
   function getDateJumper()
   {

@@ -395,5 +395,9 @@
   $txt_workingdays = "Werkdagen";
   $txt_yearly = "Jaar";
   $txt_zipcode = "Postcode";
+  $txt_attendee_empsearch = "Voeg medewerker toe";
+  $txt_attendee_contactsearch = "Voeg contactpersoon toe";
+  $txt_attendee_fuzzyhint = "Geef hieronder een komma-gescheiden lijst van namen op. De database zal doorzocht worden en treffers worden toegevoegd als genodigde.";
+  $txt_viewschedule = "Bekijk agenda";
 
 ?>

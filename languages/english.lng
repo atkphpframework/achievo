@@ -395,5 +395,9 @@
   $txt_workingdays = "Workingdays";
   $txt_yearly = "Year";
   $txt_zipcode = "Zipcode";
-
+  
+  $txt_attendee_empsearch = "Add employees";
+  $txt_attendee_contactsearch = "Add contacts";
+  $txt_attendee_fuzzyhint = "Add a comma-separated list of names below. The database will be searched for matches which will be added as attendees.";
+  $txt_viewschedule = "View schedule";
 ?>
