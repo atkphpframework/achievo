@@ -136,29 +136,29 @@
   
   $g_layout->output($g_layout->data_top());
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   while (list($empname, $time) = each ($hoursperemp))
   {    
-    $g_layout->output('<tr>');
+    $g_layout->output($g_layout->tr_top());
     $g_layout->td($empname);
     $g_layout->td(time_format($time));    
     $percentage = round($time/$total*100);
     $imgwidth = max(1,($percentage*3));
     
     $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
-    $g_layout->output('</tr>');
+    $g_layout->output($g_layout->tr_bottom());
   }
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("total"));
   $g_layout->td_datatitle(time_format($total));
   $g_layout->td_datatitle('&nbsp;');  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
 
@@ -166,28 +166,28 @@
   
   $g_layout->output($g_layout->data_top());
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("name"));
   $g_layout->td_datatitle(text("time"));
   $g_layout->td_datatitle(text("percentage"));  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   while (list($projname, $time) = each ($hoursperproj))
   {    
-    $g_layout->output('<tr>');
+    $g_layout->output($g_layout->tr_top());
     $g_layout->td($projname);
     $g_layout->td(time_format($time));    
     $percentage = round($time/$total*100);
     $imgwidth = max(1,($percentage*3));
     $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20">&nbsp; ('.$percentage.'%)');
-    $g_layout->output('</tr>');
+    $g_layout->output($g_layout->tr_bottom());
   }
   
-  $g_layout->output("<tr>");  
+  $g_layout->output($g_layout->tr_top());  
   $g_layout->td_datatitle(text("total"));
   $g_layout->td_datatitle(time_format($total));
   $g_layout->td_datatitle('&nbsp;');  
-  $g_layout->output('</tr>');
+  $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
   $g_layout->output('<br><br><br>');  
