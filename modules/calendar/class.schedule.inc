@@ -209,14 +209,14 @@
 
     function monthview($viewdate)
     {
-      global $g_user, $g_db, $user, $PHP_SELF;
+      global $g_user, $g_db, $user;
 
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
       $year  = substr($viewdate, 0,4);
 
       // get all users we can view
-      $form  = "<FORM method='post' action='$PHP_SELF'>\n";
+      $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";
@@ -268,7 +268,7 @@
 
     function employeeview($viewdate)
     {
-      global $g_user, $g_db, $user, $PHP_SELF, $selemployee;
+      global $g_user, $g_db, $user, $selemployee;
 
       if (!is_array($viewdate))
       {
@@ -291,7 +291,7 @@
       }
 
       // get all users we can view
-      $form  = "<FORM name='frmemployeeview' method='post' action='$PHP_SELF'>\n";
+      $form  = "<FORM name='frmemployeeview' method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= $this->get_employees2();
@@ -322,7 +322,7 @@
 
     function dayview($viewdate)
     {
-      global $g_user, $g_db, $PHP_SELF, $user;
+      global $g_user, $g_db, $user;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
@@ -330,7 +330,7 @@
       $year  = substr($viewdate, 0,4);
 
       // get all users we can view
-      $form  = "<FORM method='post' action='$PHP_SELF'>\n";
+      $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";
@@ -350,10 +350,10 @@
       $legend .= $dummy->legend;
 
       // link to employeeview
-      $buff  = href($PHP_SELF."?view=employeeview&viewdate=$viewdate","Employeeview");
+      $buff  = href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate","Employeeview");
 
       // link to weekview and monthview
-      $buff = href($PHP_SELF."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($PHP_SELF."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($PHP_SELF."?view=employeeview&viewdate=$viewdate", text("employeeview"));
+      $buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
 
       // assign our output buffer
       $buff .= "<br><br><table width='".$dummy->viewerWidth."'><tr>";
@@ -369,7 +369,7 @@
 
     function weekview($viewdate)
     {
-      global $g_user, $g_db, $PHP_SELF, $user;
+      global $g_user, $g_db, $user;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
@@ -377,7 +377,7 @@
       $year  = substr($viewdate, 0,4);
 
       // get all users we can view
-      $form  = "<FORM method='post' action='$PHP_SELF'>\n";
+      $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";

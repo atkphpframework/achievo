@@ -23,7 +23,7 @@ class atkProjectAttribute extends atkAttribute
    */
   function edit($record="")
   {
-    global $selectedprojectid, $atkaction, $atklevel, $PHP_SELF;
+    global $selectedprojectid, $atkaction, $atklevel;
 
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
@@ -71,7 +71,7 @@ class atkProjectAttribute extends atkAttribute
 
     $result .= '</select>&nbsp';
 
-    $targeturl = $PHP_SELF."?selectedprojectid=[id]&atklevel=$atklevel";
+    $targeturl = $_SERVER["PHP_SELF"]."?selectedprojectid=[id]&atklevel=$atklevel";
 
     if ($this->hasFlag(AF_FORMSUBMIT)) $submit = true; else $submit = false;
     $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED, $submit);

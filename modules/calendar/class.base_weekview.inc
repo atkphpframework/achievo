@@ -181,7 +181,7 @@
    */
     function dumpMatrix()
     {
-     global $PHP_SELF, $g_layout, $g_user;
+     global $g_layout, $g_user;
 
       $buff   = $g_layout->initGUI();
       $buff .= $g_layout->data_top();
@@ -192,7 +192,7 @@
       for ($i=1;$i<=7;$i++)
       {
         $text  = text($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
-        $href  = $PHP_SELF."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
+        $href  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
         $buff .= $g_layout->ret_td_datatitle(href($href, $text), 'align="center"');
       }
       $buff .= $g_layout->tr_bottom();
@@ -221,14 +221,14 @@
             if ($g_user["name"]==$dayappointments[$j]["owner"] || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
             {
               // This is your own record, you may edit it.
-              $link = href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
+              $link = href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
             }
             else
             {
               // this is somebody elses appointment. you may only view it if it is a public item.
               if ($dayappointments[$j]["publicitem"]==1)
               {
-                $link = href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
+                $link = href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
               }
               else
               {
@@ -258,7 +258,7 @@
       for ($i=1;$i<=7;$i++)
       {
         $text  = text("add");
-        $href  = $PHP_SELF."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
+        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
         $buff .= $g_layout->ret_td_datatitle(href($href, $text, SESSION_NESTED), 'align="center"');
       }
       $buff .= $g_layout->tr_bottom();

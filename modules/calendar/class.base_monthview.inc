@@ -41,16 +41,15 @@
    */
    function monthNav()
    {
-    global $PHP_SELF;
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->month-1, 1, $this->year));
-    $prevUrl  = $PHP_SELF."?view=monthview&viewdate=$prevTime&dayview=".$this->showGlobal;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$prevTime&dayview=".$this->showGlobal;
 
     $thisTime = date("Y-m")."-1";
-    $thisUrl  = $PHP_SELF."?view=monthview&viewdate=$thisTime&dayview=".$this->showGlobal;
+    $thisUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$thisTime&dayview=".$this->showGlobal;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month+1, 1, $this->year));
-    $nextUrl  = $PHP_SELF."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
 
     $this->title = "<font size='-1'><b>".date("M", mktime(0,0,0,$this->month,1,$this->year))." ".$this->year."</b></font>";
 
@@ -105,7 +104,6 @@
    */
    function dumpMatrix()
    {
-    global $PHP_SELF;
 
     $item     = 0;
     $colwidth = floor($this->viewerWidth/8);
@@ -127,13 +125,13 @@
     for ($i=0;$i<=$this->weeks;$i++)
     {
      $weekno = strftime("%W", mktime(0,0,0,substr($this->items[$item]["date"],5,2), substr($this->items[$item]["date"],8,2), substr($this->items[$item]["date"],0,4)));
-     $href   = $PHP_SELF."?view=weekview&viewdate=".$this->items[$item]["date"];
+     $href   = $_SERVER["PHP_SELF"]."?view=weekview&viewdate=".$this->items[$item]["date"];
      $buff  .= "<tr>";
      $buff  .= "<td width='$colwidth' bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($href, $weekno)."</font></td>";
 
      for ($j=0;$j<=6;$j++)
      {
-      $url     = $PHP_SELF."?view=dayview&viewdate=".$this->items[$item]["date"];
+      $url     = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->items[$item]["date"];
       $day     = substr($this->items[$item]["date"],8,2);
       $month   = substr($this->items[$item]["date"],5,2);
       $bgcolor = "#C0C0C0";

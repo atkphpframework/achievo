@@ -38,7 +38,7 @@
    */
    function dumpMatrix($selemployee)
    {
-    global $PHP_SELF, $g_db;
+    global $g_db;
 
     $date = sprintf("%4d-%2d-%2d", $this->year, $this->month, $this->day);
 
@@ -48,7 +48,7 @@
     for ($i=0;$i<count($this->workHours);$i++)
     {
       $time = $this->workHours[$i];
-      $addurl  = $PHP_SELF."?atkaction=add&atknodetype=calendar.schedule&viewdate=$date&time=$time";
+      $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=calendar.schedule&viewdate=$date&time=$time";
       $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($addurl, "<font size='-1'>".$this->workHours[$i]."</font>",SESSION_NESTED)."</font></td>";
     }
     $buff .= "</tr>\n";

@@ -86,16 +86,15 @@
    */
    function dayNav()
    {
-    global $PHP_SELF;
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-1, $this->year));
-    $prevUrl  = $PHP_SELF."?view=dayview&viewdate=$prevTime&user=".$this->showGlobal;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$prevTime&user=".$this->showGlobal;
 
     $thisTime = date("Y-m-d");
-    $thisUrl  = $PHP_SELF."?view=dayview&viewdate=$thisTime&user=".$this->showGlobal;
+    $thisUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$thisTime&user=".$this->showGlobal;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
-    $nextUrl  = $PHP_SELF."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
     $this->title = "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
@@ -343,7 +342,7 @@
    */
     function dumpMatrix()
     {
-     global $PHP_SELF, $g_user;
+     global $g_user;
 
      $buff   = "";
      $cols   = $this->getCols();
@@ -409,13 +408,13 @@
 
        if ($this->allDayItems[$i]["owner"] == $this->owner || $found == 1)
        {
-         $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
+         $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
        }
 
        if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
        {
-        $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
-        $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
        }
 
        $header .= "</tr></table>";
@@ -435,7 +434,7 @@
       $time    = $this->workHours[$i];
       $items   = $this->itemMatrix[$time];
       $now     = $this->year."-".$this->month."-".$this->day;
-      $addurl  = $PHP_SELF."?atkaction=add&atknodetype=calendar.schedule&date=$now&time=$time";
+      $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=calendar.schedule&date=$now&time=$time";
 
       $buff .= "<tr>\n";
       $buff .= "<td bgcolor='#D0D0D0' width='5%'>".href($addurl, "<font size='-1'>".$time."</font>",SESSION_NESTED)."</td>";
@@ -524,13 +523,13 @@
 
           if ($this->allDayItems[$i]["owner"] == $this->owner || count($attendees) > 0)
           {
-            $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
+            $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
           }
 
           if ($info["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
           {
-           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
-           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
           }
 
           $header .= "</td>\n";

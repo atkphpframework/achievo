@@ -136,7 +136,6 @@ class bill_line extends atkNode
 
  function action_save()
  {
-      global $PHP_SELF;
       if ($this->m_postvars['atkcancel']=="")
       {
         $record = $this->updateRecord();
