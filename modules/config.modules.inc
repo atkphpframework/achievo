@@ -8,11 +8,7 @@
   module("notes");
   module("calendar");
   module("todo");
-  module("costreg");
-  module("finance");
-  module("reports");
-  module("resource_planning");
+  module("reports");  
   module("pim");
-  module("search");
-  module("document");
+  module("search");  
 ?>
