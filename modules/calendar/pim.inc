@@ -3,7 +3,7 @@
   {
     global $g_user, $g_layout, $g_db;
 
-    $me = $g_user["name"];
+    $me = $g_user["id"];
 
     $schedulenode = getNode("calendar.schedule");
     $schedulenode->m_flags |= NF_NO_SEARCH;
@@ -32,13 +32,11 @@
     $query->addField('scheduletype', ' ', 'schedule');    
 
     $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
-    $query->addCondition("(schedule.owner='".$me."' OR person.userid='".$me."' OR schedule.all_users = 1)");
-
+    $query->addCondition("(schedule.owner='".$me."' OR person.id='".$me."' OR schedule.all_users = 1)");
 
     $query->addOrderBy('starttime');
     $querystring = $query->buildSelect(TRUE);
     $recs = $g_db->getRows($querystring);
-
     $actions = array();
 
     for ($i=0;$i<count($recs);$i++)
