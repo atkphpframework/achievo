@@ -20,7 +20,7 @@
       global $selectedproject;
       if ($selectedproject == 0)
       {
-        menuitem("projectmanagement","","main",true,400); // projects submenu
+        menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
         $target_stats = "dispatch.php?atknodetype=project.project&atkaction=stats&selectedprojectid=[id]";
         $target_planning = "dispatch.php?atknodetype=project.project&atkaction=planning&selectedprojectid=[id]";
         menuitem("project_admin", dispatch_url("project.project", "admin"), "projectmanagement", array("project.project", "admin"));
@@ -30,8 +30,8 @@
         menuitem("activity_stats", dispatch_url("project.activity", "stats"), "projectmanagement", array("project.activity", "stats"));
       }
       else
-      {
-        menuitem("projectmanagement","","main",true,400);     // selected projects submenu
+      {        
+        menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
         menuitem("project_admin", dispatch_url("project.project", "edit", array("atkselector" => "project.id='".$selectedproject."'")), "projectmanagement", array("project.project", "admin"));
         menuitem("project_planning",  dispatch_url("project.project", "planning", array("selectedprojectid" => $selectedproject)), "projectmanagement", array("project.project", "planning"));
         menuitem("-","","projectmanagement");

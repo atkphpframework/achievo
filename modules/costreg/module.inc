@@ -9,7 +9,7 @@
     
     function getMenuItems()
     {
-      menuitem("costregistration_costreport", dispatch_url("costreg.costregistration", "costreport"),"reports");
+      menuitem("costregistration_costreport", dispatch_url("costreg.costregistration", "costreport"),"reports", array("costreg.costregistration", "costreport"));
       menuitem("costregistration_admin", dispatch_url("costreg.costregistration", "admin"),"main",true,200);    
       menuitem("-","","main",true,220);
     }
