@@ -106,7 +106,7 @@ class project extends atkNode
       $this->addFilter("project.status","active");
     }
 
-  //  $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+    $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
     // $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST|AF_CASCADE_DELETE));
     // $this->addAttribute(new atkOneToManyRelation("project_notes","project_notes","projectid", AF_HIDE|AF_CASCADE_DELETE));
 
