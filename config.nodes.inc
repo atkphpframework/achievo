@@ -30,4 +30,6 @@
   registerNode("schedule", array("admin", "add", "edit", "delete"));
   registerNode("schedule_types", array("admin", "add", "edit", "delete"));
   registerNode("costregistration", array("admin", "add", "edit", "delete", "costreport", "view_all"));
+
+  registerNode("employee_project", array("admin", "add", "edit", "delete"));
 ?>
