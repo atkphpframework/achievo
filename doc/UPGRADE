@@ -31,7 +31,11 @@ Achievo versions older than 0.7.2, you have to rename this column. You can do
 this with your favorite sql tool. Just execute the following SQL statement 
 (make sure you have the priviliges to do this):
 
+for mysql:      
 ALTER TABLE hours CHANGE date activitydate DATE NOT NULL
+
+for postgresql: 
+ALTER TABLE "hours" RENAME "date" TO "activitydate"
 
 Upgrading from version 0.6.x -> 0.7
 -----------------------------------

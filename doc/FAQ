@@ -30,14 +30,7 @@ the terms might be different.
  1.4. How can I change the administrator password?
  
         The administrator password is set in the config.inc.php3 file, not in
-        the database. See also question 5.
-      
- 1.5. How do I logout?
- 
-        We use http authentication for logging in. Your browser remembers your 
-        logins and logs in for you each time you open Achievo. You have to 
-        close your browser to effectively logout. We will fix this in a future 
-        version.
+        the database. See also question 5.     
         
   
 2. User preferences
