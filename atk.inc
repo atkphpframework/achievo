@@ -17,5 +17,11 @@
                                                                    // now, because achievoModule needs it.
   include_once($config_atkroot."modules/class.achievomodule.inc"); 
   include_once($config_atkroot."atk/class.atknode.inc"); 
+  
+  // Some global achievo definitions we use in nodes.
+  
+  // Uniform textbox sizes
+  define("TEXT_SMALL", 3);
+  define("TEXT_LARGE", 10);  
    
 ?>
