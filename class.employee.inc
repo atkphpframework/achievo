@@ -26,11 +26,7 @@ class employee extends atkNode
     $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
 
     $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
-    if (atkconfig("authentication")=="db")
-    {
-      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH));
-      $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
-    }
+
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
     // you can't be your own supervisor neither can a nonactive employee be a superviros
  
@@ -50,6 +46,12 @@ class employee extends atkNode
       $this->addFilter("status","active");        
     }
     $this->addAttribute(new atkOneToManyRelation("contract","usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
+    
+    if (atkconfig("authentication")=="db")
+    {
+      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH));
+      $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
+    }
     
     $this->setTable("employee","employee");
     $this->setOrder("name");
