@@ -37,6 +37,7 @@
   }
     
   $weekcheck = atkconfig("timereg_checkweeks");
+  if ($weekcheck=="") $weekcheck=1;
   for ($weekloop=1;$weekloop<=$weekcheck;$weekloop++)
   {
     // generate a date in the correct week (doesn't matter which, so day-7 should
