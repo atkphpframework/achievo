@@ -192,7 +192,7 @@ class hours extends atkNode
       { 
         // If current is not today we can also move forward
         $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$tomorrow, text("houradmin_nextday"));
-        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$today, text("houradmin_today"));
+        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$today, text("today", "houradmin"));
       }
       $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$this->m_viewdate.'&weekview=1', text("houradmin_gotoweekview"));
       $res.='</td><td align="right" valign="top">';
