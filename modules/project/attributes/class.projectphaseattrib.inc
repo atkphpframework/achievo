@@ -1,5 +1,7 @@
 <?php
 
+define("AF_JS_UPDATEACTIVITY", AF_SPECIFIC_1);
+
 class atkProjectPhaseAttribute extends atkAttribute
 {
   /**
@@ -61,12 +63,20 @@ class atkProjectPhaseAttribute extends atkAttribute
     }    
     
     // Load Activities for each project
-    for ($i=0;$i<count($phases);$i++)
+    for ($i=0, $_i=count($phases);$i<$_i;$i++)
     {
-      $phasearray[$phases[$i]["id"]] = $this->getActivities($phases[$i]["id"]);
+      $phaseid_arr[] = $phases[$i]["id"];      
+    }
+    if (count($phaseid_arr)>0)
+    {
+      $activities = $this->getActivities($phaseid_arr);
+      for ($i=0, $_i=count($activities);$i<$_i;$i++)
+      {
+        $phasearray[$activities[$i]["phaseid"]][] = $activities[$i];
+      }
     }
 
-    if($atkaction=="hoursurvey")
+    if(!$this->hasFlag(AF_JS_UPDATEACTIVITY))
     {
       $result.= '<select name="phaseid">';   
     } 
@@ -92,20 +102,20 @@ class atkProjectPhaseAttribute extends atkAttribute
     $saveform = true; // keep form in session..
     if ($atkaction=="edit")
     {
-      $targeturl_houradmin = dispatch_url("hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]", "atklevel"=>$atklevel));      
+      $targeturl_houradmin = dispatch_url("timereg.hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]", "atklevel"=>$atklevel));      
     }
-    elseif($atkaction=="hoursurvey")
+    elseif($atkaction=="report")
     {
-      $targeturl_houradmin = dispatch_url("hours", "hoursurvey", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
+      $targeturl_houradmin = dispatch_url("reports.hoursurvey", "report", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
       $saveform = false; // hoursurvey doesn't support session save..
     }
     else
     {
-      $targeturl_houradmin = dispatch_url("hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
+      $targeturl_houradmin = dispatch_url("timereg.hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
     }
     
-    $targeturl_phase = dispatch_url("phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => atkurlencode($targeturl_houradmin)));
-    $result .= href(dispatch_url("project", "select", array("atktarget" => atkurlencode($targeturl_phase))), text("houradmin_searchallprojectsphases"), SESSION_NESTED,$saveform);
+    $targeturl_phase = dispatch_url("project.phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => atkurlencode($targeturl_houradmin)));
+    $result .= href(dispatch_url("project.project", "select", array("atktarget" => atkurlencode($targeturl_phase))), text("houradmin_searchallprojectsphases"), SESSION_NESTED,$saveform);
 
     // dirty trick: the dummy attribute which starts the javascript for the 
     // correct activities must be notified of the currentphase.
@@ -204,12 +214,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $phase;
   }
   
-  function getActivities($phaseid) 
+  function getActivities($phaseid_arr) 
   {
     global $g_db;
     
-    $query = "SELECT id, name, description, remarkrequired, billable FROM activity, phase_activity ";
-    $query.= "WHERE phase_activity.phaseid = $phaseid AND activity.id = phase_activity.activityid ";
+    $query = "SELECT phase_activity.phaseid, id, name, description, remarkrequired, billable FROM activity, phase_activity ";
+    $query.= "WHERE phase_activity.phaseid IN (".implode(",",$phaseid_arr).") AND activity.id = phase_activity.activityid ";
     $query.= "ORDER BY name";
   
     return $g_db->getrows($query);

@@ -4,7 +4,7 @@
   {
     function getNodes()
     {
-      registerNode("timereg.hours", array("admin","add","edit","delete","lock","unlock","hoursurvey","view_all")); // niet
+      registerNode("timereg.hours", array("admin","add","edit","delete","lock","unlock")); // niet
       registerNode("timereg.hours_lock", array("admin","add","delete")); // niet
     }
     

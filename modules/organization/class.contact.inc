@@ -11,7 +11,7 @@ class contact extends atkNode
     $this->atkNode("contact", NF_ADD_LINK); 
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("company","organization.customer",AF_HIDE_LIST));
+    $this->add(new atkManyToOneRelation("company","organization.customer",AF_HIDE_LIST|AF_RELATION_AUTOLINK));
     $this->add(new atkAttribute("lastname",AF_SEARCHABLE));
     $this->add(new atkAttribute("firstname",AF_SEARCHABLE));
     $this->add(new atkAttribute("address",AF_HIDE_LIST));

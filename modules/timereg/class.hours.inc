@@ -16,105 +16,69 @@ function date_format($datestamp)
 class hours extends atkNode
 {
   var $m_lock = "";
+  var $m_viewdate = "";
+  var $m_weekview = "";
 
   function hours()
   {
-    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate,$g_sessionData;
+    global $g_sessionManager;
 
     // weekview and viewdate are variables that we need to remember..
-    $weekview = $g_sessionManager->stackVar("weekview");
-    $viewdate = $g_sessionManager->stackVar("viewdate");
-    if ($viewdate=="") $viewdate = strftime("%Y-%m-%d");
+    $this->m_weekview = $g_sessionManager->stackVar("weekview");
+    $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
+    if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
 
-    // hoursurvey has extra sticky vars..
-    if ($atkaction=="hoursurvey")
-    {
-      // TODO: this doesn't work any more with the new session management code.
-      // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));
-    }
-
-    $flags=NF_NO_VIEW;
-    if ($atkaction!='hoursurvey')
-    {
-      $this->m_lock = $this->getLockType(strtolower($g_user["name"]),$viewdate);
-
-      if ($this->m_lock != "")
-      {
-        // This week is locked..
-        $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
-      }
-    }
+    $flags=NF_NO_VIEW;    
 
     $this->atkNode("hours",$flags|NF_MRA); // node() constructor is *not* called automatically!
 
     // default view if none is set
-    if (!isset($weekview)||$weekview=="")
+    if (!isset($this->m_weekview)||$this->m_weekview=="")
     {
-      if (atkconfig("timereg_defaultview")=="week") $weekview=1;
-    }
-
-    if($atkaction!='hoursurvey')
-    {
-      $this->addFilter("userid",strtolower($g_user["name"]));
-    }
-    if($atkaction!='hoursurvey'&&$atkaction!='edit')
-    {
-      if ($weekview!=1)
-      {
-        $this->addFilter("activitydate",$viewdate);
-      }
+      if (atkconfig("timereg_defaultview")=="week") $this->m_weekview=1;
     }
 
     $this->add(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    
+    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|($this->m_weekview?0:AF_HIDE_LIST)));
 
-    if($atkaction=="hoursurvey"||$weekview==1)
-    {
-      $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-    }
-    else
-    {
-      $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_HIDE_LIST));
-    }
+    $this->add(new atkAttribute("userid",AF_HIDE));
 
-    if ($atkaction=="hoursurvey")
-    {
-      $this->add(new atkAttribute("userid"));
-    }
-    else
-    {
-      $this->add(new atkAttribute("userid",AF_HIDE));
-    }
-
-    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY));
+    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
     $this->add(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));
     $this->add(new atkAttribute("remark"));
     $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
     $this->add(new atkDateAttribute("entrydate",AF_HIDE));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
-    if($atkaction=="hoursurvey")
-    {
-      $this->setOrder("id");
-    }
-    else
-    {
-      if($atkorderby!="") $this->setOrder($atkorderby);
-    }
+    $this->setOrder("id"); // Sort by order of input..    
 
     $this->setTable("hours","hours");
 
   }
+  
+  function setLock()
+  {
+    global $g_user;
+    $this->m_lock = $this->getLockType(strtolower($g_user["name"]),$this->m_viewdate);
+
+    if ($this->m_lock != "")
+    {
+      // This week is locked..
+      $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
+    }
+  }
 
   function initial_values()
   {
-     global $g_user, $viewdate, $g_sessionData;
+     global $g_user;
      $initial_date = Array();
 
-     if ($viewdate!="")
+     if ($this->m_viewdate!="")
      {
-       $initial_date = Array("year"=>substr($viewdate,0,4),
-                             "month"=>substr($viewdate,5,2),
-                             "day"=>substr($viewdate,8,2));
+       $initial_date = Array("year"=>substr($this->m_viewdate,0,4),
+                             "month"=>substr($this->m_viewdate,5,2),
+                             "day"=>substr($this->m_viewdate,8,2));
      }
      else
      {
@@ -135,14 +99,17 @@ class hours extends atkNode
     return $rec["phaseid"]["activityname"];
   }
 
-  function action_hoursurvey()
+  function action_edit()
   {
-    include 'hoursurvey.inc';
+    global $g_user;
+    $this->setLock();
+    $this->addFilter("userid",strtolower($g_user["name"]));
+    return parent::action_edit();
   }
 
   function javascript_edit($rec)
   {
-    global $currentphase, $currentactivity, $weekview, $viewdate;
+    global $currentphase, $currentactivity;
 
     if (!isset($currentphase)||$currentphase=="") $currentphase=0;
     if (!isset($currentactivity)||$currentactivity=="") $currentactivity =0;
@@ -153,12 +120,17 @@ class hours extends atkNode
 
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin()
-  {
-    global $weekview;
+  {    
+    global $g_user;
+    
+    $this->setLock();
+    
+    $this->addFilter("userid",strtolower($g_user["name"]));
 
-    if ($weekview!=1)
+    if ($this->m_weekview!=1)
     {
       if ($this->m_lock=="") $this->addPage();
+      $this->addFilter("activitydate",$this->m_viewdate);
       $this->adminPage();
     }
     else
@@ -169,11 +141,10 @@ class hours extends atkNode
   }
 
   function adminHeader()
-  {
-    global $weekview, $viewdate;
-    if ($weekview!=1)
+  {    
+    if ($this->m_weekview!=1)
     {
-      $viewdatestamp = mktime(0,0,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
+      $viewdatestamp = mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
 
       // we substract 3601 seconds to account for Daylight Savings Time
       $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
@@ -183,24 +154,24 @@ class hours extends atkNode
 
       $res = href('dispatch.php?viewdate='.$yesterday, text("houradmin_previousday"));
       $res.='&nbsp;&nbsp;<b>'.date_format($viewdatestamp).'</b>';
-      if ($viewdate<date('Y-m-d')) // If current is not today we can also move forward
+      if ($this->m_viewdate<date('Y-m-d')) // If current is not today we can also move forward
         $res.='&nbsp;&nbsp;'.href('dispatch.php?viewdate='.$tomorrow, text("houradmin_nextday"));
-      $res.= '<br><br>'.href('dispatch.php?viewdate='.$viewdate.'&weekview=1', text("houradmin_gotoweekview"));
+      $res.= '<br><br>'.href('dispatch.php?viewdate='.$this->m_viewdate.'&weekview=1', text("houradmin_gotoweekview"));
     }
     return $res;
   }
 
   function weekview()
   {
-    global $g_layout, $viewdate, $g_user;
+    global $g_layout, $g_user;
 
-    if ($viewdate!="")
+    if ($this->m_viewdate!="")
     {
-      $viewtime = mktime(12,12,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
+      $viewtime = mktime(12,12,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
     }
     else
     {
-      $viewdate = date("Y-m-d");
+      $this->m_viewdate = date("Y-m-d");
       $viewtime = time();
     }
 
@@ -220,13 +191,13 @@ class hours extends atkNode
     $projtotals = Array();
     $daytotals = Array();
 
-    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);
-
+    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);        
+        
     for ($i=0;$i<count($data);$i++)
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];      
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
       $week[$key][$date] += $time;
       $projtotals[$key] += $time;
@@ -245,13 +216,13 @@ class hours extends atkNode
 
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
-      $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$viewdate,'<b>'.text("unlock").'</b>');
+      $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("unlock").'</b>');
     }
     // users may only lock weeks that are not already locked. they must have the proper permission
     // and, if configured, they may only lock a week once they have booked all their hours.
-    else if ($this->m_lock=="" && $this->allowed("lock") && (atkconfig("timereg_incompleteweeklock") || $this->weekComplete($userid, $viewdate)))
+    else if ($this->m_lock=="" && $this->allowed("lock") && (atkconfig("timereg_incompleteweeklock") || $this->weekComplete($userid, $this->m_viewdate)))
     {
-      $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$viewdate,'<b>'.text("lock").'</b>');
+      $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("lock").'</b>');
     }
 
     $prevnextlinks.='<br><br>';
@@ -277,7 +248,7 @@ class hours extends atkNode
     $g_layout->td_datatitle(text('total'));
 
     $g_layout->output($g_layout->tr_bottom());
-
+        
     while (list($proj, $times)=each($week))
     {
       $g_layout->output($g_layout->tr_top());
@@ -319,7 +290,7 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
 
   function postUpdate($rec)
@@ -328,7 +299,7 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
 
   // Check if this week may be booked..
