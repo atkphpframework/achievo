@@ -29,7 +29,7 @@
     var $owner;
     var $emptyColor   = "#FFFFFF";
     var $fancy        = 1;
-    var $fancyBegin   = "<TABLE height='100%' width='100%' border='0' cellPadding='2'><TBODY><TR><TD height='100%' bgColor='#000000'><TABLE width='100%' height='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY><TR height='100%'>";
+    var $fancyBegin   = "<TABLE height='100%' width='100%' border='0' cellPadding='2'><TBODY><TR height='100%'><TD height='100%' bgColor='#000000'><TABLE width='100%' height='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY><TR height='100%'>";
     var $fancyEnd     = "</TR></TBODY></TABLE></TD></TR></TBODY></TABLE>"; 
     var $showGlobal;
     var $busyBgColor  = "#D0D0D0";
@@ -45,9 +45,20 @@
    */
     function dayView($day=0, $month=0, $year=0)
     {
+     global $HTTP_USER_AGENT;
+
      $this->year     = ($year  == 0) ? date("Y") : $year;
      $this->month    = ($month == 0) ? date("m") : $month;
      $this->day      = ($day   == 0) ? date("d") : $day;    
+
+     // TEMPORARY FIX FOR NETSCAPE
+     // Netscape seems to have a problem
+     // with filling a table to a certain height
+     // If this is a Netscape browser, force none-fancy layout
+     if (!eregi("msie", $HTTP_USER_AGENT))
+     {
+      $this->fancy = 0;
+     }
     }
 
   /**
@@ -95,10 +106,6 @@
     {
      global $g_db;
 
-     // $showGlobal = "all"               -> all public items for all users
-     // $showGlobal = $owner              -> all items (public/personal items) for current user
-     // $showGlobal != "all" && != $owner -> all public items for specified user + all none-public items as grey 'busy' boxes
-
      $date = $this->year."-".$this->month."-".$this->day;
      $q    = "SELECT * FROM schedule WHERE item_begin_date <='$date' AND item_end_date >= '$date' ";
 
@@ -112,6 +119,19 @@
      }
 
      $q .= " ORDER BY item_begin_time";
+     return $g_db->getRows($q);
+    }
+
+
+  /**
+   * getAttendees()
+   * get all attendees for a specified item
+   */
+    function getAttendees($id)
+    {
+     global $g_db;
+
+     $q = "SELECT user_id FROM schedule_attendees WHERE schedule_id=$id ORDER BY user_id"; 
      return $g_db->getRows($q);
     }
 
@@ -344,9 +364,9 @@
       {
        for ($j=0;$j<=$cols-1;$j++)
        {
-        $item    = $items[$j];
-        $timeLap = $this->matrixInfo[$time][$j]["duration"];
-        $info    = $this->matrixInfo[$time][$j]["info"];
+        $item      = $items[$j];
+        $timeLap   = $this->matrixInfo[$time][$j]["duration"];
+        $info      = $this->matrixInfo[$time][$j]["info"];
  
         if (trim($item) != "")
         { 
@@ -362,7 +382,7 @@
            $rowspan = "rowspan='$timeLap'";
           }
 
-          if ($info["item_global"] == 0 && $info["item_owner"] != $this->owner)
+          if ($info["item_public"] == 0 && $info["item_owner"] != $this->owner)
           {
            $title   = $this->busyTitle;
            $bgcolor = $this->busyBgColor;
@@ -376,33 +396,47 @@
            $fgcolor = $colors[$info["item_type"]]["fore"];
            $descr   = $info["item_description"];
           }
+
+          // if viewing public items for all users
+          // it might be handy to see the item's owner
+          $dspOwner = " (".$info["item_owner"].")";
+
+          // generate header (contains title, info and link to edit/view item)
+          $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
+          $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title.$dspOwner."</b></font></td>\n";
+          $header .= "<td valign='top' align='right'>";
  
-          if ($this->fancy != "1")
+          if ($info["item_owner"] == $this->owner)
           {
-           $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' bgcolor='".$bgcolor."'><font color='$fgcolor'><center>".$title."</center></font></td>\n";
+           $url     = "javascript:open_appointment(".$info["item_id"].", 1, 600, 450, 'no','no',0,0)"; 
+           $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("Edit")."</font></a>&nbsp;";
           }
           else
           {
-           $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
-           $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title."</b></font></td>\n";
-           $header .= "<td valign='top' align='right'>";
-           $header .= "<img src='images/owner.gif' border='0' alt='Owner: ".$info["item_owner"]."'>&nbsp;";
-           $header .= "<img src='images/attendees.gif' border='0' alt='Attendees: Jeroen Stephan'>&nbsp;";
+           if ($info["item_public"] == 1)
+           {
+            $url     = "javascript:open_appointment(".$info["item_id"].", 0, 600, 250, 'no','no',0,0)"; 
+            $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
+           }
+          } 
+
+          $header .= "</td>\n";
+          $header .= "</tr></table>\n";  
  
-           if ($info["item_owner"] == $this->owner)
-           {
-            $url     = "javascript:open_appointment(".$info["item_id"].", 1, 600, 450, 'no','no',0,0)"; 
-            $header .= "<a href=\"$url\"><img src='images/edit.gif' border='0' alt='Edit appointment'>&nbsp;";
-           }
-           else
-           {
-            $url     = "javascript:open_appointment(".$info["item_id"].", 0, 600, 450, 'no','no',0,0)"; 
-            $header .= "<a href=\"$url\"><img src='images/info.gif' border='0' alt='View appointment'>&nbsp;";
-           }
+          if ($this->fancy != "1")
+          {
+           $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' bgcolor='".$bgcolor."'>";
+           $buff .= $header;
 
-           $header .= "</td>\n";
-           $header .= "</tr></table>\n";  
-
+           if ($timeLap > 1)
+           {
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>";
+           }
+ 
+           $buff .= "</td>";
+          }
+          else
+          {
            $buff .= "<td height='100%' $rowspan valign='top' width='$cWidth'>";
            $buff .= $this->fancyBegin;
            $buff .= "<td height='100%' bgcolor='$bgcolor' valign='top' align='left'>";

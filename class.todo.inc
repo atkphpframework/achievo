@@ -37,7 +37,7 @@ class todo extends atkNode
                                     "day"=>date("d")));
   }
 
-  // overide display of priority (set colors)
+  // overide display of priority (set high to a red font)
   function priority_display($rec)
   {
    if ($rec["priority"] == 1)
@@ -49,7 +49,6 @@ class todo extends atkNode
     return $this->prioName[$rec["priority"]-1];
    }
   }
-
 
   function descriptor_def()
   {

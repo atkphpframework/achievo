@@ -1,6 +1,6 @@
 <?php
   /* menu items */
-      
+
   menuitem("hours_admin",  dispatch_url("hours", "admin"));
   
   menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"));
