@@ -14,7 +14,7 @@
   
   $table.= '<tr>';
   
-  $table.= $g_layout->ret_td("&nbsp;", 'width="25%" height="40"');
+  $table.= $g_layout->ret_td("&nbsp;", 'width="20%" height="40"');
   
   $centerpiece = $txt_logout_loggedinuser.': &nbsp;<b>'.$g_user["name"].'</b>&nbsp; &nbsp; &nbsp;';  
   $centerpiece.= href(dispatch_url("pim", "pim"), text('pim'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
@@ -26,11 +26,11 @@
   
   $centerpiece.= '<a href="index.php?atklogout=1" target="_top">'.text('logout').'</a>';
   
-  $table.= $g_layout->ret_td($centerpiece, 'width="50%" align="center"');
+  $table.= $g_layout->ret_td($centerpiece, 'width="55%" align="center"');
   
   $searchpiece = '<form action="search.php" target="main">';
   $searchpiece.= session_form(SESSION_NEW);
-  $searchpiece.= '<input name="searchstring" type="text" size="20">&nbsp;<input type="submit" value="'.text("search").'">';
+  $searchpiece.= '<input name="searchstring" type="text" size="18">&nbsp;<input type="submit" value="'.text("search").'">';
   $searchpiece.= '</form>';
   
   $table.= $g_layout->ret_td($searchpiece, 'width="25%" align="right"');    
