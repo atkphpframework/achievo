@@ -19,10 +19,10 @@
   $table.= $g_layout->ret_td("&nbsp;", 'width="20%" height="40"');
 
   $centerpiece = $txt_logout_loggedinuser.': &nbsp;<b>'.$g_user["name"].'</b>&nbsp; &nbsp; &nbsp;';
-  $centerpiece.= href(dispatch_url("pim.pim", "pim"), text('pim'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
 
   if ($g_user["name"]!="administrator")
   {
+    $centerpiece.= href(dispatch_url("pim.pim", "pim"), text('pim'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
     $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"');
   }
   else
