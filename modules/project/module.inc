@@ -20,13 +20,12 @@
       $selectedproject = $_REQUEST["selectedproject"];
       if ($selectedproject == 0)
       {
-        menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
-        $target_stats = "dispatch.php?atknodetype=project.project&atkaction=stats&selectedprojectid=[id]";
+        menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu        
         $target_planning = "dispatch.php?atknodetype=project.project&atkaction=planning&selectedprojectid=[id]";
         menuitem("project_admin", dispatch_url("project.project", "admin"), "projectmanagement", array("project.project", "admin"));
         menuitem("project_planning",  dispatch_url("project.project", "select", array("atktarget" => atkurlencode($target_planning))), "projectmanagement", array("project.project", "planning"));
         menuitem("-","","projectmanagement");
-        menuitem("project_stats", dispatch_url("project.project", "select", array("atktarget" => atkurlencode($target_stats))), "projectmanagement", array("project.project", "stats"));
+        menuitem("project_stats", dispatch_url("project.projectstats", "stats"), "projectmanagement", array("project.project", "stats"));
         menuitem("activity_stats", dispatch_url("project.activity", "stats"), "projectmanagement", array("project.activity", "stats"));
       }
       else

@@ -46,7 +46,7 @@ class todo extends atkNode
     $duedate = array("year"=>$nextweek['year'],
                   "month"=>$nextweek['mon'],
                   "day"=>$nextweek['mday']);
-    return array("owner"=>$g_user["id"],
+    return array("owner"=>array("id"=>$g_user["id"]),
                  "entrydate"=>$entrydate,
                  "duedate"=>$duedate,
                  "updated"=>$date,
