@@ -10,10 +10,13 @@ Changes in Achievo 0.9.3
 + Newly added employee contracts now have default values depending on 
   the previous contract of that employee. [Ivo]
 * Fixed bug: In new employee contracts, sunday was always selected. [Ivo]
-* Fixed  bugs where wrong userid field was used. (bug #113) [Jean-Charles]
+* Fixed bugs where wrong userid foreign key was used. (bug #113) 
+  [Jean-Charles, Ivo]
 * Setup.php now correctly checks PHP 4.1.0 requirement. (bug #112) [Kevin]
 * Setup.php now correctly detects Achievo 0.9 database. (bug #118) [Jonas]
 * Fixed bugs in 0.9.1 conversion script. (bug #117) [Ivo]
+* Fixed sql error in activitystats when no activity was selected. (bug #116)
+  [Jean-Charles]
 - Removed the redundant 'organization archive' feature. (bug #114) [Ivo]
 
 Changes in Achievo 0.9.2
