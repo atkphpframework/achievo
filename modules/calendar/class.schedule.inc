@@ -24,8 +24,10 @@
   useattrib("atkboolattribute");
   useattrib("atktimeattribute");
   useattrib("atklistattribute");
+  useattrib("atkdummyattribute");
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
+  useattrib("utils.fuzzysearchattribute");
 
   class schedule extends atkNode
   {
@@ -71,6 +73,11 @@
       $this->add(new atkBoolAttribute("all_users", AF_HIDE_ADD));
       $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));      
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
+      
+      $this->add(new atkDummyAttribute("hint", text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
+      $this->add(new fuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees"));
+      $this->add(new fuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees"));
+      
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD, 15));
 
@@ -417,6 +424,19 @@
       // insert the owner as first attendee.
       global $g_db;      
       $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
+    }
+    
+    function storeAttendees($rec, $recs)
+    {      
+      global $g_db;
+      foreach ($recs as $keyword=>$attendees)
+      {
+        // Add the first found match as attendee.
+        if (count($attendees))
+        {
+          $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ('".$rec["id"]."', '".$attendees[0]["id"]."')");
+        }
+      }
     }
   }
 
