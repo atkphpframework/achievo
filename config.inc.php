@@ -43,7 +43,17 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile="english.lng";
+  $config_languagefile=$config_lang.".lng";
+  $config_lang = "nl";
+  
+  // Menu configuration. You can have a menu at "top", "left", "right" or 
+  // "bottom". If you use a horizontal menu (top or bottom, you may want
+  // to change the menu_delimiter to " " (menu_delimiter is what atk
+  // puts between menu items).
+  $config_menu_pos = "left"; 
+  $config_menu_delimiter = "<br>";
+  $config_menu_layout = "plain";
+  $config_menu_align = "center";
 
 
   // -------------------------------------------

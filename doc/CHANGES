@@ -9,6 +9,7 @@ Changes in Achievo 1.1.0
 * Upgraded to ATK5 backend. [Ivo]
 + Added installation support for PostgreSQL. [Peter]
 + Now possible to make the 'contact' field obligatory by changing a var in config.inc.php [Harrie]
+* Improved themability [Boy]
 
 Changes in Achievo 1.0.3
 ------------------------

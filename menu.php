@@ -1,157 +1,50 @@
 <?php
-/**
- * Builds the Achievo menu, please note that this file is a slightly modified
- * version of the menu.php file in the ATK skel directory. This version
- * contains an extra line that includes the theme.inc file!
- */
+  /**
+   * This file is part of the Achievo ATK distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be 
+   * included in the distribution.
+   *
+   * This file is the skeleton menu loader, which you can copy to your
+   * application dir and modify if necessary. By default, it checks
+   * the menu settings and loads the proper menu.
+   *
+   * @package atk
+   * @subpackage skel
+   *
+   * @author Ivo Jansch <ivo@achievo.org>
+   * @author Peter C. Verhage <peter@ibuildings.nl>
+   *
+   * @copyright (c)2000-2004 Ibuildings.nl BV
+   * @license http://www.achievo.org/atk/licensing ATK Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
 
-  include_once("atk.inc");  
+  /**
+   * @internal includes
+   */
+  $config_atkroot = "./";
+  include_once("atk.inc");    
 
-  atksession("atkmenu", false); // menu doesn't need a stack.
+  atksession();
   atksecure();
-
-  include_once("./theme.inc");
-  include_once($config_atkroot."atk/atkmenutools.inc");
-  include_once("achievotools.inc");
-
-  /* get main menuitems */
-  include_once($config_atkroot."config.menu.inc");
-
-  /* first add module menuitems */
-  foreach ($g_modules as $modname => $modpath)
-  {
-    $mod = getModule($modname);
-    if (method_exists($mod,"getMenuItems")) $mod->getMenuItems();
-  }
-
-  $atkmenutop = $_GET["atkmenutop"];
-
-  if (!isset($atkmenutop)||$atkmenutop=="") $atkmenutop = "main";
-
-  $g_layout->initGUI();
-  $g_layout->register_script("javascript/menuload.js");
-
-  /* output html */
-  $g_layout->output("<html>");
-  $g_layout->head(text("app_title","","core"));
+  
+  $output = &atkOutput::getInstance();
+  $page = &atknew("atk.ui.atkpage");
+  $theme = &atkTheme::getInstance();  
+  $ui = &atknew("atk.ui.atkui");
 
 
-  $g_layout->body();
-  $g_layout->output("<div align='center'>");
-  $g_layout->ui_top(text("menu_".$atkmenutop,"","core"));
-  $g_layout->output("<br>");
+  /* general menu stuff */
+  include_once($config_atkroot."atk/menu/general.inc");  
 
-  /* build menu */
-  $menu = "";
+  /* load menu layout */
+  atkimport("atk.menu.atkmenu");
+  $menu = &atkMenu::getMenu();
+  
+  if (is_object($menu)) $menu->render();
+  else error("no menu object created!");;
 
-  function menu_cmp($a,$b)
-  {
-    if ($a["order"] == $b["order"]) return 0;
-    return ($a["order"] < $b["order"]) ? -1 : 1;
-  }
-
-  usort($g_menu[$atkmenutop],"menu_cmp");
-
-/*
-  $g_layout->output('<script language="JavaScript">
-
-    function reloadProjects(el)
-    {
-      var id = el.options[el.selectedIndex].value;
-      window.location= "menu.php?atkmenutop=projectmanagement&selectedproject="+id;
-    }
-    </script>');
-*/
-
-  /* Drop down in projectmanagement */
-
-  if ($atkmenutop == "projectmanagement")
-  {
-    $projects = $g_sessionManager->getValue("selectedprj","globals");  
-    
-    if (count($projects) == 0)
-    {
-      updateSelectedProjects();
-      $projects = $g_sessionManager->getValue("selectedprj","globals");
-    }        
-    
-    $prj .= text("project_select","","core").":";
-    $prj .="<FORM><SELECT name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
-    $prj .= "<OPTION value=\"0\">".text("project_select_none","","core")."</OPTION>";
-
-    for ($i=0;$i < count($projects); $i++)
-    {
-      $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
-      if ($_REQUEST["selectedproject"] == $projects[$i]['projectid']) $prj .=" selected";
-      $prj .= ">".$projects[$i]['projectname']."</OPTION>";
-    }
-    $prj .="</SELECT></FORM>";
-    $g_layout->output($prj);
-
-  }
-
-  for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++)
-  {
-    $name = $g_menu[$atkmenutop][$i]["name"];
-    $url = $g_menu[$atkmenutop][$i]["url"];
-    //if ($select != "") $url .= "&atkselectedprojectid=".$select;
-    //if ($select != "") $url .= rawurlencode("'".$select."'");
-    //if ($select != "") $url .= atkUrlEncode("'".$select."'");
-
-    $enable = $g_menu[$atkmenutop][$i]["enable"];
-
-    if (is_array($enable))
-    {
-      $enabled = false;
-      for ($j=0;$j<(count($enable)/2);$j++)
-      {
-        $enabled |= is_allowed($enable[(2*$j)],$enable[(2*$j)+1]);
-      }
-      $enable = $enabled;
-    }
-
-    /* delimiter ? */
-
-    if ($g_menu[$atkmenutop][$i]["name"] == "-") $menu .= "<br>";
-
-    else if ($enable) // don't show menu items we don't have access to.
-    {
-
-      $hassub = (is_array($g_menu[$g_menu[$atkmenutop][$i]["name"]]));
-
-      /* submenu ? */
-      if ($hassub)
-      {
-        if (empty($url)) // normal submenu
-        {
-          $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name","","core")).$config_menu_delimiter;
-        }
-        else // submenu AND a default url.
-        {
-          $menuurl = session_url('menu.php?atkmenutop='.$name);
-          $mainurl = session_url($url,SESSION_NEW);
-          $menu.= '<a href="javascript:menuload(\''.$menuurl.'\', \''.$mainurl.'\');">'.text("menu_$name","","core").'</a>'.$config_menu_delimiter;
-        }
-      }
-      else // normal menuitem
-      {
-        $menu .= href($url,text("menu_$name","","core"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
-      }
-    }
-  }
-
-  /* previous */
-  if ($atkmenutop != "main")
-  {
-    $parent = $g_menu_parent[$atkmenutop];
-    $menu .= $config_menu_delimiter;
-    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to","","core").' '.text("menu_$parent","","core")).'<br>';
-  }
-
-  /* bottom */
-  $g_layout->output($menu);
-  $g_layout->output("<br><br>");
-  $g_layout->ui_bottom();
-  $g_layout->output("</div></html>");
-  $g_layout->outputFlush();
 ?>

@@ -1,24 +1,48 @@
 <?php
-  include_once("atk.inc");
+
+  /**
+   * This file is part of the Achievo ATK distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be 
+   * included in the distribution.
+   *
+   * This file is the skeleton top frame file, which you can copy
+   * to your application dir and modify if necessary. By default,
+   * it displays the currently logged-in user and a logout link.
+   *
+   * @package atk
+   * @subpackage skel
+   *
+   * @author Ivo Jansch <ivo@achievo.org>
+   *
+   * @copyright (c)2000-2004 Ibuildings.nl BV
+   * @license http://www.achievo.org/atk/licensing ATK Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
+
+  /**
+   * @internal includes.
+   */
+  $config_atkroot = "./";
+  include_once("atk.inc"); 
+
   atksession();
-  atksecure();
-  include_once("./theme.inc");
-  include_once("./version.inc");
-
-  $g_layout->initGUI();
-  $g_layout->output('<html>');
-  $g_layout->head(text("app_title","","core"));
-  $g_layout->body();
-
-  $g_layout->ui_top(text("app_title","","core")." ".$achievo_version.($achievo_state!="stable"?" ($achievo_state)":""));
-
-  $table = $g_layout->ret_table_simple(0,true);
-
-  $table.= '<tr>';
-
-  $table.= $g_layout->ret_td("&nbsp;", 'width="20%" height="40"');
-
-  $centerpiece = text("logout_loggedinuser","","core").': &nbsp;<b>'.$g_user["name"].'</b>&nbsp; &nbsp; &nbsp;';
+  atksecure();   
+  
+  $page = &atknew("atk.ui.atkpage");  
+  $ui = &atknew("atk.ui.atkui");  
+  $theme = &atkTheme::getInstance();
+  $output = &atkOutput::getInstance();
+  
+  $page->register_style($theme->stylePath("style.css"));
+  $page->register_stylecode("form{display: inline;}");
+  $page->register_style($theme->stylePath("top.css"));
+  
+  //Backwards compatible $content, that is what will render when the box.tpl is used instead of a top.tpl
+  $loggedin = text("logged_in_as", "", "atk").": <b>".$g_user["name"]."</b>";  
+  $content = '<div style="display: inline;"><br>'.$loggedin.' &nbsp; <a href="app.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).' </a>&nbsp;';
 
   if ($g_user["name"]!="administrator")
   {
@@ -30,23 +54,25 @@
     // Administrator has a link to setup.php
     $centerpiece.= href("setup.php", text("setup","","core"), SESSION_NEW, false, 'target="_top"');
   }
-  $centerpiece.='&nbsp; &nbsp; &nbsp;';
-
-  $centerpiece.= '<a href="index.php?atklogout=1" target="_top">'.text('logout',"","core").'</a>';
-
-  $table.= $g_layout->ret_td($centerpiece, 'width="55%" align="center"');
-
+  $content.=$centerpiece;
+  
   $searchnode = getNode("search.search");
   $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
+  $content.="&nbsp;&nbsp;&nbsp; ".$searchpiece;
+  
+  $top = $ui->renderTop(array("content"=> $content,
+  							  "logintext" => atktext("logged_in_as"),
+                              "logouttext" => ucfirst(text("logout", "", "atk")),
+                              "logoutlink" => "",
+                              "logouttarget"=>"_top",
+                              "centerpiece"=>$centerpiece,
+                              "searchpiece"=>$searchpiece,
+                              "title" => atktext("app_title"),
+  							  "user"   => $g_user["name"]));
+ 
+  $page->addContent($top);
 
-  $table.= $g_layout->ret_td($searchpiece, 'width="25%" align="right"');
-
-  $table .= '</tr></table>';
-
-  $g_layout->output($table);
-  $g_layout->ui_bottom();
-  $g_layout->output('</body>');
-  $g_layout->output('</html>');
-
-  $g_layout->outputFlush();
+  $output->output($page->render(atktext('app_title'), true));
+  
+  $output->outputFlush();
 ?>
