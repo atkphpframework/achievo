@@ -283,7 +283,7 @@
         $months = array("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",  "nov", "dec");
         $shortyear = substr($label, 2, 2);
         $month = sprintf("%d", substr($label, 4, 2));
-        return text($months[$month])." '".$shortyear;
+        return text($months[$month-1])." '".$shortyear;
       }
       else
       {
