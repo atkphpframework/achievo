@@ -20,7 +20,7 @@
 
       $res.= '<b>'.text('pim_schedule').':</b><br><br>';
 
-      $schedulenode = getNode("schedule");
+      $schedulenode = getNode("calendar.schedule");
       $schedulenode->m_flags |= NF_NO_SEARCH;
       $recs = $schedulenode->selectDb("owner='$me' AND now()>=startdate AND now()<=enddate");
 
@@ -34,7 +34,7 @@
       {
         $todayschedule = text('pim_schedule_empty').'<br>';
       }
-      $todayschedule.='<br>'.href("dispatch.php?atknodetype=schedule&atkaction=admin",text('pim_gotoschedule'),SESSION_NESTED);
+      $todayschedule.='<br>'.href("dispatch.php?atknodetype=calendar.schedule&atkaction=admin",text('pim_gotoschedule'),SESSION_NESTED);
 
       $res.= $g_layout->ret_table_simple();
       $res.= '<tr>';
@@ -46,11 +46,11 @@
 
       $res.= '<br><br><b>'.text('pim_todos').':</b><br><br>';
 
-      $todonode = getNode("todo");
+      $todonode = getNode("todo.todo");
       $todonode->m_flags |= NF_NO_SEARCH;
       $todonode->addFilter("todo.status NOT IN (5,2)");
 
-      $actions["edit"] = "dispatch.php?atknodetype=todo&atkaction=edit&atkselector=[pk]";
+      $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
 
       $recs = $todonode->selectDb("assigned_to='$me'");
       $todo_assignedtome = text("pim_assignedtoyou").":<br>";
@@ -62,7 +62,7 @@
       {
         $todo_assignedtome.= text("pim_todo_empty")."<br>";
       }
-      $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.userid='$me'"),text('add'),SESSION_NESTED);
+      $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.userid='$me'"),text('add'),SESSION_NESTED);
 
       $todo_assignedbyme = text("pim_assignedbyyou").":<br>";
       $recs = $todonode->selectDb("owner='$me' AND assigned_to<>'$me'");
@@ -74,7 +74,7 @@
       {
         $todo_assignedbyme.= text("pim_todo_empty")."<br>";
       }
-      $todo_assignedbyme.= '<br>'.href("dispatch.php?atknodetype=todo&atkaction=add",text('add'),SESSION_NESTED);
+      $todo_assignedbyme.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add",text('add'),SESSION_NESTED);
 
       $res.= $g_layout->ret_table_simple();
       $res.= '<tr>';
@@ -116,7 +116,7 @@
       // TIME REGISTRATION
       $res.= '<br><br><b>'.text('pim_timeregistration').':</b><br><br>';
 
-      $hoursnode = getNode("hours");
+      $hoursnode = getNode("timereg.hours");
 
       $actions = array();
 
@@ -131,8 +131,8 @@
         $todayhours.= text('pim_timeregistration_empty').'<br>';
       }
 
-      $todayhours.= '<br>'.href("dispatch.php?atknodetype=hours&atkaction=add",text('add'),SESSION_NESTED);
-      $todayhours.= ' &nbsp; '.href("dispatch.php?atknodetype=hours&atkaction=admin",text('pim_gototimeregistration'),SESSION_NESTED);
+      $todayhours.= '<br>'.href("dispatch.php?atknodetype=timereg.hours&atkaction=add",text('add'),SESSION_NESTED);
+      $todayhours.= ' &nbsp; '.href("dispatch.php?atknodetype=timereg.hours&atkaction=admin",text('pim_gototimeregistration'),SESSION_NESTED);
 
       $res.= $g_layout->ret_table_simple();
       $res.= '<tr>';

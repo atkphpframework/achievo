@@ -19,5 +19,5 @@
   $config_auth_userdescriptor = "[name]";
   $config_authentication_md5 = true;
   $config_securityscheme = "group";
-  $config_debug = 0;
+  $config_debug = 2;
 ?>

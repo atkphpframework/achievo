@@ -270,7 +270,7 @@
    
   // employee table is not yet added to the query. Force that by adding a manytoonerel,
   // so we display a users name.
-  $this->add(new atkManyToOneRelation("userid", "employee"));
+  $this->add(new atkManyToOneRelation("userid", "employee.employee"));
   
   if ($nameswitch=="supervisor")
   {      

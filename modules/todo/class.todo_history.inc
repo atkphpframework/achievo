@@ -25,7 +25,7 @@
       $this->todo(); // call baseclass constructor, but with new name.            
       
       $this->m_flags|= NF_NO_ADD|NF_NO_EDIT|NF_NO_DELETE;
-      $this->add(new atkManyToOneRelation("todoid"    , "todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
+      $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
       
       // We disable the history attribute, for it will cause a recursive loop if history would have
       // a history.

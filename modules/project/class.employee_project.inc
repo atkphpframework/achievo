@@ -20,8 +20,8 @@
     {
       $this->atkNode("employee_project", NF_NO_EDIT);
 
-      $this->add(new atkManyToOneRelation("employeeid","employee",AF_PRIMARY|AF_RELATION_AUTOLINK));
-      $this->add(new atkManyToOneRelation("projectid","project",AF_PRIMARY));
+      $this->add(new atkManyToOneRelation("employeeid","employee.employee",AF_PRIMARY|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("projectid","project.project",AF_PRIMARY));
       $this->setTable("employee_project");
     }
   }

@@ -13,7 +13,7 @@ class usercontracts extends atkNode
     $this->atkNode("usercontracts"); // this is a support module who's called directly
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("userid","employee",AF_READONLY));
+    $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY));
     $this->add(new atkAttribute("uc_hours", AF_OBLIGATORY));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0, AF_OBLIGATORY));
     $this->add(new atkDateAttribute("enddate", "F d Y","d F Y",0,0, AF_OBLIGATORY));

@@ -32,10 +32,10 @@ class employee extends atkNode
 
     $this->add(new atkAttribute("email"  ,AF_HIDE_ADD));
 
-    $this->add(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+    $this->add(new atkManyToOneRelation("entity", "employee.profile",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
  
-    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
+    $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
 
     $preFilter->m_destinationFilter = "userid !='[userid]' AND status ='active'";
       
@@ -50,7 +50,7 @@ class employee extends atkNode
       $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE));
       $this->addFilter("status","active");        
     }
-    $this->addAttribute(new atkOneToManyRelation("contract","usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("contract","employee.usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
     
     if (atkconfig("authentication")=="db")
     {

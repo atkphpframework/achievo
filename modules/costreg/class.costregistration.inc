@@ -1,6 +1,6 @@
 <?php
 
-  include_once "class.projectattrib.inc";  
+  useattrib("project.projectattrib");
   useattrib("atkDateAttribute");
   useattrib("atkListAttribute");
   userelation("atkManyToOneRelation");

@@ -1,13 +1,13 @@
 <?php
 
-  include_once("class.dependencyattrib.inc");
-  include_once("class.projecttemplateattribute.inc");
-  include_once("achievotools.inc");
+  include_once("achievotools.inc");  
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
   useattrib("atktextattribute");
   useattrib("atkdateattribute");
   useattrib("atklistattribute");
+  useattrib("project.dependencyattrib");
+  useattrib("project.projecttemplateattribute");  
 
   class project extends atkNode
   {
@@ -26,7 +26,7 @@
       $preFilter->m_destinationFilter = "company='[customer.id]'";
       $this->add($preFilter);
 
-      $this->add(new atkManyToOneRelation("coordinator","employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $this->add(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD));
@@ -44,12 +44,12 @@
         $this->addFilter("project.status","active");
       }
 
-      $this->add(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+      $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
       // $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST|AF_CASCADE_DELETE));
       // $this->addAttribute(new atkOneToManyRelation("project_notes","project_notes","projectid", AF_HIDE|AF_CASCADE_DELETE));
 
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
-      $this->add(new projecttemplateAttribute("template","tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
+      $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
 
       $this->setTable("project","project");
       $this->setOrder("name");

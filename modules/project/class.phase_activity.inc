@@ -8,8 +8,8 @@ class phase_activity extends atkNode
   {
     $this->atkNode("phase_activity");
 
-    $this->add(new atkManyToOneRelation("activityid","activity",AF_PRIMARY));
-    $this->add(new atkManyToOneRelation("phaseid","phase",AF_PRIMARY));       
+    $this->add(new atkManyToOneRelation("activityid","project.activity",AF_PRIMARY));
+    $this->add(new atkManyToOneRelation("phaseid","project.phase",AF_PRIMARY));       
 
     $this->setTable("phase_activity");
     

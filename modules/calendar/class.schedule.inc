@@ -46,7 +46,7 @@
       $this->add(new atkTextAttribute("description"));
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE));        
       $this->add(new atkBoolAttribute("publicitem"));    
-      $this->add(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
 
       $view     = $g_sessionManager->stackVar("view");
       $viewdate = $g_sessionManager->stackVar("viewdate");

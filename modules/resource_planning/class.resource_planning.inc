@@ -41,11 +41,11 @@
 
       $this->add(new atkAttribute("id" ,AF_AUTOKEY));
 
-      $phase = new atkManytoOneRelation("phaseid","phase", AF_OBLIGATORY);
+      $phase = new atkManytoOneRelation("phaseid","project.phase", AF_OBLIGATORY);
       $phase->m_destinationFilter = $ATK_VARS["projectfilter"];
       $this->add($phase);
 
-      $employee = new atkManytoOneRelation("employeeid","employee", AF_OBLIGATORY);
+      $employee = new atkManytoOneRelation("employeeid","employee.employee", AF_OBLIGATORY);
       $employee->m_destinationFilter = $ATK_VARS["employeefilter"];
       $this->add($employee);
 

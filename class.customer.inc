@@ -23,7 +23,7 @@ class customer extends atkNode
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD)); 
     $this->addAttribute(new atkOneToManyRelation("contactperson","contact","company",AF_HIDE_LIST));
     $this->addAttribute(new atkOneToManyRelation("contracts","contracts","customer",AF_HIDE_LIST));    
-    $this->addAttribute(new atkOneToManyRelation("projects","project","customer",AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
     $this->setTable("customer", "customer");
     $this->setOrder("customer.name");
     $this->setIndex("name");

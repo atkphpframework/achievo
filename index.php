@@ -17,7 +17,7 @@
     $g_layout->output('
       <frameset cols="190,*" frameborder="0" border="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
-        <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=pim&atkaction=pim",SESSION_NEW).'" marginwidth="0" marginheight="0">
+        <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=pim.pim&atkaction=pim",SESSION_NEW).'" marginwidth="0" marginheight="0">
     ');
     $g_layout->output('</frameset>');
 

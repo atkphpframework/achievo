@@ -1,4 +1,13 @@
 <?php
+  module("employee");
+  module("project");
+  module("timereg");
+  module("costreg");
+  module("notes");
+  module("todo");
   module("finance");
+  module("reports");
+  module("calendar");
   module("resource_planning");
+  module("pim");
 ?>

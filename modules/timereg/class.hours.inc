@@ -1,8 +1,8 @@
 <?php
 
-include_once "class.projectphaseattrib.inc";
-include_once "class.projectattrib.inc";
 include_once "achievotools.inc";
+useattrib("project.projectphaseattrib");
+useattrib("project.projectattrib");
 useattrib("atkdateattribute");
 useattrib("atklistattribute");
 useattrib("atkdurationattribute");
@@ -448,7 +448,7 @@ class hours extends atkNode
    */
   function validate(&$record, $mode)
   {
-    $obj = getNode("activity");
+    $obj = getNode("project.activity");
     $act = $obj->selectDb("id=".$record["activityid"]);
     if (count($act)==1)
     {
