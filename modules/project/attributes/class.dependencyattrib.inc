@@ -188,6 +188,7 @@ class dependencyAttribute extends atkAttribute
       
       $g_db->query($query);
     }
+    return true;
   }
 
   function getSearchModes()

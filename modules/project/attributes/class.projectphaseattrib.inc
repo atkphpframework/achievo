@@ -2,14 +2,14 @@
 
 define("AF_JS_UPDATEACTIVITY", AF_SPECIFIC_1);
 
-class atkProjectPhaseAttribute extends atkAttribute
+class projectPhaseAttribute extends atkAttribute
 {
   /**
    * Constructor
    * @param $name Name of the attribute
    * @param $flags Flags for this attribute
    */
-  function atkProjectPhaseAttribute($name, $flags=0)
+  function projectPhaseAttribute($name, $flags=0)
   {
     /* base class constructor */
     $this->atkAttribute($name, $flags);

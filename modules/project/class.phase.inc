@@ -14,7 +14,7 @@ userelation("atkmanyboolrelation");
 class phaseManyBoolRelation extends atkManyBoolRelation 
 {
   function isEmpty($record)
-  {    
+  {        
     return (parent::isEmpty($record) && $record["template"]["id"]=="");
   }
 }
@@ -66,9 +66,10 @@ class phase extends atkNode
     // delete dependencies for this phase./
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
     $g_db->query($query);
+    return true;
   }  
 
-  function action_select()
+  function action_select(&$handler)
   {
     // In select mode, we place a filter, because we may only select active phases.
     $this->addFilter("status='active'");
@@ -78,7 +79,7 @@ class phase extends atkNode
     $this->m_attribList["status"]->m_flags|=AF_HIDE;
 
     // call parent method.
-    return parent::action_select();
+    return $handler->action_select();
   }
 }
 ?>

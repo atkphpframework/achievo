@@ -70,6 +70,7 @@ class projecttemplateAttribute extends atkManyToOneRelation
         }
       }
     }
+    return true;
   }
   
   function dbFieldType()
