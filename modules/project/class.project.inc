@@ -28,7 +28,8 @@
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.
-      if ($ATK_VARS["atknodetype"]=="project"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit","search")))
+      atk_var_dump($ATK_VARS, "atkvars");
+      if ($ATK_VARS["atknodetype"]=="project.project"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit","search", "view")))
       {
         $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE_ADD|AF_SEARCHABLE, 15));
       }
