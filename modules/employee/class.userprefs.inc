@@ -32,7 +32,8 @@ class userprefs extends atkNode
   {
     $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE);
 
-    $this->add(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
+    $this->add(new atkAttribute("id", AF_PRIMARY|AF_HIDE));
+    $this->add(new atkAttribute("userid", AF_HIDE));
     if (atkconfig("authentication")=="db")
     {
       $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
@@ -40,7 +41,8 @@ class userprefs extends atkNode
     }
     $themes = getThemes();
     $this->addAttribute(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
-    $this->setTable("person");
+
+    $this->setTable("person", "person");
   }
 
   function descriptor_def()
