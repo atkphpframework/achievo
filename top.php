@@ -3,12 +3,13 @@
   atksession();
   atksecure();
   include_once("./theme.inc");
+  include_once("./version.inc");
 
   $g_layout->output('<html>');
   $g_layout->head($txt_app_title);
   $g_layout->body();
 
-  $g_layout->ui_top($txt_app_title);
+  $g_layout->ui_top($txt_app_title." ".$version);
 
   $table = $g_layout->ret_table_simple(0,true);
 
