@@ -27,6 +27,12 @@ class schedule_types extends atkNode
    return $buff;
   }
 
+  function descriptor_def()
+  {
+   return "[item_description]";
+  }
+
+
   function example_edit($record)
   {
     return text("example").":".$this->item_background_display($record);

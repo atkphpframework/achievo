@@ -4,29 +4,35 @@
   include_once "class.calendar.inc";
   include_once "class.base_dayview.inc";
   include_once "class.base_weekview.inc";
+  include_once "class.base_monthview.inc";
 
   class schedule extends atkNode
   {
    function schedule()
    {
-    global $g_sessionManager, $view, $viewdate;
+    global $g_layout, $g_sessionManager, $view, $viewdate;
+
+    $g_layout->register_script("atk/javascript/open_appointment.js");
 
     $aItemBegin = array("08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30","24:00");
     $aItemEnd   = $aItemBegin;
    
     $this->atkNode("schedule", NF_ADD_LINK); 
-
-    $this->addAttribute(new atkAttribute("item_owner"           , AF_READONLY));
+/*
+    $this->addAttribute(new atkAttribute("item_owner"           , AF_READONLY|AF_HIDE));
     $this->addAttribute(new atkAttribute("item_id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
     $this->addAttribute(new atkAttribute("item_title"           , AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("item_begin_date"  , "F d Y","d F Y", 0, date("Ymd")));
-    $this->addAttribute(new atkDateAttribute("item_end_date"    , "F d Y","d F Y", 0, date("Ymd")));
+    $this->addAttribute(new atkAttribute("item_location"        , AF_SEARCHABLE));
+    $this->addAttribute(new atkTextAttribute("item_description" , AF_HIDE_LIST));
+//    $this->addAttribute(new atkDateAttribute("item_begin_date"  , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+//    $this->addAttribute(new atkDateAttribute("item_end_date"    , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
     $this->addAttribute(new atkListAttribute("item_begin_time"  , $aItemBegin, AF_OBLIGATORY));
     $this->addAttribute(new atkListAttribute("item_end_time"    , $aItemEnd, AF_OBLIGATORY));
     $this->addAttribute(new atkBoolAttribute("item_allday"      ));
     $this->addAttribute(new atkBoolAttribute("item_public"      ));
     $this->addAttribute(new atkManyToOneRelation("item_type"    , "schedule_types",AF_OBLIGATORY));
-
+    $this->addAttribute(new atkDummyAttribute("attendees"       , "", AF_HIDE_ADD|AF_HIDE_LIST));
+*/
     $view = $g_sessionManager->stackVar("view");
 
     if (trim($view) == "") { $view = "dayview"; }
@@ -35,10 +41,15 @@
     $this->setOrder("item_date DESC");
    }
 
+   function attendees_edit()
+   {
+    return "beeeh";
+   }
+
    function initial_values()
    {
-    global $g_user;
-    return array("item_owner"=>$g_user["name"]);
+    global $g_user, $viewdate, $hour;
+    return array("item_owner"=>$g_user["name"], "item_begin_time"=>$hour, "item_end_time"=>$hour, "item_begin_date"=>$viewdate);
    }
 
 
@@ -92,6 +103,28 @@
     $g_layout->ui_bottom();    
    }
 
+   function monthview()
+   {
+    global $g_layout, $viewdate, $g_user, $g_db, $dayview, $PHP_SELF;
+
+    // viewdate is something like 2001-07-23
+    $month = substr($viewdate, 5,2);
+    $year  = substr($viewdate, 0,4);
+
+    $dummy = new monthView($month, $year);
+    $dummy->viewerWidth = "600";
+    $dummy->owner       = $g_user["name"];
+    $dummy->showGlobal  = $user;
+    $dummy->generate();
+
+    $buff  = "<br><br>".$dummy->monthNav();
+    $buff .= "<br><br><b>".$dummy->title."</b>";
+    $buff .= $dummy->dumpMatrix();
+     
+    return $buff;
+   }
+
+
    function dayview()
    {
     global $g_layout, $viewdate, $g_user, $g_db, $dayview, $PHP_SELF;
@@ -137,6 +170,7 @@
     $buff .= "<td valign='top' align='right'>$form</td>";
     $buff .= "</tr></table>";
     $buff .= $dummy->dumpMatrix();
+    $buff .= $dummy->legend."<br>";
  
     return $buff;
    }

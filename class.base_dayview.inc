@@ -104,7 +104,6 @@
 
      if ($this->showGlobal == "all")
      {
-//      $q .= "AND (item_public=1 OR item_owner='".$this->owner."')";
       $q .= "AND item_public=1";
      }
      else
@@ -332,10 +331,10 @@
       $time    = $this->workHours[$i];
       $items   = $this->itemMatrix[$time]; 
       $now     = $this->year."-".$this->month."-".$this->day;              
-      $addurl  = $PHP_SELF."?atkaction=add&viewdate=$now&hour=$time";
+      $addurl  = "javascript:open_appointment(0, 1, 600, 450, 'no','no','$now','$time')";
  
       $buff .= "<tr>\n";
-      $buff .= "<td bgcolor='#666666' width='5%'><font face='verdana' size='-1' color='#FFFFFF'><b>".href($addurl,$time)."</b></font></td>\n"; 
+      $buff .= "<td bgcolor='#D0D0D0' width='5%'><a href=\"$addurl\"><font size='-1'>".$time."</font></a></td>\n"; 
 
       if ($cols == 0)
       {
@@ -384,14 +383,34 @@
           }
           else
           {
+           $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
+           $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title."</b></font></td>\n";
+           $header .= "<td valign='top' align='right'>";
+           $header .= "<img src='images/owner.gif' border='0' alt='Owner: ".$info["item_owner"]."'>&nbsp;";
+           $header .= "<img src='images/attendees.gif' border='0' alt='Attendees: Jeroen Stephan'>&nbsp;";
+ 
+           if ($info["item_owner"] == $this->owner)
+           {
+            $url     = "javascript:open_appointment(".$info["item_id"].", 1, 600, 450, 'no','no',0,0)"; 
+            $header .= "<a href=\"$url\"><img src='images/edit.gif' border='0' alt='Edit appointment'>&nbsp;";
+           }
+           else
+           {
+            $url     = "javascript:open_appointment(".$info["item_id"].", 0, 600, 450, 'no','no',0,0)"; 
+            $header .= "<a href=\"$url\"><img src='images/info.gif' border='0' alt='View appointment'>&nbsp;";
+           }
+
+           $header .= "</td>\n";
+           $header .= "</tr></table>\n";  
+
            $buff .= "<td height='100%' $rowspan valign='top' width='$cWidth'>";
            $buff .= $this->fancyBegin;
            $buff .= "<td height='100%' bgcolor='$bgcolor' valign='top' align='left'>";
-           $buff .= "<font face='verdana' size='-1' color='$fgcolor'><b>".$title."</b></font>";
- 
+           $buff .= $header;
+
            if ($timeLap > 1)
            {
-            $buff .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>"; 	
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>"; 	
            }
  
            $buff .= "</td>\n";
