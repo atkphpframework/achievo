@@ -55,8 +55,8 @@ function resource_planning()
     $this->add(&$employee);
 
     $this->add(new atkDateAttribute("plandate",AF_OBLIGATORY));
-    $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
     $this->add(new atkTextAttribute("description"));
+    $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
 
     $this->setTable("planning","planning");
     $this->setOrder("id");
@@ -71,6 +71,31 @@ function recordActions($record, &$actions)
 {
   if (!empty($this->m_postvars["noactions"]))
   $actions = array();
+}
+
+function phaseid_display(&$record, $mode)
+{
+  // For the view planning in the PIM the projectname should als be displayed because if there are duplicate phasenames in different
+  // projects it isn't clear for which project the planning is meant
+
+  // TO DO: Find a better solution so that this functions gets the projectname by an parameter. This will make the query superfluous
+
+  global $ATK_VARS;
+  global $g_db;
+
+  if ($ATK_VARS["atknodetype"] != "pim")
+    return $this->m_attribList["phaseid"]->display($record, $mode);
+  else
+  {
+    $name = "atk".atkconfig("database")."query";
+    $query = new $name();
+    $query->addTable('project');
+    $query->addJoin('phase','', 'phase.projectid = project.id', FALSE);
+    $query->addField('name', '', 'project');
+    $querystring = $query->buildSelect(TRUE);
+    $projectname = $g_db->getrows($querystring);
+    return $projectname[0]['name'].' - '.$record["phaseid"]["name"];
+  }
 }
 
 }
