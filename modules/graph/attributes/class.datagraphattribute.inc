@@ -72,6 +72,7 @@
      * @param $graphtype - The type of graph to plot. Currently supported are:
      *                     "pie" - Create a pie chart
      *                     "bar" - Create a bar chart
+     *                     "line" - Create a line chart
      *                     "auto" - Creates a pie chart if only one plot is 
      *                              passed and a bar chart if more than one
      *                              are passed.
