@@ -7,7 +7,8 @@ Changes in Achievo 0.9.1
 ------------------------
 + Added todo history.
 + Added initial version of resource planning feature.
-* Several bugfixes.
+* Bugfixes for bugs 17 and 27.
+* Several other bugfixes.
 
 Changes in Achievo 0.9.0
 ------------------------
