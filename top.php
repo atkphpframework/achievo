@@ -23,8 +23,14 @@
 
   if ($g_user["name"]!="administrator")
   {
-    $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
+    $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"');
   }
+  else
+  {
+    // Administrator has a link to setup.php
+    $centerpiece.= href("setup.php", text("setup"), SESSION_NEW, false, 'target="_top"');
+  }
+  $centerpiece.='&nbsp; &nbsp; &nbsp;';
 
   $centerpiece.= '<a href="index.php?atklogout=1" target="_top">'.text('logout').'</a>';
 
