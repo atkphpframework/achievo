@@ -4,6 +4,15 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 0.9.3
+------------------------
++ Newly added employee contracts now have default values depending on 
+  the previous contract of that employee. [Ivo]
+* Fixed bug: In new employee contracts, sunday was always selected. [Ivo]
+* Fixed  bugs where wrong userid field was used. (bug #113) [Jean-Charles]
+* Setup.php now correctly checks PHP 4.1.0 requirement (bug #112) [Kevin]
+- Removed the redundant 'organization archive' feature. (bug #114) [Ivo]
+
 Changes in Achievo 0.9.2
 ------------------------
 * Reorganised Achievo codebase. Everything is now located in modules. 
