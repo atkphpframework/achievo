@@ -32,10 +32,10 @@
                           correct, before clicking the 'continue' button. In config.inc.php, you
                           have to specify the database I should use and a valid username and password.
                           ",
-                          "setup");
+                          "dbcheck");
     }
     
-    function action_setup()
+    function action_dbcheck()
     {
       global $g_db;
       
@@ -72,13 +72,30 @@
           // In the case we don't have a DB_SUCCESS now, we fall through
           // the other cases (we don't break), so we can handle the error.
         case DB_UNKNOWNHOST:
-          return $this->setupScreen("Unable to connect to database-server", "host wrong");
+          return $this->setupScreen("Unable to connect to database-server", 
+                                    "In config.inc.php, you have set \$config_databasehost to '<b>".atkconfig("databasehost")."</b>'.
+                                     However, I am not able to connect to that server. 
+                                     This could mean:
+                                     <ul>
+                                       <li>The hostname is incorrect. In this case, please correct the error in the config.inc.php file and click 'Retry'.
+                                       <li>The host is down. You might want to retry later or contact the servers' administrator.
+                                       <li>The host is up, but there's no databaseserver running. You might want to select a different server, or contact your system-administrator.                                       
+                                     </ul>", "dbcheck");
           
         case DB_UNKNOWNDATABASE:
           return $this->setupScreen("Database does not exist", "database doesn't exist");
           
         case DB_ACCESSDENIED_USER:
-          return $this->setupScreen("Database username or password incorrect", "user wrong");
+          return $this->setupScreen("Database username or password incorrect", 
+                                    "I've tried connecting to the database with the username ('".atkconfig("databaseuser")."') and password you specified in config.inc.php, but was
+                                     unable to login. 
+                                     This could mean:
+                                     <ul>
+                                       <li>The username and or password in config.inc.php are not correct. In this case, please correct the error and click 'Retry'.
+                                       <li>The user has not been created yet in the databaseserver. In this case, create the useraccount or contact your system-administrator. When the user is created, click 'Retry'.".
+                                       (atkconfig("database")!="mysql"?"":"<li>A common problem when using MySQL is that the user was created, but the privileges were not flushes. You might want to try reloading the database (or issuing a 'FLUSH PRIVILEGES' statement), and clicking 'Retry'.").
+                                    "</ul>",
+                                    "dbcheck");
           
         case DB_ACCESSDENIED_DB:
           return $this->setupScreen("User not allowed to connect to database", 
@@ -103,8 +120,8 @@
                $output;
        
       if ($nextaction!="")
-      {
-        $form.= '<br><br> <input type="submit" value="continue"><br><br>';
+      {                        
+        $form.= '<br><br><input type="submit" value="'.($nextaction!=$this->m_action?"Continue":"Retry").'"><br><br>';
       }
                
       $form.= '</form>';
