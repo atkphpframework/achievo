@@ -192,6 +192,11 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE customer RENAME organization";
   $res = $g_db->query($sql);
   handleError($sql);
+  
+  //add state field table to organization
+  $sql = "ALTER TABLE organization ADD state VARCHAR(100)";
+  $res = $g_db->query($sql);
+  handleError($sql);
 
   //create table project_person
   $sql = "CREATE TABLE project_person (
@@ -266,21 +271,6 @@ if(!empty($convert)&&$convert==1)
 
   //rename schedule_types to schedule_type
   $sql = "ALTER TABLE schedule_types RENAME schedule_type";
-  $res = $g_db->query($sql);
-  handleError($sql);
-
-  //add table document
-  $sql = "CREATE TABLE document (
-            id INT(10) NOT NULL,
-            name VARCHAR(50) NOT NULL,
-            filename VARCHAR(255) NOT NULL,
-            owner VARCHAR(50) NOT NULL,
-            entrydate DATE NOT NULL,
-            version VARCHAR(10) NOT NULL DEFAULT '0',
-            status VARCHAR(25) NOT NULL,
-            project_id INT(10) NOT NULL,
-            PRIMARY KEY (id)
-          );";
   $res = $g_db->query($sql);
   handleError($sql);
 

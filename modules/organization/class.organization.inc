@@ -23,22 +23,24 @@ class organization extends atkNode
   {
     $this->atkNode("organization", NF_EDITAFTERADD);
 
-    $this->addAttribute(new atkAttribute("id" ,AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
-    $this->addAttribute(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->addAttribute(new atkAttribute("address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("zipcode", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("city", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("country", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST));
-    $this->addAttribute(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
-    $this->addAttribute(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
+    $this->add(new atkAttribute("address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
+    $this->add(new atkAttribute("city", AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD, 20));
+    $this->add(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD, 20));
+    $this->add(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD, 50));
+    $this->add(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST, 100));
+    $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD, 30));
+    $this->add(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
+    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
     //$this->addAttribute(new atkOneToManyRelation("projects","project.project","customer",AF_HIDE_LIST));
-    $this->addAttribute(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
+    
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setIndex("name");
