@@ -42,5 +42,11 @@
       menuitem("tpl_project_admin", dispatch_url("project.tpl_project", "admin"), "setup", array("project.tpl_project", "admin"));    
   
     }
+    
+    function search($expression)
+    {
+      $prjnode = getNode("project.project");
+      return array("projects"=>$prjnode->searchDb($expression));
+    }
   }
 ?>

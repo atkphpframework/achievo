@@ -19,6 +19,19 @@
       menuitem("contracttype", dispatch_url("organization.contracttype","admin"),"setup", array("organization.contracttype","admin"));
       menuitem("-","","main",true,720);         
     }
+    
+    function search($expression)
+    {
+      $res = array();
+      $custnode = getNode("organization.customer");
+      $res["customers"] = $custnode->searchDb($expression);   
+        
+      $contactnode = getNode("organization.contact");
+      $res["contacts"] = $contactnode->searchDb($expression);   
+      
+      return $res;
+      
+    }
   }
 
 ?>

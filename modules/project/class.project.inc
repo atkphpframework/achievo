@@ -45,8 +45,6 @@
       }
 
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
-      // $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      // $this->addAttribute(new atkOneToManyRelation("project_notes","project_notes","projectid", AF_HIDE|AF_CASCADE_DELETE));
 
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
@@ -54,11 +52,11 @@
       $this->add(new atkOneToManyRelation("employees","project.employee_project", "projectid", AF_HIDE_LIST));
 
       $this->setTable("project","project");
+      
       $this->setOrder("name");
       $this->setIndex("name");
 
   //    updateSelectedProjects();
-
       atkdebug("project::project()");
     }
 

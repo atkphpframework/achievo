@@ -346,4 +346,8 @@
   $txt_todocheck_mail_duetoday = "The following todo's must be completed today:";
   $txt_todocheck_mail_late = "The following todo's should have been already completed before today:";
 
+  $txt_search_noresults = "Sorry, your search for '[expression]' didn't yield any results.";
+  $txt_search_emptysearchstring = "Please enter an expression to search for.";
+  $txt_search_again = "Search again"
+
 ?>

@@ -28,10 +28,8 @@
   
   $table.= $g_layout->ret_td($centerpiece, 'width="55%" align="center"');
   
-  $searchpiece = '<form action="search.php" target="main">';
-  $searchpiece.= session_form(SESSION_NEW);
-  $searchpiece.= '<input name="searchstring" type="text" size="18">&nbsp;<input type="submit" value="'.text("search").'">';
-  $searchpiece.= '</form>';
+  $searchnode = getNode("search.search");
+  $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
   
   $table.= $g_layout->ret_td($searchpiece, 'width="25%" align="right"');    
       

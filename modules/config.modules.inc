@@ -11,4 +11,5 @@
   module("reports");
   module("resource_planning");
   module("pim");
+  module("search");
 ?>
