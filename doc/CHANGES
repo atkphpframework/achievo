@@ -6,6 +6,7 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 0.9.3
 ------------------------
++ Added calendar popup to all date fields. [Ivo]
 + Newly added employee contracts now have default values depending on 
   the previous contract of that employee. [Ivo]
 * Fixed bug: In new employee contracts, sunday was always selected. [Ivo]
