@@ -168,6 +168,11 @@ class project extends atkNode
     // employees.
      
   }
+  
+  function fixed_price_edit($rec)
+  {
+    return $this->m_attribList["fixed_price"]->edit($rec)." ".atkconfig("currency_symbol");
+  }
  
   
 }

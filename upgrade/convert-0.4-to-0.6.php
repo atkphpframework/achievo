@@ -1,21 +1,24 @@
 <?php
+
+chdir("../");
+
 /*
 * Achievo Convert Script 
-* for converting the database of Achievo 0.4.x to Achievo 0.7
+* for converting the database of Achievo 0.4.x to Achievo 0.6
 * See the doc/UPGRADE file for more detailed instructions on how
 * to use this conversion script.
 *
 */
 // Settings Achievo 0.4.x database
 $old_db_host = "localhost";
-$old_db_name = "merp";
+$old_db_name = "achievo_0_4";
 $old_db_user = "demo";
 $old_db_passwd = "demo";
 
-// The settings for the new Achievo 0.7 database must be entered
+// The settings for the new Achievo 0.6 database must be entered
 // in the config.inc.php file. 
 
-// Password handling has changed in Achievo 0.7, so we cannot
+// Password handling has changed in Achievo 0.6, so we cannot
 // convert the old passwords. You can set a default password 
 // here that will be assigned to each user.
 // If you don't set this password you have to set them manually 
@@ -106,7 +109,7 @@ if(!empty($convert)&&$convert==1)
 {
   $g_layout->ui_top("Convert log");
   $g_layout->output('<div align="left">');
-  write_log("Start conversion of 0.4.x database ($old_db_name) -> 0.7 ($config_databasename)");
+  write_log("Start conversion of 0.4.x database ($old_db_name) -> 0.6 ($config_databasename)");
   // make connection to the old database, for the new one, we use the achievo settings
   $old_db = @mysql_connect ($old_db_host, $old_db_user, $old_db_passwd)
           or die("Could not connect to old database $old_db_name (check username/password in convert.php3).");

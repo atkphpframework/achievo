@@ -10,34 +10,56 @@ In this case send an email to ivo@achievo.com or to the mailinglist
 
 IMPORTANT
 ---------
-The Achievo 0.7.* releases are development releases. Do not use this in a 
-production environment. If you want to use Achievo in a production 
-environment, download the latest stable (0.6.*) release.
+Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE before
+attempting to upgrade. A good way to do the upgrade is to copy the entire 
+database. For example, if your database is achievo_0_6, and you want to 
+upgrade to Achievo 0.8, then copy the database to achievo_0_8. Then proceed
+with the instructions below.
 
-Achievo 0.7.* may be broken, nonfunctional and it could severely corrupt your
-Achievo database. So we highly recommend using a NEW database to test 
-Achievo 0.7.*.
+Support
+-------
+Upgrading is not always easy, especially if you need to upgrade to a version
+that is significantly newer than your current version. Ibuildings.nl can help
+with the conversion. For information about this kind of support, see:
+http://www.ibuildings.nl/en/achievo/sponsor
 
-But, if you still have the guts to upgrade from a stable Achievo to this 
-development release, here's some help on upgrading.
 
-IF IT FAILS, YOU'RE ON YOUR OWN. WE WARNED YOU.
+General upgrade instructions
+============================
 
-Upgrading from version 0.7.x -> 0.7.2
--------------------------------------
-Due to compatibility problems with Oracle, we had to rename the column 'date' 
-in the hours table to 'activitydate'. If you want to use a database from 
-Achievo versions older than 0.7.2, you have to rename this column. You can do 
-this with your favorite sql tool. Just execute the following SQL statement 
-(make sure you have the priviliges to do this):
+These are the general upgrade instructions. Sometimes, additional information
+is provided for upgrading between certain versions. You will find this 
+additional information at the end of this document.
 
-for mysql:      
-ALTER TABLE hours CHANGE date activitydate DATE NOT NULL
+Upgrading the software usually consists of replacing the Achievo sourcecode 
+with a newer version. It is usually possible to use the config file from your
+current Achievo installation, however, you might miss some config options that
+were added in a newer release. Therefor it is best to use the new configfile and
+just change the settings again.
 
-for postgresql: 
-ALTER TABLE "hours" RENAME "date" TO "activitydate"
+In the upgrade/ directory, you will find database patches and upgrade scripts.
+In general, you have to run these patches in the correct order, to convert 
+your existing Achievo database to a database that is compatible with the
+Achievo version you are currently installing. Pay attention to the file
+extension of the patch. If it is '.sql', you can apply the patch using a 
+databaseclient, for example like this:
 
-Upgrading from version 0.6.x -> 0.7
+$ cd achievo/upgrade
+$ mysql -u root --password=secret achievo_0_8 < convert-0.6-to-0.8.sql
+
+If the extension is '.php' however, you must view the file using your
+browser. 
+For example, browse to: http://achievo-server/upgrade/convert-0.4-to-0.6.php
+and follow the instructions.
+
+Make sure you apply all patches in the correct order. For example, if you need 
+to upgrade from Achievo 0.4 to Achievo 0.8, first do achievo-0.4-to-0.6.php
+and then do achievo-0.6-to-0.8.sql.
+
+Additional upgrade instructions
+===============================
+
+Upgrading from version 0.6.x -> 0.8
 -----------------------------------
 As of version 0.7 Achievo requires PHP4. PHP3 is not supported anymore!
 
@@ -45,38 +67,18 @@ If you were/are running the 0.6.x version of Achievo in a PHP3 only
 environment you have to update your PHP version to PHP4 (we recommend
 the latest version) first.
 
-Once you have a PHP4 environment you have to backup your old
-Achievo configuration file (config.inc.php3). Install the new
-release, just follow the steps in INSTALL, but ommit step 2! (you already
-have a working database)
-Rename your old config.inc.php3 to config.inc.php and copy it to
-the root of your fresh Achievo install.
 
-
-Upgrading from version 0.4.x -> 0.7
+Upgrading from version 0.4.x -> 0.6
 -----------------------------------
-(Note: at this time there is no upgrade procedure available for upgrading
-a MySQL database to a new PostgreSQL database.)
-
-The database structure has changed a lot between 0.4.x and 0.7, so there
-are a few steps that you need to do to convert your old database to be
-compatible with Achievo 0.7.
-
 Note: the upgrade procedure does not affect your old database, so
 it's safe to try the conversion.
 
-If you were/are running the 0.4.x version of Achievo in a PHP3 only
-enviroment you have to update your PHP version to PHP4 (we recommend
-the latest version) first.
-
-Once you have a PHP4 enviroment available you have follow the steps below.
-
-1. First install Achievo 0.7 to a new directory (leave your existing 
+1. First install Achievo 0.6 to a new directory (leave your existing 
    Achievo installation in place), using the achievo_mysql.sql 
    file, as described in the INSTALL file. When creating the database,
    make sure you create a new one, don't use your existing database.
    For example: if your current Achievo database is called 'achievo',
-   create a new database that you call 'achievo_0_7'.
+   create a new database that you call 'achievo_0_6'.
    
 2. Set an administrator password by editing the config.inc.php file and
    changing the $config_administratorpassword setting.
@@ -84,9 +86,9 @@ Once you have a PHP4 enviroment available you have follow the steps below.
 3. Edit the file convert.php and change the settings in the script.
    
 4. Point your browser to the convert.php script. 
-   For example: http://myserver/achievo_0_7/convert.php
+   For example: http://myserver/achievo_0_8/upgrade/convert-0.4-to-0.6.php
    
-5. The way we handle user passwords has changed in Achievo 0.7. Since there
+5. The way we handle user passwords has changed in Achievo 0.6. Since there
    is no way to decode the existing passwords, we can't convert the existing
    passwords. If you have not set a default password for users in the 
    convert.php script, you must now login to your new Achievo installation,
@@ -98,5 +100,4 @@ Once you have a PHP4 enviroment available you have follow the steps below.
    the 'Default Group'. You have to grant permissions to this profile, since
    every converted user is put in this default profile.
    
-The Achievo upgrade is now complete. If you have any questions, please join 
-the mailinglist by sending an empty message to achievo-subscribe@achievo.com.
+

@@ -18,13 +18,13 @@ class usercontracts extends atkNode
     $this->setOrder("id");
   }
 
-    function initial_values()
-    {
-      return array("uc_hours"=>40,
-                   "enddate"=>array("year"=>(date("Y")+1),
-                                    "month"=>date("m"),
-                                    "day"=>date("d")));
-    }
+  function initial_values()
+  {
+    return array("uc_hours"=>40,
+                 "enddate"=>array("year"=>(date("Y")+1),
+                                  "month"=>date("m"),
+                                  "day"=>date("d")));
+  }
 
 }
 ?>

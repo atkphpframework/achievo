@@ -334,7 +334,7 @@
   $txt_title_contracttype_edit = "Edit contract type";
   $txt_title_contracttype_delete = "Delete contract type";
 
-  $txt_contracttype = "Contract Description";
+  $txt_contracttype = "Customer Contract Type";
 
   $txt_menu_costregistration_admin = "Cost registration";
   $txt_title_costregistration_admin = "Administrate costs made in projects";
@@ -410,5 +410,16 @@
   
   $txt_costdate = "Date of expense";
   $txt_paymethod = "Payment method";
+  
+  // --------==== Strings that were introduced in version 0.8.RC1: ====---------
+  
+  $txt_todo_new = "New";
+  $txt_todo_rejected = "Rejected";
+  $txt_todo_in_progress = "In progress";
+  $txt_todo_on_hold = "On hold";
+  $txt_todo_completed = "Completed";
+  $txt_mailnotification = "Mail if todo changes";
+  
+  $txt_link_project_add = "Add a project";
 
 ?>

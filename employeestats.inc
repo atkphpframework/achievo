@@ -195,7 +195,7 @@
   $g_layout->output($g_layout->data_bottom());
 
 //costregistration statistics
-
+/*
   $query = "SELECT
               costregistration.value as costs,
               currency.symbol as cur,
@@ -264,7 +264,7 @@
   $g_layout->output($g_layout->tr_bottom());
   
   $g_layout->output($g_layout->data_bottom());
-
+*/
   $g_layout->output('<br><br><br>');  
 
   $g_layout->ui_bottom();

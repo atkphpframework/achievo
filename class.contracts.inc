@@ -19,7 +19,7 @@ class contracts extends atkNode
     $this->setOrder("startdate");
   }
 
-  function contract_period_price_edit($rec)
+  function period_price_edit($rec)
   {
     return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
   }

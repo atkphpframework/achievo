@@ -17,7 +17,7 @@ class contact extends atkNode
     $this->addAttribute(new atkAttribute("phone"));
     $this->addAttribute(new atkAttribute("cellular"));
     $this->addAttribute(new atkAttribute("fax"));
-    $this->addAttribute(new atkAttribute("email"));
+    $this->addAttribute(new atkEmailAttribute("email"));
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST)); 
 
     $this->setTable("contact", "contact");

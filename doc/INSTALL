@@ -25,11 +25,8 @@ Requirements
 
 - A webserver capable of running php4 scripts
   (Apache is a good choice, http://www.apache.org)
-- PHP4 (http://www.php.net)
-
-Achievo requires one of the following database servers:
-- MySQL (http://www.mysql.org)
-- PostgreSQL >= 7.1 (http://www.postgresql.org)
+- PHP4 (http://www.php.net) 
+- MySQL (http://www.mysql.org) 
 
 Note: Achievo currently requires that PHP is compiled as a module, it does
 not work when PHP is compiled as a CGI binary. We will fix this in the future.
@@ -38,12 +35,11 @@ Installation Procedure
 ----------------------
 
 Note that this guide does not describe how to install a webserver or PHP
-or one of the database servers. See the documentation for these programs
-on how to install those. This installation guide assumes that you already
-have a working webserver with PHP support and a MySQL or PostgreSQL database
-installed.
+or a database server. See the documentation for these programs on how to 
+install those. This installation guide assumes that you already
+have a working webserver with PHP support and a MySQL database installed.
 
-1) Untar the entire achievo directory to a place where you can access it with 
+1) Untar the entire achievo archive to a place where you can access it with 
    your webserver.
 
    example:
@@ -55,11 +51,6 @@ installed.
 
    $ ln -s achievo_x.x achievo                # make a symbolic link 
 
-Step 2 depends on your choice of database server. Please only
-follow the step that belongs to the database server of your choice.
-
-MySQL
------
 2a) Create an empty database in mysql and a user that has select, insert,
     update and delete-access on the database.
 
@@ -67,11 +58,11 @@ MySQL
    
     $ mysql -u root --password=secret mysql
 
-    mysql> create database achievo_0_7;
-    mysql> grant select,insert,update,delete on achievo_0_7.* to achievo@localhost identified by 'secret';
+    mysql> create database achievo_0_8;
+    mysql> grant select,insert,update,delete on achievo_0_8.* to achievo@localhost identified by 'secret';
     mysql> quit;
 
-    This creates a database named 'achievo_0_7', and a user with username 
+    This creates a database named 'achievo_0_8', and a user with username 
     'achievo' and password 'secret'.
      
 
@@ -80,60 +71,14 @@ MySQL
     example:
 
     $ cd achievo/db
-    $ mysql -u root --password=secret achievo_0_7 < achievo_mysql.sql
-
-    If you want to install some Achievo demo content, insert
-    the 'demo_mysql.sql' file as well (in the same way).
+    $ mysql -u root --password=secret achievo_0_8 < achievo_mysql.sql
 
     (You can also use the just created user 'achievo', but then you must 
     also grant the 'create' privilige in step 2)
 
-PostgreSQL
-----------
-2a) Create an empty database in PostgreSQL.
-
-    $ psql -U pgsql template1
- 
-    template1=# CREATE DATABASE achievo_0_7;
-    template1=# \q
-
-    This creates a database named 'achievo_0_7'.
-
-2b) Use the db/achievo_pgsql.sql script to create the tables.
-
-    example:
-
-     $ cd achievo/db
-     $ psql -U pgsql achievo_0_7 < achievo_pgsql.sql
-
     If you want to install some Achievo demo content, insert
-    the 'demo_pgsql.sql' file as well (in the same way).
+    the 'demo_mysql.sql' file as well (in the same way).
 
-2c) Grant permissions to the created tables and sequences.
-
-    example:
-
-     $ psql -U pgsql achievo_0_7
-     achievo_0_7=# GRANT ALL ON <table/sequence> TO <user>
-     achievo_0_7=# ...
-     achievo_0_7=# \q
-
-    Ofcourse you have to do this for all tables and sequences in the
-    'achievo_0_7' database for your achievo user.
-
-    Another (more quick) way to do this is by using the db/grant_pgsql.sql script.
-    You may have to change the username, which defaults to 'achievo', in the 
-    grant_pgsql.sql file. In case you make use of this script (recommended) 
-    follow the following procedure:
-
-    example:
-
-     $ cd achievo/db
-     $ psql -U pgsql achievo_0_7 < grant_pgsql.sql
-  
-    Note: don't forget to change the username first!    
-
-The following steps apply to all installs!
 
 3) Edit the file config.inc.php3 in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
@@ -142,25 +87,19 @@ The following steps apply to all installs!
    example:
 
     $config_databasehost     = "localhost";
-    $config_databasename     = "achievo_0_7";
+    $config_databasename     = "achievo_0_8";
     $config_databaseuser     = "achievo";
     $config_databasepassword = "secret";
     $config_database         = "mysql";
 
-   Note: the $config_database can have the value 'mysql' or 'pgsql' depending
-   on your choice of database server (MySQL -> 'mysql', PostgreSQL -> 'pgsql').
-    
 5) In the same configuration file there is a variable 
    $config_administratorpassword. This is the password you need on your 
    first login. You might want to change this password.
    
    There are some other things in the config-file that you can change, but 
-   for your first configuration, you can leave those settings to be default.      
+   for your first configuration, you can leave those settings to the default.      
 
 6) Now you're ready to run Achievo. Just point your favorite browser to the
    directory where you installed Achievo. Login as 'administrator' with the
    password you set in the configfile ('demo' if you left it to the default)
 
-   example:
-  
-   $ lynx http://localhost/achievo/

@@ -122,7 +122,7 @@
   // Default currency and symbol to use.
   //
   $config_currency = "Euro";
-  $config_currency_symbol = "EU";    
+  $config_currency_symbol = "EUR";    
   
   // -------------------------------------------
   //            EXTERNAL MODULES
@@ -133,8 +133,7 @@
   // it can be found as the second parameter.
   //
   // module("somemodule","../achievo_modules/somemodule");
-  // module("sw","../achievo_modules/sw");  
-   module("tryllian","../achievo_modules/tryllian");  
+
   // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------

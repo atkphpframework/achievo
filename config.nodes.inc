@@ -22,7 +22,7 @@
   registerNode("todo", array("admin", "add", "edit", "delete"));
   registerNode("project_notes", array("admin", "add", "edit", "delete"));
 //  registerNode("holidays", array("admin","add","edit","delete"));  
-  registerNode("schedule", array("admin", "add", "edit", "delete"));  
-  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
-  registerNode("costregistration", array("admin", "add", "edit", "delete"));
+//  registerNode("schedule", array("admin", "add", "edit", "delete"));  
+//  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
+//  registerNode("costregistration", array("admin", "add", "edit", "delete"));
 ?>

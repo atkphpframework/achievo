@@ -7,12 +7,12 @@
     menuitem("hours_lock", dispatch_url("hours_lock", "admin"),"time_registration",array("hours_lock","admin"));
     
   menuitem("-","","main",true,120);
-  menuitem("costregistration_admin", dispatch_url("costregistration", "admin"),"main",true,200);
+//  menuitem("costregistration_admin", dispatch_url("costregistration", "admin"),"main",true,200);
     
-  menuitem("-","","main",true,220);
+//  menuitem("-","","main",true,220);
   
-  menuitem("schedule", dispatch_url("schedule","admin"),"main",true,300);  
-  menuitem("-","","main",true,320);
+//  menuitem("schedule", dispatch_url("schedule","admin"),"main",true,300);  
+//  menuitem("-","","main",true,320);
   
   menuitem("reports", "","main",true,370);
     menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"),"reports");    
@@ -50,8 +50,8 @@
   }   
 
   menuitem("customermanagement","","main",true,500);
-    menuitem("customer_admin", dispatch_url("customer", "admin"),"customermanagement");
-    menuitem("contracts", dispatch_url("contracts","admin"),"customermanagement");
+    menuitem("customer_admin", dispatch_url("customer", "admin"),"customermanagement", array("customer","admin"));
+    menuitem("contracts", dispatch_url("contracts","admin"),"customermanagement", array("contracts","admin"));
 
   menuitem("employeemanagement","","main",true,600);
      menuitem("profile_admin", dispatch_url("profile", "admin"), "employeemanagement", array("profile", "admin"));
@@ -64,8 +64,8 @@
      menuitem("tpl_phase_admin", dispatch_url("tpl_phase", "admin"), "setup", array("tpl_phase", "admin"));
      menuitem("tpl_project_admin", dispatch_url("tpl_project", "admin"), "setup", array("tpl_project", "admin"));    
      //menuitem("holiday_admin", dispatch_url("holidays", "admin"), "setup", array("activity", "admin"));
-     menuitem("contracttype", dispatch_url("contracttype","admin"),"setup");      
-     menuitem("schedule_types", dispatch_url("schedule_types","admin"),"setup");
+     menuitem("contracttype", dispatch_url("contracttype","admin"),"setup", array("contracttype","admin"));      
+//     menuitem("schedule_types", dispatch_url("schedule_types","admin"),"setup");
   menuitem("-","","main",true,720);         
   
   menuitem("support","","main",true,800);

@@ -2,8 +2,8 @@
 - : deprecated feature
 * : bugfix or changed code
 
-Changes in Achievo 0.7.4
-------------------------
+Changes in Achievo 0.8.RC1
+--------------------------
 + Added supervisor to employees.
 + Added a few fields to customer administration (website, projects).
 + Added a few fields to project administration (contactperson, enddate,
@@ -13,6 +13,7 @@ Changes in Achievo 0.7.4
 + Created new options for extended search feature (and/or capability, option
   to choose a searchtype per field).
 + Added tooltip support.
++ Added 'select all', 'select none' and 'invert selection' to profile editor.
 + Added colored mouseover selection bar to recordlists.
 * Fixed a Daylight Savings Time bug in time registration.
 * Fixed bug in previous/next day links in time registration.
@@ -20,6 +21,7 @@ Changes in Achievo 0.7.4
 * Fixed bug in time registration that allowed hours to be booked on a locked 
   week in some cases.
 * Fixed some small other bugs and typos.
+- Removed unstable 0.7.* features (costregistration, schedular, finance menu).
 
 Changes in Achievo 0.7.3
 ------------------------

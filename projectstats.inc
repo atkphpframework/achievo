@@ -194,7 +194,7 @@
   $g_layout->output($g_layout->data_bottom());
   
   //Costregistration stats
-
+/*
 	$query = "SELECT
               employee.name as employee,
               costregistration.value as costs,
@@ -264,7 +264,7 @@
   $g_layout->output($g_layout->tr_bottom());  
    
   $g_layout->output($g_layout->data_bottom());
-
+*/
   $g_layout->output('<br><br><br>');  
 
   $g_layout->ui_bottom();

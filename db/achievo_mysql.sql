@@ -13,31 +13,6 @@ CREATE TABLE activity (
    PRIMARY KEY (id)
 );
 
-CREATE TABLE bill (
-   id int(10) unsigned DEFAULT '0' NOT NULL,
-   projectid int(10) DEFAULT '0' NOT NULL,
-   description text,
-   create_date date DEFAULT '0000-00-00' NOT NULL,
-   userid varchar(15) NOT NULL,
-   status varchar(30) NOT NULL,
-   specify_hours tinyint(1) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)
-);
-
-CREATE TABLE rate (
-   id int(10) unsigned DEFAULT '0' NOT NULL,
-   userid varchar(15),
-   projectid int(10),
-   activityid int(10),
-   customerid int(10),
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
-   description text,
-   rate decimal(13,5) DEFAULT '0.00000' NOT NULL,
-   priority tinyint(4) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)
-);
-
 CREATE TABLE customer (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    name varchar(100) NOT NULL,
@@ -89,25 +64,6 @@ CREATE TABLE contracttype (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    description varchar(100) NOT NULL,
    PRIMARY KEY (id)
-);
-
-CREATE TABLE costregistration (
-   id int(10) unsigned DEFAULT '0' NOT NULL,
-   userid varchar(15) NOT NULL,
-   costdate date DEFAULT '0000-00-00' NOT NULL,
-   projectid int(10) unsigned DEFAULT '0' NOT NULL,
-   value decimal(13,5) DEFAULT '0.00000' NOT NULL,
-   description text,
-   paymethod varchar(30) NOT NULL,
-   currency varchar(30),
-   PRIMARY KEY (id)
-);
-
-CREATE TABLE currency (
-   name varchar(30) DEFAULT '0' NOT NULL,
-   value decimal(13,5) DEFAULT '0.00000' NOT NULL,
-   symbol varchar(10) NOT NULL,
-   PRIMARY KEY (symbol)
 );
 
 CREATE TABLE dependency (
@@ -177,8 +133,8 @@ CREATE TABLE project (
    coordinator varchar(20),
    status varchar(15) NOT NULL,
    description text,
-   startdate varchar(20) NULL,
-   enddate varchar(20) NULL,
+   startdate date NULL,
+   enddate date NULL,
    customer int(10) DEFAULT '0' NULL,
    fixed_price decimal(13,5) DEFAULT '0.00000' NULL,
    contact INT(10) NOT NULL,
@@ -228,37 +184,6 @@ CREATE TABLE tpl_project_phase (
    PRIMARY KEY (projectid, phaseid)
 );
 
-CREATE TABLE schedule (
-   id int(10) unsigned DEFAULT '0' NOT NULL,
-   startdate date DEFAULT '0000-00-00' NOT NULL,
-   enddate date DEFAULT '0000-00-00' NOT NULL,
-   starttime time DEFAULT '00:00:00' NOT NULL,
-   endtime time DEFAULT '00:00:00' NOT NULL,
-   title varchar(50) NOT NULL,
-   description text,
-   location varchar(50) DEFAULT '0',
-   allday tinyint(1) DEFAULT '0' NOT NULL,
-   publicitem tinyint(1) DEFAULT '0' NOT NULL,
-   owner varchar(15) NOT NULL,
-   showowner tinyint(1) DEFAULT '0' NOT NULL,
-   scheduletype int(10) DEFAULT '0' NOT NULL,
-   PRIMARY KEY (id)
-);
-
-CREATE TABLE schedule_attendees (
-   scheduleid int(10) DEFAULT '0' NOT NULL,
-   userid varchar(15) NOT NULL,
-   PRIMARY KEY (scheduleid, userid)
-);
-
-CREATE TABLE schedule_types (
-   id int(10) unsigned DEFAULT '0' NOT NULL,
-   description varchar(50) NOT NULL,
-   bgcolor varchar(7) NOT NULL,
-   fgcolor varchar(7) NOT NULL,
-   PRIMARY KEY (id)
-);
-
 CREATE TABLE todo (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    projectid int(10) unsigned DEFAULT '0' NOT NULL,
@@ -269,8 +194,7 @@ CREATE TABLE todo (
    description text,
    title varchar(50) NOT NULL,
    status tinyint(4) DEFAULT '0' NOT NULL,
-   priority tinyint(4) DEFAULT '0' NOT NULL,
-   mailnotification tinyint(1) DEFAULT '0' NOT NULL,
+   priority tinyint(4) DEFAULT '0' NOT NULL, 
    PRIMARY KEY (id)
 );
 
