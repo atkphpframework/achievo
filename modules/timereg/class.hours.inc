@@ -228,8 +228,6 @@ class hours extends atkNode
   function weekview()
   {
     global $g_layout, $g_user;
-    atkdebug("SANDY");
-    atkdebug($this->m_viewdate);
     if ($this->m_viewdate!="")
     {
       $viewtime = mktime(12,12,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
