@@ -187,8 +187,16 @@
   // Therefor, we should force atksecure to use an authenticationmethod 
   // that doesn't rely on the db. Since only the administrator user from
   // the configfile may log in, we can set it to "config".
+  $old_authentication = $config_authentication;
   $config_authentication = "config";  
   atksecure();
+  $config_authentication = $old_authentication; // restore to the original, 
+                                                // for node installations
+                                                // may be dependent on
+                                                // the value of this setting.
+                                                // for example, employee only
+                                                // adds a password field if
+                                                // authentication is 'db'.
   
   if ($g_user["name"]!="administrator")
   {
