@@ -44,7 +44,7 @@ class employee extends person
     }
     else
     {
-      $this->add(new atkListAttribute("status", array("active","nonactive"), array()));
+      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST));
       $this->addFilter("person.status","active");
     }
     $this->add(new atkOneToManyRelation("contract","employee.usercontracts","userid",AF_HIDE_LIST));
@@ -65,6 +65,42 @@ class employee extends person
     $initial["role"] = "employee";
     $initial["status"] = "active";
     return $initial;
+  }
+  
+  /**
+   * Are we in 'active' emps or 'all' emps mode?
+   */
+  function getView()
+  {
+    global $g_sessionManager;
+    $view = $g_sessionManager->stackVar("view");
+    if ($view=="")
+    {
+      $view = "active";
+    }
+    return $view;
+  }
+  
+  function action_admin()
+  {
+    $view = $this->getView();
+    if ($view=="active")
+    {
+      $this->addFilter("person.status","active");
+    }
+    return parent::action_admin();
+  }
+  
+  function adminFooter()
+  {  
+    $view = $this->getView();
+    
+    if ($view=="active")
+    {
+      return text("inactiveemployeesarehidden", $this->m_type, $this->m_module).' '.
+             href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+                  '&view=all', text('showallemployees', $this->m_type, $this->m_module));
+    }    
   }
 
   function action_stats()
