@@ -82,7 +82,7 @@
     for ($i=0;$i < count($projects); $i++)
     {
       $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
-      if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
+      if ($_REQUEST["selectedproject"] == $projects[$i]['projectid']) $prj .=" selected";
       $prj .= ">".$projects[$i]['projectname']."</OPTION>";
     }
     $prj .="</SELECT></FORM>";
