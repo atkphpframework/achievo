@@ -19,6 +19,12 @@
         menuitem("project_todoview", dispatch_url("todo.project_todoview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("todo.todo", "admin"));      
       }   
     }
+    
+    function getPimItems()
+    {    
+      include_once(moduleDir("todo")."pim.inc");      
+      return array("todos"=>pimTodos());
+    }
   }
 
 ?>

@@ -9,12 +9,10 @@
    *
    */
 
-  $modifiers[] = "project";
-
   /**
    * Planning module.
    */
-  class mod_resource_planning extends atkModule
+  class mod_resource_planning extends achievoModule
   {
     function getNodes()
     {
@@ -32,9 +30,10 @@
       menuitem("resource_planning_gantview", dispatch_url("resource_planning.resource_planning", "gantview"), "resource_planning", array("resource_planning.resource_planning", "gant"));
     }
 
-    function project_modifier(&$node)
+    function getPimItems()
     {
-      $node->add(new atkOneToManyRelation("employees","employee_project", "projectid", AF_HIDE_LIST));
+      include_once(moduleDir("resource_planning")."pim.inc");      
+      return array("planning"=>pimPlanning());
     }
   }
 ?>

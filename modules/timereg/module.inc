@@ -17,6 +17,12 @@
     
       menuitem("-","","main",true,120);
     }
+    
+    function getPimItems()
+    {
+      include_once(moduleDir("timereg")."pim.inc");
+      return array("timeregistration"=>pimTimeReg());
+    }  
   }
   
 ?>

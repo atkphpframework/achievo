@@ -2,13 +2,13 @@
   module("employee");
   module("project");
   module("organization");
+  module("notes");
+  module("calendar");
+  module("todo");
   module("timereg");
   module("costreg");
-  module("notes");
-  module("todo");
   module("finance");
   module("reports");
-  module("calendar");
   module("resource_planning");
   module("pim");
 ?>
