@@ -37,7 +37,7 @@
 
     function schedule()
     {
-      global $g_user, $g_sessionManager;
+      global $g_sessionManager;
 
       $time = $g_sessionManager->stackVar("time");
 
@@ -85,7 +85,20 @@
       if (trim($this->m_view) == "") { $this->m_view = "dayview"; }
 
       $this->m_user     = $g_sessionManager->stackVar("user");
-      if ($this->m_user=="") $this->m_user = $g_user["userid"];
+      if ($this->m_user=="") 
+      {
+        $user = getUser();        
+        if ($user["calendar_defaultuserview"]!="*")
+        {
+          $this->m_user = $user["userid"];
+        }        
+        else
+        {
+          // User has opted to show all users by default.
+          $this->m_user = "all";
+        }
+        
+      }
 
       $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
       if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
@@ -105,10 +118,9 @@
 
 
     function initial_values()
-    {
-      global $g_user;
-
-      $initial["owner"]["id"] = $g_user["id"];
+    {      
+      $user = getUser();
+      $initial["owner"]["id"] = $user["id"];
       $initial["publicitem"] = 1;
       $initial["status"] = "unconfirmed";
 
@@ -224,26 +236,19 @@
 
     function monthview($viewdate)
     {
-      global $g_user, $g_db;
+      global $g_db;
 
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
       $year  = substr($viewdate, 0,4);
 
-      // get all users we can view
-      $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
-      $form .= session_form();
-      $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
-      $form .= "<SELECT name='user'>\n";
-      $form .= $this->get_employees($this->m_user);
-      $form .= "</SELECT>\n";
-      $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
-      $form .= "</FORM>\n";
+      $form = $this->getUserSelector($viewdate);
 
       //get the rendered matrix
       $dummy = new monthView($month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["id"];
+      $user = getUser();
+      $dummy->owner       = $user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
@@ -283,7 +288,7 @@
 
     function employeeview($viewdate)
     {
-      global $g_user, $g_db;
+      global $g_db;
 
       $selemployee = $_REQUEST["selemployee"];
 
@@ -340,27 +345,20 @@
 
     function dayview($viewdate)
     {
-      global $g_user, $g_db;
+      global $g_db;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
       $month = substr($viewdate, 5,2);
       $year  = substr($viewdate, 0,4);
 
-      // get all users we can view
-      $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
-      $form .= session_form();
-      $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
-      $form .= "<SELECT name='user'>\n";
-      $form .= $this->get_employees($this->m_user);
-      $form .= "</SELECT>\n";
-      $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
-      $form .= "</FORM>\n";
-
+      $form = $this->getUserSelector($viewdate);
+      
       // get the rendered matrix
       $dummy = new dayView($day, $month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["id"];
+      $user = getUser();
+      $dummy->owner       = $user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
@@ -381,16 +379,9 @@
 
       return $buff;
     }
-
-    function weekview($viewdate)
-    {
-      global $g_user, $g_db;
-
-      // viewdate is something like 2001-07-23
-      $day   = substr($viewdate, 8,2);
-      $month = substr($viewdate, 5,2);
-      $year  = substr($viewdate, 0,4);
-
+    
+    function getUserSelector($viewdate)
+    {  
       // get all users we can view
       $form  = "<FORM method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
       $form .= session_form();
@@ -400,11 +391,25 @@
       $form .= "</SELECT>\n";
       $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
       $form .= "</FORM>\n";
+      return $form;
+    }
+
+    function weekview($viewdate)
+    {
+      global $g_db;
+
+      // viewdate is something like 2001-07-23
+      $day   = substr($viewdate, 8,2);
+      $month = substr($viewdate, 5,2);
+      $year  = substr($viewdate, 0,4);
+
+      $form = $this->getUserSelector($viewdate);
 
       // get the rendered matrix
       $dummy = new weekView($day, $month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["id"];
+      $user = getUser();
+      $dummy->owner       = $user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 

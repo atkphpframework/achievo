@@ -1,5 +1,7 @@
 <?php
 
+  $modifiers[] = "employee.userprefs";
+
   class mod_calendar extends achievoModule
   {
     function getNodes()
@@ -24,6 +26,17 @@
     function getDependencies($mode)
     {
       return array("person");
+    }
+    
+    function userprefs_modifier(&$node)
+    {
+      useattrib("atklistattribute");      
+      $usernode = &getNode("employee.employee");      
+      $node->add(new atkListAttribute("calendar_defaultuserview", 
+                                      array($usernode->descriptor(getUser()), 
+                                            "allusers"), 
+                                      array("", 
+                                            "*")), "calendar");
     }
   }
 
