@@ -51,11 +51,11 @@ class employee extends person
 
     if (atkconfig("authentication")=="db")
     {
-      $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));
+      $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
       $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-      $this->add(new atkPasswordAttribute("password", AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
+      $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
     }
-    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE, 25)); // discriminator.
+    $this->add(new atkAttribute("role", AF_READONLY|AF_HIDE, 25)); // discriminator.    
   }
 
   function initial_values()
@@ -73,6 +73,24 @@ class employee extends person
   function descriptor_def()
   {
     return "[lastname], [firstname]";
+  }
+  
+  function recordActions($rec, &$actions, &$mraactions)
+  {
+    if ($rec["status"] == "active")
+    {
+      $actions["deactivate"] = session_url("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=deactivate&atkselector=[pk]", SESSION_NESTED);
+    }
+  }
+  
+  function action_deactivate()
+  {
+    global $g_db;
+    if ($this->m_postvars["atkselector"]!="")
+    {
+      $g_db->query("UPDATE person SET status='nonactive' WHERE ".$this->m_postvars["atkselector"]);
+    }
+    $this->redirect();
   }
 
 }
