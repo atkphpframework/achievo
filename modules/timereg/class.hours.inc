@@ -106,7 +106,7 @@ class hours extends atkNode
   {
      global $g_user;             
      
-     return array("userid"=>$g_user["id"],
+     return array("userid"=>array("id"=>$g_user["id"]),
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d")),
