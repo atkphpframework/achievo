@@ -13,8 +13,11 @@
    *
    * $Id$   
    * $Log$
-   * Revision 1.1  2001/05/11 15:20:40  peter
-   * Initial revision
+   * Revision 4.1  2001/05/11 15:23:03  peter
+   * Revision number update.
+   *
+   * Revision 1.1.1.1  2001/05/11 15:20:40  peter
+   * initial release of Achievo for PHP4
    *
    * Revision 4.8  2001/05/10 09:42:28  sandy
    * bugfix in menu.php (config menu delimiter) and for the clear posting
