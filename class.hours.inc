@@ -3,7 +3,7 @@
 include_once "class.projectphaseattrib.inc";
 include_once "class.projectattrib.inc";
 include_once "achievotools.inc";
-  
+
 function date_format($datestamp)
 {
   return date("m-d",$datestamp)." (".text(strtolower(date("D",$datestamp))).")";
@@ -15,54 +15,54 @@ class hours extends atkNode
 
   function hours()
   {
-    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate,$g_sessionData; 
-    
-    // weekview and viewdate are variables that we need to remember..    
+    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate,$g_sessionData;
+
+    // weekview and viewdate are variables that we need to remember..
     $weekview = $g_sessionManager->stackVar("weekview");
     $viewdate = $g_sessionManager->stackVar("viewdate");
     if ($viewdate=="") $viewdate = strftime("%Y-%m-%d");
-    
+
     // hoursurvey has extra sticky vars..
     if ($atkaction=="hoursurvey")
     {
       // TODO: this doesn't work any more with the new session management code.
-      // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));    
+      // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));
     }
-        
-    $flags=NF_NO_VIEW;    
+
+    $flags=NF_NO_VIEW;
     if ($atkaction!='hoursurvey')
     {
       $this->m_lock = $this->getLockType(strtolower($g_user["name"]),$viewdate);
-    
+
       if ($this->m_lock != "")
       {
-        // This week is locked..       
-        $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;    
+        // This week is locked..
+        $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
       }
     }
-    
+
     $this->atkNode("hours",$flags); // node() constructor is *not* called automatically!
-   
+
     // default view if none is set
     if (!isset($weekview)||$weekview=="")
     {
       if (atkconfig("timereg_defaultview")=="week") $weekview=1;
-    }        
+    }
 
     if($atkaction!='hoursurvey')
     {
-      $this->addFilter("userid",strtolower($g_user["name"])); 
+      $this->addFilter("userid",strtolower($g_user["name"]));
     }
     if($atkaction!='hoursurvey'&&$atkaction!='edit')
     {
       if ($weekview!=1)
       {
-        $this->addFilter("activitydate",$viewdate); 
-      }        
+        $this->addFilter("activitydate",$viewdate);
+      }
     }
 
     $this->add(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-                
+
     if($atkaction=="hoursurvey"||$weekview==1)
     {
       $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
@@ -71,7 +71,7 @@ class hours extends atkNode
     {
       $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_HIDE_LIST));
     }
-    
+
     if ($atkaction=="hoursurvey")
     {
       $this->add(new atkAttribute("userid"));
@@ -80,12 +80,12 @@ class hours extends atkNode
     {
       $this->add(new atkAttribute("userid",AF_HIDE));
     }
-    
-    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY));    
-    $this->add(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));          
-    $this->add(new atkAttribute("remark"));          
-    $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));                
-    $this->add(new atkDateAttribute("entrydate",AF_HIDE));                      
+
+    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY));
+    $this->add(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));
+    $this->add(new atkAttribute("remark"));
+    $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
+    $this->add(new atkDateAttribute("entrydate",AF_HIDE));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
     if($atkaction=="hoursurvey")
@@ -96,16 +96,16 @@ class hours extends atkNode
     {
       if($atkorderby!="") $this->setOrder($atkorderby);
     }
-    
+
     $this->setTable("hours","hours");
-   
+
   }
-      
+
   function initial_values()
   {
      global $g_user, $viewdate, $g_sessionData;
-     $initial_date = Array();    
-     
+     $initial_date = Array();
+
      if ($viewdate!="")
      {
        $initial_date = Array("year"=>substr($viewdate,0,4),
@@ -124,34 +124,34 @@ class hours extends atkNode
                              "day"=>date("d")),
                   "activitydate"=>$initial_date);
   }
-    
+
   function activityid_display($rec)
   {
     // activityname is loaded in the phaseid join, so we get the info from there..
     return $rec["phaseid"]["activityname"];
   }
-     
+
   function action_hoursurvey()
-  {      
+  {
     include 'hoursurvey.inc';
   }
-  
+
   function javascript_edit($rec)
   {
     global $currentphase, $currentactivity, $weekview, $viewdate;
-    
+
     if (!isset($currentphase)||$currentphase=="") $currentphase=0;
     if (!isset($currentactivity)||$currentactivity=="") $currentactivity =0;
     $result = '<script language="javascript"> set_activities('.$currentphase.','.$currentactivity.'); </script>';
-        
+
     return $result;
   }
-   
+
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin()
-  {      
+  {
     global $weekview;
-    
+
     if ($weekview!=1)
     {
       if ($this->m_lock=="") $this->addPage();
@@ -161,22 +161,22 @@ class hours extends atkNode
     {
       if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $this->addPage();
       $this->weekview();
-    }      
-  }    
-  
+    }
+  }
+
   function adminHeader()
   {
     global $weekview, $viewdate;
     if ($weekview!=1)
     {
       $viewdatestamp = mktime(0,0,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
-      
+
       // we substract 3601 seconds to account for Daylight Savings Time
       $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
-      
+
       // we add 3601 seconds to account for Daylight Savings Time
       $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
-    
+
       $res = href('dispatch.php?viewdate='.$yesterday, text("houradmin_previousday"));
       $res.='&nbsp;&nbsp;<b>'.date_format($viewdatestamp).'</b>';
       if ($viewdate<date('Y-m-d')) // If current is not today we can also move forward
@@ -185,11 +185,11 @@ class hours extends atkNode
     }
     return $res;
   }
-  
+
   function weekview()
   {
     global $g_layout, $viewdate, $g_user;
-    
+
     if ($viewdate!="")
     {
       $viewtime = mktime(12,12,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
@@ -199,7 +199,7 @@ class hours extends atkNode
       $viewdate = date("Y-m-d");
       $viewtime = time();
     }
-    
+
     $g_layout->ui_top(text('title_houradmin_weekview').' '.strftime('%V',$viewtime));
 
     $weekday = strftime("%w",$viewtime);
@@ -211,7 +211,7 @@ class hours extends atkNode
       $weekdates[$i]['day']=text(strtolower(date("D" ,$viewtime-(86400*($weekday-$i)))));
       $weekdates[$i]['stamp']=$viewtime-(86400*($weekday-$i));
     }
-    
+
     $week = Array();
     $projtotals = Array();
     $daytotals = Array();
@@ -222,23 +222,23 @@ class hours extends atkNode
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"]; 
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
       $week[$key][$date] += $time;
       $projtotals[$key] += $time;
       $daytotals[$date] += $time;
       $total += $time;
     }
-    
+
     $userid = $g_user["name"];
-    
+
     // First a line with previous and next week links..
     $prevnextlinks = '<br>'.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], text('houradmin_previousweek'));
     if ($weekdates[8]['date'] <= date("Y-m-d"))
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],text('houradmin_nextweek'));
     }
-    
+
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$viewdate,'<b>'.text("unlock").'</b>');
@@ -249,16 +249,16 @@ class hours extends atkNode
     {
       $prevnextlinks.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$viewdate,'<b>'.text("lock").'</b>');
     }
-    
+
     $prevnextlinks.='<br><br>';
-    
+
     $g_layout->output($prevnextlinks);
     $g_layout->output($g_layout->data_top());
     $g_layout->output($g_layout->tr_top());
-    
+
     $g_layout->td_datatitle(text('project').'/'.text('phase'));
     for ($i=1;$i<=7;$i++)
-    {        
+    {
       if ($weekdates[$i]['date'] <= date("Y-m-d"))
       {
         $url = 'dispatch.php?viewdate='.$weekdates[$i]['date']."&weekview=0";
@@ -268,14 +268,14 @@ class hours extends atkNode
       {
         $g_layout->td_datatitle(text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
       }
-      
+
     }
     $g_layout->td_datatitle(text('total'));
-    
+
     $g_layout->output($g_layout->tr_bottom());
 
     while (list($proj, $times)=each($week))
-    {      
+    {
       $g_layout->output($g_layout->tr_top());
       $g_layout->td($proj);
       for ($i=1;$i<=7;$i++)
@@ -285,13 +285,13 @@ class hours extends atkNode
       $g_layout->td(time_format($projtotals[$proj]), 'align="center"');
       $g_layout->output($g_layout->tr_bottom());
     }
-    
+
     $g_layout->output($g_layout->tr_top());
-    
+
     $g_layout->td_datatitle(text('total'));
 
     for ($i=1;$i<=7;$i++)
-    {        
+    {
       if ($daytotals[$weekdates[$i]['date']]>atkconfig("overtimethreshold"))
       {
         $color = "#FF0000";
@@ -303,12 +303,12 @@ class hours extends atkNode
       $g_layout->td_datatitle('<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>','align="center"');
     }
     $g_layout->td_datatitle(time_format($total), 'align="center"');
-		
+
     $g_layout->output($g_layout->tr_bottom());
     $g_layout->output($g_layout->data_bottom());
     $g_layout->ui_bottom();
   }
-  
+
   function postAdd($rec)
   {
     // if we add a record on a date that is not the currently viewed date, we jump
@@ -317,7 +317,7 @@ class hours extends atkNode
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
-  
+
   function postUpdate($rec)
   {
     // if we edit a record and set it to a date that is not the currently viewed date, we jump
@@ -326,22 +326,22 @@ class hours extends atkNode
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
-  
+
   // Check if this week may be booked..
   // returns: "" - not locked
   //          "individual" - locked for the user only
   //          "all"       - locked for everybody (can only be unlocked by administrator)
   function getLockType($userid, $date)
   {
-    global $g_db; 
-  
+    global $g_db;
+
     $week = weekstamp(mktime(0,0,0,substr($date,5,2),
                                    substr($date,8,2),
                                    substr($date,0,4)));
-    
-    $query = "SELECT 
+
+    $query = "SELECT
                 week, userid
-              FROM 
+              FROM
                 hours_lock
               WHERE
                 (userid = '$userid' OR userid = '*')
@@ -352,7 +352,7 @@ class hours extends atkNode
     {
       if ($res[$i]["userid"] == '*') return "all";
     }
-    
+
     // apparently not locked for everybody.
     if (count($res)>0)
     {
@@ -360,11 +360,11 @@ class hours extends atkNode
     }
     return "";
   }
-  
+
   function action_lock()
   {
     global $g_db;
-    
+
     $viewdate = $this->m_postvars["viewdate"];
     $userid = $this->m_postvars["userid"];
     $week = weekstamp(mktime(0,0,0,substr($viewdate,5,2),
@@ -374,11 +374,11 @@ class hours extends atkNode
     $g_db->query($query);
     $this->redirect();
   }
-  
+
   function action_unlock()
   {
     global $g_db;
-    
+
     $viewdate = $this->m_postvars["viewdate"];
     $userid = $this->m_postvars["userid"];
     $week = weekstamp(mktime(0,0,0,substr($viewdate,5,2),
@@ -388,22 +388,22 @@ class hours extends atkNode
     $g_db->query($query);
     $this->redirect();
   }
-  
+
   /**
    * This function checks whether a week is 'compleet'. This means that the user
    * has booked the same ammount of hours (or more) as is specified in his contract.
-   * Note: This is checked against the contract that was valid on the first day 
+   * Note: This is checked against the contract that was valid on the first day
    * of the week.
    */
   function weekComplete($userid, $date)
   {
     global $g_db;
-    
+
     $start = startOfWeek($date);
     $end = endOfWeek($date);
-  
-    $query = "SELECT (uc_hours*60)-sum(time) as leftover 
-              FROM 
+
+    $query = "SELECT (uc_hours*60)-sum(time) as leftover
+              FROM
                 hours LEFT JOIN usercontract
                 ON hours.userid = usercontract.userid
               WHERE
@@ -423,7 +423,7 @@ class hours extends atkNode
       return ($res[0]["leftover"]<=0);
     }
   }
-  
+
   function activitydate_validate(&$rec)
   {
     global $g_user;
@@ -431,15 +431,15 @@ class hours extends atkNode
     {
       triggerError($rec, "activitydate", "houradmin_weeklocked");
     }
-  }    
-  
+  }
+
   /**
    * We override the validate method, so we can check if a remark is required
-   * for the chosen activity. If it is, we add the AF_OBLIGATORY flag to the 
+   * for the chosen activity. If it is, we add the AF_OBLIGATORY flag to the
    * remark before the validation.
    *
    * (First thought would be to create a remark_validate() function, but empty
-   * values are not validated by atkNode's validate function. That's why we 
+   * values are not validated by atkNode's validate function. That's why we
    * need to override validate.)
    */
   function validate(&$record, $mode)
@@ -457,13 +457,13 @@ class hours extends atkNode
     else // something is wrong with the chosen activity if we can't find
          // a record for it.
     {
-      triggerError($record, "activity", "error_obligatoryfield");
+      triggerError($record, "activityid", "error_obligatoryfield");
     }
-    
-    // continue with original validation 
+
+    // continue with original validation
     atkNode::validate($record, $mode);
   }
-  
+
 }
 
 ?>
