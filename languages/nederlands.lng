@@ -410,4 +410,19 @@
   $txt_costdate = "Datum uitgave";
   $txt_paymethod = "Betaalmethode";
   
+    
+  // --------==== Strings that were introduced in version 0.9: ====---------
+  
+  $txt_title_pim = "Personal Information Manager";
+  $txt_pim_schedule = "Je afspraken voor vandaag";
+  $txt_pim_gotoschedule = "Ga naar agenda";
+  $txt_pim_todos = "Je todo's";
+  $txt_pim_assignedtoyou = "Toegewezen aan jou";
+  $txt_pim_assignedbyyou = "Door jou toegewezen aan anderen";
+  $txt_pim_timeregistration = "Je tijdregistratie voor vandaag";
+  $txt_pim_gototimeregistration = "Ga naar tijdregistratie";
+  $txt_pim_timeregistration_empty = "Nog geen tijd geregistreerd";
+  $txt_pim_schedule_empty = "Nog geen afspraken voor vandaag";
+  $txt_pim_todo_empty = "Geen todo's aanwezig";
+  
 ?>
