@@ -115,7 +115,7 @@
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     // 100 should be enough to get 5 unique recent projects.
-    $query.= "ORDER BY hours.entrydate DESC";
+    $query.= "ORDER BY projectname DESC";
 
     $arr = $g_db->getrows($query,'0','100');
         
