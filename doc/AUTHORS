@@ -16,6 +16,27 @@ Marketing and Support
 Tom M. Schenkenberg <tom@achievo.com>
 
 
+Sponsors
+--------
+Achievo grows not only through contributions from the Open Source community,
+but also through financial donations from sponsors, who finance the 
+development of new features.
+
+* Tryllian BV, Netherlands (http://www.tryllian.nl) sponsored the following 
+  developments:
+
+  - hourlocking feature
+  - employee week report
+  - CSV export function
+  - employee contracts
+  - timereg_check cron script
+
+* Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of 
+  the billing feature.
+  
+To become a sponsor, please read http://www.ibuildings.nl/en/sponsor/achievo.
+
+
 Translators
 -----------
 The following people contributed a translation or updated an existing one:
