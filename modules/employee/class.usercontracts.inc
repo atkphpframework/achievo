@@ -43,7 +43,7 @@ class usercontracts extends atkNode
       {
         global $g_db;
         $recs = $g_db->getrows("select max(enddate) as lastdate from usercontract where userid = ".$record["userid"]["id"]);
-        if (count($recs))
+        if (count($recs) && !empty($recs[0]["lastdate"]))
         {
           list($year, $month, $day) = explode("-", $recs[0]["lastdate"]);          
           $record["startdate"] = array("year"=>$year,
