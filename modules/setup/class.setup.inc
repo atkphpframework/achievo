@@ -104,7 +104,15 @@
                                      </ul>", "dbcheck");
           
         case DB_UNKNOWNDATABASE:
-          return $this->setupScreen("Database does not exist", "database doesn't exist");
+          return $this->setupScreen("Database does not exist", 
+                                    "The database specified in config.inc.php ('".atkconfig("databasename")."') does not exist.
+                                     You have to do one of the following:
+                                     <ul>
+                                       <li>Correct the config.inc.php file by setting \$config_databasename to the correct database.
+                                       <li>Create the database, and make sure you grant the correct rights to the user you specified in config.inc.php.
+                                     </ul>
+                                     Once the configuration is ok, you can click 'retry' and the setup process can continue.",
+                                     "dbcheck");
           
         case DB_ACCESSDENIED_USER:
           return $this->setupScreen("Database username or password incorrect", 
@@ -172,20 +180,100 @@
       if ($res == DB_SUCCESS)
       {
         global $g_db;
+        $tablenames=array();
         $tables = $g_db->table_names();
+        for ($i=0, $_i=count($tables); $i<$_i; $i++)
+        {
+          $tablenames[] = $tables[$i]["table_name"];
+        }                
     
         if (count($tables)==0)
         {
           return $this->setupScreen("Database appears to be empty",
-                                    "Your database connection is working. However, the specified database '".atkconfig("databasename")."' seems to be empty.
+                                    "Your database connection is working. However, the specified database ('".atkconfig("databasename")."') seems to be empty.
                                      <br>This means I need to install a new database. 
                                      <br><br><i>If you think this is not correct, please verify your database setup, and rerun this script.</i>
                                      <br><br>To continue with the installation of a new Achievo database, please click 'Continue'.",
                                     "installdb");
         }
+        else if (!in_array("hours", $tablenames))
+        {
+          // The 'hours' table has been used since the very beginning of Achievo.
+          // If this table is not present, and the database is not empty, then
+          // the database is not an Achievo database and we will refuse to 
+          // install or upgrade here.
+          return $this->setupScreen("Database is not an Achievo database",
+                                    "The database configured in config.inc.php ('".atkconfig("databasename")."') is not empty, and it does not
+                                     contain an Achievo database. This database probably belongs to a different application.
+                                     <br>It is strongly recommended to install Achievo to a new, empty database.
+                                     <br><br>If you are intentionally installing Achievo into a non-empty database, you can 
+                                     continue, but keep this in mind: The installation process may fail if there are conflicting tables                                      already present in the database, and it might even try to modify or drop existing tables. 
+                                     <br><br><b>Continue at your own risk</b>.",
+                                     "installdb");
+        }
+        if (in_array("versioninfo", $tablenames))
+        {
+          return $this->setupScreen(">=0.9.2", "Hi, you have a db that's 0.9.2 or higher");
+          // TODO: read versioninformation and perform upgrades
+        }
         else
         {
-          return $this->setupScreen("Database exists and is not empty",
+          // Apparently, this is a version from before 0.9.2, when we didn't have the
+          // versioninfo table yet.
+          // Perform some checks to determine what version this database might be.
+          // We do this by looking at some tables that exist, that were created in
+          // several Achievo versions.
+          $version = "";
+          
+          if (in_array("projectactivity", $tablenames) && in_array("templateactivity"))
+          {
+            // If these two tables exist, this is a 0.4 database.
+            $version = "0.4.x";
+            // TODO FIXME: the 0.4 -> 0.6 conversion script works completely different
+            // from the others, in that it reads from db 1 and inserts in another database.
+            // We'll have to rewrite this script.
+          }
+          else if (in_array("todo_history", $tablenames) && in_array("employee_project", $tablenames))
+          {
+            $version = "0.9.1";
+          }
+          else if (in_array("schedule", $tablenames) && in_array("schedule_types"))
+          {
+            $version = "0.9";
+          }
+          else if (in_array("hours_lock", $tablenames) && in_array("contract", $tablenames)
+                  && !in_array("schedule", $tablenames))
+          {
+            $version = "0.8.x";
+          }
+          
+          if ($version!="")
+          {          
+            return $this->setupScreen("Database version $version detected",
+                                      "The database you are currently using ('".atkconfig("databasename")."') appears to be from Achievo version $version.
+                                       <br>I can upgrade this database for you. Please make sure you backup the database
+                                       first, because although I know what I'm doing, I'm just an open source script, and 
+                                       I come with no warranty whatsoever. If I screw up the database, I've got nothing to 
+                                       offer you but 'oops, sorry!'.
+                                       <br>
+                                       <br>In other words, backup your database first!
+                                       <br>
+                                       <br>If you've taken the necessary precautions, click the continue button to upgrade the database.",
+                                      "upgrade$version");
+          }
+          else
+          {
+            return $this->setupScreen("Unknown Achievo version",
+                                      "I was unable to determine what version of Achievo your current database ('".atkconfig("databasename")."') is.
+                                       <br>
+                                       <br>Please verify if the database configuration you specified in config.inc.php is correct, and try again.
+                                       <br>
+                                       <br>If you are sure the configuration is correct, please send a message to the Achievo mailinglist so we can 
+                                       try to determine why the setup script does not recognize your Achievo database.",
+                                      "dbcheck");
+          }
+        }
+          /*return $this->setupScreen("Database exists and is not empty",
                                     "In a future release, I will be able to upgrade this database automatically.
                                     <br>But I can't do that yet.                                     
                                     <br>I'm also not yet able to determine what version you are currently running.
@@ -197,8 +285,8 @@
                                     <br>If you were using a database from version <b>0.9.1</b>, you can use <b><a href=\"upgrade/convert-0.9.1-to-0.9.2.php\">this upgrade-script</a></b> to upgrade to 0.9.2.
                                     <br><br>If you are running a different version, please check Achievo's upgrade directory and run all
                                         necessary patches. The .sql files need to be executed in mysql. The .php files can be run through your browser.
-                                        Please be sure to apply the upgrade scripts in the correct order.");
-        }                
+                                        Please be sure to apply the upgrade scripts in the correct order.");*/
+        
       }
       else
       {
