@@ -1,5 +1,11 @@
 <?php
 
+  // TODO: this script uses installNode calls.
+  // This is not allowed for conversion script, since the nodes refered to 
+  // might disappear or change in later releases, leaving this conversion 
+  // script crippled.
+  // The calls must be replaced by create table and/or alter table statements.
+
   $setup->report("Start conversion of 0.9.1 database -> 0.9.2 database");
   
   // Declare a utility function for converting varchar userid's to the new int
@@ -175,7 +181,8 @@
   $g_db->query("UPDATE accessright SET node = 'organization.organization' WHERE node = 'customer'");    
   $g_db->query("UPDATE accessright SET node = CONCAT('organization.', node) WHERE node IN ('contact', 'contracts', 'contracttype')");    
   $g_db->query("UPDATE accessright SET node = CONCAT('project.', node) WHERE node IN ('project', 'phase', 'activity', 'tpl_phase', 'tpl_project')");  
-  $g_db->query("UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport', 'hoursurvey')");    
+  $g_db->query("UPDATE accessright SET node = 'reports.hoursurvey', action='report' WHERE node='hours' AND action='hoursurvey'");
+  $g_db->query("UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport')");      
   $g_db->query("UPDATE accessright SET node = CONCAT('resource_planning.', node) WHERE node = 'resource_planning'");    
   $g_db->query("UPDATE accessright SET node = CONCAT('timereg.', node) WHERE node IN ('hours', 'hours_lock')");  
   $g_db->query("UPDATE accessright SET node = CONCAT('todo.', node) WHERE node = 'todo'");  
