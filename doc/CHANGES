@@ -13,14 +13,17 @@ Changes in Achievo 0.9.1
 + Added 'multiselect' feature (for example the ability to delete more than one
   record at the same time).
 + Added Chinese language file.
++ Added Danish langugae file.
 + Added 'default' screen to menuitems. (brings back 'one click' 
   timeregistration)
 + Added a search box to the top frame (doesn't find anything yet though).
++ Added multiline select to extended search feature. (bug #30)
 * Changed include structure (include classes only when needed), resulting in 
   better performance.
 * Achievo now works with allow_call_time_pass_reference = Off in php.ini.
 * Achievo no longer behaves weird when having multiple open browser windows.
-* Bugfixes for bugs 17 and 27.
+* Updated Spanish language file (bug #53)
+* Bugfixes for bugs #17, #27 and #40.
 * Several other bugfixes.
 
 Changes in Achievo 0.9.0
