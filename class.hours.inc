@@ -430,5 +430,14 @@ class hours extends atkNode
     }
   }
   
+  function activitydate_validate($value)
+  {
+    global $g_user;
+    if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$value["year"],$value["month"],$value["day"]))!="")
+    {
+      return text("houradmin_weeklocked");
+    }
+  }
+  
 }
 ?>
