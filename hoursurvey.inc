@@ -274,12 +274,12 @@
    }
   if ($outputType=="1")
     { 
-    $g_layout->output($this->specialRecordList($data,"<tr>","<td >","</td>","</tr>", "0",$suppress));
+    $g_layout->output($this->specialRecordList($data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
     }
    if ($outputType=="2")
    {
     // specail RecordList can export to file
-     $this->specialRecordList($data, "", '"', '";', "\r\n", "1", $suppress);
+     $this->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
    }
 
 ?>
