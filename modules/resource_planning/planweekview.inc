@@ -104,24 +104,32 @@ $query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
-$query->addField('id', ' ', 'planning', 'planningid');
-$query->addField('plandate', ' ', 'planning');
-$query->addField('time', ' ', 'planning');
-$query->addField('name', ' ', 'project', 'projectname');
-$query->addField('name', ' ', 'employee', 'employeename');
-$query->addField('userid', ' ', 'employee', 'userid');
-$query->addField('abbreviation', ' ', 'project', 'projectab');
-$query->addField('id', ' ', 'project', 'qprojectid');
+$query->addField('id', ' ', 'planning', 'planning_');
+$query->addField('plandate', ' ', 'planning', 'planning_');
+$query->addField('time', ' ', 'planning', 'planning_');
+$query->addField('name', ' ', 'project', 'project_');
+$query->addField('name', ' ', 'employee', 'employee_');
+$query->addField('userid', ' ', 'employee', 'employee_');
+$query->addField('abbreviation', ' ', 'project', 'project_');
+$query->addField('id', ' ', 'project', 'project_');
 
-// If in the listbox above all project is selected the planning for a week for all employees will be selected.
+// If in the listbox above all projects is selected the planning for a week for all employees will be selected.
 // TO DO: It is not possible to make a planning for people because no project is selected en achievo does not know what project the
 // planned hours should be booked on.
 if(isset($projectid)&&$projectid!='-1') $query->addCondition("employee_project.projectid='".$projectid."'");
 
 $query->addOrderBy('employee.name');
 $query->addOrderBy('plandate');
+
 $querystring = $query->buildSelect(TRUE);
 $dbrecords = $g_db->getrows($querystring);
+
+// Call to function deAlias for every item in the result of the query, so we can see the aliasnames as defined by addField
+$cntrec=count($dbrecords);
+for ($i=0;$i<$cntrec;$i++)
+{
+  $query->deAlias($dbrecords[$i]);
+}
 
 // First a line with previous and next week links containing the viewdate 1 day before the first day of the week that is viewed
 // or 1 day after the last day of the week that is viewed
@@ -140,16 +148,15 @@ for ($i=1;$i<=7;$i++)
   // Printing the days of the week and their dates
   $g_layout->td_datatitle(text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','colspan="2" align="center"');    }
   $g_layout->output($g_layout->tr_bottom());
-  $cntrec=count($dbrecords);
   if ($cntrec>0)
   {
     for ($i = 0; $i < count($dbrecords); $i++)
     {
-      $employee = $dbrecords[$i][4];
-      $day = date("w",strtotime($dbrecords[$i][1]));
+      $employee = $dbrecords[$i]['employee_name'];
+      $day = date("w",strtotime($dbrecords[$i]['planning_plandate']));
       if ($day==0) $day=7;
       $result[$employee][$day][] = $dbrecords[$i];
-      $result[$employee][0]=$dbrecords[$i][5];
+      $result[$employee][0]=$dbrecords[$i]['employee_userid'];
     }
 
      // For each employee the planning for the whole week will be shown
@@ -172,8 +179,8 @@ for ($i=1;$i<=7;$i++)
 
             // If the date of the printed day is smaller the the date now the planned item can only be viewed (no changes are allowed)
             // because you allways plan in the future
-            if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[0]"));
-            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[0]", "employeefilter" => "employee.userid='$item[5]'", "projectfilter" => "projectid='$item[7]'"));
+            if ($linkdate<$viewdate) $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[planning_id]"));
+            else $url=dispatch_url('resource_planning.resource_planning','edit', array("atkselector" => "planning.id=$item[planning_id]", "employeefilter" => "employee.userid='$item[employee_userid]'", "projectfilter" => "projectid='$item[7]'"));
             $projects.=href($url, $item[6], SESSION_NESTED).'<br>';
             $times.=time_format($item[2]).'<br>';
           }
