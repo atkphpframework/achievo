@@ -27,7 +27,7 @@ class employee extends atkNode
       $this->addAttribute(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE));
       $this->addFilter("status","active");        
     }
-    $this->addAttribute(new atkOneToManyRelation("uc_contract","usercontracts","uc_userid",AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("contract","usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
 
     $this->setTable("employee","employee");
     $this->setOrder("name");

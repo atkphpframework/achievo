@@ -190,6 +190,7 @@
     
   function time_format($time)
   {
+    if ($time==0) return "&nbsp;";
     return floor($time/60).":".sprintf("%02d",($time%60));
   }
 

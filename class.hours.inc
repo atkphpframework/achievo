@@ -413,13 +413,13 @@ class hours extends atkNode
     $query = "SELECT (uc_hours*60)-sum(time) as leftover 
               FROM 
                 hours LEFT JOIN usercontract
-                ON userid = uc_userid
+                ON hours.userid = usercontract.userid
               WHERE
-                uc_startdate <= '$start'
-                AND uc_enddate > '$start'
-                AND userid = '$userid'
+                startdate <= '$start'
+                AND enddate > '$start'
+                AND hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'
-              GROUP BY userid";
+              GROUP BY hours.userid";
     $res = $g_db->getrows($query);
     if (count($res)==0)
     {

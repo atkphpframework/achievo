@@ -243,25 +243,25 @@ class weekreport extends atkNode
        
     // determine contracthours per week..
     $query = "SELECT
-                uc_hours, uc_startdate, uc_enddate
+                uc_hours, startdate, enddate
               FROM
                  usercontract
               WHERE
-                uc_userid ='$userid'
-                AND uc_startdate <= '$enddate'
-                AND uc_enddate >= '$startdate'
+                userid ='$userid'
+                AND startdate <= '$enddate'
+                AND enddate >= '$startdate'
               ORDER BY
-                uc_startdate";
+                startdate";
     $contracts = $g_db->getrows($query);
         
     for ($i=0;$i<count($contracts);$i++)
     {
-      $start_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["uc_startdate"],5,2),
-                                             substr($contracts[$i]["uc_startdate"],8,2),
-                                             substr($contracts[$i]["uc_startdate"],0,4)));
-      $end_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["uc_enddate"],5,2),
-                                           substr($contracts[$i]["uc_enddate"],8,2),
-                                           substr($contracts[$i]["uc_enddate"],0,4)));
+      $start_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["startdate"],5,2),
+                                             substr($contracts[$i]["startdate"],8,2),
+                                             substr($contracts[$i]["startdate"],0,4)));
+      $end_week = weekstamp(mktime(0,0,0,substr($contracts[$i]["enddate"],5,2),
+                                           substr($contracts[$i]["enddate"],8,2),
+                                           substr($contracts[$i]["enddate"],0,4)));
       for ($j=$start_week;$j<=$end_week;$j++)
       {
         if ($j>=$report_start_week && $j<=$report_end_week && substr($j,4)<=52)

@@ -36,12 +36,12 @@
   $g_layout->output('<input type="hidden" name="atknodetype" value="project">');
   $g_layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
   $g_layout->table_simple();
-  $g_layout->output($g_layout->tr_top());
+  $g_layout->output('<tr>');
   $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
   
   $g_layout->td('<input type="hidden" name="selectedprojectid" value="'.$selectedprojectid.'">');
   
-  $g_layout->output($g_layout->tr_bottom() . $g_layout->tr_top());  
+  $g_layout->output('<tr></tr>');  
   
     // we have to pass a 'dummy' record to the attributes to set their default value.
   $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
@@ -60,7 +60,7 @@
                   text("until").
                   '&nbsp; '.$enddateatt->edit($dummyrec));
                                 
-  $g_layout->output($g_layout->tr_bottom() . '</table><input type="submit" value="'.text("refresh").'"></form><br>');
+  $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
       
   $query = "SELECT 
               hours.time as time,              
