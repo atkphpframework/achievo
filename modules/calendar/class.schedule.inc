@@ -62,14 +62,14 @@
       $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $default_end_time, 0));
-      $this->add(new atkBoolAttribute("allday"));
+      $this->add(new atkBoolAttribute("allday", AF_HIDE_ADD));
       $this->add(new atkAttribute("title"          , AF_SEARCHABLE|AF_OBLIGATORY, 50));
       $this->add(new atkTextAttribute("description"));
-      $this->add(new atkAttribute("location"        , AF_SEARCHABLE, 50));
-      $this->add(new atkBoolAttribute("publicitem"));
-      $this->add(new atkBoolAttribute("all_users"));
-      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled")));
       $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
+      $this->add(new atkAttribute("location"        , AF_SEARCHABLE|AF_HIDE_ADD, 50));
+      $this->add(new atkBoolAttribute("publicitem", AF_HIDE_ADD));
+      $this->add(new atkBoolAttribute("all_users", AF_HIDE_ADD));
+      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));      
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD, 15));
@@ -103,6 +103,7 @@
 
       $initial["owner"] = $g_user["name"];
       $initial["publicitem"] = 1;
+      $initial["status"] = "unconfirmed";
 
       if ($this->m_viewdate!="")
       {
@@ -409,6 +410,15 @@
       $buff .= $dummy->dumpMatrix();
 
       return $buff;
+    }
+    
+    function postAdd($rec, $mode)
+    {
+      // insert the owner as first attendee.
+      // TODO FIXME.
+      // (the schedule table still uses userid as refkey instead of the 
+      // primary key of the employee table. we should fix this first, then
+      // implementing this postadd should be easier)
     }
   }
 
