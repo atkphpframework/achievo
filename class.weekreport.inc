@@ -314,7 +314,7 @@ class weekreport extends atkNode
                 AND activitydate <= '$enddate'
                 AND hours.userid = employee.userid
               GROUP BY
-                userid, activitydate";
+                hours.userid, activitydate";
                 
     $raw = $g_db->getrows($query);
     
