@@ -1,5 +1,5 @@
 <?php
-  $txt_menu_finance = "Financieel";
+  $txt_menu_finance = "Financieel (Niet af!)";
   $txt_menu_currency = "Wisselkoersen";
   $txt_value = "Waarde";
   $txt_symbol = "Symbool";

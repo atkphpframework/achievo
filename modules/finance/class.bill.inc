@@ -122,7 +122,7 @@ class bill extends atkNode
         
     $expire = $bill_expiredate[year] ."-".$bill_expiredate[month]."-".$bill_expiredate[day];
         
-    $sql = "UPDATE bill SET contact_choose = '".$select_contact."', contact_type = '".$type_contact;
+    $sql = "UPDATE bill SET contactperson = '".$select_contact;
     $sql .= "', customer_info = '".$customerinfo."', company_onbill = '".$companyinfo."', status = 'edit'";
     $sql .= ", expire_date = '".$expire."', bill_date = '".$bill_date."', bill_nr = '".$bill_nr."'";
     $sql .= " WHERE id = ".$bill_id;
@@ -417,7 +417,7 @@ class bill extends atkNode
     global $g_layout, $config_tax_symbol, $config_tax_rate, $config_currency_symbol, $g_db, $billid;
     global $config_company_name, $config_company_adress, $config_company_zipcode, $config_company_city, $config_company_country;
     
-    $sql = "SELECT bill_date, expire_date, bill_nr, contact_choose, contact_type, customer_info, company_onbill ";
+    $sql = "SELECT bill_date, expire_date, bill_nr, contactperson, customer_info, company_onbill ";
     $sql .= "FROM bill where id = ".$billid;    
     
     $billinfo=$g_db->getrows($sql);
@@ -437,14 +437,8 @@ class bill extends atkNode
     $customerinfo = nl2br($billinfo[0]["customer_info"]);
     $g_layout->td('<DIV ALIGN="left"><B>'.text("outputbill_billto")."</B><BR>".$customerinfo."<BR>".'</DIV>');
     $g_layout->output('</tr>');
-    if ($billinfo[0]["contact_type"] != "")
-    {
-      $contact = $billinfo[0]["contact_type"];
-    }
-    else
-    {
-       $contact = $billinfo[0]["contact_choose"];
-    }
+    $contact = $billinfo[0]["contactperson"];
+    
     $g_layout->output('<tr>');
     $g_layout->td('<DIV ALIGN="left">'.text("outputbill_contact")." ".$contact.'</DIV>');
     $g_layout->output('</tr>');

@@ -6,7 +6,7 @@ class project_notesview extends atkNode
   {
     global $ATK_VARS;
     
-    $this->atkNode("project",NF_NO_ADD|NF_NO_DELETE);
+    $this->atkNode("project_notesview",NF_NO_ADD|NF_NO_DELETE);
 
     $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name"                              , AF_READONLY));

@@ -5,9 +5,16 @@
 Changes in Achievo 0.9.0
 ------------------------
 + Re-enabled all 0.7.3 unstable features that were turned off for the stable
-  0.8.0 release: finance menu (billing), cost registration and the calendar.
+  0.8.0 release: 
+  finance menu (billing)
+  cost registration 
+  scheduler 
+  postgres/oracle database install files.
 + Added a Personal Information Manager which is now the default startup 
   screen.
+* Bugfixes to the scheduler
+* Improvements to the ATK backend
+* Made Achievo more 'session timeout' resistant
 
 Changes in Achievo 0.8.1
 ------------------------

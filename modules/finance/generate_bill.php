@@ -52,7 +52,7 @@ $contactinfo=$g_db->getrows($sql);
 
 if ($edit == 1)
 {
-  $sql = "SELECT contact_choose FROM bill WHERE id = ".$billid;
+  $sql = "SELECT contactperson FROM bill WHERE id = ".$billid;
   $contactpers=$g_db->getrows($sql);
   $edit1 = $edit;
 }
@@ -66,7 +66,7 @@ if ($edit == 1)
 	if ($edit1 == 1)
 	{
 	  $contactname = $contactinfo[$x]["firstname"] . " " . $contactinfo[$x]["lastname"];
-	  if ($contactpers["0"]["contact_choose"] == $contactname)
+	  if ($contactpers["0"]["contactperson"] == $contactname)
 	  {
 	    $select = "selected";
 	    
@@ -262,14 +262,11 @@ else
 	$g_layout->td(text("choose_contact"));
 	$g_layout->td('<SELECT name="select_contact">'.get_contacts().'</SELECT>');
 	$g_layout->output('</tr><tr>');
-	$g_layout->td(text("input_contact"));
 	if ($edit == 1)
 	{
-	  $sql = "SELECT contact_type, customer_info, company_onbill FROM bill WHERE id = ".$billid;
+	  $sql = "SELECT customer_info, company_onbill FROM bill WHERE id = ".$billid;
 	  $billinfo=$g_db->getrows($sql);	  
 	}
-	$g_layout->td('<INPUT type=text name="type_contact" value="'.$billinfo["0"]["contact_type"].'" >');
-	$g_layout->output('</tr><tr>');
 	$g_layout->td('<BR>','colspan="3"');
 	$g_layout->output('</tr><tr>');
 	$g_layout->td(text("customer_info"));

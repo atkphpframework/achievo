@@ -21,8 +21,28 @@ CREATE TABLE bill (
    userid varchar(15) NOT NULL,      
    status varchar(30) NOT NULL,      
    specify_hours tinyint(1) DEFAULT '0' NOT NULL,      
+   contactperson int(10) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)   
  );      
+
+CREATE TABLE bill_line (
+  id int(10) unsigned DEFAULT '0' NOT NULL,
+  billid int(10) DEFAULT '0' NOT NULL,
+  shortdescription varchar(100),
+  description text,
+  calcoption varchar(10),
+  fixed_billed varchar(10),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE discount (
+  id int(10) NOT NULL auto_increment,
+  type tinyint(1) NOT NULL default '0',
+  amount decimal(13,5) NOT NULL default '0.00',
+  bill_line_id int(10) NOT NULL default '0',
+  apply_on varchar(10) NOT NULL default '',
+  PRIMARY KEY  (id)
+);
  
 CREATE TABLE rate (
   id int(10) unsigned DEFAULT '0' NOT NULL,
@@ -100,6 +120,7 @@ CREATE TABLE costregistration (
    description text,
    paymethod varchar(30) NOT NULL,
    currency varchar(30),
+   bill_line_id int(10) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)   
 );
 
@@ -138,6 +159,10 @@ CREATE TABLE hours (
    remark text,
    time int(4) DEFAULT '0' NOT NULL,
    userid varchar(15) NOT NULL,
+   registered tinyint(1) DEFAULT '0' NOT NULL,
+   onbill tinyint(1) DEFAULT '0' NOT NULL,
+   bill_line_id int(10) DEFAULT '0' NOT NULL,
+   hour_rate decimal(13,5) DEFAULT '0.00000' NOT NULL,
    PRIMARY KEY (id)
 );
 
