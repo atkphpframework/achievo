@@ -118,6 +118,7 @@ CREATE TABLE dependency (
 
 CREATE TABLE employee (
    userid varchar(15) NOT NULL,
+   supervisor varchar(15),
    name varchar(40),   
    email varchar(100),
    password varchar(40),
@@ -126,6 +127,7 @@ CREATE TABLE employee (
    entity int(10) DEFAULT '0',
    PRIMARY KEY (userid)
 );
+
 
 CREATE TABLE hours (
    id int(10) unsigned DEFAULT '0' NOT NULL,

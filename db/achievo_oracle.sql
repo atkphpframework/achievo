@@ -118,6 +118,7 @@ CREATE TABLE dependency (
 
 CREATE TABLE employee (
    userid varchar2(15) NOT NULL,
+   supervisor varchar2(15),
    name varchar2(40),   
    email varchar2(100),
    password varchar2(40),
