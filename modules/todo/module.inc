@@ -19,6 +19,11 @@
         menuitem("project_todoview", dispatch_url("todo.project_todoview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("todo.todo", "admin"));
       }
     }
+    
+    function getDependencies($mode)
+    {
+      return array("project");
+    }
 
     function getPimItems()
     {

@@ -1,7 +1,7 @@
 <?php
   $setup->installNode("employee.employee");
   $setup->installNode("employee.profile");
-  
-  // TODO FIXME: the fields for userprefs cannot be installed. 
+  $setup->installNode("employee.userprefs");
+  $setup->installNode("employee.usercontracts"); 
   $setup->setVersion(1);
 ?>

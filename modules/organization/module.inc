@@ -19,6 +19,11 @@
       menuitem("contracttype", dispatch_url("organization.contracttype","admin"),"setup", array("organization.contracttype","admin"));
       menuitem("-","","main",true,720);
     }
+    
+    function getDependencies($mode)
+    {
+      return array("person");
+    }
 
     function search($expression)
     {

@@ -42,6 +42,11 @@
       menuitem("tpl_project_admin", dispatch_url("project.tpl_project", "admin"), "setup", array("project.tpl_project", "admin"));
       menuitem("role_admin", dispatch_url("project.role", "admin"), "setup", array("project.role", "admin"));
     }
+    
+    function getDependencies($mode)
+    {
+      return array("employee", "organization");
+    }
 
     function search($expression)
     {
