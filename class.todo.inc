@@ -40,16 +40,17 @@ class todo extends atkNode
   function initial_values()
   {
     global $g_user;
-   
-    $date = array("year"=>date("Y"),
-                  "month"=>date("m"),
-                  "day"=>date("d"),
-                  "hours"=>date("H"),
-                  "minutes"=>date("i"),
-                  "seconds"=>date("s"));
+    
+    $entrydate = array("year"=>date("Y"),
+                    "month"=>date("m"),
+                    "day"=>date("d"));
+    $nextweek = getdate(time()+60*60*24*7);
+    $duedate = array("year"=>$nextweek['year'],
+                  "month"=>$nextweek['mon'],
+                  "day"=>$nextweek['mday']);
     return array("owner"=>$g_user["name"],                 
-                 "entrydate"=>$date,
-                 "duedate"=>$date,
+                 "entrydate"=>$entrydate,
+                 "duedate"=>$duedate,
                  "updated"=>$date,
                  "priority"=>3);
   }    
