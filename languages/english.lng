@@ -282,7 +282,7 @@
   $txt_colorpicker_label                 = "Choose a color";
 
  
-  $txt_timeguard_mail = "Hello [name],\n\nThis is the achievo timeguard, it's been [days] days since you've booked your time.\n\n";
+  $txt_timeguard_mail = "Hello [name],\n\nThis is the achievo timeguard, you seem to miss [hours] in your hour-administration.\n\n";
   $txt_timeguard_mail_header = "Achievo Warning";
   $txt_timeguard_mail_from = "timeguard@achievo.com";
 
