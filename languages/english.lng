@@ -162,6 +162,7 @@
   $txt_pim_timeregistration_empty = "No time registered yet";
   $txt_pim_todos = "Your todo's";
   $txt_pim_todo_empty = "No todo's available";
+  $txt_title_pim_pim = "Pim";
   $txt_planned = "Planned";
   $txt_planning = "Planning";
   $txt_priority = "Priority";
@@ -333,6 +334,5 @@
   $txt_warning_fixedprice4 = "on this bill.";
   $txt_yearly = "Year";
   $txt_zipcode = "Zipcode";
-
 
 ?>
