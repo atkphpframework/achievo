@@ -19,7 +19,7 @@
   $txt_time = "Time";
   $txt_hours = "Hours";
   $txt_minutes = "Minutes";
-  $txt_date = "Date";
+  $txt_activitydate = "Date";
   $txt_percentage = "Percentage";
   $txt_total = "Total";
   $txt_description = "Description";

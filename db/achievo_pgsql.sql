@@ -8,40 +8,40 @@ CREATE TABLE accessright (
 CREATE TABLE activity (
    id integer DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
-   description varchar(50) NOT NULL,
-   remarkrequired smallint DEFAULT '0' NOT NULL,
+   description varchar(50),
+   remarkrequired smallint DEFAULT '0',
    PRIMARY KEY (id)
 );
 
 CREATE TABLE customer (
    name varchar(100) NOT NULL,
-   address varchar(100) NOT NULL,
-   zipcode varchar(20) NOT NULL,
-   city varchar(100) NOT NULL,
-   country varchar(100) NOT NULL,
-   phone varchar(20) NOT NULL,
-   fax varchar(20) NOT NULL,
-   email varchar(50) NOT NULL,
-   bankaccount varchar(30) NOT NULL,
+   address varchar(100),
+   zipcode varchar(20),
+   city varchar(100),
+   country varchar(100),
+   phone varchar(20),
+   fax varchar(20),
+   email varchar(50),
+   bankaccount varchar(30),
    id integer DEFAULT '0' NOT NULL,
-   remark text NOT NULL,
+   remark text,
    PRIMARY KEY (id)
 );
 
 CREATE TABLE contact (
    lastname varchar(50) NOT NULL,
-   firstname varchar(50) NOT NULL,
-   address varchar(100) NOT NULL,
-   zipcode varchar(20) NOT NULL,
-   city varchar(100) NOT NULL,
-   country varchar(100) NOT NULL,
-   phone varchar(20) NOT NULL,
-   fax varchar(20) NOT NULL,
-   email varchar(50) NOT NULL,
+   firstname varchar(50),
+   address varchar(100),
+   zipcode varchar(20),
+   city varchar(100),
+   country varchar(100),
+   phone varchar(20),
+   fax varchar(20),
+   email varchar(50),
    id integer DEFAULT '0' NOT NULL,
-   remark text NOT NULL,
+   remark text,
    company integer DEFAULT '0' NOT NULL,
-   owner varchar(15) NOT NULL,
+   owner varchar(15),
    PRIMARY KEY (id)
 );
 
@@ -54,19 +54,19 @@ CREATE TABLE dependency (
 CREATE TABLE employee (
    name varchar(40) NOT NULL,
    userid varchar(15) NOT NULL,
-   email varchar(100) NOT NULL,
+   email varchar(100),
    password varchar(40) NOT NULL,
    status varchar(9) DEFAULT 'active' NOT NULL,
-   theme varchar(50) NOT NULL,
-   entity integer DEFAULT '0' NOT NULL,
+   theme varchar(50),
+   entity integer DEFAULT '0',
    CHECK (status = 'active' OR status = 'nonactive')
 );
 
 CREATE TABLE hours (
    id integer DEFAULT '0' NOT NULL,
    entrydate date NOT NULL,
-   date date NOT NULL,
-   phaseid integer DEFAULT '0' NOT NULL,
+   activitydate date NOT NULL,
+   phaseid integer DEFAULT '0',
    activityid integer DEFAULT '0' NOT NULL,
    remark text,
    time smallint DEFAULT '0' NOT NULL,
@@ -104,9 +104,9 @@ CREATE TABLE project (
    name varchar(50) NOT NULL,
    coordinator varchar(20),
    status varchar(9) DEFAULT 'active' NOT NULL,
-   description text NOT NULL,
+   description text,
    startdate varchar(20) NOT NULL,
-   customer integer DEFAULT '0' NOT NULL,
+   customer integer DEFAULT '0',
    PRIMARY KEY (id),
    CHECK (status = 'active' OR status = 'nonactive' OR status = 'archived')
 );
@@ -121,7 +121,7 @@ CREATE TABLE tpl_dependency (
 CREATE TABLE tpl_phase (
    id integer DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
-   description text NOT NULL,
+   description text,
    PRIMARY KEY (id)
 );
 
@@ -134,7 +134,7 @@ CREATE TABLE tpl_phase_activity (
 CREATE TABLE tpl_project (
    id integer DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
-   description text NOT NULL,
+   description text,
    PRIMARY KEY (id)
 );
 

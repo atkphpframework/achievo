@@ -1,6 +1,7 @@
 <?php
   require_once("atk/class.atknode.inc");
-  
+
+  atksession();  
   atksecure();
   include_once("./theme.inc");
 
@@ -12,6 +13,7 @@
 
   $g_layout->output('<br>'.$txt_logout_loggedinuser.': <b>'.$g_user["name"].'</b>&nbsp; &nbsp; &nbsp;');  
   $g_layout->output(href(dispatch_url("userprefs", "edit", array("atkselector" => "employee.userid='".$g_user["name"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"'));
+  $g_layout->output('&nbsp; &nbsp; &nbsp;<a href="index.php?atklogout=true" target="_top">'.text('logout').'</a>');
   $g_layout->output('<br><br>');
   $g_layout->ui_bottom();
   $g_layout->output('</body>');

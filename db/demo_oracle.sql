@@ -1,3 +1,4 @@
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD';
 INSERT INTO accessright VALUES ( 'employee', 'stats', '2');
 INSERT INTO accessright VALUES ( 'employee', 'admin', '2');
 INSERT INTO accessright VALUES ( 'activity', 'stats', '2');
@@ -45,27 +46,39 @@ INSERT INTO activity VALUES ( '8', 'Implementation', '', '0');
 
 INSERT INTO customer VALUES ( 'Ibuildings.nl BV', '', '', '', '', '', '', 'info@ibuildings.nl', '', '2', '');
 
-INSERT INTO db_sequence VALUES ( 'node', '1');
-INSERT INTO db_sequence VALUES ( 'hours', '2');
-INSERT INTO db_sequence VALUES ( 'project', '2');
-INSERT INTO db_sequence VALUES ( 'activity', '8');
-INSERT INTO db_sequence VALUES ( 'customer', '2');
-INSERT INTO db_sequence VALUES ( 'contact', '1');
-INSERT INTO db_sequence VALUES ( 'employee', '1');
-INSERT INTO db_sequence VALUES ( 'phase', '3');
-INSERT INTO db_sequence VALUES ( 'profile', '3');
-INSERT INTO db_sequence VALUES ( 'tpl_project', '1');
-INSERT INTO db_sequence VALUES ( 'tpl_phase', '1');
+DROP SEQUENCE seq_node;
+DROP SEQUENCE seq_hours;
+DROP SEQUENCE seq_project;
+DROP SEQUENCE seq_activity;
+DROP SEQUENCE seq_customer;
+DROP SEQUENCE seq_contact;
+DROP SEQUENCE seq_employee;
+DROP SEQUENCE seq_phase;
+DROP SEQUENCE seq_profile;
+DROP SEQUENCE seq_tpl_project;
+DROP SEQUENCE seq_tpl_phase;
+
+CREATE SEQUENCE seq_node INCREMENT BY 1 START WITH 2 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_hours INCREMENT BY 1 START WITH 3 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_project INCREMENT BY 1 START WITH 3 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_activity INCREMENT BY 1 START WITH 9 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_customer INCREMENT BY 1 START WITH 3 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_contact INCREMENT BY 1 START WITH 2 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_employee INCREMENT BY 1 START WITH 2 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_phase INCREMENT BY 1 START WITH 4 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_profile INCREMENT BY 1 START WITH 4 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_tpl_project INCREMENT BY 1 START WITH 2 NOCYCLE NOORDER;
+CREATE SEQUENCE seq_tpl_phase INCREMENT BY 1 START WITH 2 NOCYCLE NOORDER;
 
 INSERT INTO dependency VALUES ( '2', '3');
 
 INSERT INTO employee VALUES ( 'Ivo Jansch', 'ivo', 'ivo@ibuildings.nl', '098f6bcd4621d373cade4e832627b4f6', 'active', 'blurb', '3');
-INSERT INTO employee VALUES ( 'Administrator', 'administrator', 'ivo@ibuildings.nl', '', 'active', 'achievo', '2');
+INSERT INTO employee VALUES ( 'Administrator', 'administrator', 'ivo@ibuildings.nl', ' ', 'active', 'achievo', '2');
 
 INSERT INTO hours VALUES ( '2', '2001-03-28', '2001-03-28', '2', '4', 'Introduction Meeting', '30', 'administrator');
 
-INSERT INTO phase VALUES ( '2', 'Main', '2', 'active', '', '0', '0');
-INSERT INTO phase VALUES ( '3', 'After Sales', '2', 'active', '', '0', '0');
+INSERT INTO phase VALUES ( '2', 'Main', '2', 'active', ' ', '0', '0');
+INSERT INTO phase VALUES ( '3', 'After Sales', '2', 'active', ' ', '0', '0');
 
 INSERT INTO phase_activity VALUES ( '3', '4', '0');
 INSERT INTO phase_activity VALUES ( '3', '5', '0');

@@ -113,8 +113,8 @@
             FROM 
               hours, employee, phase, project
             WHERE
-              hours.date >= '$startdate'
-              AND hours.date <= '$enddate'
+              hours.activitydate >= '$startdate'
+              AND hours.activitydate <= '$enddate'
               AND hours.userid = employee.userid
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id

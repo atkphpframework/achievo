@@ -33,7 +33,7 @@ class hours extends atkNode
     
     $this->atkNode("hours"); // node() constructor is *not* called automatically!
     
-    $this->addAttribute(new atkDateAttribute("date"));
+    $this->addAttribute(new atkDateAttribute("activitydate"));
     if($atkaction!='hoursurvey')
     {
       $this->addFilter("userid",strtolower($g_user["name"])); 
@@ -43,7 +43,7 @@ class hours extends atkNode
       if ($weekview!=1)
       {
         if ($viewdate=="") $viewdate = strftime("%Y-%m-%d");
-        $this->addFilter("date",$viewdate); 
+        $this->addFilter("activitydate",$viewdate); 
       }        
     }
 
@@ -51,11 +51,11 @@ class hours extends atkNode
                 
     if($atkaction=="hoursurvey"||$weekview==1)
     {
-      $this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd")));
+      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd")));
     }
     else
     {
-      $this->addAttribute(new atkDateAttribute("date","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
+      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
     }
     
     if ($atkaction=="hoursurvey")
@@ -115,7 +115,7 @@ class hours extends atkNode
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d")),
-                  "date"=>$initial_date);
+                  "activitydate"=>$initial_date);
   }
   
   function activityid_display($rec)
@@ -204,15 +204,14 @@ class hours extends atkNode
     $projtotals = Array();
     $daytotals = Array();
 
-    $data = $this->selectDb("date >= '".$weekdates[1]['date']."' AND date <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);
-    
+    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."'","","",$this->m_listExcludes);
+
     for ($i=0;$i<count($data);$i++)
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["date"]["year"]."-".$rec["date"]["month"]."-".$rec["date"]["day"]; 
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"]; 
       $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
-      
       $week[$key][$date] += $time;      
       $projtotals[$key] += $time;
       $daytotals[$date] += $time;
@@ -293,7 +292,7 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_postvars["viewdate"]=$rec["date"]["year"]."-".sprintf("%02d",$rec["date"]["month"])."-".sprintf("%02d",$rec["date"]["day"]);
+    $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
   
  function postUpdate($rec)
@@ -302,7 +301,7 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_postvars["viewdate"]=$rec["date"]["year"]."-".sprintf("%02d",$rec["date"]["month"])."-".sprintf("%02d",$rec["date"]["day"]);
+    $this->m_postvars["viewdate"]=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
   }
       
 }

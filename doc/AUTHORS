@@ -30,18 +30,19 @@ Contributors
 ------------
 We received bugfixes and other contributions from the following people:
 
-Alexandre Carmel-Veilleux <saruman@mondo-live.com>	
-Jan Peter Hecking         <jhecking@informatik.uni-rostock.de>
-Jason Kohles              <jason@mediabang.com>      
-Javier Ledesma            <javier.ledesma@ubs.com> 
-Stefan Niederhauser       <sn@atelier-w.ch>   
-T. Luyben                 <tycho@e-lab.nl>
+Alexandre Carmel-Veilleux             <saruman@mondo-live.com>	
+Jan Peter Hecking                     <jhecking@informatik.uni-rostock.de>
+Jason Kohles                          <jason@mediabang.com>      
+Javier Ledesma                        <javier.ledesma@ubs.com> 
+Stefan Niederhauser                   <sn@atelier-w.ch>   
+T. Luyben                             <tycho@e-lab.nl>
 Martin Pruijssers                       
-Wayne T. Ethier           <wte@websynergyinternet.com>
-Michel Marti              <michel.marti@ubs.com>
-Lucas Smith               <smith@dybnet.de>
-Daniel Frame              <dframe@tampabay.rr.com>
-Jakub Kahovec             <jakub.kahovec@newton.cz>
+Wayne T. Ethier                       <wte@websynergyinternet.com>
+Michel Marti                          <michel.marti@ubs.com>
+Lucas Smith                           <smith@dybnet.de>
+Daniel Frame                          <dframe@tampabay.rr.com>
+Jakub Kahovec		              <jakub.kahovec@newton.cz>
+William Rhee (University of Michigan) <willrhee@umich.edu>
 
 Achievo uses a modified version of PHPLIB's database abstraction classes for
 database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 

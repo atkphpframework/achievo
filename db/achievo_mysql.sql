@@ -20,8 +20,8 @@ CREATE TABLE accessright (
 CREATE TABLE activity (
    id int(10) unsigned DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
-   description varchar(50) NOT NULL,
-   remarkrequired tinyint(4) DEFAULT '0' NOT NULL,
+   description varchar(50),
+   remarkrequired tinyint(4) DEFAULT '0',
    PRIMARY KEY (id)
 );
 
@@ -33,16 +33,16 @@ CREATE TABLE activity (
 
 CREATE TABLE customer (
    name varchar(100) NOT NULL,
-   address varchar(100) NOT NULL,
-   zipcode varchar(20) NOT NULL,
-   city varchar(100) NOT NULL,
-   country varchar(100) NOT NULL,
-   phone varchar(20) NOT NULL,
-   fax varchar(20) NOT NULL,
-   email varchar(50) NOT NULL,
+   address varchar(100),
+   zipcode varchar(20),
+   city varchar(100),
+   country varchar(100),
+   phone varchar(20),
+   fax varchar(20),
+   email varchar(50),
    bankaccount varchar(30) NOT NULL,
    id int(11) DEFAULT '0' NOT NULL,
-   remark text NOT NULL,
+   remark text,
    PRIMARY KEY (id)
 );
 
@@ -54,18 +54,18 @@ CREATE TABLE customer (
 
 CREATE TABLE contact (
    lastname varchar(50) NOT NULL,
-   firstname varchar(50) NOT NULL,
-   address varchar(100) NOT NULL,
-   zipcode varchar(20) NOT NULL,
-   city varchar(100) NOT NULL,
-   country varchar(100) NOT NULL,
-   phone varchar(20) NOT NULL,
-   fax varchar(20) NOT NULL,
-   email varchar(50) NOT NULL,
+   firstname varchar(50),
+   address varchar(100),
+   zipcode varchar(20),
+   city varchar(100),
+   country varchar(100),
+   phone varchar(20),
+   fax varchar(20),
+   email varchar(50),
    id int(11) DEFAULT '0' NOT NULL,
-   remark text NOT NULL,
+   remark text,
    company int(11) DEFAULT '0' NOT NULL,
-   owner varchar(15) NOT NULL,
+   owner varchar(15),
    PRIMARY KEY (id)
 );
 
@@ -113,11 +113,11 @@ CREATE TABLE dependency (
 CREATE TABLE employee (
    name varchar(40) NOT NULL,
    userid varchar(15) NOT NULL,
-   email varchar(100) NOT NULL,
+   email varchar(100),
    password varchar(40) NOT NULL,
    status enum('active','nonactive') DEFAULT 'active' NOT NULL,
-   theme varchar(50) NOT NULL,
-   entity int(11) DEFAULT '0' NOT NULL,
+   theme varchar(50),
+   entity int(11) DEFAULT '0',
    PRIMARY KEY (userid)
 );
 
@@ -129,8 +129,8 @@ CREATE TABLE employee (
 CREATE TABLE hours (
    id int(10) unsigned DEFAULT '0' NOT NULL auto_increment,
    entrydate date DEFAULT '0000-00-00' NOT NULL,
-   date date DEFAULT '0000-00-00' NOT NULL,
-   phaseid int(10) unsigned DEFAULT '0' NOT NULL,
+   activitydate date DEFAULT '0000-00-00' NOT NULL,
+   phaseid int(10) unsigned DEFAULT '0',
    activityid int(10) unsigned DEFAULT '0' NOT NULL,
    remark text,
    time int(4) DEFAULT '0' NOT NULL,
@@ -187,7 +187,7 @@ CREATE TABLE project (
    name varchar(50) NOT NULL,
    coordinator varchar(20),
    status enum('active','nonactive','archived') DEFAULT 'active' NOT NULL,
-   description text NOT NULL,
+   description text,
    startdate varchar(20) NOT NULL,
    customer int(11) DEFAULT '0' NOT NULL,
    PRIMARY KEY (id)
@@ -214,7 +214,7 @@ CREATE TABLE tpl_dependency (
 CREATE TABLE tpl_phase (
    id int(10) DEFAULT '0' NOT NULL,
    name varchar(50) NOT NULL,
-   description text NOT NULL,
+   description text,
    PRIMARY KEY (id)
 );
 

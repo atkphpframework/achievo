@@ -19,7 +19,7 @@
   $txt_time = "Èas";
   $txt_hours = "Hodiny";
   $txt_minutes = "Minuty";
-  $txt_date = "Datum";
+  $txt_activitydate = "Datum";
   $txt_percentage = "Procenta";
   $txt_total = "Celkovì";
   $txt_description = "Popis";

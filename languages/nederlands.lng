@@ -19,7 +19,7 @@
   $txt_time = "Tijd";
   $txt_hours = "Uren";
   $txt_minutes = "Minuten";
-  $txt_date = "Datum";
+  $txt_activitydate = "Datum";
   $txt_percentage = "Percentage";
   $txt_total = "Totaal";
   $txt_description = "Omschrijving";

@@ -19,7 +19,7 @@
   $txt_time = "Aika";
   $txt_hours = "Tunnit";
   $txt_minutes = "Minuutit";
-  $txt_date = "Päiväys";
+  $txt_activitydate = "Päiväys";
   $txt_percentage = "Prosenttia";
   $txt_total = "Yhteensä";
   $txt_description = "Kuvaus";

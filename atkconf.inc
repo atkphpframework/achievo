@@ -10,7 +10,10 @@
   $config_auth_usertable = "employee";
   $config_auth_userfield = "userid";
   $config_auth_accesstable = "accessright";
+  $config_auth_passwordfield = "password";
+  $config_auth_leveltable  = "employee";
+  $config_auth_levelfield  = "entity";
   $config_authentication_md5 = true;
   $config_securityscheme = "group";
-  $config_debug = 0;
+  $config_debug = 2;
 ?>

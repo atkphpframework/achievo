@@ -2,7 +2,8 @@
   /* Setup the system */
   $config_atkroot = "./";
   require_once($config_atkroot."atk/class.atknode.inc");
-  
+  atksession();  
+
   if (count($HTTP_POST_VARS)>0)
   {  
     atkDataDecode(&$HTTP_POST_VARS);   

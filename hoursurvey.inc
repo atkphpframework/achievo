@@ -59,7 +59,7 @@
   }
   
   // Determine collumn suppresslist:
-  $arr_col = array("date","userid","phaseid","activityid","remark","time");
+  $arr_col = array("activitydate","userid","phaseid","activityid","remark","time");
  
   $suppress = array(); 
   if (!is_array($col)||count($col)==0)
@@ -217,7 +217,7 @@
   }
   
   // Create Filter
-  $filter="date>='".$startdate."' AND date<='".$enddate."'";
+  $filter="activitydate>='".$startdate."' AND activitydate<='".$enddate."'";
   if(!empty($activity_id)&&$activity_id!="") $filter.=" AND hours.activityid=".$activity_id;
   if(!empty($phaseid)&&$phaseid!="") $filter.=" AND hours.phaseid=".$phaseid;
   if(!empty($projectid)&&$projectid!="") $filter.=" AND A.projectid=".$projectid;

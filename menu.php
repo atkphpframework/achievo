@@ -8,7 +8,8 @@
   $config_atkroot = "./";
   require_once($config_atkroot."atk/class.atknode.inc");
   require_once($config_atkroot."atk/atkmenutools.inc");
-  
+
+  atksession();  
   atksecure();
   
   include_once("./theme.inc");
