@@ -87,12 +87,12 @@
 
     function action_billsetup()
     {
-      include_once 'billsetup.inc';
+      include_once moduleDir("finance").'billsetup.inc';
     }
 
     function action_billing()
     {
-      include_once 'projectbilling.inc';
+      include_once moduleDir("finance").'projectbilling.inc';
     }
 
     function postDel($rec)

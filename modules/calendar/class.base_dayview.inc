@@ -407,12 +407,12 @@
        if (count($attendees) > 0 || $this->allDayItems[$i]["all_users"]) $header .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$att."</font></td>";
        $header .= "<td valign='top' align='right'>";
 
-       if ($this->allDayItems[$i]["publicitem"] == 1)
+       if ($this->allDayItems[$i]["owner"] == $this->owner || $found == 1)
        {
          $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
        }
 
-       if ($this->allDayItems[$i]["owner"] == $this->owner)
+       if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
        {
         $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
         $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
@@ -522,7 +522,7 @@
             }
           }
 
-          if ($info["publicitem"] == 1)
+          if ($this->allDayItems[$i]["owner"] == $this->owner || count($attendees) > 0)
           {
             $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
           }

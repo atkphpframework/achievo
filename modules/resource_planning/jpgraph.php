@@ -12,7 +12,7 @@
 */
 
 // Get all directory paths
-include ( "jpgraph_dir.php" );
+include (moduleDir("resource_planning")."jpgraph_dir.php");
 
 // What group should the cached file belong to
 // (Set to "" will give the default group for the "PHP-user")

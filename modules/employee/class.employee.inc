@@ -67,7 +67,7 @@ class employee extends person
 
   function action_stats()
   {
-    include_once 'employeestats.inc';
+    include_once moduleDir("employee").'employeestats.inc';
   }
 
   function descriptor_def()

@@ -89,7 +89,7 @@ class bill extends atkNode
   function action_generatebill()
   {
      global $billid;
-     include "./modules/finance/generate_bill.php";
+     include moduleDir("finance")."generate_bill.php";
   }
 
   function action_billsubmit()
@@ -99,7 +99,7 @@ class bill extends atkNode
      if ($editknob !="")
      {
        $edit = 1;
-       include "./modules/finance/generate_bill.php";
+       include moduleDir("finance")."generate_bill.php";
      }
      else
      {

@@ -63,7 +63,7 @@
 
     function action_costreport()
     {
-      include 'costreport.inc';
+      include moduleDir("costreg").'costreport.inc';
     }
 
     function descriptor_def()

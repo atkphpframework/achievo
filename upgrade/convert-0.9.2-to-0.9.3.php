@@ -209,16 +209,22 @@ if(!empty($convert)&&$convert==1)
   $sql = "INSERT INTO role (id, name) VALUES (2, 'employer')";
   $res = $g_db->query($sql);
   handleError($sql);
+  $sql = "INSERT INTO db_sequence (seq_name, nextid) VALUES ('role', 2)";
+  $res = $g_db->query($sql);
+  handleError($sql);
 
-  //copy customer and contact of a project into project_organization
-  $sql = "SELECT * FROM project";
+  //copy contact of a project into project_person
+  $sql = "SELECT project.* FROM project";
   $projects = $g_db->getRows($sql);
   for ($i=0;$i<count($projects);$i++)
   {
-    $sql = "INSERT INTO project_person (personid, projectid, role)
+    iF ($projects[$i]["contact"] != 0)
+    {
+      $sql = "INSERT INTO project_person (personid, projectid, role)
             VALUES ('".$projects[$i]["contact"]."', '".$projects[$i]["id"]."', 2)";
-    $res = $g_db->query($sql);
-    handleError($sql);
+      $res = $g_db->query($sql);
+      handleError($sql);
+    }
   }
 
   //drop contact and customer field from table project
@@ -406,6 +412,44 @@ if(!empty($convert)&&$convert==1)
     }
   }
   $sql = "ALTER TABLE todo CHANGE assigned_to assigned_to INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  //change the node rights in the accessright table to this format: modulename.nodename
+  $sql = "UPDATE accessright SET node = CONCAT('calendar.', node) WHERE node IN ('schedule', 'schedule_types', 'schedule_notes', 'schedule_attendees')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('costreg.', node) WHERE node IN ('costregistration')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('employee.', node) WHERE node IN ('employee', 'profile', 'usercontracts', 'userprefs')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('finance.', node) WHERE node IN ('rates', 'finance_customer', 'finance_project', 'billing_project', 'currency', 'bill', 'bill_line')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('notes.', node) WHERE node IN ('project_notes', 'project_notesview')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = 'organization.organization' WHERE node IN ('customer')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('organization.', node) WHERE node IN ('contact', 'contracts', 'contracttype')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('project.', node) WHERE node IN ('project', 'phase', 'activity', 'tpl_phase', 'tpl_project')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport', 'hoursurvey')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('resource_planning.', node) WHERE node IN ('resource_planning')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('timereg.', node) WHERE node IN ('hours', 'hours_lock')";
+  $res = $g_db->query($sql);
+  handleError($sql);
+  $sql = "UPDATE accessright SET node = CONCAT('todo.', node) WHERE node IN ('todo')";
   $res = $g_db->query($sql);
   handleError($sql);
 

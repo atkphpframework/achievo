@@ -85,16 +85,24 @@ class contact extends person
 
     $g_layout->output('</tr><tr>');
     $g_layout->td(text("appointments").": ", 'valign="top"');
-    $g_layout->output('<td class="table" colspan="1" valign="top"><table border="0" cellspacing="0" cellpadding="0"><tr>');
-    $g_layout->output('<td align="left"><table border="0" cellspacing="0" cellpadding="0" class="backtable"><tr>');
-    $g_layout->output('<td><table border="0" cellspacing="1" cellpadding="3"><tr>');
-    $g_layout->output('<td class="tableheader" >'.text("startdate").'</td>');
-    $g_layout->output('<td class="tableheader" >'.text("enddate").'</td>');
-    $g_layout->output('<td class="tableheader" >'.text("starttime").'</td>');
-    $g_layout->output('<td class="tableheader" >'.text("endtime").'</td>');
-    $g_layout->output('<td class="tableheader" >'.text("title").'</td>');
-    $g_layout->output('<td class="tableheader" >'.text("type").'</td>');
-    $g_layout->output('<td class="tableheader" >&nbsp;</td></tr>');
+
+    if (count($appointments) > 0)
+    {
+      $g_layout->output('<td class="table" colspan="1" valign="top"><table border="0" cellspacing="0" cellpadding="0"><tr>');
+      $g_layout->output('<td align="left"><table border="0" cellspacing="0" cellpadding="0" class="backtable"><tr>');
+      $g_layout->output('<td><table border="0" cellspacing="2" cellpadding="3"><tr>');
+      $g_layout->output('<td class="tableheader" >'.text("startdate").'</td>');
+      $g_layout->output('<td class="tableheader" >'.text("enddate").'</td>');
+      $g_layout->output('<td class="tableheader" >'.text("starttime").'</td>');
+      $g_layout->output('<td class="tableheader" >'.text("endtime").'</td>');
+      $g_layout->output('<td class="tableheader" >'.text("title").'</td>');
+      $g_layout->output('<td class="tableheader" >'.text("type").'</td>');
+      $g_layout->output('<td class="tableheader" >&nbsp;</td></tr>');
+    }
+    else
+    {
+      $g_layout->td(text("none"));
+    }
 
     for ($i=0;$i<count($appointments);$i++)
     {
@@ -119,7 +127,7 @@ class contact extends person
       $g_layout->output('<td class="table" ><a href="'.session_url(dispatch_url("calendar.schedule", "view", array("atkselector" => "schedule.id=".$appointments[$i]["id"])),SESSION_NESTED).'">'.text("view").'</td></tr>');
     }
 
-    $g_layout->output('</table></td></tr></table></td></tr></table>');
+    if (count($appointments) > 0) $g_layout->output('</table></td></tr></table></td></tr></table>');
 
     $node = &getNode("project.project_personcontact");
     $node->m_attribList["personid"]->m_flags |= AF_HIDE_LIST;

@@ -10,7 +10,7 @@
    * @version $Revision
    *
    */
-  include_once $config_atkroot."/modules/resource_planning/class.planprojectattrib.inc";
+  include_once moduleDir("resource_planning")."class.planprojectattrib.inc";
   include_once $config_atkroot."achievotools.inc";
 
   userelation("atkmanytoonerelation");
@@ -64,20 +64,17 @@
 
     function action_planweekview()
     {
-      global $config_atkroot;
-      include $config_atkroot.'modules/resource_planning/planweekview.inc';
+      include moduleDir("resource_planning").'planweekview.inc';
     }
 
     function action_planweekviewempl()
     {
-      global $config_atkroot;
-      include $config_atkroot.'modules/resource_planning/planweekviewempl.inc';
+      include moduleDir("resource_planning").'planweekviewempl.inc';
     }
 
     function action_gantview()
     {
-      global $config_atkroot;
-      include $config_atkroot.'modules/resource_planning/gantview.inc';
+      include moduleDir("resource_planning").'gantview.inc';
     }
 
     function recordActions($record, &$actions)

@@ -2,9 +2,11 @@
 
   function pimTodos()
   {
-    global $g_user, $g_layout;
+    global $g_user, $g_layout, $g_db;
 
     $me = $g_user["name"];
+    $sql = "SELECT id FROM person WHERE userid = '".$me."' AND role='employee'";
+    $userid = $g_db->getRows($sql);
 
     $todonode = getNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
@@ -12,7 +14,7 @@
 
     $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
 
-    $recs = $todonode->selectDb("assigned_to='$me'");
+    if ($me != "administrator") $recs = $todonode->selectDb("assigned_to=".$userid[0]["id"]." AND assigned_to <> 0"); else $recs = $todonode->selectDb("assigned_to='".$me."' AND assigned_to <> 0");
     $todo_assignedtome = text("pim_assignedtoyou").":<br>";
     if (count($recs)>0)
     {

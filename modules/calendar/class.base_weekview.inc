@@ -212,7 +212,13 @@
           $str="";
           for ($j=0;$j<count($dayappointments);$j++)
           {
-            if ($g_user["name"]==$dayappointments[$j]["owner"])
+            $attendees = $this->get_attendees($dayappointments[$j]["id"]);
+            $found = 0;
+            for($k=0;$k<count($attendees);$k++)
+            {
+              if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+            }
+            if ($g_user["name"]==$dayappointments[$j]["owner"] || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
             {
               // This is your own record, you may edit it.
               $link = href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
@@ -261,6 +267,26 @@
       $buff .= "<br><br>";
 
       return $buff;
+    }
+
+    function get_attendees($scheduleid)
+    {
+      global $g_db;
+
+     $name = "atk".atkconfig("database")."query";
+     $query = new $name();
+     $query->addTable('schedule_attendee');
+     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+
+     $query->addField('userid', ' ', 'person');
+     $query->addField('lastname', ' ', 'person');
+     $query->addField('firstname', ' ', 'person');
+     $query->addField('role', ' ', 'person');
+
+     $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
+
+     $querystring = $query->buildSelect(TRUE);
+     return $g_db->getRows($querystring);
     }
 
    }

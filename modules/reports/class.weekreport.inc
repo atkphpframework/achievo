@@ -59,7 +59,7 @@ class weekreport extends atkNode
   function get_employee($user_id)
   {
     global $g_db;
-    $sql = "SELECT * FROM person WHERE status='active' AND role='employee' AND userid='$user_id'";
+    $sql = "SELECT * FROM person WHERE status='active' AND userid='$user_id'";
     $record = $g_db->getrows($sql);
     return $record[0];
   }
@@ -288,23 +288,26 @@ class weekreport extends atkNode
     $report_start_week = weekstamp($startstamp);
     $report_end_week = weekstamp($endstamp);
 
+    $sql = "SELECT id FROM person WHERE userid ='".$userid."'";
+    $personid = $g_db->getRows($sql);
+
     // determine contracthours per week..
     $query = "SELECT
-                uc_hours, startdate, enddate, usercontract.userid, lastname, firstname
+                uc_hours, startdate, enddate, person.userid, lastname, firstname
               FROM
                  usercontract, person
               WHERE ";
     if ($nameswitch=="supervisor")
     {
-      if ($userid!="all") $query.= " person.supervisor = '$userid' AND ";
+      if ($userid!="all") $query.= " person.supervisor = ".$personid[0]["id"]." AND ";
     }
     else
     {
-      if ($userid!="all") $query.= " usercontract.userid ='$userid' AND ";
+      if ($userid!="all") $query.= " usercontract.userid =".$personid[0]["id"]." AND ";
     }
     $query.= "  startdate <= '$enddate'
                 AND enddate >= '$startdate'
-                AND usercontract.userid = person.userid
+                AND usercontract.userid = person.id
               ORDER BY
                 startdate";
     $contracts = $g_db->getrows($query);
@@ -323,7 +326,7 @@ class weekreport extends atkNode
         {
           $weekdata[$j]["week"] = $j;
           $weekdata[$j]["userdata"][$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
-          $weekdata[$j]["userdata"][$contracts[$i]["userid"]]["name"] = $contracts[$i]["name"];
+          $weekdata[$j]["userdata"][$contracts[$i]["userid"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
     }
@@ -364,7 +367,7 @@ class weekreport extends atkNode
       $uid = $raw[$i]["userid"];
       $weekdata[$key]["userdata"][$uid][$strdow[$dow]] = $raw[$i]["time"];
       $weekdata[$key]["userdata"][$uid]["total"] = $weekdata[$key]["userdata"][$uid]["total"]+$raw[$i]["time"];
-      $weekdata[$key]["userdata"][$uid]["name"] = $raw[$i]["name"];
+      $weekdata[$key]["userdata"][$uid]["name"] = $raw[$i]["lastname"].", ".$raw[$i]["firstname"];
 
       // We need to display the first date and last date of each week.
       // Since we are looping days now, it is easiest if we calculate the

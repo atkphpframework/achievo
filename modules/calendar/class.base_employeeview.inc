@@ -65,7 +65,7 @@
       $records = $g_db->getrows($sql);
 
       $j = count($records);
-      for ($i=1;$i<$j;$i++)
+      for ($i=0;$i<$j;$i++)
       {
         $employees[$i] = $records[$i]["userid"];
       }

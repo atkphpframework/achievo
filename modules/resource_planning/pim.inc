@@ -2,14 +2,23 @@
 
   function pimPlanning()
   {
-    global $g_user, $g_layout;
-    
+    global $g_user, $g_layout, $g_db;
+
     $planningsnode = getNode("resource_planning.resource_planning");
 
     $actions = array();
 
-    $userid=$g_user['name'];
-    $recs = $planningsnode->selectDb("planning.employeeid = '$userid' AND planning.plandate=now()", "planning.phaseid", ' ', "planning.plandate");
+    $user=$g_user['name'];
+    $sql = "SELECT id FROM person WHERE userid = '".$user."' AND role='employee'";
+    $userid = $g_db->getRows($sql);
+    if ($user != "administrator")
+    {
+      $recs = $planningsnode->selectDb("planning.employeeid = ".$userid[0]["id"]." AND planning.plandate=now()", "planning.phaseid", ' ', "planning.plandate");
+    }
+    else
+    {
+      $recs = $planningsnode->selectDb("planning.employeeid = '".$user."' AND planning.plandate=now()", "planning.phaseid", ' ', "planning.plandate");
+    }
 
     if (count($recs)>0)
     {
@@ -27,7 +36,7 @@
     $res.= $g_layout->ret_td('&nbsp;','width="15"'); // spacer
     $res.= $g_layout->ret_td($plannedhours, 'valign="top"');
     $res.= '</tr></table>';
-    
+
     return $res;
   }
 

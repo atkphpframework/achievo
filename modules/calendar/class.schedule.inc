@@ -109,6 +109,43 @@
       return $initial;
     }
 
+    function enddate_validate(&$record, $mode)
+    {
+      if ($record["enddate"]["year"] < $record["startdate"]["year"])
+      {
+        triggerError($record, "enddate", "error_date");
+      }
+      elseif ($record["enddate"]["year"] == $record["startdate"]["year"])
+      {
+        if ($record["enddate"]["month"] < $record["startdate"]["month"])
+        {
+          triggerError($record, "enddate", "error_date");
+        }
+        elseif ($record["enddate"]["month"] == $record["startdate"]["month"])
+        {
+          if ($record["enddate"]["day"] < $record["startdate"]["day"])
+          {
+            triggerError($record, "enddate", "error_date");
+          }
+        }
+      }
+    }
+
+    function endtime_validate(&$record, $mode)
+    {
+      if ($record["endtime"]["hours"] < $record["starttime"]["hours"])
+      {
+        triggerError($record, "endtime", "error_time");
+      }
+      elseif ($record["endtime"]["hours"] == $record["starttime"]["hours"])
+      {
+        if ($record["endtime"]["minutes"] <= $record["starttime"]["minutes"])
+        {
+          triggerError($record, "endtime", "error_time");
+        }
+      }
+    }
+
     function get_employees($user_id)
     {
       global $g_db;

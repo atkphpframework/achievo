@@ -160,7 +160,7 @@ class bill_line extends atkNode
   function action_createbill()
   {
     global $bill_line_id, $calcoption;
-    include "./modules/finance/createbill.php";
+    include moduleDir("finance")."createbill.php";
   }
 
   function action_adddiscount()
@@ -329,7 +329,7 @@ class bill_line extends atkNode
     }
     else
     {
-      include "./modules/finance/createbill.php";
+      include moduleDir("finance")."createbill.php";
     }
 
   }
@@ -339,11 +339,11 @@ class bill_line extends atkNode
     $bill_line_id = $rec["id"];
     if ($rec["calcoption"] == "discount" or $rec["calcoption"] == "costs")
     {
-      include "./modules/finance/billaddon.php";
+      include moduleDir("finance")."billaddon.php";
     }
     else
     {
-      include "./modules/finance/createbill.php";
+      include moduleDir("finance")."createbill.php";
     }
   }
 

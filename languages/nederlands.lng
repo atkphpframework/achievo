@@ -109,8 +109,8 @@
   $txt_menu_contracttype = "Organisatie contracten";
   $txt_menu_costregistration_admin = "Kostenregistratie";
   $txt_menu_costregistration_costreport = "Kosten rapport";
-  $txt_menu_customermanagement = "Organisatiebeheer";
-  $txt_menu_customer_admin = "Organisaties";
+  $txt_menu_organizationmanagement = "Organisatiebeheer";
+  $txt_menu_organization_admin = "Organisaties";
   $txt_menu_employeemanagement = "Medewerkerbeheer";
   $txt_menu_employee_admin = "Gebruikers";
   $txt_menu_employee_personalstats = "Persoonlijke Statistieken";

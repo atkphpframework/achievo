@@ -23,10 +23,10 @@ class activity extends atkNode
   {
     return "[name]";
   }
-  
+
   function action_stats()
   {
-    include_once "activitystats.inc";
+    include_once moduleDir("project")."activitystats.inc";
   }
 }
 ?>
