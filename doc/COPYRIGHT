@@ -1,0 +1,21 @@
+Achievo Copyright and Licensing
+===============================
+
+Achievo is copyright (c)2000-2001 Ibuildings.nl BV, Vlissingen, Netherlands.
+
+Achievo is distributed according to the GNU General Public License, which
+can be found in the LICENSE file.
+
+There is a commercial, more powerful, version of Achievo's backend, ATK,
+available for building web applications and content management systems. 
+Information about ATK and pricing can be obtained from Ibuildings.nl
+(mail us at info@ibuildings.nl)
+
+
+Third party software
+====================
+
+Achievo uses modified versions of PHPLIB's database abstraction classes for
+database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
+SH Online Dienst GmbH and made available under the Library General Public 
+License (LGPL).

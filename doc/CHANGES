@@ -7,7 +7,12 @@ Changes in Achievo 0.7.3
 + Added a Scheduler/Calendar. 
 + Added Todo functionality.
 + Added project notes.
-+ Added an extended search feature. 
++ Added finance menu (not fully functional yet).
++ Added employee contracts.
++ Added customer contracts.
++ Added an extended search feature for all views. 
++ Added alphabetical indexes to employee, customer and project views.
++ Added Hungarian language files.
 * Updated German language files.
 * Replaced htmlentities() calls with htmlspecialchars().
 * Fixed some bugs.

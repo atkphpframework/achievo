@@ -1,8 +1,15 @@
-Development
------------
-Ivo Jansch         <ivo@achievo.com>
+Author
+------
+Ivo Jansch         <ivo@achievo.com> 
+
+
+Additional Development
+----------------------
 Sandy Pleyte       <sandy@achievo.com>
 Peter Verhage      <peter@ibuildings.nl>
+Rene Bakx          <rene@ibuildings.nl>
+Wim Kosten         <wim@ibuildings.nl>
+
 
 Marketing and Support
 ---------------------
@@ -22,6 +29,7 @@ French          : Benoit des Ligneris  <benoit.des.ligneris@physique.usherb.ca>
 German          : Bastian Kleineidam   <bastian.kleineidam@triplex.de>
                   Lars Martin          <lars@smb-tec.com>
                   Michael Gaehwiler    <pegatron@gmx.net>
+Hungarian       : Miklos Bagi Jr.      <Mbagim@muszakikiado.hu>
 Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
                   Luca Pescatore       <l.pescatore@network.it>                   
 Norwegian       : Stein Bjorndal       <stein@proact.no>
@@ -61,10 +69,5 @@ Michel Marti                          <michel.marti@ubs.com>
 Lucas Smith                           <smith@dybnet.de>
 Daniel Frame                          <dframe@tampabay.rr.com>
 Jakub Kahovec                         <jakub.kahovec@newton.cz>
-Rene Bakx                             <rene@ibuildings.nl>
 
 
-Achievo uses modified versions of PHPLIB's database abstraction classes for
-database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
-SH Online Dienst GmbH and made available under the Library General Public 
-License (LGPL).
