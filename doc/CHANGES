@@ -5,13 +5,20 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 0.9.1
 ------------------------
++ Added form based login, so Achievo should now work with php running as a 
+  cgi-binary.
 + Added todo history.
 + Added initial version of resource planning feature.
 + Added 'clickthrough' feature for more easy navigation between items.
 + Added 'multiselect' feature (for example the ability to delete more than one
   record at the same time).
++ Added Chinese language file.
++ Added 'default' screen to menuitems. (brings back 'one click' 
+  timeregistration)
++ Added a search box to the top frame (doesn't find anything yet though).
 * Changed include structure (include classes only when needed), resulting in 
   better performance.
+* Achievo now works with allow_call_time_pass_reference = Off in php.ini.
 * Achievo no longer behaves weird when having multiple open browser windows.
 * Bugfixes for bugs 17 and 27.
 * Several other bugfixes.
@@ -36,10 +43,12 @@ Changes in Achievo 0.8.1
 + Added contrib/ directory for (unsupported) user contributed scripts and
   utilities.
 + Added phase_convert.pl to contribs. (bug #19)
+* Updated the FAQ.
 * Updated Dutch, Finnish, German and Hungarian language files.
 * Time survey no longer forgets selected project (bugs #12 and #16)
 * Improved upgrade instructions (bug #7).
 * Fixed typo in languagefile keys (bug #10).
+* When userid is changed, relevant tables are updated (bug #37)
 * Fixed minor layout issue in project planning (bug #8)
 
 Changes in Achievo 0.8.0
