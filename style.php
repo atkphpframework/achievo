@@ -76,7 +76,7 @@ A:hover
   font-size: <?php echo $g_theme["TableFontSize"]; ?>pt;
   font-weight: <?php echo $g_theme["TableFontWeight"]; ?>;
   color: <?php echo $g_theme["TableFgColor"]; ?>;
-  background-color: <?php echo $g_theme["TableBgColor"]; ?>;
+ 	
 }
 .backtable
 {
