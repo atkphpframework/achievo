@@ -80,7 +80,7 @@ have a working webserver with PHP support and a MySQL database installed.
     the 'demo_mysql.sql' file as well (in the same way).
 
 
-3) Edit the file config.inc.php3 in the achievo directory, and set the
+3) Edit the file config.inc.php in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
    $config_databasepassword, $config_database variables to match your setup.
 

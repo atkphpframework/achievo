@@ -5,7 +5,7 @@
   *
   * Sends an email reminder if someone did not enter all of his hours in
   * the previous week.
-  *
+  * 
   * $Id$
   *
   */

@@ -112,7 +112,7 @@ if(!empty($convert)&&$convert==1)
   write_log("Start conversion of 0.4.x database ($old_db_name) -> 0.6 ($config_databasename)");
   // make connection to the old database, for the new one, we use the achievo settings
   $old_db = @mysql_connect ($old_db_host, $old_db_user, $old_db_passwd)
-          or die("Could not connect to old database $old_db_name (check username/password in convert.php3).");
+          or die("Could not connect to old database $old_db_name (check username/password in convert-0.4-to-0.6.php).");
   mysql_select_db($old_db_name, $old_db);
   write_log("Succesful connect to $old_db_name.");
   
@@ -284,7 +284,7 @@ if(!empty($convert)&&$convert==1)
   }
   else
   {
-    $g_layout->output('<br><a href="index.php3">Click here</a> to start Achievo!');
+    $g_layout->output('<br><a href="index.php">Click here</a> to start Achievo!');
   }
   $g_layout->output('</div>');
 }
