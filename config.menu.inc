@@ -6,6 +6,7 @@
   menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"));
 
   menuitem("schedule", dispatch_url("schedule","admin"));
+  menuitem("schedule_types", dispatch_url("schedule_types","admin"));
   
   menuitem("-");
   menuitem("projectmanagement"); // projects submenu
@@ -21,10 +22,6 @@
      menuitem("project_todoview", dispatch_url("project_todoview", "admin"), "projectmanagement", is_allowed("project_todoview", "admin"));
      menuitem("project_notesview", dispatch_url("project_notesview", "admin"), "projectmanagement", is_allowed("project_notesview", "admin"));
      
-//  menuitem("-");
-//  menuitem("todomanagement"); // todo submenu
-//     menuitem("todo", dispatch_url("todo", "admin"), "todomanagement", is_allowed("todo", "admin"));
-
   menuitem("-");
   menuitem("customer_admin", dispatch_url("customer", "admin"));
   
