@@ -8,10 +8,6 @@ might be situations in which the described procedure does not work.
 In this case send an email to ivo@achievo.org or to the mailinglist
 (achievo@achievo.org) and we will try to help you out.
 
-IMPORTANT: The Achievo 0.9.* and 1.0rc* releases are development releases. Do 
-not use this version in a production environment. If you want to use Achievo 
-in a production environment, download the latest stable (0.8.*) release.
-
 Upgrading from an earlier version
 ---------------------------------
 This INSTALL file assumes that you install Achievo for the first time.
@@ -90,6 +86,7 @@ have a working webserver with PHP support and a MySQL database installed.
    
    There are some other things in the config-file that you can change, but 
    for your first configuration, you can leave those settings to the default.      
+
 5) After editing the configuration file, point your browser to the setup.php
    script in the Achievo directory. For example:
    
@@ -109,8 +106,8 @@ have a working webserver with PHP support and a MySQL database installed.
    http://yourserver/achievo/
 
    If this is the first time you're using Achievo, you might want to take the 
-   Guided Tour on http://(TODO!), which will show you everything you should
-   do to make Achievo useable for your users.
+   Guided Tour on http://www.achievo.org/support/manual/tour, which will show
+   you everything you should do to make Achievo useable for your users.
 
 8) Achievo contains some useful cron scripts that can be run periodically from
    a cron job. See the cron/README file for available cron features and 

@@ -162,7 +162,8 @@
   $include_path = ini_get("include_path");
   // in unix, includepath elements are separated by :, in windows, by ;
   if (strpos($include_path, ".:")===false && strpos($include_path, ":.")===false 
-      && strpos($include_path, ".;")===false && strpos($include_path, ";.")===false)
+      && strpos($include_path, ".;")===false && strpos($include_path, ";.")===false
+      && ($include_path!="."))
   {
     $errors[] = "The <b>include_path</b> setting in <b>$inilocation</b> is not set correctly.
                  <br>This setting should contain at least the 'current dir' ('.'), but it is 

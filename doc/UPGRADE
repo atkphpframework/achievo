@@ -13,7 +13,7 @@ IMPORTANT
 Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE before
 attempting to upgrade. A good way to do the upgrade is to copy the entire 
 database. For example, if your database is achievo_0_6, and you want to 
-upgrade to Achievo 0.8, then copy the database to achievo_0_8. Then proceed
+upgrade to Achievo 1.0, then copy the database to achievo_1_0. Then proceed
 with the instructions below.
 
 Support
@@ -21,7 +21,7 @@ Support
 Upgrading is not always easy, especially if you need to upgrade to a version
 that is significantly newer than your current version. Ibuildings.nl can help
 with the conversion. For information about this kind of support, see:
-http://www.ibuildings.nl/en/achievo/sponsor
+http://www.achievo.org/support/sponsor
 
 
 General upgrade instructions

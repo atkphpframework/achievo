@@ -8,6 +8,54 @@ Changes in Achievo 1.1.0
 ------------------------
 * Upgraded to ATK5 backend. [Ivo]
 
+Changes in Achievo 1.0.3
+------------------------
++ The 'time survey' report can now be filtered by remark. [Ivo]
+* Setup.php now accepts include_paths with only ".". (bug #237) [Mike]
++ Roles that are not in use can now be deleted. (bug #236) [Ivo]
+* Updated Swedish language file. [Thomas]
+
+Changes in Achievo 1.0.2
+------------------------
++ Added second address field to organization mail and visit address. [Ivo]
+* The conversion script now warns the user if default contactpersons are
+  generated. [Ivo]
+* If add-on modules were activated before the Achievo db was installed,
+  database errors could occur. This is now fixed. [Ivo]
+* Upgrade patches can now report important information to the user. [Ivo]
+* Workaround of wrong patch version number in 1.0.1. [Ivo]
+* Fixed bug in formatting of negative time entries. [Ivo]
+* Updated German language file. [Stephan]
+
+Changes in Achievo 1.0.1
+------------------------
++ Separated mail and visit address for organizations. (bug #230) [Martin, Ivo]
+* Employee supervisor information is now properly converted. (bug #234) [Ivo]
+* Fixed bug when adding individual week locks. [Lineke]
+* Updated Spanish language file. [Daniel]
+* Added questions about extension modules to the FAQ. [Ivo]
+
+Changes in Achievo 1.0.0
+-------------------------
+* Fixed bug #213. [Ivo]
+* Fixed a few untranslated strings. (bug #224) [Martin, Ivo]
+* Updated Danish language file. [Junaid]
+
+Changes in Achievo 1.0RC3
+-------------------------
+* Fixed bug when setup.php was run with $config_auth_dropdown set to
+  true. (bug #180) [Sandy, Kevin]
+* Fixed several themes. (bug #200) [Kevin, Sandy, Ivo]
+* Fixed bug in schedule comparison. (bug #197) [Lineke]
+* Fixed project menu, notes disappeared when a project was selected. [Sandy]
++ Project edit has an extra tab with notes. [Sandy]
+* Fixed bugs #45, #92, #99, #172, #194, #210. [Ivo]
+* Fixed bug #207. [Sandy]
+* Fixed tiny bug in todo mailer. [Ivo]
+* Fixed conversion: Employees could be converted to contacts in some cases. [Ivo]
+* Updated German language file. [Nele]
+* Updated Brazilian-Portuguese language file. [Marcus]
+
 Changes in Achievo 1.0RC2
 -------------------------
 * Fixed logout problem. (bug #177) [Sandy]

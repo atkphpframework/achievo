@@ -36,25 +36,9 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         - the session.save_path directory in php.ini is set to a directory
           that doesn't exist, or
         - the dir pointed to by session.save_path is not readable and writable
-          by the webserver.
-         
- 1.3. I have installed Achievo, but I am getting the following error:
-      "Warning: Call-time pass-by-reference has been deprecated - argument 
-       passed by value; If you would like to pass it by reference, modify the 
-       declaration of [runtime function name](). If you would like to enable 
-       call-time pass-by-reference, you can set allow_call_time_pass_reference
-       to true in your INI file. However, future versions may not support this
-       any longer. in /var/www/html/achievo-0.8/atk/class.atknode.inc on line 
-       490"
-      (or something very similar)
-      
-        In PHP 4.2, they changed the default php.ini value of 
-        allow_call_time_pass_reference to false. Achievo still relies on this 
-        setting being On however. We will fix this in a future release. For 
-        now, change your php.ini and set it to On. (don't forget to restart
-        your webserver after changing php.ini)
+          by the webserver.          
 
- 1.4. Does Achievo run on Windows?
+ 1.3. Does Achievo run on Windows?
  
         Yes it does. You can either run it on Apache with PHP as a module, or
         with MS Internet Information Server, running PHP as an ISAPI 
@@ -120,10 +104,36 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
 
 
 
-4. General Problems
+4. Add-on Modules
+-----------------
+
+ 4.1. Where can I find Achievo add-on modules?
+ 
+        You can download modules from http://www.achievo.org/download/modules
+        
+ 4.2. How do I install add-on modules?
+  
+        This depends on the module. Every module contains a doc directory 
+        which contains a file named INSTALL. This INSTALL file describes every
+        step you need to take to activate the module.
+        
+ 4.3. I've downloaded and installed the module, but am unable to find new 
+      menu-entries. Where can I find the new features?
+      
+        Usually, new features are only available to users that are granted 
+        access. Since users can not grant access to features to which they 
+        don't have access themselves, you will need to login as Administrator
+        to be able to grant access to other users. Once you've granted access
+        to one profile, all users from this profile can access the new 
+        feature (and if they have the right to edit profiles, grant access to
+        others).
+
+
+
+5. General Problems
 -------------------
 
- 4.1. I can't save any records (projects, employees or anything else). I get 
+ 5.1. I can't save any records (projects, employees or anything else). I get 
       no error messages, but there is no new record after I pressed the 'save'
       button.
       
@@ -133,7 +143,7 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         problem. If it doesn't, follow the steps described in question 4.3 
         below.
         
- 4.2. Achievo is slow. 
+ 5.2. Achievo is slow. 
  
         Achievo has quite a powerful backend. Unfortunately, the more PHP code
         that is required to run an application, the slower it gets.
@@ -145,13 +155,13 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         backend. Keeping your Achievo installation up to date is a good way
         of improving performance and reducing bugs.
         
- 4.3. I can only save one record. After the first record is saved, new records
+ 5.3. I can only save one record. After the first record is saved, new records
       are no longer stored.
       
         If you are using MySQL 4.0, make sure you give the LOCK TABLES 
         privilege to the database user.
         
- 4.4. I have a problem which is not covered in this FAQ, what should I do?
+ 5.4. I have a problem which is not covered in this FAQ, what should I do?
   
         a) Have a look at the mailinglist archive at 
            http://www.achievo.org/lists. Your problem may have been discussed

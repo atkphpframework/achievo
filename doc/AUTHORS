@@ -47,7 +47,10 @@ development of new features.
 * Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
   the billing feature.
 
-To become a sponsor, please read http://www.ibuildings.nl/en/sponsor/achievo.
+* Plan42 GMBH, Germany (http://www.plan42.de) sponsored the development
+  of the Deposit module.
+
+To become a sponsor, please read http://www.achievo.org/support/sponsor.
 
 
 Translators
@@ -62,6 +65,7 @@ Chinese         : Xiaogang Sun         <sun.xiao.g@263.net>
 Czech           : Jakub Kahovec        <jakub.kahovec@newton.cz>
 Dutch           : Ivo Jansch           <ivo@achievo.org>
 Danish          : Morten Oersted       <mo@moch.dk>
+                  Junaid Mukhtar       <JUM@prosa.dk>
 Finnish         : Skyttä Kari          <kari.skytta@koskisen.fi>
                   Arto Saraniva        <arto.saraniva@imnetti.fi>
 French          : Benoit des Ligneris  <benoit.des.ligneris@physique.usherb.ca>
@@ -75,6 +79,7 @@ German          : Bastian Kleineidam   <bastian.kleineidam@triplex.de>
                   Dirk Weigenand       <Dirk.Weigenand@smb-tec.com>
                   Rainer Wedrich       <rainer.wedrich@ebd-networks.de>
                   Nele Vogel           <nele.vogel@hamburg.de>
+                  Stephan Reichhelm    <reichhelm@grit.de>
 Hungarian       : Miklos Bagi Jr.      <bagim@muszakikiado.hu>
 Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
                   Luca Pescatore       <l.pescatore@network.it>
@@ -91,7 +96,7 @@ Spanish         : Jorge Ibsen          <jibsen@eso.org>
                   Antonio              <avico@menta.net>
                   Kevin Golding        <kevin@caomhin.demon.co.uk>
                   Daniel Adad          <info@adad.net>
-Swedish         : Thomas Karlsson      <thomas.karlsson3@comhem.se>
+Swedish         : Thomas Karlsson      <thomas.karlsson@relea.se>
 
 
 Major Contributors
@@ -101,8 +106,8 @@ significant contributions to the Achievo project.
 
 Stefan Niederhauser <sn@atelier-w.ch>
 
-  Stefan came up with the aditional idea and design of the 'node'
-  concept, which later became the basis of the ATK backend.
+  Stefan came up with the idea and design of the 'node' concept, which 
+  later became the basis of the ATK backend.
 
 William Rhee <willrhee@umich.edu>
 
@@ -154,3 +159,5 @@ Ajit Deshpande                        <ajit@pobox.com>
 Jean-Charles Rogez                    <jean-charles.rogez@edfgdf.fr>
 Jonas Lincoln                         <lincoln@unit.liu.se>
 Jaap Bouma                            <jaap@buyways.nl>
+Martin ?                              <acmail@sebastian.nl>
+Mike Izydorski                        <achievobug@mizydors.rubikon.pl>
