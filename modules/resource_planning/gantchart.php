@@ -12,11 +12,12 @@
    *
    */
 
-$config_atkroot ="../../";
+chdir("../..");
+$config_atkroot ="./";
 include_once($config_atkroot."atk/class.atknode.inc");
 
-include ("jpgraph.php");
-include ("jpgraph_gantt.php");
+include (moduleDir("resource_planning")."jpgraph.php");
+include (moduleDir("resource_planning")."jpgraph_gantt.php");
 
 global $color;
 global $g_layout;

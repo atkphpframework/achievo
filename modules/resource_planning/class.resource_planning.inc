@@ -94,7 +94,7 @@
       // TO DO: Find a better solution so that this functions gets the projectname by an parameter. This will make the query superfluous
 
       global $ATK_VARS;
-      global $g_db;
+      global $g_db;            
 
       if ($ATK_VARS["atknodetype"] != "pim")
         return $this->m_attribList["phaseid"]->display($record, $mode);
