@@ -28,7 +28,7 @@ class employee extends atkNode
     $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
     if (atkconfig("authentication")=="db")
     {
-      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH));
       $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
     }
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
