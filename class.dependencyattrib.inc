@@ -130,21 +130,28 @@ class dependencyAttribute extends atkAttribute
   {
     global $g_db;
     
-    $query = "SELECT 
-                phaseid_row as first, 
-                ROW.name as firstname, 
-                phaseid_col as last, 
-                COL.name as lastname
-              FROM 
-                dependency, phase ROW, phase COL
-              WHERE                                 
-                ROW.id = phaseid_row
-                AND COL.id = phaseid_col
-                AND (ROW.projectid = ".$rec["id"]." OR COL.projectid = ".$rec["id"].")
-                ORDER BY phaseid_row";
+    if ($rec["id"]!="")
+    {
+      $query = "SELECT 
+                  phaseid_row as first, 
+                  ROW.name as firstname, 
+                  phaseid_col as last, 
+                  COL.name as lastname
+                FROM 
+                  dependency, phase ROW, phase COL
+                WHERE                                 
+                  ROW.id = phaseid_row
+                  AND COL.id = phaseid_col
+                  AND (ROW.projectid = ".$rec["id"]." OR COL.projectid = ".$rec["id"].")
+                  ORDER BY phaseid_row";
     
     
-    return array("deps"=>$g_db->getrows($query));
+      return array("deps"=>$g_db->getrows($query));
+    }
+    else
+    {
+      return array("deps"=>array());
+    }
   }
   
   function store($notused, $rec)
