@@ -8,17 +8,15 @@ might be situations in which the described procedure does not work.
 In this case send an email to ivo@achievo.org or to the mailinglist
 (achievo@achievo.org) and we will try to help you out.
 
-IMPORTANT
----------
-The Achievo 0.9.* releases are development releases. Do not use this in a 
-production environment. If you want to use Achievo in a production 
+IMPORTANT: The Achievo 0.9.* releases are development releases. Do not use 
+this in a production environment. If you want to use Achievo in a production 
 environment, download the latest stable (0.8.*) release.
 
 Upgrading from an earlier version
 ---------------------------------
 This INSTALL file assumes that you install Achievo for the first time.
-If you are upgrading from an earlier version, first check the UPGRADE
-file for upgrade instructions.
+If you are upgrading from an earlier version, check the UPGRADE file for 
+upgrade instructions.
 
 Requirements
 ------------
@@ -27,7 +25,6 @@ Requirements
   (Apache is a good choice, http://www.apache.org)
 - PHP4 (http://www.php.net, version 4.1 or greater)
 - MySQL (http://www.mysql.org) 
-
 
 Installation Procedure
 ----------------------

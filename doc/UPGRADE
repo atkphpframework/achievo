@@ -34,70 +34,50 @@ additional information at the end of this document.
 Upgrading the software usually consists of replacing the Achievo sourcecode 
 with a newer version. It is usually possible to use the config file from your
 current Achievo installation, however, you might miss some config options that
-were added in a newer release. Therefor it is best to use the new configfile and
-just change the settings again.
+were added in a newer release. Therefor it is best to use the new configfile 
+and just change the settings again.
 
-In the upgrade/ directory, you will find database patches and upgrade scripts.
-In general, you have to run these patches in the correct order, to convert 
-your existing Achievo database to a database that is compatible with the
-Achievo version you are currently installing. Pay attention to the file
-extension of the patch. If it is '.sql', you can apply the patch using a 
-databaseclient, for example like this:
+As of Achievo 0.9.2, a setup.php script is provided to upgrade Achievo 
+databases. Take the following steps to perform the upgrade:
 
-$ cd achievo/upgrade
-$ mysql -u root --password=secret achievo_0_x < convert-0.x-to-0.y.sql
+1) Make sure the config.inc.php file is correct, especially the database 
+   configuration and the administrator password.
 
-If the file extension of the patch is '.php' however, you must execute the 
-script by requesting it with your browser. For example, browse to: 
-http://achievo-server/upgrade/convert-0.x-to-0.y.php
-and follow the instructions.
+   Important: in order to upgrade your database, the databaseuser used by 
+   Achievo needs to have the following privileges on the Achievo database: 
+   select, insert, update, delete, create and alter. 
+   It is ok to remove the create and alter table privileges after the upgrade 
+   process is completed.
 
-Make sure you apply all patches in the correct order. For example, if you need 
-to upgrade from Achievo 0.4 to Achievo 0.8, first do achievo-0.4-to-0.6.php
-and then do achievo-0.6-to-0.8.sql.
-
-Additional upgrade instructions
-===============================
-
-Upgrading from version 0.6.x -> 0.8
------------------------------------
-As of version 0.7 Achievo requires PHP4. PHP3 is not supported anymore!
-
-If you were/are running the 0.6.x version of Achievo in a PHP3 only
-environment you have to update your PHP version to PHP4 (we recommend
-the latest version) first.
-
-
-Upgrading from version 0.4.x -> 0.6
------------------------------------
-Note: the upgrade procedure does not affect your old database, so
-it's safe to try the conversion.
-
-1. First install Achievo 0.6 to a new directory (leave your existing 
-   Achievo installation in place), using the achievo_mysql.sql 
-   file, as described in the INSTALL file. When creating the database,
-   make sure you create a new one, don't use your existing database.
-   For example: if your current Achievo database is called 'achievo',
-   create a new database that you call 'achievo_0_6'.
-   
-2. Set an administrator password by editing the config.inc.php file and
-   changing the $config_administratorpassword setting.
+2) Point your browser to the setup.php script. For example, browse to:
     
-3. Edit the file convert.php and change the settings in the script.
+   http://yourserver/achievo/setup.php (assuming Achievo is installed in the
+   directory 'achievo' in your webservers' document root.)
    
-4. Point your browser to the convert.php script. 
-   For example: http://myserver/achievo_0_8/upgrade/convert-0.4-to-0.6.php
-   
-5. The way we handle user passwords has changed in Achievo 0.6. Since there
-   is no way to decode the existing passwords, we can't convert the existing
-   passwords. If you have not set a default password for users in the 
-   convert.php script, you must now login to your new Achievo installation,
-   and use 'Employee Administration' to set a password for every user. 
-   If you set a default password, users can login using this default password
-   and change their own password.
- 
-6. Finally, log into Achievo, go to the 'Security Profiles' section and edit 
-   the 'Default Group'. You have to grant permissions to this profile, since
-   every converted user is put in this default profile.
-   
+   You will be presented with a login screen. You need to login as 
+   administrator, with the password you specified in config.inc.php.
 
+3) The setup.php script will take you through the upgrade process. It will 
+   verify if PHP is configured correctly to run this version of Achievo, and 
+   migrate your database if necessary. Follow the directions on screen until 
+   the script tells you that the upgrade is complete.
+  
+
+Additional upgrade notes
+========================
+
+This section contains information that you should read when upgrading to or 
+from a particular version of Achievo.
+
+Upgrading from Achievo 0.4.x
+----------------------------
+Since Achievo 0.4, the authentication and authorization processes have changed
+significantly. If you upgrade from an Achievo version 0.4.x, there are a few
+things to note:
+- All passwords are reset to 'default'. Users should change their passwords 
+  after their first login.
+- Access rights can not be preserved between these versions. After the 
+  upgrade, you should go the the Employees menu, and edit the Security 
+  Profiles. By default, all users present in Achievo 0.4 are placed in the 
+  'Default Group' profile. 
+  
