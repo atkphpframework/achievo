@@ -40,7 +40,9 @@
    {
     global $g_db;
 
-    $date = sprintf("%4d-%2d-%2d", $this->year, $this->month, $this->day);
+    if (strlen($this->month) == 1) $month = "0".$this->month; else $month = $this->month;
+    if (strlen($this->day) == 1) $day = "0".$this->day; else $day = $this->day;
+    $date = $this->year."-".$month."-".$day;
 
     $buff .= "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
     $buff .= "<tr>\n";
@@ -130,7 +132,7 @@
 
      $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
      $query->addCondition("schedule.starttime <='$time' AND schedule.endtime > '$time'");
-     $query->addCondition("(schedule.owner='".$employee."' OR person.userid='".$employee."' OR schedule.all_users = 1)");
+     $query->addCondition("(schedule.owner='".$employee."' OR (person.userid='".$employee."' AND person.role='employee') OR schedule.all_users = 1)");
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);
