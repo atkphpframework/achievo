@@ -29,8 +29,7 @@
    mail($email, text(timeguard_mail_header),$bodytext, $from); 
   }
   
-  $today = "2001-04-03";
-  //$today = date("Y-m-d");
+  $today = date("Y-m-d");
   $yr = substr($today,0,4);
   $mnth = substr($today,5,2);
   $dy = substr($today,8,2);
