@@ -60,6 +60,12 @@ class phase extends atkNode
   {
     // In select mode, we place a filter, because we may only select active phases.
     $this->addFilter("status='active'");
+
+    // Also, we hide the status field (we're showing only active phases,
+    // so this column is not necessary.
+    $this->m_attribList["status"]->m_flags|=AF_HIDE;
+
+    // call parent method.
     return parent::action_select();
   }
 }
