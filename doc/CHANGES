@@ -22,6 +22,7 @@ Changes in Achievo 0.9.4
 * Achievo should no longer generate notices when php error_reporting is set to
   E_ALL. (bug #74) [Ivo]
 * Fixed bug in project filter (non-active projects were not editable). [Ivo]
+* Fixed bug in timreg_check cron script. [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------

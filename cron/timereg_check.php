@@ -23,7 +23,7 @@
 
   // get emailaddresses for all users and presort them
   $query = "SELECT
-              userid, email
+              id, userid, firstname, lastname, email
             FROM
               person
             WHERE
@@ -33,7 +33,8 @@
   $users = $g_db->getrows($query);
   for ($i=0;$i<count($users);$i++)
   {
-    $userMail[$users[$i]["userid"]] = $users[$i]["email"];
+    $userInfo[$users[$i]["id"]]["mail"] = $users[$i]["email"];
+    $userInfo[$users[$i]["id"]]["name"] = $users[$i]["firstname"].' '.$users[$i]["lastname"];
   }
 
   $weekcheck = atkconfig("timereg_checkweeks");
@@ -58,7 +59,7 @@
 
     // get all contracts.
     $query = "SELECT
-                uc_hours, person.userid, email, supervisor
+                uc_hours, person.id, email, supervisor
               FROM
                 usercontract, person
               WHERE
@@ -71,9 +72,9 @@
 
     for ($i=0;$i<count($contracts);$i++)
     {
-      $time[$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
-      $time[$contracts[$i]["userid"]]["email"] = $contracts[$i]["email"];
-      $time[$contracts[$i]["userid"]]["supervisor"] = $contracts[$i]["supervisor"];
+      $time[$contracts[$i]["id"]]["contract"] = $contracts[$i]["uc_hours"]*60;
+      $time[$contracts[$i]["id"]]["email"] = $contracts[$i]["email"];
+      $time[$contracts[$i]["id"]]["supervisor"] = $contracts[$i]["supervisor"];
     }
 
     // get working hours
@@ -82,7 +83,7 @@
               FROM
                 hours, person
               WHERE
-                hours.userid = person.userid
+                hours.userid = person.id
                 AND person.status = 'active'
                 AND person.role='employee'
                 AND activitydate between '$startdate' and '$enddate'
@@ -114,7 +115,7 @@
 
   foreach ($incomplete_weeks as $user => $data)
   {
-    $body = stringparse(text("timeguard_mail_header"),array("userid"=>$user,
+    $body = stringparse(text("timeguard_mail_header"),array("userid"=>$userInfo[$user]["name"],
                                                      "startdate"=>$globalstart,
                                                      "enddate"=>$globalend))."\n";
 
@@ -126,16 +127,16 @@
                                                             "enddate"=>$data[$i]["enddate"]));
     }
 
-    $to = $userMail[$user];
+    $to = $userInfo[$user]["mail"];
     $cc = "";
-    $supervisormail = $userMail[$time[$user]["supervisor"]];
+    $supervisormail = $userInfo[$time[$user]["supervisor"]]["mail"];
     if ($supervisormail !="")
     {
       $cc = "Cc: ".$supervisormail."\r\n";
     }
     if ($to!="")
     {
-      usermail($to,text("timeguard_mail_subject"),$body,$cc);
+      usermail($to,text("timeguard_mail_subject"),$body, $cc);
       echo "sent mail to $to";
       if ($cc!="") echo " and a cc to $cc";
       echo "\n";
