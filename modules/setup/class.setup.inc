@@ -344,7 +344,20 @@
       }
       
       // if we get here, all dependencies are either resolved, or we have given up already
-      // and returned false.      
+      // and returned false. Next thing to do is perform the database installation.
+      $installfile = moduleDir($modname)."install/install.inc";   
+      if (file_exists($installfile))
+      {
+        // give included file access to $db and $this ("$setup");
+        global $g_db;
+        $db = &$g_db;
+        $setup = &$this;
+        
+        // also set 'current module' to the module were now installing. This will 
+        // be used by setup functions called from the install file.
+        $this->m_currentmodule = $modname;
+        include($installfile);
+      }
       
       // if we get here, everything should be installed.
       atkdebug("Installed $modname");
@@ -365,21 +378,91 @@
       // But I didn't implement this, since modules may be installed or
       // deinstalled between 2 calls.
       $result = array();
+            
       $versioninfo = getNode("setup.versioninfo");
       
       if (is_object($versioninfo)) // If this object doesn't exist, we don't have
                                    // a correct installer, so we can only return 
-                                   // an empty  result.
+                                   // an empty  result.      
       {       
+        // for fresh installations the versioninfo doesn't exist. we set
+        // errorreporting to silent, because we don't want to know this.
+        global $g_db;
+        $curhaltval = $g_db->m_haltonerror;
+        $g_db->m_haltonerror = false;
         $rows = $versioninfo->selectDb();
+        $g_db->m_haltonerror = $curhaltval; // reset to original state.
+        
         for ($i=0, $_i=count($rows); $i<$_i; $i++)
         {
           $result[$rows[$i]["module"]] = $rows[$i]["version"];
-        }
+        }        
       }
       return $result;
     }
+    
+    function installNode($nodename)
+    {
+      $node = &getNode($nodename);            
+      
+      if (is_object($node))
+      {
+        include_once(atkconfig("atkroot")."atk/db/class.atkddl.inc");
+      
+        $ddl = atkDDL::create();
         
+        if (is_object($ddl))
+        {
+          $ddl->setTable($node->m_table);
+        
+          foreach ($node->m_attribList as $attribname => $attrib)
+          {          
+            $flags = 0;
+            if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
+            if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
+            if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+            
+            // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
+          
+            $ddl->addField($attribname, 
+                           $attrib->dbFieldType(), 
+                           $attrib->dbFieldSize(), 
+                           $flags);
+          }                  
+          
+          $ddl->executeCreate();
+        }
+        else
+        {
+          atkdebug("setup::installNode: ddl class not found");
+        }
+      }
+      else
+      {
+        atkdebug("setup::installNode: node $node not found.");
+        return false;
+      }
+    }
+    
+    function setVersion($version)
+    {
+      if ($this->m_currentmodule!="")
+      {
+        $versioninfo = &getNode("setup.versioninfo");
+        $recs = $versioninfo->selectDb("module='".$this->m_currentmodule."'");
+        if (count($recs)>0)
+        {
+          // rec already exists. Update.
+          $versioninfo->updateDb(array("module"=>$this->m_currentmodule, "version"=>$version));
+        }
+        else
+        {
+          // rec doesn't exist. Insert.
+          $rec = array("module"=>$this->m_currentmodule, "version"=>$version);
+          $versioninfo->addDb($rec);
+        }
+      }
+    }      
   }
   
 ?>
