@@ -14,19 +14,19 @@ See the UPGRADE file if you want to upgrade an existing Achievo installation.
 
 Contact information
 -------------------
-Technical questions regarding Achievo: Ivo Jansch <ivo@achievo.com>
+Technical questions regarding Achievo: Ivo Jansch <ivo@achievo.org>
 Questions regarding services that ibuildings.nl provides for Achievo
-(like installation and configuration): Tom M. Schenkenberg <tom@achievo.com>
+(like installation and configuration): Tom M. Schenkenberg <tom@achievo.org>
 
-The project homepage can be found at http://www.achievo.com
+The project homepage can be found at http://www.achievo.org
 
 If you want to be notified when new versions of Achievo come out, you can 
 subscribe to our announcements mailinglist, by sending an empty message to
-announce-subscribe@achievo.com. 
+announce-subscribe@achievo.org. 
 
 If you want to discuss Achievo features with the developers and other users,
 you can subscribe to the discussion list, by sending an empty message to
-achievo-subscribe@achievo.com.
+achievo-subscribe@achievo.org.
 
 
 Commercial Support
@@ -46,7 +46,7 @@ following directly or indirectly from use of this product.
 Getting the latest release
 --------------------------
 The latest release of Achievo can always be found at 
-ftp://ftp.achievo.com/pub/achievo.
+ftp://ftp.achievo.org/pub/achievo.
 
 
 Getting involved
@@ -58,8 +58,8 @@ by our own resources alone.
 We can also use some help in doing translations of the software and
 documentation writing. If you're creative, we can also use themes.
 If you want to help development, join our mailinglist by sending an empty
-message to achievo-subscribe@achievo.com. If you don't like mailinglists
-you can also send an email to ivo@achievo.com with your suggestions.
+message to achievo-subscribe@achievo.org. If you don't like mailinglists
+you can also send an email to ivo@achievo.org with your suggestions.
 
 
 User documentation
@@ -67,4 +67,4 @@ User documentation
 Currently no user documentation is provided for Achievo. Once the project has
 reached a certain level of maturity, we will start providing user documentation
 until that time, if you have any questions, join the mailinglist by sending an
-empty message to achievo-subscribe@achievo.com
+empty message to achievo-subscribe@achievo.org

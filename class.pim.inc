@@ -50,7 +50,7 @@
       $todonode->m_flags |= NF_NO_SEARCH;
       $todonode->addFilter("todo.status NOT IN (5,2)");
       
-      $actions = array(href("dispatch.php?atknodetype=todo&atkaction=edit&atkselector=[pk]",text('edit'),SESSION_NESTED));
+      $actions["edit"] = "dispatch.php?atknodetype=todo&atkaction=edit&atkselector=[pk]";
       
       $recs = $todonode->selectDb("assigned_to='$me'");
       $todo_assignedtome = text("pim_assignedtoyou").":<br>";          

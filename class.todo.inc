@@ -145,7 +145,10 @@ class todo extends atkNode
 
    // send mail   
    $header = $this->prioHeader($rec["priority"]); 
-   usermail(implode(",",$to), $subj, $body, $header);  
+   if (is_array($to) && count($to)!="")
+   {
+     usermail(implode(",",$to), $subj, $body, $header);  
+   }
   }
   
   function todoChanged($new, $old)

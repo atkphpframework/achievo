@@ -72,6 +72,6 @@
   menuitem("support","","main",true,800);
      menuitem("achievo_docs", "manual.php", "support");
      menuitem("achievo_license", "license.php", "support");
-     menuitem("achievo_home", "http://www.achievo.com/","support");  
+     menuitem("achievo_home", "http://www.achievo.org/","support");  
 
 ?>

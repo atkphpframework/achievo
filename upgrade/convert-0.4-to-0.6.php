@@ -28,7 +28,7 @@ $default_user_passwd = "";
 
 // If you set this to 0, no logfile will be generated.
 // It is useful to leave this at 1 though. If you encounter errors
-// during the conversion, you can mail the logfile to ivo@achievo.com
+// during the conversion, you can mail the logfile to ivo@achievo.org
 // to check out what the errors are.
 $write_log = 1; // 0 = no  / 1 = yes
 $log_file = "/tmp/achievo_convert.log";
@@ -280,7 +280,7 @@ if(!empty($convert)&&$convert==1)
   {
     $g_layout->output('<br><b>There were errors during the conversion!!</b>');
     $g_layout->output('<br><br>It can not be guaranteed that your new database contains all information of the old database.');
-    $g_layout->output('Please mail the exact error messages to <a href="mailto:ivo@achievo.com">ivo@achievo.com</a>. We will try to find out what the problem is so you can try a new conversion.');
+    $g_layout->output('Please mail the exact error messages to <a href="mailto:ivo@achievo.org">ivo@achievo.org</a>. We will try to find out what the problem is so you can try a new conversion.');
   }
   else
   {

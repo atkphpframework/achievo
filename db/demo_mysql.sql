@@ -146,8 +146,8 @@ INSERT INTO activity (id, name, description, remarkrequired) VALUES ( '3', 'Trav
 INSERT INTO activity (id, name, description, remarkrequired) VALUES ( '4', 'Other', '', '1');
 INSERT INTO activity (id, name, description, remarkrequired) VALUES ( '5', 'Testing', '', '0');
 
-INSERT INTO contact (id, lastname, firstname, address, zipcode, city, country, phone, cellular, fax, email, remark, company, owner) VALUES ( '1', 'Jansch', 'Ivo', '', '', '', '', '', '', '', 'ivo@achievo.com', '', '1', NULL);
-INSERT INTO contact (id, lastname, firstname, address, zipcode, city, country, phone, cellular, fax, email, remark, company, owner) VALUES ( '2', 'Schenkenberg', 'Tom', '', '', '', '', '', '', '', 'tom@achievo.com', '', '1', NULL);
+INSERT INTO contact (id, lastname, firstname, address, zipcode, city, country, phone, cellular, fax, email, remark, company, owner) VALUES ( '1', 'Jansch', 'Ivo', '', '', '', '', '', '', '', 'ivo@achievo.org', '', '1', NULL);
+INSERT INTO contact (id, lastname, firstname, address, zipcode, city, country, phone, cellular, fax, email, remark, company, owner) VALUES ( '2', 'Schenkenberg', 'Tom', '', '', '', '', '', '', '', 'tom@achievo.org', '', '1', NULL);
 
 INSERT INTO contract (id, billing_period, period_price, contracttype, customer, startdate, enddate, description) VALUES ( '1', 'Month', '20.00000', '1', '1', '2002-01-07', '2003-01-07', 'Standard hosting contract');
 
@@ -168,7 +168,7 @@ INSERT INTO db_sequence (seq_name, nextid) VALUES ( 'phase', '1');
 INSERT INTO db_sequence (seq_name, nextid) VALUES ( 'todo', '1');
 INSERT INTO db_sequence (seq_name, nextid) VALUES ( 'hours', '1');
 
-INSERT INTO employee (userid, supervisor, name, email, password, status, theme, entity) VALUES ( 'ivo', '0', 'Ivo Jansch', 'ivo@achievo.com', '098f6bcd4621d373cade4e832627b4f6', 'active', NULL, '1');
+INSERT INTO employee (userid, supervisor, name, email, password, status, theme, entity) VALUES ( 'ivo', '0', 'Ivo Jansch', 'ivo@achievo.org', '098f6bcd4621d373cade4e832627b4f6', 'active', NULL, '1');
 
 INSERT INTO hours (id, entrydate, activitydate, phaseid, activityid, remark, time, userid) VALUES ( '1', '2002-01-07', '2002-01-07', '1', '4', 'Created demo database for Achievo 0.8', '60', 'ivo');
 
