@@ -1,4 +1,5 @@
 <?php
+  module("core","./");
   module("utils");
   module("setup");
   module("employee");

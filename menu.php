@@ -33,12 +33,12 @@
 
   /* output html */
   $g_layout->output("<html>");
-  $g_layout->head($txt_app_title);
+  $g_layout->head(text("app_title","","core"));
 
 
   $g_layout->body();
   $g_layout->output("<div align='center'>");
-  $g_layout->ui_top(text("menu_".$atkmenutop));
+  $g_layout->ui_top(text("menu_".$atkmenutop,"","core"));
   $g_layout->output("<br>");
 
   /* build menu */
@@ -75,9 +75,9 @@
       $projects = $g_sessionManager->getValue("selectedprj","globals");
     }        
     
-    $prj .= text("project_select").":";
+    $prj .= text("project_select","","core").":";
     $prj .="<FORM><SELECT name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
-    $prj .= "<OPTION value=\"0\">".text("project_select_none")."</OPTION>";
+    $prj .= "<OPTION value=\"0\">".text("project_select_none","","core")."</OPTION>";
 
     for ($i=0;$i < count($projects); $i++)
     {
@@ -124,18 +124,18 @@
       {
         if (empty($url)) // normal submenu
         {
-          $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name")).$config_menu_delimiter;
+          $menu .= href('menu.php?atkmenutop='.$name,text("menu_$name","","core")).$config_menu_delimiter;
         }
         else // submenu AND a default url.
         {
           $menuurl = session_url('menu.php?atkmenutop='.$name);
           $mainurl = session_url($url,SESSION_NEW);
-          $menu.= '<a href="javascript:menuload(\''.$menuurl.'\', \''.$mainurl.'\');">'.text("menu_$name").'</a>'.$config_menu_delimiter;
+          $menu.= '<a href="javascript:menuload(\''.$menuurl.'\', \''.$mainurl.'\');">'.text("menu_$name","","core").'</a>'.$config_menu_delimiter;
         }
       }
       else // normal menuitem
       {
-        $menu .= href($url,text("menu_$name"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
+        $menu .= href($url,text("menu_$name","","core"),SESSION_NEW,false,'target="main"').$config_menu_delimiter;
       }
     }
   }
@@ -145,7 +145,7 @@
   {
     $parent = $g_menu_parent[$atkmenutop];
     $menu .= $config_menu_delimiter;
-    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to").' '.text("menu_$parent")).'<br>';
+    $menu .= href('menu.php?atkmenutop='.$parent,text("back_to","","core").' '.text("menu_$parent","","core")).'<br>';
   }
 
   /* bottom */
