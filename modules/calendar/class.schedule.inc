@@ -13,11 +13,11 @@
  */
 
  // calendar base class
-  include_once "class.calendar.inc";
-  include_once "class.base_dayview.inc";
-  include_once "class.base_monthview.inc";
-  include_once "class.base_weekview.inc";
-  include_once "class.base_employeeview.inc";
+  include_once (moduleDir("calendar")."class.calendar.inc");
+  include_once (moduleDir("calendar")."class.base_dayview.inc");
+  include_once (moduleDir("calendar")."class.base_monthview.inc");
+  include_once (moduleDir("calendar")."class.base_weekview.inc");
+  include_once (moduleDir("calendar")."class.base_employeeview.inc");
 
   useattrib("atkdateattribute");
   useattrib("atktextattribute");
