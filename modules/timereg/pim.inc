@@ -2,11 +2,15 @@
 
   function pimTimeReg()
   {
-    global $g_layout;
+    global $g_layout, $g_user;
     $hoursnode = getNode("timereg.hours");
 
     $actions = array();
 
+    // Show only todays bookings, and only your own.
+    $hoursnode->addFilter("activitydate",strftime("%Y-%m-%d"));    
+    $hoursnode->addFilter("userid",strtolower($g_user["name"]));
+    
     $recs = $hoursnode->selectDb();
 
     if (count($recs)>0)
