@@ -105,7 +105,7 @@ class todo extends atkNode
    $emails  = $g_db->getrows($q);   
    
    // now assemble the mail body
-   $subj  = "[achievo notice] ".text("newtodoassigned").": ".$rec["title"];
+   $subj  = "[achievo notice] ".text("todoadded").": ".$rec["title"];
     
    $body = text("todo").": ".$rec["title"]."\n";     
    $body.= text("description").": \n".$rec["description"]."\n\n";

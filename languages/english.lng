@@ -304,5 +304,13 @@
   $txt_title_usercontracts_add = "Add employee contract";
   $txt_title_usercontracts_edit = "Edit employee contract";
   $txt_title_usercontracts_delete = "Delete employee contract";
+  
+  $txt_todochanged = "Todo item changed";
+  $txt_todoadded = "New todo item";
+  $txt_duedate = "Due date";
+  $txt_todo_ownedby = "Owned by";
+  $txt_todo_changedby = "Changed by";
+  $txt_todo_assignedto = "Assigned to";
+  $txt_todo_previouslyassignedto = "Previously assigned to";
 
 ?>
