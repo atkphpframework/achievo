@@ -57,7 +57,7 @@ class hours extends atkNode
     // userid, even if it's not displayed on screen.
     $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
 
-    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
+    $this->add(new projectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
     $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
     $this->add(new atkTextAttribute("remark", 1, 0));
     $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
@@ -118,7 +118,7 @@ class hours extends atkNode
     return $rec["phaseid"]["activityname"];
   }
 
-  function action_edit()
+  function action_edit(&$handler)
   {
     $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));        
     
@@ -129,12 +129,13 @@ class hours extends atkNode
     if ($this->m_lock=="")
     {
       $this->addFilter("hours.userid",strtolower($g_user["id"]));
-      return parent::action_edit();
+      return $handler->action_edit();
     }
     else
     {
       // Week is locked. We may not edit, only view.
-      return $this->action_view();
+      $handler = $this->getHandler("view");
+      $handler->invoke("action_view");
     }
   }
 
@@ -150,8 +151,10 @@ class hours extends atkNode
   }
 
   // override the admin action, because we have the weekview/dayview switch..
-  function action_admin()
+  function action_admin(&$handler)
   {
+    $page = &$this->getPage();
+    
     global $g_user;
 
     $this->setLock();
@@ -160,15 +163,17 @@ class hours extends atkNode
 
     if ($this->m_weekview!=1)
     {
-      if ($this->m_lock=="") $this->addPage();
+      if ($this->m_lock=="") $res[] = $handler->invoke("addPage");
       $this->addFilter("activitydate",$this->m_viewdate);
-      $this->adminPage();
+      $res[] = $handler->adminPage();
     }
     else
     {
-      if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $this->addPage();
-      $this->weekview();
+      if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $res[] = $handler->invoke("addPage");
+      $res[] = $this->weekview();
     }
+    
+    $page->addContent($this->renderActionPage("admin", $res));
   }
 
   function adminHeader()
@@ -227,7 +232,7 @@ class hours extends atkNode
 
   function weekview()
   {
-    global $g_layout, $g_user;
+    global $g_user;
     if ($this->m_viewdate!="")
     {
       $viewtime = mktime(12,12,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
@@ -237,8 +242,11 @@ class hours extends atkNode
       $this->m_viewdate = date("Y-m-d");
       $viewtime = time();
     }
-    $g_layout->initGUI();
-    $g_layout->ui_top(text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime));
+    $this->addStyle("style.css");
+    
+    $ui = &$this->getUi();        
+
+    $output = "";
 
     $weekday = strftime("%w",$viewtime);
     if ($weekday==0) $weekday=7;
@@ -299,44 +307,42 @@ class hours extends atkNode
 
     $prevnextlinks.='<b>'.text("week").' '.strftime('%V, %Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
 
-    $g_layout->output($prevnextlinks);
-    $g_layout->output($g_layout->data_top());
-    $g_layout->output($g_layout->tr_top());
+    $output.= $prevnextlinks;
+    
+    $weekdata = array();
+    
+    $table = &atknew("atk.utils.atktablerenderer");
 
-    $g_layout->td_datatitle(text('project').'/'.text('phase'));
+    $weekdata[0][] = text('project').'/'.text('phase');
     for ($i=1;$i<=7;$i++)
     {
       if ($weekdates[$i]['date'] <= date("Y-m-d"))
       {
         $url = 'dispatch.php?viewdate='.$weekdates[$i]['date']."&weekview=0";
-        $g_layout->td_datatitle(href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
+        $weekdata[0][] = href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
       }
       else
       {
-        $g_layout->td_datatitle(text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
+        $weekdata[0][] = text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
       }
+      $table->setColAlignment($i, TBL_CENTER);
 
     }
-    $g_layout->td_datatitle(text('total'));
-
-    $g_layout->output($g_layout->tr_bottom());
-
-    $row = 0;
+    $weekdata[0][] = text('total');
+    
+    $row = 1;
     while (list($proj, $times)=each($week))
-    {
-      $g_layout->output($g_layout->tr_top((++$row)%2==0));
-      $g_layout->td($proj);
+    {      
+      $weekdata[$row][] = $proj;
       for ($i=1;$i<=7;$i++)
       {
-        $g_layout->td(time_format($times[$weekdates[$i]['date']]), 'align="center"');
+        $weekdata[$row][] = time_format($times[$weekdates[$i]['date']]);
       }
-      $g_layout->td(time_format($projtotals[$proj]), 'align="center"');
-      $g_layout->output($g_layout->tr_bottom());
+      $weekdata[$row][] = time_format($projtotals[$proj]);      
+      $row++;
     }
-
-    $g_layout->output($g_layout->tr_top());
-
-    $g_layout->td_datatitle(text('total'));
+    
+    $weekdata[$row][] = text('total');
 
     for ($i=1;$i<=7;$i++)
     {
@@ -348,13 +354,14 @@ class hours extends atkNode
       {
         $color = "#009900";
       }
-      $g_layout->td_datatitle('<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>','align="center"');
+      $weekdata[$row][] = '<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>';
     }
-    $g_layout->td_datatitle(time_format($total), 'align="center"');
-
-    $g_layout->output($g_layout->tr_bottom());
-    $g_layout->output($g_layout->data_bottom());
-    $g_layout->ui_bottom();
+    $weekdata[$row][] = time_format($total);
+        
+    $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
+    
+    return $ui->renderBox(array("title"=>text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime),
+                                    "content"=>$output));
   }
 
   function postAdd($rec)
@@ -364,6 +371,7 @@ class hours extends atkNode
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    return true;
   }
 
   function postUpdate($rec)
@@ -373,6 +381,7 @@ class hours extends atkNode
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    return true;
   }
 
   // Check if this week may be booked..
@@ -567,7 +576,7 @@ class hours extends atkNode
     }
   }    
   
-  function addPage($record="")
+  function addPage(&$handler, $record="")
   {
     global $g_sessionManager;
    // Insert mode can be "" (normal) or "multi" (multiple days at once).
@@ -579,7 +588,7 @@ class hours extends atkNode
       $this->add(new atkDummyAttribute("dayfilter", "", AF_HIDE_EDIT|AF_HIDE_LIST));
     }
    
-    return parent::addPage($record);
+    return $handler->addPage($record);
   }
   
   function activitydate_edit($record, $prefix="", $mode="")
@@ -642,6 +651,8 @@ class hours extends atkNode
   {
     global $g_user;
     
+    $res = true;
+    
     if ($record["activitydate"]["multi"]==1)
     {      
       // We're registering multiple days at once. 
@@ -676,7 +687,7 @@ class hours extends atkNode
           $newRecord["activitydate"] = array("year"=>date("Y", $walkerStamp),
                                              "month"=>date("m", $walkerStamp),
                                              "day"=>date("d", $walkerStamp));
-          parent::addDb($newRecord);
+          $res = parent::addDb($newRecord);
         }
         
         // End of day, add 1 day and reloop.
@@ -689,8 +700,9 @@ class hours extends atkNode
     }
     else
     {
-      parent::addDb($record, $exectrigger);
+      $res = parent::addDb($record, $exectrigger);
     }
+    return $res;
   }
  
   /**
