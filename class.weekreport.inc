@@ -454,7 +454,7 @@ class weekreport extends atkNode
     else if ($outputType=="2")
     {
       // specail RecordList can export to file
-      $this->specialRecordList($rldata, "", "'", "',", "\r\n", "1", "",$suppress);
+      $this->specialRecordList($rldata, "", '"', '";', "\r\n", "1", "",$suppress);
     }  
   }
 }

@@ -15,5 +15,5 @@
   $config_auth_levelfield  = "entity";
   $config_authentication_md5 = true;
   $config_securityscheme = "group";
-  $config_debug = 0;
+  $config_debug = 1;
 ?>

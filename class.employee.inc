@@ -1,12 +1,28 @@
 <?php
 
+class useridAttribute extends atkAttribute
+{
+
+  function useridAttribute($name, $flags=0)
+  {
+    /* base class constructor */
+    $this->atkAttribute($name, $flags);
+  }
+  function value2db($rec)
+  {
+    return escapeSQL(strtolower($rec["userid"]));
+  }
+}
+
+
+
 class employee extends atkNode
 {
   function employee()
   {
     global $ATK_VARS,$g_user;
     $this->atkNode("employee",NF_EDITAFTERADD);
-    $this->addAttribute(new atkAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
+    $this->addAttribute(new useridAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
     $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
 
     $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
@@ -63,5 +79,6 @@ class employee extends atkNode
   {
     include_once 'employeestats.inc';
   }
+  
 }
 ?>

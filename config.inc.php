@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_0_7";
+  $config_databasename = "achievo_tryllian2";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -43,7 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile="english.lng";
+  $config_languagefile="nederlands.lng";
 
 
   // -------------------------------------------
@@ -129,7 +129,8 @@
   // it can be found as the second parameter.
   //
   // module("somemodule","../achievo_modules/somemodule");
-  
+  // module("sw","../achievo_modules/sw");  
+   module("tryllian","../achievo_modules/tryllian");  
   // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------

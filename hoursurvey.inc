@@ -279,7 +279,7 @@
    if ($outputType=="2")
    {
     // specail RecordList can export to file
-     $this->specialRecordList($data, "", "", ";", "\r\n", "1", $suppress);
+     $this->specialRecordList($data, "", '"', '";', "\r\n", "1", $suppress);
    }
 
 ?>

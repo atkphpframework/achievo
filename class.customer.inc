@@ -15,7 +15,7 @@ class customer extends atkNode
     $this->addAttribute(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("website",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->addAttribute(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD)); 
     $this->addAttribute(new atkOneToManyRelation("contactperson","contact","company",AF_HIDE_LIST));

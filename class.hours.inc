@@ -15,7 +15,7 @@ class hours extends atkNode
 
   function hours()
   {
-    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate; 
+    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate,$g_sessionData; 
     
     // weekview and viewdate are variables that we need to remember..    
     $weekview = $g_sessionManager->stackVar("weekview");
@@ -111,8 +111,7 @@ class hours extends atkNode
       
   function initial_values()
   {
-     global $g_user, $viewdate;
-
+     global $g_user, $viewdate, $g_sessionData;
      $initial_date = Array();    
      
      if ($viewdate!="")
@@ -127,7 +126,6 @@ class hours extends atkNode
                              "month"=>date("m"),
                              "day"=>date("d"));
      }
-     
      return array("userid"=>strtolower($g_user["name"]),
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
