@@ -10,6 +10,7 @@ Changes in Achievo 0.9.4
 + Added statistical graphs for projects. [Ivo]
 + Hour entries can now be edited directly from the time survey (only your own
   hours and only if the entries are not from locked weeks) (bug #22). [Ivo]  
++ View/edit/delete screens now show the active record in the title bar. [Ivo]
 * Fixed bug in 'recent projects' dropdown in projects menu. (bug #122) [Ivo]
 * Fixed php error message when deleting todo's. (bug #71) [Ivo]
 * When converting from an older version than 0.9.2, projects without a 
@@ -113,23 +114,24 @@ Changes in Achievo 0.9.2
 Changes in Achievo 0.9.1
 ------------------------
 + Added form based login, so Achievo should now work with php running as a 
-  cgi-binary.
-+ Added todo history.
-+ Added initial version of resource planning feature.
-+ Added 'clickthrough' feature for more easy navigation between items.
+  cgi-binary. [Martin]
++ Added todo history. [Daniel]
++ Added initial version of resource planning feature. [Ludo]
++ Added 'clickthrough' feature for more easy navigation between items.  [Ivo]
 + Added 'multiselect' feature (for example the ability to delete more than one
-  record at the same time).
-+ Added Chinese language file.
-+ Added Danish langugae file.
+  record at the same time). [Peter]
++ Added Chinese language file. [Xiaogang]
++ Added Danish language file. [Morten]
 + Added 'default' screen to menuitems. (brings back 'one click' 
-  timeregistration)
-+ Added a search box to the top frame (doesn't find anything yet though).
-+ Added multiline select to extended search feature. (bug #30)
+  timeregistration) [Ivo]
++ Added search box to the top frame (doesn't find anything yet though). [Ivo]
++ Added multiline select to extended search feature. (bug #30) [Ivo]
 * Changed include structure (include classes only when needed), resulting in 
-  better performance.
-* Achievo now works with allow_call_time_pass_reference = Off in php.ini.
+  better performance. [Ivo]
+* Achievo now works with allow_call_time_pass_reference=Off in php.ini. [Ivo]
 * Achievo no longer behaves weird when having multiple open browser windows.
-* Updated Spanish language file (bug #53)
+  [Ivo]
+* Updated Spanish language file (bug #53) [Daniel]
 * Bugfixes for bugs #17, #27 and #40.
 * Several other bugfixes.
 
