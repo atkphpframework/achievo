@@ -7,6 +7,8 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 Changes in Achievo 0.9.4
 ------------------------
 * Fixed bug in 'recent projects' dropdown in projects menu (bug #122) [Ivo]
+* Achievo should no longer generate notices when php error_reporting is set to
+  E_ALL. (bug #74) [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------
