@@ -26,6 +26,9 @@ Requirements
 - PHP4 (http://www.php.net, version 4.1 or greater)
 - MySQL (http://www.mysql.org) 
 
+There are several graphical charts in Achievo. For these to work, PHP should 
+be installed/compiled with GD support (http://www.php.net/gd).
+
 Installation Procedure
 ----------------------
 
