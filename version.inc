@@ -1,4 +1,4 @@
 <?php
-  $achievo_version = "1.0RC2";
-  $achievo_state   = "release candidate";
+  $achievo_version = "1.1.0";
+  $achievo_state   = "development";
 ?>
