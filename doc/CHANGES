@@ -2,6 +2,13 @@
 - : deprecated feature
 * : bugfix or changed code
 
+Changes in Achievo 0.7.2
+------------------------
++ Added support voor Oracle 8i databases.
++ Added context sensitive help feature.
+* Updated Italian language files.
+* Fixed some Internet Explorer 4 incompatibilities.
+
 Changes in Achievo 0.7.1
 ------------------------
 * Fixed a bug in postgresql support (outer joins).

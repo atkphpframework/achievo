@@ -19,7 +19,7 @@
   $txt_time = "Orario";
   $txt_hours = "Ore";
   $txt_minutes = "Minuti";
-  $txt_activitydate = "Data";
+  $txt_date = "Data";
   $txt_percentage = "Percentuale";
   $txt_total = "Totale";
   $txt_description = "Descrizione";
@@ -41,11 +41,11 @@
   $txt_nonactive = "Inattivo";
   $txt_archived = "Archiviato";
   
-  $txt_logout_loggedinuser = "Logged-in user";
+  $txt_logout_loggedinuser = "Utente connesso";
 
   $txt_title_activitystats = "Statistiche Attività";
   $txt_title_activitystats_totals = "Totale statistiche per ";
-  $txt_title_activitystats_peremployee = "I seguenti dipendenti hanno registrato quete ore in questa attività";
+  $txt_title_activitystats_peremployee = "I seguenti dipendenti hanno registrato queste ore in questa attività";
   $txt_title_activitystats_perproject = "Questa attività è stata usata nei seguenti progetti";
   $txt_title_employeestats = "Statistiche Dipendenti";
   $txt_title_employeestats_totals = "Totale statistiche per ";
@@ -171,7 +171,7 @@
   $txt_menu_hours_hoursurvey = "Orario";
   $txt_menu_customer_admin = "Amministrazione Clienti";
   $txt_menu_project_admin = "Amministrazione Progetto";
-  $txt_menu_activity_admin = "Amministrazione Progetto";
+  $txt_menu_activity_admin = "Amministrazione Attività";
   $txt_menu_employee_admin = "Amministrazione Dipendenti";
   $txt_menu_employee_personalstats = "Statistiche Personali";
   $txt_menu_profile_admin = "Sicurezza Profili";
@@ -193,7 +193,7 @@
   $txt_title_employee_select = "Seleziona un Dipendente";
   $txt_employee_select = "Seleziona un Dipendente";
 
-  $txt_template = "Template";
+  $txt_template = "Template(Modello)";
 
   $txt_sethoursfilter = "Seleziona quali ore vuoi visualizzare:";
 
@@ -239,7 +239,7 @@
   $txt_planning = "Planning";
   
   // --------==== Strings that were introduced in version 0.5.10: ====---------
-  $txt_link_contact_add = "Add a new contactperson";
+  $txt_link_contact_add = "Aggiungi un nuovo contatto";
   
   // --------==== Strings that were introduced in version 0.6: ====---------
   $txt_title_contact_add = "Aggiungi un nuovo contatto";
@@ -247,6 +247,6 @@
   $txt_title_tpl_project_phase_add = "Aggiungi una nuova fase al progetto";
     
   // --------==== Strings that were introduced in version 0.6.3: ====---------
-  $txt_orderby = "Order by";
+  $txt_orderby = "Ordina per";
   
 ?>
