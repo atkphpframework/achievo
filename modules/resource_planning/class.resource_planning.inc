@@ -54,7 +54,7 @@ function resource_planning()
     $employee->m_destinationFilter = $ATK_VARS["employeefilter"];
     $this->add(&$employee);
 
-    $this->add(new atkDateAttribute("date",AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("plandate",AF_OBLIGATORY));
     $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
     $this->add(new atkTextAttribute("description"));
 

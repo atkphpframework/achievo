@@ -95,13 +95,13 @@ class atkPlanProjectAttribute extends atkAttribute
   {
     global $g_db, $g_user;
 
-    $query = "SELECT project.name as name, project.id as id, planning.date as date FROM project,phase,planning ";
+    $query = "SELECT project.name as name, project.id as id, planning.plandate as plandate FROM project,phase,planning ";
     $query.= "WHERE phase.id=planning.phaseid
                 AND project.status='active'
                 AND phase.projectid=project.id
                 AND planning.phaseid=phase.id ";
 
-    $query.= "ORDER BY planning.date DESC";
+    $query.= "ORDER BY planning.plandate DESC";
 
     // N*20 should be enough to get N unique recent projects.
     $arr = $g_db->getrows($query,'0',$GLOBALS["config_numberofrecentprojects"]*20);

@@ -100,12 +100,12 @@ $name = "atk".atkconfig("database")."query";
 $query = new $name();
 $query->addTable('employee_project');
 $query->addJoin('employee', '', 'employee.userid=employee_project.employeeid', FALSE);
-$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.date BETWEEN '".$weekdates[1][date]."' AND '".$weekdates[7][date]."'", TRUE);
+$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
 $query->addField('id', ' ', 'planning', 'planningid');
-$query->addField('date', ' ', 'planning');
+$query->addField('plandate', ' ', 'planning');
 $query->addField('time', ' ', 'planning');
 $query->addField('name', ' ', 'project', 'projectname');
 $query->addField('name', ' ', 'employee', 'employeename');
@@ -119,7 +119,7 @@ $query->addField('id', ' ', 'project', 'qprojectid');
 if(isset($projectid)&&$projectid!='-1') $query->addCondition("employee_project.projectid='".$projectid."'");
 
 $query->addOrderBy('employee.name');
-$query->addOrderBy('date');
+$query->addOrderBy('plandate');
 $querystring = $query->buildSelect(TRUE);
 $dbrecords = $g_db->getrows($querystring);
 
@@ -192,13 +192,13 @@ for ($i=1;$i<=7;$i++)
       //Now the add and view links will be added under the planned items
       for ($w = 1; $w <= 7;$w++)
       {
-        $linkdate=$weekdates[$w][date];
+        $linkdate=$weekdates[$w]['date'];
         $linkname=$day[0];
         $datenow=date("Y-m-d");
         // If the date of the printed day is smaller then the date now there will be no add link available because you allways plan in the future
           if ($linkdate<$datenow)
         {
-          $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "date='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
+          $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
           $g_layout->td('&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.href($urla, text(view), SESSION_NESTED), 'colspan="2" align="left"');
         }
         else
@@ -206,13 +206,13 @@ for ($i=1;$i<=7;$i++)
           // If there is no project selected (notset or -1) there will be no add link available because achievo doesn't know which project to plan on
           if (!isset($projectid) || $projectid==-1)
           {
-            $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "date='$linkdate' AND employeeid.userid='$linkname'"));
+            $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'"));
             $g_layout->td((href($urla, text(view), SESSION_NESTED)), 'colspan="2" align="center" nowrap');
           }
           else
           {
-            $urla=dispatch_url('resource_planning.resource_planning', 'add', array("atkfilter" => "date='$linkdate' AND employeeid.userid='$linkname'", "projectfilter" => "projectid='$projectid'"));
-            $urlb=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "date='$linkdate' AND employeeid.userid='$linkname'"));
+            $urla=dispatch_url('resource_planning.resource_planning', 'add', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "projectfilter" => "projectid='$projectid'"));
+            $urlb=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'"));
             $g_layout->td((href($urla, text(resource_planning_addplan), SESSION_NESTED)).' '.(href($urlb, text(view), SESSION_NESTED)), 'colspan="2" align="center" nowrap');
           }
         }

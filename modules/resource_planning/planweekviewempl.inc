@@ -61,12 +61,12 @@ $name = "atk".atkconfig("database")."query";
 $query = new $name();
 $query->addTable('employee_project');
 $query->addJoin('employee', '', 'employee.userid=employee_project.employeeid', FALSE);
-$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.date BETWEEN '".$weekdates[1][date]."' AND '".$weekdates[7][date]."'", TRUE);
+$query->addJoin('planning', '', "planning.employeeid=employee_project.employeeid AND planning.plandate BETWEEN '".$weekdates[1]['date']."' AND '".$weekdates[7]['date']."'", TRUE);
 $query->addJoin('phase', '', 'planning.phaseid=phase.id', TRUE);
 $query->addJoin('project', '', 'phase.projectid=project.id', TRUE);
 
 $query->addField('id', ' ', 'planning', 'planningid');
-$query->addField('date', ' ', 'planning');
+$query->addField('plandate', ' ', 'planning');
 $query->addField('time', ' ', 'planning');
 $query->addField('name', ' ', 'project', 'projectname');
 $query->addField('name', ' ', 'employee', 'employeename');
@@ -76,7 +76,7 @@ $query->addField('id', ' ', 'project', 'qprojectid');
 
 $query->addCondition("employee.userid='".$userid."'");
 
-$query->addOrderBy('date');
+$query->addOrderBy('plandate');
 
 $querystring = $query->buildSelect(TRUE);
 $dbrecords = $g_db->getrows($querystring);
@@ -124,7 +124,7 @@ for ($i=1;$i<=7;$i++)
           $times='';
           foreach($day[$w] as $item)
           {
-            $linkdate=$weekdates[$w][date];
+            $linkdate=$weekdates[$w]['date'];
             $url=dispatch_url('resource_planning.resource_planning','view', array("atkselector" => "planning.id=$item[0]", "employeefilter" => "employee.userid='$item[5]'", "projectfilter" => "projectid='$item[7]'"));
             $projects.=href($url, $item[6], SESSION_NESTED).'<br>';
             $times.=time_format($item[2]).'<br>';
@@ -144,10 +144,10 @@ for ($i=1;$i<=7;$i++)
       //Now the viewlink will be added under the planned items
       for ($w = 1; $w <= 7;$w++)
       {
-        $linkdate=$weekdates[$w][date];
+        $linkdate=$weekdates[$w]['date'];
         $linkname=$day[0];
         $datenow=date("Y-m-d");
-        $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "date='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
+        $urla=dispatch_url('resource_planning.resource_planning', 'list', array("atkfilter" => "plandate='$linkdate' AND employeeid.userid='$linkname'", "noactions" => "1"));
         $g_layout->td('&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'.href($urla, text(view), SESSION_NESTED), 'colspan="2" align="left"');
       }
       $g_layout->output($g_layout->tr_bottom());
