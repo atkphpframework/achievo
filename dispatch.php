@@ -9,7 +9,7 @@
   include_once("theme.inc");
      
   // Create node
-  $obj = getNode($ATK_VARS["atknodetype"]); 
+  $obj = &getNode($ATK_VARS["atknodetype"]); 
     
   if (is_object($obj))
   {
