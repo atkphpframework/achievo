@@ -23,7 +23,7 @@
 
   if ($g_user["name"]!="administrator")
   {
-    $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.userid='".$g_user["name"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
+    $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.userid='".$g_user["id"]."'")), text('userprefs'), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
   }
 
   $centerpiece.= '<a href="index.php?atklogout=1" target="_top">'.text('logout').'</a>';
