@@ -316,7 +316,11 @@
   $txt_todo_changedby = "Changed by";
   $txt_todo_assignedto = "Assigned to";
   $txt_todo_previouslyassignedto = "Previously assigned to";
-  
+
+  $txt_project_select = "Selected project";
+  $txt_project_select_none = "No project selected";
+  $txt_menu_selectedprojectmanagement = "Manage Projects";
+
   $txt_menu_contracts = "Customer Contracts";
   $txt_title_contracts_admin = "Manage existing contracts";
   $txt_title_contracts_add = "Add contract";

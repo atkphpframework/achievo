@@ -14,7 +14,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_tryllian";
+  $config_databasename = "achievo_0_7";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -70,6 +70,10 @@
   // gets (due to some javascript issues).
   //
   $config_numberofrecentprojects = 10;
+
+  // The size of the project name in character in de drop down menu
+  // of the Manage project section
+  $config_projectnamesize = 25;
 
   // The ammount of time that a user can book on a day before it is 
   // considered overtime. 

@@ -10,7 +10,9 @@
   menuitem("schedule_types", dispatch_url("schedule_types","admin"));
   
   menuitem("-");
-  menuitem("projectmanagement"); // projects submenu
+  if ($selectedproject == 0)
+  {
+    menuitem("projectmanagement"); // projects submenu
      $target_stats = "dispatch.php?atknodetype=project&atkaction=stats&selectedprojectid=[id]";      
      $target_planning = "dispatch.php?atknodetype=project&atkaction=planning&selectedprojectid=[id]";        
      menuitem("project_admin", dispatch_url("project", "admin"), "projectmanagement", is_allowed("project", "admin"));
@@ -22,6 +24,19 @@
      menuitem("-","","projectmanagement");
      menuitem("project_todoview", dispatch_url("project_todoview", "admin"), "projectmanagement", is_allowed("project_todoview", "admin"));
      menuitem("project_notesview", dispatch_url("project_notesview", "admin"), "projectmanagement", is_allowed("project_notesview", "admin"));
+  }
+  else
+  {
+    menuitem("projectmanagement"); // selected projects submenu   
+     menuitem("project_admin", dispatch_url("project", "edit", array("atkselector" => "project.id='".$selectedproject."'")), "projectmanagement", is_allowed("project", "admin"));
+     menuitem("project_planning",  dispatch_url("project", "planning", array("selectedprojectid" => $selectedproject)), "projectmanagement", is_allowed("project", "planning"));  
+     //menuitem("project_planning",  dispatch_url("project", "planning", array("atkselector" => "project.id=")), "projectmanagement", is_allowed("project", "planning"));  
+     menuitem("-","","projectmanagement");
+     menuitem("project_stats", dispatch_url("project", "stats", array("selectedprojectid" => $selectedproject)), "projectmanagement", is_allowed("project", "stats"));          
+     menuitem("-","","projectmanagement");
+     menuitem("project_todoview", dispatch_url("project_todoview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", is_allowed("project_todoview", "admin"));
+     menuitem("project_notesview", dispatch_url("project_notesview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", is_allowed("project_notesview", "admin"));   
+  }   
 
   menuitem("-");
   menuitem("customer_admin", dispatch_url("customer", "admin"));

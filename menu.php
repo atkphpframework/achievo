@@ -11,6 +11,7 @@
   atksecure();
   
   include_once("./theme.inc");
+  include_once("achievotools.inc");
   
   /* get main menuitems */
   include_once($config_atkroot."config.menu.inc");  
@@ -33,12 +34,52 @@
   $g_layout->ui_top(text("menu_".$atkmenutop));
   $g_layout->output("<br>");
 
+  
+?>
+    <script language="JavaScript">
+    
+    function reloadProjects(el)
+    {
+      var id = el.options[el.selectedIndex].value;      
+      window.location= "menu.php?atkmenutop=projectmanagement&selectedproject="+id;                
+    }
+    </script>
+<?
+  /*drop down in projectmanagement */
+  if ($atkmenutop == "projectmanagement")
+  { 
+    $projects = $g_sessionManager->getValue("recentprj");  
+    if (count($projects) == 0)
+    {
+      updateSelectedProjects();
+      $projects = $g_sessionManager->getValue("recentprj");
+    }
+    $prj .= text("project_select").":";
+    $prj .="<FORM><SELECT name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
+    $prj .= "<OPTION value=\"0\">".text("project_select_none")."</OPTION>";
+    
+    for ($i=0;$i < count($projects); $i++)
+    {
+      $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
+      if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
+      $prj .= ">".$projects[$i]['projectname']."</OPTION>";
+    }
+    $prj .="</SELECT></FORM>";
+    $g_layout->output($prj);
+    
+  }
+  
+
   /* build menu */
   $menu = "";  
   for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++)
   {
     $name = $g_menu[$atkmenutop][$i]["name"];
     $url = $g_menu[$atkmenutop][$i]["url"];
+    //if ($select != "") $url .= "&atkselectedprojectid=".$select;
+    //if ($select != "") $url .= rawurlencode("'".$select."'");
+    //if ($select != "") $url .= atkUrlEncode("'".$select."'");
+    
     $enable = $g_menu[$atkmenutop][$i]["enable"];
 
     /* delimiter ? */

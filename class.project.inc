@@ -1,6 +1,7 @@
 <?php
 
-include_once "class.dependencyattrib.inc";
+  include_once "class.dependencyattrib.inc";
+  include_once("achievotools.inc");
 
 // When a new project is saved, you can base it on a template, i.e. select a set of 
 // default activities. To accomplish this, we make a new attribute based on a ManyToOneRelation
@@ -77,7 +78,7 @@ class project extends atkNode
 {
   function project()
   {
-    global $ATK_VARS;
+    global $ATK_VARS, $g_sessionManager;
     
     $this->atkNode("project",NF_EDITAFTERADD);
 
@@ -100,14 +101,17 @@ class project extends atkNode
       $this->addFilter("project.status","active");
     }
 
-    $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid", AF_HIDE_LIST));
-    $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST));
+    $this->addAttribute(new atkOneToManyRelation("phase","phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+    $this->addAttribute(new atkOneToManyRelation("Todo","todo","projectid", AF_HIDE_LIST|AF_CASCADE_DELETE));
+    $this->addAttribute(new atkOneToManyRelation("project_notes","project_notes","projectid", AF_HIDE|AF_CASCADE_DELETE));
 
     $this->addAttribute(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
     $this->addAttribute(new projecttemplateAttribute("template","tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
 
     $this->setTable("project","project");
     $this->setOrder("name");
+
+    updateSelectedProjects();
 
     atkdebug("project::project()");
   }
@@ -145,6 +149,12 @@ class project extends atkNode
   function postDel($rec)
   {
     // TODO: delete phases and dependencies, and hours (???)
+    // Phases, dependancies, todo's, notes, activities are permenantly deleted
+    // trough the AF_CASCADE_DELETE flag
+    // At the moment a project is also permanently deleted. This wil corrupt de hours survey.
+    // Therefore NF_DELETED_FLAG should be realised for hours, projects and
+    // employees.
+     
   }
 }
 ?>

@@ -1,0 +1,135 @@
+<?php
+
+  /**
+   * Add a selected project to the session variable.
+   * If the session variable is empty, it is filled with
+   * the projects the user has recently booked on.
+   */
+  function updateSelectedProjects()
+  {
+    GLOBAL $g_sessionManager, $g_db, $g_layout;
+    
+    atkdebug("updateSelectedProject");
+    $prj = array();
+    //Get current sessionvar
+    $prj =  $g_sessionManager->getValue("recentprj");
+
+    //If session var is empty fill with recent projects
+    if (count($prj) == 0)
+    {
+      $prj = getRecentProjects();
+    }
+
+    //Check if selected project already exists in session var
+    $atkselect = $g_sessionManager->stackVar("atkselector");     
+    if (($atkselect != "") && isset($atkselect))
+    {
+       $projectid = sscanf($atkselect, "project.id=\'%d\'");
+       $prjId = $projectid[0];
+    }
+    else
+    {
+        $atkselect = $g_sessionManager->stackVar("selectedprojectid");     
+        if (($atkselect != "") && isset($atkselect))
+        {
+          $prjId = $atkselect;
+        }
+        else
+        {
+          $prjId = 0;
+        }
+    }
+    if ($prjId != 0)
+    {
+       $found = FALSE;
+       foreach( $prj as $cur)
+       {
+         if ($cur['projectid']  == $prjId) $found = TRUE;
+       }
+       if (!$found)
+       {
+
+         $selectedPrj = Array();
+         $selectedPrj['projectid'] = $prjId;
+
+         //Get project name
+         $query = "SELECT name FROM project WHERE id='".$selectedPrj['projectid']."'";
+         $arr = $g_db->getrows($query);
+         $selectedPrj['projectname'] = $arr[0]['name'];
+         if (strlen($arr[0]['name']) > $GLOBALS["config_projectnamesize"])
+         {
+           $selectedPrj['projectname'] = substr($arr[0]['name'],0,$GLOBALS["config_projectnamesize"]-2).".."; //update because of phases
+         }
+         else
+         {
+           $selectedPrj['projectname'] = $arr[0]['name']; //update because of phases
+         }
+         
+         //Check maximum number of projects in session var
+         if (count($prj) >= $GLOBALS["config_numberofrecentprojects"]) array_shift($prj);         
+         array_push($prj,$selectedPrj);
+         
+       }
+         //Reload the menu frame by creating javascript
+         $js = "<script language='JavaScript'> parent.menu.location=\"menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId."\";</script>";                
+         $g_layout->output($js);
+     }
+     
+
+     //Copy prj to session var
+     $g_sessionManager->globalVar("recentprj",$prj);
+  }
+
+ /**
+  * Get the projects the user recently booked hours on
+  * @return array with recently used projects
+  *
+  */
+
+  function getRecentProjects()   
+  {
+    global $g_db, $g_user;
+     
+    $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
+    // 100 should be enough to get 5 unique recent projects.
+    $query.= "ORDER BY hours.entrydate DESC";
+    
+    $arr = $g_db->getrows($query,'0','100');
+    $j=0;
+    $alreadyhad = Array();
+    $newarr = Array();
+    for ($i=0;$i<count($arr)&&$j<$GLOBALS["config_numberofrecentprojects"];$i++)
+    {
+      if (!in_array($arr[$i]['projectid'],$alreadyhad))
+      {
+        $alreadyhad[$j]=$arr[$i]['projectid'];
+        $newarr[$j]['projectid'] = $arr[$i]['projectid'];
+        
+        if (strlen($arr[$i]['name']) > $GLOBALS["config_projectnamesize"])
+        {
+          $newarr[$j]['name'] = substr($arr[$i]['name'],0,18)."..";
+        }
+        else
+        {
+          $newarr[$j]['name'] = $arr[$i]['name'];
+        }           
+        if (strlen($arr[$i]['projectname']) > $GLOBALS["config_projectnamesize"])
+        {
+          $newarr[$j]['projectname'] = substr($arr[$i]['projectname'],0,18).".."; //update because of phases
+          atkdebug("If ok ".strlen($newarr[$j]['projectname']));
+          
+        }
+        else
+        {
+          $newarr[$j]['projectname'] = $arr[$i]['projectname']; //update because of phases
+        }
+        atkdebug("projectname ".strlen($newarr[$j]['projectname']));
+        $j++;
+      }
+    }
+    return $newarr;
+  }
+
+
+?>
