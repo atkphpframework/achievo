@@ -189,5 +189,16 @@ class dependencyAttribute extends atkAttribute
       $g_db->query($query);
     }
   }
+
+  function getSearchModes()
+  { 
+    // search not supported.
+    return array();
+  }
+
+  function searchCondition(&$query, $table, $value, $searchmode)
+  {
+    // Search not supported.
+  }
 }
 ?>
