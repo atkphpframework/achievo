@@ -1,16 +1,19 @@
 <?php
 
+useattrib("atkcolorpickerattribute");
+useattrib("atkdummyattribute");
+
 class schedule_types extends atkNode
 {
   function schedule_types()
   {
-    $this->atkNode("schedule_types");
+    $this->atkNode("schedule_types", NF_MRA);
 
-    $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("description"                  , AF_OBLIGATORY));
-    $this->addAttribute(new atkColorPickerAttribute("bgcolor"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));
-    $this->addAttribute(new atkColorPickerAttribute("fgcolor"        , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_FORCE_LOAD|AF_POPUP));    
-    $this->addAttribute(new atkDummyAttribute("example"                      , "", AF_HIDE_ADD));
+    $this->add(new atkAttribute("id"                 , AF_AUTOKEY));
+    $this->add(new atkAttribute("description"        , AF_OBLIGATORY));
+    $this->add(new atkColorPickerAttribute("bgcolor" , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));
+    $this->add(new atkColorPickerAttribute("fgcolor" , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_FORCE_LOAD|AF_POPUP));    
+    $this->add(new atkDummyAttribute("example"       , "", AF_HIDE_ADD));
 
     $this->setTable("schedule_types", "schedule_types");         
     $this->setOrder("id");
@@ -37,8 +40,6 @@ class schedule_types extends atkNode
   {
     return text("example").":".$this->example_display($record);
   }
-
-
 
 }
 ?>

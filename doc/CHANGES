@@ -7,6 +7,12 @@ Changes in Achievo 0.9.1
 ------------------------
 + Added todo history.
 + Added initial version of resource planning feature.
++ Added 'clickthrough' feature for more easy navigation between items.
++ Added 'multiselect' feature (for example the ability to delete more than one
+  record at the same time).
+* Changed include structure (include classes only when needed), resulting in 
+  better performance.
+* Achievo no longer behaves weird when having multiple open browser windows.
 * Bugfixes for bugs 17 and 27.
 * Several other bugfixes.
 

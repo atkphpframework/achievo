@@ -1,20 +1,24 @@
 <?php
 
+userelation("atkmanytoonerelation");
+userelation("atkonetomanyrelation");
+useattrib("atklistattribute");
+useattrib("atkdummyattribute");
+useattrib("atkpasswordattribute");
+
 class useridAttribute extends atkAttribute
 {
-
   function useridAttribute($name, $flags=0)
   {
     /* base class constructor */
     $this->atkAttribute($name, $flags);
   }
+  
   function value2db($rec)
   {
-    return escapeSQL(strtolower($rec["userid"]));
+    return escapeSQL(str_replace(" ", "_", strtolower($rec["userid"])));
   }
 }
-
-
 
 class employee extends atkNode
 {
@@ -22,35 +26,35 @@ class employee extends atkNode
   {
     global $ATK_VARS,$g_user;
     $this->atkNode("employee",NF_EDITAFTERADD);
-    $this->addAttribute(new useridAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
-    $this->addAttribute(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->add(new useridAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
+    $this->add(new atkAttribute("name"   ,AF_OBLIGATORY|AF_SEARCHABLE));
 
-    $this->addAttribute(new atkAttribute("email"  ,AF_HIDE_ADD));
+    $this->add(new atkAttribute("email"  ,AF_HIDE_ADD));
 
-    $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
-    // you can't be your own supervisor neither can a nonactive employee be a superviros
+    $this->add(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+    // you can't be your own supervisor neither can a nonactive employee be a supervisor
  
-    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD|AF_HIDE_LIST);
+    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
 
-    $preFilter->m_destinationFilter = "userid !='[userid]' && status ='active'";
+    $preFilter->m_destinationFilter = "userid !='[userid]' AND status ='active'";
       
-    $this->addAttribute($preFilter,AF_HIDE_ADD);
+    $this->add($preFilter);
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.      
     if ($ATK_VARS["atknodetype"]=="employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
     {        
-      $this->addAttribute(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_ADD));
+      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_ADD));
     }
     else
     {
-      $this->addAttribute(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE));
+      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE));
       $this->addFilter("status","active");        
     }
     $this->addAttribute(new atkOneToManyRelation("contract","usercontracts","userid",AF_HIDE_ADD|AF_HIDE_LIST));
     
     if (atkconfig("authentication")=="db")
     {
-      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH));
-      $this->addAttribute(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
+      $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH));
+      $this->add(new atkPasswordAttribute("password", AF_HIDE_ADD|AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
     }
     
     $this->setTable("employee","employee");
@@ -83,4 +87,5 @@ class employee extends atkNode
   }
   
 }
+
 ?>

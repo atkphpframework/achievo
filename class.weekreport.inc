@@ -2,6 +2,8 @@
 
 include_once("achievotools.inc");
 
+useattrib("atkdateattribute");
+
 class timeDisplayAttribute extends atkAttribute
 {
   function display($rec)
@@ -27,28 +29,26 @@ function compare_by_field($a, $b, $field)
   return ($a[$field] < $b[$field]) ? -1 : 1;
 }
 
-
 class weekreport extends atkNode
 {
-
   function weekreport()
   {              
     $this->atkNode("weekreport",NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT); // node() constructor is *not* called automatically!
-    $this->addAttribute(new atkAttribute("userid"));    
-    $this->addAttribute(new atkAttribute("week"));    
-    $this->addAttribute(new atkAttribute("startdate"));
-    $this->addAttribute(new atkAttribute("enddate"));
-    $this->addAttribute(new timeDisplayAttribute("mon"));
-    $this->addAttribute(new timeDisplayAttribute("tue"));
-    $this->addAttribute(new timeDisplayAttribute("wed"));
-    $this->addAttribute(new timeDisplayAttribute("thu"));
-    $this->addAttribute(new timeDisplayAttribute("fri"));
-    $this->addAttribute(new timeDisplayAttribute("sat"));
-    $this->addAttribute(new timeDisplayAttribute("sun"));
-    $this->addAttribute(new timeDisplayAttribute("total",AF_TOTAL));
-    $this->addAttribute(new timeDisplayAttribute("contract",AF_TOTAL));
-    $this->addAttribute(new timeDisplayAttribute("overtime",AF_TOTAL));
-    $this->addAttribute(new atkAttribute("status"));      	
+    $this->add(new atkAttribute("userid"));    
+    $this->add(new atkAttribute("week"));    
+    $this->add(new atkAttribute("startdate"));
+    $this->add(new atkAttribute("enddate"));
+    $this->add(new timeDisplayAttribute("mon"));
+    $this->add(new timeDisplayAttribute("tue"));
+    $this->add(new timeDisplayAttribute("wed"));
+    $this->add(new timeDisplayAttribute("thu"));
+    $this->add(new timeDisplayAttribute("fri"));
+    $this->add(new timeDisplayAttribute("sat"));
+    $this->add(new timeDisplayAttribute("sun"));
+    $this->add(new timeDisplayAttribute("total",AF_TOTAL));
+    $this->add(new timeDisplayAttribute("contract",AF_TOTAL));
+    $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));
+    $this->add(new atkAttribute("status"));      	
   }
   
   function status_display($rec)

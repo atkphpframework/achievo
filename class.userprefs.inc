@@ -1,4 +1,5 @@
 <?php
+
 function getThemes() 
 {      
   $s = array();
@@ -20,6 +21,10 @@ function getThemes()
   // return array with themes
   return $s;
 }
+
+useattrib("atkdummyattribute");
+useattrib("atkpasswordattribute");
+useattrib("atklistattribute");
     
 class userprefs extends atkNode
 {
@@ -27,13 +32,14 @@ class userprefs extends atkNode
   {
     $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE); 
 
-    $this->addAttribute(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
+    $this->add(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
     if (atkconfig("authentication")=="db")
     {
-      $this->addAttribute(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
-      $this->addAttribute(new atkPasswordAttribute("password",AF_OBLIGATORY));
+      $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->add(new atkPasswordAttribute("password",AF_OBLIGATORY));
     }
-    $this->addAttribute(new atkListAttribute("theme",getThemes(),getThemes(),AF_HIDE_ADD));      
+    $themes = getThemes();
+    $this->addAttribute(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));      
     $this->setTable("employee");      
   }
 
@@ -45,28 +51,14 @@ class userprefs extends atkNode
   function postUpdate($record)
   {
     global $g_user;
-    global $atknoclose;
-    global $g_layout;
-    global $g_theme;
-
-    // The new session management disables the saveandclose button, so
-    // the next commented lines of code no longer worked.
-    //if($atknoclose=="")
-    //{
-      if($record["userid"]==$g_user["name"])
-      {
-        echo '<script language="javascript">';
-        echo 'parent.location = "index.php"';
-        echo '</script>';
-        exit;
-      }
-    //}
-    //else
-    //{
-//      $g_theme["Name"] = $record["theme"];
-      //$g_layout->initTheme();
-      //$g_layout->import_layout();
-    //}
+  
+    if($record["userid"]==$g_user["name"])
+    {
+      echo '<script language="javascript">';
+      echo 'parent.location = "index.php"';
+      echo '</script>';
+      exit;
+    }
   }
 }   
 ?>

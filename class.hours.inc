@@ -3,6 +3,10 @@
 include_once "class.projectphaseattrib.inc";
 include_once "class.projectattrib.inc";
 include_once "achievotools.inc";
+useattrib("atkdateattribute");
+useattrib("atklistattribute");
+useattrib("atkdurationattribute");
+useattrib("atkdummyattribute");
 
 function date_format($datestamp)
 {
@@ -41,7 +45,7 @@ class hours extends atkNode
       }
     }
 
-    $this->atkNode("hours",$flags); // node() constructor is *not* called automatically!
+    $this->atkNode("hours",$flags|NF_MRA); // node() constructor is *not* called automatically!
 
     // default view if none is set
     if (!isset($weekview)||$weekview=="")

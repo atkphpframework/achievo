@@ -1,5 +1,8 @@
 <?php
 
+useattrib("atktextattribute");
+userelation("atkonetomanyrelation");
+
 class customer extends atkNode
 {
   function customer()

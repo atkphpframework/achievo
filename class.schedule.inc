@@ -4,6 +4,12 @@
   include_once "class.calendar.inc";
   include_once "class.base_dayview.inc";
   include_once "class.base_monthview.inc";
+  
+  useattrib("atkdateattribute");
+  useattrib("atktextattribute");
+  useattrib("atkboolattribute");
+  useattrib("atktimeattribute");
+  userelation("atkmanytoonerelation");
 
   class schedule extends atkNode
   {
@@ -29,8 +35,8 @@
 
       $this->atkNode("schedule", NF_ADD_LINK); 
 
-      $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE));
-      $this->add(new atkAttribute("id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
+      $this->add(new atkAttribute("id"              , AF_AUTOKEY));
+      $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE));      
       $this->add(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $default_start_time, 0));
@@ -40,7 +46,7 @@
       $this->add(new atkTextAttribute("description"));
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE));        
       $this->add(new atkBoolAttribute("publicitem"));    
-      $this->add(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY));    
+      $this->add(new atkManyToOneRelation("scheduletype"    , "schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
 
       $view     = $g_sessionManager->stackVar("view");
       $viewdate = $g_sessionManager->stackVar("viewdate");
@@ -354,4 +360,5 @@
    }   
 
   }
+  
 ?>

@@ -1,10 +1,12 @@
 <?php
 
+useattrib("atkdummyattribute");
+
 class hours_lock extends atkNode
 {
   function hours_lock()
   {
-    $this->atkNode("hours_lock",NF_NO_EDIT|NF_NO_EXTENDED_SEARCH|NF_NO_VIEW);
+    $this->atkNode("hours_lock",NF_NO_EDIT|NF_NO_EXTENDED_SEARCH|NF_NO_VIEW|NF_MRA);
 
     $this->add(new atkDummyAttribute("label",text("hourlock_week_explanation"),AF_HIDE_LIST));
     $this->add(new atkAttribute("week",AF_PRIMARY|AF_SEARCHABLE));

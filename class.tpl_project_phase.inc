@@ -1,5 +1,7 @@
 <?php
 
+userelation("atkmanytoonerelation");
+
 class tpl_project_phase extends atkNode
 {
   function tpl_project_phase()
@@ -8,11 +10,10 @@ class tpl_project_phase extends atkNode
       
     $this->addAllowedAction(array("add","delete","edit","view"));
 
-    $this->addAttribute(new atkManyToOneRelation("projectid","tpl_project",AF_PRIMARY|AF_HIDE_LIST));
-    $this->addAttribute(new atkManyToOneRelation("phaseid","tpl_phase",AF_PRIMARY)); 
+    $this->add(new atkManyToOneRelation("projectid","tpl_project",AF_PRIMARY|AF_HIDE_LIST));
+    $this->add(new atkManyToOneRelation("phaseid","tpl_phase",AF_PRIMARY)); 
 
-    $this->setTable("tpl_project_phase","tpl_project_phase");
-    atkdebug("tpl_project_phase::tpl_project_phase()");
+    $this->setTable("tpl_project_phase","tpl_project_phase");    
   }
     
   function descriptor_def()

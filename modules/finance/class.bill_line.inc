@@ -3,9 +3,13 @@
 function getbilledamount($billedamount)
 {
    global $g_db;
-   
-   
+   // TODO FIXME   
 }
+
+userelation("atkmanytoonerelation");
+useattrib("atktextattribute");
+useattrib("atkdummyattribute");
+useattrib("atkradioattribute");
 
 class bill_line extends atkNode
 {
@@ -15,21 +19,20 @@ class bill_line extends atkNode
      
     $this->atkNode("bill_line", NF_NO_EDIT);
 
-    $this->addAttribute(new atkAttribute("id" ,AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("shortdescription",AF_OBLIGATORY));
-    $this->addAttribute(new atkTextAttribute("description", "", AF_HIDE_LIST));
+    $this->add(new atkAttribute("id", AF_AUTOKEY));
+    $this->add(new atkAttribute("shortdescription",AF_OBLIGATORY));
+    $this->add(new atkTextAttribute("description", "", AF_HIDE_LIST));
     
-    $this->addAttribute(new atkDummyAttribute("fixed","",AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("fixed","",AF_HIDE_LIST));
     $this->add(new atkRadioAttribute("calcoption",array(text("fixedcalc"),text("aftercalc"),text("discount"),text("costs")),array("fixed","calc","discount","costs"), AF_OBLIGATORY));
-    $this->addAttribute(new atkDummyAttribute("fixedamount","",AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("fixedamount","",AF_HIDE_LIST));
     $this->add(new atkAttribute("fixed_billed"));
 
-    $this->addAttribute(new atkManyToOneRelation("billid","finance.bill",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE));
+    $this->add(new atkManyToOneRelation("billid","finance.bill",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE));
     
     $this->setTable("bill_line","bill_line");
     $this->setOrder("id");
-    
-    atkdebug("bill_line::bill_line()");
+        
     $this->m_securityMap["addtobill"] = "add";
     $this->m_securityMap["nohours"] = "add";
     $this->m_securityMap["addcosts"] = "add";

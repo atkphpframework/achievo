@@ -1,28 +1,27 @@
 <?php
 
-function getstatus()
-{
-  
-}
+useattrib("atkdateattribute");
+useattrib("atktextattribute");
+useattrib("atkdummyattribute");
+userelation("atkmanytoonerelation");
+userelation("atkonetomanyrelation");
 
 class bill extends atkNode
 {
   function bill()
   {
     $this->atkNode("bill", NF_EDITAFTERADD);
-    $this->addAttribute(new atkAttribute("id" ,AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkManytoOneRelation("projectid","project", AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("create_date",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
-    $this->addAttribute(new atkAttribute("userid",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
-    $this->addAttribute(new atkTextAttribute("description", AF_HIDE_ADD|AF_HIDE_LIST));
-    $this->addAttribute(new atkDummyAttribute("fixed","",AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkManytoOneRelation("projectid","project", AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("create_date",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
+    $this->add(new atkAttribute("userid",AF_OBLIGATORY|AF_READONLY|AF_HIDE_ADD));
+    $this->add(new atkTextAttribute("description", AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("fixed","",AF_HIDE_ADD|AF_HIDE_LIST));
     
-    $this->addAttribute(new atkOneToManyRelation("bill_line","finance.bill_line","billid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+    $this->add(new atkOneToManyRelation("bill_line","finance.bill_line","billid",AF_HIDE_LIST|AF_CASCADE_DELETE));
     
-    $this->addAttribute(new atkDummyAttribute("status","",AF_HIDE_ADD|AF_HIDE_LIST));
-    
-    //$this->add(new atkParserAttribute("Bill","<A href='dispatch.php?billid=[id]&atknodetype=finance.bill&atkaction=generatebill'><FONT size=+1><B><CENTER>$genbill</CENTER></B></FONT></A><BR><BR>", AF_HIDE_LIST|AF_HIDE_ADD|AF_BLANKLABEL));
-    
+    $this->add(new atkDummyAttribute("status","",AF_HIDE_ADD|AF_HIDE_LIST));
+            
     $this->setTable("bill","bill");
     $this->setOrder("create_date,id desc");
     

@@ -5,7 +5,7 @@
    *
    * @author Dan Frame <dan_frame@jabil.com>
    *         
-   * Rewrite to be an extension of todo class by Ivo.
+   * Rewriten to be an extension of todo class by Ivo.
    *
    * @version $Revision$
    *
@@ -16,6 +16,7 @@
   require_once("achievotools.inc");
   require_once("class.todo.inc");
   useattrib("atkdummyattribute");  
+  userelation("atkmanytoonerelation");
 
   class todo_history extends todo
   { 

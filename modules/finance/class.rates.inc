@@ -1,22 +1,26 @@
 <?php
 
+userelation("atkmanytoonerelation");
+useattrib("atkdateattribute");
+useattrib("atknumberattribute");
+useattrib("atktextattribute");
+
 class rates extends atkNode
 {
   function rates()
   {
-    $this->atkNode("rates");
+    $this->atkNode("rates", NF_ADD_LINK);
 
-    $this->addAttribute(new atkAttribute("id" ,AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkTextAttribute("description"));
-    $this->addAttribute(new atkDateAttribute("startdate",AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("enddate",AF_OBLIGATORY));
-    $this->addAttribute(new atkAttribute("rate",AF_OBLIGATORY));
-    $this->addAttribute(new atkNumberAttribute("priority",AF_OBLIGATORY));
-		$this->addAttribute(new atkManytoOneRelation("userid","employee"));
-		$this->addAttribute(new atkManytoOneRelation("projectid","project"));
-		$this->addAttribute(new atkManytoOneRelation("activityid","activity"));
-		$this->addAttribute(new atkManytoOneRelation("customerid","customer"));
-		
+    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkTextAttribute("description"));
+    $this->add(new atkDateAttribute("startdate",AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("enddate",AF_OBLIGATORY));
+    $this->add(new atkAttribute("rate",AF_OBLIGATORY));
+    $this->add(new atkNumberAttribute("priority",AF_OBLIGATORY));
+		$this->add(new atkManytoOneRelation("userid","employee", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("projectid","project", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("activityid","activity", AF_RELATION_AUTOLINK));
+		$this->add(new atkManytoOneRelation("customerid","customer", AF_RELATION_AUTOLINK));		
 
     $this->setTable("rate","rate");
     $this->setOrder("id");
@@ -60,4 +64,5 @@ class rates extends atkNode
   }
 
 }
+
 ?>

@@ -1,14 +1,19 @@
 <?php
 
+userelation("atkmanytoonerelation");
+useattrib("atklistattribute");
+useattrib("atkdateattribute");
+useattrib("atktextattribute");
+
 class contracts extends atkNode
 {
   function contracts()
   {
     $this->atkNode("contracts",NF_ADD_LINK);
 
-    $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkManyToOneRelation("contracttype","contracttype",AF_SEARCHABLE|AF_OBLIGATORY));    
-    $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY));    
+    $this->addAttribute(new atkAttribute("id",AF_AUTOKEY));
+    $this->addAttribute(new atkManyToOneRelation("contracttype","contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));    
+    $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));    
     $this->addAttribute(new atkListAttribute("billing_period",array(text("monthly"),text("quarterly"),text("yearly"),text("per_incident")),array(),AF_OBLIGATORY|AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("period_price",AF_OBLIGATORY|AF_HIDE_LIST));
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0,AF_OBLIGATORY));
@@ -35,7 +40,7 @@ class contracts extends atkNode
                                   "month"=>date("m"),
                                   "day"=>date("d")));
   }
-
   
 }
+
 ?>

@@ -1,6 +1,9 @@
 <?php
 
-include_once "class.projectattrib.inc";  
+  include_once "class.projectattrib.inc";  
+  useattrib("atkDateAttribute");
+  useattrib("atkListAttribute");
+  userelation("atkManyToOneRelation");
   
   class costregistration extends atkNode
   {
@@ -8,7 +11,7 @@ include_once "class.projectattrib.inc";
     {
       global $g_user, $config_currency_symbol, $atkaction;
 
-      $this->atkNode("costregistration"); // node() constructor is *not* called automatically!      
+      $this->atkNode("costregistration", NF_MRA); // node() constructor is *not* called automatically!      
       
       if($atkaction!='costreport')
       {
@@ -23,7 +26,7 @@ include_once "class.projectattrib.inc";
       
       $this->add(new atkAttribute("value", AF_OBLIGATORY));
       $this->add(new atkAttribute("description", AF_OBLIGATORY));
-      $this->add(new atkManyToOneRelation("currency","finance.currency"));      
+      $this->add(new atkManyToOneRelation("currency","finance.currency", AF_RELATION_AUTOLINK));
       $this->add(new atkListAttribute("paymethod",array("cash","electronic payment","creditcard"), array("cash","electronic payment","creditcard"), AF_OBLIGATORY));      
      
       $this->setOrder("costdate");

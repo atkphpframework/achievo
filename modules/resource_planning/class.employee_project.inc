@@ -1,5 +1,5 @@
 <?php
- /**
+  /**
    * Module Resource planning
    * Class employee_project
    *
@@ -11,16 +11,19 @@
    * @version $Revision$
    *
    */
+   
+  userelation("atkmanytoonerelation");
 
-class employee_project extends atkNode
-{
-  function employee_project()
+  class employee_project extends atkNode
   {
-    $this->atkNode("employee_project", NF_NO_EDIT);
+    function employee_project()
+    {
+      $this->atkNode("employee_project", NF_NO_EDIT);
 
-    $this->add(new atkManyToOneRelation("employeeid","employee",AF_PRIMARY));
-    $this->add(new atkManyToOneRelation("projectid","project",AF_PRIMARY));
-    $this->setTable("employee_project");
+      $this->add(new atkManyToOneRelation("employeeid","employee",AF_PRIMARY|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("projectid","project",AF_PRIMARY));
+      $this->setTable("employee_project");
+    }
   }
-}
+  
 ?>

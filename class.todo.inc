@@ -1,8 +1,12 @@
 <?
 
 require_once("achievotools.inc");
+userelation("atkmanytoonerelation");
+userelation("atkonetomanyrelation");
 useattrib("atkupdatestampattribute");
-
+useattrib("atkdateattribute");
+useattrib("atklistattribute");
+useattrib("atktextattribute");
 
 class todo extends atkNode
 {
@@ -14,14 +18,14 @@ class todo extends atkNode
     global $atkaction, $g_user;
 
     $this->atkNode("todo", NF_TRACK_CHANGES);
-    $this->add(new atkAttribute("id"                   , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->add(new atkAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkAttribute("owner"                , AF_READONLY|AF_HIDE));
     $this->add(new atkManyToOneRelation("projectid"    , "project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY));
     $this->add(new atkManyToOneRelation("assigned_to"  , "employee", AF_SEARCHABLE));    
     $this->add(new atkDateAttribute("entrydate"        , AF_READONLY_EDIT|AF_HIDE_ADD));
     $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
-    $this->add(new atkUpdateStampAttribute("updated", AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
+    $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->add(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
@@ -234,4 +238,5 @@ class todo extends atkNode
   }
 
 }
+
 ?>

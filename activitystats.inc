@@ -1,6 +1,7 @@
 <?php
  
   include_once("achievotools.inc");
+  useattrib("atkdateattribute");
 
   global $g_layout;
   global $g_securityManager;

@@ -13,6 +13,8 @@
   global $userid;
   global $config_currency_symbol;
   
+  useattrib("atkdateattribute");
+  
   function get_employees($user_id)
   {
     global $g_db;

@@ -1,15 +1,17 @@
 <?php
 
+useattrib("atkboolattribute");
+
 class activity extends atkNode
 {
   function activity()
   {
-    $this->atkNode("activity");
+    $this->atkNode("activity", NF_MRA);
 
-    $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
-    $this->addAttribute(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));
-    $this->addAttribute(new atkAttribute("description",AF_SEARCHABLE));
-    $this->addAttribute(new atkBoolAttribute("remarkrequired"));
+    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));
+    $this->add(new atkAttribute("description",AF_SEARCHABLE));
+    $this->add(new atkBoolAttribute("remarkrequired"));
 
     $this->setTable("activity","activity");
     $this->setOrder("name");
