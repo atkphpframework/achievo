@@ -29,10 +29,12 @@
     {
       $res = array();
       $custnode = &getNode("organization.organization");
-      $res["customers"] = $custnode->searchDb($expression);
+      $recs = $custnode->searchDb($expression);
+            
+      $res["customers"] = $this->recLinks($recs, "organization.organization");
 
       $contactnode = &getNode("organization.contact");
-      $res["contacts"] = $contactnode->searchDb($expression);
+      $res["contacts"] = $this->recLinks($contactnode->searchDb($expression), "organization.contact");
 
       return $res;
     }

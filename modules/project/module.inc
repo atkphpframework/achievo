@@ -48,7 +48,7 @@
     function search($expression)
     {
       $prjnode = &getNode("project.project");
-      return array("projects"=>$prjnode->searchDb($expression));
+      return array("projects"=>$this->recLinks($prjnode->searchDb($expression), "project.project"));
     }
   }
 ?>

@@ -85,5 +85,21 @@
     {      
       return array();
     }
+    
+    function recLinks($recordset, $nodetype)
+    {
+      $node = &getNode($nodetype);      
+      
+      $res = array();
+      
+      for($i=0, $_i=count($recordset); $i<$_i; $i++)
+      {
+        $item["title"] = $node->descriptor($recordset[$i]);
+        $item["url"] = dispatch_url($nodetype, "view", array("atkselector"=>$node->primaryKey($recordset[$i])));
+        $res[] = $item;
+      }
+            
+      return $res;
+    }
   }
 ?>
