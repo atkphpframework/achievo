@@ -6,7 +6,8 @@
   // 
 
   // The database to use. Default is MySQL. If you want to use PostgreSQL,
-  // change this value to "pgsql".  For Oracle, use "oci8".
+  // change this value to "pgsql". For Oracle, use "oci8".
+  //
   $config_database = "mysql";
 
   // The database configuration. Specify the hostname of the database server,
@@ -14,19 +15,13 @@
   //
   $config_databasehost = "localhost";
   $config_databasename = "achievo_0_7";
-  $config_databaseuser = "demo";
+  $config_databaseuser = "achievo";
   $config_databasepassword = "demo";
-//  $config_databasehost     = "cdb";
-//  $config_databasename     = "cdb";
-//  $config_databaseuser     = "achievo";
-//  $config_databasepassword = "demo";
-//  $config_database         = "oci8";
-
   
   // In admin pages, Achievo shows you a number of records with previous and
   // next buttons. You can specify the number of records to show on a page.
   //
-  $config_recordsperpage=2; 
+  $config_recordsperpage=25; 
 
   // The theme defines the layout of Achievo. You can see which 
   // themes there are in the directory themes. Users can choose their own 
