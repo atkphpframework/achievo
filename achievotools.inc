@@ -84,8 +84,15 @@
          }
 
          //Check maximum number of projects in session var
-         if (count($prj) >= atkconfig("numberofrecentprojects")) array_shift($prj);
-         array_push($prj,$selectedPrj);
+         if (count($prj) >= atkconfig("numberofrecentprojects")) 
+         {
+           array_shift($prj); // remove the first
+           $prj[count($prj)-1] = $selectedPrj;
+         }
+         else
+         {
+           $prj[] = $selectedPrj;
+         }
 
        }
          //Reload the menu frame by creating javascript
