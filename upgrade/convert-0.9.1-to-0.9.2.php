@@ -153,27 +153,30 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->getrows($sql);
   $i = $res[0]["nextid"];
   $j = 1;
-  for ($j=0;$j<count($employees);$j++)
+  if (count($employees)>0)
   {
-    $i++;
-    $names = explode(" ", $employees[$j]["name"]);
-    $lastname = "";
-    for ($k=1;$k<count($names);$k++)
+    for ($j=0;$j<count($employees);$j++)
     {
-      if ($k == 1) $lastname .= $names[$k]; else $lastname .= " ".$names[$k];
+      $i++;
+      $names = explode(" ", $employees[$j]["name"]);
+      $lastname = "";
+      for ($k=1;$k<count($names);$k++)
+      {
+        if ($k == 1) $lastname .= $names[$k]; else $lastname .= " ".$names[$k];
+      }
+      $sql = "INSERT INTO person (id, userid, password, lastname, firstname, email, supervisor, status, theme, entity, role)
+              VALUES ('".$i."', '".$employees[$j]["userid"]."', '".$employees[$j]["password"]."', '".$lastname."', '".$names[0]."',
+              '".$employees[$j]["email"]."', '".$employees[$j]["supervisor"]."', '".$employees[$j]["status"]."', '".$employees[$j]["theme"]."',
+              '".$employees[$j]["entity"]."', 'employee')";
+      $res = $g_db->query($sql);
+      handleError($sql);
     }
-    $sql = "INSERT INTO person (id, userid, password, lastname, firstname, email, supervisor, status, theme, entity, role)
-            VALUES ('".$i."', '".$employees[$j]["userid"]."', '".$employees[$j]["password"]."', '".$lastname."', '".$names[0]."',
-            '".$employees[$j]["email"]."', '".$employees[$j]["supervisor"]."', '".$employees[$j]["status"]."', '".$employees[$j]["theme"]."',
-            '".$employees[$j]["entity"]."', 'employee')";
+
+    //change db_sequence nextid
+    $sql = "UPDATE db_sequence SET nextid = ".$i." WHERE seq_name = 'person'";
     $res = $g_db->query($sql);
     handleError($sql);
   }
-
-  //change db_sequence nextid
-  $sql = "UPDATE db_sequence SET nextid = ".$i." WHERE seq_name = 'person'";
-  $res = $g_db->query($sql);
-  handleError($sql);
 
   //drop employee table
   $sql = "DROP TABLE employee";
