@@ -170,6 +170,22 @@
                  <br>Please alter $inilocation and correct this value. ".$restarthint ;
   }
   
+  // Achievo 1.1 requires a writable temp dir. We must check if we can write.
+  $fp = @fopen("achievotmp/compiled/tpl/setuptest", "w");
+  if ($fp==FALSE)
+  {
+    $errors[] = "The Achievo temporary directory is not writable by the webserver. 
+                 <br>Please check the permissions of the achievotmp/ directory (and its subdirectories).
+                 <br><br>On Linux/Unix you can run the command 'chown -R <i>username</i> achievotmp' to make the directory
+                 writable by the webserver. Replace <i>username</i> with the username that you use to run the webserver, 
+                 for example 'nobody', 'apache' or 'www'.";     
+  }
+  else
+  {
+    fclose($fp);
+    unlink("achievotmp/compiled/tpl/setuptest");
+  }
+  
   // If there are any errors when we reach this point, it's no use continuing because
   // nothing will work, not even the installer.
   if (count($errors)>0)
