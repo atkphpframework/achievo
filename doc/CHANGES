@@ -20,6 +20,7 @@ Changes in Achievo 0.9.2
   scheduler
 + Added feature to compare schedules of employees for easy planning of 
   meetings.
++ The project edit screen now uses tabs to devide the information. (bug #64)
 + Added initial version of setup.php, which can be used to install and/or 
   upgrade the Achievo database (not yet functional though).
 + Added PIM API. All modules can now add information to the PIM screen.
