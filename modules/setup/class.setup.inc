@@ -145,24 +145,45 @@
       }
     }
     
-    function setupScreen($title, $output, $nextaction="")
+    function setupScreen($title, $output, $nextaction="", $params=array())
     {
       global $g_layout;
       
       $g_layout->initGui();
       $g_layout->ui_top($title);
-                  
-      $form = '<b>'.$title.'</b><br><br>
-               <form action="setup.php">'.
-               session_form(SESSION_NESTED).
+      
+      $form = '<b>'.$title.'</b><br><br>';
+                               
+      $form.= '<form action="'.($nextaction=="achievostart"?"index.php":"setup.php").'">'.
+               session_form(SESSION_NESTED).               
                '<input type="hidden" name="atkaction" value="'.$nextaction.'">'.
                $output;
+               
+      if (count($params))
+      {
+        foreach ($params as $key=>$value)
+        {
+          $form.='<input type="hidden" name="'.$key.'" value="'.$value.'">';
+        }
+      }
        
       if ($nextaction!="")
       {                        
-        $form.= '<br><br><input type="submit" value="'.($nextaction!=$this->m_action?"Continue":"Retry").'"><br><br>';
+        if ($nextaction=="achievostart")
+        {
+          $btn = "Start using Achievo";
+        }
+        else if ($nextaction==$this->m_action)
+        {
+          $btn = "Retry";
+        }
+        else
+        {
+          $btn = "Continue";
+        }
+        $form.= '<br><br><input type="submit" value="'.$btn.'"><br><br>';
       }
-               
+                             
       $form.= '</form>';
       $g_layout->output($form);
       $g_layout->ui_bottom();
@@ -228,7 +249,7 @@
           if (in_array("projectactivity", $tablenames) && in_array("templateactivity"))
           {
             // If these two tables exist, this is a 0.4 database.
-            $version = "0.4.x";
+            $version = "0.4";
             // TODO FIXME: the 0.4 -> 0.6 conversion script works completely different
             // from the others, in that it reads from db 1 and inserts in another database.
             // We'll have to rewrite this script.
@@ -244,14 +265,20 @@
           else if (in_array("hours_lock", $tablenames) && in_array("contract", $tablenames)
                   && !in_array("schedule", $tablenames))
           {
-            $version = "0.8.x";
+            $version = "0.8";
+          }
+          else if (!in_array("hours_lock", $tablenames) && !in_array("contract", $tablenames)
+                  && in_array("tpl_project", $tablenames))
+          {
+            $version = "0.6";
           }
           
           if ($version!="")
           {          
             return $this->setupScreen("Database version $version detected",
                                       "The database you are currently using ('".atkconfig("databasename")."') appears to be from Achievo version $version.
-                                       <br>I can upgrade this database for you. Please make sure you backup the database
+                                       <br>I can upgrade this database for you. 
+                                       <br>Please make sure you backup the database
                                        first, because although I know what I'm doing, I'm just an open source script, and 
                                        I come with no warranty whatsoever. If I screw up the database, I've got nothing to 
                                        offer you but 'oops, sorry!'.
@@ -259,7 +286,7 @@
                                        <br>In other words, backup your database first!
                                        <br>
                                        <br>If you've taken the necessary precautions, click the continue button to upgrade the database.",
-                                      "upgrade$version");
+                                      "upgradedb", array("version"=>$version));
           }
           else
           {
@@ -310,10 +337,10 @@
       // The setup module contains essential table needed for the installation process,
       // so we install this first.
       $result = array();
+      $ok = true;
       
       if ($this->installModule("setup", $result))
-      {
-      
+      {      
         foreach ($g_modules as $modname=>$moduledir)
         {
           if ($modname!="setup") // we already installed setup when we started.
@@ -321,6 +348,7 @@
             if (!$this->installModule($modname, $result, true))
             {
               atkdebug("Installation failed.");
+              $ok = false;
               break;
             }
           }
@@ -329,6 +357,7 @@
       else
       {
         $output = "I was unable to install the system table, so I cannot continue with the installation. Please verify your database setup and try again.";
+        $ok = false;
       }
       
       if (count($result)>0)
@@ -348,7 +377,14 @@
         }
         $output.= $g_layout->data_bottom();
       }
-      return $this->setupScreen("Installation result", $output);
+      if ($ok)
+      {
+        return $this->setupScreen("Installation result", $output, "achievostart");
+      }
+      else
+      {
+        return $this->setupScreen("Installation result", $output);
+      }
     }
     
     /**
@@ -449,9 +485,8 @@
       $installfile = moduleDir($modname)."install/install.inc";   
       if (file_exists($installfile))
       {
-        // give included file access to $db and $this ("$setup");
-        global $g_db;
-        $db = &$g_db;
+        // give included file access to $g_db and $this ("$setup");
+        global $g_db;        
         $setup = &$this;
         
         // also set 'current module' to the module were now installing. This will 
@@ -618,9 +653,26 @@
       }
     }      
     
-    function report($progressmsg)
+    /**
+     * patch/install scripts can use this method for providing progress 
+     * information.
+     *
+     * There are several types of progress information:
+     * info - Normal progress information. 
+     * important - Important information that the user running the convert
+     *             script *must* read.
+     * warning - Indicates a warning during the conversion phase, which is
+     *           not critical enough to stop execution, but must still be
+     *           reported to the user.
+     * error - Indicates an error during conversion. The installer will not
+     *         run any further script when an error is encountered.
+     */
+    function report($progressmsg, $type="info")
     {
-      $this->m_report[] = $progressmsg;
+      $this->m_report[] = array("msg"=>$progressmsg, "type"=>$type);
+      // Regardless of what we output later to the user, everything
+      // reported by the scripts is put in the debuglog.
+      atkdebug($type.": ".$progressmsg);
     }
     
     // TODO FIXME: functions that follow are *NOT* yet database
@@ -675,6 +727,92 @@
     { 
       global $g_db;
       $g_db->query("DROP TABLE $table");
+    }
+    
+    function action_upgradedb()
+    {          
+      global $g_db; 
+      
+      $version = $this->m_postvars["version"];
+      
+      $history = array("0.4", "0.6", "0.8", "0.9", "0.9.1", "0.9.2");
+      
+      $startidx = array_search($version, $history, true);
+      
+      if ($startidx!==false && $startidx!==NULL) // in php 4.2.0 the result switched from null to false
+      {
+        $ok = true;
+        for ($script=$startidx, $_script=count($history); $script<$_script-1 && $ok; $script++)
+        {          
+          $scriptname = "upgrade/convert-".$history[$script]."-to-".$history[$script+1].".inc";
+          $output.="<br><br>Start of conversion from ".$history[$script]." to ".$history[$script+1];
+          
+          // Upgrade scripts might take a while. We'll set the timelimit to something big.
+          set_time_limit(180); // 3 minutes should be enough.
+          
+          // Like with install db, we pass the upgrade scripts a pointer
+          // to $setup and $g_db.
+          $setup = &$this;
+          
+          // clear the report.
+          $this->m_report = array();
+          
+          include_once($scriptname);
+          
+          // first check if there are any atk errors.
+          global $g_error_msg;
+          if (count($g_error_msg))
+          {
+            $output.='<br><br><b>Conversion failed!</b><br>';
+            $output.= implode("<br>", $g_error_msg);
+            $ok = false;
+          }
+          else
+          {
+            // if no atk errors occured, check the report.
+            foreach($this->m_report as $reportmsg)
+            {            
+              if ($reportmsg["type"]=="error")
+              {
+                $output.='<br><br><b>Conversion failed!</b><br>';
+                $output.= $reportmsg["msg"];
+                $ok = false;
+                break;
+              }
+              else if ($reportmsg["type"]=="important")
+              {
+                // Show this to the user
+                $output.="<br><br><b>Important:</b><br>";
+                $output.= $reportmsg["msg"];              
+              }
+              else if ($reportmsg["type"]=="warning")
+              {
+                 // Show this to the user
+                $output.="<br><br><b>Warning:</b><br>";
+                $output.= $reportmsg["msg"];              
+              }
+            }
+          }
+          if ($ok)
+          {
+            $output.= "<br><br>Conversion of ".$history[$script]." to ".$history[$script+1]." complete.";
+          }
+          else
+          {
+            $output.= "<br><br>Conversion of ".$history[$script]." to ".$history[$script+1]." failed, stopping conversion. 
+                       <br><br><b>Please restore your backup</b>. Contact the Achievo developers who might help you out in finding the cause of failure.";
+          }
+        }
+      }
+      else
+      {
+      }
+      
+      $this->setupscreen("Upgrade result",
+                         "Upgraded from version $version.
+                         <br>".$output,
+                         "achievostart");
+      
     }
       
   }

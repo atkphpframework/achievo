@@ -4,15 +4,15 @@
   
   // Declare a utility function for converting varchar userid's to the new int
   // foreign keys for users.
-  function useridConvert($table, $field)
+  function useridConvert($table, $field, $setup)
   {
     static $s_users="";
-    global $g_db, $setup;
+    global $g_db;
     
-    // One time retrieval of all people.
+    // One time retrieval of all employees.
     if ($s_users=="")
     {
-      $sql = "SELECT id, userid FROM person";
+      $sql = "SELECT id, userid FROM person WHERE role='employee'";
       $s_users = $g_db->getrows($sql);
     }
     
@@ -20,12 +20,14 @@
     {
       for ($i=0;$i<count($s_users);$i++)
       {                
-        $g_db->query("UPDATE $table SET $field='".$s_users[$i]["id"]."' WHERE id = ".$s_users[$i]["userid"]);
+        $g_db->query("UPDATE $table SET $field='".$s_users[$i]["id"]."' WHERE $field = '".$s_users[$i]["userid"]."'");
       }
     }    
     $setup->alterColumn($table, $field, $field, "int(10)", false);    
     
   }
+  
+  $setup->installNode("setup.versioninfo");
  
   // Create the schedule_notes table.
   $setup->installNode("calendar.schedule_notes");
@@ -35,10 +37,15 @@
   
   // The following calls will add new fields to the person table.
   $setup->installNode("employee.employee");
+  $setup->installNode("employee.userprefs");
   $setup->installNode("organization.contact");
   
   // Also update the usercontract node.
-  $setup->installNode("employee.usercontract");  
+  $setup->installNode("employee.usercontracts"); 
+  
+  // Create project_person table with all necessary fields.
+  $setup->installNode("project.project_personcontact");
+  $setup->installNode("project.project_personemployee");
  
   //set role = "contact" for all persons in person table
   //these persons are only contacts at this moment  
@@ -94,10 +101,6 @@
   // Update the organization node with new fields.
   $setup->installNode("organization.organization");
 
-  // Create project_person table with all necessary fields.
-  $setup->installNode("project.project_personcontact");
-  $setup->installNode("project.project_personemployee");
-
   $setup->installNode("project.role");  
 
   //insert roles in table role  
@@ -138,7 +141,7 @@
     for ($i=0;$i<count($res);$i++)
     {
       //search employee id with given userid      
-      $result = $g_db->getrows("SELECT id FROM person WHERE userid ='".$res[$i]["employeeid"]."' AND role='employee'";);      
+      $result = $g_db->getrows("SELECT id FROM person WHERE userid ='".$res[$i]["employeeid"]."' AND role='employee'");
       $g_db->query("UPDATE employee_project SET employeeid='".$result[0]["id"]."' WHERE employeeid = '".$res[$i]["employeeid"]."'");
     }
   }
@@ -154,14 +157,13 @@
   $setup->dropTable("employee_project");    
   
   //convert planning, employee_project, rate, usercontract, person, todo, todo_history and project table because this version
-  //does not use userid as primary key for employees  
-  useridConvert("planning", "employeeid");
-  useridConvert("project", "coordinator");
-  useridConvert("employee_project", "employeeid");
-  useridConvert("usercontract", "userid");  
-  useridConvert("person", "supervisor"); 
-  useridConvert("todo", "assigned_to");  
-  useridConvert("todo_history", "assigned_to");
+  //does not use userid as primary key for employees    
+  useridConvert("project", "coordinator", $setup);
+  useridConvert("project_person", "personid", $setup);
+  useridConvert("usercontract", "userid", $setup);  
+  useridConvert("person", "supervisor", $setup); 
+  useridConvert("todo", "assigned_to", $setup);  
+  useridConvert("todo_history", "assigned_to", $setup);
   
  
   //change the node rights in the accessright table to this format: modulename.nodename
