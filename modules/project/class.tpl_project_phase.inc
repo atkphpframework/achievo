@@ -13,7 +13,7 @@ class tpl_project_phase extends atkNode
     $this->add(new atkManyToOneRelation("projectid","project.tpl_project",AF_PRIMARY|AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("phaseid","project.tpl_phase",AF_PRIMARY)); 
 
-    $this->setTable("tpl_project_phase","tpl_project_phase");    
+    $this->setTable("tpl_project_phase");    
   }
     
   function descriptor_def()

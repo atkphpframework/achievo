@@ -23,12 +23,12 @@ class schedule_types extends atkNode
     $this->atkNode("schedule_types", NF_MRA);
 
     $this->add(new atkAttribute("id"                 , AF_AUTOKEY));
-    $this->add(new atkAttribute("description"        , AF_OBLIGATORY));
+    $this->add(new atkAttribute("description"        , AF_OBLIGATORY, 50));
     $this->add(new atkColorPickerAttribute("bgcolor" , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_POPUP));
     $this->add(new atkColorPickerAttribute("fgcolor" , "", AF_OBLIGATORY|AF_HIDE_LIST|AF_FORCE_LOAD|AF_FORCE_LOAD|AF_POPUP));
     $this->add(new atkDummyAttribute("example"       , "", AF_HIDE_ADD));
 
-    $this->setTable("schedule_type", "schedule_type");
+    $this->setTable("schedule_type");
     $this->setOrder("description");
   }
 

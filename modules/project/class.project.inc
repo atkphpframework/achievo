@@ -8,6 +8,7 @@
   useattrib("atklistattribute");
   useattrib("project.dependencyattrib");
   useattrib("project.projecttemplateattribute");
+  useattrib("atknumberattribute");
 
   class project extends atkNode
   {
@@ -18,12 +19,12 @@
       $this->atkNode("project",NF_EDITAFTERADD);
 
       $this->add(new atkAttribute("id",AF_AUTOKEY));
-      $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
-      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST));
+      $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
+      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST, 10));
 
       $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $this->add(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
-      $this->add(new atkAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD));      
+      $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 5));      
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.

@@ -63,16 +63,16 @@
       $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $default_end_time, 0));
       $this->add(new atkBoolAttribute("allday"));
-      $this->add(new atkAttribute("title"          , AF_SEARCHABLE|AF_OBLIGATORY));
+      $this->add(new atkAttribute("title"          , AF_SEARCHABLE|AF_OBLIGATORY, 50));
       $this->add(new atkTextAttribute("description"));
-      $this->add(new atkAttribute("location"        , AF_SEARCHABLE));
+      $this->add(new atkAttribute("location"        , AF_SEARCHABLE, 50));
       $this->add(new atkBoolAttribute("publicitem"));
       $this->add(new atkBoolAttribute("all_users"));
-      $this->add(new atkListAttribute("status", array(text("confirmed"), text("unconfirmed"), text("cancelled"))));
+      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled")));
       $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD));
+      $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD, 15));
 
       $this->m_view     = $g_sessionManager->stackVar("view");
       if (trim($this->m_view) == "") { $this->m_view = "dayview"; }

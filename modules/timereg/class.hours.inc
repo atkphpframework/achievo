@@ -1,6 +1,6 @@
 <?php
 
-include_once "achievotools.inc";
+include_once("achievotools.inc");
 useattrib("project.projectphaseattrib");
 useattrib("project.projectattrib");
 useattrib("atkdateattribute");
@@ -51,14 +51,14 @@ class hours extends atkNode
       if (atkconfig("timereg_defaultview")=="week") $this->m_weekview=1;
     }
 
-    $this->add(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->add(new atkAttribute("id",AF_AUTOKEY));
 
     $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|($this->m_weekview?0:AF_HIDE_LIST)));
 
-    $this->add(new atkAttribute("userid",AF_HIDE));
+    $this->add(new atkAttribute("userid",AF_HIDE, 15));
 
     $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
-    $this->add(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));
+    $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
     $this->add(new atkAttribute("remark"));
     $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
     $this->add(new atkDateAttribute("entrydate",AF_HIDE));

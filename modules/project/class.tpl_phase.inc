@@ -10,7 +10,7 @@ class tpl_phase extends atkNode
     $this->atkNode("tpl_phase",NF_EDITAFTERADD);
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
     $this->add(new atkTextAttribute("description",AF_HIDE_ADD));
 
     $tmp = new atkManyBoolRelation("tpl_phase_activity", "project.tpl_phase_activity", "project.activity",AF_HIDE_LIST|AF_HIDE_ADD);

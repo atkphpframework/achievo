@@ -6,8 +6,9 @@ class contracttype extends atkNode
   {
     $this->atkNode("contracttype", NF_MRA);
 
-    $this->addAttribute(new atkAttribute("id",AF_AUTOKEY));
-    $this->addAttribute(new atkAttribute("description",AF_OBLIGATORY));    
+    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkAttribute("description",AF_OBLIGATORY, 100));    
+    
     $this->setTable("contracttype","contracttype");
     $this->setOrder("description");
    }

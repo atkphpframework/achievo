@@ -26,19 +26,20 @@ class person extends atkNode
     $this->atkNode($name, $flags|NF_ADD_LINK);
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkAttribute("lastname",AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->add(new atkAttribute("firstname",AF_SEARCHABLE));
-    $this->add(new atkAttribute("address",AF_HIDE_LIST));
-    $this->add(new atkAttribute("zipcode",AF_HIDE_LIST));
-    $this->add(new atkAttribute("city",AF_HIDE_LIST));
-    $this->add(new atkAttribute("country",AF_HIDE_LIST));
-    $this->add(new atkAttribute("phone"));
-    $this->add(new atkAttribute("cellular"));
-    $this->add(new atkAttribute("fax"));
-    $this->add(new atkEmailAttribute("email"));
-    $this->add(new atkAttribute("function", AF_HIDE_LIST));
+    $this->add(new atkAttribute("lastname",AF_SEARCHABLE|AF_OBLIGATORY, 50));
+    $this->add(new atkAttribute("firstname",AF_SEARCHABLE, 50));
+    $this->add(new atkAttribute("address",AF_HIDE_LIST, 100));
+    $this->add(new atkAttribute("zipcode",AF_HIDE_LIST, 20));
+    $this->add(new atkAttribute("city",AF_HIDE_LIST, 100));
+    $this->add(new atkAttribute("state",AF_HIDE_LIST, 100));
+    $this->add(new atkAttribute("country",AF_HIDE_LIST, 100));
+    $this->add(new atkAttribute("phone", 0, 20));
+    $this->add(new atkAttribute("cellular", 0, 20));
+    $this->add(new atkAttribute("fax", 0, 20));
+    $this->add(new atkEmailAttribute("email", 0, 50));
+    $this->add(new atkAttribute("function", AF_HIDE_LIST, 50));
     $this->add(new atkTextAttribute("remark", AF_HIDE_LIST));
-    $this->add(new atkAttribute("role", AF_HIDE)); //discriminator
+    $this->add(new atkAttribute("role", AF_HIDE, 25)); //discriminator
 
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");

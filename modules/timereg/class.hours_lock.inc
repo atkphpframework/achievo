@@ -9,8 +9,8 @@ class hours_lock extends atkNode
     $this->atkNode("hours_lock",NF_NO_EDIT|NF_NO_EXTENDED_SEARCH|NF_NO_VIEW|NF_MRA);
 
     $this->add(new atkDummyAttribute("label",text("hourlock_week_explanation"),AF_HIDE_LIST));
-    $this->add(new atkAttribute("week",AF_PRIMARY|AF_SEARCHABLE));
-    $this->add(new atkAttribute("userid",AF_PRIMARY|AF_SEARCHABLE));
+    $this->add(new atkAttribute("week",AF_PRIMARY|AF_SEARCHABLE, 6));
+    $this->add(new atkAttribute("userid",AF_PRIMARY|AF_SEARCHABLE, 15));
 
     $this->setOrder("week DESC");
     $this->setTable("hours_lock");

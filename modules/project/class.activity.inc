@@ -9,8 +9,8 @@ class activity extends atkNode
     $this->atkNode("activity", NF_MRA);
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));
-    $this->add(new atkAttribute("description",AF_SEARCHABLE));
+    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE, 50));
+    $this->add(new atkAttribute("description",AF_SEARCHABLE, 50));
     $this->add(new atkBoolAttribute("remarkrequired"));
 
     $this->setTable("activity","activity");

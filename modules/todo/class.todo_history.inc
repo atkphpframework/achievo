@@ -16,6 +16,7 @@
   require_once("achievotools.inc");
   require_once(moduleDir("todo")."class.todo.inc");
   useattrib("atkdummyattribute");
+  useattrib("atkupdatestampattribute");
   userelation("atkmanytoonerelation");
 
   class todo_history extends todo
@@ -24,7 +25,7 @@
     {
       $this->todo(); // call baseclass constructor, but with new name.
 
-      $this->m_flags|= NF_NO_ADD|NF_NO_EDIT|NF_NO_DELETE;
+      $this->m_flags|= NF_READONLY;
       $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
 
       // We disable the history attribute, for it will cause a recursive loop if history would have
@@ -35,9 +36,9 @@
       // and we don't want to store the current date, but the original date that the todo was
       // last changed before it ended up in the history.
       $this->remove("updated");
-      $this->add(new atkAttribute("updated"));
+      $this->add(new atkUpdateStampAttribute ("updated"));
 
-      $this->setTable("todo_history", "todo_history");
+      $this->setTable("todo_history");
 
       // Ordering by id makes sure we sort in order of history.
       $this->setOrder("id");

@@ -53,9 +53,9 @@ class employee extends person
     {
       $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));
       $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-      $this->add(new atkPasswordAttribute("password", AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
+      $this->add(new atkPasswordAttribute("password", AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
     }
-    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE)); // discriminator.
+    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE, 25)); // discriminator.
   }
 
   function initial_values()

@@ -13,19 +13,19 @@ class phase extends atkNode
     $this->atkNode("phase",NF_AUTOSELECT); // node() constructor is *not* called automatically!
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
     $this->add(new atkManyToOneRelation("projectid","project.project",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE_EDIT));
 
     $this->add(new atkTextAttribute("description",AF_HIDE_LIST));
-    $this->add(new atkListAttribute("status",Array("active","nonactive")));
+    $this->add(new atkListAttribute("status",array("active","nonactive")));
 
-    $this->add(new atkAttribute("max_phasetime"));
-    $this->add(new atkAttribute("max_hours"));
+    $this->add(new atkNumberAttribute("max_phasetime"));
+    $this->add(new atkNumberAttribute("max_hours"));
 
     $tmp = new atkManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST);
     $tmp->m_localKey = "phaseid";
     $tmp->m_remoteKey = "activityid";
-    $this->addAttribute($tmp);
+    $this->add($tmp);
 
     // template *must* come after phase_activity, because phase_activity does a delete of all
     // records on store, so template must be stored after phase_activity.
