@@ -233,8 +233,9 @@
         }
         if (in_array("versioninfo", $tablenames))
         {
-          return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart");
-          // TODO: read versioninformation and perform upgrades for versions > 0.9.2
+          // Post 0.9.1 database, we can perform upgrades according to
+          // versioninfo
+          return $this->upgradeCheck();
         }
         else
         {
@@ -285,7 +286,7 @@
                                        <br>In other words, backup your database first!
                                        <br>
                                        <br>If you've taken the necessary precautions, click the continue button to upgrade the database.",
-                                      "upgradedb", array("version"=>$version));
+                                      "legacyupgrade", array("version"=>$version));
           }
           else
           {
@@ -310,6 +311,8 @@
     function action_installdb()
     {
       global $g_modules, $g_layout;
+      
+      $g_layout->initGui();
       
       $resultmsg = array("ok" => "Installation completed",
                          "failed" => "Installation failed",
@@ -347,8 +350,7 @@
       }
       
       if (count($result)>0)
-      {
-        $g_layout->initGui();
+      {        
         $output = $g_layout->data_top();
         $output.= $g_layout->tr_top();
         $output.= $g_layout->ret_td_datatitle("Module");
@@ -469,7 +471,7 @@
       // if we get here, all dependencies are either resolved, or we have given up already
       // and returned false. Next thing to do is perform the database installation.
       $installfile = moduleDir($modname)."install/install.inc";   
-      if (file_exists($installfile))
+      if ($this->needsInstall($modname))
       {
         // give included file access to $g_db and $this ("$setup");
         global $g_db;        
@@ -485,6 +487,12 @@
       atkdebug("Installed $modname");
       $result[$modname] = "ok";
       return true;
+    }
+    
+    function needsInstall($modname)
+    {
+      $installfile = moduleDir($modname)."install/install.inc";   
+      return (file_exists($installfile));
     }
     
     /**
@@ -715,7 +723,7 @@
       $g_db->query("DROP TABLE $table");
     }
     
-    function action_upgradedb()
+    function action_legacyupgrade()
     {          
       global $g_db; 
       
@@ -794,11 +802,136 @@
       {
       }
       
+      // finally perform post 0.9.1 installation stuff. 
+      
       $this->setupscreen("Upgrading from version $version",
                          "Below is the result of the conversion. Please review if there are any errors.
                           <br>Also take note of any important messages.".$output,
                          "achievostart");
       
+    }
+    
+    function action_upgradedb()
+    {
+      global $g_modules, $g_layout;
+      
+      $g_layout->initGui();
+
+      $installedmodules = $this->getInstalledModules();
+      
+      $ok = true;
+      $result = array();
+      
+      $stufftodo = false;
+      
+      foreach ($g_modules as $modname=>$moduledir)
+      {
+        if (!in_array($modname, array_keys($installedmodules)) && $this->needsInstall($modname))
+        {
+          // module is not installed yet.           
+          $stufftodo = true;
+          
+          if (!$this->installModule($modname, $result, true))
+          {
+            atkdebug("Installation failed.");
+            $ok = false;
+            break;
+          }     
+        }
+        else
+        {
+          // module is installed. Check if we need to patch.
+        }
+      }
+      
+      if ($stufftodo)
+      {        
+        // things have been installed. Show result.
+        if (count($result)>0)
+        {        
+          $output = $g_layout->data_top();
+          $output.= $g_layout->tr_top();
+          $output.= $g_layout->ret_td_datatitle("Module");
+          $output.= $g_layout->ret_td_datatitle("Result");
+          $output.= $g_layout->tr_bottom();
+          foreach ($result as $modname => $result)
+          {
+            $output.= $g_layout->tr_top();
+            $output.= $g_layout->ret_td($modname);          
+            $output.= $g_layout->ret_td((!empty($resultmsg[$result])?$resultmsg[$result]:$result));
+            $output.= $g_layout->tr_bottom();
+          }
+          $output.= $g_layout->data_bottom();
+
+          if ($ok)
+          {
+            return $this->setupScreen("Installation result", $output, "achievostart");
+          }
+          else
+          {
+            return $this->setupScreen("Upgrade result", $output);
+          }
+        }        
+      }
+      else
+      {    
+        return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart");          
+      }
+    }
+    
+    function upgradeCheck()
+    {
+      global $g_modules, $g_layout;
+      
+      $g_layout->initGui();
+
+      $installedmodules = $this->getInstalledModules();            
+      
+      $installs = array();
+      $patches = array();
+      
+      foreach ($g_modules as $modname=>$moduledir)
+      {
+        if (!in_array($modname, array_keys($installedmodules)) && $this->needsInstall($modname))
+        {
+          // module is not installed yet.         
+          $installs[] = $modname; 
+        }
+        else
+        {
+          // module is installed. Check if we need to patch.
+        }
+      }
+      
+      if (count($installs)||count($patches))
+      {
+        // things have been installed. Show result.
+        $output = $g_layout->data_top();
+        $output.= $g_layout->tr_top();
+        $output.= $g_layout->ret_td_datatitle("Module");
+        $output.= $g_layout->ret_td_datatitle("Necessary action");
+        $output.= $g_layout->tr_bottom();
+        foreach ($installs as $modname)
+        {
+          $output.= $g_layout->tr_top();
+          $output.= $g_layout->ret_td($modname);          
+          $output.= $g_layout->ret_td("Install");
+          $output.= $g_layout->tr_bottom();
+        }
+        foreach ($patches as $modname)
+        {
+          $output.= $g_layout->tr_top();
+          $output.= $g_layout->ret_td($modname);          
+          $output.= $g_layout->ret_td("Patch");
+          $output.= $g_layout->tr_bottom();
+        }
+        $output.= $g_layout->data_bottom();
+        return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output, "upgradedb");          
+      }
+      else      
+      {    
+        return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart");          
+      }
     }
       
   }
