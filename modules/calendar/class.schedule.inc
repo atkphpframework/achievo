@@ -101,7 +101,7 @@
     {
       global $g_user;
 
-      $initial["owner"] = $g_user["id"];
+      $initial["owner"]["id"] = $g_user["id"];
       $initial["publicitem"] = 1;
       $initial["status"] = "unconfirmed";
 
@@ -415,7 +415,7 @@
     function postAdd($rec, $mode)
     {
       // insert the owner as first attendee.
-      global $g_db;
+      global $g_db;      
       $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
     }
   }

@@ -9,7 +9,7 @@ class select_person extends person
     $this->person("select_person");
     
     // for employees the nonactive ones must be filtered out.
-    $this->addFilter("person.status <> 'nonactive' OR person.role <> 'employee'");
+    $this->addFilter("(person.status <> 'nonactive' OR person.role <> 'employee')");
 
     $this->remove("role");
     $this->remove("fax");

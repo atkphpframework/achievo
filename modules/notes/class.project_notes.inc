@@ -24,7 +24,7 @@ class project_notes extends atkNode
   function initial_values()
   {
     global $g_user;
-    return array("owner"=>$g_user["id"],
+    return array("owner"=>array("id"=>$g_user["id"]),
                  "entrydate"=>array("year"=>date("Y"),
                                     "month"=>date("m"),
                                     "day"=>date("d")));
