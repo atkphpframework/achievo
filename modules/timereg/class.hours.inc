@@ -63,12 +63,12 @@ class hours extends atkNode
     $this->add(new atkDateAttribute("entrydate",AF_HIDE));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
-    $this->setOrder("id"); // Sort by order of input..
+    $this->setOrder("hours.id"); // Sort by order of input..
 
     $this->setTable("hours","hours");
 
   }
-
+    
   function setLock()
   {
     global $g_user;
