@@ -150,7 +150,7 @@
   
   $restarthint = "<br>Don't forget to restart the webserver after changing this."; // common sentence
   $inilocation = get_cfg_var("cfg_file_path");  
-  
+/*  
   $register_globals = (bool)ini_get("register_globals");  
   if (!$register_globals)
   {
@@ -158,7 +158,7 @@
                  <br>Currently, Achievo will only function with this setting turned on.
                  <br>Please alter $inilocation and set this value to on. ".$restarthint;                 
   }    
-  
+  */
   $include_path = ini_get("include_path");
   // in unix, includepath elements are separated by :, in windows, by ;
   if (strpos($include_path, ".:")===false && strpos($include_path, ":.")===false 
