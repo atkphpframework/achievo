@@ -11,7 +11,7 @@ useattrib("atktextattribute");
 class todo extends atkNode
 {
   var $prioId   = array(1,2,3,4,5);
-  var $prioName = array("Highest","High","Normal","Low","Lowest");
+  var $prioName = array("highest","high","normal","low","lowest");
 
   function todo()
   {
@@ -56,24 +56,25 @@ class todo extends atkNode
   // overide display of priority (set high to a red font)
   function priority_display($rec)
   {
-   $dummy  = $rec["priority"];
+   $prio = $rec["priority"];   
+   $org = $this->m_attribList["priority"]->display($rec);
    $result = "";
 
-   switch ($dummy)
+   switch ($prio)
    {
     case 1:
-     $dummy = "<font color='#FF0000'>".$this->prioName[$dummy-1]."</font>";
+     $result = "<font color='#FF0000'>".$org."</font>";
      break;
 
     case 2:
-     $dummy = "<font color='#A00000'>".$this->prioName[$dummy-1]."</font>";
+     $result = "<font color='#A00000'>".$org."</font>";
      break;
 
     default:
-     $dummy = $this->prioName[$rec["priority"]-1];
+     $result = $org;
      break;
    }
-   return $dummy;
+   return $result;
   }
 
   function descriptor_def()

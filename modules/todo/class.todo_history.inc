@@ -24,6 +24,8 @@
     function todo_history()
     {
       $this->todo(); // call baseclass constructor, but with new name.
+      $this->m_type = "todo_history";
+      
 
       $this->m_flags|= NF_READONLY;
       $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
@@ -42,6 +44,7 @@
 
       // Ordering by id makes sure we sort in order of history.
       $this->setOrder("id");
+      $this->setSecurityAlias("todo");
 
     }
 
