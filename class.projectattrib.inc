@@ -21,7 +21,7 @@ class atkProjectAttribute extends atkAttribute
    */
   function edit($record="")
   {    
-    global $selectedprojectid, $atkaction;     
+    global $selectedprojectid, $atkaction, $atklevel;
     
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
@@ -68,7 +68,7 @@ class atkProjectAttribute extends atkAttribute
     
     $result .= '</select>&nbsp';
     
-    $targeturl_hourstats = dispatch_url("hours", "hoursurvey",  array("selectedprojectid" => "[id]"));
+    $targeturl_hourstats = dispatch_url("hours", "hoursurvey",  array("selectedprojectid" => "[id]", "atklevel" => $atklevel));
     $result .= href(dispatch_url("project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl_hourstats)), text("houradmin_searchallprojects"),SESSION_NESTED);
 
     return $result;
