@@ -174,7 +174,7 @@ INSERT INTO hours (id, entrydate, activitydate, phaseid, activityid, remark, tim
 
 INSERT INTO hours_lock (week, userid) VALUES ( '200151', '*');
 
-INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '1', 'Main', '1', '', '', '365', '1000');
+INSERT INTO phase (id, name, projectid, status, description, max_phasetime, max_hours) VALUES ( '1', 'Main', '1', 'active', '', '365', '1000');
 
 INSERT INTO phase_activity (phaseid, activityid, billable) VALUES ( '1', '2', '0');
 INSERT INTO phase_activity (phaseid, activityid, billable) VALUES ( '1', '1', '0');
