@@ -7,7 +7,11 @@ Changes in Achievo 0.7.4
 + Added supervisor to employees.
 + Added a few fields to customers and projects.
 + Added a contactperson per project.
-* Fixed a Daylight Savings Time bug in hourregistration.
++ Added multiple week check to time registration cron check script.
++ Created new options for extended search feature.
+* Fixed a Daylight Savings Time bug in time registration.
+* Fixed bug in previous/next day links in time registration.
+* Fixed some bugs.
 
 Changes in Achievo 0.7.3
 ------------------------
