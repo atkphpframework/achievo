@@ -7,9 +7,9 @@
     menuitem("hours_lock", dispatch_url("hours_lock", "admin"),"time_registration",array("hours_lock","admin"));
     
   menuitem("-","","main",true,120);
-//  menuitem("costregistration_admin", dispatch_url("costregistration", "admin"),"main",true,200);
+  menuitem("costregistration_admin", dispatch_url("costregistration", "admin"),"main",true,200);
     
-//  menuitem("-","","main",true,220);
+  menuitem("-","","main",true,220);
   
   menuitem("schedule", dispatch_url("schedule","admin"),"main",true,300);  
   menuitem("-","","main",true,320);
