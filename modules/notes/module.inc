@@ -4,8 +4,7 @@
   {
     function getNodes()
     {
-      registerNode("notes.project_notes", array("admin", "add", "edit", "delete"));
-      registerNode("notes.project_notesview", array("admin", "add", "edit", "delete"));
+      registerNode("notes.project_notes", array("admin", "add", "edit", "delete"));     
     }
     
     function getMenuItems()

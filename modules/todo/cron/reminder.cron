@@ -14,11 +14,7 @@
   *
   * $Id$
   *
-  */
-
-  chdir("../");
-  include_once("atk.inc");
-  include_once("achievotools.inc");
+  */  
 
   // check which todo's have a duedate of today or earlier, and which have a
   // status of new, in_progress or on_hold.
@@ -51,7 +47,7 @@
   // being mailed: the owner, and the assignee. We group todos such, that each
   // user only gets one email.
 
-  var_dump($todos);
+  //var_dump($todos);
 
   $mails = array();
   $today = date("Y-m-d");
@@ -136,7 +132,7 @@
         }
       }
       $body.="\n";
-    }
+    }    
     usermail($to,text("todocheck_mail_subject"),$body);
     echo "sent mail to $to";
     echo "\n";

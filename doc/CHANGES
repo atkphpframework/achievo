@@ -4,6 +4,14 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.0RC2
+-------------------------
+* Fixed logout problem. (bug #177) [Sandy]
+* Bugfixes for bugs #181, #183, #185, #187, #189. [Ivo]
+* Bugfix for bug #191. [Jaap]
+* Changed cron method so add-on modules can add custom crons. [Ivo]
+* Updated German language file. [Nele]
+
 Changes in Achievo 1.0RC1
 -------------------------
 + In employee management, inactive employees are now hidden by default. [Ivo]

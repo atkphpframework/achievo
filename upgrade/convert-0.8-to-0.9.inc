@@ -29,6 +29,13 @@
                    fgcolor varchar(7) NOT NULL,
                    PRIMARY KEY (id)
                 )");
-  $setup->dropColumn("customer", "currency"); // no longer used
+   
+  // The currency field was not created in all situations. 
+  // Most notably, an upgrade from 0.6 to 0.8 did not contain the field,
+  // whereas a fresh 0.8 database did contain it.
+  if ($setup->columnExists("customer", "currency"))
+  {
+    $setup->dropColumn("customer", "currency"); // no longer used
+  }
 
 ?>

@@ -18,9 +18,10 @@ include_once($config_atkroot."atk.inc");
 include_once(moduleDir("graph")."jpgraph/jpgraph.php");
 include_once(moduleDir("graph")."jpgraph/jpgraph_gantt.php");
 
-global $color;
 global $g_layout;
 global $config_language;
+
+$projectid = $_REQUEST['projectid'];
 
 function load_dependencies($phase_record,$dep_record)
 {

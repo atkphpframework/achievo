@@ -1,30 +1,32 @@
 Achievo crontab scripts
 =======================
 
-This directory contains some scripts that you can run from cron to perform
+Achievo contains some scripts that you can run from cron to perform
 certain actions or checks.
 
 To be able to use these scripts, you need to have the php cgi-binary on your
 system.
 
+
 General instructions
 --------------------
-
 If you want to use one of the scripts, edit your crontab (crontab -e on 
 most Unix systems), and add a line in the form of:
 
-0 9 * * tue   /usr/bin/php /var/www/achievo/cron/timereg_check.php > /dev/null
+0 9 * * tue   /usr/bin/php /var/www/achievo/runcron todo.reminder > /dev/null
 
-This will run the timereg_check script every tuesday morning at 9 o'clock.
+This will run the reminder.cron script from the todo module every tuesday 
+morning at 9 o'clock.
 
 (assuming your php binary is in /usr/bin and Achievo is installed in 
 /var/www/html/, if this is not the case, change the values accordingly.)
+
 
 Available scripts
 -----------------
 Currently, the following scripts can be used from cron:
 
-* timereg_check.php 
+* timereg.reminder
 
    This script checks if all users have registered enough hours in the 
    previous week. 
@@ -35,13 +37,13 @@ Currently, the following scripts can be used from cron:
    Note: This script always counts the hours in the previous week from 
    monday to sunday, regardless of the day on which you run the script. This 
    means you can run the script multiple times a week, so people will be 
-   reminded more than once if they still don't register their hours.
+   reminded more than once if they keep forgetting to register their hours.
    
    Suggested run frequency: once or twice a week.
    Suggested run time: monday morning (and the second one on wednesday 
                        morning)
                       
-* todo_reminder.php
+* todo.reminder
  
    This script sends reminders to people if they have one or more todo's
    open, that are due today, or that are overdue. A cc is sent to the owner
@@ -53,3 +55,19 @@ Currently, the following scripts can be used from cron:
    Suggested run frequency: daily
    Suggested run time: in the morning, just before office opening time.
   
+   
+Add-on modules
+--------------
+
+Add-on modules may have their own useful cron scripts. These are usually
+located in the cron subdirectory of the module. They can be run using
+runcron, like above. 
+
+Example: suppose you have a module 'mymodule' with a file 'dailycheck.cron'
+in its cron/ subdirectory. You can run this script by adding this to your 
+crontab:
+
+0 9 * * *   /usr/bin/php /var/www/achievo/runcron mymodule.dailycheck
+
+Note that the '.cron' extension of the filename does not need to be passed
+to the runcron script.
