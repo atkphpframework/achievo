@@ -29,6 +29,7 @@
   include_once($config_atkroot."atk/attributes/class.atktextattribute.inc");  
   // include_once($config_atkroot."atk/attributes/class.atkhtmlattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atklistattribute.inc");
+  include_once($config_atkroot."atk/attributes/class.atkradioattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atkparserattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atkdateattribute.inc");  
   include_once($config_atkroot."atk/attributes/class.atkfileattribute.inc");

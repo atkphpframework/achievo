@@ -73,6 +73,10 @@
   // considered overtime. 
   $config_overtimethreshold = 480;
 
+  // allow hour entry's on weekends?
+  // set to true, if the employee is allowed to book hours on weekends
+  $config_hourweekend = "true";
+
   // Leave this line in place, it configures the backend of Achievo.
   // Also, you should not change the atkconf.inc file, since that would 
   // break Achievo.

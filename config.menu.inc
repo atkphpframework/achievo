@@ -30,7 +30,9 @@
      menuitem("activity_admin", dispatch_url("activity", "admin"), "setup", is_allowed("activity", "admin"));
      menuitem("tpl_phase_admin", dispatch_url("tpl_phase", "admin"), "setup", is_allowed("tpl_phase", "admin"));
      menuitem("tpl_project_admin", dispatch_url("tpl_project", "admin"), "setup", is_allowed("tpl_project", "admin"));    
-  
+     menuitem("holiday_admin", dispatch_url("holidays", "admin"), "setup", is_allowed("activity", "admin"));
+
+
   menuitem("-");
   menuitem("employeemanagement");
      menuitem("profile_admin", dispatch_url("profile", "admin"), "employeemanagement", is_allowed("profile", "admin"));

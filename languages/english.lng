@@ -281,4 +281,28 @@
 
   $txt_colorpicker_label                 = "Choose a color";
 
+ 
+  $txt_timeguard_mail = "Hello [name],\n\nThis is the achievo timeguard, it's been [days] days since you've booked your time.\n\n";
+  $txt_timeguard_mail_header = "Achievo Warning";
+  $txt_timeguard_mail_from = "timeguard@achievo.com";
+
+  $txt_menu_holiday_admin = "Holidays";
+  $txt_holiday_date = "Holiday date";
+  $txt_holiday_desc = "Holiday description";
+  $txt_holiday_work = "Normal workday";
+  $txt_title_holidays_admin = "Holidays";
+  $txt_title_holidays_add = "Add an Holiday";
+  $txt_title_holidays_edit = "Edit an Holiday";
+  $txt_title_holidays_delete = "Delete an Holiday";
+
+  $txt_uc_descr = "Contract Description";
+  $txt_uc_hours = "Contract Hours/week";
+  $txt_uc_startdate = "Contract starts on";
+  $txt_uc_enddate = "Contract ends on";
+
+  $txt_link_usercontracts_add = "Add an employee contract";
+  $txt_title_usercontracts_add = "Add employee contract";
+  $txt_title_usercontracts_edit = "Edit employee contract";
+  $txt_title_usercontracts_delete = "Delete employee contract";
+
 ?>
