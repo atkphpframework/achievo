@@ -45,7 +45,7 @@
     
     function search($expression)
     {
-      $prjnode = getNode("project.project");
+      $prjnode = &getNode("project.project");
       return array("projects"=>$prjnode->searchDb($expression));
     }
   }

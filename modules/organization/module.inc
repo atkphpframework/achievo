@@ -23,15 +23,13 @@
     function search($expression)
     {
       $res = array();
-      $custnode = getNode("organization.customer");
+      $custnode = &getNode("organization.customer");
       $res["customers"] = $custnode->searchDb($expression);   
         
-      $contactnode = getNode("organization.contact");
+      $contactnode = &getNode("organization.contact");
       $res["contacts"] = $contactnode->searchDb($expression);   
       
       return $res;
-      
     }
   }
-
 ?>
