@@ -1,63 +1,9 @@
 <?php
-  /**
-   * Builds a navigation menu for the ATK application. 
-   * Items for the main application can be added within the
-   * config.menu.inc file with the menuitem() method. Modules
-   * can register menuitems in their constructor. The menu
-   * has support for enabling/disabling items on a user profile base.
-   *
-   * For more information check the atkmoduletools.inc file!
-   *
-   * @author Peter Verhage <peter@ibuildings.nl>
-   * @version $Revision$
-   *
-   * $Id$   
-   * $Log$
-   * Revision 4.2  2001/05/23 09:43:57  ivo
-   * Created submenu's.
-   * Updated code to new atk4 session management features.
-   *
-   * Revision 4.1  2001/05/11 15:23:03  peter
-   * Revision number update.
-   *
-   * Revision 1.1.1.1  2001/05/11 15:20:40  peter
-   * initial release of Achievo for PHP4
-   *
-   * Revision 4.8  2001/05/10 09:42:28  sandy
-   * bugfix in menu.php (config menu delimiter) and for the clear posting
-   *
-   * Revision 4.7  2001/05/10 08:31:01  ivo
-   * Major upgrade. Changes:
-   * * Deprecated the m_records/m_currentRec feature of atknode. Nodes are now
-   *   singletons by default, and nodefunctions pass around recordsets.
-   * + Session management for forms. If you now leave a page through a click on
-   *   a link, the session remembers everything from your form and restores it
-   *   when you return.
-   * + New relation: oneToOneRelation
-   * + Reimplemented the embedded editForm feature (forms inside forms)
-   *
-   * Revision 4.6  2001/05/07 15:13:49  ivo
-   * Put config_atkroot in all files.
-   *
-   * Revision 4.5  2001/05/01 09:49:49  ivo
-   * Replaced all require() and include() calls by require_once() and
-   * include_once() calls. The if(!DEFINED)... inclusion protection in files
-   * is now obsolete.
-   *
-   * Revision 4.4  2001/05/01 09:15:51  ivo
-   * Initial session based atk version.
-   *
-   * Revision 4.3  2001/04/24 13:51:50  ivo
-   * Fixed some small bugs, and updated the language files, improved the menu.
-   *
-   * Revision 4.2  2001/04/23 15:59:07  peter
-   * Removed something that didn't belong there...
-   *
-   * Revision 4.1  2001/04/23 13:21:22  peter
-   * Introduction of module support. An ATK application can now have zero
-   * or more modules which can, but don't have to, contain ATK nodes.
-   *
-   */
+/**
+ * Builds the Achievo menu, please note that this file is a slightly modified
+ * version of the menu.php file in the ATK skel directory. This version
+ * contains an extra line that includes the theme.inc file!
+ */
 
   $config_atkroot = "./";
   require_once($config_atkroot."atk/class.atknode.inc");
