@@ -82,4 +82,9 @@
   // break Achievo.
   include "atkconf.inc";
 
+  // The default lengths of workdays and workweeks
+  // Needed for the notifier mails in order to calculate the missed hours
+  $config_workdaylength = 8; 
+  $config_workweeklength = 40;
+
 ?>
