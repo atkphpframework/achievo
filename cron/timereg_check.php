@@ -126,7 +126,8 @@
     }
   
     $to = $userMail[$user];        
-    $supervisormail = $userMail[$time[$user]]["supervisor"]];
+    $cc = "";
+    $supervisormail = $userMail[$time[$user]["supervisor"]];
     if ($supervisormail !="")        
     {           
       $cc = "Cc: ".$supervisormail."\r\n";      
