@@ -150,7 +150,7 @@ CREATE TABLE phase (
    id number(10) DEFAULT '0' NOT NULL,
    name varchar2(50) NOT NULL,
    projectid number(10) DEFAULT '0' NOT NULL,
-   status varchar2(15) NOT NULL,
+   status varchar2(15) DEFAULT 'active' NOT NULL,
    description text,
    max_phasetime number(10) DEFAULT '0',
    max_hours number(10) DEFAULT '0',
