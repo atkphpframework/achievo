@@ -19,6 +19,6 @@
   $config_auth_userdescriptor = "[userid]";
   $config_authentication_md5 = true;
   $config_securityscheme = "group";
-  $config_debug = 2;
+  $config_debug = 0;
   $config_auth_accountenableexpression = "role='employee' AND status='active'";
 ?>

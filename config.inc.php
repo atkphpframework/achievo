@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_0_9_3";
+  $config_databasename = "achievo_0_9_2";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
 
