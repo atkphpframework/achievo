@@ -38,7 +38,7 @@
   // themes there are in the directory themes. Users can choose their own
   // theme in the user preferences section.
   //
-  $config_defaulttheme = "rainyd";
+  $config_defaulttheme = "outlook";
 
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
@@ -118,32 +118,8 @@
 
   // The next value indicates how many weeks back the timereg_check cron
   // script searches for incomplete time registrations.
-  $config_timereg_checkweeks = 5;
-
-  // -------------------------------------------
-  //           FINANCIAL CONFIGURATION
-  // -------------------------------------------
-
-  // Default currency and symbol to use.
-  //
-  $config_currency = "Euro";
-  $config_currency_symbol = "EU";
-  $config_tax_symbol = "BTW";
-  $config_tax_rate = "19.00";
-  $config_bill_bankaccount = "58.78.14.305";
-
-  // -------------------------------------------
-  //           COMPANY CONFIGURATION
-  //--------------------------------------------
-
-  //This vars have to be filled if you want your company on your bill
-  //
-  $config_company_name = "Ibuildings";
-  $config_company_adress = "Post-Post straat 10";
-  $config_company_zipcode = "1232 DB";
-  $config_company_city = "Sittard";
-  $config_company_country = "Nederland";
-
+  $config_timereg_checkweeks = 5; 
+  
   // -------------------------------------------
   //            EXTERNAL MODULES
   // -------------------------------------------
@@ -154,18 +130,6 @@
   //
 
   // module("somemodule","../achievo_modules/somemodule");
-  // module("sw","../achievo_modules/sw");
-  // module("tryllian","../achievo_modules/tryllian");
-
-  // -------------------------------------------
-  //                FILES UPLOAD
-  // -------------------------------------------
-
-  // specify the directory in which files will be uploaded
-  // path can be relative to the achievo directory
-  // make sure the directory exists
-  // NOTE: the webserver must be able to read from and write to this directory
-  $config_documentpath = "./modules/project/uploaded_files";
 
   // -------------------------------------------
   //            END OF CONFIGURATION
