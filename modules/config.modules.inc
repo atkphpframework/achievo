@@ -11,4 +11,5 @@
   module("reports");  
   module("pim");
   module("search");  
+  module("graph");
 ?>
