@@ -145,7 +145,13 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         backend. Keeping your Achievo installation up to date is a good way
         of improving performance and reducing bugs.
         
- 4.3. I have a problem which is not covered in this FAQ, what should I do?
+ 4.3. I can only save one record. After the first record is saved, new records
+      are no longer stored.
+      
+        If you are using MySQL 4.0, make sure you give the LOCK TABLES 
+        privilege to the database user.
+        
+ 4.4. I have a problem which is not covered in this FAQ, what should I do?
   
         a) Have a look at the mailinglist archive at 
            http://www.achievo.org/lists. Your problem may have been discussed
