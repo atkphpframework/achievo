@@ -277,7 +277,7 @@
       if ($outputType=="0")
       {
         $g_layout->ui_bottom();
-        $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("of")." ".$userid." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
+        $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
         $g_layout->output('<br><br>');
         $g_layout->output($hoursnode->recordList($data, array(),false,$suppress));
         $g_layout->output('<br><br>');
