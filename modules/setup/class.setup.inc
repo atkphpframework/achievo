@@ -10,6 +10,8 @@
    
   class setup extends atkNode
   {
+    var $m_report = array(); 
+  
     function setup()
     {
       $this->atkNode("setup");
@@ -506,25 +508,87 @@
       }
     }
     
-    function setVersion($version)
+    function setVersion($version, $module="")
     {
-      if ($this->m_currentmodule!="")
+      if ($module=="") $module = $this->m_currentmodule;
+      
+      if ($module!="")
       {
         $versioninfo = &getNode("setup.versioninfo");
-        $recs = $versioninfo->selectDb("module='".$this->m_currentmodule."'");
+        $recs = $versioninfo->selectDb("module='".$module."'");
         if (count($recs)>0)
         {
           // rec already exists. Update.
-          $versioninfo->updateDb(array("module"=>$this->m_currentmodule, "version"=>$version));
+          $versioninfo->updateDb(array("module"=>$module, "version"=>$version));
         }
         else
         {
           // rec doesn't exist. Insert.
-          $rec = array("module"=>$this->m_currentmodule, "version"=>$version);
+          $rec = array("module"=>$module, "version"=>$version);
           $versioninfo->addDb($rec);
         }
       }
     }      
+    
+    function report($progressmsg)
+    {
+      $this->m_report[] = $progressmsg;
+    }
+    
+    // TODO FIXME: functions that follow are *NOT* yet database
+    // independent. They should use the abstractionlayer. 
+    
+    function renameSequence($seq_name,$new_name)
+    {
+      global $g_db;
+      $sql = "UPDATE db_sequence SET seq_name='".$new_name."'
+                WHERE seq_name='".$seq_name."'";
+      $res = $g_db->query($sql);  
+    }
+    
+    function renameTable($old, $new)
+    {
+      global $g_db;    
+      $sql = "ALTER TABLE $old RENAME $new";
+      $res = $g_db->query($sql);    
+      
+      //change db_sequence name
+      $this->renameSequence($old, $new);  
+    }
+    
+    function addColumn($table, $col, $type, $nullable=true, $default="")
+    {
+      global $g_db;
+    
+      $sql = "ALTER TABLE $table ADD $col $type";
+      if (!$nullable) $sql.=" NOT NULL";
+      if ($default!="") $sql.= " DEFAULT $default";
+      $g_db->query($sql);        
+    }
+    
+    function alterColumn($table, $col, $newname, $type, $nullable=true, $default="")
+    {
+      global $g_db;
+      $sql = "ALTER TABLE $table CHANGE $col $newname $type";
+      if (!$nullable) $sql.=" NOT NULL";
+      if ($default!="") $sql.= " DEFAULT $default";
+      $g_db->query($sql);
+    }
+    
+    function dropColumn($table, $col)
+    {
+      global $g_db;
+    
+      $sql = "ALTER TABLE $table DROP $col";      
+      $res = $g_db->query($sql);        
+    }        
+    
+    function dropTable($table)
+    { 
+      global $g_db;
+      $g_db->query("DROP TABLE $table");
+    }
+      
   }
   
 ?>
