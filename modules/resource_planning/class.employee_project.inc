@@ -16,7 +16,7 @@ class employee_project extends atkNode
 {
   function employee_project()
   {
-    $this->atkNode("employee_project");
+    $this->atkNode("employee_project", NF_NO_EDIT);
 
     $this->add(new atkManyToOneRelation("employeeid","employee",AF_PRIMARY));
     $this->add(new atkManyToOneRelation("projectid","project",AF_PRIMARY));
