@@ -11,12 +11,19 @@ Changes in Achievo 0.9.5
 + Time registration now contains a link to the scheduler. [Ivo]
 + Achievo can now handle userpreferences per module. (bug #140) [Ivo]
 + There is now a userpref for the scheduler to set the default user. [Ivo]
+* Replaced the old projectplanning with a graphical ganttchart [Ludo, Ivo]
 + The setup.php script detects and installs newly added modules. [Ivo]
 + The setup.php script detects and installs patches. [Ivo]
 + The scheduler has a new privilege 'edit all appointments'. [Lineke]
 * Fixed bug in pim todo items. (bug #142) [Ivo]
 * Setup script timelimit has been set to infinite. (bug #146) [Ivo]
 * Fixed bug in scheduler afternoon/evening calculation. (bug #141) [Ivo]
++ Added Swedish language file. [Thomas]
+* Updated Dutch and English language files. [Ivo]
+* Updated French language file. [Timduru]
+* Updated Brazilian-Portugues language file. [Geraldo]
+* Updated Danish language file. [Morten]
+* Updated Norwegian language file. [Kjetil, Stian]
 
 Changes in Achievo 0.9.4
 ------------------------
