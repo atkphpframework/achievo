@@ -38,7 +38,7 @@ class person extends atkNode
     $this->add(new atkEmailAttribute("email"));
     $this->add(new atkAttribute("function", AF_HIDE_LIST));
     $this->add(new atkTextAttribute("remark", AF_HIDE_LIST));
-    $this->add(new atkAttribute("role", AF_HIDE));
+    $this->add(new atkAttribute("role", AF_HIDE)); //discriminator
 
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");

@@ -55,7 +55,7 @@ class employee extends person
       $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
       $this->add(new atkPasswordAttribute("password", AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE));
     }
-    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE));
+    $this->add(new atkAttribute("role"           , AF_READONLY|AF_HIDE)); // discriminator.
   }
 
   function initial_values()
