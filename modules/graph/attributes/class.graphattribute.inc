@@ -18,6 +18,19 @@
    * @version $Revision$
    *
    * $Id$
+   *
+   * This file is part of Achievo.
+   *
+   * Achievo is free software; you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation; either version 2 of the License, or
+   * (at your option) any later version.
+   *
+   * Achievo is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
    */
   
   class graphAttribute extends atkAttribute
@@ -103,7 +116,14 @@
     
     function showGraph($record)
     {
-      return '<img src="'.session_url("graph.php?atknodetype=".$this->getSource()."&callback=".$this->m_callback.$this->_getParams($record), SESSION_NEW).'">';
+      return '<img src="'.session_url($this->_graphUrl($record), SESSION_NEW).'">';
+    }
+    
+    function _graphUrl($record)
+    {
+      return "graph.php?atknodetype=".$this->getSource().
+                      "&plotter=graph.".get_class($this).
+                      "&callback=".$this->m_callback.$this->_getParams($record);
     }
     
     function _getParams($record)
@@ -121,7 +141,7 @@
         }
       }
       return $res;
-    }
+    }       
     
     // Dummy methods to prevent loading/storing of data.
     function load() {}
@@ -131,6 +151,51 @@
     function search() {}
     function getSearchModes() {}
     function searchCondition() {}
+  }
+  
+  /**
+   * Plotter companion class for graphAttribute.
+   */
+  class graphAttributePlotter 
+  {
+    /**
+     * Plot method.
+     * Called by the graph.php image wrapper, to perform the actual plot.
+     * 
+     * Do not call directly. Internal framework use only, as they say.
+     */
+    function plot($postvars)
+    {          
+      $res = false;
+      
+      // Create node
+      $atknodetype = $postvars["atknodetype"];
+      $callback = $postvars["callback"];            
+      $obj = &getNode($atknodetype); 
+    
+      if (is_object($obj))
+      {
+        // We prepend graph_ to the callback as a security precaution. 
+        // This prevents anyone from executing arbitrary methods. 
+        // Only methods starting with graph_ can be executed as callback.
+        // 
+        $method = "graph_".$callback;
+        if (method_exists($obj, $method))
+        {
+          $res = $obj->$method($postvars);
+        }
+        else
+        {
+          atkerror("Graph: callback $method on source node ".$atknodetype." does not exist.");
+        }
+      }
+      else
+      {
+        atkerror("Graph: source node ".$atknodetype." not found.");
+      }      
+      return $res;
+      
+    }
   }
 
 ?>
