@@ -212,6 +212,10 @@
                       VALUES ('".$tplphaselookup[$tplact[$i]["templateid"]]."','".$tplact[$i]["activityid"]."')");
   }
   
+  // Remove the old tables.
+  $setup->dropTable("template");
+  $setup->dropTable("templateactivity");
+  
   function setSequence($seq, $value)
   {
     global $g_db;

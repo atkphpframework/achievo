@@ -1,6 +1,8 @@
 <?php
-
-  $setup->installNode("project.project");
+  atkdebug("In convert-0.9-to-0.9.1.inc");
+  
+  $setup->addColumn("project", "abbreviation", "varchar(10)");  
+  
   $setup->alterColumn("accessright", "node", "node", "varchar(50)", false);
   $setup->addColumn("todo", "updated", "datetime");
 

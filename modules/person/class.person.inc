@@ -38,8 +38,8 @@ class person extends atkNode
     $this->add(new atkAttribute("fax", AF_HIDE_LIST|AF_FORCE_LOAD, 20));
     $this->add(new atkEmailAttribute("email", false, 0, 50));
     $this->add(new atkAttribute("function", AF_HIDE_LIST, 50));
-    $this->add(new atkTextAttribute("remark", AF_HIDE_LIST));
-    $this->add(new atkAttribute("role", AF_HIDE, 25)); //discriminator
+    $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST));
+    $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_HIDE, 15)); //discriminator
 
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");

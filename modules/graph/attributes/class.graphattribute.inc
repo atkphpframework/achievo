@@ -219,6 +219,7 @@
     function load() {}
     function store() {}
     function addToQuery() {}
+    function dbFieldType() {}
     function hide() {}
     function search() {}
     function getSearchModes() {}
@@ -267,7 +268,7 @@
       }      
       return $res;
       
-    }
+    }    
   }
 
 ?>

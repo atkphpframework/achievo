@@ -164,7 +164,7 @@
       $form = '<div align="left"><b>'.$title.'</b><br><br>';
                                
       $form.= '<form action="'.($nextaction=="achievostart"?"index.php":"setup.php").'">'.
-               session_form(SESSION_NESTED).               
+               session_form(SESSION_NEW). 
                '<input type="hidden" name="atkaction" value="'.$nextaction.'">'.
                $output;
                
@@ -261,36 +261,36 @@
           // Perform some checks to determine what version this database might be.
           // We do this by looking at some tables that exist, that were created in
           // several Achievo versions.
-          $version = "";
+          $orgversion = "";
           
           if (in_array("projectactivity", $tablenames) && in_array("templateactivity", $tablenames))
           {
             // If these two tables exist, this is a 0.4 database.
-            $version = "0.4";
+            $orgversion = "0.4";
           }
           else if (in_array("todo_history", $tablenames) && in_array("employee_project", $tablenames))
           {
-            $version = "0.9.1";
+            $orgversion = "0.9.1";
           }
           else if (in_array("schedule", $tablenames) && in_array("schedule_types", $tablenames))
           {
-            $version = "0.9";
+            $orgversion = "0.9";
           }
           else if (in_array("hours_lock", $tablenames) && in_array("contract", $tablenames)
                   && !in_array("schedule", $tablenames))
           {
-            $version = "0.8";
+            $orgversion = "0.8";
           }
           else if (!in_array("hours_lock", $tablenames) && !in_array("contract", $tablenames)
                   && in_array("tpl_project", $tablenames))
           {
-            $version = "0.6";
+            $orgversion = "0.6";
           }
           
-          if ($version!="")
+          if ($orgversion!="")
           {          
-            return $this->setupScreen("Database version $version detected",
-                                      "The database you are currently using ('".atkconfig("databasename")."') appears to be from Achievo version $version.
+            return $this->setupScreen("Database version $orgversion detected",
+                                      "The database you are currently using ('".atkconfig("databasename")."') appears to be from Achievo version $orgversion.
                                        <br>I can upgrade this database for you. 
                                        <br>Please make sure you backup the database
                                        first, because although I know what I'm doing, I'm just an open source script, and 
@@ -300,7 +300,7 @@
                                        <br>In other words, backup your database first!
                                        <br>
                                        <br>If you've taken the necessary precautions, click the continue button to upgrade the database.",
-                                      "legacyupgrade", array("version"=>$version));
+                                      "legacyupgrade", array("orgversion"=>$orgversion));
           }
           else
           {
@@ -355,50 +355,13 @@
         $ok = false;
       }
       
-      if (count($result)>0)
-      {        
-        $output = $g_layout->data_top();
-        $output.= $g_layout->tr_top();
-        $output.= $g_layout->ret_td_datatitle("Module");
-        $output.= $g_layout->ret_td_datatitle("Result");
-        $output.= $g_layout->tr_bottom();
-        foreach ($result as $modname => $result)
-        {
-          $output.= $g_layout->tr_top();
-          $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
-          $output.= $g_layout->tr_bottom();
-        }
-        $output.= $g_layout->data_bottom();
-      }
-  
-      // Also show any reports.
-      if (count($this->m_report))
-      {
-        foreach($this->m_report as $reportmsg)
-        {            
-          if ($reportmsg["type"]=="error")
-          {
-            $output.='<br><br><b>Installation failed!</b><br>';
-            $output.= $reportmsg["msg"];
-            $ok = false;
-            break;
-          }
-          else if ($reportmsg["type"]=="important")
-          {
-            // Show this to the user
-            $output.="<br><br><b>Important:</b><br>";
-            $output.= $reportmsg["msg"];              
-          }
-          else if ($reportmsg["type"]=="warning")
-          {
-             // Show this to the user
-            $output.="<br><br><b>Warning:</b><br>";
-            $output.= $reportmsg["msg"];              
-          }
-        }   
-      }
+      $output.=$this->renderResult($result);
       
+      // Also show any reports.
+      if (!$this->renderReport($output))
+      {
+        $ok = false;
+      }
       
       if ($ok)
       {
@@ -408,6 +371,43 @@
       {
         return $this->setupScreen("Installation result", $output);
       }
+    }
+    
+    function renderReport(&$output)
+    {  
+      $ok = true;
+      if (count($this->m_report))
+      {
+        foreach($this->m_report as $reportmsg)
+        {  
+          // We only show errors, important msgs and warnings.
+          if (in_array($reportmsg["type"], array("error", "important", "warning")))
+          {
+            $output.="<br><br>";
+            if ($reportmsg["type"]=="error")
+            {
+              $output.='<b>Installation failed!</b><br>';
+              $output.= $reportmsg["msg"];
+              $ok = false;
+              break;
+            }
+            else if ($reportmsg["type"]=="important")
+            {
+              // Show this to the user
+              $output.="<b>Important:</b><br>";
+              $output.= $reportmsg["msg"];
+            }
+            else if ($reportmsg["type"]=="warning")
+            {
+               // Show this to the user
+              $output.="<b>Warning:</b><br>";
+              $output.= $reportmsg["msg"];
+            }          
+            $output.="<br>";
+          }
+        }   
+      }
+      return $ok;
     }
     
     /**
@@ -603,6 +603,8 @@
     {
       // Check if previous calls all went ok. If one went wrong, we should stop.
       if (!$this->m_cancontinue) return false;
+      
+      atkdebug("Installnode call for $nodename");
       
       $node = &getNode($nodename);            
       
@@ -832,11 +834,10 @@
     {          
       global $g_db; 
       
-      $version = $this->m_postvars["version"];
-      
+      $orgversion = $this->m_postvars["orgversion"];      
       $history = array("0.4", "0.6", "0.8", "0.9", "0.9.1", "0.9.2");
       
-      $startidx = array_search($version, $history, true);
+      $startidx = array_search($orgversion, $history, true);
       
       if ($startidx!==false && $startidx!==NULL) // in php 4.2.0 the result switched from null to false
       {
@@ -869,33 +870,15 @@
           }
           else
           {
-            // if no atk errors occured, check the report.
-            foreach($this->m_report as $reportmsg)
-            {            
-              if ($reportmsg["type"]=="error")
-              {
-                $output.='<br><br><b>Conversion failed!</b><br>';
-                $output.= $reportmsg["msg"];
-                $ok = false;
-                break;
-              }
-              else if ($reportmsg["type"]=="important")
-              {
-                // Show this to the user
-                $output.="<br><br><b>Important:</b><br>";
-                $output.= $reportmsg["msg"];              
-              }
-              else if ($reportmsg["type"]=="warning")
-              {
-                 // Show this to the user
-                $output.="<br><br><b>Warning:</b><br>";
-                $output.= $reportmsg["msg"];              
-              }
+            // Also show any reports.
+            if (!$this->renderReport($output))
+            {
+              $ok = false;
             }
           }
           if ($ok)
           {
-            $output.= "<br><br>Conversion of ".$history[$script]." to ".$history[$script+1]." complete.";
+            $output.= "<br>Conversion of ".$history[$script]." to ".$history[$script+1]." complete.";
           }
           else
           {
@@ -908,25 +891,86 @@
       {
       }
       
-      // finally perform post 0.9.1 installation stuff. 
-      
-      $this->setupscreen("Upgrading from version $version",
-                         "Below is the result of the conversion. Please review if there are any errors.
+      if ($ok)
+      {
+        // finally perform post 0.9.1 installation stuff. 
+        // Legacy upgrade will upgrade to 0.9.2; after that, we can execute
+        // the auto-upgrade, which will install necessary patches.
+        include_once("./version.inc");
+        $output.="<br><br>Start of patch from ".$history[count($history)-1]." to ".$achievo_version;
+        
+        $result = array();
+        if ($this->upgradedb($result))
+        {
+          $output.=$this->renderResult($result);
+        }
+      } 
+      $this->setupscreen("Upgrading from version $orgversion",
+                         "Your database is upgraded from version $orgversion to version $achievo_version. The upgrade is performed in several small steps.
+                          <br>Below is the result of each of these steps. Please review if there are any errors.
                           <br>Also take note of any important messages.".$output,
                          "achievostart");
       
     }
     
+    function renderResult($result)
+    {
+      global $g_layout;
+      $output="";
+      if (count($result)>0)
+      {        
+        $output = $g_layout->data_top();
+        $output.= $g_layout->tr_top();
+        $output.= $g_layout->ret_td_datatitle("Module");
+        $output.= $g_layout->ret_td_datatitle("Result");
+        $output.= $g_layout->tr_bottom();
+        foreach ($result as $modname => $result)
+        {
+          $output.= $g_layout->tr_top();
+          $output.= $g_layout->ret_td($modname);          
+          $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
+          $output.= $g_layout->tr_bottom();
+        }
+        $output.= $g_layout->data_bottom();
+      }
+      return $output;
+    }
+    
     function action_upgradedb()
     {
-      global $g_modules, $g_layout;
+      global $g_layout;
       
       $g_layout->initGui();
+      
+      $result = array();
+      
+      if ($this->upgradedb($result))
+      {
+        // things have been installed. Show result.
+        $output = $this->renderResult($result);     
+
+        if ($ok)
+        {
+          return $this->setupScreen("Upgrade result", $output, "achievostart");
+        }
+        else
+        {
+          return $this->setupScreen("Upgrade result", $output);
+        }        
+      }
+      else
+      {    
+        return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart"); 
+      }    
+    }
+    
+    function upgradedb(&$result)
+    {
+      global $g_modules;            
 
       $installedmodules = $this->getInstalledModules();
       
-      $ok = true;
-      $result = array();
+      $ok = true;      
       
       $stufftodo = false;
       
@@ -982,39 +1026,7 @@
         }
       }
       
-      if ($stufftodo)
-      {        
-        // things have been installed. Show result.
-        if (count($result)>0)
-        {        
-          $output = $g_layout->data_top();
-          $output.= $g_layout->tr_top();
-          $output.= $g_layout->ret_td_datatitle("Module");
-          $output.= $g_layout->ret_td_datatitle("Result");
-          $output.= $g_layout->tr_bottom();
-          foreach ($result as $modname => $result)
-          {
-            $output.= $g_layout->tr_top();
-            $output.= $g_layout->ret_td($modname);          
-            $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
-            $output.= $g_layout->tr_bottom();
-          }
-          $output.= $g_layout->data_bottom();
-
-          if ($ok)
-          {
-            return $this->setupScreen("Installation result", $output, "achievostart");
-          }
-          else
-          {
-            return $this->setupScreen("Upgrade result", $output);
-          }
-        }        
-      }
-      else
-      {    
-        return $this->setupScreen("Database is up to date", "Your database appears to be up to date. No upgrade is necessary.", "achievostart");          
-      }
+      return $stufftodo;
     }
     
     function upgradeCheck()

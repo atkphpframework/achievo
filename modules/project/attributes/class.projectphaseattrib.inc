@@ -312,5 +312,10 @@ class atkProjectPhaseAttribute extends atkAttribute
               </script>';
     return $result;
   }
+  
+  function dbFieldType()
+  {
+    return "number";
+  }
 }
 ?>

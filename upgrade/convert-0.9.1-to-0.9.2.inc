@@ -8,6 +8,8 @@
 
   $setup->report("Start conversion of 0.9.1 database -> 0.9.2 database");
   
+  atkdebug("In convert-0.9.1-to-0.9.2.inc");
+  
   // Declare a utility function for converting varchar userid's to the new int
   // foreign keys for users.
   function useridConvert($table, $field, $setup)
@@ -40,14 +42,22 @@
 
   //convert contact table to person table and copy employees to person table
   $setup->renameTable("contact", "person");
+  $setup->dropColumn("person", "owner"); // no longer used.
   
   // The following calls will add new fields to the person table.
-  $setup->installNode("employee.employee");
-  $setup->installNode("employee.userprefs");
-  $setup->installNode("organization.contact");
+  $setup->addColumn("person", "state", "varchar(100)");
+  $setup->addColumn("person", "function", "varchar(50)");
+  $setup->addColumn("person", "role", "varchar(15)", false);
+  $setup->addColumn("person", "entity", "int(10)");
+  $setup->addColumn("person", "supervisor", "int(10)");
+  $setup->addColumn("person", "status", "varchar(9)");
+  $setup->addColumn("person", "userid", "varchar(15)", false);
+  $setup->addColumn("person", "password", "varchar(40)");
+  
+  $setup->addColumn("person", "theme", "varchar(15)");
   
   // Also update the usercontract node.
-  $setup->installNode("employee.usercontracts"); 
+  $setup->addColumn("usercontract", "workingdays", "varchar(14)");
   
   // Create project_person table with all necessary fields.
   $setup->installNode("project.project_personcontact");
@@ -105,7 +115,7 @@
   $setup->renameTable("customer", "organization");
     
   // Update the organization node with new fields.
-  $setup->installNode("organization.organization");
+  $setup->addColumn("organization", "state", "varchar(100)");
 
   $setup->installNode("project.role");  
 
@@ -168,12 +178,15 @@
   $setup->dropColumn("project", "customer");
   
   //add new fields to schedule table
-  $setup->installNode("calendar.schedule");
+  $setup->addColumn("schedule", "all_users", "int(1)");
+  $setup->addColumn("schedule", "status", "varchar(11)");
+  
+  atkdebug("After last installnode");
      
   $setup->renameTable("schedule_attendees", "schedule_attendee");
   
   $setup->alterColumn("schedule_attendee", "scheduleid", "schedule_id", "int(10)", false);
-  $setup->alterColumn("schedule_attendee", "userid", "person_id", "int(10)", false);    
+  $setup->alterColumn("schedule_attendee", "userid", "person_id", "int(10)", false);        
 
   $setup->renameTable("schedule_types", "schedule_type");
     
@@ -205,10 +218,13 @@
   useridConvert("hours", "userid", $setup);
   useridConvert("project", "coordinator", $setup);
   useridConvert("project_person", "personid", $setup);
+  useridConvert("project_notes", "owner", $setup);
   useridConvert("usercontract", "userid", $setup);  
   useridConvert("person", "supervisor", $setup); 
   useridConvert("todo", "assigned_to", $setup);  
+  useridConvert("todo", "owner", $setup);  
   useridConvert("todo_history", "assigned_to", $setup);
+  useridConvert("todo_history", "owner", $setup);
   useridConvert("schedule", "owner", $setup);
   
   // Add new id field to hours_lock table.
@@ -234,6 +250,60 @@
   useridConvert("hours_lock", "userid", $setup);    
   $setup->alterColumn("hours_lock", "userid", "userid", "int(10)", true); // for hours_lock, the userid field may be null  
   $g_db->query("UPDATE hours_lock SET userid = NULL WHERE userid=''");
+  
+  
+  // Perform some additional alterations to make db more compatible
+  // with fresh 0.9.2+ installs.
+  $setup->alterColumn("accessright", "node", "node", "varchar(100)", false);
+  $setup->alterColumn("accessright", "entity", "entity", "int(10)", false);
+  $setup->alterColumn("activity", "id", "id", "int(10)", false);
+  $setup->alterColumn("activity", "remarkrequired", "remarkrequired", "int(1)", true);
+  $setup->alterColumn("activity", "description", "description", "varchar(50)", true);  
+  $setup->alterColumn("db_sequence", "seq_name", "seq_name", "varchar(40)", false);
+  $setup->alterColumn("db_sequence", "nextid", "nextid", "int(10)", false);
+  $setup->alterColumn("hours", "id", "id", "int(10)", false);
+  $setup->alterColumn("hours", "activityid", "activityid", "int(10)", false);
+  $setup->alterColumn("project", "id", "id", "int(10)", false);
+  $setup->alterColumn("project", "status", "status", "varchar(15)", true);   
+  $setup->alterColumn("project", "description", "description", "text", true);   
+  $setup->alterColumn("project", "coordinator", "coordinator", "int(10)", true);   
+  $setup->alterColumn("contract", "contracttype", "contracttype", "int(10)", false);
+  $setup->alterColumn("contract", "billing_period", "billing_period", "varchar(12)", false);  
+  $setup->alterColumn("contract", "id", "id", "int(10)", false);
+  $setup->alterColumn("contract", "description", "description", "text", false);
+  $setup->alterColumn("usercontract", "id", "id", "int(10)", false);
+  $setup->alterColumn("contracttype", "id", "id", "int(10)", false);
+  $setup->alterColumn("person", "lastname", "lastname", "varchar(50)", false);
+  $setup->alterColumn("person", "supervisor", "supervisor", "int(10)", true);  
+  $setup->alterColumn("phase", "id", "id", "int(10)", false);
+  $setup->alterColumn("phase", "status", "status", "varchar(9)", true); 
+  $setup->dropColumn("phase_activity", "billable"); // no longer used
+  $setup->alterColumn("phase_activity", "phaseid", "phaseid", "int(10)", false);
+  $setup->alterColumn("phase_activity", "activityid", "activityid", "int(10)", false);
+  $setup->alterColumn("project_notes", "id", "id", "int(10)", false);
+  $setup->alterColumn("project_notes", "projectid", "projectid", "int(10)", false);
+  $setup->alterColumn("project_notes", "description", "description", "text", false);
+  $setup->alterColumn("schedule", "id", "id", "int(10)", false);
+  $setup->alterColumn("schedule_type", "id", "id", "int(10)", false);
+  $setup->alterColumn("schedule_note", "owner", "owner", "int(10)", false);
+  $setup->alterColumn("schedule_note", "schedule_id", "schedule_id", "int(10)", false);
+  $setup->alterColumn("todo", "id", "id", "int(10)", false);
+  $setup->alterColumn("todo", "projectid", "projectid", "int(10)", false);
+  $setup->alterColumn("todo", "status", "status", "int(1)", false);
+  $setup->alterColumn("todo", "assigned_to", "assigned_to", "int(10)", true);
+  $setup->alterColumn("todo", "priority", "priority", "int(1)", false);
+  $setup->alterColumn("todo", "description", "description", "text", false);
+  $setup->alterColumn("todo_history", "id", "id", "int(10)", false);
+  $setup->alterColumn("todo_history", "todoid", "todoid", "int(10)", false);
+  $setup->alterColumn("todo_history", "projectid", "projectid", "int(10)", false);
+  $setup->alterColumn("todo_history", "description", "description", "text", false);
+  $setup->alterColumn("todo_history", "status", "status", "int(1)", false);
+  $setup->alterColumn("todo_history", "priority", "priority", "int(1)", false);
+  $setup->alterColumn("todo_history", "assigned_to", "assigned_to", "int(10)", true);
+  $setup->alterColumn("todo_history", "updated", "updated", "datetime ", true);
+  $setup->alterColumn("tpl_phase_activity", "phaseid", "phaseid", "int(10)", false);
+  $setup->alterColumn("tpl_phase_activity", "activityid", "activityid", "int(10)", false);
+  $setup->alterColumn("tpl_project", "id", "id", "int(10)", false);
   
  
   //change the node rights in the accessright table to this format: modulename.nodename

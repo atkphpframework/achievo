@@ -66,7 +66,7 @@
       $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $default_end_time, 0));
       $this->add(new atkBoolAttribute("allday"));
       $this->add(new atkAttribute("title"          , AF_SEARCHABLE|AF_OBLIGATORY, 50));
-      $this->add(new atkTextAttribute("description"));
+      $this->add(new atkTextAttribute("description", TEXT_LARGE, 0));
       $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE|AF_HIDE_ADD, 50));
       $this->add(new atkBoolAttribute("publicitem", AF_HIDE_ADD));
@@ -79,7 +79,7 @@
       $this->add(new fuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
 
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD, 15));
+      $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD|AF_OBLIGATORY));
 
       $this->m_view     = $g_sessionManager->stackVar("view");
       if (trim($this->m_view) == "") { $this->m_view = "dayview"; }

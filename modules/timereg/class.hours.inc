@@ -5,6 +5,7 @@ useattrib("project.projectphaseattrib");
 useattrib("project.projectattrib");
 useattrib("atkdateattribute");
 useattrib("atklistattribute");
+useattrib("atktextattribute");
 useattrib("atkdurationattribute");
 useattrib("atkdummyattribute");
 userelation("atkmanytoonerelation");
@@ -54,13 +55,13 @@ class hours extends atkNode
 
     // force_load flag is set for userid, since several features rely on the 
     // userid, even if it's not displayed on screen.
-    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD));
+    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
 
     $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
     $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
-    $this->add(new atkAttribute("remark"));
+    $this->add(new atkTextAttribute("remark", 1, 0));
     $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
-    $this->add(new atkDateAttribute("entrydate",AF_HIDE));
+    $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_OBLIGATORY));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
     $this->setOrder("hours.id"); // Sort by order of input..

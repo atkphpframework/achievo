@@ -29,6 +29,11 @@ class phasetemplateAttribute extends atkManyToOneRelation
       }
     }
   }
+  
+  function dbFieldType()
+  {
+    return "";
+  }
 }
 
 ?>

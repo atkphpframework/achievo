@@ -200,5 +200,10 @@ class dependencyAttribute extends atkAttribute
   {
     // Search not supported.
   }
+  
+  function dbFieldType()
+  {
+    return "";
+  }
 }
 ?>

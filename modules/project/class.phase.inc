@@ -17,7 +17,7 @@ class phase extends atkNode
     $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
     $this->add(new atkManyToOneRelation("projectid","project.project",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE_EDIT));
 
-    $this->add(new atkTextAttribute("description",AF_HIDE_LIST));
+    $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status",array("active","nonactive")));
 
     $this->add(new atkNumberAttribute("max_phasetime"));
