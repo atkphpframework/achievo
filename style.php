@@ -61,6 +61,15 @@ A:hover
   color: <?php echo $g_theme["TableHeaderFgColor"]; ?>;
 }
 
+.tableheader_today
+{
+  font-family: <?php echo $g_theme["TableHeaderFontFamily"]; ?>;
+  font-size: <?php echo $g_theme["TableHeaderFontSize"]; ?>pt;
+  font-weight: <?php echo $g_theme["TableHeaderFontWeight"]; ?>;
+  background-color: #FF0000;
+  color: #FFFFFF;
+}
+
 .table
 {
   font-family: <?php echo $g_theme["TableFontFamily"]; ?>;

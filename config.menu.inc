@@ -4,6 +4,8 @@
   menuitem("hours_admin",  dispatch_url("hours", "admin"));
   
   menuitem("hours_hoursurvey", dispatch_url("hours", "hoursurvey"));
+
+  menuitem("schedule", dispatch_url("schedule","admin"));
   
   menuitem("-");
   menuitem("projectmanagement"); // projects submenu
