@@ -18,6 +18,7 @@ class hours extends atkNode
   var $m_lock = "";
   var $m_viewdate = "";
   var $m_weekview = "";
+  var $m_insertmode = ""; // can be set to 'day' or 'multi'
 
   function hours()
   {
@@ -402,9 +403,15 @@ class hours extends atkNode
   function activitydate_validate(&$rec)
   {
     global $g_user;
-    if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$rec["activitydate"]["year"],$rec["activitydate"]["month"],$rec["activitydate"]["day"]))!="")
-    {
-      triggerError($rec, "activitydate", "houradmin_weeklocked");
+    
+    // when inserting multiple days at once, we don't break on invalid days 
+    // (we will just skip them later on).
+    if ($rec["activitydate"]["multi"]!=1)
+    {    
+      if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$rec["activitydate"]["year"],$rec["activitydate"]["month"],$rec["activitydate"]["day"]))!="")
+      {
+        triggerError($rec, "activitydate", "houradmin_weeklocked");
+      }
     }
   }
 
@@ -418,7 +425,7 @@ class hours extends atkNode
    * need to override validate.)
    */
   function validate(&$record, $mode)
-  {
+  {  
     $obj = getNode("project.activity");
     $act = $obj->selectDb("id=".$record["activityid"]);
     if (count($act)==1)
@@ -437,14 +444,29 @@ class hours extends atkNode
       triggerError($record, "activityid", "error_obligatoryfield");
     }
     
-    $activitydate = sprintf("%04d-%02d-%02d", $record["activitydate"]["year"], $record["activitydate"]["month"], $record["activitydate"]["day"]);
-    $new_minutes = $record["time"]["hours"]*60 + $record["time"]["minutes"];
-
-    if ($this->exceed_hrs_in_day($record["userid"], $activitydate, $new_minutes, $record["id"]))
+    // when inserting multiple days at once, we don't break on invalid days 
+    // (we will just skip them later on).    
+    if ($record["activitydate"]["multi"]!=1)
     {
-      triggerError($record, "time", "error_hoursindayexceeded");
-    }
+      $activitydate = sprintf("%04d-%02d-%02d", $record["activitydate"]["year"], $record["activitydate"]["month"], $record["activitydate"]["day"]);
+      $new_minutes = $record["time"]["hours"]*60 + $record["time"]["minutes"];
 
+      if ($this->exceed_hrs_in_day($record["userid"], $activitydate, $new_minutes, $record["id"]))
+      {
+        triggerError($record, "time", "error_hoursindayexceeded");
+      }
+    }
+    else // when inserting multiple days at once, we must verify if end is not smaller than start.
+    {
+      $start = date("Y-m-d", mktime(12,0,0,$record["activitydate"]["month"],$record["activitydate"]["day"],$record["activitydate"]["year"]));
+      $todate = $this->m_postvars["todate"]; // todate is not part of $record, because the todate attrib isn't really a part of the node.      
+      $end = date("Y-m-d", mktime(12,0,0,$todate["month"],$todate["day"],$todate["year"]));
+      atkdebug("validating $start vs $end");
+      if ($start>$end)
+      {
+        triggerError($record, "activitydate", "error_startbiggerthanend");
+      }
+    }
     // continue with original validation
     atkNode::validate($record, $mode);
   }
@@ -473,8 +495,133 @@ class hours extends atkNode
     {
       return ($res[0]["minutes_in_day"] > 24*60 );
     }
+  }    
+  
+  function addPage($record="")
+  {
+    global $g_sessionManager;
+   // Insert mode can be "" (normal) or "multi" (multiple days at once).
+    $this->m_insertmode = $g_sessionManager->stackVar("insertmode");    
+    if ($this->m_insertmode=="multi")
+    {
+      // When in multidate mode, add an extra attribute for filtering
+      // what days we want to filter.      
+      $this->add(new atkDummyAttribute("dayfilter", "", AF_HIDE_EDIT|AF_HIDE_LIST));
+    }
+   
+    return parent::addPage($record);
   }
-
+  
+  function activitydate_edit($record, $prefix="", $mode="")
+  {  
+    if ($mode=="add")
+    {
+      // We support 2 modes... one for single day entry, one for multiday entry.
+      if ($this->m_insertmode=="multi")
+      {
+        $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
+        $toDate = new atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY);
+        
+        $res.= " ".text("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
+        $res.= '<input type="hidden" name="'.$prefix.'activitydate[multi]" value="1">';
+        $newmode = "day";
+      }
+      else
+      {
+        $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);      
+        $newmode = "multi";
+      }
+      $res.= " ".href("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=".$this->m_action."&insertmode=".$newmode, 
+                      text("insert_".$newmode, $this->m_type, $this->m_module), 
+                      SESSION_DEFAULT, 
+                      true);
+      return $res;
+    }
+    else
+    {
+      return $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
+    }
+  }
+  
+  function dayfilter_edit($record, $prefix="", $mode="")
+  {
+    $res= "<BR>".text("filterdays", $this->m_type, $this->m_module)."<BR>";
+    $days = array("mon", "tue", "wed", "thu", "fri", "sat", "sun");    
+    
+    // we use a hidden variable to indicate that the dayfilter has been edited.
+    // If it has not been edited, dayfilter[edited] will not be 1, and we will
+    // assume a default dayfilter of mon-fri. TODOFIXME: take the correct
+    // day values from the user's contract.
+    $res.='<input type="hidden" name="'.$prefix.'dayfilter[edited]" value="1">';
+    for ($i=0;$i<7;$i++)
+    {
+      if ($record["dayfilter"]["edited"]==1)
+      {
+        $checked = ($record["dayfilter"][$i]==1?"checked":"");
+      }
+      else
+      {
+        $checked = ($i<5?"checked":"");
+      }
+      $res.= text($days[$i]).': <input type="checkbox" name="'.$prefix.'dayfilter['.$i.']" value="1" '.$checked.'> &nbsp; ';
+    }
+    return $res;
+  }
+  
+  function addDb(&$record, $exectrigger=true)
+  {
+    global $g_user;
+    
+    if ($record["activitydate"]["multi"]==1)
+    {      
+      // We're registering multiple days at once. 
+      $walkerStamp = mktime(12,0,0,$record["activitydate"]["month"],$record["activitydate"]["day"],$record["activitydate"]["year"]);
+      $walker = date("Y-m-d", $walkerStamp);      
+      
+      $todate = $this->m_postvars["todate"]; // todate is not part of $record, because the todate attrib isn't really a part of the node.
+      
+      $end = date("Y-m-d", mktime(12,0,0,$todate["month"],$todate["day"],$todate["year"]));
+      
+      // Make a quick lookup array in which we can easily see if a day was checked.
+      $doDays=array();
+      for ($i=0; $i<7; $i++)
+      {
+        if ($this->m_postvars["dayfilter"][$i]==1)
+        {
+          $doDays[] = (($i+1)%7); // we started with monday as 0, but php date() function counts sunday as 0.
+        }
+      }      
+      
+      for ($i=1; $walker <= $end ; $i++)
+      {                       
+        $dow = date("w", $walkerStamp);
+        if (!in_array($dow, $doDays) || $this->getLockType($g_user["name"],$walker)!="")
+        {
+          atkdebug("Skipping $walker, for this day is locked or not checked");
+        }
+        else
+        {
+          $newRecord = $record; // We're going to save the data we entered.
+          // but replace the activitydate field with the walker:
+          $newRecord["activitydate"] = array("year"=>date("Y", $walkerStamp),
+                                             "month"=>date("m", $walkerStamp),
+                                             "day"=>date("d", $walkerStamp));
+          parent::addDb($newRecord);
+        }
+        
+        // End of day, add 1 day and reloop.
+        $walkerStamp = mktime(12,0,0,$record["activitydate"]["month"],
+                                     $record["activitydate"]["day"]+$i,
+                                     $record["activitydate"]["year"]);
+        $walker = date("Y-m-d", $walkerStamp);
+                              
+      }
+    }
+    else
+    {
+      parent::addDb($record, $exectrigger);
+    }
+  }
 }
 
 ?>

@@ -23,7 +23,7 @@ Changes in Achievo 0.9.2
   so you can easily do other functions with the same project (stats, etc).
   Also, the last used projects are remembered in a dropdown.
 * Fixed numerous bugs in the scheduler. 
-+ Added attendees (which can be employees and/or contactpersons) feature to 
++ Added attendees (which can be employees or contactpersons) feature to the
   scheduler
 + Added feature to compare schedules of employees for easy planning of 
   meetings.
@@ -31,17 +31,21 @@ Changes in Achievo 0.9.2
   upgrade the Achievo database (not yet functional though).
 * In the 'security profiles' screen, you can no longer grant rights that you
   don't have yourself.  
+* In the 'security profiles' screen, the confusing 'Administration' right
+  has been renamed to 'Access'. 
++ All screens have now default 'view' links for readonly access to the data,
+  which is enabled if the user has the 'Access' right. (bug #41)
 + Added PIM API. All modules can now add information to the PIM screen.
 + Added Search API. All modules can now return searchresults when using the 
   search feature from the topframe.  
 + Implemented search feature for contactpersons and projects.
++ Added timeregistration feature to register multiple days at once (bug #21)
 * You can now no longer register time on nonactive project phases. (bug #51)
 * Registering more than 24 hours per day is no longer possible.
 * Updated Brazilian-Portuguese, French, German, Spanish and Dutch language 
   files.
 + Added a report for organizations which contains all information regarding 
   the organization and the contacts.
-* Adminscreens now show 'view' link next to 'edit' link (bug #41)
 * Bugfix in IMAP authentication.
 * Users now have a numerical id as primary key (the userid string is still 
   present but no longer primary key). Module developers should take note of 
