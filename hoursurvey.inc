@@ -192,9 +192,9 @@
     $g_layout->td('<input type="checkbox" name="printable" value="1">');
     $g_layout->output('</tr><tr>');  
 
-    $g_layout->td(text("PDF"));
-    $g_layout->td('<input type="checkbox" name="pdf" value="1">');
-    $g_layout->output('</tr><tr>');  
+    //$g_layout->td(text("PDF"));
+    //$g_layout->td('<input type="checkbox" name="pdf" value="1">');
+    //$g_layout->output('</tr><tr>');  
 
     $g_layout->td(text("hoursurvey_output_showcollumns"));
     
@@ -244,7 +244,7 @@
   if (!$printable)
   {
     $g_layout->ui_bottom();
-    $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("title_hoursurvey_of").$g_user["name"]." ".text("title_hoursurvey_intimespan")." ".$startdate." t/m ".$enddate);
+    $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("title_hoursurvey_of")." ".$userid." ".text("title_hoursurvey_intimespan")." ".$startdate." t/m ".$enddate);
     $g_layout->output('<br><br>');
     $g_layout->output($this->recordList($data, array(""),true,$suppress));
     $g_layout->output('<br><br>');
