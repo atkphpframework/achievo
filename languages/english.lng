@@ -77,25 +77,7 @@
   $txt_title_projectstats_totals = "Total statistics for ";
   $txt_title_projectstats_peremployee = "The following employees have registered hours on this project";
   $txt_title_projectstats_peractivity = "People worked on the following activities for this project";
-
-  // -- Todo stuff --
-  $txt_menu_project_todoview             = "Project todo's";
-  $txt_title_project_todoview_admin      = "Project selector";
-  $txt_title_project_todoview_edit       = "Overview project todo's";
-  $txt_link_todo_add                     = "Add a new todo item";
-  $txt_title_todo_add                    = "Add a new todo item";
-  $txt_title_todo_edit                   = "Edit a todo item";
-  $txt_title_todo_delete                 = "Delete a todo item";
-
-  // -- Notes stuff
-  $txt_menu_project_notesview            = "Project notes";
-  $txt_title_project_notesview_admin     = "Project selector";
-  $txt_title_project_notesview_edit      = "Overview project notes";
-  $txt_link_project_notes_add            = "Add a new note"; 
-  $txt_title_project_notes_add           = "Add a new note";  
-  $txt_title_project_notes_delete        = "Delete a project note";  
-  $txt_title_project_notes_edit          = "Edit a project note";  
-
+  
   // --------==== Strings that were introduced in version 0.4: ====---------    
   $txt_title_hoursurvey_onactivity = "on activity ";
   $txt_allusers = "All users";  
@@ -276,4 +258,25 @@
   $txt_menu_achievo_license = $txt_app_shorttitle." license";
   $txt_menu_achievo_docs = "Online documentation";
   $txt_menu_achievo_home = $txt_app_shorttitle." homepage";
+  
+  // --------==== Strings that were introduced in version 0.7.3: ====---------
+  
+  $txt_menu_project_todoview             = "Project todo's";
+  $txt_title_project_todoview_admin      = "Project selector";
+  $txt_title_project_todoview_edit       = "Overview project todo's";
+  $txt_link_todo_add                     = "Add a new todo item";
+  $txt_title_todo_add                    = "Add a new todo item";
+  $txt_title_todo_edit                   = "Edit a todo item";
+  $txt_title_todo_delete                 = "Delete a todo item";
+  
+  $txt_menu_project_notesview            = "Project notes";
+  $txt_title_project_notesview_admin     = "Project selector";
+  $txt_title_project_notesview_edit      = "Overview project notes";
+  $txt_link_project_notes_add            = "Add a new note"; 
+  $txt_title_project_notes_add           = "Add a new note";  
+  $txt_title_project_notes_delete        = "Delete a project note";  
+  $txt_title_project_notes_edit          = "Edit a project note";  
+  
+  $txt_menu_schedule = "Schedule";
+
 ?>
