@@ -17,6 +17,7 @@
     atkdebug("updateSelectedProject");
     $prj = array();
     //Get current sessionvar
+    $session = &atkSessionManager::getSession();
     $prj =  $g_sessionManager->getValue("selectedprj","globals");
 
     //If session var is empty fill with recent projects
@@ -28,7 +29,7 @@
     //Delete atkselector from global vars, because the stackVar
     //function overwrites the stack val of atkselector
     //when it finds a value in $GLOBALS
-    $_REQUEST['atkselector'] = "";
+    //$_REQUEST['atkselector'] = "";
 
  //Check if selected project already exists in session var
     $atkselect = $g_sessionManager->stackVar("atkselector");
@@ -112,26 +113,31 @@
     global $g_db, $g_user, $g_projectnamesize;
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     // 100 should be enough to get 5 unique recent projects.
     $query.= "ORDER BY hours.entrydate DESC";
 
     $arr = $g_db->getrows($query,'0','100');
         
     $newarr = Array();
+    
+    // For some reason, the above query returns double results (even though I 
+    // do a 'select distinct'!)
+    // I fail to see why, but I'll work around it by checking for doubles.
+    $alreadyhad = array();    
     for ($i=0, $_i=count($arr); $i<$_i ;$i++)
     {                    
-      if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
+      if (!in_array($arr[$i]['projectid'], $alreadyhad))
       {
-        $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases        
+        $alreadyhad[] = $arr[$i]['projectid'];        
+        if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
+        {
+          $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases        
+        } 
+        $newarr[] = $arr[$i];
       }
-      else
-      {
-        $arr[$i]['projectname'] = $arr[$i]['projectname']; //update because of phases        
-      }
-      atkdebug("projectname ".strlen($arr[$i]['projectname']));      
     }
-    return $arr;
+    return $newarr;
   }
 
   /*
