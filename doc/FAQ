@@ -28,14 +28,37 @@ the terms might be different.
        c:\path_to_achievo\atk\session\class.atksessionmanager.inc on line 14"
       (or something very similar)
       
-       This could be caused by two things, either of which is a PHP 
-       misconfiguration:
-       - the session.save_path directory in php.ini is set to a directory
-         that doesn't exist, or
-       - the dir pointed to by session.save_path is not readable and writable
-         by the webserver.
-        
-        
+        This could be caused by two things, either of which is a PHP 
+        misconfiguration:
+        - the session.save_path directory in php.ini is set to a directory
+          that doesn't exist, or
+        - the dir pointed to by session.save_path is not readable and writable
+          by the webserver.
+         
+ 1.3. I have installed Achievo, but I am getting the following error:
+      "Warning: Call-time pass-by-reference has been deprecated - argument 
+       passed by value; If you would like to pass it by reference, modify the 
+       declaration of [runtime function name](). If you would like to enable 
+       call-time pass-by-reference, you can set allow_call_time_pass_reference
+       to true in your INI file. However, future versions may not support this
+       any longer. in /var/www/html/achievo-0.8/atk/class.atknode.inc on line 
+       490"
+      (or something very similar)
+      
+        In PHP 4.2, they changed the default php.ini value of 
+        allow_call_time_pass_reference to false. Achievo still relies on this 
+        setting being On however. We will fix this in a future release. For 
+        now, change your php.ini and set it to On. (don't forget to restart
+        your webserver after changing php.ini)
+
+ 1.4. Does Achievo run on Windows?
+ 
+        Yes it does. You can either run it on Apache with PHP as a module, or
+        with MS Internet Information Server, running PHP as an ISAPI 
+        extension.
+ 
+ 
+
 2. Logging in to Achievo
 ------------------------
 
@@ -46,18 +69,37 @@ the terms might be different.
  2.2. I just installed Achievo for the first time and I try to login. 
       What's the username and password?   
    
-        The username is 'administrator', the default password is 'demo'.   
+        The username is 'administrator', the default password is 'demo'.
    
- 2.3. When I try to login, all I get is a message 'Failed to logon',
-      and I'm sure the password is correct.
-
-        If you run PHP as a cgi-module, you can't use the login protocol
-        we use. We will fix this in the future. 
-   
- 2.4. How can I change the administrator password?
+ 2.3. How can I change the administrator password?
  
         The administrator password is set in the config.inc.php file, not in
         the database.      
+        
+ 2.4. I am absolutely sure I have the correct username and password, but I 
+      still can't login to Achievo. It keeps presenting the login box, no 
+      matter what I enter, or I get a "Failed to logon" message.
+      
+        There are several things that could cause this behaviour. Here are the
+        known causes, in order of probability:
+        
+        a) You are not using the correct username and password. (Yes, 
+           'absolutely sure' is a relative term.) Remember that the password
+           for 'administrator' is the one set in the config.inc.php file, even
+           if you set another password in the database.
+        b) In php.ini, register_globals should be set to On. This used to be 
+           default in older PHP versions, but as of PHP 4.2, the default value
+           is Off. Currently, Achievo will only work if you put this value to
+           On. (don't forget to restart your webserver after changing php.ini)
+        c) If you run PHP as a cgi-module, you can't use the login protocol
+           we use. We will fix this in the future. For now, you will have to
+           use the Apache module version (or the ISAPI version in case you are
+           running Microsoft Internet Information Server).
+        d) There could be a .htaccess file in the way. Don't put an .htaccess 
+           file in Achievo's directory, or above it. If you do this, the login
+           box you will see is the one from the .htaccess file, not the one 
+           from Achievo.
+        
         
   
 3. Time Registration
@@ -82,3 +124,45 @@ the terms might be different.
         help.
 
 
+
+4. General Problems
+-------------------
+
+ 4.1. I can't save any records (projects, employees or anything else). I get 
+      no error messages, but there is no new record after I pressed the 'save'
+      button.
+      
+        There appears to be a problem when using PHP 4.1.2, which results in
+        this weird behaviour. The problem is session related, but we don't 
+        know the exact cause yet. Upgrading to a newer PHP version solves the 
+        problem. If it doesn't, follow the steps described in question 4.3 
+        below.
+        
+ 4.2. Achievo is slow. 
+ 
+        Achievo has quite a powerful backend. Unfortunately, the more PHP code
+        that is required to run an application, the slower it gets.
+        One very good way to speed up any PHP application is to use an 
+        accelerator. php-accelerator is free, and we have had very positive
+        results with it. You can find it at http://www.php-accelerator.co.uk
+        
+        We are also constantly improving the speed and efficiency of the 
+        backend. Keeping your Achievo installation up to date is a good way
+        of improving performance and reducing bugs.
+        
+ 4.3. I have a problem which is not covered in this FAQ, what should I do?
+  
+        a) Have a look at the mailinglist archive at 
+           http://www.achievo.org/lists. Your problem may have been discussed
+           there.
+        b) Subscribe to the mailinglist by sending an empty message to
+           achievo-subscribe@achievo.org. Send a mail to the list, with the 
+           following information:
+           - A good description of the problem, if possible with steps to 
+             reproduce it.
+           - Which version of Achievo, PHP, MySQL and Apache you are using.
+        c) If you think you found a bug, please use our bugtracking system at
+           http://www.achievo.org/bugzilla to report it. (First search the 
+           bug database to make sure your bug is not already reported by 
+           someone else.)
+           
