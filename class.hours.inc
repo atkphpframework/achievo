@@ -43,14 +43,11 @@ class hours extends atkNode
     
     $this->atkNode("hours",$flags); // node() constructor is *not* called automatically!
    
-    // $this->addAttribute(new atkDateAttribute("activitydate"));
     // default view if none is set
     if (!isset($weekview)||$weekview=="")
     {
       if (atkconfig("timereg_defaultview")=="week") $weekview=1;
-    }
-    
-    //$this->addAttribute(new atkDateAttribute("activitydate"));
+    }        
 
     if($atkaction!='hoursurvey')
     {
@@ -64,37 +61,32 @@ class hours extends atkNode
       }        
     }
 
-    $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->add(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
                 
     if($atkaction=="hoursurvey"||$weekview==1)
     {
-      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+      $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
     }
     else
     {
-      $this->addAttribute(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_HIDE_LIST));
+      $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_HIDE_LIST));
     }
     
     if ($atkaction=="hoursurvey")
     {
-      $this->addAttribute(new atkAttribute("userid"));
+      $this->add(new atkAttribute("userid"));
     }
     else
     {
-      $this->addAttribute(new atkAttribute("userid",AF_HIDE));
+      $this->add(new atkAttribute("userid",AF_HIDE));
     }
     
-    $this->addAttribute(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY));
-    
-    $this->addAttribute(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));      
-    
-    $this->addAttribute(new atkAttribute("remark"));      
-    
-    $this->addAttribute(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
-                
-    $this->addAttribute(new atkDateAttribute("entrydate",AF_HIDE));      
-                
-    $this->addAttribute(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
+    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY));    
+    $this->add(new atkListAttribute("activityid",Array("dummy","dummy","dummy","dummy","dummy"),Array(),AF_OBLIGATORY));          
+    $this->add(new atkAttribute("remark"));          
+    $this->add(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));                
+    $this->add(new atkDateAttribute("entrydate",AF_HIDE));                      
+    $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
     if($atkaction=="hoursurvey")
     {
@@ -432,14 +424,46 @@ class hours extends atkNode
     }
   }
   
-  function activitydate_validate($value)
+  function activitydate_validate(&$rec)
   {
     global $g_user;
-    if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$value["year"],$value["month"],$value["day"]))!="")
+    if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$rec["activitydate"]["year"],$rec["activitydate"]["month"],$rec["activitydate"]["day"]))!="")
     {
-      return text("houradmin_weeklocked");
+      triggerError($rec, "activitydate", "houradmin_weeklocked");
     }
+  }    
+  
+  /**
+   * We override the validate method, so we can check if a remark is required
+   * for the chosen activity. If it is, we add the AF_OBLIGATORY flag to the 
+   * remark before the validation.
+   *
+   * (First thought would be to create a remark_validate() function, but empty
+   * values are not validated by atkNode's validate function. That's why we 
+   * need to override validate.)
+   */
+  function validate(&$record, $mode)
+  {
+    $obj = getNode("activity");
+    $act = $obj->selectDb("id=".$record["activityid"]);
+    if (count($act)==1)
+    {
+      if ($act[0]["remarkrequired"]==1)
+      {
+        // Specification is required. So we set the obligatory flag.
+        $this->m_attribList["remark"]->m_flags |= AF_OBLIGATORY;
+      }
+    }
+    else // something is wrong with the chosen activity if we can't find
+         // a record for it.
+    {
+      triggerError($record, "activity", "error_obligatoryfield");
+    }
+    
+    // continue with original validation 
+    atkNode::validate($record, $mode);
   }
   
 }
+
 ?>
