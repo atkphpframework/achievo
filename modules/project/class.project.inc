@@ -118,8 +118,11 @@
       $projectinfo.= '<tr><td align="right"><b>'.text("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
       $projectinfo.= '</table><br>';   
       
+      $legend = text("legend").": [".text("booked").", ".text("hoursleft")."]<br>";
+      $legend.= text("ganttexplanation");
+      
       $g_layout->ui_top(text("title_projectplanning"));
-      $g_layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>');
+      $g_layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
       $g_layout->ui_bottom();
     }
 
