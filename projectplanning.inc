@@ -96,7 +96,7 @@ function order_milestones(&$m,$path)
             {
                if ($current_pos_before > $current_pos_after) 
                {
-                  swap(&$m_order,$current_pos_before,$current_pos_after);
+                  swap($m_order,$current_pos_before,$current_pos_after);
                   $changes = 1;
                }
             }   
@@ -270,11 +270,11 @@ function ins_milestone(&$m, $before, $after)
    $m[count($m)-2]['deadline'] = 0;
 
    $current_m      = get_current_milestone($m,$before,'in');   
-   del_edge(&$m, $current_m, $before, '');
+   del_edge($m, $current_m, $before, '');
    $current_m      = get_current_milestone($m,$after,'out');   
-   del_edge(&$m, $current_m, '', $after);
+   del_edge($m, $current_m, '', $after);
 
-   ins_edge(&$m, count($m)-2, $before, $after);   
+   ins_edge($m, count($m)-2, $before, $after);   
 }
 // **********************************************************************
 function get_phases($milestone,$edge_type)
@@ -554,22 +554,22 @@ function get_phase_pos($path,$phase)
             case '-1':
                // m_after_out = m_before_in
                $current_m = get_current_milestone($m,$after_phase,'out');                              
-               del_edge(&$m, $current_m, '', $after_phase);
+               del_edge($m, $current_m, '', $after_phase);
                $current_m = get_current_milestone($m,$before_phase,'in');               
-               ins_edge(&$m, $current_m,'',$after_phase);
+               ins_edge($m, $current_m,'',$after_phase);
             break;
                   
             case '1':
                // m_before_in = m_after_out
                $current_m = get_current_milestone($m,$before_phase,'in');
-               del_edge(&$m, $current_m, $before_phase,'');
+               del_edge($m, $current_m, $before_phase,'');
                $current_m = get_current_milestone($m,$after_phase,'out');
-               ins_edge(&$m, $current_m, $before_phase, '');
+               ins_edge($m, $current_m, $before_phase, '');
             break;
                
             default:
                //insert new milestone 
-               ins_milestone(&$m, $before_phase, $after_phase);               
+               ins_milestone($m, $before_phase, $after_phase);               
          }
       } 
     } 
@@ -585,8 +585,8 @@ function get_phase_pos($path,$phase)
   } 
   else 
   { 
-     order_milestones(&$m,$path);
-     calc_milestone_deadlines(&$m,$phase_ids,$phase_maxtimes);   
+     order_milestones($m,$path);
+     calc_milestone_deadlines($m,$phase_ids,$phase_maxtimes);   
            
      $milestones_table = print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_record);
   }
