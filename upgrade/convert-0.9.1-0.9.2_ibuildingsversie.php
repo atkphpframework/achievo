@@ -278,7 +278,7 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->query($sql);
   handleError($sql);
 
-  //convert planning, employee_project, rate, usercontract, person, todo and project table because this version
+  //convert planning, employee_project, rate, usercontract, person, todo, todo_history and project table because this version
   //does not use userid as primary key for employees
   $sql = "SELECT id, employeeid FROM planning";
   $res = $g_db->getrows($sql);
@@ -415,6 +415,24 @@ if(!empty($convert)&&$convert==1)
     }
   }
   $sql = "ALTER TABLE todo CHANGE assigned_to assigned_to INT(10) NOT NULL DEFAULT 0";
+  $res = $g_db->query($sql);
+  handleError($sql);
+
+  $sql = "SELECT id, assigned_to FROM todo_history";
+  $res = $g_db->getrows($sql);
+  if (count($res) > 0)
+  {
+    for ($i=0;$i<count($res);$i++)
+    {
+      //search employee id with given userid
+      $sql = "SELECT id FROM person WHERE userid ='".$res[$i]["assigned_to"]."' AND role='employee'";
+      $result = $g_db->getrows($sql);
+      $sql = "UPDATE todo_history SET assigned_to='".$result[0]["id"]."' WHERE id = ".$res[$i]["id"]."";
+      $update = $g_db->query($sql);
+      handleError($sql);
+    }
+  }
+  $sql = "ALTER TABLE todo_history CHANGE assigned_to assigned_to INT(10) NOT NULL DEFAULT 0";
   $res = $g_db->query($sql);
   handleError($sql);
 

@@ -24,6 +24,19 @@ class hours_lock extends atkNode
     return $res;
   }
 
+  function userid_display($record)
+  {
+    if ($record["userid"] != "*")
+    {
+      global $g_db;
+      $sql = "SELECT lastname, firstname FROM person WHERE role ='employee' AND userid='".$record["userid"]."'";
+      $res = $g_db->getRows($sql);
+      $buff = $res[0]["lastname"].", ".$res[0]["firstname"];
+      return $buff;
+    }
+    return text("all_users");
+  }
+
   function get_employees($userid)
   {
     global $g_db;

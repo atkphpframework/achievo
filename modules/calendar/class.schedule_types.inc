@@ -29,7 +29,7 @@ class schedule_types extends atkNode
     $this->add(new atkDummyAttribute("example"       , "", AF_HIDE_ADD));
 
     $this->setTable("schedule_type", "schedule_type");
-    $this->setOrder("id");
+    $this->setOrder("description");
   }
 
   function example_display($record)

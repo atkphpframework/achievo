@@ -62,7 +62,7 @@
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE));
       $this->add(new atkBoolAttribute("publicitem"));
       $this->add(new atkBoolAttribute("all_users"));
-      $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), array()));
+      $this->add(new atkListAttribute("status", array(text("confirmed"), text("unconfirmed"), text("cancelled"))));
       $this->add(new atkManyToOneRelation("scheduletype", "calendar.schedule_types",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
@@ -309,7 +309,8 @@
       $dummy = new employeeView($day, $month, $year);
       $dummy->viewerWidth = "600";
 
-      $buff  = "<font size='-1'>".text("seluserdate")."</font><br><br>";
+      $buff  = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$viewdate",text("dayview"))."<br><br>";
+      $buff .= "<font size='-1'>".text("seluserdate")."</font><br><br>";
 
       // assign our output buffer
       $buff .= "<table width='".$dummy->viewerWidth."'><tr>";
@@ -349,10 +350,7 @@
       // get the legend
       $legend .= $dummy->legend;
 
-      // link to employeeview
-      $buff  = href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate","Employeeview");
-
-      // link to weekview and monthview
+      // link to weekview and monthview and employeeview
       $buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
 
       // assign our output buffer
