@@ -18,6 +18,8 @@ Changes in Achievo 0.9.2
 + In the hoursurvey, you can now filter hours using this role. [Ivo]
 * Renamed customer to organization (which can have multiple roles, one of
   which could be 'Customer'). [Lineke]
++ Added 'state' field to organization and person. [Ivo]
++ Added 'function' field to person. [Lineke]
 + The project edit screen now uses tabs to devide the information. (bug #64)
   [Ivo]
 + The project management menu now remembers the currently edited project,
