@@ -4,8 +4,8 @@ require_once("achievotools.inc");
 
 class todo extends atkNode
 {
- var $prioId   = array(1,2,3,4,5);
- var $prioName = array("Highest","High","Normal","Low","Lowest");
+  var $prioId   = array(1,2,3,4,5);
+  var $prioName = array("Highest","High","Normal","Low","Lowest");
 
   function todo()
   {
@@ -21,8 +21,7 @@ class todo extends atkNode
     $this->addAttribute(new atkDateAttribute("duedate"          , "F d Y","d F Y", date("Ymd"), 0, AF_OBLIGATORY));
     $this->addAttribute(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->addAttribute(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->addAttribute(new atkListAttribute("status"           , array("New", "In progress","Awaiting external person","On hold","Done"), array(1,2,3,4,5),AF_SEARCHABLE));
-    $this->addAttribute(new atkBoolAttribute("mailnotification"   , AF_HIDE_LIST));
+    $this->addAttribute(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE));    
 
     $this->setTable("todo", "todo");         
     $this->setOrder("duedate");
@@ -37,7 +36,7 @@ class todo extends atkNode
                  "entrydate"=>array("year"=>date("Y"),
                                     "month"=>date("m"),
                                     "day"=>date("d")),
-                 "priority"=>2);
+                 "priority"=>3);
   }
 
   // overide display of priority (set high to a red font)
@@ -167,7 +166,7 @@ class todo extends atkNode
   {
    global $g_db, $g_user;
 
-   if ($rec["mailnotification"] == 1 && $this->todoChanged($rec,$rec["atkorgrec"]))
+   if ($this->todoChanged($rec,$rec["atkorgrec"]))
    {    
      $owner = $rec["owner"];
      $newassign = $rec["assigned_to"]["userid"];
