@@ -265,7 +265,7 @@
   $setup->alterColumn("hours", "activityid", "activityid", "int(10)", false);
   $setup->alterColumn("hours", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("hours", "time", "time", "int(10)", false);
-  $setup->dropColumn("hours", "ratetype"); // no longer used.
+  //$setup->dropColumn("hours", "ratetype"); // no longer used.
   $setup->alterColumn("project", "id", "id", "int(10)", false);
   $setup->alterColumn("project", "status", "status", "varchar(15)", true);   
   $setup->alterColumn("project", "description", "description", "text", true);   
