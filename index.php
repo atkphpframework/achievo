@@ -20,7 +20,7 @@
     $g_layout->output('
                <frameset rows="100,*" frameborder="0" border="0">
                   <frame name="menu" scrolling="no"   noresize src="menu.php"   marginwidth="0" marginheight="0">
-                  <frame name="main" scrolling="auto" noresize src="dispatch.php?atknodetype=hours&atkaction=admin" marginwidth="0" marginheight="0">
+                  <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
     $g_layout->output('
@@ -44,7 +44,7 @@
     }
     $g_layout->output('
                <frameset rows="*,100" frameborder="0" border="0">
-                  <frame name="main" scrolling="auto" noresize src="dispatch.php?atknodetype=hours&atkaction=admin" marginwidth="0" marginheight="0">
+                  <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
                   <frame name="menu" scrolling="no"   noresize src="menu.php"   marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
@@ -71,7 +71,7 @@
     $g_layout->output('
       <frameset cols="190,*" frameborder="0" border="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
-        <frame name="main" scrolling="auto" noresize src="dispatch.php?atknodetype=hours&atkaction=admin" marginwidth="0" marginheight="0">
+        <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
 
@@ -96,7 +96,7 @@
     }
     $g_layout->output('
       <frameset cols="*,190" frameborder="0" border="0">
-        <frame name="main" scrolling="auto" noresize src="dispatch.php?atknodetype=hours&atkaction=admin" marginwidth="0" marginheight="0">
+        <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
