@@ -9,7 +9,7 @@
 
     function getMenuItems()
     {
-      global $selectedproject;
+      $selectedproject = $_REQUEST["selectedproject"];
       if ($selectedproject == 0)
       {
         menuitem("project_todoview", dispatch_url("todo.project_todoview", "admin"), "projectmanagement", array("todo.todo", "admin"));
