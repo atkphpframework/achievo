@@ -56,7 +56,7 @@
     {
      $viewtime = mktime(0,0,0,$this->month, $begin, $this->year);
      $weekday  = strftime("%w",$viewtime);
- 
+
      if ($weekday==0) $weekday=7;
 
      for ($i=1; $i<=7;$i++)
@@ -78,11 +78,12 @@
     global $PHP_SELF;
 
     $item     = 0;
-    $colwidth = floor($this->viewerWidth/7);
+    $colwidth = floor($this->viewerWidth/8);
     $today    = date("Y-m-d");
 
     $buff  = "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
     $buff .= "<tr>\n";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Week")."</font></td>";
     $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Mon")."</font></td>";
     $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Tue")."</font></td>";
     $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("Wed")."</font></td>";
@@ -92,9 +93,14 @@
     $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("Sun")."</font></td>";
     $buff .= "</tr>\n";
 
+    $w = 0;
     for ($i=0;$i<=$this->weeks;$i++)
     {
-     $buff .= "<tr>";
+     $weekno = strftime("%W", mktime(0,0,0,substr($this->items[$item]["date"],5,2), substr($this->items[$item]["date"],8,2), substr($this->items[$item]["date"],0,4)));
+     $href   = $PHP_SELF."?view=weekview&viewdate=".$this->items[$item]["date"];
+     $buff  .= "<tr>";
+     $buff  .= "<td width='$colwidth' bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($href, $weekno)."</font></td>";
+
      for ($j=0;$j<=6;$j++)
      {
       $url     = $PHP_SELF."?view=dayview&viewdate=".$this->items[$item]["date"];
