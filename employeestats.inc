@@ -1,4 +1,4 @@
- <?php
+<?php
   function employee_time_format($time)
   {
     return floor($time/60).":".sprintf("%02d",($time%60));

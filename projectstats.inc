@@ -61,6 +61,8 @@
                   '&nbsp; '.$enddateatt->edit($dummyrec));
                                 
   $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
+  
+  $g_layout->ui_bottom();
       
   $query = "SELECT 
               hours.time as time,              

@@ -4,7 +4,7 @@ class currency extends atkNode
 {
   function currency()
   {
-	  global $config_default_currency;
+    global $config_default_currency;
 		
     $this->atkNode("currency");
 

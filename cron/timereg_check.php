@@ -31,22 +31,21 @@
     
   // get all contracts.
   $query = "SELECT
-              uc_hours, uc_userid, email
+              uc_hours, usercontract.userid, email
             FROM
               usercontract, employee
             WHERE               
-              uc_startdate <= '$startdate'
-              AND uc_enddate > '$startdate'
-              AND userid = uc_userid";
+              startdate <= '$startdate'
+              AND enddate > '$startdate'
+              AND usercontract.userid = employee.userid";
               
   $contracts = $g_db->getrows($query);
   
   for ($i=0;$i<count($contracts);$i++)
   { 
-    $time[$contracts[$i]["uc_userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
-    $time[$contracts[$i]["uc_userid"]]["email"] = $contracts[$i]["email"];
+    $time[$contracts[$i]["userid"]]["contract"] = $contracts[$i]["uc_hours"]*60;
+    $time[$contracts[$i]["userid"]]["email"] = $contracts[$i]["email"];
   }
-  
   
   // get working hours
   $query = "SELECT 
@@ -65,18 +64,21 @@
   }
   
   // mail people who have entered less time than their contract
-  foreach($time as $user => $data)
+  if (is_array($time))
   {
-    if ($data["time"]<$data["contract"])
+    foreach($time as $user => $data)
     {
-      $body = stringparse(text("timeguard_mail"),array("hours"=>time_format($data["contract"]-$data["time"]),
-                                                       "userid"=>$user,
-                                                       "startdate"=>$startdate,
-                                                       "week"=>$week,
-                                                       "enddate"=>$enddate));
-      $to = $data["email"];
-      usermail($to,text("timeguard_mail_subject"),$body);
-      echo "send mail to $to\n";
+      if ($data["time"]<$data["contract"])
+      {
+        $body = stringparse(text("timeguard_mail"),array("hours"=>time_format($data["contract"]-$data["time"]),
+                                                         "userid"=>$user,
+                                                         "startdate"=>$startdate,
+                                                         "week"=>$week,
+                                                         "enddate"=>$enddate));
+       $to = $data["email"];
+        usermail($to,text("timeguard_mail_subject"),$body);
+        echo "send mail to $to\n";
+      }
     }
   }
             

@@ -70,7 +70,7 @@
   $txt_title_hoursurvey_hours = "Hours ";  
   $txt_of = "of";
   $txt_title_hoursurvey_onproject = "on project ";
-  $txt_title_hoursurvey_intimespan = "in period ";
+  $txt_report_intimespan = "in period ";
       
   $txt_title_projectstats = "Project Statistics";
   
@@ -324,12 +324,10 @@
 
   $txt_contract_period_price = "Price per period";
   $txt_contract_billing_period = "Billing per";    
-  $txt_contract_startdate = "Contract starts on";
-  $txt_contract_enddate = "Contract ends on";
   $txt_monthly = "Month";
   $txt_quaterly = "Quater";
   $txt_yearly = "Year";
-  $txt_incident = "Incident";
+  $txt_per_incident = "Incident";
   
   $txt_menu_contracttype = "Customer contracts";
   $txt_title_contracttype_admin = "Manage contract types";

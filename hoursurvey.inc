@@ -25,7 +25,7 @@
   global $outputType;
   if (!isset($outputType))
   {
-  $outputType==0;   //default=standard
+    $outputType=0;   //default=standard
   }
   
 //  global $col;

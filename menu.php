@@ -46,7 +46,7 @@
   usort($g_menu[$atkmenutop],"menu_cmp");   
   
 
-  $g_layout->output('<script language="JavaScript">
+/*  $g_layout->output('<script language="JavaScript">
     
     function reloadProjects(el)
     {
@@ -54,9 +54,9 @@
       window.location= "menu.php?atkmenutop=projectmanagement&selectedproject="+id;                
     }
     </script>');
-
+*/
   /* DIRTY HACK: drop down in projectmanagement */
-  if ($atkmenutop == "projectmanagement")
+/*  if ($atkmenutop == "projectmanagement")
   { 
     $projects = $g_sessionManager->getValue("recentprj");  
     if (count($projects) == 0)
@@ -77,7 +77,7 @@
     $prj .="</SELECT></FORM>";
     $g_layout->output($prj);
     
-  }
+  }*/
   
   for ($i = 0; $i < count($g_menu[$atkmenutop]); $i++)
   {

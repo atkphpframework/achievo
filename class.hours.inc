@@ -28,9 +28,7 @@ class hours extends atkNode
       // TODO: this doesn't work any more with the new session management code.
       // $this->addStickyVar(Array("projectid","userid","phaseid","activityid"));    
     }
-    
-    $this->atkNode("hours"); // node() constructor is *not* called automatically!
-    
+        
     $flags=NF_NO_VIEW;    
     if ($atkaction!='hoursurvey')
     {
@@ -45,7 +43,7 @@ class hours extends atkNode
     
     $this->atkNode("hours",$flags); // node() constructor is *not* called automatically!
    
-    $this->addAttribute(new atkDateAttribute("activitydate"));
+    // $this->addAttribute(new atkDateAttribute("activitydate"));
     // default view if none is set
     if (!isset($weekview)||$weekview=="")
     {

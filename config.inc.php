@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_tryllian";
+  $config_databasename = "tryllian_test";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
   
@@ -43,7 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile="english.lng";
+  $config_languagefile="nederlands.lng";
 
 
   // -------------------------------------------
@@ -97,15 +97,18 @@
   
   // Default view in time registration. Can be "week" or "day"
   //
-  $config_timereg_defaultview = "day";
+  $config_timereg_defaultview = "week";
   
   // This variable indicates whether the user may directly register
   // time on each day in a week when he is in weekview. 
   // If set to false, the user must first go to the dayview of a day, 
   // before he may register time.
   //
-  $config_timereg_week_bookable = true;
-  
+  $config_timereg_week_bookable = false;
+
+  // This variable indicates wheter users may lock their time 
+  // registration for weeks in which they have not entered 
+  // all hours. 
   $config_timereg_incompleteweeklock = false;
   
   // -------------------------------------------
@@ -121,11 +124,10 @@
   //            EXTERNAL MODULES
   // -------------------------------------------
   
-  // Use the mnodule function if you want to use Achievo modules.
+  // Use the module function if you want to use Achievo modules.
   // Specify the module name as first parameter, and the path where
   // it can be found as the second parameter.
   //
-
   module("tryllian","../achievo_modules/tryllian");
   
   // -------------------------------------------

@@ -6,7 +6,7 @@ class usercontracts extends atkNode
 {
   function usercontracts()
   {
-    $this->atkNode("usercontracts",NF_NO_SECURITY); // this is a support module who's called directly
+    $this->atkNode("usercontracts"); // this is a support module who's called directly
 
     $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkManyToOneRelation("userid","employee",AF_READONLY));

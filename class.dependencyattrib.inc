@@ -65,10 +65,10 @@ class dependencyAttribute extends atkAttribute
       $result.=$g_layout->ret_td_datatitle(text('delete'));
       for ($i=0;$i<count($deps);$i++)
       {
-        $result.="<tr>";
+        $result.=$g_layout->tr_top(($i%2)!=0);
         $result.=$g_layout->ret_td(text("phase")." '".$deps[$i]["firstname"]."' ".text("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'");
         $result.=$g_layout->ret_td('&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">');
-        $result.="</tr>";
+        $result.=$g_layout->tr_bottom();
       }
       $result.=$g_layout->data_bottom().'<br>';
     }

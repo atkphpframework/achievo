@@ -1,4 +1,4 @@
- <?php
+<?php
  
   include_once("achievotools.inc");
 

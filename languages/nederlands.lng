@@ -311,7 +311,7 @@
   $txt_todo_assignedto = "Toegewezen aan";
   $txt_todo_previouslyassignedto = "Voorheen toegewezen aan";
 
-  $txt_project_select = "Geselecteerd project";
+  $txt_project_select = "Selecteer een project";
   $txt_project_select_none = "Geen project geselecteerd";
   $txt_menu_selectedprojectmanagement = "Projectbeheer";
 
@@ -324,12 +324,10 @@
 
   $txt_contract_period_price = "Prijs per periode";
   $txt_contract_billing_period = "Facturatie per";  
-  $txt_contract_startdate = "Startdatum";
-  $txt_contract_enddate = "Einddatum";
-	$txt_monthly = "Maand";
-	$txt_quaterly = "Kwartaal";
-	$txt_yearly = "Jaar";
-	$txt_incident = "Incident";
+  $txt_monthly = "Maand";
+  $txt_quaterly = "Kwartaal";
+  $txt_yearly = "Jaar";
+  $txt_per_incident = "Incident";
   
   $txt_menu_contracttype = "Klant contracten";
   $txt_title_contracttype_admin = "Contract typen beheren";
@@ -373,5 +371,14 @@
   $txt_menu_reports = "Rapporten";
   
   $txt_uc_contract = "Contracten";
+  
+  $txt_hours_lock = "Uren blokkeren";
+  $txt_holidays = "Feestdagen";
+  $txt_contracts = "Klanten contracten";
+  $txt_usercontracts = "Werknemer contracten";
+
+  $txt_both = "Beide";
+
+  $txt_report_show_details = "Toon details";
   
 ?>
