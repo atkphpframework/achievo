@@ -9,7 +9,7 @@
   useattrib("project.dependencyattrib");
   useattrib("project.projecttemplateattribute");
   useattrib("atknumberattribute");
-  useattrib("graph.graphattribute");
+  useattrib("graph.datagraphattribute");
 
   class project extends atkNode
   {
@@ -53,8 +53,9 @@
       
       $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
             
-      $this->add(new graphAttribute("phasetimedistribution", "phasetime", array("projectid"=>"[id]"), AF_HIDE_ADD|AF_HIDE_LIST), "stats");
-      $this->add(new graphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), AF_HIDE_ADD|AF_HIDE_LIST), "stats");
+      $this->add(new dataGraphAttribute("phasetimedistribution", "phasetime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
+      $this->add(new dataGraphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
+      $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST), "stats");
 
       $this->setTable("project","project");
 
@@ -146,77 +147,19 @@
                                 phase.name
                               ORDER BY 
                                 phase.name");
-                                
-      $values = array();
-      $legend = array();
-            
-      // Determine lookup
+      
+      // convert records to graph-compatible array.
+      $dataset = array();
       for ($i=0, $_i=count($data); $i<$_i; $i++)
       {        
-        $values[] = $data[$i]["total"]/60;
-        $legend[] = $data[$i]["name"];
+        $dataset[$data[$i]["name"]] = $data[$i]["total"];        
       }
-      /*
-      // Plos x-axis.
-      $walker = mktime(12,0,0,substr($data[0]["activitydate"],5,2),
-                             substr($data[0]["activitydate"],8,2),
-                             substr($data[0]["activitydate"],0,4));
-      $lastdate = $data[count($data)-1]["activitydate"];
-      $end = mktime(12,0,0,substr($lastdate,5,2),
-                           substr($lastdate,8,2),
-                           substr($lastdate,0,4));                             
-
-      for ($i=1; $walker<=$end; $i++)
-      {       
-        $date = date("Y-m-d", $walker);
-        $val = $values[$date];
-        $y[] = ($val!=""?$val:"");
-        $x[] = $date;
-        $walker = mktime(12,0,0,date("m", $walker), date("d", $walker)+1, date("Y", $walker));
-      }
-        */            
-      $graph = new PieGraph(450,250,"auto");
       
-      global $g_theme;      
-      $graph->SetColor($g_theme["BgColor"]);
-
-      // Use an integer X-scale
-      $graph->SetScale("textlin");
- 
-       // Set title 
-      $graph->title->Set(text("registeredtimeperphase"));
-
-      // Use built in font
-      $graph->title->SetFont(FF_FONT1,FS_BOLD);
-
-      // Slightly adjust the legend from it's default position in the
-      // top right corner to middle right side
-      //$graph->legend->Pos(0.05,0.5,"right","center");
-
-       // Display every 10:th datalabel
-      // $graph->xaxis->SetTextTickInterval(1);
-       //$graph->xaxis->SetTextLabelInterval(14);
-       //$graph->xaxis->SetTickLabels($x);
-       //$graph->xaxis->SetLabelAngle(90);
-
-       // Create a red line plot
-       $p1 = new PiePlot($values);
-       $p1->setCenter(0.3,0.5);
-       $p1->SetLegends($legend);
-       //$p1->SetColor("red");
-  //     $p1->SetLegend("Total project time");
-      
-       $graph->Add($p1);     
-
-       // Finally output the  image
-       $graph->Stroke();
-       return true;
+      return array("registeredtimeperphase"=>$dataset);
     }
     
     function graph_emptime($params)
     {      
-      usegraph("pie");
-
       global $g_db;
       $data = $g_db->getrows("SELECT 
                                 person.id, person.firstname, person.lastname, SUM(time) as total
@@ -230,71 +173,41 @@
                                 person.id
                               ORDER BY 
                                 person.lastname");
-                                
-      $values = array();
-      $legend = array();
-            
-      // Determine lookup
+                         
+       // convert records to graph-compatible array.
+      $dataset = array();                         
       for ($i=0, $_i=count($data); $i<$_i; $i++)
       {        
-        $values[] = $data[$i]["total"]/60;
-        $legend[] = $data[$i]["firstname"].' '.$data[$i]["lastname"];
+        $dataset[$data[$i]["firstname"]." ".$data[$i]["lastname"]] = $data[$i]["total"];        
       }
-      /*
-      // Plos x-axis.
-      $walker = mktime(12,0,0,substr($data[0]["activitydate"],5,2),
-                             substr($data[0]["activitydate"],8,2),
-                             substr($data[0]["activitydate"],0,4));
-      $lastdate = $data[count($data)-1]["activitydate"];
-      $end = mktime(12,0,0,substr($lastdate,5,2),
-                           substr($lastdate,8,2),
-                           substr($lastdate,0,4));                             
-
-      for ($i=1; $walker<=$end; $i++)
-      {       
-        $date = date("Y-m-d", $walker);
-        $val = $values[$date];
-        $y[] = ($val!=""?$val:"");
-        $x[] = $date;
-        $walker = mktime(12,0,0,date("m", $walker), date("d", $walker)+1, date("Y", $walker));
+      
+      return array("registeredtimeperemp"=>$dataset);
+    }
+    
+    function graph_activitytime($params)
+    {            
+      global $g_db;
+      $data = $g_db->getrows("SELECT 
+                                activity.name, SUM(time) as total
+                              FROM 
+                                hours, phase, activity
+                              WHERE 
+                                hours.phaseid = phase.id
+                                AND phase.projectid = ".$params["projectid"]."
+                                AND hours.activityid = activity.id
+                              GROUP BY 
+                                activity.name
+                              ORDER BY 
+                                activity.name");                                      
+       
+      // convert records to graph-compatible array.
+      $dataset = array();       
+      for ($i=0, $_i=count($data); $i<$_i; $i++)
+      {        
+        $dataset[$data[$i]["name"]] = $data[$i]["total"];        
       }
-        */            
-      $graph = new PieGraph(450,250,"auto");
       
-      global $g_theme;      
-      $graph->SetColor($g_theme["BgColor"]);
-
-      // Use an integer X-scale
-      $graph->SetScale("textlin");
- 
-       // Set title 
-      $graph->title->Set(text("registeredtimeperemp"));
-
-      // Use built in font
-      $graph->title->SetFont(FF_FONT1,FS_BOLD);
-
-      // Slightly adjust the legend from it's default position in the
-      // top right corner to middle right side
-      //$graph->legend->Pos(0.05,0.5,"right","center");
-
-       // Display every 10:th datalabel
-      // $graph->xaxis->SetTextTickInterval(1);
-       //$graph->xaxis->SetTextLabelInterval(14);
-       //$graph->xaxis->SetTickLabels($x);
-       //$graph->xaxis->SetLabelAngle(90);
-
-       // Create a red line plot
-       $p1 = new PiePlot($values);
-       $p1->setCenter(0.3,0.5);
-       $p1->SetLegends($legend);
-       //$p1->SetColor("red");
-  //     $p1->SetLegend("Total project time");
-      
-       $graph->Add($p1);     
-
-       // Finally output the  image
-       $graph->Stroke();
-       return true;
+      return array("registeredtimeperactivity"=>$dataset);
     }
   }
 
