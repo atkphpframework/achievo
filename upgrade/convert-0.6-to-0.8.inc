@@ -3,6 +3,7 @@
   $setup->alterColumn("hours", "date", "activitydate", "date", false);
   $setup->addColumn("employee", "supervisor", "varchar(15)");
   $setup->addColumn("customer", "website", "varchar(100)");
+  $setup->addColumn("customer", "currency", "varchar(10)");
   $setup->addColumn("contact", "cellular", "varchar(20)");
   $setup->addColumn("project", "fixed_price", "decimal(13,5)");
   $setup->addColumn("project", "enddate", "date");

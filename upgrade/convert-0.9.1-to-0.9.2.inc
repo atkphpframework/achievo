@@ -263,6 +263,9 @@
   $setup->alterColumn("db_sequence", "nextid", "nextid", "int(10)", false);
   $setup->alterColumn("hours", "id", "id", "int(10)", false);
   $setup->alterColumn("hours", "activityid", "activityid", "int(10)", false);
+  $setup->alterColumn("hours", "phaseid", "phaseid", "int(10)", false);
+  $setup->alterColumn("hours", "time", "time", "int(10)", false);
+  $setup->dropColumn("hours", "ratetype"); // no longer used.
   $setup->alterColumn("project", "id", "id", "int(10)", false);
   $setup->alterColumn("project", "status", "status", "varchar(15)", true);   
   $setup->alterColumn("project", "description", "description", "text", true);   
@@ -273,6 +276,7 @@
   $setup->alterColumn("contract", "description", "description", "text", false);
   $setup->alterColumn("usercontract", "id", "id", "int(10)", false);
   $setup->alterColumn("contracttype", "id", "id", "int(10)", false);
+  $setup->alterColumn("organization", "id", "id", "int(10)", false);
   $setup->alterColumn("organization", "address", "address", "varchar(100)", true);
   $setup->alterColumn("organization", "zipcode", "zipcode", "varchar(20)", true);
   $setup->alterColumn("organization", "city", "city", "varchar(100)", true);
@@ -283,6 +287,7 @@
   $setup->alterColumn("organization", "email", "email", "varchar(50)", true);
   $setup->alterColumn("organization", "remark", "remark", "text", true);
   $setup->alterColumn("organization", "bankaccount", "bankaccount", "varchar(30)", true);
+  $setup->alterColumn("person", "id", "id", "int(10)", false);
   $setup->alterColumn("person", "firstname", "firstname", "varchar(50)", true);
   $setup->alterColumn("person", "lastname", "lastname", "varchar(50)", false);
   $setup->alterColumn("person", "supervisor", "supervisor", "int(10)", true);  
@@ -303,6 +308,7 @@
   $setup->dropColumn("phase_activity", "billable"); // no longer used
   $setup->alterColumn("phase_activity", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("phase_activity", "activityid", "activityid", "int(10)", false);
+  $setup->alterColumn("profile", "id", "id", "int(10)", false);
   $setup->alterColumn("project_notes", "id", "id", "int(10)", false);
   $setup->alterColumn("project_notes", "projectid", "projectid", "int(10)", false);
   $setup->alterColumn("project_notes", "description", "description", "text", false);
@@ -327,6 +333,7 @@
   $setup->alterColumn("tpl_phase_activity", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("tpl_phase_activity", "activityid", "activityid", "int(10)", false);
   $setup->alterColumn("tpl_phase", "description", "description", "text", true);
+  $setup->alterColumn("tpl_phase", "id", "id", "int(10)", false);  
   $setup->alterColumn("tpl_project", "id", "id", "int(10)", false);  
   $setup->alterColumn("tpl_project", "description", "description", "text", true);  
  

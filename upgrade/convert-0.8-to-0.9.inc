@@ -29,5 +29,6 @@
                    fgcolor varchar(7) NOT NULL,
                    PRIMARY KEY (id)
                 )");
+  $setup->dropColumn("customer", "currency"); // no longer used
 
 ?>
