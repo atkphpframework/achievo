@@ -400,4 +400,5 @@
   $txt_attendee_contactsearch = "Add contacts";
   $txt_attendee_fuzzyhint = "Add a comma-separated list of names below. The database will be searched for matches which will be added as attendees.";
   $txt_viewschedule = "View schedule";
+  $txt_fsa_pleasemakeselection = "More than one match was found. Please make a selection.";
 ?>
