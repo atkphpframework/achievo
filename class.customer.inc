@@ -8,7 +8,6 @@ class customer extends atkNode
 
     $this->addAttribute(new atkAttribute("id" ,AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
     $this->addAttribute(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->addAttribute(new atkOneToManyRelation("contactperson","contact","company",AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("zipcode", AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("city", AF_HIDE_LIST|AF_HIDE_ADD));
@@ -19,7 +18,9 @@ class customer extends atkNode
     $this->addAttribute(new atkAttribute("website",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST|AF_HIDE_ADD)); 
+    $this->addAttribute(new atkOneToManyRelation("contactperson","contact","company",AF_HIDE_LIST));
     $this->addAttribute(new atkOneToManyRelation("contracts","contracts","customer",AF_HIDE_LIST));    
+    $this->addAttribute(new atkOneToManyRelation("projects","project","customer",AF_HIDE_LIST));
     $this->setTable("customer", "customer");
     $this->setOrder("customer.name");
     $this->setIndex("name");
