@@ -9,9 +9,7 @@ Sandy Pleyte       <sandy@achievo.org>
 Peter Verhage      <peter@achievo.org>
 Rene Bakx          <rene@ibuildings.nl>
 Wim Kosten         <wim@ibuildings.nl>
-Paul Verhoeff      <paul@ibuildings.nl>
 Maurice Maas       <maurice@ibuildings.nl>
-Marc van Agteren   <marc@ibuildings.nl>
 
 
 Marketing and Support
@@ -91,6 +89,11 @@ William Rhee <willrhee@umich.edu>
   William, of the University of Michigan, added Oracle 8i Support
   to Achievo.
 
+Marc van Agteren <mva@buzzmachines.com>
+
+  Marc developed the initial version of the finance menu, during
+  an internship at ibuildings.nl.
+
 
 Other Contributors
 ------------------
@@ -112,3 +115,4 @@ Tobias Henle                          <t.henle@thiesen.com>
 Andrei Dragomir                       <adragomir@iakt.rdsnet.ro>
 Harry School                          <harryschool@netscape.net>
 Sergio Fernandez                      <sergio.fernandez@agoratechnologies.com>
+Paul Verhoeff                         <paul@ibuildings.nl>
