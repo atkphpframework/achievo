@@ -55,12 +55,22 @@
 
       $this->setOrder("name");
       $this->setIndex("name");
-
-      //When a new project is selected add it to the selectedprj array
-      //in stack
-      if ($ATK_VARS!='add' || $ATK_VARS!='delete' || $ATK_VARS!='select')
-        updateSelectedProjects();
+    
       atkdebug("project::project()");
+    }
+    
+    // We override the dispatch function, to intercept projectid's. We use this
+    // to update the list of recent projects etc. So whatever action you perform
+    // on the project node, the current project you are using (if any) is stored
+    // in your history. (exceptions: actions add and delete do not add
+    // the project to the recent list, for obvious reasons)
+    function dispatch($postvars, $fullpage=true)
+    {
+      if ($postvars['atkaction']!='add' && $postvars['atkaction']!='delete')
+      {
+        updateSelectedProjects();
+      }
+      parent::dispatch($postvars, $fullpage);
     }
 
     function descriptor_def()

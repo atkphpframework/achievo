@@ -6,6 +6,8 @@
    * the projects the user has recently booked on.
    */
 
+  global $g_projectnamesize; // must declare global. this piece of code might
+                             // be executed somewhere in a local function scope.
   $g_projectnamesize = 25;
 
   function updateSelectedProjects()
@@ -20,7 +22,7 @@
     //If session var is empty fill with recent projects
     if (count($prj) == 0)
     {
-      $prj = getRecentProjects();
+      $prj = getRecentProjects();      
     }
 
     //Delete atkselector from global vars, because the stackVar
@@ -30,9 +32,10 @@
 
  //Check if selected project already exists in session var
     $atkselect = $g_sessionManager->stackVar("atkselector");
+       
     if (($atkselect != "") && isset($atkselect))
     {
-       $projectid = sscanf($atkselect, "project.id=\'%d\'");
+       $projectid = sscanf($atkselect, "project.id='%d'");
        $prjId = $projectid[0];
     }
     else
@@ -71,11 +74,11 @@
          $arr = $g_db->getrows($query);
          $selectedPrj['projectname'] = $arr[0]['name'];
          if (strlen($arr[0]['name']) > $g_projectnamesize)
-         {
+         {           
            $selectedPrj['projectname'] = substr($arr[0]['name'],0,$g_projectnamesize-2).".."; //update because of phases
          }
          else
-         {
+         {         
            $selectedPrj['projectname'] = $arr[0]['name']; //update because of phases
          }
 
@@ -114,39 +117,21 @@
     $query.= "ORDER BY hours.entrydate DESC";
 
     $arr = $g_db->getrows($query,'0','100');
-    $j=0;
-    $alreadyhad = Array();
+        
     $newarr = Array();
-    for ($i=0;$i<count($arr)&&$j<$GLOBALS["config_numberofrecentprojects"];$i++)
-    {
-      if (!in_array($arr[$i]['projectid'],$alreadyhad))
+    for ($i=0, $_i=count($arr); $i<$_i ;$i++)
+    {                    
+      if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
       {
-        $alreadyhad[$j]=$arr[$i]['projectid'];
-        $newarr[$j]['projectid'] = $arr[$i]['projectid'];
-
-        if (strlen($arr[$i]['name']) > $g_projectnamesize)
-        {
-          $newarr[$j]['name'] = substr($arr[$i]['name'],0,18)."..";
-        }
-        else
-        {
-          $newarr[$j]['name'] = $arr[$i]['name'];
-        }
-        if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
-        {
-          $newarr[$j]['projectname'] = substr($arr[$i]['projectname'],0,18).".."; //update because of phases
-          atkdebug("If ok ".strlen($newarr[$j]['projectname']));
-
-        }
-        else
-        {
-          $newarr[$j]['projectname'] = $arr[$i]['projectname']; //update because of phases
-        }
-        atkdebug("projectname ".strlen($newarr[$j]['projectname']));
-        $j++;
+        $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases        
       }
+      else
+      {
+        $arr[$i]['projectname'] = $arr[$i]['projectname']; //update because of phases        
+      }
+      atkdebug("projectname ".strlen($arr[$i]['projectname']));      
     }
-    return $newarr;
+    return $arr;
   }
 
   /*
