@@ -13,10 +13,6 @@
 
   class project extends atkNode
   {
-  	// when set to true the contact relation will be obligatory in the edit screen
-  	// but not in the add screen (because it is hidden there)
-  	var $m_contact_obligatory = true;
-  	
     function project()
     {
       global $ATK_VARS, $g_sessionManager;
@@ -44,7 +40,8 @@
         $this->addFilter("project.status","active");
       }
 	
-		  if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && $this->m_contact_obligatory)
+      
+		  if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && atkconfig("project_contact_obligatory"))
 		  {
 		  	$flags = AF_OBLIGATORY;
 	  	}

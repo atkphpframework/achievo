@@ -122,6 +122,14 @@
   // script searches for incomplete time registrations.
   //
   $config_timereg_checkweeks = 5; 
+
+  // -------------------------------------------
+  //               PROJECTS
+  // -------------------------------------------
+  
+  // This variable indicated wheter contacts in the project module are
+  // obligatory
+  $config_project_contact_obligatory = false;
   
   // -------------------------------------------
   //            EXTERNAL MODULES
