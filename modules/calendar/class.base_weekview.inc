@@ -144,12 +144,13 @@
    */
     function daypart($time)
     {
-     $hour = (int)$time["hours"];
-     if ($hour < 12)
+     list($hours, $minutes, $seconds) = explode(":", $time);
+     
+     if ($hours < 12)
      {
        return "morning";
      }
-     else if ($hour >= 12 && $hour < 17)
+     else if ($hours >= 12 && $hours <= 17)
      {
        return "afternoon";
      }

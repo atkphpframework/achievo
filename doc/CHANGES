@@ -9,8 +9,11 @@ Changes in Achievo 0.9.5
 + In employee management, inactive employees are now hidden by default. [Ivo]
 + Added fuzzy search box to the scheduler, to quickly add attendees. [Ivo]
 + Time registration now contains a link to the scheduler. [Ivo]
-+ The setup.php script now detects and installs newly added modules. [Ivo]
++ The setup.php script detects and installs newly added modules. [Ivo]
++ The scheduler has a new privilege 'edit all appointments. [Lineke]
 * Fixed bug in pim todo items. (bug #142) [Ivo]
+* Setup script timelimit has been set to infinite (bug #146) [Ivo]
+* Fixed bug in scheduler afternoon/evening calculation (bug #141) [Ivo]
 
 Changes in Achievo 0.9.4
 ------------------------
