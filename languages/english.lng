@@ -383,6 +383,17 @@
   $txt_houradmin_weeklocked = "Week is locked";
   
   $txt_title_employeestats_costs = "This employee registered costs on the following projects";
+ 
+  $txt_menu_costregistration_costreport = "Cost report";
+  $txt_title_employee_costreport = "Cost report";
+  $txt_setcostsfilter = "Select which costs you want to view:";
+  $txt_title_costregistration_stats = "Cost Report";
+  $txt_title_costregistration_costs = "Costs ";
+
+  $txt_warning_fixedprice1 = "This project has a fixed price of ";
+  $txt_warning_fixedprice2 = " and ";
+  $txt_warning_fixedprice3 = "has already been billed to the customer, of which";
+  $txt_warning_fixedprice4 = "on this bill.";
   
   $txt_bgcolor = "Backgroundcolor";
   $txt_fgcolor = "Textcolor";

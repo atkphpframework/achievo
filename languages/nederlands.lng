@@ -381,6 +381,19 @@
   $txt_title_projectstats_costsperemp = "De volgende medewerkers hebben kosten geboekt op dit project";
   $txt_title_employeestats_costs = "Deze werknemer heeft kosten geregistreerd op de volgende projecten";
   
+  $txt_title_projectstats_costsperemp = "The following employees made expenses for this project";
+
+  $txt_menu_costregistration_costreport = "Kosten rapport";
+  $txt_title_employee_costreport = "Kosten rapport";
+  $txt_setcostsfilter = "Selecteer welke kosten U wilt zien:";
+  $txt_title_costregistration_stats = "Kosten rapport";
+  $txt_title_costregistration_costs = "Kosten ";
+
+  $txt_warning_fixedprice1 = "Dit project heeft een vaste prijs van ";
+  $txt_warning_fixedprice2 = " en ";
+  $txt_warning_fixedprice3 = "is al aan de klant gefactureerd, waarvan";
+  $txt_warning_fixedprice4 = "op deze factuur.";
+  
   $txt_bgcolor = "Achtergrondkleur";
   $txt_fgcolor = "Tekstkleur";
   
