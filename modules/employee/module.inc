@@ -20,6 +20,11 @@
 
       menuitem("-","","main",true,620);
     }
+    
+    function getDependencies($mode)
+    {
+      return array("person");
+    }
   }
 
 ?>

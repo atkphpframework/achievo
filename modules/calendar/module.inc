@@ -20,6 +20,11 @@
       include_once(moduleDir("calendar")."pim.inc");
       return array("schedule"=>pimSchedule());
     }
+    
+    function getDependencies($mode)
+    {
+      return array("person");
+    }
   }
 
 ?>
