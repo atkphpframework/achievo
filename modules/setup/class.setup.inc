@@ -36,6 +36,22 @@
     }
     
     function action_dbcheck()
+    {            
+      $res = $this->getDbStatus();
+      
+      if ($res==DB_SUCCESS)
+      {
+        // Database seems to be ok. Now we go check what version(s) we are running.
+        return $this->action_versioncheck();
+      }
+      else
+      {
+        // something went wrong.      
+        return $this->handleDbStatus($res); 
+      }          
+    }
+    
+    function getDbStatus()
     {
       global $g_db;
       
@@ -43,8 +59,18 @@
       // we handle the error ourselves.
       $g_db->m_haltonerror = false;            
       
-      $this->handleDbStatus($g_db->connect());            
-            
+      $res = $g_db->connect();
+      
+      if ($res==DB_SUCCESS)
+      {        
+        // This can't be trusted. Mysql returns DB_SUCCESS even
+        // if the user doesn't have access to the database. We only get an
+        // error for this after we performed the first query.
+        $tmp = $g_db->getrows("show tables");  // TODO FIXME: 'show tables' is NOT database independent
+        $res = $g_db->_translateError($g_db->m_errno);
+      }
+          
+      return $res;
     }
     
     /** 
@@ -53,21 +79,14 @@
      * performing a query. If handleDbStatus is not called with
      * confirmed=true, it will perform this query and confirm itself.
      */
-    function handleDbStatus($dbstatus, $confirmed=false)
+    function handleDbStatus($dbstatus)
     {    
       switch($dbstatus)
       {
-        case DB_SUCCESS:      
-          if (!$confirmed)
-          {
-            global $g_db;
-            // This can't be trusted. Mysql returns DB_SUCCESS even
-            // if the user doesn't have access to the database. We only get an
-            // error for this after we performed the first query.
-            $res = $g_db->getrows("show tables");                        
-            return $this->handleDbStatus($g_db->_translateError($g_db->m_errno), true);            
-          }
-          return $this->setupScreen("hmm","successful");
+        case DB_SUCCESS: // We're not supposed to handle a db status if the db is ok. But, in the case some 
+                         // programmer decides to call handleDbStatus anyway, we'll just return a screen with an 'ok' message.
+          return $this->setupScreen("Connection succesful",
+                                    "Your database connection appears to be OK");
           
           // In the case we don't have a DB_SUCCESS now, we fall through
           // the other cases (we don't break), so we can handle the error.
@@ -87,22 +106,32 @@
           
         case DB_ACCESSDENIED_USER:
           return $this->setupScreen("Database username or password incorrect", 
-                                    "I've tried connecting to the database with the username ('".atkconfig("databaseuser")."') and password you specified in config.inc.php, but was
+                                    "I've tried to connect to the database with username '".atkconfig("databaseuser")."' and the password you specified in config.inc.php, but was
                                      unable to login. 
-                                     This could mean:
+                                     <br>This could mean:
                                      <ul>
                                        <li>The username and or password in config.inc.php are not correct. In this case, please correct the error and click 'Retry'.
                                        <li>The user has not been created yet in the databaseserver. In this case, create the useraccount or contact your system-administrator. When the user is created, click 'Retry'.".
-                                       (atkconfig("database")!="mysql"?"":"<li>A common problem when using MySQL is that the user was created, but the privileges were not flushes. You might want to try reloading the database (or issuing a 'FLUSH PRIVILEGES' statement), and clicking 'Retry'.").
+                                       (atkconfig("database")!="mysql"?"":"<li>A common problem when using MySQL is that the user was created, but the privileges were not flushed. You might want to try reloading the database (or issuing a 'FLUSH PRIVILEGES' statement), and clicking 'Retry'.").
                                     "</ul>",
                                     "dbcheck");
           
         case DB_ACCESSDENIED_DB:
           return $this->setupScreen("User not allowed to connect to database", 
-                                    "user may not connect to db");
+                                    "I've tried to connect to the database with username '".atkconfig("databaseuser")."' and the password you specified in config.inc.php, but was 
+                                     unable to connect. The username and password appear to be ok, but the user is not allowed to use the database '".atkconfig("databasename")."'.
+                                     <br>This could mean:
+                                     <ul>
+                                       <li>The username has not been granted access to the database. Please correct the error and click 'Retry'".
+                                       (atkconfig("database")!="mysql"?"":"<li>A common problem when using MySQL is that access was granted, but the privileges were not flushed. You might want to try reloading the database (or issuing a 'FLUSH PRIVILEGES' statement), and clicking 'Retry'.").
+                                    "</ul>",
+                                    "dbcheck");
               
         default: // catches any errors we don't know of, and also DB_UNKNOWNERROR
-          return $this->setupScreen("can't do anything");
+          return $this->setupScreen("Unknown connection problem",
+                                    "There was an unknown problem when I tried connecting to the database. Please verify your database setup and
+                                     the database configuration in config.inc.php. If you think you have fixed the problem, you may click 'Retry'.",
+                                    "dbcheck");
       }
     }
     
@@ -128,6 +157,40 @@
       $g_layout->output($form);
       $g_layout->ui_bottom();
       
+    }
+    
+    /**
+     * Check what version of the Achievo database we are using.
+     */
+    function action_versioncheck()
+    {         
+      // Check if we have a connection first.
+      $res = $this->getDbStatus();
+      
+      if ($res == DB_SUCCESS)
+      {
+        global $g_db;
+        $tables = $g_db->table_names();
+    
+        if (count($tables)==0)
+        {
+          return $this->setupScreen("Database appears to be empty",
+                                    "Your database connection is working. However, the specified database '".atkconfig("databasename")."' seems to be empty.
+                                     <br>This means I need to install a new database. 
+                                     <br><br><i>If you think this is not correct, please verify your database setup, and rerun this script.</i>
+                                     <br><br>To continue with the installation of a new Achievo database, please click 'Continue'.",
+                                    "installdb");
+        }
+        else
+        {
+          return $this->setupScreen("There is a database, go check which version",
+                                    "lalala");
+        }                
+      }
+      else
+      {
+        return $this->handleDbStatus($res);
+      }
     }
         
   }
