@@ -5,7 +5,7 @@ userelation("atkonetomanyrelation");
 useattrib("atklistattribute");
 useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
-include_once ("./modules/person/class.person.inc");
+include_once (moduleDir("person")."class.person.inc");
 
 class useridAttribute extends atkAttribute
 {
