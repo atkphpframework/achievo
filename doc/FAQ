@@ -89,16 +89,8 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         a) You are not using the correct username and password. (Yes, 
            'absolutely sure' is a relative term.) Remember that the password
            for 'administrator' is the one set in the config.inc.php file, even
-           if you set another password in the database.
-        b) In php.ini, register_globals should be set to On. This used to be 
-           default in older PHP versions, but as of PHP 4.2, the default value
-           is Off. Currently, Achievo will only work if you put this value to
-           On. (don't forget to restart your webserver after changing php.ini)
-        c) If you run PHP as a cgi-module, you can't use the login protocol
-           we use. We will fix this in the future. For now, you will have to
-           use the Apache module version (or the ISAPI version in case you are
-           running Microsoft Internet Information Server).
-        d) There could be a .htaccess file in the way. Don't put an .htaccess 
+           if you set another password in the database.        
+        b) There could be a .htaccess file in the way. Don't put an .htaccess 
            file in Achievo's directory, or above it. If you do this, the login
            box you will see is the one from the .htaccess file, not the one 
            from Achievo.
