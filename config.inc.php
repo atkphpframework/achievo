@@ -12,7 +12,7 @@
 
 
   // The database to use. Default is MySQL. If you want to use PostgreSQL,
-  // change this value to "pgsql". For Oracle, use "oci8".
+  // change this value to "pgsql". For Oracle, use "oci8" or "oci9".
   //
   $config_database = "mysql";
 
@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_test_lineke2";
+  $config_databasename = "achievo_0_9";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
 
