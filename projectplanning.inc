@@ -9,7 +9,7 @@ include_once("achievotools.inc");
 
 function load_dependencies($phase_record,$dep_record)
 {  
-  for ($i=0;$i<count($dep_record);$i++)
+  for ($i=0,$_i=count($dep_record);$i<$_i;$i++)
   {          
     $before[] = $dep_record[$i]['first'];
     $after[] = $dep_record[$i]['last'];
@@ -35,9 +35,9 @@ function init_milestones($phase_ids)
 // **********************************************************************
 function calc_milestone_deadlines(&$m,$phase,$phase_maxtime)
 {   
-   for ($i=1;$i<count($m);$i++)
+     for ($i=0,$_i=count($m);$i<$_i;$i++)
    {
-      for ($j=0;$j<count($phase);$j++)
+      for ($j=0,$_j=count($phase);$j<$_j;$j++)
       {
          $out_m = get_current_milestone($m,$phase[$j],'out');
          $in_m  = get_current_milestone($m,$phase[$j],'in');
@@ -57,7 +57,7 @@ function calc_milestone_deadlines(&$m,$phase,$phase_maxtime)
 function check_pos($thing,$order)
 {
    $pos = -1;
-   for ($i=0;$i<count($order)&&$pos==-1;$i++)
+   for ($i=0,$i=count($order);$i<$_i&&$pos==-1;$i++)
    {
       if ($order[$i] == $thing) $pos = $i;   
    }
@@ -73,18 +73,18 @@ function swap(&$array,$posa,$posb)
 
 function order_milestones(&$m,$path)
 {
-   for ($i=0;$i<count($m);$i++)
+   for ($i=0,$_i=count($m);$i<$_i;$i++)
    {
       $m_order[$i] = $i;
    }
    
-   for ($i=0;$i<count($path);$i++) 
+   for ($i=0,$_i=count($path);$i<$_i;$i++)
    {
       do 
       {
          $changes = 0;
          
-         for ($j=1;$j<count($path[$i]['milestone']);$j++)
+         for ($j=1,$_j=count($path[$i]['milestone']);$j<$_j;$j++)
          {
             $before = $path[$i]['milestone'][$j-1];
             $after  = $path[$i]['milestone'][$j];
@@ -105,7 +105,7 @@ function order_milestones(&$m,$path)
    }
       
    $m_old = $m;
-   for ($i=0;$i<count($m);$i++)
+   for ($i=0,$_i=count($m);$i<$_i;$i++)
    {
       $number = $m_order[$i];
       $m[$i]  = $m_old[$number];
@@ -147,7 +147,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
   
   $echo .= $g_layout->ret_td_datatitle(text("deadline").' <img src="images/arrow_right.gif">','colspan="2" align="right"');
   
-  for($counter=0;$counter<count($m);$counter++)
+  for($counter=0,$_counter=count($m);$counter<$_counter;$counter++)
   { 
      $deadline = deadline_calc($project_record['startdate'],$m[$counter]['deadline']);
      $echo.= $g_layout->ret_td_datatitle($deadline, 'colspan="2" align="center"');   
@@ -159,7 +159,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
   $echo.= $g_layout->ret_td_datatitle(text("phase").' <img src="images/arrow_down.gif">');
   $echo.= $g_layout->ret_td_datatitle(text("milestones").' <img src="images/arrow_right.gif">','align="right"');
   
-  for($counter=0;$counter<count($m);$counter++)
+  for($counter=0,$_counter=count($m);$counter<$_counter;$counter++)
   { 
     $echo.= $g_layout->ret_td("m".$counter.'<br><img src="images/arrow_down.gif">','colspan="2" align="center"');   
   }  
@@ -169,7 +169,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
   $totalbooked=0;
   $totalplanned=0;
 
-  for($i=0;$i<count($phase_ids);$i++)
+  for ($i=0,$_i=count($phase_ids);$i<$_i;$i++)
   { 
     $echo.= $g_layout->tr_top();
     $echo.= $g_layout->ret_td($phase_names[$i],'colspan="2"');
@@ -179,7 +179,7 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
     
     $cell = '<table width="100%" cellspacing="0" cellspacing="0" border="0">'.$g_layout->tr_top();
    
-    for($j=0;$j<count($m);$j++)
+    for($j=0,$_j=count($m);$j<$_j;$j++)
     { 
       if ($bgcolor=='red')
       {
@@ -236,7 +236,7 @@ function del_edge(&$m, $current_m, $in, $out)
    {
       if ($del != '')
       {
-         for ($i=0;$i<count($m[$current_m][$edge_type]);$i++)
+         for ($i=0,$_i<count($m[$current_m][$edge_type]);$i<$_i;$i++)
          {   
             if ($del != $m[$current_m][$edge_type][$i]) $new[] = $m[$current_m][$edge_type][$i];
          }
@@ -289,9 +289,9 @@ function get_phases($milestone,$edge_type)
 function get_current_milestone($m,$phase,$edge_type)
 {
    $number = '';
-   for($counter=0;$counter<count($m);$counter++) 
+   for($counter=0,$_counter=count($m);$counter<$_counter;$counter++) 
    {
-      for ($i=0;$i<count($m[$counter][$edge_type]);$i++) 
+      for ($i=0,$_i<count($m[$counter][$edge_type]);$i<$_i;$i++) 
       {
          if ($m[$counter][$edge_type][$i]== $phase) 
          {
@@ -308,12 +308,12 @@ function get_current_milestone($m,$phase,$edge_type)
 function is_edge($m,$phase)
 {
    $result=0;
-   for ($i=0;$i<count($m['in'])&&$result==0;$i++)
+   for ($i=0,$_i=count($m['in']);$i<$_i&&$result==0;$i++)
    {
       if ($m['in'][$i]==$phase) $result=1;   
    }
    
-   for ($i=0;$i<count($m['out'])&&$result==0;$i++)
+   for ($i=0,$_i=count($m['out']);$i<$_i&&$result==0;$i++)
    {
       if ($m['out'][$i]==$phase) $result=1;   
    }  
@@ -324,7 +324,7 @@ function is_edge($m,$phase)
 function cycle_check($path)
 {
    $cycle=0;
-   for ($i=0;$i<count($path)&&$cycle==0;$i++)
+   for ($i=0,$_i=count($path);$i<$_i&&$cycle==0;$i++)
    {
       $phase = $path[$i];
       $counter=0;
