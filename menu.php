@@ -5,12 +5,13 @@
  * contains an extra line that includes the theme.inc file!
  */
 
-  include_once("atk.inc");
+  include_once("atk.inc");  
 
   atksession("atkmenu");
   atksecure();
 
   include_once("./theme.inc");
+  include_once($config_atkroot."atk/atkmenutools.inc");
   include_once("achievotools.inc");
 
   /* get main menuitems */
