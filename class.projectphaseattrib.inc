@@ -274,6 +274,7 @@ class atkProjectPhaseAttribute extends atkAttribute
                         if (activityarray[projectindex][i].actid == selectedactivityid)
                         {
                           options[i].selected=true;
+                          document.entryform.activityid.options.selectedIndex=i;
                           somethingselected = true;
                         }
                       }

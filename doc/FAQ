@@ -61,19 +61,15 @@ the terms might be different.
         documents' option most applications have. It only contains the last
         projects you used, so you can quickly access them. If a project you
         want to use is not in the dropdown, click the link 'Search all 
-        projects and phases'.
-      
- 3.2. When I change the date, the date jumps to january and I am unable 
-      to change it. (Mozilla/Netscape 6)
+        projects and phases'.       
+
+ 3.2. When I edit an entry, the activity is not set correctly. (Mozilla/
+      Netscape 6)
 
         There is a bug in some Mozilla 0.9.x and Netscape 6.x releases that
         causes this behaviour:
         http://bugzilla.mozilla.org/show_bug.cgi?id=86659
-        There is currently no workaround for this bug.
+        Mozilla 0.9.4 no longer has this bug, so upgrading Mozilla should 
+        help.
 
- 3.3. When I edit an entry, the activity is not set correctly. (Mozilla/
-      Netscape 6)
-
-        This is caused by the same Mozilla bug that causes the problem from 
-        question 3.2.
 
