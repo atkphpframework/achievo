@@ -24,6 +24,8 @@
   $txt_title_finance_customer_edit = "Financiele gegevens klant bewerken";
   $txt_title_finance_project_admin = "Financiele gegevens projecten beheren";
   $txt_title_finance_project_edit = "Financiele gegevens project bewerken";  
+  
+  $txt_menu_bill = "Factuur Beheer";
   $txt_fixed_price = "Vaste offerteprijs";
   $txt_fixed_price_explain = "Vaste offerteprijs is in %s. Wanneer geen prijs is ingevuld, zijn de uurtarieven van toepassing";
   
