@@ -171,6 +171,7 @@
   useridConvert("person", "supervisor", $setup); 
   useridConvert("todo", "assigned_to", $setup);  
   useridConvert("todo_history", "assigned_to", $setup);
+  useridConvert("schedule", "owner", $setup);
   
   // Add new id field to hours_lock table.
   $setup->addColumn("hours_lock", "id", "int(10)", false);
