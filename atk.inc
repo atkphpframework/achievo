@@ -33,6 +33,7 @@
   include_once($config_atkroot."atk/attributes/class.atkparserattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atkdateattribute.inc");  
   include_once($config_atkroot."atk/attributes/class.atkfileattribute.inc");
+  include_once($config_atkroot."atk/attributes/class.atkdurationattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atktimeattribute.inc");
   // include_once($config_atkroot."atk/attributes/class.atkmultiplefileattribute.inc");
   include_once($config_atkroot."atk/attributes/class.atkpasswordattribute.inc");
@@ -44,7 +45,8 @@
   // include_once($config_atkroot."atk/attributes/class.atkmltextattribute.inc");
   // include_once($config_atkroot."atk/attributes/class.atkmlnumberattribute.inc");
   // include_once($config_atkroot."atk/attributes/class.atkmlhtmlattribute.inc");
-include_once($config_atkroot."atk/attributes/class.atkcolorpickerattribute.inc");  
+  include_once($config_atkroot."atk/attributes/class.atkcolorpickerattribute.inc"); 
+  include_once($config_atkroot."atk/attributes/class.atktimeattribute.inc");  
   /** 
    * The relations. All relations that you don't use in your application 
    * can be stripped out.
@@ -55,5 +57,5 @@ include_once($config_atkroot."atk/attributes/class.atkcolorpickerattribute.inc")
   include_once($config_atkroot."atk/relations/class.atkonetomanyrelation.inc");
   //include_once($config_atkroot."atk/relations/class.atkmatrixrelation.inc");
   include_once($config_atkroot."atk/relations/class.atkonetoonerelation.inc");
-  
+
 ?>

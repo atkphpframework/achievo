@@ -73,7 +73,7 @@ class hours extends atkNode
     
     $this->addAttribute(new atkAttribute("remark"));      
     
-    $this->addAttribute(new atkTimeAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
+    $this->addAttribute(new atkDurationAttribute("time",'15m', '10h',AF_OBLIGATORY|AF_TOTAL));
                 
     $this->addAttribute(new atkDateAttribute("entrydate",AF_HIDE));      
                 

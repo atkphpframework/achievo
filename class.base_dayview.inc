@@ -385,10 +385,10 @@
       $time    = $this->workHours[$i];
       $items   = $this->itemMatrix[$time]; 
       $now     = $this->year."-".$this->month."-".$this->day;              
-      $addurl  = "javascript:open_appointment(0, 1, 600, 450, 'no','no','$now','$time')";
+      $addurl  = $PHP_SELF."?atkaction=add&atknodetype=schedule&date=$now&time=$time";
  
       $buff .= "<tr>\n";
-      $buff .= "<td bgcolor='#D0D0D0' width='5%'><a href=\"$addurl\"><font size='-1'>".$time."</font></a></td>\n"; 
+      $buff .= "<td bgcolor='#D0D0D0' width='5%'>".href($addurl, "<font size='-1'>".$time."</font>",SESSION_NESTED)."</td>";
 
       if ($cols == 0)
       {
@@ -442,8 +442,8 @@
  
           if ($info["item_owner"] == $this->owner)
           {
-           $url     = "javascript:open_appointment(".$info["item_id"].", 1, 600, 450, 'no','no',0,0)"; 
-           $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("Edit")."</font></a>&nbsp;";
+           $url     = $PHP_SELF."?atknodetype=schedule&atkaction=edit&atkselector=schedule.item_id=".$info["item_id"];
+           $header .= href($url, "<font size='-2' color='$fgcolor'>".text("Edit")."</font>",SESSION_NESTED);
           }
           else
           {

@@ -173,7 +173,6 @@
 
     $buff .= "</tr>";
 
-
     // morning
     $buff .= "<tr bgcolor='#FFFFFF'>";
     $buff .= "<td valign='top' bgcolor='#F0F0F0'><font size='-1'>08:00<nobr> - 12:00</font></td>";   
@@ -225,4 +224,4 @@
     return $buff;
    }
   }
-?>   
+?>

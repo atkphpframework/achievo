@@ -10,7 +10,7 @@
   {
    function schedule()
    {
-    global $g_layout, $g_sessionManager, $view, $viewdate;
+    global $g_layout, $g_sessionManager, $view, $viewdate, $time;
 
     $g_layout->register_script("atk/javascript/open_appointment.js");
 
@@ -18,27 +18,28 @@
     $aItemEnd   = $aItemBegin;
    
     $this->atkNode("schedule", NF_ADD_LINK); 
-/*
+
     $this->addAttribute(new atkAttribute("item_owner"           , AF_READONLY|AF_HIDE));
     $this->addAttribute(new atkAttribute("item_id"              , AF_HIDE|AF_AUTO_INCREMENT|AF_PRIMARY));
     $this->addAttribute(new atkAttribute("item_title"           , AF_SEARCHABLE|AF_OBLIGATORY));
     $this->addAttribute(new atkAttribute("item_location"        , AF_SEARCHABLE));
     $this->addAttribute(new atkTextAttribute("item_description" , AF_HIDE_LIST));
-//    $this->addAttribute(new atkDateAttribute("item_begin_date"  , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-//    $this->addAttribute(new atkDateAttribute("item_end_date"    , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
-    $this->addAttribute(new atkListAttribute("item_begin_time"  , $aItemBegin, AF_OBLIGATORY));
-    $this->addAttribute(new atkListAttribute("item_end_time"    , $aItemEnd, AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("item_begin_date"  , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("item_end_date"    , "F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY));
     $this->addAttribute(new atkBoolAttribute("item_allday"      ));
     $this->addAttribute(new atkBoolAttribute("item_public"      ));
+    $this->addAttribute(new atkTimeAttribute("item_begin_time"  , 8, 24, array("00","30"), $time, 0));
+    $this->addAttribute(new atkTimeAttribute("item_end_time"    , 8, 24, array("00","30"), $time, 0));
     $this->addAttribute(new atkManyToOneRelation("item_type"    , "schedule_types",AF_OBLIGATORY));
     $this->addAttribute(new atkDummyAttribute("attendees"       , "", AF_HIDE_ADD|AF_HIDE_LIST));
-*/
-    $view = $g_sessionManager->stackVar("view");
+
+    $view     = $g_sessionManager->stackVar("view");
+    $viewdate = $g_sessionManager->stackVar("viewdate");
 
     if (trim($view) == "") { $view = "dayview"; }
 
     $this->setTable("schedule", "schedule");
-    $this->setOrder("item_date DESC");
+    $this->setOrder("item_begin_date DESC");
    }
 
    function attendees_edit()
