@@ -6,22 +6,21 @@ class rates extends atkNode
   {
     $this->atkNode("rates");
 
-    $this->addAttribute(new atkAttribute("rate_id" ,AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
+    $this->addAttribute(new atkAttribute("id" ,AF_PRIMARY|AF_UNIQUE|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkTextAttribute("description"));
-    $this->addAttribute(new atkDateAttribute("start_date",AF_OBLIGATORY));
-    $this->addAttribute(new atkDateAttribute("end_date",AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("startdate",AF_OBLIGATORY));
+    $this->addAttribute(new atkDateAttribute("enddate",AF_OBLIGATORY));
     $this->addAttribute(new atkAttribute("rate",AF_OBLIGATORY));
     $this->addAttribute(new atkNumberAttribute("priority",AF_OBLIGATORY));
 		$this->addAttribute(new atkManytoOneRelation("userid","employee"));
-		$this->addAttribute(new atkManytoOneRelation("project_id","project"));
-		$this->addAttribute(new atkManytoOneRelation("activity_id","activity"));
-		$this->addAttribute(new atkManytoOneRelation("customer_id","customer"));
+		$this->addAttribute(new atkManytoOneRelation("projectid","project"));
+		$this->addAttribute(new atkManytoOneRelation("activityid","activity"));
+		$this->addAttribute(new atkManytoOneRelation("customerid","customer"));
 		
 
-    $this->setTable("rates","rates");
-    $this->setOrder("rate_id");
+    $this->setTable("rate","rate");
+    $this->setOrder("id");
     
-    atkdebug("rates::rates()");    
   }
 
   function initial_values()

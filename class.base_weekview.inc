@@ -76,10 +76,10 @@
     $n = 0;
     for ($i=0;$i<=count($r)-1;$i++)
     {
-     $date      = $r[$i]["item_begin_date"];
-     $beginHour = intval(substr($r[$i]["item_begin_time"],0,2));
+     $date      = $r[$i]["startdate"];
+     $beginHour = intval(substr($r[$i]["starttime"],0,2));
 
-     if ($r[$i]["item_allday"] != 1)
+     if ($r[$i]["allday"] != 1)
      {
       $position  = $this->dayTime($beginHour);
       $appoints[$date][$position][$n] = $r[$i];
@@ -87,7 +87,7 @@
      }
      else
      {
-      $allday[$date] .= "<font size='-1'>".$r[$i]["item_title"]."</font><br>";
+      $allday[$date] .= "<font size='-1'>".$r[$i]["title"]."</font><br>";
      }
     }
 
@@ -122,7 +122,7 @@
     {
      for ($i=0;$i<=$nAppoints-1;$i++)
      {
-      $buff .= "<font size='-1'>".$this->appointments[$date][$dayTime][$i]["item_title"]."</font><br>";
+      $buff .= "<font size='-1'>".$this->appointments[$date][$dayTime][$i]["title"]."</font><br>";
      }
     }
 

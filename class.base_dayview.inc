@@ -107,18 +107,18 @@
      global $g_db;
 
      $date = $this->year."-".$this->month."-".$this->day;
-     $q    = "SELECT * FROM schedule WHERE item_begin_date <='$date' AND item_end_date >= '$date' ";
+     $q    = "SELECT * FROM schedule WHERE startdate <='$date' AND enddate >= '$date' ";
 
      if ($this->showGlobal == "all")
      {
-      $q .= "AND item_public=1";
+      $q .= "AND publicitem=1";
      }
      else
      {
-      $q .= "AND item_owner='".$this->showGlobal."'";
+      $q .= "AND owner='".$this->showGlobal."'";
      }
 
-     $q .= " ORDER BY item_begin_time";
+     $q .= " ORDER BY starttime";
      return $g_db->getRows($q);
     }
 
@@ -131,7 +131,7 @@
     {
      global $g_db;
 
-     $q = "SELECT user_id FROM schedule_attendees WHERE schedule_id=$id ORDER BY user_id"; 
+     $q = "SELECT userid FROM schedule_attendees WHERE scheduleid=$id ORDER BY userid"; 
      return $g_db->getRows($q);
     }
 
@@ -153,13 +153,13 @@
 
     for ($i=0;$i<=count($r)-1;$i++)
     {
-     $colors[$r[$i]["id"]]["desc"] = $r[$i]["item_description"];
-     $colors[$r[$i]["id"]]["fore"] = $r[$i]["item_foreground"];
-     $colors[$r[$i]["id"]]["back"] = $r[$i]["item_background"];
+     $colors[$r[$i]["id"]]["desc"] = $r[$i]["description"];
+     $colors[$r[$i]["id"]]["fore"] = $r[$i]["fgcolor"];
+     $colors[$r[$i]["id"]]["back"] = $r[$i]["bgcolor"];
 
      $tmpLegend                    = "<TR bgcolor='#FFFFFF'><TD>\n";
-     $tmpLegend                   .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='".$r[$i]["item_background"]."'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-     $tmpLegend                   .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".$r[$i]["item_description"]."</font></TD>";
+     $tmpLegend                   .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='".$r[$i]["bgcolor"]."'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
+     $tmpLegend                   .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".$r[$i]["description"]."</font></TD>";
      $tmpLegend                   .= "</TR>"; 
      $legend                      .= $tmpLegend;
     }
@@ -199,7 +199,7 @@
     {
      for ($i=0;$i<=count($this->allItems)-1;$i++)
      {
-      if ($this->allItems[$i]["item_allday"] == 1)
+      if ($this->allItems[$i]["allday"] == 1)
       {
        $this->allDayItems[] = $this->allItems[$i];
       }
@@ -257,8 +257,8 @@
    */
     function setMatrix($item)
     {
-     $begin    = substr($item["item_begin_time"],0,5);
-     $einde    = substr($item["item_end_time"],0,5);     
+     $begin    = substr($item["starttime"],0,5);
+     $einde    = substr($item["endtime"],0,5);     
      $duration = $this->duration($begin, $einde);
      $appoints = count($this->itemMatrix[$begin]);
 
@@ -284,7 +284,7 @@
      //fill the matrix
      for ($i=0;$i<=count($duration)-1;$i++)
      {
-      $this->itemMatrix[$duration[$i]][$col]         = $item["item_title"];
+      $this->itemMatrix[$duration[$i]][$col]         = $item["title"];
       $this->matrixInfo[$duration[$i]][$col]["info"] = $item;
      }
 
@@ -343,8 +343,8 @@
 
       for ($i=0;$i<=count($this->allDayItems)-1;$i++)
       {
-       $type    = $this->allDayItems[$i]["item_type"];
-       $title   = $this->allDayItems[$i]["item_title"];
+       $type    = $this->allDayItems[$i]["scheduletype"];
+       $title   = $this->allDayItems[$i]["title"];
        $bgcolor = $colors[$type]["back"];
        $fgcolor = $colors[$type]["fore"];
 
@@ -352,19 +352,19 @@
        $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
 
        $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
-       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["item_owner"].")</b></font></td>";
+       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owner"].")</b></font></td>";
        $header .= "<td valign='top' align='right'>";
  
-       if ($this->allDayItems[$i]["item_owner"] == $this->owner)
+       if ($this->allDayItems[$i]["owner"] == $this->owner)
        {
-        $url     = "javascript:open_appointment(".$this->allDayItems[$i]["item_id"].", 1, 600, 450, 'no','no',0,0)";
+        $url     = "javascript:open_appointment(".$this->allDayItems[$i]["id"].", 1, 600, 450, 'no','no',0,0)";
         $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("Edit")."</font></a>&nbsp;";
        }
        else
        {   
-        if ($this->allDayItems[$i]["item_public"] == 1)
+        if ($this->allDayItems[$i]["publicitem"] == 1)
         {
-         $url     = "javascript:open_appointment(".$this->allDayItems[$i]["item_id"].", 0, 600, 250, 'no','no',0,0)";
+         $url     = "javascript:open_appointment(".$this->allDayItems[$i]["id"].", 0, 600, 250, 'no','no',0,0)";
          $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
         }
        } 
@@ -416,7 +416,7 @@
            $rowspan = "rowspan='$timeLap'";
           }
 
-          if ($info["item_public"] == 0 && $info["item_owner"] != $this->owner)
+          if ($info["publicitem"] == 0 && $info["owner"] != $this->owner)
           {
            $title   = $this->busyTitle;
            $bgcolor = $this->busyBgColor;
@@ -426,30 +426,30 @@
           else
           {
            $title   = $item;
-           $bgcolor = $colors[$info["item_type"]]["back"];
-           $fgcolor = $colors[$info["item_type"]]["fore"];
-           $descr   = $info["item_description"];
+           $bgcolor = $colors[$info["scheduletype"]]["back"];
+           $fgcolor = $colors[$info["scheduletype"]]["fore"];
+           $descr   = $info["description"];
           }
 
           // if viewing public items for all users
           // it might be handy to see the item's owner
-          $dspOwner = " (".$info["item_owner"].")";
+          $dspOwner = " (".$info["owner"].")";
 
           // generate header (contains title, info and link to edit/view item)
           $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
           $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title.$dspOwner."</b></font></td>\n";
           $header .= "<td valign='top' align='right'>";
  
-          if ($info["item_owner"] == $this->owner)
+          if ($info["owner"] == $this->owner)
           {
-           $url     = $PHP_SELF."?atknodetype=schedule&atkaction=edit&atkselector=schedule.item_id=".$info["item_id"];
+           $url     = $PHP_SELF."?atknodetype=schedule&atkaction=edit&atkselector=schedule.id=".$info["id"];
            $header .= href($url, "<font size='-2' color='$fgcolor'>".text("Edit")."</font>",SESSION_NESTED);
           }
           else
           {
-           if ($info["item_public"] == 1)
+           if ($info["publicitem"] == 1)
            {
-            $url     = "javascript:open_appointment(".$info["item_id"].", 0, 600, 250, 'no','no',0,0)"; 
+            $url     = "javascript:open_appointment(".$info["id"].", 0, 600, 250, 'no','no',0,0)"; 
             $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
            }
           } 

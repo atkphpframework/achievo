@@ -30,7 +30,7 @@ function specify_hours($rec)
 	$g_layout->output('<form action="./modules/finance/create_bill.php" method="post">');
 	$g_layout->output('<input type="hidden" name="specify_post" value=1>');
 	$g_layout->output('<input type="hidden" name="project_id" value='.$rec["project_id"]["id"].'>');
-	$g_layout->output('<input type="hidden" name="bill_id" value='.$rec["bill_id"].'>');
+	$g_layout->output('<input type="hidden" name="id" value='.$rec["id"].'>');
 	$g_layout->table_simple(1);
 	$g_layout->output("<tr>");
 	
@@ -124,7 +124,7 @@ if(!is_null($rec))
 }
 elseif($specify_post==1)
 {
-  create_bill($bill_id,$project_id,$hour_id,1);
+  create_bill($id,$project_id,$hour_id,1);
 }
 else
 {

@@ -6,8 +6,8 @@
   registerNode("weekreport",array("report","view_all"));
   registerNode("customer", array("admin", "add", "edit", "delete"));
   registerNode("contact", array("add","edit","delete"));
-//  registerNode("contracts", array("admin","add","edit","delete"));
-//  registerNode("contracttype", array("admin","add","edit","delete"));    
+  registerNode("contracts", array("admin","add","edit","delete"));
+  registerNode("contracttype", array("admin","add","edit","delete"));    
   
   registerNode("profile", array("admin", "add", "edit", "delete"));
   registerNode("employee", array("admin", "add", "edit", "delete", "stats", "view_all"));
@@ -19,12 +19,12 @@
   registerNode("tpl_phase", array("admin", "add", "edit", "delete"));
   registerNode("tpl_project", array("admin", "add", "edit", "delete"));
  
-//  registerNode("todo", array("admin", "add", "edit", "delete"));
-//  registerNode("project_todoview", array("admin", "add", "edit", "delete"));
-//  registerNode("project_notes", array("admin", "add", "edit", "delete"));
-//  registerNode("project_notesview", array("admin", "add", "edit", "delete"));
+  registerNode("todo", array("admin", "add", "edit", "delete"));
+  registerNode("project_todoview", array("admin", "add", "edit", "delete"));
+  registerNode("project_notes", array("admin", "add", "edit", "delete"));
+  registerNode("project_notesview", array("admin", "add", "edit", "delete"));
 //  registerNode("holidays", array("admin","add","edit","delete"));  
-//  registerNode("schedule", array("admin", "add", "edit", "delete"));  
-//  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
-//  registerNode("costregistration", array("admin", "add", "edit", "delete"));
+  registerNode("schedule", array("admin", "add", "edit", "delete"));  
+  registerNode("schedule_types", array("admin", "add", "edit", "delete"));
+  registerNode("costregistration", array("admin", "add", "edit", "delete"));
 ?>

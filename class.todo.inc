@@ -22,7 +22,7 @@ class todo extends atkNode
     $this->addAttribute(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->addAttribute(new atkTextAttribute("description"      , AF_OBLIGATORY|AF_HIDE_LIST));
     $this->addAttribute(new atkListAttribute("status"           , array("New", "In progress","Awaiting external person","On hold","Done"), array(1,2,3,4,5),AF_SEARCHABLE));
-    $this->addAttribute(new atkBoolAttribute("mail_on_change"   , AF_HIDE_LIST));
+    $this->addAttribute(new atkBoolAttribute("mailnotification"   , AF_HIDE_LIST));
 
     $this->setTable("todo", "todo");         
     $this->setOrder("duedate");
@@ -167,7 +167,7 @@ class todo extends atkNode
   {
    global $g_db, $g_user;
 
-   if ($rec["mail_on_change"] == 1 && $this->todoChanged($rec,$rec["atkorgrec"]))
+   if ($rec["mailnotification"] == 1 && $this->todoChanged($rec,$rec["atkorgrec"]))
    {    
      $owner = $rec["owner"];
      $newassign = $rec["assigned_to"]["userid"];

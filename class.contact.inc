@@ -15,6 +15,7 @@ class contact extends atkNode
     $this->addAttribute(new atkAttribute("city",AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("country",AF_HIDE_LIST));
     $this->addAttribute(new atkAttribute("phone"));
+    $this->addAttribute(new atkAttribute("cellular"));
     $this->addAttribute(new atkAttribute("fax"));
     $this->addAttribute(new atkAttribute("email"));
     $this->addAttribute(new atkTextAttribute("remark", AF_HIDE_LIST)); 

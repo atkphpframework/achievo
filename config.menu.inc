@@ -63,7 +63,7 @@
      menuitem("activity_admin", dispatch_url("activity", "admin"), "setup", array("activity", "admin"));
      menuitem("tpl_phase_admin", dispatch_url("tpl_phase", "admin"), "setup", array("tpl_phase", "admin"));
      menuitem("tpl_project_admin", dispatch_url("tpl_project", "admin"), "setup", array("tpl_project", "admin"));    
-     menuitem("holiday_admin", dispatch_url("holidays", "admin"), "setup", array("activity", "admin"));
+     //menuitem("holiday_admin", dispatch_url("holidays", "admin"), "setup", array("activity", "admin"));
      menuitem("contracttype", dispatch_url("contracttype","admin"),"setup");      
      menuitem("schedule_types", dispatch_url("schedule_types","admin"),"setup");
   menuitem("-","","main",true,720);         
