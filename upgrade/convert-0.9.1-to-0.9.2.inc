@@ -169,9 +169,9 @@
   {  
     $setup->report("For ".$defaultcnt." customer".($defaultcnt>1?"s":"")." a 
                     new auto-generated contact person was added to be part of 
-                    projects that did not have a contactperson yet. These 
-                    contacts have been named  'Auto-generated default 
-                    contact'. Please update these to real contacts.", "warning");
+                    projects that did not have a contactperson yet. ".($defaultcnt>1?"These 
+                    contacts have":"This contact has")." been named 'Auto-generated default 
+                    contact'. Please update this name to the correct value.", "warning");
   }
 
   $setup->dropColumn("project", "contact");
@@ -273,10 +273,33 @@
   $setup->alterColumn("contract", "description", "description", "text", false);
   $setup->alterColumn("usercontract", "id", "id", "int(10)", false);
   $setup->alterColumn("contracttype", "id", "id", "int(10)", false);
+  $setup->alterColumn("organization", "address", "address", "varchar(100)", true);
+  $setup->alterColumn("organization", "zipcode", "zipcode", "varchar(20)", true);
+  $setup->alterColumn("organization", "city", "city", "varchar(100)", true);
+  $setup->alterColumn("organization", "state", "state", "varchar(100)", true);
+  $setup->alterColumn("organization", "country", "country", "varchar(100)", true);
+  $setup->alterColumn("organization", "phone", "phone", "varchar(20)", true);
+  $setup->alterColumn("organization", "fax", "fax", "varchar(20)", true);
+  $setup->alterColumn("organization", "email", "email", "varchar(50)", true);
+  $setup->alterColumn("organization", "remark", "remark", "text", true);
+  $setup->alterColumn("organization", "bankaccount", "bankaccount", "varchar(30)", true);
+  $setup->alterColumn("person", "firstname", "firstname", "varchar(50)", true);
   $setup->alterColumn("person", "lastname", "lastname", "varchar(50)", false);
   $setup->alterColumn("person", "supervisor", "supervisor", "int(10)", true);  
+  $setup->alterColumn("person", "address", "address", "varchar(100)", true);
+  $setup->alterColumn("person", "zipcode", "zipcode", "varchar(20)", true);
+  $setup->alterColumn("person", "city", "city", "varchar(100)", true);
+  $setup->alterColumn("person", "country", "country", "varchar(100)", true);
+  $setup->alterColumn("person", "phone", "phone", "varchar(20)", true);
+  $setup->alterColumn("person", "fax", "fax", "varchar(20)", true);
+  $setup->alterColumn("person", "email", "email", "varchar(50)", true);
+  $setup->alterColumn("person", "remark", "remark", "text", true);
+  $setup->alterColumn("person", "company", "company", "int(10)", true);
   $setup->alterColumn("phase", "id", "id", "int(10)", false);
   $setup->alterColumn("phase", "status", "status", "varchar(9)", true); 
+  $setup->alterColumn("phase", "max_phasetime", "max_phasetime", "int(10)", true); 
+  $setup->alterColumn("phase", "max_hours", "max_hours", "int(10)", true); 
+  $setup->alterColumn("phase", "description", "description", "text", true); 
   $setup->dropColumn("phase_activity", "billable"); // no longer used
   $setup->alterColumn("phase_activity", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("phase_activity", "activityid", "activityid", "int(10)", false);
@@ -303,8 +326,9 @@
   $setup->alterColumn("todo_history", "updated", "updated", "datetime ", true);
   $setup->alterColumn("tpl_phase_activity", "phaseid", "phaseid", "int(10)", false);
   $setup->alterColumn("tpl_phase_activity", "activityid", "activityid", "int(10)", false);
-  $setup->alterColumn("tpl_project", "id", "id", "int(10)", false);
-  
+  $setup->alterColumn("tpl_phase", "description", "description", "text", true);
+  $setup->alterColumn("tpl_project", "id", "id", "int(10)", false);  
+  $setup->alterColumn("tpl_project", "description", "description", "text", true);  
  
   //change the node rights in the accessright table to this format: modulename.nodename
   $g_db->query("UPDATE accessright SET node = CONCAT('calendar.', node) WHERE node IN ('schedule', 'schedule_types', 'schedule_notes', 'schedule_attendees')");    
