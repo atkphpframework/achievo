@@ -1,11 +1,12 @@
 <?php
   include_once("achievotools.inc");
-
+  
   global $g_layout;  
   global $startdate;
   global $enddate;  
   global $g_db; 
   global $selectedprojectid;
+  global $config_currency_symbol;
   
   if (is_array($startdate)) 
   {
@@ -79,15 +80,17 @@
               AND hours.userid = employee.userid
               AND hours.phaseid = phase.id
               AND phase.projectid = project.id
-              AND project.id = ".$selectedprojectid;                
+	      AND project.id = ".$selectedprojectid;                
   
   $records = $g_db->getrows($query);
   
   $hoursperact = array();
   $hoursperemp = array();
   $hoursperphase = array();
+  $costsperemp = array();
   
   $total = 0;
+  $totalcosts = 0;
   
   // We display the projectname, which we can get from this query
   // (if there are no entries, we don't see a name. todo: fix this.
@@ -190,6 +193,78 @@
   
   $g_layout->output($g_layout->data_bottom());
   
+  //Costregistration stats
+
+	$query = "SELECT
+              employee.name as employee,
+              costregistration.value as costs,
+             currency.symbol as cur,
+              currency.value as value,
+              project.name as project
+            FROM 
+              costregistration LEFT JOIN currency ON costregistration.currency = currency.name, 
+              employee,              
+              project                  
+            WHERE
+              costregistration.date >= '$startdate'
+              AND costregistration.date <= '$enddate'
+              AND costregistration.userid = employee.userid
+              AND costregistration.projectid = project.id           
+              AND project.id = ".$selectedprojectid;
+  
+  $rec = $g_db->getrows($query);
+  
+  //$costs = getNode("costregistration");
+  //$recs = $costs->selectDb();
+  //var_dump($recs);
+
+  $costsperemp = array();  
+  $totalcosts = 0;
+
+  for ($x=0;$x<count($rec);$x++)
+  {
+    //Calculate the costs to the default currency.
+   
+   if ($rec[$x]["cur"] == "") {
+     $defcur = $rec[$x]["costs"];
+   }
+   else {
+     $defcur = $rec[$x]["costs"] / $rec[$x]["value"];
+   }    
+    
+    $costsperemp[$rec[$x]["employee"]] += $defcur;
+    $totalcosts += $defcur;
+  }
+  
+  $g_layout->output('<br><b>'.text("title_projectstats_costsperemp") .'</b><br><br>');
+
+  $g_layout->output($g_layout->data_top());
+  $g_layout->output($g_layout->tr_top());   
+  
+  $g_layout->td_datatitle(text("name"));
+  $g_layout->td_datatitle(text("value"));
+  $g_layout->td_datatitle(text("percentage"));  
+  $g_layout->output($g_layout->tr_bottom());
+  
+  while (list($empname, $defcur) = each ($costsperemp))
+  {
+    $g_layout->output($g_layout->tr_top());
+    $g_layout->td($empname);
+    $g_layout->td($config_currency_symbol . " " . round($defcur, 2));         
+    $percentage = round(($defcur/$totalcosts)*100);
+    $imgwidth = max(1,($percentage*3));
+    $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+    $g_layout->output($g_layout->tr_bottom());
+  }
+   
+  $g_layout->output($g_layout->tr_top());
+  $g_layout->td_datatitle(text("total"));      
+  $g_layout->td_datatitle($config_currency_symbol . " " . round($totalcosts, 2));
+  $g_layout->td_datatitle('&nbsp;');  
+  $g_layout->output($g_layout->tr_bottom());  
+   
+  $g_layout->output($g_layout->data_bottom());
+
   $g_layout->output('<br><br><br>');  
 
   $g_layout->ui_bottom();
