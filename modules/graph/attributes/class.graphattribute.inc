@@ -38,6 +38,7 @@
     var $m_source = "";
     var $m_callback = "";
     var $m_params = array();
+    var $m_dynparams = array();
     
     /**
      * Constructor.
@@ -94,6 +95,11 @@
       $this->m_source = $node;
     }
     
+    function addDynamicParam($paramname, $possiblevalues)
+    {
+      $this->m_dynparams[$paramname] = $possiblevalues;
+    }
+    
     /** 
      * Return the source node responsible for drawing the graph.
      * Usually, this is the node to which the attribute was added, unless
@@ -114,34 +120,100 @@
       return $this->showGraph($record);
     }
     
-    function showGraph($record)
-    {
-      return '<img src="'.session_url($this->_graphUrl($record), SESSION_NEW).'">';
+    function showGraph($record=array())
+    {      
+      $imgname = $this->fieldName();
+      $res = '<img name="'.$imgname.'" src="'.$this->_graphUrl($record).'">';
+      if (count($this->m_dynparams))
+      {            
+        $res.="<script language=\"javascript\">\n";                
+        
+        $decodedparams = $this->_parseParams($record);
+        
+        $paramelems = "";
+        foreach ($decodedparams as $paramname=>$value)
+        {
+          $res.= $imgname."_".$paramname." = '".$value."';\n";
+          $paramelems[]= $paramname."='+".$imgname."_".$paramname;
+        }
+        
+        $res.=" function ".$imgname."_refresh()
+                {
+                  document.".$imgname.".src = '".$this->_baseUrl().implode("+'&", $paramelems).";
+                }\n";
+            
+        $res.='</script>';
+        $res.='<form name="dummyform">';
+        foreach ($this->m_dynparams as $paramname=>$possiblevalues)
+        {
+          $res.=text($paramname).": ";
+          
+          for ($i=0, $_i=count($possiblevalues); $i<$_i; $i++)
+          {
+            $checked = ($possiblevalues[$i]==$this->m_params[$paramname]?"checked":"");
+            $res.= '<input type="radio" name="resolution" onClick="';
+            $res.= $imgname."_".$paramname."='".$possiblevalues[$i]."'; ".$imgname."_refresh();";
+            $res.= '" value="'.$possiblevalues[$i].'" '.$checked.'>'.
+                        text($possiblevalues[$i]);
+          }
+        }
+        $res.='</form>';
+      }
+      
+      return $res;
     }
     
-    function _graphUrl($record)
+    function _graphUrl($record=array())
     {
-      return "graph.php?atknodetype=".$this->getSource().
-                      "&plotter=graph.".get_class($this).
-                      "&callback=".$this->m_callback.$this->_getParams($record);
+      return $this->_baseUrl().$this->_paramsToUrl($record);
     }
     
-    function _getParams($record)
+    function _baseUrl()
+    {
+      return session_url("graph.php?atknodetype=".$this->getSource().
+                         "&plotter=graph.".get_class($this).
+                         "&callback=".$this->m_callback, SESSION_NEW);
+    }
+    
+    function _paramsToUrl($record=array())
     {
       $res = "";
       
-      if (count($this->m_params))
+      $decodedparams = $this->_parseParams($record);
+      
+      if (count($decodedparams))
       {
         // Params can use [fieldnames] and [pk]
-        $record["pk"] = $this->m_ownerInstance->primaryKey($record);        
-        
-        foreach($this->m_params as $key=>$value)
+        if (is_object($this->m_ownerInstance))
+        {
+          $record["pk"] = $this->m_ownerInstance->primaryKey($record);        
+        }
+        foreach($decodedparams as $key=>$value)
         {          
           $res.="&".$key."=".urlencode(stringparse($value, $record));
         }
       }
       return $res;
-    }       
+    }    
+    
+    function _parseParams($record=array())
+    {
+      $res = array();
+      
+      if (count($this->m_params))
+      {
+        // Params can use [fieldnames] and [pk]
+        if (is_object($this->m_ownerInstance))
+        {
+          $record["pk"] = $this->m_ownerInstance->primaryKey($record);        
+        }
+        foreach($this->m_params as $key=>$value)
+        {          
+          $res[$key] = stringparse($value, $record);
+        }
+      }
+      return $res;
+    }
     
     // Dummy methods to prevent loading/storing of data.
     function load() {}

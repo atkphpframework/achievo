@@ -36,7 +36,7 @@
    */       
   class dataGraphAttribute extends graphAttribute
   {
-    var $m_graphtype = "auto"; 
+    //var $m_graphtype = "auto"; 
   
     /**
      * Constructor.
@@ -82,14 +82,10 @@
      */ 
     function dataGraphAttribute($name, $callback, $params=array(), $graphtype="auto", $flags=0)
     {
+      $params["graphtype"] = $graphtype; // treating graphtype as an extra parameter internally saves us a lot of work.
       $this->graphAttribute($name, $callback, $params, $flags);
-      $this->m_graphtype = $graphtype;
     }
-    
-    function _graphUrl($record)
-    {
-      return parent::_graphUrl($record)."&graphtype=".$this->m_graphtype;
-    }
+        
   }
   
   /**
