@@ -9,11 +9,9 @@
     }
     
     function getMenuItems()
-    {
-      global $selectedproject;
-      
+    {          
       menuitem("-","","projectmanagement");        
-      if ($selectedproject == 0)
+      if ($_REQUEST["selectedproject"] == 0)
       {            
         menuitem("project_notesview", dispatch_url("notes.project_notesview", "admin"), "projectmanagement", array("notes.project_notes", "admin"));
       } 

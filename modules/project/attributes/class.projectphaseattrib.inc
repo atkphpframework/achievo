@@ -27,8 +27,9 @@ class atkProjectPhaseAttribute extends atkAttribute
    * @return piece of html code with a textarea
    */
   function edit($record="")
-  {    
-    global $selectedphaseid, $atkaction, $atklevel;
+  {        
+    $selectedphaseid = $_REQUEST["selectedphaseid"];
+    $atkaction = $_REQUEST["atkaction"];
     
     // The current phase (in case of edit of an existing record)
     $currentphase = $record[$this->fieldName()]["phaseid"];
@@ -111,16 +112,16 @@ class atkProjectPhaseAttribute extends atkAttribute
     $saveform = true; // keep form in session..
     if ($atkaction=="edit")
     {
-      $targeturl_houradmin = dispatch_url("timereg.hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]", "atklevel"=>$atklevel));      
+      $targeturl_houradmin = dispatch_url("timereg.hours", "edit", array("atkselector" => 'hours.id='.$record['id'], "selectedphaseid" => "[id]", "atklevel"=>atkLevel()));      
     }
     elseif($atkaction=="report")
     {
-      $targeturl_houradmin = dispatch_url("reports.hoursurvey", "report", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
+      $targeturl_houradmin = dispatch_url("reports.hoursurvey", "report", array("selectedphaseid" => "[id]", "atklevel"=>atkLevel()));
       $saveform = false; // hoursurvey doesn't support session save..
     }
     else
     {
-      $targeturl_houradmin = dispatch_url("timereg.hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>$atklevel));
+      $targeturl_houradmin = dispatch_url("timereg.hours", "admin", array("selectedphaseid" => "[id]", "atklevel"=>atkLevel()));
     }
     
     $targeturl_phase = dispatch_url("project.phase", "select", array("atkfilter" => "projectid=[id]", "atktarget" => atkurlencode($targeturl_houradmin)));
@@ -211,7 +212,7 @@ class atkProjectPhaseAttribute extends atkAttribute
   
   function getPhase($phaseid)
   {
-    global $g_db, $g_user;
+    global $g_db;
      
     $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase ";
     $query.= "WHERE phase.projectid=project.id AND phase.id = $phaseid";            

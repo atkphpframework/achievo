@@ -17,7 +17,7 @@
 
     function getMenuItems()
     {
-      global $selectedproject;
+      $selectedproject = $_REQUEST["selectedproject"];
       if ($selectedproject == 0)
       {
         menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu

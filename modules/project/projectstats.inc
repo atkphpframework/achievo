@@ -1,12 +1,10 @@
 <?php
   include_once("achievotools.inc");
 
-  global $g_layout;
-  global $startdate;
-  global $enddate;
-  global $g_db;
-  global $selectedprojectid;
-  global $config_currency_symbol;
+  global $g_layout, $g_db, $config_currency_symbol;
+  $startdate = $_REQUEST["startdate"];
+  $enddate = $_REQUEST["enddate"];  
+  $selectedprojectid = $_REQUEST["selectedprojectid"];  
 
   if (is_array($startdate))
   {

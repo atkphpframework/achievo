@@ -214,7 +214,7 @@
   $txt_project = "Project";
   $txt_projectid = "Project";
   $txt_projects = "Projecten";
-  $txt_project_select = "Selected project";
+  $txt_project_select = "Select project";
   $txt_project_select_none = "No project selected";
   $txt_project_tab_default = "General";
   $txt_project_tab_documents = "Documents";

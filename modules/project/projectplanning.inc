@@ -3,7 +3,9 @@
 //  MILESTONES BEGIN
 // **********************************************************************
 
-global $g_layout, $g_db, $selectedprojectid;
+global $g_layout, $g_db;
+
+$selectedprojectid= $_REQUEST["selectedprojectid"];
 
 include_once("achievotools.inc");
 

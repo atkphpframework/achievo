@@ -22,8 +22,8 @@ class atkProjectAttribute extends atkAttribute
    * @return piece of html code with a textarea
    */
   function edit($record="")
-  {
-    global $selectedprojectid, $atkaction, $atklevel;
+  {      
+    $selectedprojectid = $_REQUEST["selectedprojectid"];
 
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
@@ -71,7 +71,7 @@ class atkProjectAttribute extends atkAttribute
 
     $result .= '</select>&nbsp';
 
-    $targeturl = $_SERVER["PHP_SELF"]."?selectedprojectid=[id]&atklevel=$atklevel";
+    $targeturl = $_SERVER["PHP_SELF"]."?selectedprojectid=[id]&atklevel=".atkLevel();
 
     if ($this->hasFlag(AF_FORMSUBMIT)) $submit = true; else $submit = false;
     $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("houradmin_searchallprojects"),SESSION_NESTED, $submit);
@@ -139,7 +139,7 @@ class atkProjectAttribute extends atkAttribute
 
   function getProject($projectid)
   {
-    global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate, $g_db;
+    global $g_db;
 
     $query = "SELECT id,name FROM project ";
     $query.= "WHERE id = $projectid ";

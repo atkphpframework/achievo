@@ -11,8 +11,6 @@ Changes in Achievo 0.9.2
 + Added a cron script that sends reminders for todo's. [Ivo]
 + The search box in the top frame now works for contacts, projects and
   customers. [Ivo]
-+ Added initial version of document management module (uploading documents to 
-  a project). [Lineke]
 * Contactpersons and employees are generalized to 'person'. (Both stored in 
   one table now) [Lineke]
 + Instead of one 'customer' and one 'contactperson', a project now has
@@ -31,6 +29,7 @@ Changes in Achievo 0.9.2
   scheduler. [Lineke]
 + Added feature to compare schedules of employees for easy planning of 
   meetings. [Lineke]
+* Achievo should now work with register_globals = Off. (bug #107) [Ivo]
 + Added initial version of setup.php, which can be used to install and/or 
   upgrade the Achievo database (not yet functional though). [Ivo]
 * In the 'security profiles' screen, you can no longer grant rights that you
@@ -62,6 +61,8 @@ Changes in Achievo 0.9.2
 - Removed about 80 unnecessary strings from the language files. In some
   cases this unfortunately means that some strings have to be retranslated.
   [Ivo]
+- Finance, Costregistration and Resource_planning modules have been 
+  deprecated and moved into separately downloadable add-on modules. [Ivo]
 
 Changes in Achievo 0.9.1
 ------------------------

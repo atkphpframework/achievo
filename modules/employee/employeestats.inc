@@ -4,14 +4,12 @@
     return floor($time/60).":".sprintf("%02d",($time%60));
   }
 
-  global $g_layout;
-  global $g_securityManager;
-  global $startdate;
-  global $enddate;
-  global $g_user;
-  global $g_db;
-  global $userid;
-  global $config_currency_symbol;
+  global $g_layout, $g_securityManager, $g_user, $g_db, $config_currency_symbol;
+  
+  $startdate = $_REQUEST["startdate"];
+  $enddate = $_REQUEST["enddate"];
+  $userid = $_REQUEST["userid"];
+  
 
   useattrib("atkdateattribute");
 

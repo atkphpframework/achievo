@@ -89,19 +89,12 @@ class weekreport extends atkNode
 
   function action_report()
 	{
-    global $g_layout;
-    global $g_securityManager;
-
-    global $g_user;
-    global $atkorderby;
-    global $g_db;
-    global $userid;
-    global $nameswitch;
-    global $showdetails;
-    global $showstatus;
-
-//  global $printable;
-//  global $export;
+    global $g_layout, $g_securityManager, $g_user, $g_db;
+    $atkorderby = $_REQUEST["atkorderby"];    
+    $userid = $_REQUEST["userid"];
+    $nameswitch = $_REQUEST["nameswitch"];
+    $showdetails = $_REQUEST["showdetails"];
+    $showstatus = $_REQUEST["showstatus"];
 
     /** $outputType gives control over the kind of output:
     *        0 standard(onscreen in compliance with theme, default)
@@ -109,7 +102,7 @@ class weekreport extends atkNode
     *             [was $printable]
     *        2 export ( to a file on local computer ex. achievo.csv)
     */
-    global $outputType;
+    $outputType = $_REQUEST["outputType"];
     if (!isset($outputType)||$outputType=="") $outputType=0;
 
     if (!isset($atkorderby)||$atkorderby=="") $atkorderby = "week";

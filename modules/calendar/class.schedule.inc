@@ -29,10 +29,16 @@
 
   class schedule extends atkNode
   {
+    var $m_viewdate; 
+    var $m_user;
+    var $m_view;
+  
     function schedule()
     {
-      global $g_user, $g_sessionManager, $view, $viewdate, $user, $time;
+      global $g_user, $g_sessionManager;
 
+      $time = $g_sessionManager->stackVar("time");
+      
       if ($time!="")
       {
         $default_start_time = $time; // passed from the url.
@@ -68,19 +74,19 @@
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD));
 
-      $view     = $g_sessionManager->stackVar("view");
-
-      $viewdate = $g_sessionManager->stackVar("viewdate");
-
-      $user     = $g_sessionManager->stackVar("user");
-      if ($viewdate=="") $viewdate = strftime("%Y-%m-%d");
-      if (trim($view) == "") { $view = "dayview"; }
-      if ($user=="") $user = $g_user["name"];
+      $this->m_view     = $g_sessionManager->stackVar("view");
+      if (trim($this->m_view) == "") { $this->m_view = "dayview"; }
+      
+      $this->m_user     = $g_sessionManager->stackVar("user");
+      if ($this->m_user=="") $this->m_user = $g_user["name"];
+      
+      $this->m_viewdate = $g_sessionManager->stackVar("viewdate");      
+      if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
 
       $this->addAllowedAction("view");
 
       $this->setTable("schedule", "schedule");
-      if ($view == "dayview")
+      if ($this->m_view == "dayview")
       {
         $this->setOrder("startdate DESC");
       }
@@ -93,16 +99,16 @@
 
     function initial_values()
     {
-      global $g_user, $viewdate;
+      global $g_user;
 
       $initial["owner"] = $g_user["name"];
       $initial["publicitem"] = 1;
 
-      if ($viewdate!="")
+      if ($this->m_viewdate!="")
       {
-        $arr_date = array("year"=>substr($viewdate, 0, 4),
-                          "month"=>substr($viewdate, 5, 2),
-                          "day"=>substr($viewdate, 8, 2));
+        $arr_date = array("year"=>substr($this->m_viewdate, 0, 4),
+                          "month"=>substr($this->m_viewdate, 5, 2),
+                          "day"=>substr($this->m_viewdate, 8, 2));
         $initial["startdate"] = $arr_date;
         $initial["enddate"] = $arr_date;
       }
@@ -189,19 +195,20 @@
 
     function adminPage()
     {
-      global $view, $g_layout, $viewdate;
+      global $g_layout;
 
-      if (method_exists($this, $view))
+      if (method_exists($this, $this->m_view))
       {
-        $result = $this->$view($viewdate);
+        $funcname = $this->m_view;
+        $result = $this->$funcname($this->m_viewdate);
       }
       else
       {
-        $result = "Niet bestaande view ($view)";
+        $result = "Niet bestaande view (".$this->m_view.")";
       }
 
       $g_layout->initGUI();
-      $g_layout->ui_top(text("Achievo scheduler / ".$view));
+      $g_layout->ui_top(text("Achievo scheduler / ".$this->m_view));
       $g_layout->output($this->statusbar());
       $g_layout->output($result);
       $g_layout->ui_bottom();
@@ -209,7 +216,7 @@
 
     function monthview($viewdate)
     {
-      global $g_user, $g_db, $user;
+      global $g_user, $g_db;
 
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
@@ -220,7 +227,7 @@
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";
-      $form .= $this->get_employees($user);
+      $form .= $this->get_employees($this->m_user);
       $form .= "</SELECT>\n";
       $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
       $form .= "</FORM>\n";
@@ -229,7 +236,7 @@
       $dummy = new monthView($month, $year);
       $dummy->viewerWidth = "600";
       $dummy->owner       = $g_user["name"];
-      $dummy->showGlobal  = $user;
+      $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
       // assign our output buffer
@@ -268,7 +275,9 @@
 
     function employeeview($viewdate)
     {
-      global $g_user, $g_db, $user, $selemployee;
+      global $g_user, $g_db;
+      
+      $selemployee = $_REQUEST["selemployee"];
 
       if (!is_array($viewdate))
       {
@@ -323,7 +332,7 @@
 
     function dayview($viewdate)
     {
-      global $g_user, $g_db, $user;
+      global $g_user, $g_db;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
@@ -335,7 +344,7 @@
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";
-      $form .= $this->get_employees($user);
+      $form .= $this->get_employees($this->m_user);
       $form .= "</SELECT>\n";
       $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
       $form .= "</FORM>\n";
@@ -344,7 +353,7 @@
       $dummy = new dayView($day, $month, $year);
       $dummy->viewerWidth = "600";
       $dummy->owner       = $g_user["name"];
-      $dummy->showGlobal  = $user;
+      $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
       // get the legend
@@ -367,7 +376,7 @@
 
     function weekview($viewdate)
     {
-      global $g_user, $g_db, $user;
+      global $g_user, $g_db;
 
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
@@ -379,7 +388,7 @@
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= "<SELECT name='user'>\n";
-      $form .= $this->get_employees($user);
+      $form .= $this->get_employees($this->m_user);
       $form .= "</SELECT>\n";
       $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
       $form .= "</FORM>\n";
@@ -388,7 +397,7 @@
       $dummy = new weekView($day, $month, $year);
       $dummy->viewerWidth = "600";
       $dummy->owner       = $g_user["name"];
-      $dummy->showGlobal  = $user;
+      $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
       // assign our output buffer

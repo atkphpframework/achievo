@@ -3,24 +3,22 @@
   include_once("achievotools.inc");
   useattrib("atkdateattribute");
 
-  global $g_layout;
-  global $g_securityManager;
-  global $startdate;
-  global $enddate;
-  global $activityid;
-  global $g_db;
-  global $activityname;
+  global $g_layout, $g_db, $g_securityManager;
+  $startdate = $_REQUEST["startdate"];
+  $enddate = $_REQUEST["enddate"];
+  $activityid = $_REQUEST["activityid"];  
+  $activityname = $_REQUEST["activityname"];
 
-  function get_activities($act_id)
+  function get_activities($act_id, &$activityname)
   {
-    global $g_db, $activityname, $activityid;
+    global $g_db;
     // Get the activities
     $sql = "SELECT id,name
             FROM activity
             ORDER BY name
            ";
     $records = $g_db->getrows($sql);
-    if($act_id==-1) { $sel="SELECTED"; } else { $sel=""; }
+    
     for($i=0;$i<count($records);$i++)
     {
       // first activity is default if no activity is selected.
@@ -29,8 +27,7 @@
       {
         $sel="SELECTED";
         // since we are getting activityrecords anyway, we also remember the name of the currently
-        // selected activity.
-        $activityid = $records[$i]["id"];
+        // selected activity.        
         $activityname = $records[$i]["name"];
       }
       else
@@ -87,7 +84,7 @@
 
   $g_layout->td(text("activity").':</b> ');
 
-  $g_layout->td('<SELECT name="activityid">'.get_activities($activityid).'</SELECT>');
+  $g_layout->td('<SELECT name="activityid">'.get_activities($activityid, $activityname).'</SELECT>');
 
   $g_layout->output('</tr><tr>');
 
