@@ -15,29 +15,7 @@
 
 useattrib("atktextattribute");
 useattrib("atkparserattribute");
-useattrib("atkdummyattribute");
 userelation("atkonetomanyrelation");
-
-class customerFilteredProjectAttrib extends atkDummyAttribute
-{
-  var $m_customerid = NULL;
-  
-  function customerFilteredProjectAttrib($customerid)
-  {
-    $this->atkDummyAttribute("custfilter", "", AF_HIDE);
-    $this->m_customerid = $customerid;
-  }
- 
-  function addToQuery(&$query, $table="", $aliasprefix="", $rec="", $level, $mode)
-  {
-    if ($this->m_customerid != NULL)
-    {
-      $query->addJoin("project_person", "projectmembers", "project.id = projectmembers.projectid", false);
-      $query->addJoin("person", "person", "person.id = projectmembers.personid AND person.company='".$this->m_customerid."'", false);      
-      $query->setDistinct(true); // the join we perform could lead to duplicate records.
-    }
-  }
-}
 
 class organization extends atkNode
 {
@@ -93,7 +71,8 @@ class organization extends atkNode
   function showProjects($record, $mode)
   {
     $projectnode = getNode("project.project");
-    $projectnode->add(new customerFilteredProjectAttrib($record["id"]));
+    useattrib("project.filterprojectbyorganizationattrib");
+    $projectnode->add(new filterProjectByOrganizationAttrib($record["id"]));
     $recs = $projectnode->selectDb();
     if (count($recs)>0)
     {

@@ -1,7 +1,7 @@
 <?php
 
   userelation("atkmanytoonerelation");
-
+  
   class hoursurvey extends atkNode
   {
     function hoursurvey()
@@ -19,7 +19,7 @@
       $phaseid = $this->m_postvars["phaseid"];
       $userid = $this->m_postvars["userid"];
       $nameswitch = $this->m_postvars["nameswitch"];
-      $role = $this->m_postvars["role"];
+      $roleid = $this->m_postvars["roleid"];
 
       /** $outputType gives control over the kind of output:
        * 0 standard (onscreen in compliance with theme, default)
@@ -38,8 +38,8 @@
       $col = $this->m_postvars["col"];
 
       // the selected customer_id is found as "customer.id='3'" in the postvars
-      $customerarr = decodeKeyValuePair($this->m_postvars["customerid"]);
-      $customerid = $customerarr["customer.id"];
+      $organizationarr = decodeKeyValuePair($this->m_postvars["organizationid"]);
+      $organizationid = $organizationarr["organization.id"];
 
       $hoursnode = &getNode("timereg.hours");
 
@@ -133,7 +133,7 @@
 
         // we have to pass a 'dummy' record to the attributes to set their default value.
         $dummyrec = Array("projectid"=>$projectid,
-                          "customerid"=>array("id"=>$customerid), // manytoonerelation needs subarray
+                          "organizationid"=>array("id"=>$organizationid), // manytoonerelation needs subarray
                           "phaseid"=>Array("phaseid"=>$phaseid), // is implemented as an array in projphaseattrib.
                           "startdate"=>array("year"=>substr($startdate,0,4),
                                              "month"=>substr($startdate,5,2),
@@ -155,17 +155,19 @@
         $g_layout->td(text('or'),'colspan="2"');
         $g_layout->output('</tr><tr>');
         //$g_layout->td(text('customer').':');
-        $g_layout->td('<SELECT name="role">'.$this->get_roles($role).'</SELECT>');
-        $customeratt = new atkManyToOneRelation("customerid", "organization.organization");
-        $g_layout->td($customeratt->edit($dummyrec));
+        $g_layout->td(text("organization").':');
+        $organizationatt = new atkManyToOneRelation("organizationid", "organization.organization");
+        $g_layout->td('<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.
+                      $organizationatt->edit($dummyrec));
         $g_layout->output('</tr><tr>');
         $g_layout->td('<hr>','colspan="2"');
         $g_layout->output('</tr><tr>');
-        $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');
+        $g_layout->td(text('employee').':');
 
         if($view_all)
         {
-          $g_layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
+          $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>'.
+                        ' <SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
         }
         else
         {
@@ -242,11 +244,21 @@
       if(!empty($activity_id)&&$activity_id!="") $filter.=" AND hours.activityid=".$activity_id;
       if(!empty($phaseid)&&$phaseid!="") $filter.=" AND hours.phaseid=".$phaseid;
       if(!empty($projectid)&&$projectid!="") $filter.=" AND A.projectid=".$projectid;
-      if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
+      //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
 
       // employee table is not yet added to the query. Force that by adding a manytoonerel,
       // so we display a users name.
       $hoursnode->add(new atkManyToOneRelation("userid", "employee.employee"));
+      
+      // organization and person_organization tables are not yet added to the query. 
+      // Since this is a many:many thing between projects and organizations, with the
+      // contactpersons als intermediairy, we have to add a special attribute which 
+      // nests itself nicely in the query.
+      if ($organizationid!="")
+      {
+        useattrib("project.filterprojectbyorganizationattrib");
+        $hoursnode->add(new filterProjectByOrganizationAttrib($organizationid, $roleid, "B")); // the projectphaseattribute uses 'B' as alias for the project table.
+      }
 
       if ($nameswitch=="supervisor")
       {
@@ -331,12 +343,13 @@
               ORDER BY name";
 
       $records = $g_db->getrows($sql);
+      $role_code='<OPTION VALUE="">'.text("allroles");
       for($i=0,$_i=count($records);$i<$_i;$i++)
       {
-        if ($role == $records["id"]) $sel = "SELECTED"; else $sel = "";
-        $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["name"].':</OPTION>';
+        if ($role == $records[$i]["id"]) $sel = "SELECTED"; else $sel = "";
+        $role_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["name"].':</OPTION>';
       }
-      return $employee_code;
+      return $role_code;
     }
   }
 
