@@ -58,7 +58,7 @@
      */
     function filterProjectByOrganizationAttrib($organizationid, $roleid="", $projectalias="")
     {
-      $this->atkDummyAttribute("custfilter", "", AF_HIDE);
+      $this->atkDummyAttribute("custfilter", "", AF_HIDE|AF_FORCE_LOAD);
       $this->m_organizationid = $organizationid;
       $this->m_projectalias = $projectalias;
       $this->m_roleid = $roleid;
