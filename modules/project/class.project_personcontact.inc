@@ -28,11 +28,7 @@ class project_personcontact extends atkNode
     $this->setSecurityAlias("project.project"); // if you may edit the project, you may also add contactpersons to it.
     $this->setTable("project_person", "project_person");
   }
-
-  function recordActions($record, &$actions)
-  {
-    if (!$this->hasFlag(NF_NO_VIEW)) $actions["view"] = session_url(dispatch_url("project.project", "view", array("atkselector" => "project.id=".$record["projectid"]["id"])),SESSION_NESTED);
-  }
+  
 }
 
 ?>
