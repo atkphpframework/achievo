@@ -11,12 +11,14 @@
   class setup extends atkNode
   {
     var $m_report = array(); 
+    var $m_cancontinue = true;
     
     var $m_resultmsg = array("ok" => "Installation completed",
+                             "n/a" => "No installation required",
                              "failed" => "Installation failed",
                              "faileddep" => "Not installed (dependencies could not be resolved)",
                              "cyclicdep" => "Not installed (Cyclic dependency detected)",
-                             "alreadyinstalled" => "No installation necessary, module was already installed",
+                             "alreadyinstalled" => "Module was already installed and up to date",
                              "notfound" => "Not installed (Module could not be found)",
                              "patched" => "Patch applied succesfully");
   
@@ -197,6 +199,19 @@
       
     }
     
+    function getTableNames()
+    {
+      global $g_db;
+      
+      $tablenames=array();
+      $tables = $g_db->table_names();
+      for ($i=0, $_i=count($tables); $i<$_i; $i++)
+      {
+        $tablenames[] = $tables[$i]["table_name"];
+      }                
+      return $tablenames;   
+    }
+    
     /**
      * Check what version of the Achievo database we are using.
      */
@@ -207,13 +222,7 @@
       
       if ($res == DB_SUCCESS)
       {
-        global $g_db;
-        $tablenames=array();
-        $tables = $g_db->table_names();
-        for ($i=0, $_i=count($tables); $i<$_i; $i++)
-        {
-          $tablenames[] = $tables[$i]["table_name"];
-        }                
+        $tablenames = $this->getTableNames();      
     
         if (count($tables)==0)
         {
@@ -342,7 +351,7 @@
       }
       else
       {
-        $output = "I was unable to install the system table, so I cannot continue with the installation. Please verify your database setup and try again.";
+        $output = "I was unable to install the system table, so I cannot continue the installation. Please verify your database setup and try again.";
         $ok = false;
       }
       
@@ -362,6 +371,35 @@
         }
         $output.= $g_layout->data_bottom();
       }
+  
+      // Also show any reports.
+      if (count($this->m_report))
+      {
+        foreach($this->m_report as $reportmsg)
+        {            
+          if ($reportmsg["type"]=="error")
+          {
+            $output.='<br><br><b>Installation failed!</b><br>';
+            $output.= $reportmsg["msg"];
+            $ok = false;
+            break;
+          }
+          else if ($reportmsg["type"]=="important")
+          {
+            // Show this to the user
+            $output.="<br><br><b>Important:</b><br>";
+            $output.= $reportmsg["msg"];              
+          }
+          else if ($reportmsg["type"]=="warning")
+          {
+             // Show this to the user
+            $output.="<br><br><b>Warning:</b><br>";
+            $output.= $reportmsg["msg"];              
+          }
+        }   
+      }
+      
+      
       if ($ok)
       {
         return $this->setupScreen("Installation result", $output, "achievostart");
@@ -414,7 +452,7 @@
       // installed before. 
       if (in_array($modname, $installed_mods))
       {
-        $result[$modname] = "allreadyinstalled";
+        $result[$modname] = "alreadyinstalled";
         atkdebug("Module ".$modname." already installed in previous run.");
         return true;
       }
@@ -469,14 +507,29 @@
       // and returned false. Next thing to do is perform the database installation.
       $installfile = moduleDir($modname)."install/install.inc";   
       if ($this->needsInstall($modname))
-      {
+      {      
         $this->includeInstallFile($modname, $installfile);
+        if (!$this->m_cancontinue)
+        {  
+          //  Something went wrong.
+          atkdebug("Detected an error during the installation of $modname");
+          $result[$modname] = "failed";
+          return false;
+        }
+        else
+        {
+          // if we get here, everything should be installed.
+          atkdebug("Installed $modname");
+          $result[$modname] = "ok";
+          return true;
+        }
+
       }
-      
-      // if we get here, everything should be installed.
-      atkdebug("Installed $modname");
-      $result[$modname] = "ok";
+
+      // If we get here, there was nothing to install for this module.
+      $result[$modname] = "n/a";
       return true;
+      
     }
     
     function includeInstallFile($modname, $installfile)
@@ -497,6 +550,17 @@
       return (file_exists($installfile));
     }
     
+    function hasVersionInfo()
+    {
+      static $s_hasversioninfo=false;
+      if (!$s_hasversioninfo) // While we have no versioninfo, we keep trying.
+      {
+        $tablenames = $this->getTableNames();        
+        $s_hasversioninfo = (in_array("versioninfo", $tablenames));
+      }      
+      return $s_hasversioninfo;
+    }
+    
     /**
      * This function retrieves the list of installed modules. 
      *
@@ -510,39 +574,60 @@
       // But I didn't implement this, since modules may be installed or
       // deinstalled between 2 calls.
       $result = array();
-            
-      $versioninfo = getNode("setup.versioninfo");
       
-      if (is_object($versioninfo)) // If this object doesn't exist, we don't have
-                                   // a correct installer, so we can only return 
-                                   // an empty  result.      
-      {       
-        // for fresh installations the versioninfo doesn't exist. we set
-        // errorreporting to silent, because we don't want to know this.
-        global $g_db;
-        $curhaltval = $g_db->m_haltonerror;
-        $g_db->m_haltonerror = false;
-        $rows = $versioninfo->selectDb();
-        $g_db->m_haltonerror = $curhaltval; // reset to original state.
-        
-        for ($i=0, $_i=count($rows); $i<$_i; $i++)
-        {
-          $result[$rows[$i]["module"]] = $rows[$i]["version"];
-        }        
+      if ($this->hasVersionInfo())
+      {                
+        $versioninfo = getNode("setup.versioninfo");
+      
+        if (is_object($versioninfo)) // If this object doesn't exist, we don't have
+                                     // a correct installer, so we can only return 
+                                     // an empty  result.      
+        {       
+          // for fresh installations the versioninfo doesn't exist. we set
+          // errorreporting to silent, because we don't want to know this.
+          global $g_db;
+          $curhaltval = $g_db->m_haltonerror;
+          $g_db->m_haltonerror = false;
+          $rows = $versioninfo->selectDb();
+          $g_db->m_haltonerror = $curhaltval; // reset to original state.        
+          for ($i=0, $_i=count($rows); $i<$_i; $i++)
+          {
+            $result[$rows[$i]["module"]] = $rows[$i]["version"];
+          }        
+        }
       }
       return $result;
     }
     
     function installNode($nodename)
     {
+      // Check if previous calls all went ok. If one went wrong, we should stop.
+      if (!$this->m_cancontinue) return false;
+      
       $node = &getNode($nodename);            
       
       if (is_object($node))
       {
         // We have to check if the table already exists. If it exists, we may need to
         // add columns to it.
-        global $g_db;
+        global $g_db;        
         $meta = $g_db->metadata($node->m_table, true);                
+        
+        if ((!is_array($meta)||count($meta)<=0) && in_array($node->m_table, $this->getTableNames()))
+        {
+          // No metadata. It is unsafe to continue the installation.
+          atkdebug("Table exists, but metadata is not present. I cannot continue installation without metadata");
+          $this->report("I could not read metadata from the database, so I 
+                         cannot continue the installation. Please verify your 
+                         database setup and try again. 
+                         <br>If you cannot find the problem, please send a 
+                         message to the Achievo mailinglist.", "error");
+          return false;
+        }
+        else
+        {
+          // Table does not exist.
+        }
         
         include_once(atkconfig("atkroot")."atk/db/class.atkddl.inc");        
         $ddl = atkDDL::create();
@@ -618,6 +703,10 @@
         else
         {
           atkdebug("setup::installNode: ddl class not found");
+          $this->report("Your database is not supported by the automatic 
+                        installscript. If you think it should be, please 
+                        send a message to the Achievo mailinglist.", "error");
+          return false;
         }
       }
       else
@@ -625,13 +714,17 @@
         atkdebug("setup::installNode: node $node not found.");
         return false;
       }
+      return true;
     }
     
     function setVersion($version, $module="")
     {
+      // if something went wrong, we should ignore the setVersion call.
+      if (!$this->m_cancontinue) return false;   
+      
       if ($module=="") $module = $this->m_currentmodule;
       
-      if ($module!="")
+      if ($module!="" && $this->hasVersionInfo())
       {
         $versioninfo = &getNode("setup.versioninfo");
         $recs = $versioninfo->selectDb("module='".$module."'");
@@ -671,6 +764,14 @@
       // Regardless of what we output later to the user, everything
       // reported by the scripts is put in the debuglog.
       atkdebug($type.": ".$progressmsg);
+      
+      // If an error is reported by some subprocess, we should
+      // mark this so we don't continue.
+      if ($type=="error")
+      {
+        $this->m_cancontinue=false;
+      }
+      
     }
     
     // TODO FIXME: functions that follow are *NOT* yet database
