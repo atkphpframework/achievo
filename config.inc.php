@@ -43,7 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile="nederlands.lng";
+  $config_languagefile="english.lng";
 
 
   // -------------------------------------------
@@ -128,7 +128,7 @@
   // Specify the module name as first parameter, and the path where
   // it can be found as the second parameter.
   //
-  module("tryllian","../achievo_modules/tryllian");
+  // module("somemodule","../achievo_modules/somemodule");
   
   // -------------------------------------------
   //            END OF CONFIGURATION
@@ -138,6 +138,5 @@
   // Also, you should not change the atkconf.inc file, since that would 
   // break Achievo.
   include "atkconf.inc";
-
 
 ?>
