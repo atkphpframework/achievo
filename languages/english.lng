@@ -79,20 +79,22 @@
   $txt_title_projectstats_peractivity = "People worked on the following activities for this project";
 
   // -- Todo stuff --
-  $txt_menu_todomanagement   = "Manage todo Item's";
-  $txt_menu_project_todoview = "Project todo items";
-  $txt_menu_todo             = "Project todo's";
-  $txt_title_todo_admin      = "Project todo list";
-  $txt_title_todo_edit       = "Edit project todo";
-  $txt_title_todo_add        = "Add project todo";
-  $txt_link_todo_add         = "Add project todo";
+  $txt_menu_project_todoview             = "Project todo's";
+  $txt_title_project_todoview_admin      = "Project selector";
+  $txt_title_project_todoview_edit       = "Overview project todo's";
+  $txt_link_todo_add                     = "Add a new todo item";
+  $txt_title_todo_add                    = "Add a new todo item";
+  $txt_title_todo_edit                   = "Edit a todo item";
+  $txt_title_todo_delete                 = "Delete a todo item";
 
   // -- Notes stuff
-  $txt_menu_project_notesview        = "Project notes";
-  $txt_title_project_notesview_admin = "Project selector";
-  $txt_title_project_notes_add       = "Add a project note";
-  $txt_title_project_notesview_edit  = "Edit a project note";
-
+  $txt_menu_project_notesview            = "Project notes";
+  $txt_title_project_notesview_admin     = "Project selector";
+  $txt_title_project_notesview_edit      = "Overview project notes";
+  $txt_link_project_notes_add            = "Add a new note"; 
+  $txt_title_project_notes_add           = "Add a new note";  
+  $txt_title_project_notes_delete        = "Delete a project note";  
+  $txt_title_project_notes_edit          = "Edit a project note";  
 
   // --------==== Strings that were introduced in version 0.4: ====---------    
   $txt_title_hoursurvey_onactivity = "on activity ";
