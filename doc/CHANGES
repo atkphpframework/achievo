@@ -21,6 +21,7 @@ Changes in Achievo 0.9.4
   more than 1 digit. [Ivo]
 * Achievo should no longer generate notices when php error_reporting is set to
   E_ALL. (bug #74) [Ivo]
+* Fixed bug in project filter (non-active projects were not editable). [Ivo]
 
 Changes in Achievo 0.9.3
 ------------------------
