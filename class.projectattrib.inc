@@ -24,7 +24,8 @@ class atkProjectAttribute extends atkAttribute
     global $selectedprojectid, $atkaction, $atklevel;
     
     // The current phase (in case of edit of an existing record)
-    $currentproject = $record[$this->fieldName()];
+    
+    $currentproject = $record[$this->fieldName()]['projectid'];
      
     // The current value might be overriden by use of the 'search all phases' button
     if (isset($selectedprojectid)&&$selectedprojectid!="")
@@ -84,6 +85,35 @@ class atkProjectAttribute extends atkAttribute
 
   }    
   
+  function display($rec)
+  {  
+    return $rec[$this->fieldName()]["projname"];
+  } 
+
+  function db2value($rec)
+  {
+    return Array("projname"=>$rec["proj_name"], "projectid"=>$rec["projectid"]);
+  }
+
+  function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
+  {
+    if ($mode == "select")
+    {
+      //$query->addField($this->fieldName(),"","hours",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));
+      $query->addField("name","", "B", "proj_", false);
+      $query->addField("projectid","", "costregistration", "", false);
+      //$query->addField("name","", "A", "phase_", false);
+      //$query->addField("name","", "C", "activity_", false);
+      //$query->addJoin("activity", "C", "C.id=hours.activityid", false);
+      //$query->addJoin("phase", "A","A.id=hours.phaseid", true);
+      $query->addJoin("project", "B","B.id=costregistration.projectid", true);
+
+    }
+     
+    else if ($mode == "add" || $mode == "edit")
+      $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));
+  } 
+  
   function getRecentProjects()   
   {
     global $g_db, $g_user;
@@ -118,13 +148,11 @@ class atkProjectAttribute extends atkAttribute
     global $g_user,$atkaction,$atkorderby, $g_sessionManager, $weekview, $viewdate, $g_db; 
      
     $query = "SELECT id,name FROM project ";
-    $query.= "WHERE id = $projectid";            
+    $query.= "WHERE id = $projectid ";            
     
     $arr = $g_db->getrows($query);
     
     $project = $arr[0];  
-    
-//echo "$project";
     return $project;
   }
  
