@@ -151,7 +151,7 @@
       $g_layout->initGui();
       $g_layout->ui_top($title);
       
-      $form = '<b>'.$title.'</b><br><br>';
+      $form = '<div align="left"><b>'.$title.'</b><br><br>';
                                
       $form.= '<form action="'.($nextaction=="achievostart"?"index.php":"setup.php").'">'.
                session_form(SESSION_NESTED).               
@@ -183,7 +183,7 @@
         $form.= '<br><br><input type="submit" value="'.$btn.'"><br><br>';
       }
                              
-      $form.= '</form>';
+      $form.= '</form></div>';
       $g_layout->output($form);
       $g_layout->ui_bottom();
       
@@ -744,7 +744,7 @@
         for ($script=$startidx, $_script=count($history); $script<$_script-1 && $ok; $script++)
         {          
           $scriptname = "upgrade/convert-".$history[$script]."-to-".$history[$script+1].".inc";
-          $output.="<br><br>Start of conversion from ".$history[$script]." to ".$history[$script+1];
+          $output.="<br><br>Start of conversion from ".$history[$script]." to ".$history[$script+1].".";
           
           // Upgrade scripts might take a while. We'll set the timelimit to something big.
           set_time_limit(180); // 3 minutes should be enough.
