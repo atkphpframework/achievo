@@ -19,6 +19,7 @@
   $txt_activitydate = "Dato";
   $txt_activityid = "Aktivitet";
   $txt_activitytemplate = "Aktivitetsmal";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "Velg først en aktivitet";
   $txt_addnewdependency = "Legg til avhengighet";
   $txt_address = "Adresse";
@@ -230,6 +231,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Quarter"; // Missing string!!!
   $txt_refresh = "Vis";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!

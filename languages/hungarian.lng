@@ -17,6 +17,7 @@
   $txt_activitydate = "Dátum";
   $txt_activityid = "Aktivitás";
   $txt_activitytemplate = "Aktivitás sablon";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "El&ouml;bb válasszon aktivitást";
   $txt_addnewdependency = "Új függ&ouml;ség hozzáadása";
   $txt_address = "Cím";
@@ -228,6 +229,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Negyed";
   $txt_refresh = "Frissítés";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!

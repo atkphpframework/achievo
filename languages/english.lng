@@ -17,6 +17,7 @@
   $txt_activitydate = "Date";
   $txt_activityid = "Activity";
   $txt_activitytemplate = "Activity template";
+  $txt_activitytimedistribution = "Per activity";
   $txt_activity_select = "First select an activity";
   $txt_addnewdependency = "Add new dependency";
   $txt_address = "Address";
@@ -228,6 +229,7 @@
   $txt_publicitem = "Public item";
   $txt_quarterly = "Quarter";
   $txt_refresh = "Refresh";
+  $txt_registeredtimeperactivity = "Registered time per activity";
   $txt_registeredtimeperday = "Registered time per day";
   $txt_registeredtimeperemp = "Registered time per employee";
   $txt_registeredtimepermonth = "Registered time per month";

@@ -22,6 +22,7 @@
   $txt_activitydate = "Datum";
   $txt_activityid = "Aktivit&auml;t";
   $txt_activitytemplate = "Aktivit&auml;tenschablone";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "Erst eine Aktivit&auml;t ausw&auml;hlen";
   $txt_addnewdependency = "Eine Abh&auml;ngigkeit hinzuf&uuml;gen";
   $txt_address = "Adresse";
@@ -233,6 +234,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Viertelj&auml;hrlich";
   $txt_refresh = "Neuladen";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!

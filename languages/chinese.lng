@@ -17,6 +17,7 @@
   $txt_activitydate = "日期";
   $txt_activityid = "活动状态";
   $txt_activitytemplate = "活动状态模版";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "请选择一种活动阶段";
   $txt_addnewdependency = "Add new dependency";
   $txt_address = "地址";
@@ -228,6 +229,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "一刻";
   $txt_refresh = "刷新";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!

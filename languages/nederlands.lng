@@ -17,6 +17,7 @@
   $txt_activitydate = "Datum";
   $txt_activityid = "Activiteit";
   $txt_activitytemplate = "Activiteiten template";
+  $txt_activitytimedistribution = "Per activiteit"; 
   $txt_activity_select = "Select eerst een activiteit";
   $txt_addnewdependency = "Voeg een afhankelijkheid toe";
   $txt_address = "Adres";
@@ -228,6 +229,7 @@
   $txt_publicitem = "Openbaar";
   $txt_quarterly = "Kwartaal";
   $txt_refresh = "Verversen";
+  $txt_registeredtimeperactivity = "Geregistreerde tijd per activiteit"; 
   $txt_registeredtimeperday = "Geregistreerde tijd per dag";
   $txt_registeredtimeperemp = "Geregistreerde tijd per medewerker";
   $txt_registeredtimepermonth = "Geregistreerde tijd per maand";

@@ -17,6 +17,7 @@
   $txt_activitydate = "Дата";
   $txt_activityid = "Деятельность";
   $txt_activitytemplate = "Шаблон для деятельности";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "Вначале выберите деятельность";
   $txt_addnewdependency = "Добавить новую зависимость";
   $txt_address = "Адрес";
@@ -228,6 +229,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Квартал";
   $txt_refresh = "Обновить";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!

@@ -18,6 +18,7 @@
   $txt_activitydate = "P&auml;iv&auml;";
   $txt_activityid = "Toiminto";
   $txt_activitytemplate = "Toimintamalli";
+  $txt_activitytimedistribution = "Per activity"; // Missing string!!!
   $txt_activity_select = "Valitse ensin toiminto";
   $txt_addnewdependency = "Lis&auml;&auml; uusi riippuvuus";
   $txt_address = "Osoite";
@@ -229,6 +230,7 @@
   $txt_publicitem = "Public item"; // Missing string!!!
   $txt_quarterly = "Nelj&auml;nnes";
   $txt_refresh = "P&auml;ivit&auml;";
+  $txt_registeredtimeperactivity = "Registered time per activity"; // Missing string!!!
   $txt_registeredtimeperday = "Registered time per day"; // Missing string!!!
   $txt_registeredtimeperemp = "Registered time per employee"; // Missing string!!!
   $txt_registeredtimepermonth = "Registered time per month"; // Missing string!!!
