@@ -8,6 +8,12 @@ might be situations in which the described procedure does not work.
 In this case send an email to ivo@achievo.com or to the mailinglist
 (achievo@achievo.com) and we will try to help you out.
 
+IMPORTANT
+---------
+The Achievo 0.7.* releases are development releases. Do not use this in a 
+production environment. If you want to use Achievo in a production 
+environment, download the latest stable (0.6.*) release.
+
 Upgrading from an earlier version
 ---------------------------------
 This INSTALL file assumes that you install Achievo for the first time.
@@ -76,9 +82,8 @@ MySQL
     $ cd achievo/db
     $ mysql -u root --password=secret achievo_0_7 < achievo_mysql.sql
 
-    If you want to install Achievo with a demo database, you have to do
-    the same as above again but this time you have to replace
-    'achievo_pgsql.sql' by 'demo_mysql.sql'.
+    If you want to install the Achievo demo content, insert
+    the 'demo_mysql.sql' file as well (in the same way).
 
     (You can also use the just created user 'achievo', but then you must 
     also grant the 'create' privilige in step 2)
@@ -101,9 +106,8 @@ PostgreSQL
      $ cd achievo/db
      $ psql -U pgsql achievo_0_7 < achievo_pgsql.sql
 
-    If you want to install Achievo with a demo database, you have to do
-    the same as above again but this time you have to replace
-    'achievo_pgsql.sql' by 'demo_pgsql.sql'. 
+    If you want to install the Achievo demo content, insert
+    the 'demo_pgsql.sql' file as well (in the same way).
 
 2c) Grant permissions to the created tables and sequences.
 

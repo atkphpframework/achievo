@@ -5,6 +5,10 @@
   // Change this file to fit your needs before using Achievo.
   // 
 
+  // The database to use. Default is MySQL. If you want to use PostgreSQL,
+  // change this value to "pgsql".
+  $config_database = "mysql";
+
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //

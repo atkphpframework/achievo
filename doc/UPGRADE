@@ -8,18 +8,34 @@ might be situations in which the described procedure does not work.
 In this case send an email to ivo@achievo.com or to the mailinglist
 (achievo@achievo.com) and we will try to help you out.
 
+IMPORTANT
+---------
+The Achievo 0.7.* releases are development releases. Do not use this in a 
+production environment. If you want to use Achievo in a production 
+environment, download the latest stable (0.6.*) release.
+
+Achievo 0.7.* may be broken, nonfunctional and it could severely corrupt your
+Achievo database. So we highly recommend using a NEW database to test 
+Achievo 0.7.*.
+
+But, if you still have the guts to upgrade from a stable Achievo to this 
+development release, here's some help on upgrading.
+
+IF IT FAILS, YOU'RE ON YOUR OWN. WE WARNED YOU.
+
 
 Upgrading from version 0.6.x -> 0.7
 -----------------------------------
 As of version 0.7 Achievo requires PHP4. PHP3 is not supported anymore!
 
 If you were/are running the 0.6.x version of Achievo in a PHP3 only
-enviroment you have to update your PHP version to PHP4 (we recommend
+environment you have to update your PHP version to PHP4 (we recommend
 the latest version) first.
 
 Once you have a PHP4 environment you have to backup your old
 Achievo configuration file (config.inc.php3). Install the new
-release, just follow the steps in INSTALL, you have to ommit step 2!
+release, just follow the steps in INSTALL, but ommit step 2! (you already
+have a working database)
 Rename your old config.inc.php3 to config.inc.php and copy it to
 the root of your fresh Achievo install.
 

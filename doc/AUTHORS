@@ -11,18 +11,20 @@ Tom M. Schenkenberg <tom@achievo.com>
 
 Translators
 -----------
-Braz. Portuguese : Armando M. Baratti   <ambaratti@aduaneiras.com.br>
-Dutch            : Ivo Jansch           <ivo@achievo.com>
-Finnish          : Skyttä Kari          <kari.skytta@koskisen.fi>
-French           : Olivier Fourdan      <fourdan@xfce.org>
-German           : Lars Martin          <lars@smb-tec.com>
-                   Michael Gaehwiler    <pegatron@gmx.net>
-Italian          : Marco De Toni        <marco.detoni@dedalomedia.it>
-                   Luca Pescatore       <l.pescatore@network.it>                   
-Norwegian        : Stein Bjorndal       <stein@proact.no>
-                   Tommy Stiansen       <Tommy@tradeit.as>                   
-Spanish          : Jorge Ibsen          <jibsen@eso.org>
-                   Armando Montiel Caba <amontiel@mpsnet.net.mx>
+Braz. Portuguese: Armando M. Baratti   <ambaratti@aduaneiras.com.br>
+Dutch           : Ivo Jansch           <ivo@achievo.com>
+Czech           : Jakub Kahovec        <jakub.kahovec@newton.cz>
+Finnish         : Skyttä Kari          <kari.skytta@koskisen.fi>
+French          : Benoit des Ligneris  <benoit.des.ligneris@physique.usherb.ca>
+                  Olivier Fourdan      <fourdan@xfce.org>
+German          : Lars Martin          <lars@smb-tec.com>
+                  Michael Gaehwiler    <pegatron@gmx.net>
+Italian         : Marco De Toni        <marco.detoni@dedalomedia.it>
+                  Luca Pescatore       <l.pescatore@network.it>                   
+Norwegian       : Stein Bjorndal       <stein@proact.no>
+                  Tommy Stiansen       <Tommy@tradeit.as>                   
+Spanish         : Jorge Ibsen          <jibsen@eso.org>
+                  Armando Montiel Caba <amontiel@mpsnet.net.mx>
 
 Contributors
 ------------
@@ -39,6 +41,7 @@ Wayne T. Ethier           <wte@websynergyinternet.com>
 Michel Marti              <michel.marti@ubs.com>
 Lucas Smith               <smith@dybnet.de>
 Daniel Frame              <dframe@tampabay.rr.com>
+Jakub Kahovec             <jakub.kahovec@newton.cz>
 
 Achievo uses a modified version of PHPLIB's database abstraction classes for
 database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
