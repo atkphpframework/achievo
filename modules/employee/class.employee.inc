@@ -40,11 +40,11 @@ class employee extends person
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.
     if ($ATK_VARS["atknodetype"]=="employee.employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
     {
-      $this->add(new atkListAttribute("status", array("active","nonactive"), array()));
+      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_OBLIGATORY));
     }
     else
     {
-      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST));
+      $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST|AF_OBLIGATORY));
       $this->addFilter("person.status","active");
     }
     $this->add(new atkOneToManyRelation("contract","employee.usercontracts","userid",AF_HIDE_LIST));
