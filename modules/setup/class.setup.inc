@@ -407,30 +407,81 @@
       
       if (is_object($node))
       {
-        include_once(atkconfig("atkroot")."atk/db/class.atkddl.inc");
-      
+        // We have to check if the table already exists. If it exists, we may need to
+        // add columns to it.
+        global $g_db;
+        $meta = $g_db->metadata($node->m_table, true);                
+        
+        include_once(atkconfig("atkroot")."atk/db/class.atkddl.inc");        
         $ddl = atkDDL::create();
         
         if (is_object($ddl))
         {
-          $ddl->setTable($node->m_table);
-        
-          foreach ($node->m_attribList as $attribname => $attrib)
-          {          
-            $flags = 0;
-            if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
-            if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
-            if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+          if (count($meta)==0 || $meta["num_fields"]==0)
+          {
+            atkdebug("Table ".$node->m_table." does not exist; creating...");      
+                
+            $ddl->setTable($node->m_table);
+          
+            foreach ($node->m_attribList as $attribname => $attrib)
+            {          
+              $flags = 0;
+              if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
+              if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
+              if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+              
+              // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented                    
             
-            // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
+              $ddl->addField($attribname, 
+                             $attrib->dbFieldType(), 
+                             $attrib->dbFieldSize(), 
+                             $flags);
+            }                  
+            
+            $ddl->executeCreate();
+          }
+          else
+          {
+            atkdebug("Table ".$node->m_table." already exists; performing diff...");
+            
+            // Create lookup table of fields.
+            for ($i=0, $_i=count($meta); $i<$_i; $i++)
+            {
+              $fields[$meta[$i]["name"]] = $meta[$i];
+            }
+            
+            $ddl->setTable($node->m_table);
           
-            $ddl->addField($attribname, 
-                           $attrib->dbFieldType(), 
-                           $attrib->dbFieldSize(), 
-                           $flags);
-          }                  
-          
-          $ddl->executeCreate();
+            foreach ($node->m_attribList as $attribname => $attrib)
+            {          
+              if (in_array($attribname, array_keys($fields)))
+              {
+                // field exists. assume it's ok.
+                // TODO FIXME: verify size and type and if necessary, alter the column.
+                atkdebug("Field $attribname already exists");
+              }
+              else
+              {
+                atkdebug("Field $attribname does not exist. Adding to alter table queue...");
+                $flags = 0;
+                if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
+                if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
+                if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+              
+                // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented                    
+            
+                $ddl->addField($attribname, 
+                               $attrib->dbFieldType(), 
+                               $attrib->dbFieldSize(), 
+                               $flags);
+              }   
+            }                  
+            
+            if ($ddl->executeAlter())
+            {
+              atkdebug("Table ".$node->m_table." altered...");
+            }
+          }
         }
         else
         {
