@@ -16,7 +16,7 @@
    {
     var $year         = 0;
     var $month        = 0;
-    var $day          = 0;    
+    var $day          = 0;
     var $maxCols      = 15;
     var $allItems     = array();
     var $allDayItems  = array();
@@ -30,11 +30,12 @@
     var $emptyColor   = "#FFFFFF";
     var $fancy        = 1;
     var $fancyBegin   = "<TABLE height='100%' width='100%' border='0' cellPadding='2'><TBODY><TR height='100%'><TD height='100%' bgColor='#000000'><TABLE width='100%' height='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY><TR height='100%'>";
-    var $fancyEnd     = "</TR></TBODY></TABLE></TD></TR></TBODY></TABLE>"; 
+    var $fancyEnd     = "</TR></TBODY></TABLE></TD></TR></TBODY></TABLE>";
     var $showGlobal;
     var $busyBgColor  = "#D0D0D0";
     var $busyFgColor  = "#000000";
-    var $busyTitle    = "Occupied";
+    var $busyTitle    = "";
+    var $title        = "";
 
 
   /**
@@ -47,9 +48,10 @@
     {
      global $HTTP_USER_AGENT;
 
-     $this->year     = ($year  == 0) ? date("Y") : $year;
-     $this->month    = ($month == 0) ? date("m") : $month;
-     $this->day      = ($day   == 0) ? date("d") : $day;    
+     $this->year      = ($year  == 0) ? date("Y") : $year;
+     $this->month     = ($month == 0) ? date("m") : $month;
+     $this->day       = ($day   == 0) ? date("d") : $day;
+     $this->busyTitle = text("private_appointment");
 
      // TEMPORARY FIX FOR NETSCAPE
      // Netscape/Mozilla seems to have a problem
@@ -95,7 +97,9 @@
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
     $nextUrl  = $PHP_SELF."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
-    return href($prevUrl, text("Previous day"))."&nbsp;".href($thisUrl, text("Today"))."&nbsp;".href($nextUrl, text("Next day"));
+    $this->title = "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
+
+    return "<font size='-1'>".href($prevUrl, text("Previous day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("Today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("Next day"))."</font>";
    }
 
   /**
@@ -111,11 +115,11 @@
 
      if ($this->showGlobal == "all")
      {
-      $q .= "AND publicitem=1";
+       //$q .= "AND publicitem=1";
      }
      else
      {
-      $q .= "AND owner='".$this->showGlobal."'";
+       $q .= "AND owner='".$this->showGlobal."'";
      }
 
      $q .= " ORDER BY starttime";
@@ -131,7 +135,7 @@
     {
      global $g_db;
 
-     $q = "SELECT userid FROM schedule_attendees WHERE scheduleid=$id ORDER BY userid"; 
+     $q = "SELECT userid FROM schedule_attendees WHERE scheduleid=$id ORDER BY userid";
      return $g_db->getRows($q);
     }
 
@@ -144,7 +148,7 @@
    {
     global $g_db;
 
-    // get the defined colors for each scheduler-type   
+    // get the defined colors for each scheduler-type
     $q = "SELECT * FROM schedule_types ORDER BY id";
     $r = $g_db->getRows($q);
 
@@ -159,19 +163,19 @@
 
      $tmpLegend                    = "<TR bgcolor='#FFFFFF'><TD>\n";
      $tmpLegend                   .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='".$r[$i]["bgcolor"]."'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-     $tmpLegend                   .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".$r[$i]["description"]."</font></TD>";
-     $tmpLegend                   .= "</TR>"; 
+     $tmpLegend                   .= "</TD><TD><font color='".$r[$i]["fgcolor"]."' face='verdana' size='-1'>".$r[$i]["description"]."</font></TD>";
+     $tmpLegend                   .= "</TR>";
      $legend                      .= $tmpLegend;
     }
 
-    $this->legend .= $legend."</TBODY></TABLE></TD></TR></TBODY></TABLE>";   
+    $this->legend .= $legend."</TBODY></TABLE></TD></TR></TBODY></TABLE>";
     return $colors;
    }
 
 
   /**
    * findInArray
-   * $param $what  (look for what
+   * $param $what  (look for what)
    * @param $where (1d array to look in)
    * @return index within the array if found, else -1
    */
@@ -223,11 +227,11 @@
      $a = $this->findInArray($begin, $this->allDayHours);
      $b = $this->findInArray($eind, $this->allDayHours);
 
-     for ($i=$a;$i<=$b-1;$i++)                      // a half our is now one bar, for two bars remove -1 after <=$b
+     for ($i=$a;$i<=$b-1;$i++)                      // a half our is now one bar, for two bars remove -1 after i<=$b
      {
       $items[] = $this->allDayHours[$i];
      }
-    
+
      return $items;
     }
 
@@ -258,7 +262,7 @@
     function setMatrix($item)
     {
      $begin    = substr($item["starttime"],0,5);
-     $einde    = substr($item["endtime"],0,5);     
+     $einde    = substr($item["endtime"],0,5);
      $duration = $this->duration($begin, $einde);
      $appoints = count($this->itemMatrix[$begin]);
 
@@ -275,12 +279,12 @@
        {
         break;
        }
-      }       
+      }
      }
 
      // add the duration (used in the display part for rowspan)
-     $this->matrixInfo[$duration[0]][$col]["duration"] = count($duration); 
-    
+     $this->matrixInfo[$duration[0]][$col]["duration"] = count($duration);
+
      //fill the matrix
      for ($i=0;$i<=count($duration)-1;$i++)
      {
@@ -310,7 +314,7 @@
 
   /**
    * dumpMatrix
-   * the actual displaying function 
+   * the actual displaying function
    */
     function dumpMatrix()
     {
@@ -330,8 +334,6 @@
       $cWidth = floor(95/$cols)."%";
       $aCols  = $cols+1;
      }
-
-     $buff .= "<font size='-1'><b>".text(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year)))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
      // if we have allday items show 'em in a seperate table
      if (count($this->allDayItems) > 0)
@@ -354,26 +356,25 @@
        $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
        $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owner"].")</b></font></td>";
        $header .= "<td valign='top' align='right'>";
- 
+
        if ($this->allDayItems[$i]["owner"] == $this->owner)
        {
-        $url     = "javascript:open_appointment(".$this->allDayItems[$i]["id"].", 1, 600, 450, 'no','no',0,0)";
-        $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("Edit")."</font></a>&nbsp;";
+        $header .= href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
        }
        else
-       {   
+       {
         if ($this->allDayItems[$i]["publicitem"] == 1)
         {
-         $url     = "javascript:open_appointment(".$this->allDayItems[$i]["id"].", 0, 600, 250, 'no','no',0,0)";
-         $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
+         $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
         }
-       } 
+       }
        $header .= "</tr></table>";
 
        $buff .= $header;
        $buff .= "</td>";
        $buff .= "</tr>";
-      }  
+      }
       $buff .= "</table><br>";
      }
 
@@ -383,10 +384,10 @@
      for ($i=0;$i<=count($this->workHours)-1;$i++)
      {
       $time    = $this->workHours[$i];
-      $items   = $this->itemMatrix[$time]; 
-      $now     = $this->year."-".$this->month."-".$this->day;              
-      $addurl  = $PHP_SELF."?atkaction=add&atknodetype=schedule&date=$now&time=$time";
- 
+      $items   = $this->itemMatrix[$time];
+      $now     = $this->year."-".$this->month."-".$this->day;
+      $addurl  = $PHP_SELF."?atkaction=add&atknodetype=calendar.schedule&date=$now&time=$time";
+
       $buff .= "<tr>\n";
       $buff .= "<td bgcolor='#D0D0D0' width='5%'>".href($addurl, "<font size='-1'>".$time."</font>",SESSION_NESTED)."</td>";
 
@@ -401,12 +402,12 @@
         $item      = $items[$j];
         $timeLap   = $this->matrixInfo[$time][$j]["duration"];
         $info      = $this->matrixInfo[$time][$j]["info"];
- 
+
         if (trim($item) != "")
-        { 
+        {
          if ($timeLap != 0)
          {
- 
+
           if ($timeLap == 1)
           {
            $rowspan = "";
@@ -433,30 +434,29 @@
 
           // if viewing public items for all users
           // it might be handy to see the item's owner
-          $dspOwner = " (".$info["owner"].")";
+          if ($this->showGlobal=="all") $dspOwner = " (".$info["owner"].")";
 
           // generate header (contains title, info and link to edit/view item)
           $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
           $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title.$dspOwner."</b></font></td>\n";
           $header .= "<td valign='top' align='right'>";
- 
+
           if ($info["owner"] == $this->owner)
           {
-           $url     = $PHP_SELF."?atknodetype=schedule&atkaction=edit&atkselector=schedule.id=".$info["id"];
-           $header .= href($url, "<font size='-2' color='$fgcolor'>".text("Edit")."</font>",SESSION_NESTED);
+           $header .= href($PHP_SELF."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Edit")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($PHP_SELF."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("Delete")."</font>", SESSION_NESTED);
           }
           else
           {
            if ($info["publicitem"] == 1)
            {
-            $url     = "javascript:open_appointment(".$info["id"].", 0, 600, 250, 'no','no',0,0)"; 
-            $header .= "<a href=\"$url\"><font size='-2' color='$fgcolor'>".text("View")."</font></a>&nbsp;";
+            $header .= href($PHP_SELF."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
            }
-          } 
+          }
 
           $header .= "</td>\n";
-          $header .= "</tr></table>\n";  
- 
+          $header .= "</tr></table>\n";
+
           if ($this->fancy != "1")
           {
            $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' bgcolor='".$bgcolor."'>";
@@ -466,7 +466,7 @@
            {
             $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>";
            }
- 
+
            $buff .= "</td>";
           }
           else
@@ -478,9 +478,9 @@
 
            if ($timeLap > 1)
            {
-            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>"; 	
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."</font>";
            }
- 
+
            $buff .= "</td>\n";
            $buff .= $this->fancyEnd;
            $buff .= "</td>";
