@@ -9,7 +9,7 @@
 
     // Show only todays bookings, and only your own.
     $hoursnode->addFilter("activitydate",strftime("%Y-%m-%d"));    
-    $hoursnode->addFilter("userid",strtolower($g_user["name"]));
+    $hoursnode->addFilter("hours.id",strtolower($g_user["id"]));
     
     $recs = $hoursnode->selectDb();
 
