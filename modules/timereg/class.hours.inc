@@ -200,7 +200,7 @@ class hours extends atkNode
       $res.=$this->getDateJumper();
       $res.='&nbsp;<input type="submit" value="'.text("goto").'">';
       $res.='</td></tr></table></form>';
-      $res.='<b>'.text(strtolower(date("l", $viewdatestamp)))." ".date("F d, Y", $viewdatestamp).'</b>';
+      $res.='<b>'.text(strtolower(date("l", $viewdatestamp)))." ".text(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>';
     }
     return $res;
   }
