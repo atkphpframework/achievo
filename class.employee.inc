@@ -4,6 +4,7 @@ class employee extends atkNode
 {
   function employee()
   {
+    global $ATK_VARS;
     $this->atkNode("employee",NF_EDITAFTERADD);
 
     $this->addAttribute(new atkAttribute("userid" ,AF_PRIMARY|AF_UNIQUE|AF_SEARCHABLE));
@@ -18,7 +19,7 @@ class employee extends atkNode
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
       
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.      
-    if ($GLOBALS["atknodetype"]=="employee"&& in_array($GLOBALS["atkaction"],array("admin","add","update","edit")))
+    if ($ATK_VARS["atknodetype"]=="employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
     {        
       $this->addAttribute(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_ADD));
     }

@@ -23,6 +23,11 @@ class contracts extends atkNode
    {
      return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
    }
+
+    function descriptor_def()
+    {
+      return "[description]";
+    }
   
 }
 ?>
