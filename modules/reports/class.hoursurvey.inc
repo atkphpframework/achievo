@@ -86,7 +86,7 @@
 
       if (!isset($userid)||$userid=="")
       {
-        $userid=$g_user["name"];
+        $userid=$g_user["id"];
       }
 
       if (!isset($nameswitch)||$nameswitch=="")
@@ -171,8 +171,8 @@
         }
         else
         {
-          $userid = $g_user["name"];
-          $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["name"].'">');
+          $userid = $g_user["id"];
+          $g_layout->td($g_user["id"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
         }
         $g_layout->output('</tr><tr>');
 
@@ -318,7 +318,7 @@
     {
       global $g_db;
 
-      $sql = "SELECT lastname,userid, firstname
+      $sql = "SELECT id,lastname,userid, firstname
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname
@@ -328,8 +328,8 @@
       $employee_code='<OPTION VALUE="all">'.text("allusers");
       for($i=0,$_i=count($records);$i<$_i;$i++)
       {
-        if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
-        $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+        if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
+        $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
       }
       return $employee_code;
     }
