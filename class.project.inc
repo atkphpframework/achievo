@@ -110,6 +110,7 @@ class project extends atkNode
 
     $this->setTable("project","project");
     $this->setOrder("name");
+    $this->setIndex("name");
 
     updateSelectedProjects();
 

@@ -2,7 +2,7 @@
 /**
  * NEED EXTRA WORK!!! 
  */
-
+/*
 // for editing profiles we create a custom attribute
 class profileAttribute extends atkAttribute
 {
@@ -45,14 +45,14 @@ class profileAttribute extends atkAttribute
   
   function edit($record)
   {
-    /* get nodes */
+    // get nodes 
     require_once("atk/atknodetools.inc");
     include_once("config.nodes.inc");
 
-    /* get permissions */
+    // get permissions 
     $checked = $record[$this->fieldName()];
     
-    /***  main application ***/
+    //  main application 
     $nodes = $GLOBALS["g_nodes"];
     if (count($nodes) > 0)
     {
@@ -76,7 +76,7 @@ class profileAttribute extends atkAttribute
       }
     }
  
-    /*** per module ***/
+    // per module
     foreach ($GLOBALS["g_modules"] as $module)
     {
       $mod_inst = new $module();
@@ -104,7 +104,7 @@ class profileAttribute extends atkAttribute
       }
     }
     
-    /* return html */
+    // return html 
     return $result;
   }
   
@@ -120,7 +120,7 @@ class profileAttribute extends atkAttribute
     }
     return $actions;
   }
-}
+}*/
 
 
 class profile extends atkNode
@@ -132,7 +132,7 @@ class profile extends atkNode
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name",AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE));      
     $this->addAttribute(new atkDummyAttribute("profile_explanation",text("profile_explanation"),AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->addAttribute(new profileAttribute("accessrights",AF_HIDE_LIST|AF_HIDE_ADD|AF_BLANKLABEL));
+    $this->addAttribute(new atkProfileAttribute("accessrights",AF_HIDE_LIST|AF_HIDE_ADD|AF_BLANKLABEL));
 
     $this->setTable("profile","profile");
     $this->setOrder("name");

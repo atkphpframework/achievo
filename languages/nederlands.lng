@@ -247,8 +247,4 @@
     
   // --------==== Strings that were introduced in version 0.6.3: ====---------
   $txt_orderby = "Sorteren op";
-  
-  $txt_timeguard_mail = "Hallo [name],\n\nVolgens achievo mis je [hours] in je uren verantwoording.\n\n";
-  $txt_timeguard_mail_header = "Achievo Waarschuwing";
-  $txt_timeguard_mail_from = "timeguard@achievo.com";
 ?>

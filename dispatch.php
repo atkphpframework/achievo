@@ -10,7 +10,7 @@
      
   // Create node
   $obj = getNode($ATK_VARS["atknodetype"]); 
-
+    
   if (is_object($obj))
   {
     $obj->dispatch($ATK_VARS);     

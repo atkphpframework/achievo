@@ -44,7 +44,7 @@
 
    function attendees_edit()
    {
-    return "beeeh";
+    //return "beeeh";
    }
 
    function initial_values()

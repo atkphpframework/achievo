@@ -5,6 +5,9 @@
    * If the session variable is empty, it is filled with
    * the projects the user has recently booked on.
    */
+ 
+  $projectnamesize = 25;
+   
   function updateSelectedProjects()
   {
     GLOBAL $g_sessionManager, $g_db, $g_layout;
@@ -56,9 +59,9 @@
          $query = "SELECT name FROM project WHERE id='".$selectedPrj['projectid']."'";
          $arr = $g_db->getrows($query);
          $selectedPrj['projectname'] = $arr[0]['name'];
-         if (strlen($arr[0]['name']) > $GLOBALS["config_projectnamesize"])
+         if (strlen($arr[0]['name']) > $projectnamesize)
          {
-           $selectedPrj['projectname'] = substr($arr[0]['name'],0,$GLOBALS["config_projectnamesize"]-2).".."; //update because of phases
+           $selectedPrj['projectname'] = substr($arr[0]['name'],0,$projectnamesize-2).".."; //update because of phases
          }
          else
          {
@@ -106,7 +109,7 @@
         $alreadyhad[$j]=$arr[$i]['projectid'];
         $newarr[$j]['projectid'] = $arr[$i]['projectid'];
         
-        if (strlen($arr[$i]['name']) > $GLOBALS["config_projectnamesize"])
+        if (strlen($arr[$i]['name']) > $projectnamesize)
         {
           $newarr[$j]['name'] = substr($arr[$i]['name'],0,18)."..";
         }
@@ -114,7 +117,7 @@
         {
           $newarr[$j]['name'] = $arr[$i]['name'];
         }           
-        if (strlen($arr[$i]['projectname']) > $GLOBALS["config_projectnamesize"])
+        if (strlen($arr[$i]['projectname']) > $projectnamesize)
         {
           $newarr[$j]['projectname'] = substr($arr[$i]['projectname'],0,18).".."; //update because of phases
           atkdebug("If ok ".strlen($newarr[$j]['projectname']));
@@ -129,6 +132,47 @@
       }
     }
     return $newarr;
+  }
+  
+  /* 
+   * given a timestamp, this function calculates the weekstamp, which is a concatenation
+   * of the year and the ISO week number. (e.g. 200134) 
+   */
+  function weekstamp($timestamp)
+  {
+    $year = strftime("%Y",$timestamp);
+    $week = strftime("%V",$timestamp);
+    $month = strftime("%m",$timestamp);
+    if ($week==1 && $month == 12)
+    {
+      // tricky.. first week of next year starts this year, so key must be incremented.
+      return ($year+1).$week;
+    }
+    return $year.$week;
+  }
+  
+  /*
+   * Given a date in the form "2001-03-25", this function returns the date of the first
+   * day (monday) of that week.
+   */ 
+  function startOfWeek($date)
+  {
+    $viewtime = mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
+    $weekday = strftime("%w",$viewtime);
+    if ($weekday==0) $weekday=7;
+    return date("Y-m-d" ,$viewtime-(86400*($weekday-1)));
+  }
+  
+  /*
+   * Given a date in the form "2001-03-25", this function returns the date of the last
+   * day (friday) of that week.
+   */ 
+  function endOfWeek($date)
+  {
+    $viewtime = mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
+    $weekday = strftime("%w",$viewtime);
+    if ($weekday==0) $weekday=7;
+    return date("Y-m-d" ,$viewtime-(86400*($weekday-7)));
   }
 
 

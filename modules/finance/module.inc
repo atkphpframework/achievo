@@ -1,7 +1,5 @@
 <?php
 
-  require_once("atk/modules/class.atkmodule.inc");
-
   /**
    * Example module.
    */
@@ -20,8 +18,8 @@
 			
       
       /* add menuitems */
-      $this->menuitem("-");      
-      $this->menuitem("finance");
+      $this->menuitem("finance","","main",1,675);
+      $this->menuitem("-","","main",1,676);
 
       $this->menuitem("currency", dispatch_url("finance.currency", "admin"),"finance", 1);
       $this->menuitem("-","","finance");      

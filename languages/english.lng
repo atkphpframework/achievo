@@ -282,9 +282,7 @@
   $txt_title_schedule_types_admin        = "Manage schedule types";
   $txt_title_schedule_types_add          = "Add a schedule type";
   $txt_title_schedule_types_edit         = "Edit schedule type";
-  $txt_title_schedule_types_delete       = "Delete schedule types";
-
-  $txt_colorpicker_label                 = "Choose a color";
+  $txt_title_schedule_types_delete       = "Delete schedule types";  
  
   $txt_timeguard_mail = "Hello [name],\n\nThis is the achievo timeguard, you seem to miss [hours] in your hour-administration.\n\n";
   $txt_timeguard_mail_header = "Achievo Warning";
@@ -299,10 +297,10 @@
   $txt_title_holidays_edit = "Edit an Holiday";
   $txt_title_holidays_delete = "Delete an Holiday";
 
-  $txt_uc_descr = "Contract Description";
-  $txt_uc_hours = "Contract Hours/week";
-  $txt_uc_startdate = "Contract starts on";
-  $txt_uc_enddate = "Contract ends on";
+  $txt_uc_descr = "Description";
+  $txt_uc_hours = "Hours per week";
+  $txt_uc_startdate = "Startdate";
+  $txt_uc_enddate = "Enddate";
 
   $txt_link_usercontracts_add = "Add an employee contract";
   $txt_title_usercontracts_add = "Add employee contract";
@@ -345,5 +343,9 @@
   $txt_title_contracttype_edit = "Edit contract type";
   $txt_title_contracttype_delete = "Delete contract type";
   $txt_contracttype = "Contract Description";  
+  
+  $txt_menu_customermanagement = "Manage Customers";
+  
+  $txt_menu_finance = "Finance";
 
 ?>

@@ -212,18 +212,13 @@
     $g_layout->td('<input type="checkbox" name="export" value="1">');
 */
 
-    $g_layout->td(text("hoursurvey_output_standard"));
-    $g_layout->td('<INPUT TYPE="radio" NAME="outputType" VALUE="0" CHECKED>');
     
-    $g_layout->output('</tr><tr>');  
-    
-    $g_layout->td(text("hoursurvey_output_printable"));
-    $g_layout->td('<input type="radio" name="outputType" value="1">');
-    
-    $g_layout->output('</tr><tr>');  
-    
-    $g_layout->td(text("hoursurvey_export"));
-    $g_layout->td('<input type="radio" name="outputType" value="2">');
+    $g_layout->td(text("report_output_type"));
+    $g_layout->td('<select name="outputType">
+                     <option VALUE="0" selected>'.text("report_output_standard").'
+                     <option value="1">'.text("report_output_printable").'
+                     <option value="2">'.text("report_output_export").'
+                     </select>');                     
     
 
     

@@ -1,5 +1,7 @@
 <?php
 
+// The ability to add contracts per user was sponsored by Tryllian BV, Netherlands.
+
 class usercontracts extends atkNode
 {
   function usercontracts()
