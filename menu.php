@@ -7,7 +7,7 @@
 
   include_once("atk.inc");  
 
-  atksession("atkmenu");
+  atksession("atkmenu", false); // menu doesn't need a stack.
   atksecure();
 
   include_once("./theme.inc");
@@ -67,12 +67,14 @@
 
   if ($atkmenutop == "projectmanagement")
   {
-    $projects = $g_sessionManager->getValue("selectedprj","globals");
+    $projects = $g_sessionManager->getValue("selectedprj","globals");  
+    
     if (count($projects) == 0)
     {
       updateSelectedProjects();
       $projects = $g_sessionManager->getValue("selectedprj","globals");
-    }
+    }        
+    
     $prj .= text("project_select").":";
     $prj .="<FORM><SELECT name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
     $prj .= "<OPTION value=\"0\">".text("project_select_none")."</OPTION>";
