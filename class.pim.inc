@@ -85,7 +85,7 @@
       $res.= '</tr></table>';
 
       //PLANNING
-      
+
       $res.='<br><br><b>'.text(resource_planning_your_planning).':</b><br><br>';
 
       $planningsnode = getNode("resource_planning.resource_planning");
@@ -97,7 +97,7 @@
 
       if (count($recs)>0)
       {
-        $plannedhours.= $planningsnode->recordList($recs,$actions,false, array("employeeid", "date"));
+        $plannedhours.= $planningsnode->recordList($recs,$actions,false, array("employeeid", "plandate"));
       }
       else
       {
