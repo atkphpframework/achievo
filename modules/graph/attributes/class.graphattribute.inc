@@ -58,7 +58,7 @@
      */ 
     function graphAttribute($name, $callback, $params=array(), $flags=0)
     {
-      $this->atkAttribute($name, $flags);      
+      $this->atkAttribute($name, $flags|AF_HIDE_SEARCH);
       $this->m_callback = $callback;
       $this->m_params = $params;
     }
@@ -128,6 +128,9 @@
     function store() {}
     function addToQuery() {}
     function hide() {}
+    function search() {}
+    function getSearchModes() {}
+    function searchCondition() {}
   }
 
 ?>
