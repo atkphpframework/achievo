@@ -26,14 +26,30 @@ Currently, the following scripts can be used from cron:
 
 * timereg_check.php 
 
-  This script checks if all users have registered enough hours in the 
-  previous week. 
-  It compares the number of hours in the contract of that user with the 
-  number of hours actually booked. If the number of booked hours is not 
-  enough, an email reminder is sent to that user.
+   This script checks if all users have registered enough hours in the 
+   previous week. 
+   It compares the number of hours in the contract of that user with the 
+   number of hours actually booked. If the number of booked hours is not 
+   enough, an email reminder is sent to that user.
 
-  Note: This script always counts the hours in the previous week from 
-  monday to sunday, regardless of the day on which you run the script. This 
-  means you can run the script multiple times a week, so people will be 
-  reminded more than once if they still don't register their hours.
+   Note: This script always counts the hours in the previous week from 
+   monday to sunday, regardless of the day on which you run the script. This 
+   means you can run the script multiple times a week, so people will be 
+   reminded more than once if they still don't register their hours.
+   
+   Suggested run frequency: once or twice a week.
+   Suggested run time: monday morning (and the second one on wednesday 
+                       morning)
                       
+* todo_reminder.php
+ 
+   This script sends reminders to people if they have one or more todo's
+   open, that are due today, or that are overdue. A cc is sent to the owner
+   of the todo.
+   If a user has more than one todo assigned, the todos are grouped in a 
+   single mail per owner, to prevent users from being spammed with lots
+   of todo reminders.
+  
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+  
