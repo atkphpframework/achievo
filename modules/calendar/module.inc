@@ -6,8 +6,6 @@
     {
       registerNode("calendar.schedule", array("admin", "add", "edit", "delete", "edit_attendee"));
       registerNode("calendar.schedule_types", array("admin", "add", "edit", "delete"));
-      registerNode("calendar.schedule_notes", array("admin", "add", "edit", "delete", "view"));
-      registerNode("calendar.schedule_attendees", array("admin", "add", "edit", "delete", "view"));
     }
 
     function getMenuItems()
