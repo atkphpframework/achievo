@@ -6,6 +6,7 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 0.9.4
 ------------------------
++ Added jpGraph graphs support. [Ivo]
 + Hour entries can now be edited directly from the time survey (only your own
   hours and only if the entries are not from locked weeks) (bug #22) [Ivo]
 * Achievo should no longer generate notices when php error_reporting is set to

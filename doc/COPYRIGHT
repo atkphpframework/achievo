@@ -18,4 +18,10 @@ Third party software
 Achievo uses modified versions of PHPLIB's database abstraction classes for
 database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
 SH Online Dienst GmbH and made available under the Library General Public 
-License (LGPL).
+License (LGPL). Included with permission of the authors.
+
+Achievo uses parts of the JpGraph graphics suite. JpGraph 
+(http://www.aditus.nu/jpgraph) is Copyright (c) 2001, 2002, 2003 Johan 
+Persson and made available under the Qt Free License (GPL 1.0), a copy of 
+which can be found in the modules/graph/jpgraph/ directory. Included with
+permission of the author.
