@@ -6,7 +6,7 @@ class project_notesview extends atkNode
   {
     global $ATK_VARS;
     
-    $this->atkNode("project",NF_EDITAFTERADD|NF_NO_ADD);
+    $this->atkNode("project",NF_NO_ADD|NF_NO_DELETE);
 
     $this->addAttribute(new atkAttribute("id"                                , AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name"                              , AF_READONLY));
@@ -28,34 +28,5 @@ class project_notesview extends atkNode
     return "[name]";
   }
   
-  function initial_values()
-  {
-    return array("startdate"=>array("year"=>date(Y),"month"=>date(m),"day"=>date(d)),"status"=>"active");
-  }
-
-  function action_stats()
-  {
-    include_once 'projectstats.inc';   // MILESTONES FUNCTIONS     
-  }
-  
-  function action_planning()
-  {
-    include_once 'projectplanning.inc';   // MILESTONES FUNCTIONS     
-  }
-  
-  function action_billsetup()
-  {
-    include_once 'billsetup.inc';
-  } 
-  
-  function action_billing()
-  {
-    include_once 'projectbilling.inc';
-  } 
-  
-  function postDel($rec)
-  {
-    // TODO: delete phases and dependencies, and hours (???)
-  }
 }
 ?>
