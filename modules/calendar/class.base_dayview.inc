@@ -548,7 +548,7 @@
            $buff .= $header;
            if ($timeLap > 1)
            {
-            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$descr."<br></font>";
+            $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".nl2br($descr)."<br></font>";
            }
            if (count($attendees) > 0 || $info["all_users"]) $buff .= "<font face='verdana' size='-2' color='$fgcolor'>".$att."</font>";
 
