@@ -10,7 +10,7 @@
   $g_layout->head($txt_app_title);
   $g_layout->body();
 
-  $g_layout->ui_top($txt_app_title." ".$version.($state!="stable"?" ($state)":""));
+  $g_layout->ui_top($txt_app_title." ".$achievo_version.($achievo_state!="stable"?" ($achievo_state)":""));
 
   $table = $g_layout->ret_table_simple(0,true);
 
