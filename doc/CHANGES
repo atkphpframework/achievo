@@ -6,8 +6,11 @@ Changes in Achievo 0.7.2
 ------------------------
 + Added support voor Oracle 8i databases.
 + Added context sensitive help feature.
++ Added pop3 authentication.
++ The logout feature is back.
 * Updated Italian language files.
 * Fixed some Internet Explorer 4 incompatibilities.
+* Fixed error messages in project planning for projects without phases.
 
 Changes in Achievo 0.7.1
 ------------------------

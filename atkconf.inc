@@ -6,7 +6,7 @@
   // If you want to configure Achievo, edit the config.inc.php3 file.
   
   $config_top_frame = 1;
-  $config_authentication = "db";  
+  $config_authorization = "db";  
   $config_auth_usertable = "employee";
   $config_auth_userfield = "userid";
   $config_auth_accesstable = "accessright";

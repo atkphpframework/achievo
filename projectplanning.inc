@@ -128,8 +128,8 @@ function deadline_calc($startdate,$workdays)
    
    for ($i=0,$j=$today[1];$i<=$workdays;$j++) 
    {
-      if (!in_array(date('D',mktime(0,0,0,$today[0],$j,$today[2])),$nonday) && 
-          !in_array(date('Ymd',mktime(0,0,0,$today[0],$j,$today[2])),$nondate)) $i++;         
+      if (!atk_in_array(date('D',mktime(0,0,0,$today[0],$j,$today[2])),$nonday) && 
+          !atk_in_array(date('Ymd',mktime(0,0,0,$today[0],$j,$today[2])),$nondate)) $i++;         
    }  
    $stamp = mktime(0,0,0,$today[0],$j,$today[2]);
    
@@ -192,8 +192,8 @@ function print_milestones($m,$phase_ids,$phase_names,$hoursperphase,$project_rec
       {
         $cell.= "<td bgcolor='#555555'>&nbsp;</td>";
       }
-      if (in_array($phase_ids[$i],$m[$j]['in']))  $bgcolor='black';
-      if (in_array($phase_ids[$i],$m[$j]['out'])) $bgcolor='red';
+      if (atk_in_array($phase_ids[$i],$m[$j]['in']))  $bgcolor='black';
+      if (atk_in_array($phase_ids[$i],$m[$j]['out'])) $bgcolor='red';
       if ($bgcolor=='red')
       {
         $cell.= "<td bgcolor='#555555' background='images/stats_red50.gif'>&nbsp;</td>";
