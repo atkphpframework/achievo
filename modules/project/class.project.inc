@@ -268,11 +268,27 @@
       $dataset = array();       
       for ($i=0, $_i=count($data); $i<$_i; $i++)
       {        
-        $dataset[$data[$i]["label"]] = sprintf("%.2f", ($data[$i]["total"]/60));
+        $dataset[$this->_graphLabel($data[$i]["label"], $scale)] = sprintf("%.2f", ($data[$i]["total"]/60));
       }
       
       return array("registeredtimeper".$scale=>$dataset);
       
+    }
+    
+    function _graphLabel($label, $scale)
+    {
+      if ($scale=="month")
+      {
+        // output nice monthnames
+        $months = array("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",  "nov", "dec");
+        $shortyear = substr($label, 2, 2);
+        $month = sprintf("%d", substr($label, 4, 2));
+        return text($months[$month])." '".$shortyear;
+      }
+      else
+      {
+        return $label;
+      }
     }
   }
 

@@ -190,6 +190,10 @@
         $p->SetColor("red");
         $p->SetLegend(text($legend));
         
+        $p->mark->SetType(MARK_FILLEDCIRCLE);
+        $p->mark->SetFillColor("red");
+        $p->mark->SetWidth(4);
+        
         $graph->Add($p);                
 
       }
