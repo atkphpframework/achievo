@@ -372,5 +372,6 @@
   $txt_weekview = "Weekview";
   $txt_yearly = "Year";
   $txt_zipcode = "Zipcode";
+  $txt_title_setup_setup = "Achievo Setup";
 
 ?>
