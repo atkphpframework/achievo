@@ -12,7 +12,7 @@ userelation("atkonetomanyrelation");
 
     function project_project_modifier(&$node)
     {
-      $node->add(new atkOneToManyRelation("documents","document.document", "project_id", AF_HIDE_LIST));
+      $node->add(new atkOneToManyRelation("documents","document.document", "project_id", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
     }
   }
 ?>
