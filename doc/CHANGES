@@ -13,10 +13,23 @@ Changes in Achievo 0.9.2
   search feature from the topframe.
 + The search box in the top frame now works for contacts, projects and
   customers.
++ Added a document module for uploading documents to a project.
++ Added a possibility to add contacts to a project in a certain role. Roles can 
+  be defined.
++ Employees now have a role in a project.
++ Added a report for organizations which contains all infomration regarding the 
+  organization and the contacts.
 * Reorganised Achievo codebase. Everything is now located in modules.
 * You can now no longer register time on nonactive project phases. (bug #51)
 * Bugfix in IMAP authentication.
 * Updated Brazilian-Portuguese, French, German and Dutch language files.
+* Fixed the scheduler feature. It is now possible to add, edit and delete 
+  appointments. These appointments can have attendees, which are employees and 
+  contacts. Also added a feature to compare schedules of employees for easyily   
+  planning a meeting.
+* Renamed customer to organization. Organization has a wider range than just
+  customers.
+* Changed database structure of Achievo.
 
 Changes in Achievo 0.9.1
 ------------------------
@@ -336,3 +349,4 @@ Changes in Achievo 0.4.1
 Changes in Achievo 0.4
 ----------------------
 First public release, so everything is new. :-)
+
