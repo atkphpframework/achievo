@@ -82,7 +82,7 @@ class project extends atkNode
     
     $this->atkNode("project",NF_EDITAFTERADD);
     $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD);
-    $preFilter->m_destinationFilter = "company=[customer.id]";
+    $preFilter->m_destinationFilter = "company='[customer.id]'";
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
