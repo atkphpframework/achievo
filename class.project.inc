@@ -81,15 +81,15 @@ class project extends atkNode
     global $ATK_VARS, $g_sessionManager;
 
     $this->atkNode("project",NF_EDITAFTERADD);
-    $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD|AF_HIDE_LIST);
+    $preFilter = new atkManyToOneRelation("contact","contact",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
     $preFilter->m_destinationFilter = "company='[customer.id]'";
 
     $this->addAttribute(new atkAttribute("id",AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE));
-    $this->addAttribute(new atkAttribute("abbreviation", AF_UNIQUE|AF__OBLIGATORY|AF_SEARCHABLE|AF_HIDE_LIST));
-    $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_HIDE_SELECT|AF_HIDE_ADD));
+    $this->addAttribute(new atkAttribute("abbreviation", AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE|AF_HIDE_LIST));
+    $this->addAttribute(new atkManyToOneRelation("customer","customer",AF_HIDE_SELECT|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     $this->addAttribute($preFilter);
-    $this->addAttribute(new atkManyToOneRelation("coordinator","employee",AF_SEARCHABLE|AF_HIDE_ADD));
+    $this->addAttribute(new atkManyToOneRelation("coordinator","employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     $this->addAttribute(new atkTextAttribute("description",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->addAttribute(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD));
