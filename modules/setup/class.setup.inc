@@ -11,6 +11,14 @@
   class setup extends atkNode
   {
     var $m_report = array(); 
+    
+    var $m_resultmsg = array("ok" => "Installation completed",
+                             "failed" => "Installation failed",
+                             "faileddep" => "Not installed (dependencies could not be resolved)",
+                             "cyclicdep" => "Not installed (Cyclic dependency detected)",
+                             "alreadyinstalled" => "No installation necessary, module was already installed",
+                             "notfound" => "Not installed (Module could not be found)",
+                             "patched" => "Patch applied succesfully");
   
     function setup()
     {
@@ -309,15 +317,7 @@
     {
       global $g_modules, $g_layout;
       
-      $g_layout->initGui();
-      
-      $resultmsg = array("ok" => "Installation completed",
-                         "failed" => "Installation failed",
-                         "faileddep" => "Not installed (dependencies could not be resolved)",
-                         "cyclicdep" => "Not installed (Cyclic dependency detected)",
-                         "alreadyinstalled" => "No installation necessary, module was already installed",
-                         "notfound" => "Not installed (Module could not be found)");
-                         
+      $g_layout->initGui();                                     
       
       // We loop through the modules to install them. 
       // The setup module contains essential table needed for the installation process,
@@ -357,7 +357,7 @@
         {
           $output.= $g_layout->tr_top();
           $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td((!empty($resultmsg[$result])?$resultmsg[$result]:$result));
+          $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
           $output.= $g_layout->tr_bottom();
         }
         $output.= $g_layout->data_bottom();
@@ -470,20 +470,25 @@
       $installfile = moduleDir($modname)."install/install.inc";   
       if ($this->needsInstall($modname))
       {
-        // give included file access to $g_db and $this ("$setup");
-        global $g_db;        
-        $setup = &$this;
-        
-        // also set 'current module' to the module were now installing. This will 
-        // be used by setup functions called from the install file.
-        $this->m_currentmodule = $modname;
-        include($installfile);
+        $this->includeInstallFile($modname, $installfile);
       }
       
       // if we get here, everything should be installed.
       atkdebug("Installed $modname");
       $result[$modname] = "ok";
       return true;
+    }
+    
+    function includeInstallFile($modname, $installfile)
+    {
+      // give included file access to $g_db and $this ("$setup");
+      global $g_db;        
+      $setup = &$this;
+        
+      // also set 'current module' to the module were now installing. This will 
+      // be used by setup functions called from the install file.
+      $this->m_currentmodule = $modname;      
+      include($installfile);
     }
     
     function needsInstall($modname)
@@ -630,16 +635,18 @@
       {
         $versioninfo = &getNode("setup.versioninfo");
         $recs = $versioninfo->selectDb("module='".$module."'");
+        
         if (count($recs)>0)
         {
-          // rec already exists. Update.
-          $versioninfo->updateDb(array("module"=>$module, "version"=>$version));
+          // rec already exists. Update.          
+          $recs[0]["version"] = $version;
+          $versioninfo->updateDb($recs[0]);
         }
         else
         {
-          // rec doesn't exist. Insert.
-          $rec = array("module"=>$module, "version"=>$version);
-          $versioninfo->addDb($rec);
+          $newrec = array("module"=>$module, "version"=>$version);
+          // rec doesn't exist. Insert.          
+          $versioninfo->addDb($newrec);
         }
       }
     }      
@@ -839,6 +846,38 @@
         else
         {
           // module is installed. Check if we need to patch.
+          $availablepatches = array();
+          
+          if ($handle=@opendir($moduledir."install"))
+          {
+            while ($file = readdir($handle))
+            {            
+              if (substr($file,0,5)=="patch")
+              {            
+                $patchno = substr($file, 6, -4); // Patchnumber is between 'patch-' and '.inc'
+                if ($patchno>$installedmodules[$modname])
+                {
+                  $availablepatches[] = $patchno;
+                }
+              }
+            }
+            closedir($handle);
+            
+            if (count($availablepatches))
+            {
+              $stufftodo = true;
+              // We need to install patches.
+              natcasesort($availablepatches); // We must install patches in the correct order.
+             
+              for($i=0, $_i=count($availablepatches); $i<$_i; $i++)
+              {
+                $patchfile = moduleDir($modname)."install/patch-".$availablepatches[$i].".inc";
+                $this->includeInstallFile($modname, $patchfile);
+                $this->setVersion($availablepatches[$i]);
+                $result[$modname] = "patched";
+              }
+            }
+          }
         }
       }
       
@@ -856,7 +895,7 @@
           {
             $output.= $g_layout->tr_top();
             $output.= $g_layout->ret_td($modname);          
-            $output.= $g_layout->ret_td((!empty($resultmsg[$result])?$resultmsg[$result]:$result));
+            $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
             $output.= $g_layout->tr_bottom();
           }
           $output.= $g_layout->data_bottom();
@@ -926,7 +965,7 @@
       
       if (count($installs)||count($patches))
       {
-        // things have been installed. Show result.
+        // things must be installed or patched
         $output = $g_layout->data_top();
         $output.= $g_layout->tr_top();
         $output.= $g_layout->ret_td_datatitle("Module");
@@ -947,7 +986,7 @@
           $output.= $g_layout->tr_bottom();
         }
         $output.= $g_layout->data_bottom();
-        return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output, "upgradedb");
+        return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output."<br>Please click the 'continue' button below to start the update.", "upgradedb");
       }
       else      
       {    
