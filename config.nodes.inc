@@ -1,4 +1,4 @@
-<?
+<?php
   /* register nodes */
   registerNode("hours", array("admin","add","edit","delete","hoursurvey","view_all"));
   registerNode("customer", array("admin", "add", "edit", "delete"));

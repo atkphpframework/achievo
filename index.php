@@ -20,13 +20,13 @@
     $g_layout->output('
                <frameset rows="100,*" frameborder="0" border="0">
                   <frame name="menu" scrolling="no"   noresize src="menu.php"   marginwidth="0" marginheight="0">
-                  <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
+                  <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW).'" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
     $g_layout->output('
                    <noframes>
                     <body bgcolor="#CCCCCC" text="#000000">
-                      <p>Your browser doesnt support frames, but this is required to run <? echo $txt_app_title; ?></p>
+                      <p>Your browser doesnt support frames, but this is required to run <?php echo $txt_app_title; ?></p>
                     </body>
                   </noframes>
                </frameset>
@@ -44,7 +44,7 @@
     }
     $g_layout->output('
                <frameset rows="*,100" frameborder="0" border="0">
-                  <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
+                  <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW).'" marginwidth="0" marginheight="0">
                   <frame name="menu" scrolling="no"   noresize src="menu.php"   marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
@@ -52,7 +52,7 @@
     $g_layout->output('
                    <noframes>
                     <body bgcolor="#CCCCCC" text="#000000">
-                      <p>Your browser doesnt support frames, but this is required to run <? echo $txt_app_title; ?></p>
+                      <p>Your browser doesnt support frames, but this is required to run <?php echo $txt_app_title; ?></p>
                     </body>
                   </noframes>
                </frameset>
@@ -71,14 +71,14 @@
     $g_layout->output('
       <frameset cols="190,*" frameborder="0" border="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
-        <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
+        <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW.'" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
 
     $g_layout->output('
         <noframes>
           <body bgcolor="#CCCCCC" text="#000000">
-            <p>Your browser doesnt support frames, but this is required to run <? echo $txt_app_title; ?></p>
+            <p>Your browser doesnt support frames, but this is required to run <?php echo $txt_app_title; ?></p>
           </body>
         </noframes>
       </frameset>
@@ -96,7 +96,7 @@
     }
     $g_layout->output('
       <frameset cols="*,190" frameborder="0" border="0">
-        <frame name="main" scrolling="auto" noresize src="<? echo session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW); ?>" marginwidth="0" marginheight="0">
+        <frame name="main" scrolling="auto" noresize src="'.session_url("dispatch.php?atknodetype=hours&atkaction=admin",SESSION_NEW).'" marginwidth="0" marginheight="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
     ');
     if($config_top_frame==1) { $g_layout->output('</frameset>'); }
@@ -104,7 +104,7 @@
     $g_layout->output('
         <noframes>
           <body bgcolor="#CCCCCC" text="#000000">
-            <p>Your browser doesnt support frames, but this is required to run <? echo $txt_app_title; ?></p>
+            <p>Your browser doesnt support frames, but this is required to run <?php echo $txt_app_title; ?></p>
           </body>
         </noframes>
       </frameset>

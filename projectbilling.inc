@@ -1,4 +1,4 @@
- <?
+ <?php
 
 global $g_layout;
 

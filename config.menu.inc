@@ -1,4 +1,4 @@
-<?
+<?php
   /* menu items */
       
   menuitem("hours_admin",  dispatch_url("hours", "admin"));
