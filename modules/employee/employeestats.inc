@@ -107,166 +107,100 @@
   $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
 
   $g_layout->ui_bottom();
-
-  $query = "SELECT
-              hours.time as time,
-              project.name as project,
-              activity.name as activity
-            FROM
-              hours, activity, phase, project
-            WHERE
-              hours.activitydate >= '$startdate'
-              AND hours.activitydate <= '$enddate'
-              AND hours.activityid = activity.id
-              AND hours.phaseid = phase.id
-              AND phase.projectid = project.id";
-  if ($userid!="all") $query.= " AND hours.userid = '$userid'";
-
-  $records = $g_db->getrows($query);
-
-  $hoursperact = Array();
-  $hoursperproj = Array();
-  $total = 0;
-
-  for ($i=0;$i<count($records);$i++)
+  
+  if ($userid!='') // only display stats if we have a valid id.
   {
-    $hoursperact[$records[$i]["activity"]] += $records[$i]["time"];
-    $hoursperproj[$records[$i]["project"]] += $records[$i]["time"];
-    $total += $records[$i]["time"];
-  }
 
-  $g_layout->ui_top(text("title_employee_stats")." - ".$userid);
-
-  $g_layout->output('<br><b>'.text("title_employeestats_perproject").'</b><br><br>');
-
-  $g_layout->output($g_layout->data_top());
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("name"));
-  $g_layout->td_datatitle(text("time"));
-  $g_layout->td_datatitle(text("percentage"));
-  $g_layout->output($g_layout->tr_bottom());
-
-  while (list($projname, $time) = each ($hoursperproj))
-  {
+    $query = "SELECT
+                hours.time as time,
+                project.name as project,
+                activity.name as activity
+              FROM
+                hours, activity, phase, project
+              WHERE
+                hours.activitydate >= '$startdate'
+                AND hours.activitydate <= '$enddate'
+                AND hours.activityid = activity.id
+                AND hours.phaseid = phase.id
+                AND phase.projectid = project.id";
+    if ($userid!="all") $query.= " AND hours.userid = '$userid'";
+  
+    $records = $g_db->getrows($query);
+  
+    $hoursperact = Array();
+    $hoursperproj = Array();
+    $total = 0;
+  
+    for ($i=0;$i<count($records);$i++)
+    {
+      $hoursperact[$records[$i]["activity"]] += $records[$i]["time"];
+      $hoursperproj[$records[$i]["project"]] += $records[$i]["time"];
+      $total += $records[$i]["time"];
+    }
+  
+    $g_layout->ui_top(text("title_employee_stats")." - ".$userid);
+  
+    $g_layout->output('<br><b>'.text("title_employeestats_perproject").'</b><br><br>');
+  
+    $g_layout->output($g_layout->data_top());
+  
     $g_layout->output($g_layout->tr_top());
-    $g_layout->td($projname);
-    $g_layout->td(employee_time_format($time));
-    $percentage = round(($time/$total)*100);
-    $imgwidth = max(1,($percentage*3));
-    $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+    $g_layout->td_datatitle(text("name"));
+    $g_layout->td_datatitle(text("time"));
+    $g_layout->td_datatitle(text("percentage"));
     $g_layout->output($g_layout->tr_bottom());
-  }
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("total"));
-  $g_layout->td_datatitle(employee_time_format($total));
-  $g_layout->td_datatitle('&nbsp;');
-  $g_layout->output($g_layout->tr_bottom());
-
-  $g_layout->output($g_layout->data_bottom());
-
-  $g_layout->output('<br><b>'.text("title_employeestats_peractivity").'</b><br><br>');
-
-  $g_layout->output($g_layout->data_top());
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("name"));
-  $g_layout->td_datatitle(text("time"));
-  $g_layout->td_datatitle(text("percentage"));
-  $g_layout->output($g_layout->tr_bottom());
-
-  while (list($actname, $time) = each ($hoursperact))
-  {
+  
+    while (list($projname, $time) = each ($hoursperproj))
+    {
+      $g_layout->output($g_layout->tr_top());
+      $g_layout->td($projname);
+      $g_layout->td(employee_time_format($time));
+      $percentage = round(($time/$total)*100);
+      $imgwidth = max(1,($percentage*3));
+      $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+      $g_layout->output($g_layout->tr_bottom());
+    }
+  
     $g_layout->output($g_layout->tr_top());
-    $g_layout->td($actname);
-    $g_layout->td(employee_time_format($time));
-    $percentage = round(($time/$total)*100);
-    $imgwidth = max(1,($percentage*3));
-    $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+    $g_layout->td_datatitle(text("total"));
+    $g_layout->td_datatitle(employee_time_format($total));
+    $g_layout->td_datatitle('&nbsp;');
     $g_layout->output($g_layout->tr_bottom());
-  }
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("total"));
-  $g_layout->td_datatitle(employee_time_format($total));
-  $g_layout->td_datatitle('&nbsp;');
-  $g_layout->output($g_layout->tr_bottom());
-
-  $g_layout->output($g_layout->data_bottom());
-
-//costregistration statistics
-/*
-  $query = "SELECT
-              costregistration.value as costs,
-              currency.symbol as cur,
-              currency.value as value,
-              project.name as project
-            FROM
-              costregistration LEFT JOIN currency ON costregistration.currency = currency.symbol, project
-            WHERE
-              costregistration.costdate >= '$startdate'
-              AND costregistration.costdate <= '$enddate'
-              AND costregistration.projectid = project.id";
-            if ($userid!="all") $query.= " AND costregistration.userid = '$userid'";
-
-  $rec = $g_db->getrows($query);
-
-  $costsperemp = array();
-  $totalcosts = 0;
-
-  for ($x=0;$x<count($rec);$x++)
-  {
-    //Calculate the costs to the default currency.
-
-   if ($rec[$x]["cur"] == "") {
-     $defcur = $rec[$x]["costs"];
-   }
-   else {
-     $defcur = $rec[$x]["costs"] / $rec[$x]["value"];
-   }
-
-    $costsperemp[$rec[$x]["project"]] += $defcur;
-    $totalcosts += $defcur;
-  }
-
-  //for ($i=0;$i<count($records);$i++)
-  //{
-  //  $hoursperact[$records[$i]["activity"]] += $records[$i]["time"];
-  //  $hoursperproj[$records[$i]["project"]] += $records[$i]["time"];
-  //  $total += $records[$i]["time"];
-  //}
-
-  $g_layout->output('<br><b>'.text("title_employeestats_costs").'</b><br><br>');
-
-  $g_layout->output($g_layout->data_top());
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("name"));
-  $g_layout->td_datatitle(text("costs"));
-  $g_layout->td_datatitle(text("percentage"));
-  $g_layout->output($g_layout->tr_bottom());
-
-  while (list($project, $costs) = each ($costsperemp))
-  {
+  
+    $g_layout->output($g_layout->data_bottom());
+  
+    $g_layout->output('<br><b>'.text("title_employeestats_peractivity").'</b><br><br>');
+  
+    $g_layout->output($g_layout->data_top());
+  
     $g_layout->output($g_layout->tr_top());
-    $g_layout->td($project);
-    $g_layout->td($config_currency_symbol . " " . round($costs, 2));
-    $percentage = round(($costs/$totalcosts)*100);
-    $imgwidth = max(1,($percentage*3));
-    $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+    $g_layout->td_datatitle(text("name"));
+    $g_layout->td_datatitle(text("time"));
+    $g_layout->td_datatitle(text("percentage"));
     $g_layout->output($g_layout->tr_bottom());
+  
+    while (list($actname, $time) = each ($hoursperact))
+    {
+      $g_layout->output($g_layout->tr_top());
+      $g_layout->td($actname);
+      $g_layout->td(employee_time_format($time));
+      $percentage = round(($time/$total)*100);
+      $imgwidth = max(1,($percentage*3));
+      $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+      $g_layout->output($g_layout->tr_bottom());
+    }
+  
+    $g_layout->output($g_layout->tr_top());
+    $g_layout->td_datatitle(text("total"));
+    $g_layout->td_datatitle(employee_time_format($total));
+    $g_layout->td_datatitle('&nbsp;');
+    $g_layout->output($g_layout->tr_bottom());
+  
+    $g_layout->output($g_layout->data_bottom());
+    
+    $g_layout->output('<br><br><br>');
+  
+    $g_layout->ui_bottom();
+
   }
-
-  $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle(text("total"));
-  $g_layout->td_datatitle($config_currency_symbol . " " . round($totalcosts, 2));
-  $g_layout->td_datatitle('&nbsp;');
-  $g_layout->output($g_layout->tr_bottom());
-
-  $g_layout->output($g_layout->data_bottom());
-*/
-  $g_layout->output('<br><br><br>');
-
-  $g_layout->ui_bottom();
 ?>
