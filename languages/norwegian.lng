@@ -1,0 +1,253 @@
+<?php
+  // To keep language files up to date, all strings that are introduced in a new version
+  // Have to be kept in a separate section, so we can easily see which strings need to be
+  // translated when a new version comes out.
+  
+  // --------==== Strings that were there from the beginning: ====---------
+
+  $txt_app_title = "Achievo Intranett System";
+  $txt_app_shorttitle = "Achievo";
+
+  $txt_startdate = "Startdato"; 
+  $txt_name = "Navn";
+  $txt_project = "Prosjekt";
+  $txt_activity = "Aktivitet";
+  $txt_remark = "Merknad";
+  $txt_employee = "Bruker";
+  $txt_coordinator = "Koordinator";
+  $txt_email = "Epost";
+  $txt_time = "Tid";
+  $txt_hours = "Time(r)";
+  $txt_minutes = "Minutter";
+  $txt_date = "Dato";
+  $txt_percentage = "Prosent";
+  $txt_total = "Totalt";
+  $txt_description = "Beskrivelse";
+  $txt_specrequired = "Må oppgi beskrivelse";
+  $txt_timespan = "Periode";
+  $txt_bill = "Faktura";
+  $txt_uptoandincluding = "tom";
+  $txt_continue = "Fortsett";
+  $txt_userid = "Bruker-id";
+  $txt_password = "Passord";
+  $txt_details = "detaljer";
+  $txt_refresh = "Vis";
+  $txt_login = "Logg inn";
+  $txt_logout = "Logg ut";
+  $txt_menu = "Meny";
+  $txt_id = "ID";
+  $txt_activitytemplate = "Aktivitetsmal";
+  $txt_status = "Status";
+  $txt_active = "Aktivt";
+  $txt_nonactive = "Inaktivt";
+  $txt_archived = "Arkivert";  
+  
+  $txt_logout_loggedinuser = "Innlogget som";
+  
+  $txt_title_activitystats = "Aktivitetsrapport";
+  $txt_title_activitystats_totals = "Samlet rapport for ";
+  $txt_title_activitystats_peremployee = "Følgende medarbeidere har registrert timer i denne aktiviteten";
+  $txt_title_activitystats_perproject = "Denne aktiviteten er brukt i følgende prosjekter";
+  $txt_title_employeestats = "Rapport for medarbeider";
+  $txt_title_employeestats_totals = "Samlet rapport for ";
+  $txt_title_employeestats_perproject = "Denne medarbeideren har registrert timer i følgende prosjekter";
+  $txt_title_employeestats_peractivity = "Denne medarbeideren har registrert timer i følgende aktiviteter";
+  $txt_title_employeestats_details_hoursof = "Timer for ";
+  $txt_title_employeestats_details_onproject = " på prosjekt ";
+  $txt_stats_chooseactivity = "Velg aktiviteten du vil ha rapporter for ved å klikke på aktivitetsnavn.";
+  $txt_stats_chooseemployee = "Velg medarbeideren du vil ha rapporter for ved å klikke på vedkommendes navn.";
+  $txt_title_billing = "Fakturering";
+
+  $txt_title_houradmin_weekview = "Registreringer for uke ";
+  $txt_title_houradmin_dayview = "Registreringer for ";
+
+  $txt_houradmin_previousweek = "Foregående uke";
+  $txt_houradmin_nextweek = "Neste uke";
+  $txt_houradmin_firstselectproject = "(Velg først prosjekt/fase)";
+  $txt_houradmin_gotoweekview = "Ukeoversikt";
+  $txt_houradmin_searchallprojects = "Søk i alle prosjekter";
+  $txt_houradmin_searchallprojectsphases = "Søk i alle prosjekter og faser"; 
+  
+  $txt_title_hoursurvey_hours = "Timer ";
+  $txt_title_hoursurvey_of = "for ";
+  $txt_title_hoursurvey_onproject = "på prosjekt ";
+  $txt_title_hoursurvey_intimespan = "i perioden ";
+      
+  $txt_title_projectstats = "Prosjektrapportering";
+  
+  $txt_title_projectstats_totals = "Samlet rapport for ";
+  $txt_title_projectstats_peremployee = "Følgende medarbeidere har registrert timer i dette prosjektet";
+  $txt_title_projectstats_peractivity = "Det er registrert arbeid på følgende aktiviteter i dette prosjektet";
+  
+
+  // --------==== Strings that were introduced in version 0.4: ====---------    
+  $txt_title_hoursurvey_onactivity = "for aktivitet ";
+  $txt_allusers = "Alle brukere";  
+  $txt_allprojects = "Alle prosjekter";
+  $txt_allactivities = "Alle aktiviteter";
+
+  // --------==== Strings that were introduced in version 0.5: ====---------
+
+  // TODO: find a solution for the 'one big language file' problem. It's 
+  // unworkable to have such a big file, while Achievo is so modularized.
+  // Probably each module should have its own language file, but with 
+  // one general file. 
+
+  $txt_phone = "Telefonnummer";
+  $txt_address = "Adresse";
+  $txt_number = "Nr";
+  $txt_fax = "Faxnummer";
+  $txt_remarkrequired = "Beskrivelse må fylles ut";
+  $txt_title_activity_add = "Legg til aktivitet";
+  $txt_title_activity_admin = "Registrerte aktiviteter";
+  $txt_title_activity_edit = "Endre aktivitet";  
+      
+  // --------==== Strings that were introduced in version 0.5.2: ====---------
+  $txt_project_select = "Velg først prosjekt";
+  $txt_phase_select = "Velg så fase";
+  $txt_code = "Kode";
+  $txt_title_project_select = "Velg et prosjekt";
+         
+  $txt_tpl_project_phase = "Fase";
+  $txt_tpl_dependency = "Avhengighet";
+  $txt_tpl_phase_activity = "Aktiviteter i fasen";
+  
+  $txt_title_tpl_project_add = "Legg til prosjektmal";
+  $txt_title_tpl_project_edit = "Endre prosjektmal";  
+  $txt_title_tpl_project_admin = "Registrerte prosjektmaler";
+  
+  $txt_title_tpl_phase_add = "Legg til fasemal";
+  $txt_title_tpl_phase_edit = "Endre fasemal";  
+  $txt_title_tpl_phase_admin = "Registrerte fasemaler";
+  
+  $txt_phase = "Fase";
+  
+  // --------==== Strings that were introduced in version 0.5.4: ====---------
+  
+  $txt_phaseid = "Prosjekt/Fase";
+  $txt_activityid = "Aktivitet";
+  $txt_contactperson = "Kontaktperson";
+  $txt_company = "Selskap";
+  $txt_bankaccount = "Bankkonto";  
+  $txt_zipcode = "Postnummer";
+  $txt_city = "Sted";
+  $txt_country = "Land";
+    
+  $txt_title_hours_add = "Ny tidsregistrering";
+  $txt_title_hours_edit = "Endre tidsregistrering";
+  $txt_title_hours_admin = "Registrert tidsforbruk";
+  $txt_title_hours_stats = "Spesifiser utvalg ";
+  
+  $txt_title_customer_add = "Legg til kunde";
+  $txt_title_customer_admin = "Registrerte kunder";
+  $txt_title_customer_edit = "Endre kunde";
+  
+  $txt_title_license = $txt_app_shorttitle." lisens";
+  $txt_title_manual = "Online dokumentasjon";
+  $txt_title_homepage = $txt_app_shorttitle." hjemmeside";
+  
+  $txt_customer = "Kunde";
+  
+  $txt_title_profile_add = "Lag en ny profil";
+  $txt_title_profile_admin = "Registerte profiler";
+  $txt_title_profile_edit = "Endre profil";
+  
+  $txt_password_leaveblankifunchanged = "La begge passordfeltene være tomme hvis du ønsker å beholde nåværende passord.";
+
+  $txt_userprefs = "Innstillinger";
+  $txt_profile = "Sikkerhetsprofiler";
+ 
+  $txt_menu_tpl_project_admin = "Prosjektmaler";
+  $txt_menu_tpl_phase_admin = "Fasemaler";
+
+  $txt_title_userprefs_edit = "Endre brukerinnstillinger";
+
+  $txt_profile_explanation = "<br>Under kan du angi hva en medarbeider med denne profilen kan og ikke kan gjøre.<br><br>";
+
+  $txt_entity = "Profil";
+
+  $txt_personalstats = "Personlig rapportering";
+  
+  $txt_menu_hours_admin = "Registrering";
+  $txt_menu_hours_hoursurvey = "Rapportering";
+  $txt_menu_customer_admin = "Kunder";
+  $txt_menu_project_admin = "Prosjekter";
+  $txt_menu_activity_admin = "Aktiviteter";
+  $txt_menu_employee_admin = "Brukere";
+  $txt_menu_employee_personalstats = "Personlig rapportering";
+  $txt_menu_profile_admin = "Sikkerhetsprofiler";  
+  
+  $txt_title_employee_add = "Legg til bruker";
+  $txt_title_employee_edit = "Endre bruker";
+  $txt_title_employee_admin = "Registrerte brukere";  
+  
+  $txt_title_project_add = "Legg til prosjekt";
+  $txt_title_project_edit = "Endre prosjekt";
+  $txt_title_project_admin = "Registrerte prosjekter";
+  
+  $txt_title_activity_select = "Velg en aktivitet";
+  $txt_activity_select = "Velg først en aktivitet";
+  $txt_title_phase_select = "Velg en fase";
+  
+  $txt_title_employee_stats = "Rapport for personer";
+  
+  $txt_title_employee_select = "Velg en person";
+  $txt_employee_select = "Velg en person";
+  
+  $txt_template = "Mal";
+  
+  $txt_sethoursfilter = "Spesifiser rapport:";
+
+  $txt_searchbyprojectorphase = "Du kan søke på prosjekter eller innenfor en fase i et prosjekt";
+  
+  $txt_view_all = "Vis alle medarbeidere";
+  $txt_hoursurvey = "Tidsoversikt";
+  $txt_stats = "Rapport";
+  $txt_tpl_project = "Prosjektmaler";
+  $txt_tpl_phase = "Fasemaler";  
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_hoursurvey_output_options = "Tilpass visning:";
+  $txt_hoursurvey_output_printable = "Utskriftsvennlig visning";
+  $txt_hoursurvey_output_showcollumns = "Vis bare disse kolonnene:";
+  $txt_menu_activity_stats = "Aktivitetsrapportering";
+  $txt_menu_employee_stats = "Brukerrapportering";
+  $txt_lastname = "Etternavn";
+  $txt_firstname = "Fornavn";
+  $txt_title_contact_edit = "Endre kontaktperson";
+  $txt_contact = "Kontaktperson";
+  
+  // --------==== Strings that were introduced in version 0.5.8: ====---------
+  $txt_houradmin_previousday = "Foregående dag";
+  $txt_houradmin_nextday = "Neste dag";
+  $txt_link_phase_add = "Legg til fase i dette prosjektet";
+  $txt_dependencies = "Avhengigheter";
+  $txt_addnewdependency = "Legg til avhengighet";
+  $txt_mustbecompletedbeforephase = "må fullføres før fase";
+  $txt_link_tpl_project_phase_add = "Legg til fase i dette prosjektet";
+  $txt_title_projectstats_perphase = "Det er registrert arbeid på følgende faser i dette prosjektet";
+  $txt_title_projectplanning = "Prosjektplanlegging";
+  $txt_milestones = "Milepæler";
+  $txt_deadline = "Ferdigdato";
+  $txt_booked = "Registrert";
+  $txt_planned = "Planlagt";
+  $txt_nophasesdefined = "Prosjektet har ingen faser!";
+  $txt_title_phase_edit = "Endre fase";
+  $txt_title_phase_add = "Legg til fase i dette prosjektet";
+  $txt_max_phasetime = "Estimert tidsforbruk (dager)";
+  $txt_max_hours = "Estimert timeforbruk";
+  $txt_phase_activity = "Aktiviteter";
+  $txt_planning = "Planlegging";
+  
+  // --------==== Strings that were introduced in version 0.5.10: ====---------
+  $txt_link_contact_add = "Legg til kontaktperson";
+
+  // --------==== Strings that were introduced in version 0.6: ====---------
+  $txt_title_contact_add = "Legg til kontaktperson";
+  $txt_theme = "Tema";
+  $txt_title_tpl_project_phase_add = "Legg til fase i dette prosjektet";
+    
+  // --------==== Strings that were introduced in version 0.6.3: ====---------
+  $txt_orderby = "Order by";
+
+?>

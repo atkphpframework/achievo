@@ -1,0 +1,175 @@
+<?
+  // To keep language files up to date, all strings that are introduced in a new version
+  // Have to be kept in a separate section, so we can easily see which strings need to be
+  // translated when a new version comes out.
+
+  // --------==== Strings that were there from the beginning: ====---------
+
+  $txt_app_title = "Achievo Intranet System";
+  $txt_app_shorttitle = "Achievo";
+  $txt_title_debugger = "Debugger";
+
+  $txt_name = "Nom";
+  $txt_project = "Projet";
+  $txt_activity = "Activité";
+  $txt_remark = "Remarque";
+  $txt_employee = "Employé";
+  $txt_coordinator = "Coordinateur";
+  $txt_email = "Email";
+  $txt_time = "Temps";
+  $txt_hours = "Heures";
+  $txt_minutes = "Minutes";
+  $txt_date = "Date";
+  $txt_percentage = "Pourcentage";
+  $txt_total = "Total";
+  $txt_description = "Description";
+  $txt_specrequired = "Spécification requise";
+  $txt_timespan = "Période";
+  $txt_yes = "Oui";
+  $txt_no = "Non";
+  $txt_bill = "Facturation";
+  $txt_uptoandincluding = "jusqu'au";
+  $txt_continue = "Continuer";
+  $txt_userid = "Utilisateur";
+  $txt_password = "Mot de passe";
+  $txt_edit = "Editer";
+  $txt_del = "Effacer";
+  $txt_add = "Ajouter";
+  $txt_save = "Sauver";
+  $txt_cancel = "Annuler";
+  $txt_details = "détails";
+  $txt_refresh = "Rafraîchir";
+  $txt_login = "Connecter";
+  $txt_logout = "Déconnecter";
+  $txt_menu = "Menu";
+  $txt_error = "Erreur";
+  $txt_id = "no.";
+  $txt_activitytemplate = "Modèle d'activité";
+  $txt_status = "Status";
+  $txt_active = "Actif";
+  $txt_nonactive = "Inactif";
+  $txt_archived = "Archivé";
+  $txt_currentpassword = "Mot de passe actuel";
+  $txt_newpassword = "Nouveau mot de passe";
+
+  $txt_title_login = "Connexion au système";
+  $txt_badpassword = "Mot de passe incorrect.";
+  $txt_logout_loggedinuser = "Connexion actuelle";
+  $txt_changepassword = "Changer le mot de passe";
+
+  $txt_hours_chooseproject = "En cliquant sur le numéro de projet dans la liste, le projet sera rajouté dans le formulaire d'enregistrement du temps.";
+  $txt_stats_chooseproject = "Choisissez le projet pour lequel vous désirez consulter les statistiques en cliquant sur son numéro.";
+
+  $txt_title_chooseactivity = "Choisir une activité";
+  $txt_title_chooseemployee = "Choisir un employé";
+  $txt_title_activitystats = "Statistiques activité";
+  $txt_title_activitystats_totals = "Total statistiques pour ";
+  $txt_title_activitystats_peremployee = "Les employés suivants ont enregistré du temps pour cette activité";
+  $txt_title_activitystats_perproject = "Cette activité était utilisée pour les projets suivants";
+  $txt_title_employeestats = "Statistiques Employés";
+  $txt_title_employeestats_totals = "Statistiques totales pour ";
+  $txt_title_employeestats_perproject = "Cet employé a enregistré du temps sur les projets suivants";
+  $txt_title_employeestats_peractivity = "Cet employé a enregistré du temps sur les activités suivantes";
+  $txt_title_employeestats_details_hoursof = "Heures de ";
+  $txt_title_employeestats_details_onproject = " sur le projet ";
+  $txt_stats_chooseactivity = "Sélectionnez l'activité pour laquelle vous désirez consulter les statistiques en cliquant sur le nom de l'activité.";
+  $txt_stats_chooseemployee = "Sélectionnez l'employé pour lequel vous désirez consulter les statistiques en cliquant sur son nom.";
+  $txt_title_billing = "Facturation";
+  $txt_bill_chooseproject = "Sélectionnez le projet pour lequel vous voulez générer la facturation";
+  $txt_bill_choosebillables = "Selectionnez les entrées facturables";
+  $txt_bill_choosebillables_explanation = "Sélectionnez tâches qui seront facturées en cliquant sur le bouton situé a coté";
+  $txt_bill_generate = "Générer la facturation";
+  $txt_title_billsetup = "Entrer les donnéées pour gébérer la facturation";
+  $txt_title_employeeadmin = "Gestion des employés";
+  $txt_title_employeeadmin_newemployee = "Nouvel employé";
+  $txt_title_employeeadmin_existingemployees = "Employés existants";
+  $txt_title_employeeadmin_editemployee = "Edition d'un employé";
+  $txt_employeeedit_accessrights = "Droits d'accès";
+
+  $txt_title_houradmin = "Enregistrement du temps";
+  $txt_title_houradmin_newentry = "Nouvelle entrée";
+  $txt_title_houradmin_editentry = "Edition d'une entrée";
+  $txt_title_houradmin_weekview = "Entrées pour la semaine ";
+  $txt_title_houradmin_dayview = "Entrées pour le ";
+  $txt_houradmin_previousweek = "Semaine précédente";
+  $txt_houradmin_nextweek = "Semaine suivante";
+  $txt_houradmin_firstselectproject = "(Sélectionner d'abord un projet)";
+  $txt_houradmin_gotoweekview = "Visualisation par semaine";
+  $txt_houradmin_searchallprojects = "Rechercher tous les projets";
+
+  $txt_hourprocess_fail_zerotime = "Echec sauvegarde: 0 heures, 0 minutes!";
+  $txt_hourprocess_fail_remarkrequired = "Echec sauvegarde: Le champ suivant l'activité doît être renseigné pour cette activité.";
+  $txt_hourprocess_fail_invalidprojectid = "Echec sauvegarde: Le projet n'existe pas : ";
+
+  $txt_title_hoursurvey = "Consultation du temps";
+  $txt_title_hoursurvey_hours = "Heures ";
+  $txt_title_hoursurvey_of = "de ";
+  $txt_title_hoursurvey_onproject = "du projet ";
+  $txt_title_hoursurvey_intimespan = "pour la période du ";
+
+  $txt_title_projectadmin = "Administration projet";
+  $txt_title_projectadmin_newproject = "Nouveau projet";
+  $txt_title_projectadmin_editproject = "Edition d'un projet";
+  $txt_title_projectadmin_leaveblankforautoid = "Laisser vide pour saisie automatique";
+  $txt_title_projectadmin_notemplate = "Aucun (sélection manuelle)";
+  $txt_title_projectadmin_existingprojects = "Projets existants";
+  $txt_title_projectadmin_selectactivities = "Selectionnez les activités contenues dans ce projet";
+  $txt_title_projectadmin_bookable = "Enregistrables";
+  $txt_title_projectadmin_billable = "Facturables";
+
+  $txt_hourprocess_fail_namerequired = "Echec sauvegarde: Manque le nom du projet!";
+  $txt_hourprocess_fail_projectexists = "Echec sauvegarde: Le numéro du projet existe déjà!";
+
+  $txt_employeeprocess_fail_useridrequired = "Echec sauvegarde: Manque le nom d'utilisateur!";
+  $txt_employeeprocess_fail_employeeexists = "Echec sauvegarde: Ce nom d'utilisateur existe déjà!";
+  $txt_employeeprocess_fail_namerequired = "Echec sauvegarde: Manque le nom!";
+  $txt_employeeprocess_fail_passwordmismatch = "Les mots de passe ne correspondent pas: mot de passe inchangé!";
+
+  $txt_title_projectstats = "Statistiques projet";
+
+  $txt_title_onlinedoc = "Documentation en ligne";
+  $txt_title_apphomepage = $txt_app_shorttitle." homepage";
+
+  $txt_title_chooseproject = "Choisissez un projet";
+
+  $txt_title_projectstats = "Statistiques Projet ";
+  $txt_title_projectstats_totals = "Statistiques totales pour ";
+  $txt_title_projectstats_peremployee = "Les employés suivants ont enregistré du temps sur ce projet";
+  $txt_title_projectstats_peractivity = "Les employés suivants ont travaillé sur les activités suivantes pour ce projet";
+
+  $txt_title_passwordedit = "Changer le mot de passe";
+
+  // --------==== Strings that were introduced in version 0.3: ====---------
+
+  $txt_title_activityadmin = "Administration de l'activité";
+  $txt_title_templateadmin = "Administration des modèles";
+  $txt_title_activityadmin_newactivity = "Nouvelle activité";
+  $txt_title_activityadmin_existingactivities = "Activités existantes";
+  $txt_activityprocess_fail_namerequired = "Echec sauvegarde: L'activité doît avoir un nom!";
+  $txt_title_activityadmin_editactivity = "Edition de l'activité";
+  $txt_title_templateadmin_newtemplate = "Nouveau modèle";
+  $txt_title_templateadmin_existingtemplates = "Modèles existants";
+  $txt_templateprocess_fail_namerequired = "Echec sauvegarde: Le modèle doît avoir un nom!";
+  $txt_title_templateadmin_edittemplate = "Edition du modèle";
+  $txt_title_templateadmin_selectactivities = "Sélectionnez les activités contenues dans le modèle";
+
+  // --------==== Strings that were introduced in version 0.4: ====---------
+  $txt_title_userpreferences = "Préférences personnelles";
+  $txt_backgroundcolor = "Couleur de fond (6 chiffres code couleur HTML)";
+  $txt_fontcolor = "Couleur de texte";
+  $txt_tableheadercolor = "Couleur de titre pour la table des données";
+  $txt_titlefontcolor = "Couleur de titre";
+  $txt_title_hoursurvey_onactivity = "pour l'activité ";
+  $txt_allusers = "Tous les utilisateurs";
+  $txt_hoursurvey_filter = "Rédéfinir la sélection";
+  $txt_allprojects = "Tous les projets";
+  $txt_allactivities = "Toutes les activités";
+  $txt_license = $txt_app_shorttitle." licence";
+
+  // --------==== Strings introduced in version 0.4.5  ====--------
+  $txt_title_employeedelete = "Supprimer un employé";
+  $txt_title_projectdelete = "Supprimer un projet";
+  $txt_delete_button = "Effacer";
+  $txt_cancel_button = "Annuler";
+  $txt_confirm_delete = "Etes-vous certain de vouloir supprimer cet objet ?";
+?>

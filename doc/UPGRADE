@@ -1,0 +1,48 @@
+Upgrading Achievo
+=================
+
+Read this first
+---------------
+Depite our efforts to keep this UPGRADE file as accurate as possible, there
+might be situations in which the described procedure does not work.
+In this case send an email to ivo@achievo.com or to the mailinglist
+(achievo@achievo.com) and we will try to help you out.
+
+Upgrading from version 0.4.x -> 0.6
+-----------------------------------
+The database structure has changed a lot between 0.4.x and 0.6, so there
+are a few steps that you need to do to convert your old database to be
+compatible with Achievo 0.6.
+Note that the upgrade procedure does not affect your old database, so
+it's safe to try the conversion.
+
+1. First install Achievo 0.6 to a new directory (leave your existing 
+   Achievo installation in place), using the achievo.sql 
+   file, as described in the INSTALL file. 
+   When creating the database, make sure you create a new one, don't use
+   your existing database.
+   For example: if your current Achievo database is called 'achievo', create 
+   a new database that you call 'achievo_0_6'.
+   
+2. Set an administrator password by editing the config.inc.php3 file and
+   changing the $config_administratorpassword setting.
+    
+3. Edit the file convert.php3 and change the settings in the script.
+   
+4. Point your browser to the convert.php3 script. 
+   For example: http://myserver/achievo_0.6/convert.php3
+   
+5. The way we handle user passwords has changed in Achievo 0.6. Since there
+   is no way to decode the existing passwords, we can't convert the existing
+   passwords. If you have not set a default password for users in the 
+   convert.php3 script, you must now login to your new Achievo installation,
+   and use 'Employee Administration' to set a password for every user. 
+   If you set a default password, users can login using this default password
+   and change their own password.
+ 
+6. Finally, log into Achievo, go to the 'Security Profiles' section and edit 
+   the 'Default Group'. You have to grant permissions to this profile, since
+   every converted user is put in this default profile.
+   
+The Achievo upgrade is now complete. If you have any questions, please join 
+the mailinglist by sending an empty message to achievo-subscribe@achievo.com.

@@ -1,0 +1,73 @@
+Achievo Frequently Asked Questions
+==================================
+
+If you have a question about Achievo, try to find the answer below.
+If you can't find it, mail your question to the Achievo mailinglist.
+
+Note: In the answers below, we sometimes refer to menu items or fields in 
+Achievo. We use the english terms, so if you use a different language, 
+the terms might be different.
+
+
+1. Log in questions
+-------------------
+
+ 1.1. What is the password for the Achievo demo on your site?
+ 
+        The username is 'administrator', the password is 'demo'.
+
+ 1.2. I just installed Achievo for the first time and I try to login. 
+      What's the username and password?   
+   
+        The username is 'administrator', the default password is 'demo'.   
+   
+ 1.3. When I try to login, all I get is a message 'Failed to logon',
+      and I'm sure the password is correct.
+
+        If you run PHP as a cgi-module, you can't use the login protocol
+        we use. We will fix this in the future. 
+   
+ 1.4. How can I change the administrator password?
+ 
+        The administrator password is set in the config.inc.php3 file, not in
+        the database. See also question 5.
+      
+ 1.5. How do I logout?
+ 
+        We use http authentication for logging in. Your browser remembers your 
+        logins and logs in for you each time you open Achievo. You have to 
+        close your browser to effectively logout. We will fix this in a future 
+        version.
+        
+  
+2. User preferences
+-------------------
+
+ 2.1. When I use 'user preferences' for administrator, I get an error message
+      when I try to save.
+    
+        The administrator is not a real user. His account is set in the 
+        config.inc.php3 file. This is useful when your database is down or
+        corrupted but you still need to login.
+      
+        You can create a 'real' account for administrator if you want.
+        In the 'Security Profiles' section, create a profile that has
+        all access privileges. In the 'Employee Administration' section,
+        create a user with userid 'administrator' and whatever name and
+        password you like. Then disable the config account by putting //
+        in front of the line with $config_administratorpassword.
+
+
+3. Time Registration
+--------------------
+
+ 3.1. The dropdown for 'Project/Phase' is empty, but I am sure I created 
+      projects and phases.
+    
+        This is not a bug, this is a feature. The dropdown is like a 'recent 
+        documents' option most applications have. It only contains the last
+        projects you used, so you can quickly access them. If a project you
+        want to use is not in the dropdown, click the link 'Search all 
+        projects and phases'.
+      
+      

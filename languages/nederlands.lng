@@ -1,0 +1,251 @@
+<?php
+  // To keep language files up to date, all strings that are introduced in a new version
+  // Have to be kept in a separate section, so we can easily see which strings need to be
+  // translated when a new version comes out.
+  
+  // --------==== Strings that were there from the beginning: ====---------
+
+  $txt_app_title = "Achievo Intranet Systeem";
+  $txt_app_shorttitle = "Achievo";
+
+  $txt_startdate = "Start datum"; 
+  $txt_name = "Naam";
+  $txt_project = "Project";
+  $txt_activity = "Activiteit";
+  $txt_remark = "Opmerking";
+  $txt_employee = "Gebruiker";
+  $txt_coordinator = "Coordinator";
+  $txt_email = "Email";
+  $txt_time = "Tijd";
+  $txt_hours = "Uren";
+  $txt_minutes = "Minuten";
+  $txt_date = "Datum";
+  $txt_percentage = "Percentage";
+  $txt_total = "Totaal";
+  $txt_description = "Omschrijving";
+  $txt_specrequired = "Specificatie vereist";
+  $txt_timespan = "Periode";
+  $txt_bill = "Factuur";
+  $txt_uptoandincluding = "t/m";
+  $txt_continue = "Doorgaan";
+  $txt_userid = "Gebruikernaam";
+  $txt_password = "Wachtwoord";
+  $txt_details = "Details";
+  $txt_refresh = "Verversen";
+  $txt_login = "Login";
+  $txt_logout = "Logout";
+  $txt_id = "ID";
+  $txt_activitytemplate = "Activiteiten template";
+  $txt_status = "Status";
+  $txt_active = "Aktief";
+  $txt_nonactive = "Non-aktief";
+  $txt_archived = "Archived";  
+  
+  $txt_logout_loggedinuser = "Ingelogde gebruiker";
+     
+  $txt_title_activitystats = "Activiteit Statistieken";
+  $txt_title_activitystats_totals = "Totaal statistieken voor ";
+  $txt_title_activitystats_peremployee = "De volgende gebruikers hebben uren geregistreerd op deze activiteit";
+  $txt_title_activitystats_perproject = "Deze activiteit is bij de volgende projecten gebruikt";
+  $txt_title_employeestats = "Medewerker Statistieken";
+  $txt_title_employeestats_totals = "Totaal statistieken voor ";
+  $txt_title_employeestats_perproject = "Deze werknemer heeft uren geregistreerd op de volgende projecten";
+  $txt_title_employeestats_peractivity = "Deze werknemer heeft uren geregistreerd op de volgende activiteiten";
+  $txt_title_employeestats_details_hoursof = "Uren van ";
+  $txt_title_employeestats_details_onproject = " op project ";  
+  $txt_title_billing = "Facturering";      
+
+  $txt_title_houradmin_weekview = "Uren voor week ";
+  $txt_title_houradmin_dayview = "Uren voor ";
+
+  $txt_houradmin_previousweek = "Week terug";
+  $txt_houradmin_nextweek = "Week verder";
+  $txt_houradmin_firstselectproject = "(Selecteer eerst een fase)";
+  $txt_houradmin_gotoweekview = "Ga naar weekoverzicht";
+  $txt_houradmin_searchallprojects = "Zoek in alle projecten";
+  $txt_houradmin_searchallprojectsphases = "Zoek in alle projecten en fasen"; 
+    
+  $txt_title_hoursurvey_hours = "Uren ";
+  $txt_title_hoursurvey_of = "van ";
+  $txt_title_hoursurvey_onproject = "op project ";
+  $txt_title_hoursurvey_intimespan = "in periode ";
+      
+  $txt_title_projectstats = "Project statistieken";
+  
+  $txt_title_projectstats_totals = "Totaal statistieken voor ";
+  $txt_title_projectstats_peremployee = "De volgende werknemers hebben uren op dit project geboekt";
+  $txt_title_projectstats_peractivity = "Voor dit project is aan de volgende activiteiten gewerkt";
+  
+
+  // --------==== Strings that were introduced in version 0.4: ====---------    
+  $txt_title_hoursurvey_onactivity = "op activiteit ";
+  $txt_allusers = "Alle gebruikers";  
+  $txt_allprojects = "Alle projecten";
+  $txt_allactivities = "Alle activiteiten";
+
+
+  // --------==== Strings that were introduced in version 0.5: ====---------
+
+  // TODO: find a solution for the 'one big language file' problem. It's 
+  // unworkable to have such a big file, while Achievo is so modularized.
+  // Probably each module should have its own language file, but with 
+  // one general file. 
+
+  $txt_phone = "Telefoon";
+  $txt_address = "Adres";
+  $txt_number = "Huisnr.";
+  $txt_fax = "Fax";
+  $txt_remarkrequired = "Specificatie verplicht";
+  $txt_title_activity_add = "Activiteit toevoegen";
+  $txt_title_activity_admin = "Activiteiten beheren";
+  $txt_title_activity_edit = "Activiteit bewerken";  
+      
+      
+  // --------==== Strings that were introduced in version 0.5.2: ====---------
+  $txt_project_select = "Selecteer een project";
+  $txt_phase_select = "Selecteer een fase";  
+  $txt_title_project_select = "Selecteer een project";     
+    
+  $txt_tpl_project_phase = "Fase";
+  $txt_tpl_dependency = "Afhankelijkheid";
+  $txt_tpl_phase_activity = "Fase activiteiten";
+  
+  $txt_title_tpl_project_add = "Project template toevoegen";
+  $txt_title_tpl_project_edit = "Project template bewerken";  
+  $txt_title_tpl_project_admin = "Project templates beheren";
+  
+  $txt_title_tpl_phase_add = "Fase template toevoegen";
+  $txt_title_tpl_phase_edit = "Fase template bewerken";  
+  $txt_title_tpl_phase_admin = "Fase templates beheren";
+  
+  $txt_phase = "Fase";
+  
+  // --------==== Strings that were introduced in version 0.5.4: ====---------
+  
+  $txt_phaseid = "Project/Fase";
+  $txt_activityid = "Activiteit";
+  $txt_contactperson = "Contactpersoon";
+  $txt_company = "Bedrijf";
+  $txt_bankaccount = "Bankrekeningnummer";
+  $txt_zipcode = "Postcode";
+  $txt_city = "Woonplaats";
+  $txt_country = "Land";
+  
+  $txt_title_hours_add = "Nieuwe entry";
+  $txt_title_hours_edit = "Entry bewerken";
+  $txt_title_hours_admin = "Geregistreerde uren";
+  $txt_title_hours_stats = "Selectie verfijnen";
+  
+  $txt_title_customer_add = "Klant toevoegen";
+  $txt_title_customer_admin = "Klanten beheren";
+  $txt_title_customer_edit = "Klant bewerken";
+  
+  $txt_title_license = $txt_app_shorttitle." licentie";
+  $txt_title_manual = "Online documentatie";
+  $txt_title_homepage = $txt_app_shorttitle." homepage";
+  
+  $txt_customer = "Klant";
+    
+  $txt_title_profile_add = "Profiel toevoegen";
+  $txt_title_profile_admin = "Profielen beheren";
+  $txt_title_profile_edit = "Profiel bewerken";
+    
+  $txt_password_leaveblankifunchanged = "Laat beide wachtwoord velden leeg als u het huidige wachtwoord wilt houden.";
+
+  $txt_userprefs = "Gebruikersinstellingen";
+  $txt_profile = "Profiel";
+ 
+  $txt_menu_tpl_project_admin = "Project templates";
+  $txt_menu_tpl_phase_admin = "Fase templates";
+
+  $txt_title_userprefs_edit = "Instellingen wijzigen";
+
+  $txt_profile_explanation = "<br>Hieronder kunt u aangeven wat een gebruiker in dit profiel wel of niet mag doen.<br><br>";
+
+  $txt_entity = "Profiel";
+
+  $txt_personalstats = "Persoonlijke Statistieken";
+  
+  $txt_menu_hours_admin = "Tijd Registratie";
+  $txt_menu_hours_hoursurvey = "Uren overzicht";
+  $txt_menu_customer_admin = "Klanten";
+  $txt_menu_project_admin = "Projecten";
+  $txt_menu_activity_admin = "Activiteiten";
+  $txt_menu_employee_admin = "Gebruikers";
+  $txt_menu_employee_personalstats = "Persoonlijke Statistieken";
+  $txt_menu_profile_admin = "Beveiligings Profielen";  
+  
+  $txt_title_employee_add = "Gebruiker toevoegen";
+  $txt_title_employee_edit = "Gebruiker bewerken";
+  $txt_title_employee_admin = "Gebruikers beheren";  
+  
+  $txt_title_project_add = "Project toevoegen";
+  $txt_title_project_edit = "Project bewerken";
+  $txt_title_project_admin = "Projecten beheren";
+  
+  $txt_title_activity_select = "Selecteer een activiteit";
+  $txt_activity_select = "Select eerst een activiteit";
+  $txt_title_phase_select = "Selecteer een fase";
+  
+  $txt_title_employee_stats = "Gebruikers statistieken";
+  
+  $txt_title_employee_select = "Selecteer een gebruiker";
+  $txt_employee_select = "Selecteer een gebruiker";
+  
+  $txt_template = "Template";
+  
+  $txt_sethoursfilter = "Selecteer welke uren u wilt zien:";
+
+  $txt_searchbyprojectorphase = "U kunt zoeken per project, of per fase van een project";
+  
+  $txt_view_all = "Alle gebruikers bekijken";
+  $txt_hoursurvey = "Uren overzicht";
+  $txt_stats = "Statistieken";
+  $txt_tpl_project = "Project Templates";
+  $txt_tpl_phase = "Fase Templates";  
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_hoursurvey_output_options = "Aanpassen van de uitvoer:";
+  $txt_hoursurvey_output_printable = "Printer-vriendelijk formaat";
+  $txt_hoursurvey_output_showcollumns = "Toon alleen deze kolommen:";
+  $txt_menu_activity_stats = "Activiteit Statistieken";
+  $txt_menu_employee_stats = "Gebruiker Statistieken";
+  $txt_lastname = "Achternaam";
+  $txt_firstname = "Voornaam";  
+  $txt_title_contact_edit = "Contactpersoon bewerken";
+  $txt_contact = "Contactpersoon";
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_houradmin_previousday = "Dag terug";
+  $txt_houradmin_nextday = "Dag verder";
+  $txt_link_phase_add = "Fase toevoegen";  
+  $txt_dependencies = "Afhankelijkheden";
+  $txt_addnewdependency = "Voeg een afhankelijkheid toe";
+  $txt_mustbecompletedbeforephase = "moet afgerond zijn voor fase";
+  $txt_link_tpl_project_phase_add = "Voeg een nieuwe fase toe aan dit project";
+  $txt_title_projectstats_perphase = "Bij dit project is aan de volgende fasen gewerkt";
+  $txt_title_projectplanning = "Project Planning";
+  $txt_milestones = "Mijlpalen";
+  $txt_deadline = "Deadline";
+  $txt_booked = "Geboekt";
+  $txt_planned = "Gepland";
+  $txt_nophasesdefined = "Het project heeft geen fasen!";
+  $txt_title_phase_edit = "Fase bewerken";
+  $txt_title_phase_add = "Fase toevoegen";
+  $txt_max_phasetime = "Doorlooptijd (dagen)";
+  $txt_max_hours = "Urenschatting";
+  $txt_phase_activity = "Activiteiten";
+  $txt_planning = "Planning";
+  
+  // --------==== Strings that were introduced in version 0.5.10: ====---------
+  $txt_link_contact_add = "Voeg een nieuwe contactpersoon toe";
+  
+  // --------==== Strings that were introduced in version 0.6: ====---------
+  $txt_title_contact_add = "Voeg een nieuwe contactpersoon toe";  
+  $txt_theme = "Thema";
+  $txt_title_tpl_project_phase_add = "Voeg een nieuwe fase toe aan dit project";
+    
+  // --------==== Strings that were introduced in version 0.6.3: ====---------
+  $txt_orderby = "Sorteren op";
+  
+?>

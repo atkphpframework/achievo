@@ -1,0 +1,158 @@
++ : new feature
+- : deprecated feature
+* : bugfix or changed code
+
+Changes in Achievo 0.6.3
+------------------------
+* Updated Finnish language file
+* Small fix to prevent a warning with some php versions
+* Fixed bug in .sql files: employee table lacked a primary key
+* Fixed bug in hoursurvey that caused an empty list when sorting after a
+  refresh
++ Added an 'order by' option for printer friendly hoursurvey
+* Changed the order of Edit/Delete links on pages
+
+Changes in Achievo 0.6.2
+------------------------
+* Improved documentation (fixed bugs in INSTALL file)
++ Added FAQ document
+* Improved Italian language file
+* Workaround for a bug in php-4.0.4pl1 (http://www.php.net/bugs.php?id=8966)
+  that affected Achievo.
+
+Changes in Achievo 0.6.1
+------------------------
++ Added Finnish language file.
+* Fixed a bug with accessrights of project templates.
+* Fixed a bug in project planning that caused segfaults with php4.0.4
+
+Changes in Achievo 0.6
+----------------------
++ Added Norwegian language file.
++ Added German language file.
++ Time Registration now automatically selects the phase if a project
+  only has one phase.
+* Updated some language files.
+
+Changes in Achievo 0.5.11
+-------------------------
++ Added Spanish language file.
+* Fixed a bug with the Refresh button of project statistics.
+* Fixed a bug with handling of all date fields.
+* Fixed a bug in the accessrights of project templates.
+
+Changes in Achievo 0.5.10
+-------------------------
++ Added Brazilian-Portuguese language file.
++ Added automatic scrollbar to menu.
+- Disabled broken billing feature (won't be enabled until 0.7)
+* Bugfix in user preferencer: 'save' now doesn't close the window.
+* Bugfixes hoursurvey, projectstats and some small fixes in other files
+
+Changes in Achievo 0.5.9
+------------------------
+* Bugfixes in project administration.
+
+Changes in Achievo 0.5.8
+------------------------
++ Added previous/next day feature to houradmin
++ Better navigation in record lists (pagenumbers in addition to 
+  prev/next links)
++ Added Italian language file
++ Added Dutch language file
++ Better interface for project/phase editing.
++ Separation of project Statistics/Planning
+* Optimisations for project planning.
+* Bugfixes
+
+Changes in Achievo 0.5.7
+------------------------
++ Contactpersons per customer.
++ Project and employee 'active/nonactive' feature.
++ Output customisation for hoursurvey.
+* Improved activity/employee stats.
+* Fixed 0.4->0.6 convert script bugs, plus improved feedback.
+* Changed font sizes of most themes from ugly big to normal.
+* Bugfixes.
+
+Changes in Achievo 0.5.6
+------------------------
++ Hoursurvey.
++ Weekview in houradministration.
++ Convert script to convert 0.4.x databases to 0.5.6 databases.
++ Achievo Classic theme.
+* Bugfixes.
+* File/directories restructured.
+
+Changes in Achievo 0.5.5
+------------------------
+* Fixed a bug in atk javascript that prevented houradministration 
+  from working.
+* Fixed a bug in recent projects/phases dropdown that prevented
+  houradministration from working.
+
+Changes in Achievo 0.5.4
+------------------------
++ Security (login, profiles)
++ User preferences (select theme, change password)
++ Customer administration
++ Personal statistics
++ Ported last bits of old 0.4 code to atk
+* Lots of fixes
+
+Changes in Achievo 0.5.3
+------------------------
++ Theme support
++ Project Planning (Phases)
++ Ported more stuff to atk
+* Numerous fixes
+
+Changes in Achievo 0.5.2
+------------------------
+* Major enhancements to atk (again :) 
++ Search functionality for all node types
++ preliminary Oracle support (undocumented)
++ ported more old stuff to atk (again :)
+
+Changes in Achievo 0.5.1
+------------------------
+* Major enhancements to atk
++ query class
+* ported more old stuff to atk (also broke a lot of functionality)
++ more atkattributes (list and text)
++ many to one relations between nodes
++ many to many relations between nodes (not yet complete)
+* moved some layout related stuff to cascading style sheets
+
+Changes in Achievo 0.5
+----------------------
+* Major step towards new base code. Eventually all current features
+  will be ported to the new, more flexible, system. With the new system
+  it will be easier to implement new features and new modules. The 
+  application core logic is now separated into a separate codebase, 
+  called atk.
++ Hoursurvey now has a line with the total time.
+- config_activities is no longer used. If you don't want activitybased
+  projects, put in 1 'general' activity.
+* Rewrote some of the database queries.
+* Fixed some problems with the in_array function in PHP4
++ Added Spanish language file
++ Added French language file
++ Added Italian language file
+* Renamed config.inc to config.inc.php3 (to prevent webservers from
+  serving the .inc file as-is, which could reveal the database password)
+
+Changes in Achievo 0.4.2
+------------------------
+* Fixed some localization bugs (Jason Kohles)
+* Achievo now works under PHP4 (some incompatibilityproblems) (Ivo Jansch)
+
+Changes in Achievo 0.4.1
+------------------------
++ Added german language file (Michael Gaehwiler)
+* Users were unable to change their password. Fixed. (Jason Kohles)
+* Fixed an untranslated button (Jason Kohles)
+
+Changes in Achievo 0.4
+----------------------
+First public release, so everything is new. :-)

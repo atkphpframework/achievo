@@ -1,0 +1,46 @@
+Development
+-----------
+Ivo Jansch         <ivo@achievo.com>
+Sandy Pleyte       <sandy@achievo.com>
+
+
+Marketing and Support
+---------------------
+Tom M. Schenkenberg <tom@achievo.com>
+
+
+Translators
+-----------
+Braz. Portuguese : Armando M. Baratti   <ambaratti@aduaneiras.com.br>
+Dutch            : Ivo Jansch           <ivo@achievo.com>
+Finnish          : Skyttä Kari          <kari.skytta@koskisen.fi>
+French           : Olivier Fourdan      <fourdan@xfce.org>
+German           : Lars Martin          <lars@smb-tec.com>
+                   Michael Gaehwiler    <pegatron@gmx.net>
+Italian          : Marco De Toni        <marco.detoni@dedalomedia.it>
+                   Luca Pescatore       <l.pescatore@network.it>                   
+Norwegian        : Stein Bjorndal       <stein@proact.no>
+                   Tommy Stiansen       <Tommy@tradeit.as>                   
+Spanish          : Jorge Ibsen          <jibsen@eso.org>
+                   Armando Montiel Caba <amontiel@mpsnet.net.mx>
+
+Contributors
+------------
+We received bugfixes and other contributions from the following people:
+
+Alexandre Carmel-Veilleux <saruman@mondo-live.com>	
+Jan Peter Hecking         <jhecking@informatik.uni-rostock.de>
+Jason Kohles              <jason@mediabang.com>      
+Javier Ledesma            <javier.ledesma@ubs.com> 
+Stefan Niederhauser       <sn@atelier-w.ch>   
+T. Luyben                 <tycho@e-lab.nl>
+Martin Pruijssers                       
+Wayne T. Ethier           <wte@websynergyinternet.com>
+Michel Marti              <michel.marti@ubs.com>
+Lucas Smith               <smith@dybnet.de>
+
+Achievo uses a modified version of db_mysql.inc for mysql database access. 
+db_mysql.inc is part of PHPLIB (http://phplib.netuse.de) 
+Copyright (c) 1998,1999 SH Online Dienst GmbH. db_mysql.inc is made available 
+under the Library General Public License (LGPL).
+

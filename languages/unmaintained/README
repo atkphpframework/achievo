@@ -1,0 +1,13 @@
+Unmaintained language files
+===========================
+
+The language files in the unmaintained directory are language files from 
+previous Achievo versions that are no longer updated by their translators.
+
+If you want to update one of the unmaintained languages, use enlish.lng 
+from the languages directory as basis for your new translation.
+Please also translate the corresponding language file in the atk/languages 
+directory.
+
+Please send your updated translation to ivo@achievo.com so we can include
+it in the next release.

@@ -1,0 +1,70 @@
+Achievo Readme
+==============
+
+General information
+-------------------
+Achievo and all related material is (c)2000-2001 ibuildings.nl.
+Achievo is distributed under the GNU General Public License (See LICENSE file
+for details).
+
+See the file INSTALL for installation instructions if you install Achievo for
+the first time.
+See the UPGRADE file if you want to upgrade an existing Achievo installation.
+
+
+Contact information
+-------------------
+Technical questions regarding Achievo: Ivo Jansch <ivo@achievo.com>
+Questions regarding services that ibuildings.nl provides for Achievo
+(like installation and configuration): Tom M. Schenkenberg <tom@achievo.com>
+
+The project homepage can be found at http://www.achievo.com
+
+If you want to be notified when new versions of Achievo come out, you can 
+subscribe to our announcements mailinglist, by sending an empty message to
+announce-subscribe@achievo.com. 
+
+If you want to discuss Achievo features with the developers and other users,
+you can subscribe to the discussion list, by sending an empty message to
+achievo-subscribe@achievo.com.
+
+
+Commercial Support
+------------------
+Ibuildings provides extensive support for Achievo. Information about the 
+support program can be found at http://www.ibuildings.nl/en/achievo/sponsor.
+
+
+Disclaimer
+----------
+This product is currently in beta-stage and is provided AS-IS. ibuildings.nl
+and any other party involved do not warrant any functionality of the product
+and deny all responsibility in case of failure of the product or any damage
+following directly or indirectly from use of this product.
+
+
+Getting the latest release
+--------------------------
+The latest release of Achievo can always be found at 
+ftp://ftp.achievo.com/pub/achievo.
+
+
+Getting involved
+----------------
+Achievo is developed in an Open Source (http://www.opensource.org) fashion in
+order to facilitate collaboration on the project. One of the reasons for
+choosing the Open Source method is to ensure that development is not limited
+by our own resources alone.
+We can also use some help in doing translations of the software and
+documentation writing. If you're creative, we can also use themes.
+If you want to help development, join our mailinglist by sending an empty
+message to achievo-subscribe@achievo.com. If you don't like mailinglists
+you can also send an email to ivo@achievo.com with your suggestions.
+
+
+User documentation
+------------------
+Currently no user documentation is provided for Achievo. Once the project has
+reached a certain level of maturity, we will start providing user documentation
+until that time, if you have any questions, join the mailinglist by sending an
+empty message to achievo-subscribe@achievo.com

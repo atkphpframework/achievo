@@ -1,0 +1,290 @@
+<?php
+
+  // To keep language files up to date, all strings that are introduced in a new version
+  // Have to be kept in a separate section, so we can easily see which strings need to be
+  // translated when a new version comes out.
+
+  // --------==== Strings that were there from the beginning: ====---------
+
+  $txt_app_title = "Sistema Intranet Achievo";
+  $txt_app_shorttitle = "Achievo";
+
+  $txt_startdate = "Data de início";
+  $txt_name = "Nome";
+  $txt_project = "Projeto";
+  $txt_activity = "Atividade";
+  $txt_remark = "Comentário";
+  $txt_employee = "Empregado";
+  $txt_coordinator = "Cordenador";
+  $txt_email = "Email";
+  $txt_time = "Tempo";
+  $txt_hours = "Horas";
+  $txt_minutes = "Minutos";
+  $txt_date = "Data";
+  $txt_percentage = "Porcentagem";
+  $txt_total = "Total";
+  $txt_description = "Descrição";
+  $txt_specrequired = "Especificação requerida";
+  $txt_timespan = "Período";
+  $txt_yes = "Sim";
+  $txt_no = "Não";
+  $txt_bill = "Fatura";
+  $txt_uptoandincluding = "a ";
+  $txt_continue = "Continuar";
+  $txt_userid = "Usuário";
+  $txt_password = "Senha";
+  $txt_edit = "Editar";
+  $txt_del = "Apagar";
+  $txt_add = "Adicionar";
+  $txt_save = "Savar";
+  $txt_cancel = "Cancelar";
+  $txt_details = "detalhes";
+  $txt_refresh = "Atualizar";
+  $txt_login = "Logar";
+  $txt_logout = "Encerrar";  
+  $txt_error = "Erro";
+  $txt_id = "ID";
+  $txt_activitytemplate = "Modêlo de Atividade";
+  $txt_status = "Estado";
+  $txt_active = "Ativo";
+  $txt_nonactive = "Inativo";
+  $txt_archived = "Arquivado";
+  $txt_currentpassword = "Senha atual";
+  $txt_newpassword = "Nova senha";
+
+  $txt_title_login = "Logar no sistema";
+  $txt_badpassword = "Senha incorreta.";
+  $txt_logout_loggedinuser = "Usuário logado";
+  $txt_changepassword = "Mudar a senha";
+
+  $txt_hours_chooseproject = "Clique num número de projeto para colocá-lo no formulário de registro de tempo.";
+  $txt_stats_chooseproject = "Escolha o projeto para o qual deseja ver estatísticas clicando no seu número.";
+
+  $txt_title_chooseactivity = "Escolha uma atividade";
+  $txt_title_chooseemployee = "Escolha um empregado";
+  $txt_title_activitystats = "Estatísticas de atividade";
+  $txt_title_activitystats_totals = "Estatísticas totais de ";
+  $txt_title_activitystats_peremployee = "Os seguintes empregados registraram horas nesta atividade";
+  $txt_title_activitystats_perproject = "Esta atividade foi usada para os seguintes projetos";
+  $txt_title_employeestats = "Estatísticas do empregado";
+  $txt_title_employeestats_totals = "Estatísticas totais de ";
+  $txt_title_employeestats_perproject = "Este empregado registrou horas nos seguintes projetos";
+  $txt_title_employeestats_peractivity = "Este empregado registrou horas nas seguintes atividades";
+  $txt_title_employeestats_details_hoursof = "Horas de ";
+  $txt_title_employeestats_details_onproject = " no projeto ";
+  $txt_stats_chooseactivity = "Escolha a atividade para a qual deseja ver estatísticas clicando no seu nome.";
+  $txt_stats_chooseemployee = "Escolha o empregado para o qual deseja ver estatísticas clicando no seu nome.";
+  $txt_title_billing = "Contabilização";
+  $txt_bill_chooseproject = "Escolha o projeto para o qual deseja criar uma fatura";
+  $txt_bill_choosebillables = "Selecione as entradas contabilizáveis de registro de tempo";
+  $txt_bill_choosebillables_explanation = "Selecione as entradas de registro de tempo que serão contabilizadas clicando na caixa de seleção à direita delas";
+  $txt_bill_generate = "Gerar fatura";
+  $txt_title_billsetup = "Entre com os dados para a geração da fatura";
+  $txt_employeeedit_accessrights = "Direitos de acesso";
+
+  $txt_title_houradmin_weekview = "Entradas da semana ";
+  $txt_title_houradmin_dayview = "Entradas de ";
+
+  $txt_houradmin_previousweek = "Semana anterior";
+  $txt_houradmin_nextweek = "Próxima semana";
+  $txt_houradmin_firstselectproject = "(Primeiramente selecione uma fase)";
+  $txt_houradmin_gotoweekview = "Visualização semanal";
+  $txt_houradmin_searchallprojects = "Pesquisar em todos os projetos";
+  $txt_houradmin_searchallprojectsphases = "Pesquisar em todos os projetos e fases";
+
+  $txt_title_hoursurvey = "Análise de tempos";
+  $txt_title_hoursurvey_hours = "Horas ";
+  $txt_title_hoursurvey_of = "de ";
+  $txt_title_hoursurvey_onproject = "no projeto ";
+  $txt_title_hoursurvey_intimespan = "no período ";
+
+  $txt_title_projectstats = "Estatísticas do projeto";
+
+  $txt_title_projectstats_totals = "Estatísticas totais para ";
+  $txt_title_projectstats_peremployee = "Os seguintes empregados registraram horas neste projeto";
+  $txt_title_projectstats_peractivity = "Atividades nas quais se trabalhou neste projeto";
+
+
+  // --------==== Strings that were introduced in version 0.4: ====---------
+  $txt_title_hoursurvey_onactivity = "em atividade ";
+  $txt_allusers = "Todos os usuários";
+  $txt_allprojects = "Todos os projetos";
+  $txt_allactivities = "Todas as atividades";
+
+  // --------==== Strings that were introduced in version 0.5: ====---------
+
+  // TODO: find a solution for the 'one big language file' problem. It's
+  // unworkable to have such a big file, while Achievo is so modularized.
+  // Probably each module should have its own language file, but with
+  // one general file.
+
+  $txt_phone = "Telefone";
+  $txt_address = "Endereço";
+  $txt_number = "N.";
+  $txt_fax = "Fax";
+  $txt_remarkrequired = "Especificação requerida";
+  $txt_title_activity_add = "Adicionar uma atividade";
+  $txt_title_activity_admin = "Mudar atividades existentes";
+  $txt_title_activity_edit = "Editar atividades existentes";
+
+  // --------==== Strings that were introduced in version 0.5.2: ====---------
+  $txt_project_select = "Primeiramente selecione um projeto";
+  $txt_phase_select = "Agora selecione uma fase";
+  $txt_code = "Código";
+  $txt_active = "Ativo";
+  $txt_select = "Selecionar";
+  $txt_title_project_select = "Selecione um projeto";
+
+  $txt_title_tpl_project = "Modelos de projetos";
+  $txt_title_tpl_phase = "Modelos de fase";
+
+  $txt_tpl_project_phase = "Fase";
+  $txt_tpl_dependency = "Dependência";
+  $txt_tpl_phase_activity = "atividade de fase";
+
+  $txt_title_tpl_project_add = "Adicionar um novo modelo de projeto";
+  $txt_title_tpl_project_edit = "Editar modelo de projeto";
+  $txt_title_tpl_project_admin = "Gerenciar modelos de projeto existentes";
+
+  $txt_title_tpl_phase_add = "Adicionar modelo de fase";
+  $txt_title_tpl_phase_edit = "Editar modelo de fase";
+  $txt_title_tpl_phase_admin = "Gerenciar modelos de fase existentes";
+
+  $txt_phase = "Fase";
+
+  // --------==== Strings that were introduced in version 0.5.4: ====---------
+
+  $txt_phaseid = "Projeto/Fase";
+  $txt_activityid = "Atividade";
+  $txt_contactperson = "Pessoa de contato";
+  $txt_company = "Companhia";
+  $txt_bankaccount = "Conta bancária";
+  $txt_zipcode = "Código Postal";
+  $txt_city = "Cidade";
+  $txt_country = "País";
+
+  $txt_title_hours = "Registro de tempo";
+  $txt_title_hours_add = "Nova entrada";
+  $txt_title_hours_edit = "Editar entrada";
+  $txt_title_hours_admin = "Entradas de administração de horas";
+  $txt_title_hours_stats = "Refinar seleção ";
+
+  $txt_title_customer = "Administração de clientes";
+  $txt_title_customer_add = "Adicionar um novo cliente";
+  $txt_title_customer_admin = "Gerenciar clientes existentes";
+  $txt_title_customer_edit = "Editar clientes";
+
+  $txt_title_license = $txt_app_shorttitle." - licença";
+  $txt_title_manual = "Documentação online";
+  $txt_title_homepage = $txt_app_shorttitle." - homepage";
+
+  $txt_customer = "Cliente";
+
+  $txt_title_profile = "Perfis de Segurança";
+  $txt_title_profile_add = "Criar um novo perfil";
+  $txt_title_profile_admin = "Gerenciar perfís existentes";
+  $txt_title_profile_edit = "Editar perfil";
+
+  $txt_title_project = "Administração de projeto";
+  $txt_title_activity = "Administração de atividade";
+  $txt_title_employee = "Administração de empregados";
+
+  $txt_password_leaveblankifunchanged = "Deixe ambos os campos de senha em branco se quiser manter a senha atual.";
+
+  $txt_userprefs = "Preferencias do usuário";
+  $txt_profile = "Perfís de Segurança";
+
+  $txt_menu_tpl_project_admin = "Modelos de projeto";
+  $txt_menu_tpl_phase_admin = "Modelos de fase";
+
+  $txt_title_userprefs_edit = "Editar preferências do usuário";
+
+  $txt_profile_explanation = "<br>Abaixo pode ser indicado o que um empregado com este perfil pode ou não pode fazer.<br><br>";
+
+  $txt_entity = "Perfil";
+
+  $txt_personalstats = "Estatísticas Pessoais";
+
+  $txt_menu_hours_admin = "Registro de Tempos";
+  $txt_menu_hours_hoursurvey = "Análise de tempos";
+  $txt_menu_customer_admin = "Administração de Cliente";
+  $txt_menu_project_admin = "Administração de Projeto";
+  $txt_menu_activity_admin = "Administração de Atividade";
+  $txt_menu_employee_admin = "Administração de Empregados";
+  $txt_menu_employee_personalstats = "Estatísticas Pessoais";
+  $txt_menu_profile_admin = "Prefís de Segurança";
+
+  $txt_title_employee_add = "Adicionar empregado";
+  $txt_title_employee_edit = "Editar empregado";
+  $txt_title_employee_admin = "Gerenciar empregados existentes";
+
+  $txt_title_project_add = "Adicionar projeto";
+  $txt_title_project_edit = "Editar projeto";
+  $txt_title_project_admin = "Gerenciar projetos existentes";
+
+  $txt_title_activity_select = "Selecione uma atividade";
+  $txt_activity_select = "Primeiramente selecione uma atividade";
+  $txt_title_phase_select = "Selecione uma fase";
+
+  $txt_title_employee_stats = "Estatísticas do empregado";
+
+  $txt_title_employee_select = "Selecione um empregado";
+  $txt_employee_select = "Selecione um empregado";
+
+  $txt_template = "Modelo";
+
+  $txt_sethoursfilter = "Selecione qual horário deseja visualizar:";
+
+  $txt_searchbyprojectorphase = "A pesquisa pode ser feita por projeto, ou dentro de uma fase de um projeto";
+
+  $txt_view_all = "Vsualizar todos os usuários";
+  $txt_hoursurvey = "Análise de Tempos";
+  $txt_stats = "Estatísticas";
+  $txt_tpl_project = "Modelos de Projeto";
+  $txt_tpl_phase = "Modelos de Fase";
+  
+  // --------==== Strings that were introduced in version 0.5.7: ====---------
+  $txt_hoursurvey_output_options = "Ajustar a saída:";
+  $txt_hoursurvey_output_printable = "Saída adequada à impressão";
+  $txt_hoursurvey_output_showcollumns = "Mostrar apenas estas colunas:";
+  $txt_menu_activity_stats = "Estatísticas de Atividade";
+  $txt_menu_employee_stats = "Estatísticas de Empregado";
+  $txt_lastname = "Último nome";
+  $txt_firstname = "Primeiro nome";
+  $txt_title_contact_edit = "Editar pessoa de contato";
+  $txt_contact = "Pessoa de contato";
+  
+  // --------==== Strings that were introduced in version 0.5.8: ====---------
+  $txt_houradmin_previousday = "Dia anterior";
+  $txt_houradmin_nextday = "Próximo dia";
+  $txt_link_phase_add = "Adicionar fase";
+  $txt_dependencies = "Dependências";
+  $txt_addnewdependency = "Adicionar nova dependência";
+  $txt_mustbecompletedbeforephase = "deve ser completado antes da fase";
+  $txt_link_tpl_project_phase_add = "Adicionar uma nova fase a este projeto";
+  $txt_title_projectstats_perphase = "Fases nas quais se trabalhou neste projeto";
+  $txt_title_projectplanning = "Planejamento do Projeto";
+  $txt_milestones = "Marcações";
+  $txt_deadline = "Prazo Final";
+  $txt_booked = "Agendado";
+  $txt_planned = "Planejado";
+  $txt_nophasesdefined = "O projeto não tem fase alguma!";
+  $txt_title_phase_edit = "Editar uma fase";
+  $txt_title_phase_add = "Adicionar uma fase";
+  $txt_max_phasetime = "Tempo estim. para término (dias)";
+  $txt_max_hours = "Estimativa de horas";
+  $txt_phase_activity = "Atividades";
+  $txt_planning = "Planejamento";
+  
+  // --------==== Strings that were introduced in version 0.5.10: ====---------
+  $txt_link_contact_add = "Adicionar um novo contato";
+    
+  // --------==== Strings that were introduced in version 0.6: ====---------
+  $txt_title_contact_add = "Adicionar um novo contato";
+  $txt_theme = "Tema";
+  $txt_title_tpl_project_phase_add = "Adicione uma nova fase a este projeto";
+    
+  // --------==== Strings that were introduced in version 0.6.3: ====---------
+  $txt_orderby = "Order by";
+
+?>
