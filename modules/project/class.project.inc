@@ -47,7 +47,6 @@
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH));
 
       $this->add(new atkOneToManyRelation("employees","project.employee_project", "projectid", AF_HIDE_LIST));
-      $this->add(new atkOneToManyRelation("documents","project.document", "project_id", AF_HIDE_LIST));
 
       $this->setTable("project","project");
 
@@ -178,7 +177,7 @@
       $g_layout->td(text("employees").": ", 'valign="top"');
       if (count($data) != 0) $g_layout->td($node->recordList($data, array(), false)); else $g_layout->td(text("none"));
 
-      $node = &getNode("project.document");
+      $node = &getNode("document.document");
       $data = $node->selectDb("project_id=".$projectid);
       $g_layout->output('</tr><tr>');
       $g_layout->td(text("documents").": ", 'valign="top"');
