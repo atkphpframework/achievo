@@ -161,10 +161,7 @@ class todo extends atkNode
 
    // send mail
    $header = $this->prioHeader($rec["priority"]);
-   if (is_array($to) && count($to)!="")
-   {
-     usermail(implode(",",$to), $subj, $body, $header);
-   }
+   usermail($to, $subj, $body, $header);
   }
 
   function todoChanged($new, $old)
@@ -230,7 +227,7 @@ class todo extends atkNode
 
      // send mail
      $header = $this->prioHeader($rec["priority"]);
-     usermail(implode(",",$to),text("todochanged"), $body, $header);
+     usermail($to,text("todochanged"), $body, $header);
 
      // also store the old todo in the history table.
      $historynode = getNode("todo.todo_history");

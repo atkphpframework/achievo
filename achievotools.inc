@@ -195,6 +195,10 @@
 
   function usermail($to, $subject, $body, $add_header="")
   {
+    if (is_array($to) && count($to)>0)
+    {
+      $to = implode(",",$to);
+    }
     if ($to!="" && $subject!="")
     {
       mail($to,"[achievo notice] ".$subject,$body,"From: achievo\n".$add_header);
