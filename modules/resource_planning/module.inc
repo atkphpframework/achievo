@@ -19,7 +19,6 @@
     function getNodes()
     {
       registerNode("resource_planning.resource_planning", array("add", "resplanning", "myplanning"));
-      registerNode("resource_planning.employee_project", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
@@ -34,7 +33,7 @@
 
     function project_modifier(&$node)
     {
-      $node->add(new atkOneToManyRelation("employees","resource_planning.employee_project", "projectid", AF_HIDE_LIST));
+      $node->add(new atkOneToManyRelation("employees","employee_project", "projectid", AF_HIDE_LIST));
     }
   }
 ?>
