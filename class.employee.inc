@@ -18,7 +18,7 @@ class employee extends atkNode
     $this->addAttribute(new atkManyToOneRelation("entity", "profile",AF_HIDE_ADD));
     // you can't be your own supervisor neither can a nonactive employee be a superviros
  
-    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD);
+    $preFilter = new atkManyToOneRelation("supervisor","employee",AF_HIDE_ADD|AF_HIDE_LIST);
 
     $preFilter->m_destinationFilter = "userid !='[userid]' && status ='active'";
       

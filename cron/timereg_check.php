@@ -72,7 +72,6 @@
             GROUP BY userid";
   
   $hours = $g_db->getrows($query);
-  $bcc   = "Bcc: ".$userMail[$userid]."\r\n";
   for ($i=0;$i<count($hours);$i++)
   {
     $time[$hours[$i]["userid"]]["time"] = $hours[$i]["time"];
