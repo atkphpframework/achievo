@@ -32,6 +32,34 @@ class usercontracts extends atkNode
                                   "month"=>date("m"),
                                   "day"=>date("d")));
   }
+  
+  // We override the startdate edit, to set the initial date to 
+  // the enddate of the last contract of the selected employee (if any).
+  function startdate_edit(&$record, $prefix, $mode)
+  {
+    if ($mode=="add")
+    {
+      if ($record["userid"]["id"]!="")
+      {
+        global $g_db;
+        $recs = $g_db->getrows("select max(enddate) as lastdate from usercontract where userid = ".$record["userid"]["id"]);
+        if (count($recs))
+        {
+          list($year, $month, $day) = explode("-", $recs[0]["lastdate"]);          
+          $record["startdate"] = array("year"=>$year,
+                                       "month"=>$month,
+                                       "day"=>$day);
+                                       
+          // We also set enddate now, to startdate+1 year.
+          $endstamp = mktime(12, 0, 0, $month, $day, $year+1);
+          $record["enddate"] = array("year"=>date("Y", $endstamp),
+                                       "month"=>date("m", $endstamp),
+                                       "day"=>date("d", $endstamp));                                       
+        }        
+      }
+    }
+    return $this->m_attribList["startdate"]->edit($record, $prefix, $mode);
+  }
 
 }
 
