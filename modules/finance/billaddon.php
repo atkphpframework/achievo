@@ -40,24 +40,24 @@ if ($rec["calcoption"] == "discount")
   $g_layout->output('<BR><BR>');
   $g_layout->table_simple();
   $g_layout->output('<tr>');
-  $g_layout->td('<B>Specify the discount you want:<B>','colspan="2"');
+  $g_layout->td('<B>'.text("specify_discount").'<B>','colspan="2"');
   $g_layout->output('</tr><tr>');
   $g_layout->td('<BR>','colspan="2"');
   $g_layout->output('</tr><tr>');
-  $g_layout->td('Type of Discount:');
-  $g_layout->td('<SELECT name="dis_option"><OPTION value="1">Amount</OPTION><OPTION value="2">Percentage</OPTION></SELECT>');
+  $g_layout->td(text("type_discount"));
+  $g_layout->td('<SELECT name="dis_option"><OPTION value="1">'.text("amountselect_discount").'</OPTION><OPTION value="2">'.text("percentage_discount").'</OPTION></SELECT>');
   $g_layout->output('</tr><tr>');
-  $g_layout->td('Amount:');
+  $g_layout->td(text("amount_discount"));
   $g_layout->td('<input type="text" name="amount">');
   $g_layout->output('</tr><tr>');
-  $g_layout->td('Apply cost on:');
+  $g_layout->td(text("apply_discount"));
   $g_layout->td('<SELECT name="apply_on">'.get_activities($rec["billid"]["id"]).'</SELECT>');
   $g_layout->output('</tr>');
   $g_layout->output('</table>');
   
   $g_layout->table_simple();
   $g_layout->output('<tr>');
-  $g_layout->td('<BR><input type="submit" value="'.text("Add to Bill").'" >');
+  $g_layout->td('<BR><input type="submit" value="'.text("addtobill").'" >');
   $g_layout->output('</tr>');
   $g_layout->output("</FORM>");
   $g_layout->output('</table>');
@@ -111,11 +111,11 @@ if ($rec["calcoption"] == "costs")
   $g_layout->output($g_layout->data_top());
 
   $g_layout->output($g_layout->tr_top());
-  $g_layout->td_datatitle("Date");
-  $g_layout->td_datatitle("Owner");
-  $g_layout->td_datatitle("Remark");
-  $g_layout->td_datatitle("Value");
-  $g_layout->td_datatitle("Register");
+  $g_layout->td_datatitle(text("hours_date"));
+  $g_layout->td_datatitle(text("hours_owner"));
+  $g_layout->td_datatitle(text("hours_remark"));
+  $g_layout->td_datatitle(text("costs_value"));
+  $g_layout->td_datatitle(text("hours_register"));
   $g_layout->td("");
   $g_layout->output($g_layout->tr_bottom());
 

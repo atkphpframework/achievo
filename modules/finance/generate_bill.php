@@ -333,7 +333,7 @@ else
 	      {
 	        $g_layout->td('<TEXTAREA rows="3" cols="40" name="fixed_description'.$x.'">'.$value["description"]."\n".$display_discount.'</TEXTAREA>');
 	      }
-	      $g_layout->td($config_currency_symbol." ".$value["value"]);
+	      $g_layout->td($config_currency_symbol." ".number_format($value["value"], 2,",","."));
 	      $g_layout->output('<INPUT type="hidden" name="fixed'.$x.'" value="'.$value["value"].'">');
 	      $g_layout->output('<INPUT type="hidden" name="fixed_discount_type'.$x.'" value="'.$discount_type.'">');
 	      $g_layout->output('<INPUT type="hidden" name="fixed_discount_value'.$x.'" value="'.$discount_value.'">');
@@ -382,7 +382,7 @@ else
 	      {
 	        $g_layout->td('<TEXTAREA rows="3" cols="40" name="calc_description'.$x.'">'.text("billed_hours").$value["totalhours"]." - ".$value["description"]."\n".$display_discount.'</TEXTAREA>');
 	      }	
-	      $g_layout->td($config_currency_symbol." ".$value["value"]);
+	      $g_layout->td($config_currency_symbol." ".number_format($value["value"], 2,",","."));
 	      $g_layout->output('<INPUT type="hidden" name="calc'.$x.'" value="'.$value["value"].'">');
 	      $g_layout->output('<INPUT type="hidden" name="calc_discount_type'.$x.'" value="'.$discount_type.'">');
 	      $g_layout->output('<INPUT type="hidden" name="calc_discount_value'.$x.'" value="'.$discount_value.'">');
@@ -412,7 +412,7 @@ else
 	      {
 	        $g_layout->td('<TEXTAREA rows="3" cols="40" name="costs_description'.$x.'">'.$value["description"].'</TEXTAREA>');
 	      } 	
-	      $g_layout->td($config_currency_symbol." ".$value["value"]);
+	      $g_layout->td($config_currency_symbol." ".number_format($value["value"], 2,",","."));
 	      $g_layout->output('<INPUT type="hidden" name="costs'.$x.'" value="'.$value["value"].'">');
 	      $g_layout->output('<INPUT type="hidden" name="costs_id'.$x.'" value="'.$key.'">');
 	      $g_layout->output('</tr>');
@@ -431,7 +431,7 @@ else
 		  $x++;
 		  $g_layout->output('<tr>');
 		  $g_layout->td(text("bill_discount"));
-		  if ($value["type"] == 1) $g_layout->td("<B>".$config_currency_symbol." ".$value["value"]."</B> ".text("entire_bill_discount"));
+		  if ($value["type"] == 1) $g_layout->td("<B>".$config_currency_symbol." ".number_format($value["value"], 2,",",".")."</B> ".text("entire_bill_discount"));
 		  if ($value["type"] == 2) $g_layout->td("<B>".$value["value"]."%</B>"." ".text("entire_bill_discount"));
 		  $g_layout->output('<INPUT type="hidden" name="entire_discount_type'.$x.'" value="'.$value["type"].'">');
 		  $g_layout->output('<INPUT type="hidden" name="entire_discount_value'.$x.'" value="'.$value["value"].'">');

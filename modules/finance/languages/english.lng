@@ -122,5 +122,33 @@
 	$txt_title_error = "Error";
 	$txt_bill_print = "Print";
 	$txt_bill_edit = "Edit";
+  
+  $txt_title_bill_admin = "Administrate Bills";
+  $txt_title_bill_add = "Add a Bill";
+  $txt_title_bill_edit = "Edit a Bill";
+  $txt_title_bill_delete = "Delete a Bill";
+  
+  $txt_create_date = "Date";
+  $txt_bill_line = "Bill Line";
+  $txt_link_bill_line_add = "Add Bill Line";
+  $txt_specify_discount = "Specify the discount:";
+  $txt_type_discount = "Type of Discount:";
+  $txt_amount_discount = "Value:";
+  $txt_addtobill = "Add to Bill";
+  $txt_apply_discount = "Apply on:";
+  $txt_amountselect_discount = "Amount:";
+  $txt_percentage_discount = "Percentage";
+  $txt_hours_date= "Date";
+  $txt_hours_owner = "Owner";
+  $txt_hours_activity = "Activity";
+  $txt_hours_remark = "Remark";
+  $txt_hours_time = "Time";
+  $txt_hours_rate = "Rate";
+  $txt_hours_register = "Register";
+  $txt_hours_putonbill = "Put on Bill";
+  $txt_costs_value = "Value";
+  
+  $txt_view_bill = "View Bill";
+  $txt_bill_ok = "Finish";
 
 ?>

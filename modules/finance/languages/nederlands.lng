@@ -91,4 +91,32 @@
 	$txt_bill_print = "Print";
 	$txt_bill_edit = "Bewerk";
   
+  $txt_title_bill_admin = "Facturen beheren";
+  $txt_title_bill_add = "Factuur toevoegen";
+  $txt_title_bill_edit = "Factuur bewerken";
+  $txt_title_bill_delete = "Factuur verwijderen";
+  
+  $txt_create_date = "Datum";
+  $txt_bill_line = "Factuurregel";
+  $txt_link_bill_line_add = "Factuurregel toevoegen";
+  $txt_specify_discount = "Specificeer de korting:";
+  $txt_type_discount = "Soort korting:";
+  $txt_amount_discount = "Waarde:";
+  $txt_addtobill = "Toevoegen aan factuur";
+  $txt_apply_discount = "Korting op:";
+  $txt_amountselect_discount = "Bedrag";
+  $txt_percentage_discount = "Percentage";
+  $txt_hours_date= "Datum";
+  $txt_hours_owner = "Eigenaar";
+  $txt_hours_activity = "Acitiviteit";
+  $txt_hours_remark = "Omschrijving";
+  $txt_hours_time = "Tijd";
+  $txt_hours_rate = "Tarief";
+  $txt_hours_register = "Registreer";
+  $txt_hours_putonbill = "Op de factuur";
+  $txt_costs_value = "Waarde";
+  
+  $txt_view_bill = "Bekijk Factuur";
+  $txt_bill_ok = "Afronden";
+  
 ?>

@@ -17,19 +17,13 @@ class bill_line extends atkNode
 
     $this->addAttribute(new atkAttribute("id" ,AF_PRIMARY|AF_AUTO_INCREMENT|AF_HIDE));
     $this->addAttribute(new atkAttribute("shortdescription",AF_OBLIGATORY));
-    $this->addAttribute(new atkTextAttribute("description"));
+    $this->addAttribute(new atkTextAttribute("description", "", AF_HIDE_LIST));
     
-    if ($fixed_price > 0)
-    {
-      $this->addAttribute(new atkDummyAttribute("fixed","",AF_HIDE_LIST));
-      $this->add(new atkRadioAttribute("calcoption",array(text("fixedcalc"),text("aftercalc"),text("discount"),text("costs")),array("fixed","calc","discount","costs"), AF_OBLIGATORY));
-      $this->addAttribute(new atkDummyAttribute("fixedamount","",AF_HIDE_LIST));
-      $this->add(new atkAttribute("fixed_billed"));
-    }
-    else
-    {
-      $this->add(new atkRadioAttribute("calcoption",array(text("aftercalc"),text("discount"),text("costs")),array("calc","discount","costs"), AF_OBLIGATORY));
-    }
+    $this->addAttribute(new atkDummyAttribute("fixed","",AF_HIDE_LIST));
+    $this->add(new atkRadioAttribute("calcoption",array(text("fixedcalc"),text("aftercalc"),text("discount"),text("costs")),array("fixed","calc","discount","costs"), AF_OBLIGATORY));
+    $this->addAttribute(new atkDummyAttribute("fixedamount","",AF_HIDE_LIST));
+    $this->add(new atkAttribute("fixed_billed"));
+
     $this->addAttribute(new atkManyToOneRelation("billid","finance.bill",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE));
     
     $this->setTable("bill_line","bill_line");
@@ -48,7 +42,7 @@ class bill_line extends atkNode
     $initial_date = Array("year"=>date("Y"), "month"=>date("m"), "day"=>date("d"));
     return array("create_date"=>$initial_date,"userid"=>strtolower($g_user["name"]));
   }
- 
+  
  function fixed_edit(&$rec)
  {
    global $g_db, $g_layout;
@@ -111,7 +105,7 @@ class bill_line extends atkNode
    }
    
    $g_layout->output('<input type="hidden" name="billedamount" value="' .$billedamount.'">');
-   $text = "<B>" . text("warning_fixedprice1") . round($fixed_price,2) . "! " . $billedamount . " " . text("warning_fixedprice3") ." ". $this_billedamount." ".text("warning_fixedprice4")."</B>";
+   $text = "<B>" . text("warning_fixedprice1") . number_format($fixed_price, 2,",",".") . "! " . number_format($billedamount, 2,",",".") . " " . text("warning_fixedprice3") ." ". number_format($this_billedamount, 2,",",".")." ".text("warning_fixedprice4")."</B>";
    return $text;
  }
  
@@ -127,11 +121,14 @@ class bill_line extends atkNode
     
     $fixed_price = sessionLoad("fixed_price");
     
-    if ($rec["fixed_billed"] > ($fixed_price - $billedamount))
+    if ($fixed_price != 0)
     {
-      triggerError(&$rec, $this->m_attribList["fixed_billed"], 'error_billamount_tohigh');
-      return false;
-    }
+      if ($rec["fixed_billed"] > ($fixed_price - $billedamount))
+      {
+        triggerError(&$rec, $this->m_attribList["fixed_billed"], 'error_billamount_tohigh');
+        return false;
+      }
+    }  
  }
  
  function action_save()
@@ -171,6 +168,9 @@ class bill_line extends atkNode
     $sql = " INSERT INTO discount (type, amount, bill_line_id, apply_on) VALUES ('$dis_option', '$amount', '$bill_line_id', '$apply_on')";
     $rec=$g_db->getrows($sql);
     
+    $sql = "UPDATE bill_line SET fixed_billed = ".$amount." WHERE id = ".$bill_line_id;
+    $rec=$g_db->getrows($sql);
+    
     $this->redirect();
     
   }
@@ -189,14 +189,14 @@ class bill_line extends atkNode
       if ($value1 != "") 
       {     
         $regArr[] = $value1;
-	$costArr[] = $value2;
+        $costArr[] = $value2;
       }
     }
-    //Check if there are any hours selected. 
+    //Check if there are any costs selected. 
     if ($regArr == NULL)
     {
-      echo "You didn't select any costs, please go back and select some costs!";
-      exit;
+      $sql = " DELETE FROM bill_line WHERE id = " . $bill_line_id;
+      $g_db->getrows($sql);
     }
     
     //add the calculated amount of the costs (default currency) into the right records.
@@ -204,14 +204,19 @@ class bill_line extends atkNode
     {
       $sql = " UPDATE costregistration SET costamount = ".$costArr[$i]. " WHERE id = ".$regArr[$i];
       $rec=$g_db->getrows($sql);
+      $totalcosts += $costArr[$i];
     }
     
-    //check which hours are selected to do a proper Query  
+    //check which costs are selected to do a proper Query  
     if ($regArr > NULL)
     {
       $sql = " UPDATE costregistration SET bill_line_id = ".$bill_line_id. " WHERE id IN (".implode(",",$regArr).") ";
       $rec=$g_db->getrows($sql);
     }
+    
+    $sql = "UPDATE bill_line SET fixed_billed = ".$totalcosts." WHERE id = ".$bill_line_id;
+    $rec=$g_db->getrows($sql);
+    
     $this->redirect();
   }
   
@@ -288,7 +293,21 @@ class bill_line extends atkNode
 	     $sql2 = " UPDATE hours SET bill_line_id = ".$bill_line_id. ", registered = 1 WHERE id IN (".implode(",",$regArr).") ";
 	     $rec=$g_db->getrows($sql2);
 	   }
-	
+     
+     $sql = "SELECT time, onbill, hour_rate FROM hours WHERE bill_line_id = ".$bill_line_id;
+     $rec=$g_db->getrows($sql);     
+     
+     for ($i=0;$i<count($rec);$i++)
+     {
+       if ($rec[$i]["onbill"] == 1)
+       {
+         $total += (($rec[$i]["time"]/60) * $rec[$i]["hour_rate"]);
+       }  
+     }
+     
+    $sql = "UPDATE bill_line SET fixed_billed = ".$total." WHERE id = ".$bill_line_id;
+    $rec=$g_db->getrows($sql);
+
 	   $this->redirect();
     }
                
@@ -311,13 +330,6 @@ class bill_line extends atkNode
     
   }
 
-  /* 
-  function postUpdate($rec)
-  {
-     include "./modules/finance/createbill.php";
-  }
-  */
-  
   function postAdd($rec)
   {
     $bill_line_id = $rec["id"];  
