@@ -11,8 +11,6 @@
       registerNode("project.tpl_phase", array("admin", "add", "edit", "delete"));
       registerNode("project.tpl_project", array("admin", "add", "edit", "delete"));
       registerNode("project.role", array("admin", "add", "edit"));
-      registerNode("project.project_personcontact", array("admin", "add", "edit", "delete"));
-      registerNode("project.project_personemployee", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
