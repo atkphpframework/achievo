@@ -345,6 +345,7 @@ if(!empty($convert)&&$convert==1)
   $res = $g_db->query($sql);
   handleError($sql);
 
+ /*
   $sql = "SELECT id, userid FROM rate";
   $res = $g_db->getrows($sql);
   if (count($res) > 0)
@@ -362,7 +363,7 @@ if(!empty($convert)&&$convert==1)
   $sql = "ALTER TABLE rate CHANGE userid userid INT(10) NOT NULL DEFAULT 0";
   $res = $g_db->query($sql);
   handleError($sql);
-
+*/
   $sql = "SELECT id, userid FROM usercontract";
   $res = $g_db->getrows($sql);
   if (count($res) > 0)
