@@ -1,12 +1,12 @@
 <?php
 
 include_once "class.projectattrib.inc";  
-
+  
   class costregistration extends atkNode
   {
     function costregistration()
     {
-      global $g_user;
+      global $g_user, $config_currency_symbol;
 
       $this->atkNode("costregistration"); // node() constructor is *not* called automatically!      
       $this->addFilter("userid",strtolower($g_user["name"]));
@@ -36,7 +36,21 @@ include_once "class.projectattrib.inc";
     {
       $value = $rec["value"];
       $value = round($value, 2);
+      $value =  number_format($value, 2, '.', '');
       return "$value";
+    }
+    
+    function currency_display($rec)
+    {
+      global $config_currency_symbol;
+
+      if ($rec["currency"]["name"] == "") {
+        $cur = $config_currency_symbol;
+      }
+      else {
+        $cur = $rec["currency"]["name"];
+      }
+      return "$cur";
     }
 
     function descriptor_def()
