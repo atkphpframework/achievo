@@ -115,6 +115,7 @@
      $query->addTable('schedule');
      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+     $query->addJoin('person', 'owner', 'owner.id=schedule.owner', TRUE);
 
      $query->addField('id', ' ', 'schedule');
      $query->addField('startdate', ' ', 'schedule');
@@ -130,6 +131,7 @@
      $query->addField('status', ' ', 'schedule');
      $query->addField('all_users', ' ', 'schedule');
      $query->addField('scheduletype', ' ', 'schedule');
+     $query->addField('userid', '', 'owner', 'owneruser_AE_');
 
      $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
 
@@ -140,7 +142,13 @@
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
+     $recs = $g_db->getrows($querystring);
+     for ($i=0, $_i=count($recs); $i<$_i; $i++)
+     {
+       $query->deAlias($recs[$i]);
+       atkDataDecode($recs[$i]);
+     }
+     return $recs;
     }
 
   /**
@@ -380,7 +388,7 @@
        if ($this->allDayItems[$i]["all_users"]) $att .= text("all_users");
        for($k=0;$k<count($attendees);$k++)
        {
-         if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+         if ($attendees[$k]["userid"] == $g_user["id"]) $found = 1;
          if ($k == 0 && !$this->allDayItems[$i]["all_users"])
          {
            $att .= $attendees[$k]["firstname"];
@@ -401,13 +409,13 @@
        $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
 
        $header  = "<table width='100%' border='0' cellpadding='0' cellspacing='0'><tr>\n";
-       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owner"].")</b></font>";
+       $header .= "<td valign='top' align='left'><font face='verdana' size='-1' color='$fgcolor'><b>".$title." (".$this->allDayItems[$i]["owneruser"]["userid"].")</b></font>";
        if (count($attendees) > 0 || $this->allDayItems[$i]["all_users"]) $header .= "<br><font face='verdana' size='-2' color='$fgcolor'>".$att."</font></td>";
        $header .= "<td valign='top' align='right'>";
 
        if ($this->allDayItems[$i]["owner"] == $this->owner || $found == 1 || $info["all_users"])
        {
-         $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("View")."</font>", SESSION_NESTED);
+         $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("view")."</font>", SESSION_NESTED);
        }
 
        if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_attendee") && ($found == 1 || $info["all_users"])))
@@ -478,13 +486,13 @@
            $fgcolor = $colors[$info["scheduletype"]]["fore"];
            $descr   = $info["description"];
            $status  = " [".$info["status"]."]";
-          }
+          }                    
 
           // if viewing public items for all users
           // it might be handy to see the item's owner
           if ($this->showGlobal!=$info["owner"])
           {
-            $dspOwner = " (".$info["owner"].")";
+            $dspOwner = " (".$info["owneruser"]["userid"].")";
           }
           else
           {
@@ -503,7 +511,7 @@
           if ($info["all_users"]) $att .= text("all_users");
           for($k=0;$k<count($attendees);$k++)
           {
-            if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+            if ($attendees[$k]["userid"] == $g_user["id"]) $found = 1;
             if ($k == 0 && !$info["all_users"])
             {
               $att .= $attendees[$k]["firstname"];

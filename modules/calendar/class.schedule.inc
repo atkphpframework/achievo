@@ -72,13 +72,13 @@
       $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));      
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      $this->add(new atkAttribute("owner"           , AF_READONLY|AF_HIDE_ADD, 15));
+      $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD, 15));
 
       $this->m_view     = $g_sessionManager->stackVar("view");
       if (trim($this->m_view) == "") { $this->m_view = "dayview"; }
       
       $this->m_user     = $g_sessionManager->stackVar("user");
-      if ($this->m_user=="") $this->m_user = $g_user["name"];
+      if ($this->m_user=="") $this->m_user = $g_user["id"];
       
       $this->m_viewdate = $g_sessionManager->stackVar("viewdate");      
       if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
@@ -101,7 +101,7 @@
     {
       global $g_user;
 
-      $initial["owner"] = $g_user["name"];
+      $initial["owner"] = $g_user["id"];
       $initial["publicitem"] = 1;
       $initial["status"] = "unconfirmed";
 
@@ -157,7 +157,7 @@
     {
       global $g_db;
 
-      $sql = "SELECT lastname,firstname,userid
+      $sql = "SELECT lastname,firstname,userid,id
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname
@@ -167,8 +167,8 @@
       $employee_code='<OPTION VALUE="all">'.text("allusers");
       for($i=0;$i<count($records);$i++)
       {
-        if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
-        $employee_code.='<OPTION VALUE="'.$records[$i]["userid"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+        if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
+        $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
       }
       return $employee_code;
     }
@@ -177,7 +177,7 @@
     {
       global $g_db, $selemployee;
 
-      $sql = "SELECT lastname,firstname,userid
+      $sql = "SELECT lastname,firstname,userid,id
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname
@@ -188,8 +188,8 @@
       $employee_code='<INPUT TYPE="checkbox" VALUE="all" NAME="employee[]" '.$sel.'><font size="-1">'.text("allusers")."</font><br>";
       for($i=0;$i<count($records);$i++)
       {
-        if($selemployee[$records[$i]["userid"]]==$records[$i]["userid"]) { $sel="CHECKED"; } else { $sel=""; }
-        $employee_code.='<INPUT TYPE="checkbox" VALUE="'.$records[$i]["userid"].'"  NAME="employee[]" '.$sel.'><font size="-1">'.$records[$i]["lastname"].', '.$records[$i]["firstname"]."(".$records[$i]["userid"].")</font><br>";
+        if($selemployee[$records[$i]["id"]]==$records[$i]["id"]) { $sel="CHECKED"; } else { $sel=""; }
+        $employee_code.='<INPUT TYPE="checkbox" VALUE="'.$records[$i]["id"].'"  NAME="employee[]" '.$sel.'><font size="-1">'.$records[$i]["lastname"].', '.$records[$i]["firstname"]."(".$records[$i]["userid"].")</font><br>";
       }
       return $employee_code;
     }
@@ -236,7 +236,7 @@
       //get the rendered matrix
       $dummy = new monthView($month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["name"];
+      $dummy->owner       = $g_user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
@@ -353,7 +353,7 @@
       // get the rendered matrix
       $dummy = new dayView($day, $month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["name"];
+      $dummy->owner       = $g_user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
@@ -397,7 +397,7 @@
       // get the rendered matrix
       $dummy = new weekView($day, $month, $year);
       $dummy->viewerWidth = "600";
-      $dummy->owner       = $g_user["name"];
+      $dummy->owner       = $g_user["id"];
       $dummy->showGlobal  = $this->m_user;
       $dummy->generate();
 
@@ -415,10 +415,8 @@
     function postAdd($rec, $mode)
     {
       // insert the owner as first attendee.
-      // TODO FIXME.
-      // (the schedule table still uses userid as refkey instead of the 
-      // primary key of the employee table. we should fix this first, then
-      // implementing this postadd should be easier)
+      global $g_db;
+      $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
     }
   }
 

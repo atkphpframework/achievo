@@ -7,6 +7,7 @@ useattrib("atkdateattribute");
 useattrib("atklistattribute");
 useattrib("atkdurationattribute");
 useattrib("atkdummyattribute");
+userelation("atkmanytoonerelation");
 
 function date_format($datestamp,$dateformat)
 { 
@@ -54,7 +55,7 @@ class hours extends atkNode
 
     $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|($this->m_weekview?0:AF_HIDE_LIST)));
 
-    $this->add(new atkAttribute("userid",AF_HIDE, 15));
+    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE));
 
     $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
     $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
@@ -72,7 +73,7 @@ class hours extends atkNode
   function setLock()
   {
     global $g_user;
-    $this->m_lock = $this->getLockType(strtolower($g_user["name"]),$this->m_viewdate);
+    $this->m_lock = $this->getLockType(strtolower($g_user["id"]),$this->m_viewdate);
 
     if ($this->m_lock != "")
     {
@@ -101,9 +102,9 @@ class hours extends atkNode
 
   function initial_values()
   {
-     global $g_user;   
+     global $g_user;             
      
-     return array("userid"=>strtolower($g_user["name"]),
+     return array("userid"=>$g_user["id"],
                   "entrydate"=>Array("year"=>date("Y"),
                              "month"=>date("m"),
                              "day"=>date("d")),
@@ -121,7 +122,7 @@ class hours extends atkNode
   {
     global $g_user;
     $this->setLock();
-    $this->addFilter("userid",strtolower($g_user["name"]));
+    $this->addFilter("userid",strtolower($g_user["id"]));
     return parent::action_edit();
   }
 
@@ -143,7 +144,7 @@ class hours extends atkNode
 
     $this->setLock();
 
-    $this->addFilter("userid",strtolower($g_user["name"]));
+    $this->addFilter("userid",$g_user["id"]);
 
     if ($this->m_weekview!=1)
     {
@@ -240,7 +241,7 @@ class hours extends atkNode
       $total += $time;
     }
 
-    $userid = $g_user["name"];
+    $userid = $g_user["id"];
 
     // First a line with previous and next week links..
     $prevnextlinks='<form name="weekview" method="post" action="dispatch.php">';
@@ -453,7 +454,7 @@ class hours extends atkNode
     // (we will just skip them later on).
     if ($rec["activitydate"]["multi"]!=1)
     {    
-      if ($this->getLockType($g_user["name"],sprintf("%04d-%02d-%02d",$rec["activitydate"]["year"],$rec["activitydate"]["month"],$rec["activitydate"]["day"]))!="")
+      if ($this->getLockType($g_user["id"],sprintf("%04d-%02d-%02d",$rec["activitydate"]["year"],$rec["activitydate"]["month"],$rec["activitydate"]["day"]))!="")
       {
         triggerError($rec, "activitydate", "houradmin_weeklocked");
       }
@@ -640,7 +641,7 @@ class hours extends atkNode
       for ($i=1; $walker <= $end ; $i++)
       {                       
         $dow = date("w", $walkerStamp);
-        if (!in_array($dow, $doDays) || $this->getLockType($g_user["name"],$walker)!="")
+        if (!in_array($dow, $doDays) || $this->getLockType($g_user["id"],$walker)!="")
         {
           atkdebug("Skipping $walker, for this day is locked or not checked");
         }

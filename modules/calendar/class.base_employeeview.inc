@@ -58,19 +58,14 @@
     //if all users is checked then loop all users else loop only the selected users
     if ($selemployee[0] == "all")
     {
-      $employees = Array();
-      $sql = "SELECT userid
+      $employees = array();
+      $sql = "SELECT userid,  id
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname
              ";
-      $records = $g_db->getrows($sql);
-
-      $j = count($records);
-      for ($i=0;$i<$j;$i++)
-      {
-        $employees[$i] = $records[$i]["userid"];
-      }
+      $employees = $g_db->getrows($sql);
+            
     }
     else
     {
@@ -80,7 +75,7 @@
     for ($i=0;$i<count($employees);$i++)
     {
      $buff  .= "<tr>";
-     $buff  .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".$employees[$i]."</font></td>";
+     $buff  .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".$employees[$i]["userid"]."</font></td>";
 
      for ($j=0;$j<count($this->workHours);$j++)
      {
@@ -89,7 +84,7 @@
 
       // get all items for this workhour
       //if there are items then change the background color to yellow
-      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]);
+      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]["id"]);
       if (count($allItems) > 0) { $bgcolor = "#FFFF00"; }
 
       $buff .= "<td bgcolor='$bgcolor' valign='top' align='left'></td>";

@@ -188,7 +188,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     global $g_db, $g_user;
      
     $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     // 100 should be enough to get 5 unique recent projects.
     $query.= "ORDER BY hours.entrydate DESC";
     

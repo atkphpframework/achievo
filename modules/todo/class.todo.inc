@@ -15,12 +15,10 @@ class todo extends atkNode
 
   function todo()
   {
-    global $atkaction, $g_user;
-
     $this->atkNode("todo", NF_TRACK_CHANGES);
 
     $this->add(new atkAttribute("id"                   , AF_AUTOKEY));
-    $this->add(new atkAttribute("owner"                , AF_READONLY|AF_HIDE, 15));
+    $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE));
     $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
     $this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
@@ -48,7 +46,7 @@ class todo extends atkNode
     $duedate = array("year"=>$nextweek['year'],
                   "month"=>$nextweek['mon'],
                   "day"=>$nextweek['mday']);
-    return array("owner"=>$g_user["name"],
+    return array("owner"=>$g_user["id"],
                  "entrydate"=>$entrydate,
                  "duedate"=>$duedate,
                  "updated"=>$date,
@@ -125,7 +123,7 @@ class todo extends atkNode
    global $g_db;
 
    // obtain some project info
-   $assignTo = $rec["assigned_to"]["userid"];
+   $assignTo = $rec["assigned_to"]["id"];
    $assigner = $rec["owner"];
    $pid      = $rec["projectid"]["id"];
 
@@ -135,7 +133,7 @@ class todo extends atkNode
    $project = $r[0]["name"];
 
    // now get her/his email address
-   $q  = "SELECT email, lastname, firstname, userid FROM person WHERE userid IN ('$assignTo','".$assigner."')";
+   $q  = "SELECT email, lastname, firstname, userid, id FROM person WHERE id IN ('$assignTo','".$assigner."')";
    $emails  = $g_db->getrows($q);
 
    // now assemble the mail body
@@ -152,9 +150,9 @@ class todo extends atkNode
 
    for ($i=0;$i<count($emails);$i++)
    {
-     if ($emails[$i]["userid"]==$assigner)
+     if ($emails[$i]["id"]==$assigner)
        $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
-     if ($emails[$i]["userid"]==$assignTo)
+     if ($emails[$i]["id"]==$assignTo)
        $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
      $to[] = $emails[$i]["email"];
    }
@@ -189,14 +187,14 @@ class todo extends atkNode
 
    if ($this->todoChanged($rec,$rec["atkorgrec"]))
    {
-     $owner = $rec["owner"];
-     $newassign = $rec["assigned_to"]["userid"];
-     $oldassign = $rec["atkorgrec"]["assigned_to"]["userid"];
+     $owner = $rec["owner"]["id"];
+     $newassign = $rec["assigned_to"]["id"];
+     $oldassign = $rec["atkorgrec"]["assigned_to"]["id"];
 
      // read all relevant emails.
-     $query = "SELECT DISTINCT lastname, firstname, email, userid
+     $query = "SELECT DISTINCT lastname, firstname, email, userid, id
                FROM person
-               WHERE userid IN('$owner','".$g_user["name"]."','$newassign','$oldassign')";
+               WHERE id IN('$owner','".$g_user["id"]."','$newassign','$oldassign')";
      $emails    = $g_db->getrows($query);
      $pid  = $rec["projectid"]["id"];
      // get project name
@@ -214,13 +212,13 @@ class todo extends atkNode
      $body.= "\n";
      for ($i=0;$i<count($emails);$i++)
      {
-       if ($emails[$i]["userid"]==$owner)
+       if ($emails[$i]["id"]==$owner)
          $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
-       if ($emails[$i]["userid"]==$oldassign)
+       if ($emails[$i]["id"]==$oldassign)
          $body.= text("todo_previouslyassignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
-       if ($emails[$i]["userid"]==$newassign)
+       if ($emails[$i]["id"]==$newassign)
          $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
-       if ($emails[$i]["userid"]==$g_user["name"])
+       if ($emails[$i]["id"]==$g_user["id"])
          $body.= text("todo_changedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        $to[] = $emails[$i]["email"];
      }

@@ -113,7 +113,7 @@ class atkProjectAttribute extends atkAttribute
     global $g_db, $g_user;
 
     $query = "SELECT project.name as name, project.id as id FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["name"]."'
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."'
                 AND phase.status='active'
                 AND project.status='active'
                 AND phase.projectid=project.id ";

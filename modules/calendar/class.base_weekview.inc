@@ -83,6 +83,7 @@
       $query->addTable('schedule');
       $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
       $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+      $query->addJoin('person', 'owner', 'owner.id=schedule.owner', TRUE);
 
       $query->addField('id', ' ', 'schedule');
       $query->addField('startdate', ' ', 'schedule');
@@ -95,6 +96,7 @@
       $query->addField('allday', ' ', 'schedule');
       $query->addField('publicitem', ' ', 'schedule');
       $query->addField('owner', ' ', 'schedule');
+      $query->addField('userid', '', 'owner', 'owneruser_AE_');
       $query->addField('status', ' ', 'schedule');
       $query->addField('scheduletype', ' ', 'schedule');
       $query->addField('all_users', ' ', 'schedule');
@@ -108,11 +110,14 @@
 
       $query->addOrderBy('starttime');
       $querystring = $query->buildSelect(TRUE);
-      $recs = $g_db->getRows($querystring);
+      $recs = $g_db->getrows($querystring);                    
 
       // now add them to a nice array
       for ($i=0;$i<count($recs);$i++)
       {
+        $query->deAlias($recs[$i]);         
+        atkDataDecode($recs[$i]);        
+      
         $year = substr($recs[$i]["startdate"],0,4);
         $month = substr($recs[$i]["startdate"],5,2);
         $day = substr($recs[$i]["startdate"],8,2);
@@ -216,9 +221,9 @@
             $found = 0;
             for($k=0;$k<count($attendees);$k++)
             {
-              if ($attendees[$k]["userid"] == $g_user["name"]) $found = 1;
+              if ($attendees[$k]["userid"] == $g_user["id"]) $found = 1;
             }
-            if ($g_user["name"]==$dayappointments[$j]["owner"] || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
+            if ($g_user["id"]==$dayappointments[$j]["owner"] || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
             {
               // This is your own record, you may edit it.
               $link = href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
@@ -244,7 +249,7 @@
               $str.="] ";
             }
             $str.= $link;
-            if ($this->showGlobal!=$dayappointments[$j]["owner"]) $str.=" (".$dayappointments[$j]["owner"].")";
+            if ($this->showGlobal!=$dayappointments[$j]["owner"]) $str.=" (".$dayappointments[$j]["owneruser"]["userid"].")";
 
             if ($j!=count($dayappointments)-1) $str.="<br>";
           }
