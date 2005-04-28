@@ -45,6 +45,7 @@
   $loggedin = atktext("logged_in_as").": <b>".$g_user["name"]."</b>";  
   $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).' </a>&nbsp;';
 
+
   if ($g_user["name"]!="administrator")
   {
     $centerpiece.= href(dispatch_url("pim.pim", "pim"), text("pim","","core"), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';

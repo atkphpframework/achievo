@@ -22,7 +22,6 @@
     var $showGlobal;
     var $owner;
     var $viewerWidth  = "100%";
-    var $title        = "";
 
   /**
    * constructor
@@ -46,7 +45,7 @@
      $viewdate = $this->year."-".$this->month."-".$this->day;
      if ($viewdate!="")
       {
-        $viewtime = mktime(12,12,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
+        $viewtime = adodb_mktime(12,12,0,substr($viewdate,5,2),substr($viewdate,8,2),substr($viewdate,0,4));
       }
       else
       {
@@ -172,13 +171,16 @@
     $prevTime = $this->weekdates[0]['date'];
     $prevUrl  = $PHP_SELF."?view=weekview&viewdate=$prevTime&user=".$this->showGlobal;
 
+    $thisTime = date("Y-m-d");
+    $thisUrl  = $_SERVER["PHP_SELF"]."?view=weekview&viewdate=$thisTime&user=".$this->showGlobal;
+
     $nextTime = $this->weekdates[8]['date'];
     $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime&user=".$this->showGlobal;
 
     $date     = $this->year."-".$this->month."-".$this->day;
-    $this->title = "<font size='-1'><b>".text("week")."&nbsp;".strftime("%V", mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
+    $this->title = "<font size='-1'><b>".text("week")."&nbsp;".strftime("%V", adodb_mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text('previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('nextweek'))."</font>";
+    return "<font size='-1'>".href($prevUrl, text('previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text('thisweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('nextweek'))."</font>";
    }
 
   /**

@@ -134,17 +134,18 @@ class dependencyAttribute extends atkAttribute
     
     if ($rec["id"]!="")
     {
+// @TODO JvdW 10-01-2004 ROW is Oracle keyword
       $query = "SELECT 
                   phaseid_row as first, 
-                  ROW.name as firstname, 
+                  ROW1.name as firstname, 
                   phaseid_col as last, 
-                  COL.name as lastname
+                  COL1.name as lastname
                 FROM 
-                  dependency, phase ROW, phase COL
+                  dependency, phase ROW1, phase COL1
                 WHERE                                 
-                  ROW.id = phaseid_row
-                  AND COL.id = phaseid_col
-                  AND (ROW.projectid = ".$rec["id"]." OR COL.projectid = ".$rec["id"].")
+                  ROW1.id = phaseid_row
+                  AND COL1.id = phaseid_col
+                  AND (ROW1.projectid = ".$rec["id"]." OR COL1.projectid = ".$rec["id"].")
                   ORDER BY phaseid_row";
     
     

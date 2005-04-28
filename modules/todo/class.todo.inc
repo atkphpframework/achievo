@@ -58,23 +58,42 @@ class todo extends atkNode
   {
    $prio = $rec["priority"];   
    $org = $this->m_attribList["priority"]->display($rec);
-   $result = "";
+   $result = "";      
 
    switch ($prio)
    {
     case 1:
-     $result = "<font color='#FF0000'>".$org."</font>";
-     break;
-
+     $result = '<font color="'.COLOR_ERROR.'"><b>'.$org."</b></font>"; break;
     case 2:
-     $result = "<font color='#A00000'>".$org."</font>";
-     break;
-
+     $result = '<font color="'.COLOR_WARNING.'"><b>'.$org."</b></font>"; break;
+    case 4:
+     $result = '<font color="#666666">'.$org."</font>"; break;
     default:
      $result = $org;
      break;
    }
    return $result;
+  }
+  
+  function duedate_display($rec)
+  {
+    $duedate = sprintf("%d-%02d-%02d", $rec["duedate"]["year"], $rec["duedate"]["month"], $rec["duedate"]["day"]);            
+    $open = (in_array($rec["status"], array(1, 3, 4)));    
+    $org = $this->m_attribList["duedate"]->display($rec);
+    
+    if (!$open)
+    {
+      return $org;
+    }
+    else
+    {                 
+      $days_left = $this->daysLeft(date("Y-m-d"), $duedate);         
+      
+      if ($days_left>2) return $org; // normal
+      if ($days_left<0) return '<font color="#FF0000"><b>'.$org.'</b></font>'; // expired
+      return '<font color="#ee6c22"><b>'.$org.'</b></font>'; // almost expired
+      
+    }         
   }
 
   function descriptor_def()
@@ -252,6 +271,15 @@ class todo extends atkNode
     }    
     return $record;
   }
+  
+   function daysLeft($start, $end)  
+   {                      
+     if ($start==""||$end=="") return 0;    
+      
+     $d1 = adodb_mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));    
+     $d2 = adodb_mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));    
+     return floor(($d2-$d1)/(60*60*24));  
+   }   
 
 }
 

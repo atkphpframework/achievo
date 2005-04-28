@@ -13,13 +13,13 @@ General instructions
 If you want to use one of the scripts, edit your crontab (crontab -e on 
 most Unix systems), and add a line in the form of:
 
-0 9 * * tue   /usr/bin/php /var/www/achievo/runcron todo.reminder > /dev/null
+0 9 * * tue   cd /var/www/achievo; /usr/bin/php runcron todo.reminder > /dev/null
 
 This will run the reminder.cron script from the todo module every tuesday 
 morning at 9 o'clock.
 
 (assuming your php binary is in /usr/bin and Achievo is installed in 
-/var/www/html/, if this is not the case, change the values accordingly.)
+/var/www/, if this is not the case, change the values accordingly.)
 
 
 Available scripts
@@ -67,7 +67,7 @@ Example: suppose you have a module 'mymodule' with a file 'dailycheck.cron'
 in its cron/ subdirectory. You can run this script by adding this to your 
 crontab:
 
-0 9 * * *   /usr/bin/php /var/www/achievo/runcron mymodule.dailycheck
+0 9 * * *   cd /var/www/achievo; /usr/bin/php runcron mymodule.dailycheck
 
 Note that the '.cron' extension of the filename does not need to be passed
 to the runcron script.

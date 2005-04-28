@@ -150,16 +150,50 @@
    * given a timestamp, this function calculates the weekstamp, which is a concatenation
    * of the year and the ISO week number. (e.g. 200134)
    */
-  function weekstamp($timestamp)
+  function weekstamp($timestamp)  // in achievotools.inc
   {
+    /*
+     * JN 02-06-26: FIX: Time locks based on week numbers not working on win32.                    
+     *                   Reason is PHP: not all strftime functions are working on win32.
+     *                   Solution: We have to calculate week of year manually.
+     */
+    
     $year = strftime("%Y",$timestamp);
-    $week = strftime("%V",$timestamp);
-    $month = strftime("%m",$timestamp);
-    if ($week==1 && $month == 12)
-    {
-      // tricky.. first week of next year starts this year, so key must be incremented.
-      return ($year+1).$week;
+    $yearStart = mktime(0,0,0,1,1,$year);
+    $yearEnd = mktime(0,0,0,12,31,$year);
+    
+    $daysLost = strftime("%w",$yearStart);
+    if ($daysLost > 4) {
+      $daysLost -= 9;
+    } else {
+      $daysLost -= 2;
     }
+    // $week = bcdiv(strftime("%j",$timestamp)+$daysLost+7,7,0);
+    $week = "".floor((strftime("%j",$timestamp)+$daysLost+7)/7);
+            
+    /*
+    atkdebug("(weekstamp): date: ".strftime("%a %d %m %Y",$timestamp).
+             " week: ".$week.
+             " day: ".strftime("%j",$timestamp).
+             " jan1: ".strftime("%a",$yearStart).
+             " dec31: ".strftime("%a",$yearEnd).
+             " w1dLastY: ".($daysLost+1));
+    */
+    
+    if ($week == 0) {
+      //atkdebug("(weekstamp): adjust to previous year");
+      return weekstamp(mktime(0,0,0,12,31,($year-1)));
+    }
+
+    if ($week == 53) 
+    {
+      if ((strftime("%w", $yearEnd) >= 1) && (strftime("%w", $yearEnd)<= 3)) 
+      {
+        //atkdebug("(weekstamp): adjust to following year");
+        return ($year+1)."1";
+      }
+    }  
+
     return $year.$week;
   }
 
@@ -169,7 +203,7 @@
    */
   function startOfWeek($date)
   {
-    $viewtime = mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
+    $viewtime = adodb_mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
     $weekday = strftime("%w",$viewtime);
     if ($weekday==0) $weekday=7;
     return date("Y-m-d" ,$viewtime-(86400*($weekday-1)));
@@ -181,7 +215,7 @@
    */
   function endOfWeek($date)
   {
-    $viewtime = mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
+    $viewtime = adodb_mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4));
     $weekday = strftime("%w",$viewtime);
     if ($weekday==0) $weekday=7;
     return date("Y-m-d" ,$viewtime-(86400*($weekday-7)));
@@ -189,13 +223,15 @@
 
   function usermail($to, $subject, $body, $add_header="")
   {
+    $sender = atkconfig("mail_sender", "achievo");
+
     if (is_array($to) && count($to)>0)
     {
       $to = implode(",",$to);
     }
     if ($to!="" && $subject!="")
     {
-      mail($to,"[achievo notice] ".$subject,$body,"From: achievo\r\n".$add_header);
+      mail($to,"[achievo notice] ".$subject,$body,"From: ".$sender."\r\n".$add_header);
       atkdebug("Sent mail to $to");
     }
     else

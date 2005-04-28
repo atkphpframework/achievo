@@ -2,6 +2,7 @@
   /* Setup the system */
 //  $config_atkroot = "./";
 //  require_once($config_atkroot."atk/class.atknode.inc");
+  include_once("atk/atkbrowsertools.inc");
   if (is_object($g_sessionManager))
   {
     $g_theme["Name"] = $g_sessionManager->getValue("atkTheme", "globals");
@@ -23,6 +24,7 @@
       $g_sessionManager->globalVar("atkTheme", $g_theme["Name"], true);
     }
   }
+  if (browserInfo::detectPDA()) $g_theme["Name"]="pda";
   $g_layout->initTheme();
   $g_layout->import_layout();
   

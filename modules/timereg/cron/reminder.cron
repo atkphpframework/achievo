@@ -4,7 +4,7 @@
   * @Author Ivo Jansch <ivo@achievo.org>
   *
   * Sends an email reminder if someone did not enter all of his hours in
-  * the previous week.
+  * the previous week(s).
   * 
   * $Id$
   *
@@ -38,7 +38,7 @@
   {
     // generate a date in the correct week (doesn't matter which, so day-7 should
     // always work.
-    $prevweekstamp = mktime(12,12,12,$month,$day-($weekloop*7),$year);
+    $prevweekstamp = adodb_mktime(12,12,12,$month,$day-($weekloop*7),$year);
 
     $startdate = startOfWeek(date("Y-m-d",$prevweekstamp));
     $enddate =  endOfWeek(date("Y-m-d",$prevweekstamp));
@@ -59,7 +59,7 @@
                 usercontract, person
               WHERE
                 startdate <= '$startdate'
-                AND enddate > '$startdate'
+                AND (enddate > '$startdate' OR enddate IS NULL)
                 AND usercontract.userid = person.id
                 AND person.status='active' AND person.role = 'employee'";
 
@@ -67,7 +67,7 @@
 
     for ($i=0;$i<count($contracts);$i++)
     {
-      $time[$contracts[$i]["id"]]["contract"] = $contracts[$i]["uc_hours"]*60;
+      $time[$contracts[$i]["id"]]["contract"] += $contracts[$i]["uc_hours"]*60;
       $time[$contracts[$i]["id"]]["email"] = $contracts[$i]["email"];
       $time[$contracts[$i]["id"]]["supervisor"] = $contracts[$i]["supervisor"];
     }
@@ -129,6 +129,7 @@
     {
       $cc = "Cc: ".$supervisormail."\r\n";
     }
+
     if ($to!="")
     {      
       usermail($to,text("timeguard_mail_subject"),$body, $cc);

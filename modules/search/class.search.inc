@@ -17,53 +17,56 @@
     {
       global $g_layout, $g_sessionManager;
 
-      $g_layout->initGui();
-      $g_layout->ui_top(text("search"));  
-      
       // Searchstring is a stackvar. We get it through the post_vars, 
       // but we need to store it in the session stack, so the system
       // remembers the last searchstring when coming back from a 
       // view action.
-      $searchstring = $g_sessionManager->stackVar("searchstring");
+      $searchstring = strip_tags($g_sessionManager->stackVar("searchstring"));
       
       if ($searchstring!="")
       {  
         $results = atkHarvestModules("search", $searchstring);
-    
+        $firsturl=""; 
         $res = "";
-        $hasresults = false; // We can't use count($results) to determine if we 
-                             // found anything. Bad modules might set a category
-                             // in $results even if they haven't got results in
-                             // that category.
+        $resultcnt = 0;  // We can't use count($results) to determine if we 
+                         // found anything. Bad modules might set a category
+                         // in $results even if they haven't got results in
+                         // that category.
         
         foreach ($results as $category=>$items)
         {
           $cnt = count($items);
           if ($cnt>0)
           {
-            $hasresults = true;
+            $hasresults += $cnt;
             $res .= '<br><b>'.text($category).'</b><br>';
             for ($i=0;$i<$cnt;$i++)
             {        
               $res.= '<br>&nbsp; &nbsp;'.href($items[$i]["url"], $items[$i]["title"], SESSION_NESTED);
+              if ($firsturl=="") $firsturl = $items[$i]["url"];
             }
             $res.='<br>';
           }
         }      
       
-        if (!$hasresults)
+        if ($hasresults==0)
         {  
           $res = '<br>'.sprintf(text("search_noresults"), $searchstring);
         }  
+        else if ($hasresults==1)
+        {
+          // autoview first url
+          return $this->redirect(session_url($firsturl, SESSION_REPLACE));
+        }
       }
       else
       {       
         $res = '<br>'.text("search_emptysearchstring");       
       }
-      
+      $g_layout->initGui();
+      $g_layout->ui_top(text("search"));
       $g_layout->output($res.'<br><br>'.text('search_again').':<br>');
       $g_layout->output($this->simpleSearchForm($searchstring, "", SESSION_DEFAULT).'<br><br>');
-      
       $g_layout->ui_bottom();
     }
     

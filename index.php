@@ -1,7 +1,7 @@
 <?php
   
   include_once("atk.inc");
-    
+  include_once("atk/atkbrowsertools.inc");
   atksession(); 
   atksecure();
  
@@ -9,19 +9,26 @@
   $g_layout->head(text("app_title"));
   
   $user = getUser();
+  $pda = browserInfo::detectPDA();
   
   if (strtolower($user["name"]) == "administrator")
   {
     $default_url = session_url("dispatch.php?atknodetype=pim.pim&atkaction=adminpim",SESSION_NEW);
+  }
+  else if ($pda)
+  {
+    $default_url = session_url("dispatch.php?atknodetype=pim.pim&atkaction=pim",SESSION_NEW);
   }
   else
   {
     $default_url = session_url("dispatch.php?atknodetype=pim.pim&atkaction=pim",SESSION_NEW);
   }
   
-
+  
+  if (!$pda)
+  {
   $g_layout->output('
-        <frameset rows="73,*" frameborder="0" border="0">
+        <frameset rows="80,*" frameborder="0" border="0">
           <frame name="top" scrolling="no" noresize src="top.php" marginwidth="0" marginheight="0">
        ');    
     
@@ -41,6 +48,22 @@
       </frameset>
       </html>
        ');  
-
+  }
+  else 
+  {    
+    $config_defaulttheme="default";
+    $g_layout->output('
+    <frameset rows="30,*" frameborder="0">
+      <frame name="top" src="top.php">
+      <frame name="main" src="'.$default_url.'">
+      <noframes>
+        <body bgcolor="#CCCCCC" text="#000000">
+          <p>Your PDA doesnt support frames, but this is required to run '.text("app_title").'</p>
+        </body>
+      </noframes>
+    </frameset>
+  </html>');  
+  }
   $g_layout->outputFlush();
+
 ?>

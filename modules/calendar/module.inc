@@ -19,8 +19,11 @@
 
     function getPimItems()
     {
-      include_once(moduleDir("calendar")."pim.inc");
-      return array("schedule"=>pimSchedule());
+      if (!(browserInfo::detectPDA()))
+      {
+        include_once(moduleDir("calendar")."pim.inc");
+        return array("schedule"=>pimSchedule());
+      }
     }
 
     function getDependencies($mode)

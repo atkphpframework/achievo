@@ -1,6 +1,8 @@
 <?php
 
+useattrib("atkboolattribute");
 useattrib("atkdummyattribute");
+useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 
 class hours_lock extends atkNode
@@ -11,9 +13,13 @@ class hours_lock extends atkNode
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
     $this->add(new atkDummyAttribute("weekexplain",text("hourlock_week_explanation"),AF_HIDE_LIST));
-    $this->add(new atkAttribute("week",AF_SEARCHABLE|AF_OBLIGATORY, 6));
+    $this->add(new atkNumberAttribute("week",AF_SEARCHABLE|AF_OBLIGATORY, 6));
     $this->add(new atkDummyAttribute("useridexplain",text("hourlock_userid_explanation"),AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("userid","employee.employee", AF_SEARCHABLE));
+    if (atkconfig("lock_week_approval_required") && is_allowed("hours_lock", "approve"))
+    {
+      $this->add(new atkBoolAttribute("approved", AF_HIDE_ADD));
+    }
 
     $this->setOrder("week DESC");
     $this->setTable("hours_lock");

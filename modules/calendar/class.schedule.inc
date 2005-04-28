@@ -46,12 +46,12 @@
         $default_start_time = $time; // passed from the url.
 
         // endtime is half an hour later than starttime by default
-        $default_end_time = strftime("%H:%M", mktime(substr($time,0,2), substr($time,3,2)+30));
+        $default_end_time = strftime("%H:%M", adodb_mktime(substr($time,0,2), substr($time,3,2)+30,0,1,1,2000)); // datepart is obligatory for adodb_mktime but not used 
       }
       else
       {
         $default_start_time = strftime("%H:%M");
-        $default_end_time = strftime("%H:%M", mktime(substr($default_start_time,0,2),substr($default_end_time,3,2)+30));
+        $default_end_time = strftime("%H:%M", adodb_mktime(substr($default_start_time,0,2),substr($default_end_time,3,2)+30,0,1,1,2000));
       }
 
       $aItemBegin = array("08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30","24:00");
@@ -220,7 +220,10 @@
       if (method_exists($this, $this->m_view))
       {
         $funcname = $this->m_view;
-        $result = $this->$funcname($this->m_viewdate);
+              // link to weekview and monthview and employeeview
+        $result= href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",text("dayview")) ."&nbsp;".href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
+
+        $result.= $this->$funcname($this->m_viewdate);
       }
       else
       {
@@ -366,10 +369,10 @@
       $legend .= $dummy->legend;
 
       // link to weekview and monthview and employeeview
-      $buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
-
+      //$buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
+     
       // assign our output buffer
-      $buff .= "<br><br><table width='".$dummy->viewerWidth."'><tr>";
+      $buff= "<br><br><table width='".$dummy->viewerWidth."'><tr>";
       $buff .= "<td valign='top' align='left'>".$dummy->dayNav()."</td>";
       $buff .= "<td valign='top' align='right'>$form</td>";
       $buff .= "</tr><tr><td valign='top' align='left'><b>".$dummy->title."</b></td>";
@@ -428,15 +431,26 @@
     {
       // insert the owner as first attendee.
       global $g_db;
-      $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
+      $this->_addAttendeeRecord($rec["id"], $rec["owner"]["id"]);      
     }
 
     function storeAttendees($rec, $attendees)
+    {      
+      for ($i=0, $_i=count($attendees); $i<$_i; $i++)
+      {        
+        $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"]);
+      }
+    }
+    
+    function _addAttendeeRecord($schedule_id, $person_id)
     {
       global $g_db;
-      for ($i=0, $_i=count($attendees); $i<$_i; $i++)
+      
+      // attendee may already exist.
+      $recs = $g_db->getrows("SELECT count(*) AS cnt FROM schedule_attendee WHERE schedule_id = $schedule_id AND person_id = $person_id");
+      if (!count($recs)||$recs[0]["cnt"]==0)
       {
-        $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ('".$rec["id"]."', '".$attendees[$i]["id"]."')");
+        $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ($schedule_id, $person_id)");
       }
     }
   }

@@ -9,7 +9,7 @@ class contact extends person
   {
     $this->person("contact");
     $this->addFilter("person.role='contact'");
-    $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE));
+    $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     $this->add(new atkAttribute("role"           , AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15));
   }
 
@@ -24,6 +24,7 @@ class contact extends person
     return "[lastname], [firstname]";
   }
 
+  /*
   function action_view()
   {
     // view not only contactperson information but also meetings (including attendees of meetings) and projects
@@ -114,7 +115,7 @@ class contact extends person
         if (is_array($bgn)) list($bgn, $bgh) = $bgn;
       }
 
-      /* alternate colors of rows */
+      // alternate colors of rows 
       $g_layout->output('<tr class="row'.($i % 2 == 0 ? 1 : 2).'" '.(empty($bgn) ? '' : 'style="background-color:'.$bgn.'" ').
                    '  onmouseover="if (typeof(this.style) != \'undefined\') this.style.backgroundColor = \''.$bgh.'\'"'.
                    '  onmouseout="if (typeof(this.style) != \'undefined\') this.style.backgroundColor = \''.(empty($bgn)?'':$bgn).'\'">');
@@ -143,7 +144,7 @@ class contact extends person
     $g_layout->output(session_form(SESSION_BACK));
     $g_layout->output('<input type="submit" value="&lt;&lt; '.text("back").'"></form>');
     $g_layout->ui_bottom();
-  }
+  }*/
 }
 
 ?>

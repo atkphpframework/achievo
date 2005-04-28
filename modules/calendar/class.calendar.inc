@@ -52,7 +52,7 @@
     $totalDays     = $this->daysInMonth();
     $this->calRows = array();
 
-    $emptyOffset = date("w", mktime( 0, 0, 0, $this->displayMonth, 1, $this->displayYear));
+    $emptyOffset = date("w", adodb_mktime( 0, 0, 0, $this->displayMonth, 1, $this->displayYear));
     for ($i = 0;$i<$emptyOffset;$i++)
     {
      $this->calRows[$item] = "&nbsp;";
@@ -131,7 +131,7 @@
   // just a copy from the hours class weekView()
   function weekItems()
   {
-   $viewtime = mktime(0,0,0,$this->displayMonth, $this->displayDay, $this->displayYear);
+   $viewtime = adodb_mktime(0,0,0,$this->displayMonth, $this->displayDay, $this->displayYear);
    $weekday  = strftime("%w",$viewtime);
 
    if ($weekday==0) $weekday=7;

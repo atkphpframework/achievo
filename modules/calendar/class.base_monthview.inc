@@ -42,16 +42,16 @@
    function monthNav()
    {
 
-    $prevTime = date("Y-m-d", mktime(0,0,0,$this->month-1, 1, $this->year));
+    $prevTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month-1, 1, $this->year));
     $prevUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$prevTime&dayview=".$this->showGlobal;
 
     $thisTime = date("Y-m")."-1";
     $thisUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$thisTime&dayview=".$this->showGlobal;
 
-    $nextTime = date("Y-m-d", mktime(0,0,0,$this->month+1, 1, $this->year));
+    $nextTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month+1, 1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".text(strtolower(date("F", mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".text(strtolower(date("F", adodb_mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
 
     return "<font size='-1'>".href($prevUrl, text("previous_month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("this_month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_month"))."</font>";
    }
@@ -79,7 +79,7 @@
 
     for ($j=0;$j<=$weeks;$j++)
     {
-     $viewtime = mktime(0,0,0,$this->month, $begin, $this->year);
+     $viewtime = adodb_mktime(0,0,0,$this->month, $begin, $this->year);
      $weekday  = strftime("%w",$viewtime);
 
      if ($weekday==0) $weekday=7;
@@ -124,7 +124,7 @@
     $w = 0;
     for ($i=0;$i<=$this->weeks;$i++)
     {
-     $weekno = strftime("%W", mktime(0,0,0,substr($this->items[$item]["date"],5,2), substr($this->items[$item]["date"],8,2), substr($this->items[$item]["date"],0,4)));
+     $weekno = strftime("%V", adodb_mktime(0,0,0,substr($this->items[$item]["date"],5,2), substr($this->items[$item]["date"],8,2), substr($this->items[$item]["date"],0,4)));
      $href   = $_SERVER["PHP_SELF"]."?view=weekview&viewdate=".$this->items[$item]["date"];
      $buff  .= "<tr>";
      $buff  .= "<td width='$colwidth' bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($href, $weekno)."</font></td>";

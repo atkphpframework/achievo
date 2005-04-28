@@ -107,7 +107,7 @@
       $graphtype   = $postvars["graphtype"];
       
       $obj = &getNode($atknodetype); 
-    
+      
       if (is_object($obj))
       {
         // We prepend graph_ to the callback as a security precaution. 
@@ -164,7 +164,10 @@
       
       $defcolors = array('red', 'blue', 'green', 'yellow', 'black');
       
-      $graph = new  Graph(650,250,"auto");
+      $graphwidth   = atkconfig("graph_width",650);
+      $graphheight  = round($graphwidth / 650 * 250);
+      
+      $graph        = new  Graph($graphwidth,$graphheight,"auto");
       
       global $g_theme;
       $graph->SetMarginColor($g_theme["BgColor"]);
@@ -185,7 +188,7 @@
       // To prevent weird unreadable intervals, we round
       // to the nearest multiple of 5 bigger than what we
       // calculated (to prevent label overlaps).
-      $interv = floor(count($xlabels)/5);                   
+      $interv = floor(count($xlabels)/5);
       $graph->xaxis->SetTextLabelInterval(max(1,$interv+(5-($interv%5))));
       
       $i=0;
@@ -220,8 +223,11 @@
       // We only support one dataset, so we only use the first piece of data.
       $dataset = reset($data);
       $title = key($data);
-
-      $graph = new PieGraph(550,250,"auto");
+      
+      $graphwidth = atkconfig("graph_width",550);
+      $graphheight = round($graphwidth / 550 * 250);
+      
+      $graph = new PieGraph($graphwidth,$graphheight,"auto");
       
       global $g_theme;      
       $graph->SetColor($g_theme["BgColor"]);
@@ -234,7 +240,7 @@
 
       // Create a plot
       $p1 = new PiePlot(array_values($dataset));
-      
+
       $p1->setCenter(0.26,0.5);
       $p1->SetLegends(array_keys($dataset));
        

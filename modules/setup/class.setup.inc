@@ -77,7 +77,7 @@
         // This can't be trusted. Mysql returns DB_SUCCESS even
         // if the user doesn't have access to the database. We only get an
         // error for this after we performed the first query.
-        $g_db->getrows("show tables");  // TODO FIXME: 'show tables' is NOT database independent
+        $g_db->table_names();  // this triggers a query
         $res = $g_db->_translateError($g_db->m_errno);
       }
           

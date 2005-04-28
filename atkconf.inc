@@ -23,4 +23,7 @@
   $config_auth_accountenableexpression = "role='employee' AND status='active'";
   $config_atktempdir = $config_atkroot."achievotmp/";
   $config_tplcompiledir = $config_atktempdir."compiled/tpl/";
+  $config_auth_grantall_privilege = "employee.profile.grantall";
+  $config_durationformat = 0;
+  $config_defaultfavico = "images/achievo.ico";
 ?>

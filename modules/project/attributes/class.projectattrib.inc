@@ -57,7 +57,7 @@ class atkProjectAttribute extends atkAttribute
     }
 
     $result.= '<select name="projectid">';
-    $result.= '<option value="">---';
+    $result.= '<option value="">'.text('select');
 
     for ($i=0;$i<count($projects);$i++)
     {
@@ -115,7 +115,7 @@ class atkProjectAttribute extends atkAttribute
     $query = "SELECT project.name as name, project.id as id FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."'
                 AND phase.status='active'
-                AND project.status='active'
+                AND project.status<>'archived'
                 AND phase.projectid=project.id ";
     $query.= "ORDER BY hours.entrydate DESC";
 

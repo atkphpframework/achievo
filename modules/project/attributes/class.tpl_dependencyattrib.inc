@@ -34,18 +34,18 @@ class tpl_dependencyAttribute extends dependencyAttribute
   function load($notused, $rec)
   {
     global $g_db;
-
+// @TODO JvdW 10-01-2004 ROW is Oracle keyword
     $query = "SELECT
                 phaseid_row as first,
-                ROW.name as firstname,
+                ROW1.name as firstname,
                 phaseid_col as last,
-                COL.name as lastname
+                COL1.name as lastname
               FROM
-                tpl_dependency, tpl_phase ROW, tpl_phase COL
+                tpl_dependency, tpl_phase ROW1, tpl_phase COL1
               WHERE
                 projectid = ".$rec["id"]."
-                AND ROW.id = phaseid_row
-                AND COL.id = phaseid_col
+                AND ROW1.id = phaseid_row
+                AND COL1.id = phaseid_col
                 ORDER BY phaseid_row";
 
     return array("deps"=>$g_db->getrows($query));

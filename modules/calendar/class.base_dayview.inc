@@ -86,16 +86,16 @@
    function dayNav()
    {
 
-    $prevTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day-1, $this->year));
+    $prevTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month, $this->day-1, $this->year));
     $prevUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$prevTime&user=".$this->showGlobal;
 
     $thisTime = date("Y-m-d");
     $thisUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$thisTime&user=".$this->showGlobal;
 
-    $nextTime = date("Y-m-d", mktime(0,0,0,$this->month, $this->day+1, $this->year));
+    $nextTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month, $this->day+1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".text(strtolower(date("l", mktime(0, 0, 0, $this->month, $this->day, $this->year))))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".text(strtolower(date("l", adodb_mktime(0, 0, 0, $this->month, $this->day, $this->year))))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
     return "<font size='-1'>".href($prevUrl, text("previous_day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_day"))."</font>";
    }

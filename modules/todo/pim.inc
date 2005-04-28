@@ -38,9 +38,8 @@
 
     $res.= $g_layout->ret_table_simple();
     $res.= '<tr>';
-    $res.= $g_layout->ret_td('&nbsp;','width="15"'); // spacer
     $res.= $g_layout->ret_td($todo_assignedtome, 'valign="top"');
-    $res.= $g_layout->ret_td('&nbsp;','width="15"'); // spacer
+    $res.= '</tr><tr><td>&nbsp;</td></tr><tr>';
     $res.= $g_layout->ret_td($todo_assignedbyme, 'valign="top"');
     $res.= '</tr></table>';
     return $res;

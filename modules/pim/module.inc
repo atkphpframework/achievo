@@ -9,6 +9,11 @@
     function getMenuItems()
     {
     }
+    
+    function pdaNodes()
+    {
+      return array("pim"=>dispatch_url("pim.pim","pim"));
+    }
   }
   
 ?>

@@ -16,9 +16,9 @@ class usercontracts extends atkNode
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY|AF_OBLIGATORY));
-    $this->add(new atkNumberAttribute("uc_hours", AF_OBLIGATORY, 3));
+    $this->add(new atkNumberAttribute("uc_hours", AF_OBLIGATORY, 3,2));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0, AF_OBLIGATORY));
-    $this->add(new atkDateAttribute("enddate", "F d Y","d F Y",0,0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("enddate", "F d Y","d F Y"));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, 0));
     $this->add(new atkMultiSelectAttribute("workingdays",array("mon", "tue","wed","thu","fri","sat","sun"),array(1,2,3,4,5,6,0),AF_HIDE_LIST));
     $this->setTable("usercontract");
@@ -63,7 +63,7 @@ class usercontracts extends atkNode
                                          "day"=>$day);
                                          
             // We also set enddate now, to startdate+1 year.
-            $endstamp = mktime(12, 0, 0, $month, $day, $year+1);
+            $endstamp = adodb_mktime(12, 0, 0, $month, $day, $year+1);
             $record["enddate"] = array("year"=>date("Y", $endstamp),
                                        "month"=>date("m", $endstamp),
                                        "day"=>date("d", $endstamp)); 
@@ -86,6 +86,16 @@ class usercontracts extends atkNode
     // We have only implemented this method to set some values. We should
     // call the regular edit method now.
     return $this->m_attribList["uc_hours"]->edit($record, $prefix, $mode);
+  }
+  
+  function getMostRecentContract($userid)
+  {
+    if ($userid!="")
+    {
+      $recs = $this->selectDb("userid=".$userid, "enddate desc", 1, "", array("startdate", "enddate", "uc_hours"));
+      if (count($recs)) return $recs[0];
+    }
+    return array();
   }
 
 }

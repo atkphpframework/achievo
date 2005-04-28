@@ -10,18 +10,17 @@
   //           DATABASE CONFIGURATION
   // -------------------------------------------
 
-
   // The database to use. Default is MySQL. 
   // MySQL is currently the only officially supported database.
   // Experimental: If you want to use PostgreSQL, change this value to 
-  // "pgsql". For Oracle, use "oci8" or "oci9".
+  // "pgsql". For Oracle, use "oci8".
   $config_database = "mysql";
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_1_1";  
+  $config_databasename = "achievo_1_1";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
 
@@ -96,6 +95,28 @@
   //
   $config_auth_dropdown = false;
 
+  // As an extra security measure, to prevent session highjacking, Achievo
+  // will regenerate it's session id on each hit. This does not work 
+  // properly on some (usually older) PHP installations. If you experience
+  // login trouble, set the next value to false.
+  $config_session_regenerate = false;
+
+  
+  // -------------------------------------------
+  //            MAIL CONFIGURATION
+  // -------------------------------------------
+
+  // Achievo can send out notifications and reminders to users. The
+  // default sender for these mails is 'achievo@domain_of_your_server'. 
+  // Sometimes users will reply to these mails, so it's better to change
+  // this to the mail address of the administrator or human resource manager.
+  // Example: $config_mail_sender = "ivo@achievo.org".
+  // If you leave out the @domain part, the domainname of the server is
+  // appended automatically.
+  //
+  $config_mail_sender = "achievo"; 
+
+
   // -------------------------------------------
   //            TIME REGISTRATION
   // -------------------------------------------
@@ -107,7 +128,8 @@
   $config_numberofrecentprojects = 10;
 
   // The ammount of time that a user can book on a day before it is
-  // considered overtime.
+  // considered overtime. (visualization only, true overtime is
+  // calculated based on employee contracts.)
   //
   $config_overtimethreshold = 480;
 
@@ -115,6 +137,18 @@
   //
   $config_timereg_defaultview = "day";
 
+  // Number of lines of the 'remark' field for time entry. Defaults to a
+  // single line. (Regardless of this setting, the actual amount of text 
+  // that can be entered is unlimited.)
+  $config_timereg_remark_lines = 1;
+
+  // Resolution for time registration. By default, time can be registered in
+  // steps of 15 minutes. You can increase or decrease this.
+  // You can specify a resolution in minutes or in hours.
+  // Examples: 1m, 5m, 10m, 20m, 30m, 1h, 2h etc.
+  //
+  $config_timereg_resolution = "15m";    
+  
   // This variable indicates whether the user may directly register
   // time on each day in a week when he is in weekview.
   // If set to false, the user must first go to the dayview of a day,
@@ -134,9 +168,8 @@
   $config_timereg_checkweeks = 5; 
 
   // -------------------------------------------
-  //               PROJECTS
+  //             PROJECT MODULE
   // -------------------------------------------
-  
   // This variable indicated wheter contacts in the project module are
   // obligatory
   $config_project_contact_obligatory = false;
@@ -159,5 +192,5 @@
   // Also, you should not change the atkconf.inc file, since that would
   // break Achievo.
   //
-  include "atkconf.inc";
+  include "atkconf.inc";  
 ?>

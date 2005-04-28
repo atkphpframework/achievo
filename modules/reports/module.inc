@@ -7,6 +7,12 @@
       registerNode("reports.weekreport",array("report","view_all"));
       registerNode("reports.hoursurvey",array("report","view_all"));
     }
+    
+    function pdaNodes()
+    {
+      return array(
+      "hours_hoursurvey"=>dispatch_url("reports.hoursurvey", "report"));
+    }
 
     function getMenuItems()
     {

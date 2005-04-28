@@ -2,6 +2,6 @@
 
   $setup->installNode("person.person");
   
-  $setup->setVersion(1);
+  $setup->setVersion(2);
 
 ?>
