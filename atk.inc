@@ -17,6 +17,7 @@
                                                                    // now, because achievoModule needs it.
   include_once($config_atkroot."modules/class.achievomodule.inc"); 
   include_once($config_atkroot."atk/class.atknode.inc"); 
+  include_once($config_atkroot."atk/utils/adodb-time.inc.php"); 
   
   // Some global achievo definitions we use in nodes.
   
