@@ -290,13 +290,8 @@ class hours extends atkNode
                                                 $recs[0]["activitydate"]["day"]));
     if ($this->m_lock=="")
     {
-<<<<<<< class.hours.inc
       $this->addFilter("hours.userid",strtolower($g_user["id"]));
       return $handler->action_edit();
-=======
-      $this->addFilter("hours.userid",strtolower($this->m_user));
-      return parent::action_edit();
->>>>>>> 1.24.2.25
     }
     else
     {
