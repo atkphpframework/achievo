@@ -195,7 +195,7 @@ class hours extends atkNode
     if (atkconfig("use_duration", true))
     {
       $relation = new atkManyToOneRelation("workperiod","timereg.workperiod", AF_OBLIGATORY|AF_HIDE_LIST);
-      $relation->setHideWhenEmpty(true);
+      //$relation->setHideWhenEmpty(true);
       $this->add($relation);
     }
     
@@ -349,13 +349,10 @@ class hours extends atkNode
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin(&$handler)
   {
-<<<<<<< class.hours.inc
     $page = &$this->getPage();
     
     global $g_user;
 
-=======
->>>>>>> 1.24.2.25
     $this->setLock();
 
     $this->addFilter("hours.userid",$this->m_user);
@@ -450,12 +447,6 @@ class hours extends atkNode
 
   function weekview()
   {
-<<<<<<< class.hours.inc
-    global $g_user;
-=======
-    global $g_layout;
-    
->>>>>>> 1.24.2.25
     if ($this->m_viewdate!="")
     {
       $viewtime = mktime(12,12,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
@@ -467,18 +458,12 @@ class hours extends atkNode
     }
     $this->addStyle("style.css");
     
-    $ui = &$this->getUi();        
-
-    $output = "";
-
-    $g_layout->output($this->getWeekviewData($viewtime));
-    $g_layout->ui_bottom();
+    return $this->getWeekviewData($viewtime);
+    
   }
   
   function getWeekviewData($viewtime)
   {
-    global $g_layout;
-    
     $userid = $this->m_user;
     $weekday = strftime("%w",$viewtime);
     if ($weekday==0) $weekday=7;
@@ -510,90 +495,42 @@ class hours extends atkNode
 
     $weekviewheader = $this->weekviewHeader($weekdates, $viewtime);
 
-<<<<<<< class.hours.inc
     $output.= $prevnextlinks;
     
     $weekdata = array();
     
     $table = &atknew("atk.utils.atktablerenderer");
-=======
-    $output.=$weekviewheader;
-    $output.=$g_layout->data_top();
-    $output.=$g_layout->tr_top();
->>>>>>> 1.24.2.25
 
-<<<<<<< class.hours.inc
     $weekdata[0][] = text('project').'/'.text('phase');
-=======
-    $output.=$g_layout->ret_td_datatitle(text('project').'/'.text('phase'));
->>>>>>> 1.24.2.25
     for ($i=1;$i<=7;$i++)
     {
       if ($weekdates[$i]['date'] <= date("Y-m-d"))
       {
         $url = 'dispatch.php?viewdate='.$weekdates[$i]['date']."&weekview=0";
-<<<<<<< class.hours.inc
         $weekdata[0][] = href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
-=======
-        $output.=$g_layout->ret_td_datatitle(href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
->>>>>>> 1.24.2.25
       }
       else
       {
-<<<<<<< class.hours.inc
         $weekdata[0][] = text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
-=======
-        $output.=$g_layout->ret_td_datatitle(text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')','align="center"');
->>>>>>> 1.24.2.25
       }
       $table->setColAlignment($i, TBL_CENTER);
 
     }
-<<<<<<< class.hours.inc
     $weekdata[0][] = text('total');
     
     $row = 1;
-=======
-    $output.=$g_layout->ret_td_datatitle(text('total'));
-
-    $output.=$g_layout->tr_bottom();
-
-    $row = 0;
->>>>>>> 1.24.2.25
     while (list($proj, $times)=each($week))
-<<<<<<< class.hours.inc
     {      
       $weekdata[$row][] = $proj;
-=======
-    {
-      $output.=$g_layout->tr_top((++$row)%2==0);
-      $output.=$g_layout->ret_td($proj);
->>>>>>> 1.24.2.25
       for ($i=1;$i<=7;$i++)
       {
-<<<<<<< class.hours.inc
         $weekdata[$row][] = time_format($times[$weekdates[$i]['date']]);
-=======
-        $output.=$g_layout->ret_td($times[$weekdates[$i]['date']], 'align="center"');
->>>>>>> 1.24.2.25
       }
-<<<<<<< class.hours.inc
       $weekdata[$row][] = time_format($projtotals[$proj]);      
       $row++;
-=======
-      $output.=$g_layout->ret_td(time_format($projtotals[$proj]), 'align="center"');
-      $output.=$g_layout->tr_bottom();
->>>>>>> 1.24.2.25
     }
-<<<<<<< class.hours.inc
     
     $weekdata[$row][] = text('total');
-=======
-
-    $output.=$g_layout->tr_top();
-
-    $output.=$g_layout->ret_td_datatitle(text('total'));
->>>>>>> 1.24.2.25
 
     for ($i=1;$i<=7;$i++)
     {
@@ -605,25 +542,15 @@ class hours extends atkNode
       {
         $color = "#000000";
       }
-<<<<<<< class.hours.inc
       $weekdata[$row][] = '<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>';
-=======
-      $output.=$g_layout->ret_td_datatitle('<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>','align="center"');
->>>>>>> 1.24.2.25
     }
-<<<<<<< class.hours.inc
     $weekdata[$row][] = time_format($total);
         
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
-    
+    $ui = &atknew("atk.ui.atkui");
     return $ui->renderBox(array("title"=>text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime),
                                     "content"=>$output));
-=======
-    $output.=$g_layout->ret_td_datatitle(time_format($total), 'align="center"');
 
-    $output.=$g_layout->tr_bottom();
-    $output.=$g_layout->data_bottom();
-    return $output;
   }
   
   function weekviewHeader($weekdates, $viewtime)
@@ -662,7 +589,6 @@ class hours extends atkNode
 
     $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.text("week").' '.strftime('%V, %Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
     return $output;
->>>>>>> 1.24.2.25
   }
 
   function postAdd($rec)
@@ -672,13 +598,10 @@ class hours extends atkNode
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
-<<<<<<< class.hours.inc
-    return true;
-=======
-    
+
     // update overtime balance
     $this->calculateNewBalance($rec, "add");
->>>>>>> 1.24.2.25
+    return true;
   }
 
   function postUpdate($rec)
@@ -688,12 +611,10 @@ class hours extends atkNode
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
-<<<<<<< class.hours.inc
-    return true;
-=======
     
     // update overtime balance
     $this->calculateNewBalance($rec, "edit");
+    return true;
   }
   
   function postDel($rec)
@@ -749,7 +670,6 @@ class hours extends atkNode
     }
     else $manualdate = $yesterday;
     if ($manualdate < $day) $balancenode->deleteBalance($rec["userid"]["id"], $day);
->>>>>>> 1.24.2.25
   }
 
   // Check if this week may be booked..
@@ -1071,13 +991,10 @@ class hours extends atkNode
   
   function addDb(&$record, $exectrigger=true)
   {
-<<<<<<< class.hours.inc
     global $g_user;
     
     $res = true;
     
-=======
->>>>>>> 1.24.2.25
     if ($record["activitydate"]["multi"]==1)
     {      
       // We're registering multiple days at once. 
