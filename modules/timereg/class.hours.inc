@@ -167,7 +167,7 @@ class hours extends atkNode
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
     if ($this->m_user == "") $this->m_user = $g_user["id"];
    
-    $flags=NF_NO_VIEW|NF_TRACK_CHANGES;
+    $flags=NF_NO_VIEW|NF_TRACK_CHANGES|NF_NO_IMPORT;
 
     $this->atkNode("hours",$flags|NF_MRA|NF_NO_ADD); // node() constructor is *not* called automatically!
 
