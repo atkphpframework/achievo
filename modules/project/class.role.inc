@@ -20,7 +20,7 @@ class role extends atkNode
     $this->atkNode("role");
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
-    $this->add(new atkAttribute("name"));
+    $this->add(new atkAttribute("name",AF_OBLIGATORY));
 
     $this->setTable("role");
     $this->setOrder("name");
