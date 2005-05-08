@@ -48,7 +48,7 @@ class projectstats extends atkNode
     $this->setSecurityAlias("project.project");
   }
 
-  function action_stats()
+  function action_stats(&$handler)
   {
     global $g_layout, $g_db;
 

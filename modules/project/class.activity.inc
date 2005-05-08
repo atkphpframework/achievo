@@ -24,7 +24,7 @@ class activity extends atkNode
     return "[name]";
   }
 
-  function action_stats()
+  function action_stats(&$handler)
   {
     include_once moduleDir("project")."activitystats.inc";
   }

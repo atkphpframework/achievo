@@ -29,12 +29,12 @@ class project_personemployee extends atkNode
     $this->setTable("project_person", "project_person");
   }
   
-  function action_delete()
+  function action_delete(&$handler)
   {
     // When deleting, the above filter won't work. But that doesn't matter, we
     // don't need it anyway.
     $this->m_flags |= NF_NO_FILTER;
-    return parent::action_delete();
+    return $handler->action_delete();
   }
 
 }

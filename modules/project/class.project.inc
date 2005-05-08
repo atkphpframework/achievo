@@ -158,7 +158,7 @@
                    "status"=>"active");
     }   
 
-    function action_planning()
+    function action_planning(&$handler)
     {
       //include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
       global $g_layout;            
@@ -181,12 +181,12 @@
       $g_layout->ui_bottom();
     }
 
-    function action_billsetup()
+    function action_billsetup(&$handler)
     {
       include_once moduleDir("finance").'billsetup.inc';
     }
 
-    function action_billing()
+    function action_billing(&$handler)
     {
       include_once moduleDir("finance").'projectbilling.inc';
     }
@@ -490,7 +490,7 @@
       return $view;
     }
   
-    function action_admin()
+    function action_admin(&$handler)
     {
       $view = $this->getView();
       if ($view=="active")
@@ -501,7 +501,7 @@
       {
         $this->addFilter("project.status<>'active'");
       }
-      return parent::action_admin();
+      return $handler->action_admin();
     }
   
     function adminFooter()

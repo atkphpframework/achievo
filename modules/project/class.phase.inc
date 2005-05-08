@@ -92,7 +92,7 @@
       $g_db->query($query);
     }  
   
-    function action_select()
+    function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
       $this->addFilter("status='active'");
@@ -102,7 +102,7 @@
       $this->m_attribList["status"]->m_flags|=AF_HIDE;
   
       // call parent method.
-      return parent::action_select();
+      return $handler->action_select();
     }
     
     function phaseplanning_add_edit($record, $mode)
@@ -175,16 +175,18 @@
 
   
     function rowColor($record)
-    {      
-      if($record["spend_hours"]>($record["current_planning"]/60)) 
-      {
-        return COLOR_ERROR;
+    { 
+      if($record["current_planning"]["hours"]>0)  
+      {   
+        if($record["spend_hours"]>($record["current_planning"]["hours"])) 
+        {
+          return COLOR_ERROR;
+        }
+        elseif($record["spend_hours"]>=($record["current_planning"]["hours"])*0.9)
+        {
+          return COLOR_WARNING;
+        }
       }
-      elseif($record["spend_hours"]>=($record["current_planning"]/60)*0.9)
-      {
-        return COLOR_WARNING;
-      }
-       
     }
   }
 
