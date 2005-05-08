@@ -303,7 +303,7 @@ class hours extends atkNode
 
   // If there is a $config_hours_confirm_save then Achievo will display it
   // in a confirm box on the first timeregistration for the project
-  function action_save()
+  function action_save(&$handler)
   {
     if (atkconfig("hours_confirm_save") && ($this->_isThisTheFirstTimeRegForThisProject() || !empty($this->m_postvars['confirm'])))
     {
@@ -312,7 +312,7 @@ class hours extends atkNode
       {
         $this->m_postvars = $g_sessionManager->getValue("postvars");
         $this->m_postvars = $this->m_postvars["postvars"];
-        return parent::action_save();
+        return $handler->action_save();
       }
       elseif (empty($this->m_postvars['cancel'])) // nothing clicked yet?
       {
@@ -327,7 +327,7 @@ class hours extends atkNode
         $this->redirect(); // go back to where we came from
       }
     }
-    else return parent::action_save(); // normal behaviour
+    else return $handler->action_save(); // normal behaviour
   }
 
   function confirmSaveText()
@@ -361,7 +361,7 @@ class hours extends atkNode
     {
       if ($this->m_lock=="") $res[] = $handler->invoke("addPage");
       $this->addFilter("activitydate",$this->m_viewdate);
-      $res[] = $handler->adminPage();
+      $res[] = $handler->invoke("adminPage");
     }
     else
     {
@@ -493,10 +493,11 @@ class hours extends atkNode
       $total += $time;
     }
 
-    $weekviewheader = $this->weekviewHeader($weekdates, $viewtime);
+    //$weekviewheader = $this->weekviewHeader($weekdates, $viewtime);
 
     $output.= $prevnextlinks;
-    
+    $output.=   $this->weekviewHeader($weekdates, $viewtime);
+
     $weekdata = array();
     
     $table = &atknew("atk.utils.atktablerenderer");
@@ -569,7 +570,7 @@ class hours extends atkNode
       $output.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],text('nextweek'));
     }
     $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.date("Y-m-d"), text('thisweek'));
-    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=0&viewdate='.date("Y-m-d"), text('dayoverview'));
+    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=0&viewdate='.date("Y-m-d"), text('dayview'));
 
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
@@ -587,7 +588,7 @@ class hours extends atkNode
     $output.='&nbsp;<input type="submit" value="'.text("goto").'">';
     $output.='</td></tr></table></form>';
 
-    $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.text("week").' '.strftime('%V, %Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
+    $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.text("week").' '.adodb_date('W, Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
     return $output;
   }
 
@@ -724,7 +725,7 @@ class hours extends atkNode
     return ($s_locks[$userid][$week]=="none"?"":$s_locks[$userid][$week]);
   }
 
-  function action_lock()
+  function action_lock(&$handler)
   {
     if (atkconfig("lock_week_approval_required"))
       $this->lockWeek();    
@@ -746,7 +747,7 @@ class hours extends atkNode
     $this->redirect();
   }
 
-  function action_unlock()
+  function action_unlock(&$handler)
   {
     global $g_db;
 
