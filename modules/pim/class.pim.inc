@@ -7,7 +7,7 @@
       $this->atkNode("pim",NF_NO_SECURITY);
     }
 
-    function action_pim()
+    function action_pim(&$handler)
     {
       global $g_user;
 
@@ -42,7 +42,7 @@
 
     }
     
-    function action_adminpim()
+    function action_adminpim(&$handler)
     {
       $ui = &$this->getUi();
       if (is_object($ui))
@@ -68,7 +68,12 @@
                    <br>
                    <br><b>Upgrades and module installations</b>
                    <br>If you need to upgrade or if you installed a new module, use the
-                   \'setup\' link in the top frame to update the database.</div><br><br>';      
+                   \'setup\' link in the top frame to update the database.
+                   <br><br><b>Donations</b>
+                 <br>If you like Achievo, consider becoming a sponsor for the
+                 project. Contributions keep the Achievo project alive. 
+                 <br>Click the button below for more information.
+                 <br><br><a href="http://www.achievo.org/support/donate" target="_new"><img border="0" src="modules/pim/paypal_donate.gif" alt="donate"></a></div><br><br>';      
          $page->addContent($ui->renderBox(array("title"=>text("title_pim_adminpim"),
                                                  "content"=>$content)));
       }
