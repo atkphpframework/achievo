@@ -213,7 +213,7 @@
       return $employee_code;
     }
 
-    function adminPage()
+    function adminPage(&$handler)
     {
       global $g_layout;
 
