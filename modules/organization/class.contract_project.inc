@@ -31,7 +31,7 @@
     /**
      * Remove a project from a contract. 
      */
-    function action_remove()
+    function action_remove(&$handler)
     {
       global $g_db;
       if ($this->m_postvars["project_id"]!="")

@@ -27,7 +27,7 @@
       $this->atkNode("setup");
     }
     
-    function action_intro()
+    function action_intro(&$handler)
     {
       $this->setupScreen("Introduction", 
                           "I am the Achievo setup script. I can do several things for you:
@@ -46,14 +46,14 @@
                           "dbcheck");
     }
     
-    function action_dbcheck()
+    function action_dbcheck(&$handler)
     {            
       $res = $this->getDbStatus();
       
       if ($res==DB_SUCCESS)
       {
         // Database seems to be ok. Now we go check what version(s) we are running.
-        return $this->action_versioncheck();
+        return $this->action_versioncheck($handler);
       }
       else
       {
@@ -216,7 +216,7 @@
     /**
      * Check what version of the Achievo database we are using.
      */
-    function action_versioncheck()
+    function action_versioncheck(&$handler)
     {         
       // Check if we have a connection first.
       $res = $this->getDbStatus();
@@ -324,7 +324,7 @@
       }
     }
     
-    function action_installdb()
+    function action_installdb(&$handler)
     {
       global $g_modules, $g_layout, $g_modifiers;
       
@@ -857,7 +857,7 @@
       $g_db->query("DROP TABLE $table");
     }
     
-    function action_legacyupgrade()
+    function action_legacyupgrade(&$handler)
     {          
       global $g_db; 
       
@@ -965,7 +965,7 @@
       return $output;
     }
     
-    function action_upgradedb()
+    function action_upgradedb(&$handler)
     {
       global $g_layout;
       

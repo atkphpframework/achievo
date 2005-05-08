@@ -71,7 +71,7 @@
       $this->atkNode("hoursurvey");
     }
 
-    function action_report()
+    function action_report(&$handler)
     {
       global $g_layout, $g_user, $g_sessionManager;
 

@@ -13,7 +13,7 @@
       // search result)
     }
     
-    function action_search()
+    function action_search(&$handler)
     {
       global $g_layout, $g_sessionManager;
 

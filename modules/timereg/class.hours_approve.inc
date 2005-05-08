@@ -27,7 +27,7 @@ class hours_approve extends hours
     }
   }
   
-  function action_admin()
+  function action_admin(&$handler)
   {
     global $viewdate, $g_layout, $_POST, $ATK_VARS;
     
@@ -163,12 +163,12 @@ class hours_approve extends hours
     return $output;
   }
   
-  function action_approve()
+  function action_approve(&$handler)
   {
     $this->updateHoursLockApproval("1");
   }
   
-  function action_disapprove()
+  function action_disapprove(&$handler)
   {
     $this->updateHoursLockApproval("0");
   }
@@ -192,7 +192,7 @@ class hours_approve extends hours
     $this->redirect();
   }
   
-  function action_convert_old()
+  function action_convert_old(&$handler)
   {
     global $g_db;
     $lockedhoursbyweek = array();

@@ -101,7 +101,7 @@ class organization extends atkNode
     return text("none");
   }
   
-   function action_vcard()
+   function action_vcard(&$handler)
   {
     return $this->createVCard($this->m_postvars["id"]);
   }

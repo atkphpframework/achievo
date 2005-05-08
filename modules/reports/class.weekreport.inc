@@ -105,7 +105,7 @@ class weekreport extends atkNode
     return $node->getOvertimeLink($rec);
   }
 
-  function action_report()
+  function action_report(&$handler)
 	{
     global $g_layout, $g_securityManager, $g_user, $g_db, $g_sessionManager;
     $atkorderby = $g_sessionManager->pageVar("atkorderby");

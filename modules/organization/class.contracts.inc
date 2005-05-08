@@ -51,7 +51,7 @@ class contracts extends atkNode
       return $res."<br>";
     }
 
-   function action_admin()
+   function action_admin(&$handler)
     {
       global $g_sessionManager;
       $this->m_archive = $g_sessionManager->pageVar("archive");
@@ -65,7 +65,7 @@ class contracts extends atkNode
         $this->addFilter("contract.status='active'");
       }
 
-      return parent::action_admin();
+      return $handler->action_admin();
     }
 
 

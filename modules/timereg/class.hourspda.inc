@@ -168,7 +168,7 @@ class hoursPDA extends hours
   }
 
   // override the admin action, because we have the weekview/dayview switch..
-  function action_admin()
+  function action_admin(&$handler)
   {
     global $atkorderby;
     $this->setLock();
@@ -191,7 +191,7 @@ class hoursPDA extends hours
 
       $viewnode->setOrder($atkorderby);
       $viewnode->m_postvars = $this->m_postvars;
-      $viewnode->adminPage();
+      $viewnode->adminPage($handler);
     }
     else
     {
