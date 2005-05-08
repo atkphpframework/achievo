@@ -64,7 +64,7 @@
       $this->setSecurityAlias("employee.employee");
     }
     
-    function action_stats()
+    function action_stats(&$handler)
     {
       global $g_layout;
       

@@ -144,7 +144,7 @@ class employee extends person
     if($rec["id"]==$user["id"]) unset($actions["delete"]);
   }
 
-  function action_deactivate()
+  function action_deactivate(&$handler)
   {
     global $g_db;
     if ($this->m_postvars["atkselector"]!="")
