@@ -6,10 +6,13 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.2.0
 ------------------------
-* Upgraded to ATK5 backend. [Ivo,Sandy]
 + Added installation support for PostgreSQL. [Peter]
-+ Now possible to make the 'contact' field obligatory by changing a var in config.inc.php [Harrie]
-* Improved themability [Boy]
++ Now possible to make the 'contact' field obligatory by changing 
+  a var in config.inc.php. [Harrie]
+* Upgraded to ATK5 backend. [Ivo,Sandy]
+* Improved themability. [Boy]
+* Fixed small bug in displaying the weeknumber on windows in the timereg 
+  weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
 
 Changes in Achievo 1.1.1
