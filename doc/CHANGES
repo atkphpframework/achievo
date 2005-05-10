@@ -4,8 +4,8 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
-Changes in Achievo 1.2.0
-------------------------
+Changes in Achievo 1.2RC1
+---------------------------
 + Added installation support for PostgreSQL. [Peter]
 + Now possible to make the 'contact' field obligatory by changing 
   a var in config.inc.php. [Harrie]
@@ -14,9 +14,6 @@ Changes in Achievo 1.2.0
 * Fixed small bug in displaying the weeknumber on windows in the timereg 
   weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
-
-Changes in Achievo 1.1.1
-------------------------
 + Made chart height/width configurable. [Harrie]
 + Added ability to assign department to employee. [Harrie]
 + Hoursurvey is now able to search on department and functionlevel. [Harrie]
