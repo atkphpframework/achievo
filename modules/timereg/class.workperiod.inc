@@ -58,6 +58,7 @@
     function postAdd($rec)
     {
       if ($rec["defaultrate"] == "1") $this->clearDuplicateDefaults($rec["id"]);
+      return true;
     }
   }
 
