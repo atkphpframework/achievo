@@ -311,7 +311,7 @@
                                        <br>
                                        <br>Please verify if the database configuration you specified in config.inc.php is correct, and try again.
                                        <br>
-                                       <br>If you are sure the configuration is correct, please send a message to the Achievo mailinglist so we can 
+                                       <br>If you are sure the configuration is correct, please post a message in the <a href=\"http://www.achievo.org/forum\">Achievo forums</a>  so we can 
                                        try to determine why the setup script does not recognize your Achievo database.",
                                       "dbcheck");
           }
@@ -635,8 +635,8 @@
           $this->report("I could not read metadata from the database, so I 
                          cannot continue the installation. Please verify your 
                          database setup and try again. 
-                         <br>If you cannot find the problem, please send a 
-                         message to the Achievo mailinglist.", "error");
+                         <br>If you cannot find the problem, please post a 
+                         message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
           return false;
         }
         else
@@ -720,7 +720,7 @@
           atkdebug("setup::installNode: ddl class not found");
           $this->report("Your database is not supported by the automatic 
                         installscript. If you think it should be, please 
-                        send a message to the Achievo mailinglist.", "error");
+                        post a message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
           return false;
         }
       }

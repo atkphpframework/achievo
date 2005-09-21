@@ -20,9 +20,10 @@
   // the database to use and the user/password.
   //
   $config_databasehost = "localhost";
-  $config_databasename = "achievo_1_1";
+  $config_databasename = "achievo_local";
   $config_databaseuser = "demo";
   $config_databasepassword = "demo";
+
 
   // -------------------------------------------
   //           LAYOUT CONFIGURATION
@@ -42,17 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile=$config_lang.".lng";
-  $config_lang = "nl";
-  
-  // Menu configuration. You can have a menu at "top", "left", "right" or 
-  // "bottom". If you use a horizontal menu (top or bottom, you may want
-  // to change the menu_delimiter to " " (menu_delimiter is what atk
-  // puts between menu items).
-  $config_menu_pos = "left"; 
-  $config_menu_delimiter = "<br>";
-  $config_menu_layout = "plain";
-  $config_menu_align = "center";
+  $config_languagefile="nederlands.lng";
 
 
   // -------------------------------------------
@@ -86,7 +77,7 @@
   // set up the entire system and enable it only when you need it.
   // (disable it by putting // in front of it)
   //
-  $config_administratorpassword = "demo";
+  $config_administratorpassword = "topsecret";
 
   // If you set $config_auth_dropdown to true, the login screen will contain
   // a list of available usernames. If you set it to false, there will be
@@ -172,7 +163,8 @@
   // -------------------------------------------
   // This variable indicated wheter contacts in the project module are
   // obligatory
-  $config_project_contact_obligatory = false;
+  $config_project_contact_obligatory = true;
+  
   
   // -------------------------------------------
   //            EXTERNAL MODULES
@@ -183,7 +175,24 @@
   // it can be found as the second parameter.
   //
   // module("somemodule","../achievo_modules/somemodule/");
-  
+  module("docserver","../achievo_modules/docserver/"); // semichecked
+  module("autoduty", "../achievo_modules/autoduty/"); // checked
+  module("secrets", "../achievo_modules/secrets/"); // checked
+  module("athos", "../achievo_modules/athos/"); //checked
+  module("quotation", "../achievo_modules/quotation/"); // checked
+  module("storing", "../achievo_modules/storing/"); // checked: niet buggier dan ie al was ;-)
+  module("holidayreport", "../achievo_modules/holidayreport/");
+  module("ibscustomizations", "../achievo_modules/ibscustomizations/"); // checked
+  module("domein_verhuizing", "../achievo_modules/domein_verhuizing/");
+  module("projectsoftware", "../achievo_modules/projectsoftware/");
+  module("xp", "../achievo_modules/xp/");
+  module("ibscontract", "../achievo_modules/ibscontract/");
+
+  $config_mailreport = "ivo@ibuildings.nl"; // mail errors naar ivo
+
+  // cookie onthouden
+  $config_authentication_cookie = true;
+
   // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------

@@ -16,8 +16,8 @@
         correctly. 
         Please make sure your PHP-installation works, and come back
         when you got it running. You might want to consult your system 
-        administrator. If you can't get it to work, subscribe to the Achievo
-        mailinglist and we will try to help you out.
+        administrator. If you can't get it to work, join the Achievo
+        forums at http://www.achievo.org/forum and we will try to help you out.
     
         You can ignore the rest of what you see below: this is programmers' 
         code, that you shouldn't be seeing in the first place.
@@ -116,7 +116,7 @@
     echo '    </ul>';
     if ($fixablebyuser)
     {
-      echo '  If you can\'t get Achievo to work after following the above instructions, subscribe to the Achievo mailinglist en we might be able to help you.';
+      echo '  If you can\'t get Achievo to work after following the above instructions, please visit the <a href="http://www.achievo.org/forum" target="_new">Achievo forums</a> and we might be able to help you.';
     }
     echo '  </body>
           </html>';    

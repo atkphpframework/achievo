@@ -2,7 +2,8 @@ Achievo Frequently Asked Questions
 ==================================
 
 If you have a question about Achievo, try to find the answer below.
-If you can't find it, mail your question to the Achievo mailinglist.
+If you can't find it, post your question on the Achievo forums at
+http://www.achievo.org/forum.
 
 Note: In the answers below, we sometimes refer to menu items or fields in 
 Achievo. We use the english terms, so if you use a different language, 
@@ -172,12 +173,10 @@ Note 2: The FAQ is targeted at the latest stable release of Achievo.
         
  5.4. I have a problem which is not covered in this FAQ, what should I do?
   
-        a) Have a look at the mailinglist archive at 
-           http://www.achievo.org/lists. Your problem may have been discussed
-           there.
-        b) Subscribe to the mailinglist by sending an empty message to
-           achievo-subscribe@achievo.org. Send a mail to the list, with the 
-           following information:
+        a) Have a look at the Achievo forums at http://www.achievo.org/forum
+           Your problem may have been discussed there.
+        b) If you can't find a solution to your problem on the forum, please
+           post your question, and include the  following information:
            - A good description of the problem, if possible with steps to 
              reproduce it.
            - Which version of Achievo, PHP, MySQL and Apache you are using.
