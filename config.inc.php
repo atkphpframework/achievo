@@ -14,15 +14,15 @@
   // MySQL is currently the only officially supported database.
   // Experimental: If you want to use PostgreSQL, change this value to 
   // "pgsql". For Oracle, use "oci8".
-  $config_database = "mysql";
+  $config_db["default"]["driver"] = "mysql";
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
-  $config_databasehost = "localhost";
-  $config_databasename = "achievo_local";
-  $config_databaseuser = "demo";
-  $config_databasepassword = "demo";
+  $config_db["default"]["host"] = "localhost";
+  $config_db["default"]["db"] = "achievo_2_0";
+  $config_db["default"]["user"] = "demo";
+  $config_db["default"]["password"] = "demo";
 
 
   // -------------------------------------------
@@ -43,7 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_languagefile="nederlands.lng";
+  $config_language="en";
 
 
   // -------------------------------------------
