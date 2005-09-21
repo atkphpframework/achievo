@@ -223,20 +223,16 @@
       
       if ($detailparams["userid"]=="") $detailparams["userid"]="all"; // workaround, the hoursurvey will select current user if no user is passed.
       
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
+      $table = &atknew("atk.utils.atktablerenderer"); 
       
-      $res = $layout->data_top();
-      $res.= $layout->tr_top();
-      $res.= $layout->ret_td_datatitle($itemheader);
-      $res.= $layout->ret_td_datatitle(text("time"));
-      $res.= $layout->ret_td_datatitle(text("percentage"));
-      if ($mayviewdetail) $res.= $layout->ret_td_datatitle(text("details"));
-      $res.= $layout->tr_bottom();
+      $cells = array();
+      
+      $cells[0] = array($itemheader, text("time"), text("percentage"));
+      if ($mayviewdetail) $cells[0][] = text("details");      
       
       for($i=0, $_i=count($dataset); $i<$_i; $i++)
       {
-        $res.= $layout->tr_top($i%2!=0);
+        $row = array();        
         
         $descriptor = array();
         // datasetdescriptors is an array contain information on which fields in $dataset are
@@ -247,29 +243,27 @@
         }
         $value = $dataset[$i]["total"];
                 
-        $res.= $layout->ret_td(implode(" ", $descriptor));
-        $res.= $layout->ret_td(time_format($value, true), 'align="right"');
+        $row[] = implode(" ", $descriptor);
+        $row[] = time_format($value, true);
         $percentage = ($total<=0?0:(($value/$total)*100));
-        $res.= $layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
+        $row[] = sprintf("%02.02f", $percentage)."%";
         if ($mayviewdetail)
         {          
           $detailparams[$idparam] = $dataset[$i]["id"];
           $detailurl = href(dispatch_url("reports.hoursurvey", "report", $detailparams), text("view"), SESSION_NESTED);
-          $res.= $layout->ret_td($detailurl);
+          $row[] = $detailurl;
         }
-        $res.= $layout->tr_bottom();
+        $cells[] = $row;
       }
       
-      $res.= $layout->tr_top();
-      $res.= $layout->ret_td_datatitle(text("total"));
-      $res.= $layout->ret_td_datatitle(time_format($total, true), 'align="right"');
-      $res.= $layout->ret_td_datatitle('100.00%', 'align="right"');
-      if ($mayviewdetail) $res.= $layout->ret_td_datatitle("");
-      $res.= $layout->tr_bottom();
+      $footer = array(text("total"),
+                      time_format($total, true),
+                      '100.00%');
+      if ($mayviewdetail) $footer[] = "";
       
-      $res.= $layout->data_bottom();
-      
-      return $res;
+      $cells[] = $footer;
+                  
+      return $table->render($cells, TBL_DATA|TBL_FOOTER, "recordlist");
     }
     
     
