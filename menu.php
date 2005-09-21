@@ -40,8 +40,6 @@
 
 
   /* general menu stuff */
-  include_once($config_atkroot."atk/menu/general.inc");  
-
   /* load menu layout */
   atkimport("atk.menu.atkmenu");
   $menu = &atkMenu::getMenu();
