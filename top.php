@@ -43,7 +43,7 @@
   
   //Backwards compatible $content, that is what will render when the box.tpl is used instead of a top.tpl
   $loggedin = atktext("logged_in_as").": <b>".$g_user["name"]."</b>";  
-  $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).' </a>&nbsp;';
+  $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(text("logout", "", "atk")).'</a> &nbsp;';
 
 
   if ($g_user["name"]!="administrator")
