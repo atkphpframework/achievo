@@ -10,7 +10,7 @@
   useattrib("project.projecttemplateattribute");
   useattrib("atknumberattribute");
   useattrib("graph.datagraphattribute");
-  useattrib("utils.fuzzysearchattribute");
+  useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
   
   define("PRJ_TIMEREG_ALL_USERS", 0);
@@ -20,7 +20,7 @@
   {
     function project($name="project", $flags=0)
     {
-      global $ATK_VARS, $g_sessionManager, $g_db;
+      global $ATK_VARS, $g_sessionManager;
 
       $this->atkNode($name,$flags|NF_EDITAFTERADD|NF_EXT_SORT);
 
@@ -94,14 +94,14 @@
     
     function graph_topprojects($params)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $start = $params["startdate"];
       $end   = $params["enddate"];
       $max   = $params["max"];      
       $from  = $params["from"];
 
-      $query = &atkQuery::create();
+      $query = &$db->createQuery();
 
       $query->addTable("hours");
       $query->addJoin("phase", "", "phase.id = hours.phaseid", false);
@@ -116,7 +116,7 @@
       }
       $query->addOrderBy("totaltime DESC");
       $query->addGroupBy("project.name");
-      $data = $g_db->getrows($query->buildSelect());
+      $data = $db->getrows($query->buildSelect());
 
       // convert records to graph-compatible array.
       $dataset = array();
@@ -161,7 +161,9 @@
     function action_planning(&$handler)
     {
       //include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
-      global $g_layout;            
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
+
       $prjid = $this->m_postvars["selectedprojectid"];
       $imgurl = moduleDir("project")."ganttchart.php?projectid=".$prjid;
       
@@ -176,9 +178,9 @@
       $legend = text("legend").": [".text("booked").", ".text("hoursleft")."]<br>";
       $legend.= text("ganttexplanation");
       
-      $g_layout->ui_top(text("title_projectplanning"));
-      $g_layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
-      $g_layout->ui_bottom();
+      $layout->ui_top(text("title_projectplanning"));
+      $layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
+      $layout->ui_bottom();
     }
 
     function action_billsetup(&$handler)
@@ -209,8 +211,8 @@
     
     function graph_phasetime($params, $raw=false)
     {          
-      global $g_db;
-      $data = $g_db->getrows("SELECT 
+      $db = &atkGetDb();
+      $data = $db->getrows("SELECT 
                                 phase.id, phase.name, SUM(time) as total
                               FROM 
                                 hours, phase
@@ -238,8 +240,8 @@
     
     function graph_emptime($params, $raw=false)
     {      
-      global $g_db;
-      $data = $g_db->getrows("SELECT 
+      $db = &atkGetDb();
+      $data = $db->getrows("SELECT 
                                 person.id, person.firstname, person.lastname, SUM(time) as total
                               FROM 
                                 hours, phase, person
@@ -271,8 +273,8 @@
     
     function graph_activitytime($params, $raw=false)
     {            
-      global $g_db;
-      $data = $g_db->getrows("SELECT 
+      $db = &atkGetDb();
+      $data = $db->getrows("SELECT 
                                 activity.id, activity.name, SUM(time) as total
                               FROM 
                                 hours, phase, activity
@@ -302,11 +304,11 @@
     
     function graph_dowtime($params, $raw=false)
     {            
-      global $g_db;
+      $db = &atkGetDb();
       
       $days = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
       
-      $data = $g_db->getrows("SELECT 
+      $data = $db->getrows("SELECT 
                                 date_format(hours.activitydate, '%w') as dow, SUM(time) as total
                               FROM 
                                 hours, phase, activity
@@ -343,12 +345,12 @@
     
     function graph_timeline($params)
     {
-      global $g_db;
+      $db = &atkGetDb();
    
       // First find out if a timeline would make more sense per week, per 
       // month or per day. This all depends on the amount of time between the 
       // first and last time entry.
-      $range = $g_db->getrows("SELECT 
+      $range = $db->getrows("SELECT 
                                  min(activitydate) as minimum, 
                                  max(activitydate) as maximum
                                FROM 
@@ -406,7 +408,7 @@
                   ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").      
               " GROUP BY
                   ".($groupbystmt==""?"activitydate":$groupbystmt);                
-      $data = $g_db->getrows($query);
+      $data = $db->getrows($query);
             
       // convert records to graph-compatible array.
       $dataset = array();       
@@ -466,13 +468,13 @@
     
     function _addMemberRecord($project_id, $person_id, $role_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       // attendee may already exist.
-      $recs = $g_db->getrows("SELECT count(*) AS cnt FROM project_person WHERE projectid = $project_id AND personid = $person_id");
+      $recs = $db->getrows("SELECT count(*) AS cnt FROM project_person WHERE projectid = $project_id AND personid = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
       {
-        $g_db->query("INSERT INTO project_person (projectid, personid, role) VALUES ($project_id, $person_id, $role_id)");
+        $db->query("INSERT INTO project_person (projectid, personid, role) VALUES ($project_id, $person_id, $role_id)");
       }
     }
     

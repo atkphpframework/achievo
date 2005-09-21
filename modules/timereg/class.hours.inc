@@ -430,11 +430,11 @@ class hours extends atkNode
   }
   
   function getUserSelect()
-  {
-    global $g_db;
+  {    
     if ($this->allowed("any_user"))
     {
-      $users = $g_db->getRows("SELECT id, lastname, firstname FROM person WHERE role = 'employee' AND status = 'active'");
+      $db = &atkGetDb();
+      $users = $db->getRows("SELECT id, lastname, firstname FROM person WHERE role = 'employee' AND status = 'active'");
       $res = '<select name="viewuser">';
       for ($i=0;$i<count($users);$i++)
       {
@@ -679,8 +679,7 @@ class hours extends atkNode
   //          "all"       - locked for everybody (can only be unlocked by administrator)
   function getLockType($userid, $date)
   {
-    static $s_locks = array();
-    global $g_db;
+    static $s_locks = array();    
     
     $week = weekstamp(adodb_mktime(0,0,0,substr($date,5,2),
                                      substr($date,8,2),
@@ -696,7 +695,8 @@ class hours extends atkNode
                   (userid = '$userid' OR userid IS NULL OR userid='')
                 AND
                   week = '$week'";
-      $res = $g_db->getrows($query);
+      $db = &atkGetDb();
+      $res = $db->getrows($query);
       
       if (count($res))
       {
@@ -749,7 +749,7 @@ class hours extends atkNode
 
   function action_unlock(&$handler)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $viewdate = $this->m_postvars["viewdate"];
     $userid = $this->m_postvars["userid"];
@@ -757,7 +757,7 @@ class hours extends atkNode
                                    substr($viewdate,8,2),
                                    substr($viewdate,0,4)));
     $query = "DELETE FROM hours_lock WHERE week = '$week' AND userid = '$userid'";
-    $g_db->query($query);
+    $db->query($query);
     $this->redirect();
   }
 
@@ -769,7 +769,7 @@ class hours extends atkNode
    */
   function weekComplete($userid, $date)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $start = startOfWeek($date);
     $end = endOfWeek($date);
@@ -777,7 +777,7 @@ class hours extends atkNode
     // first get the total of contract hours
     $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
                 AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
-    $result = $g_db->getRows($sql);
+    $result = $db->getRows($sql);
     
     // get the total of time already registered this week
     $query = "SELECT sum(time) as totaal
@@ -786,7 +786,7 @@ class hours extends atkNode
               WHERE
                 hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'";
-    $res = $g_db->getrows($query);
+    $res = $db->getrows($query);
     if (count($res)==0 || count($result)==0)
     {
       // either no contract in this period, or no hours booked at all..
@@ -895,7 +895,7 @@ class hours extends atkNode
   
   function exceed_hrs_in_day($userid, $date, $new_minutes, $recordid="")
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $query = "SELECT sum(time) + $new_minutes minutes_in_day
               FROM hours 
@@ -907,7 +907,7 @@ class hours extends atkNode
     // must not be counted, but the new value (which was already added as
     // $new_minutes).
     if ($recordid!="") $query.= " AND id <> $recordid";
-    $res = $g_db->getrows($query);
+    $res = $db->getrows($query);
     if (count($res)==0)
     {
       // no records for $date

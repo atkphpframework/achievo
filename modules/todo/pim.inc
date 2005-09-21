@@ -2,7 +2,7 @@
 
   function pimTodos()
   {
-    global $g_user, $g_layout, $g_db;
+    global $g_user;
 
     $userid = $g_user["id"];
     $rl = &atknew("atk.recordlist.atkrecordlist");
@@ -36,11 +36,11 @@
     }
     $todo_assignedbyme.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add",text('add'),SESSION_NESTED);
 
-    $res.= $g_layout->ret_table_simple();
+    $res.= '<table border="0">';
     $res.= '<tr>';
-    $res.= $g_layout->ret_td($todo_assignedtome, 'valign="top"');
+    $res.= '<td valign="top">'.$todo_assignedtome.'</td>';
     $res.= '</tr><tr><td>&nbsp;</td></tr><tr>';
-    $res.= $g_layout->ret_td($todo_assignedbyme, 'valign="top"');
+    $res.= '<td valign="top">'.$todo_assignedbyme.'</td>';
     $res.= '</tr></table>';
     return $res;
   }

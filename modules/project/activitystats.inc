@@ -3,7 +3,7 @@
   include_once("achievotools.inc");
   useattrib("atkdateattribute");
 
-  global $g_layout, $g_db, $g_securityManager;
+  global $g_securityManager;
   $startdate = $_REQUEST["startdate"];
   $enddate = $_REQUEST["enddate"];
   $activityid = $_REQUEST["activityid"];  
@@ -11,13 +11,13 @@
 
   function get_activities($act_id, &$activityname)
   {
-    global $g_db;
+    $db = &atkGetDb();
     // Get the activities
     $sql = "SELECT id,name
             FROM activity
             ORDER BY name
            ";
-    $records = $g_db->getrows($sql);
+    $records = $db->getrows($sql);
     
     for($i=0;$i<count($records);$i++)
     {
@@ -62,17 +62,20 @@
       $enddate = date('Y-m-d');
     }
   }
+  
+  atkimport("atk.layout");
+  $layout = &layout::getInstance();
 
-  $g_layout->initGUI();
-  $g_layout->ui_top(text("title_hours_stats"));
+  $layout->initGUI();
+  $layout->ui_top(text("title_hours_stats"));
 
-  $g_layout->output('<form action="dispatch.php" method="get">');
-  $g_layout->output('<input type="hidden" name="atknodetype" value="project.activity">');
-  $g_layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
-  $g_layout->table_simple();
-  $g_layout->output('<tr>');
-  $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
-  $g_layout->output('</tr><tr>');
+  $layout->output('<form action="dispatch.php" method="get">');
+  $layout->output('<input type="hidden" name="atknodetype" value="project.activity">');
+  $layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
+  $layout->table_simple();
+  $layout->output('<tr>');
+  $layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
+  $layout->output('</tr><tr>');
 
     // we have to pass a 'dummy' record to the attributes to set their default value.
   $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
@@ -82,24 +85,24 @@
                                      "month"=>substr($enddate,5,2),
                                      "day"=>substr($enddate,8,2)));
 
-  $g_layout->td(text("activity").':</b> ');
+  $layout->td(text("activity").':</b> ');
 
-  $g_layout->td('<SELECT name="activityid">'.get_activities($activityid, $activityname).'</SELECT>');
+  $layout->td('<SELECT name="activityid">'.get_activities($activityid, $activityname).'</SELECT>');
 
-  $g_layout->output('</tr><tr>');
+  $layout->output('</tr><tr>');
 
-  $g_layout->td(text("timespan").': ');
+  $layout->td(text("timespan").': ');
 
   $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
   $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
 
-  $g_layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
+  $layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
                   text("until").
                   '&nbsp; '.$enddateatt->edit($dummyrec));
 
-  $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
+  $layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
 
-  $g_layout->ui_bottom();
+  $layout->ui_bottom();
 
   if ($activityid) // Show only stats if we have a valid activityid.
   {
@@ -119,7 +122,7 @@
                 AND phase.projectid = project.id
                 AND hours.activityid = $activityid";
   
-    $records = $g_db->getrows($query);
+    $records = $db->getrows($query);
   
     $hoursperemp = Array();
     $hoursperproj = Array();
@@ -133,68 +136,68 @@
       $total += $records[$i]["time"];
     }
   
-    $g_layout->ui_top(text("title_activitystats")." - ".$activityname);
+    $layout->ui_top(text("title_activitystats")." - ".$activityname);
   
-    $g_layout->output('<br><b>'.text("title_activitystats_peremployee").'</b><br><br>');
+    $layout->output('<br><b>'.text("title_activitystats_peremployee").'</b><br><br>');
   
-    $g_layout->output($g_layout->data_top());
+    $layout->output($layout->data_top());
   
-    $g_layout->output($g_layout->tr_top());
-    $g_layout->td_datatitle(text("name"));
-    $g_layout->td_datatitle(text("time"));
-    $g_layout->td_datatitle(text("percentage"));
-    $g_layout->output($g_layout->tr_bottom());
+    $layout->output($layout->tr_top());
+    $layout->td_datatitle(text("name"));
+    $layout->td_datatitle(text("time"));
+    $layout->td_datatitle(text("percentage"));
+    $layout->output($layout->tr_bottom());
   
     while (list($empname, $time) = each ($hoursperemp))
     {
-      $g_layout->output($g_layout->tr_top());
-      $g_layout->td($empname);
-      $g_layout->td(time_format($time));
+      $layout->output($layout->tr_top());
+      $layout->td($empname);
+      $layout->td(time_format($time));
       $percentage = round($time/$total*100);
       $imgwidth = max(1,($percentage*3));
   
-      $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
-      $g_layout->output($g_layout->tr_bottom());
+      $layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
+      $layout->output($layout->tr_bottom());
     }
   
-    $g_layout->output($g_layout->tr_top());
-    $g_layout->td_datatitle(text("total"));
-    $g_layout->td_datatitle(time_format($total));
-    $g_layout->td_datatitle('&nbsp;');
-    $g_layout->output($g_layout->tr_bottom());
+    $layout->output($layout->tr_top());
+    $layout->td_datatitle(text("total"));
+    $layout->td_datatitle(time_format($total));
+    $layout->td_datatitle('&nbsp;');
+    $layout->output($layout->tr_bottom());
   
-    $g_layout->output($g_layout->data_bottom());
+    $layout->output($layout->data_bottom());
   
-    $g_layout->output('<br><b>'.text("title_activitystats_perproject").'</b><br><br>');
+    $layout->output('<br><b>'.text("title_activitystats_perproject").'</b><br><br>');
   
-    $g_layout->output($g_layout->data_top());
+    $layout->output($layout->data_top());
   
-    $g_layout->output($g_layout->tr_top());
-    $g_layout->td_datatitle(text("name"));
-    $g_layout->td_datatitle(text("time"));
-    $g_layout->td_datatitle(text("percentage"));
-    $g_layout->output($g_layout->tr_bottom());
+    $layout->output($layout->tr_top());
+    $layout->td_datatitle(text("name"));
+    $layout->td_datatitle(text("time"));
+    $layout->td_datatitle(text("percentage"));
+    $layout->output($layout->tr_bottom());
   
     while (list($projname, $time) = each ($hoursperproj))
     {
-      $g_layout->output($g_layout->tr_top());
-      $g_layout->td($projname);
-      $g_layout->td(time_format($time));
+      $layout->output($layout->tr_top());
+      $layout->td($projname);
+      $layout->td(time_format($time));
       $percentage = round($time/$total*100);
       $imgwidth = max(1,($percentage*3));
-      $g_layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20">&nbsp; ('.$percentage.'%)');
-      $g_layout->output($g_layout->tr_bottom());
+      $layout->td('<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20">&nbsp; ('.$percentage.'%)');
+      $layout->output($layout->tr_bottom());
     }
   
-    $g_layout->output($g_layout->tr_top());
-    $g_layout->td_datatitle(text("total"));
-    $g_layout->td_datatitle(time_format($total));
-    $g_layout->td_datatitle('&nbsp;');
-    $g_layout->output($g_layout->tr_bottom());
+    $layout->output($layout->tr_top());
+    $layout->td_datatitle(text("total"));
+    $layout->td_datatitle(time_format($total));
+    $layout->td_datatitle('&nbsp;');
+    $layout->output($layout->tr_bottom());
   
-    $g_layout->output($g_layout->data_bottom());
-    $g_layout->output('<br><br><br>');
+    $layout->output($layout->data_bottom());
+    $layout->output('<br><br><br>');
   
-    $g_layout->ui_bottom();
+    $layout->ui_bottom();
   }
 ?>

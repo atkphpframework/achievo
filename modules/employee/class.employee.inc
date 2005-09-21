@@ -145,136 +145,136 @@ class employee extends person
   }
 
   function action_deactivate(&$handler)
-  {
-    global $g_db;
+  {    
     if ($this->m_postvars["atkselector"]!="")
     {
-      $g_db->query("UPDATE person SET status='nonactive' WHERE ".$this->m_postvars["atkselector"]);
+      $db = &atkGetDb();
+      $db->query("UPDATE person SET status='nonactive' WHERE ".$this->m_postvars["atkselector"]);
     }
     $this->redirect();
   }
 
   function graph_prjtime($params, $raw=false)
+  {
+    $db = &atkGetDb();
+    $data = $db->getrows("SELECT
+                              project.id, project.name, SUM(time) as total
+                            FROM
+                              hours, phase, project
+                            WHERE
+                              hours.phaseid = phase.id ".
+                              ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
+                              AND phase.projectid = project.id".
+                              ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                              ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                          " GROUP BY
+                              project.id
+                            ORDER BY
+                              project.name");
+
+    if ($raw)
     {
-      global $g_db;
-      $data = $g_db->getrows("SELECT
-                                project.id, project.name, SUM(time) as total
-                              FROM
-                                hours, phase, project
-                              WHERE
-                                hours.phaseid = phase.id ".
-                                ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
-                                AND phase.projectid = project.id".
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
-                            " GROUP BY
-                                project.id
-                              ORDER BY
-                                project.name");
-
-      if ($raw)
-      {
-        return $data;
-      }
-
-       // convert records to graph-compatible array.
-      $dataset = array();
-      for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {
-        $dataset[$data[$i]["name"]] = $data[$i]["total"];
-      }
-
-      return array("registeredtimeperproj"=>$dataset);
+      return $data;
     }
 
-    function graph_activitytime($params, $raw=false)
+     // convert records to graph-compatible array.
+    $dataset = array();
+    for ($i=0, $_i=count($data); $i<$_i; $i++)
     {
-      global $g_db;
-      $data = $g_db->getrows("SELECT
-                                activity.id, activity.name, SUM(time) as total
-                              FROM
-                                hours, activity
-                              WHERE
-                                hours.activityid = activity.id ".
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
-                            ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
-                              GROUP BY
-                                activity.name
-                              ORDER BY
-                                activity.name");
-      // In raw mode the data is sufficient.
-      if ($raw) return $data;
-
-      // convert records to graph-compatible array.
-      $dataset = array();
-
-      for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {
-        $dataset[$data[$i]["name"]] = $data[$i]["total"];
-      }
-
-      return array("registeredtimeperactivity"=>$dataset);
+      $dataset[$data[$i]["name"]] = $data[$i]["total"];
     }
+
+    return array("registeredtimeperproj"=>$dataset);
+  }
+
+  function graph_activitytime($params, $raw=false)
+  {
+    $db = &atkGetDb();
+    $data = $db->getrows("SELECT
+                              activity.id, activity.name, SUM(time) as total
+                            FROM
+                              hours, activity
+                            WHERE
+                              hours.activityid = activity.id ".
+                              ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                              ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                          ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
+                            GROUP BY
+                              activity.name
+                            ORDER BY
+                              activity.name");
+    // In raw mode the data is sufficient.
+    if ($raw) return $data;
+
+    // convert records to graph-compatible array.
+    $dataset = array();
+
+    for ($i=0, $_i=count($data); $i<$_i; $i++)
+    {
+      $dataset[$data[$i]["name"]] = $data[$i]["total"];
+    }
+
+    return array("registeredtimeperactivity"=>$dataset);
+  }
+  
+  function graph_dowtime($params, $raw=false)
+  {
+    $db = &atkGetDb();
+    $days = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
     
-    function graph_dowtime($params, $raw=false)
+    $data = $db->getrows("SELECT 
+                              date_format(hours.activitydate, '%w') as dow, SUM(time) as total
+                            FROM
+                              hours, activity
+                            WHERE
+                              hours.activityid = activity.id ".
+                              ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
+                              ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                              ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
+                            GROUP BY 
+                              date_format(hours.activitydate, '%w')
+                            ORDER BY 
+                              dow");
+                          
+    // Add weekday names.
+    for ($i=0, $_i=count($data); $i<$_i; $i++)                            
     {
-      global $g_db;
-      $days = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-      
-      $data = $g_db->getrows("SELECT 
-                                date_format(hours.activitydate, '%w') as dow, SUM(time) as total
-                              FROM
-                                hours, activity
-                              WHERE
-                                hours.activityid = activity.id ".
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
-                                ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
-                              GROUP BY 
-                                date_format(hours.activitydate, '%w')
-                              ORDER BY 
-                                dow");
-                            
-      // Add weekday names.
-      for ($i=0, $_i=count($data); $i<$_i; $i++)                            
-      {
-        $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
-      }
-                            
-      // In raw mode the data is sufficient.
-      if ($raw) return $data;
-
-      // convert records to graph-compatible array.
-      $dataset = array();
-
-      for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {
-        $dataset[$data[$i]["dow"]] = $data[$i]["total"];
-      }
-
-      return array("registeredtimeperweekday"=>$dataset);
+      $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
     }
+                          
+    // In raw mode the data is sufficient.
+    if ($raw) return $data;
+
+    // convert records to graph-compatible array.
+    $dataset = array();
+
+    for ($i=0, $_i=count($data); $i<$_i; $i++)
+    {
+      $dataset[$data[$i]["dow"]] = $data[$i]["total"];
+    }
+
+    return array("registeredtimeperweekday"=>$dataset);
+  }
+  
+  function rowColor($record)
+  {            
+    $contractnode = &getNode("employee.usercontracts");
+    $contract = $contractnode->getMostRecentContract($record["id"]);                
     
-    function rowColor($record)
-    {            
-      $contractnode = &getNode("employee.usercontracts");
-      $contract = $contractnode->getMostRecentContract($record["id"]);                
+    if ($record["status"]=="active")
+    {        
+      $enddate = dateutil::arr2str($contract["enddate"]);                      
       
-      if ($record["status"]=="active")
-      {        
-        $enddate = dateutil::arr2str($contract["enddate"]);                      
-        
-        if (!count($contract)||($enddate!=""&&$enddate<date("Ymd")))
-        {
-          return COLOR_ERROR;
-        }
-        else if ($enddate!=""&&dateutil::date_diff(date("Ymd"), $enddate)<14)
-        {
-          return COLOR_WARNING;
-        }
+      if (!count($contract)||($enddate!=""&&$enddate<date("Ymd")))
+      {
+        return COLOR_ERROR;
+      }
+      else if ($enddate!=""&&dateutil::date_diff(date("Ymd"), $enddate)<14)
+      {
+        return COLOR_WARNING;
       }
     }
+  }
         
 
 }

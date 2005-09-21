@@ -197,7 +197,7 @@ class atkProjectPhaseAttribute extends atkAttribute
         
   function getRecentPhases()   
   {
-    global $g_db, $g_securityManager, $ATK_VARS, $g_sessionManager;
+    global $g_securityManager, $ATK_VARS, $g_sessionManager;
     
     $user = getUser();
 
@@ -219,7 +219,8 @@ class atkProjectPhaseAttribute extends atkAttribute
     // 100 should be enough to get 5 unique recent projects.
     $query.= "ORDER BY hours.entrydate DESC";
     
-    $arr = $g_db->getrows($query,'0','100');
+    $db = &atkGetDb();
+    $arr = $db->getrows($query,'0','100');
     $j=0;
     $alreadyhad = Array();
     $newarr = Array();
@@ -239,12 +240,12 @@ class atkProjectPhaseAttribute extends atkAttribute
   
   function getPhase($phaseid)
   {
-    global $g_db;
+    $db = &atkGetDb();
     
     $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase ";
     $query.= "WHERE phase.projectid=project.id AND phase.id = $phaseid";            
     
-    $arr = $g_db->getrows($query);
+    $arr = $db->getrows($query);
     
     $phase = $arr[0];  
     
@@ -253,13 +254,13 @@ class atkProjectPhaseAttribute extends atkAttribute
   
   function getActivities($phaseid_arr) 
   {
-    global $g_db;
+    $db = &atkGetDb();
     
     $query = "SELECT phase_activity.phaseid, id, name, description, remarkrequired FROM activity, phase_activity ";
     $query.= "WHERE phase_activity.phaseid IN (".implode(",",$phaseid_arr).") AND activity.id = phase_activity.activityid ";
     $query.= "ORDER BY name";
   
-    return $g_db->getrows($query);
+    return $db->getrows($query);
   }
   
   function javascript($phasearray)

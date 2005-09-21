@@ -50,20 +50,21 @@ class projectstats extends atkNode
 
   function action_stats(&$handler)
   {
-    global $g_layout, $g_db;
-
     include_once("achievotools.inc");
 
-    $g_layout->initGui();
-    $g_layout->ui_top(text("parameters", "projectstats", "project"));
+    atkimport("atk.layout");
+    $layout = &layout::getInstance();
+
+    $layout->initGui();
+    $layout->ui_top(text("parameters", "projectstats", "project"));
 
     $startdate = $this->m_viewstart;
     $enddate = $this->m_viewend;
     $projectid = $this->m_projectid;
 
-    $g_layout->output('<br>'.$this->navigator().'<br>');
+    $layout->output('<br>'.$this->navigator().'<br>');
 
-    $g_layout->ui_bottom();
+    $layout->ui_bottom();
 
     $prjnode = &getNode("project.project");
 
@@ -75,7 +76,7 @@ class projectstats extends atkNode
       $descriptor = " - ".$prjnode->descriptor($recs[0]);
     }
 
-    $g_layout->ui_top(text("stats").$descriptor);
+    $layout->ui_top(text("stats").$descriptor);
 
     $backbtn = "";
     if (atkLevel()>0)
@@ -95,8 +96,10 @@ class projectstats extends atkNode
       $params["max"] = ($this->m_zoom=="topprojects"?20:10);
       $max = ($this->m_zoom=="topprojects"?0:10);
       useattrib("graph.dataGraphAttribute");
+      
+      $db = &atkGetDb();
 
-      $query = &atkQuery::create();
+      $query = &$db->createQuery();
       $query->addTable("hours");
       $query->addJoin("phase", "", "phase.id = hours.phaseid", false);
       $query->addJoin("project", "", "phase.projectid = project.id", false);
@@ -109,8 +112,8 @@ class projectstats extends atkNode
         $query->setLimit(0,$max);
       }
       $query->addOrderBy("totaltime DESC");
-      $query->addGroupBy("project.name");
-      $projects = $g_db->getrows($query->buildSelect());
+      $query->addGroupBy("project.name");      
+      $projects = $db->getrows($query->buildSelect());
 
       for ( $i=0; $i < count($projects); $i=$i+20 )
       {
@@ -184,9 +187,9 @@ class projectstats extends atkNode
 
     $output.="<br>".$backbtn."<br>";
 
-    $g_layout->output($output);
+    $layout->output($output);
 
-    $g_layout->ui_bottom();
+    $layout->ui_bottom();
   }
 
   function _paramForm($contents)
@@ -226,9 +229,9 @@ class projectstats extends atkNode
 
   function topProjects($start, $end, $max=0)
   {
-    global $g_db, $g_layout;
+    $db = &atkGetDb();
     atkdebug("niet in graph maar in topprojects");
-    $query = &atkQuery::create();
+    $query = &$db->createQuery();
 
     $query->addTable("hours");
     $query->addJoin("phase", "", "phase.id = hours.phaseid", false);
@@ -243,7 +246,7 @@ class projectstats extends atkNode
     }
     $query->addOrderBy("totaltime DESC");
     $query->addGroupBy("project.name");
-    $projects = $g_db->getrows($query->buildSelect());
+    $projects = $db->getrows($query->buildSelect());
 
     if ($max)
     {
@@ -256,35 +259,38 @@ class projectstats extends atkNode
       $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"0")), sprintf(text("top_projects"), 10));
     }
     $output.=')<br>';
+    
+    atkimport("atk.layout");
+    $layout = &layout::getInstance();
 
-    $output.= $g_layout->data_top();
+    $output.= $layout->data_top();
 
-    $output.= $g_layout->tr_top();
-    $output.= $g_layout->ret_td_datatitle("#");
-    $output.= $g_layout->ret_td_datatitle(text("project"));
-    $output.= $g_layout->ret_td_datatitle(text("time"));
-    $output.= $g_layout->tr_bottom();
+    $output.= $layout->tr_top();
+    $output.= $layout->ret_td_datatitle("#");
+    $output.= $layout->ret_td_datatitle(text("project"));
+    $output.= $layout->ret_td_datatitle(text("time"));
+    $output.= $layout->tr_bottom();
 
     for ($i=0, $_i=count($projects); $i<$_i; $i++)
     {
-      $output.= $g_layout->tr_top($i%2);
-      $output.= $g_layout->ret_td($i+1);
-      $output.= $g_layout->ret_td(href("dispatch.php?atknodetype=".$this->atkNodeType().
+      $output.= $layout->tr_top($i%2);
+      $output.= $layout->ret_td($i+1);
+      $output.= $layout->ret_td(href("dispatch.php?atknodetype=".$this->atkNodeType().
       "&atkaction=".$this->m_action.
       "&projectid=".$projects[$i]["id"],
       $projects[$i]["name"],
       SESSION_NESTED));
-      $output.= $g_layout->ret_td(time_format($projects[$i]["totaltime"], true));
-      $output.= $g_layout->tr_bottom();
+      $output.= $layout->ret_td(time_format($projects[$i]["totaltime"], true));
+      $output.= $layout->tr_bottom();
     }
 
-    $output.= $g_layout->data_bottom();
+    $output.= $layout->data_bottom();
     return $output;
   }
 
   function _tableStats($itemheader, $dataset, $datasetdescriptors, $detailparams, $idparam="")
   {
-    global $g_layout, $g_securityManager;
+    global $g_securityManager;
 
     // Totals count
     $total = 0;
@@ -294,18 +300,21 @@ class projectstats extends atkNode
     }
 
     $mayviewdetail = ($idparam!="" && $g_securityManager->allowed("reports.hoursurvey", "view_all"));
+    
+    atkimport("atk.layout");
+    $layout = &layout::getInstance();
 
-    $res = $g_layout->data_top();
-    $res.= $g_layout->tr_top();
-    $res.= $g_layout->ret_td_datatitle($itemheader);
-    $res.= $g_layout->ret_td_datatitle(text("time"));
-    $res.= $g_layout->ret_td_datatitle(text("percentage"));
-    if ($mayviewdetail) $res.= $g_layout->ret_td_datatitle(text("details"));
-    $res.= $g_layout->tr_bottom();
+    $res = $layout->data_top();
+    $res.= $layout->tr_top();
+    $res.= $layout->ret_td_datatitle($itemheader);
+    $res.= $layout->ret_td_datatitle(text("time"));
+    $res.= $layout->ret_td_datatitle(text("percentage"));
+    if ($mayviewdetail) $res.= $layout->ret_td_datatitle(text("details"));
+    $res.= $layout->tr_bottom();
 
     for($i=0, $_i=count($dataset); $i<$_i; $i++)
     {
-      $res.= $g_layout->tr_top($i%2!=0);
+      $res.= $layout->tr_top($i%2!=0);
 
       $descriptor = array();
       // datasetdescriptors is an array contain information on which fields in $dataset are
@@ -316,27 +325,27 @@ class projectstats extends atkNode
       }
       $value = $dataset[$i]["total"];
 
-      $res.= $g_layout->ret_td(implode(" ", $descriptor));
-      $res.= $g_layout->ret_td(time_format($value, true), 'align="right"');
+      $res.= $layout->ret_td(implode(" ", $descriptor));
+      $res.= $layout->ret_td(time_format($value, true), 'align="right"');
       $percentage = ($total<=0?0:(($value/$total)*100));
-      $res.= $g_layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
+      $res.= $layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
       if ($mayviewdetail)
       {
         $detailparams[$idparam] = $dataset[$i]["id"];
         $detailurl = href(dispatch_url("reports.hoursurvey", "report", $detailparams), text("view"), SESSION_NESTED);
-        $res.= $g_layout->ret_td($detailurl);
+        $res.= $layout->ret_td($detailurl);
       }
-      $res.= $g_layout->tr_bottom();
+      $res.= $layout->tr_bottom();
     }
 
-    $res.= $g_layout->tr_top();
-    $res.= $g_layout->ret_td_datatitle(text("total"));
-    $res.= $g_layout->ret_td_datatitle(time_format($total, true), 'align="right"');
-    $res.= $g_layout->ret_td_datatitle('100.00%', 'align="right"');
-    if ($mayviewdetail) $res.= $g_layout->ret_td_datatitle("");
-    $res.= $g_layout->tr_bottom();
+    $res.= $layout->tr_top();
+    $res.= $layout->ret_td_datatitle(text("total"));
+    $res.= $layout->ret_td_datatitle(time_format($total, true), 'align="right"');
+    $res.= $layout->ret_td_datatitle('100.00%', 'align="right"');
+    if ($mayviewdetail) $res.= $layout->ret_td_datatitle("");
+    $res.= $layout->tr_bottom();
 
-    $res.= $g_layout->data_bottom();
+    $res.= $layout->data_bottom();
 
     return $res;
   }

@@ -18,8 +18,6 @@ include_once($config_atkroot."atk.inc");
 include_once(moduleDir("graph")."jpgraph/jpgraph.php");
 include_once(moduleDir("graph")."jpgraph/jpgraph_gantt.php");
 
-global $g_layout;
-
 $projectid = $_REQUEST['projectid'];
 
 function load_dependencies($phase_record,$dep_record)
@@ -35,8 +33,8 @@ function load_dependencies($phase_record,$dep_record)
 
 
 // Select the dependency's  for the gantchart
-$name = "atk".atkconfig("database")."query";
-$querydep  = new $name();
+$db = &atkGetDb();
+$querydep = &$db->createQuery();
 $querydep->addTable('phase');
 $querydep->addJoin('project', '' ,'project.id=phase.projectid', FALSE);
 $querydep->addJoin('dependency', '' ,'dependency.phaseid_row=phase.id', FALSE);
@@ -44,7 +42,7 @@ $querydep->addField('phaseid_row', ' ', 'dependency', 'dependency_');
 $querydep->addField('phaseid_col', ' ', 'dependency', 'dependency_');
 $querydep->addCondition("project.id='".$projectid."'");
 $querystringdep = $querydep->buildSelect(TRUE);
-$dbrecordsdep = $g_db->getrows($querystringdep);
+$dbrecordsdep = $db->getrows($querystringdep);
 
 $cntrec=count($dbrecordsdep);
 for ($i=0;$i<$cntrec;$i++)
@@ -67,7 +65,7 @@ $queryphase->addField('phase.startdate AS phase_startdate');
 $queryphase->addField('phase.enddate AS phase_enddate');
 $queryphase->addCondition("project.id='".$projectid."'");
 $querystringphase = $queryphase->buildSelect(TRUE);
-$dbrecordsphase = $g_db->getrows($querystringphase);
+$dbrecordsphase = $db->getrows($querystringphase);
 
 $cntrec=count($dbrecordsphase);
 for ($i=0;$i<$cntrec;$i++)
@@ -98,7 +96,7 @@ $querybooked->addCondition("phase.projectid='".$projectid."'");
 $querybooked->addGroupBy("phase.id");
 
 $querystringbooked = $querybooked->buildSelect(TRUE);
-$dbrecordsbooked = $g_db->getrows($querystringbooked);
+$dbrecordsbooked = $db->getrows($querystringbooked);
 
 $cntrec=count($dbrecordsbooked);
 for ($i=0;$i<$cntrec;$i++)
@@ -124,7 +122,7 @@ $queryplanned->addGroupBy("project.id");
 $queryplanned->addGroupBy("phase.id");
 
 $querystringplanned = $queryplanned->buildSelect(TRUE);
-$dbrecordsplanned = $g_db->getrows($querystringplanned);
+$dbrecordsplanned = $db->getrows($querystringplanned);
 
 $cntrec=count($dbrecordsplanned);
 for ($i=0;$i<$cntrec;$i++)
@@ -257,7 +255,6 @@ if($startdateproject <= (date("Y-m-d")) AND $enddateproject >= (date("Y-m-d")))
   $graph->Add($vline);
 }
 
-//$g_layout->outputflush();
 $graph->Stroke();
 
 ?>

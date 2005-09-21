@@ -118,9 +118,7 @@
     }
     
     function getLatestManualCorrection($userid, $default, $day="")
-    {
-      //global $g_db;
-      //$result = $g_db->getRows("SELECT day FROM overtime_balance WHERE userid = $userid AND manual = 1 ORDER BY day DESC");
+    {      
       $node = &getNode("timereg.overtime_balance");
       $result = $node->selectDb("userid.id = '$userid' AND manual = 1 ".($day != "" ? "AND day <= '$day' " : ""), "day DESC", 1);
       return (count($result[0]) ? $result[0] : $default);
@@ -128,49 +126,49 @@
     
     function deleteBalance($userid, $day)
     {
-      global $g_db;
-      $g_db->query("DELETE FROM overtime_balance WHERE manual <> 1 AND day > '$day'");
+      $db = &atkGetDb();
+      $db->query("DELETE FROM overtime_balance WHERE manual <> 1 AND day > '$day'");
     }
     
     function addOvertimeBalance($userid, $day, $balance)
     {
-      global $g_db;
-      $newid = $g_db->nextid("overtime_balance");
-      $g_db->query("INSERT INTO overtime_balance (id, userid, day, balance, manual)
+      $db = &atkGetDb();
+      $newid = $db->nextid("overtime_balance");
+      $db->query("INSERT INTO overtime_balance (id, userid, day, balance, manual)
                   VALUES ('$newid', '$userid', '$day', '$balance', 0)");
     }
     
     function saveOvertimeBalance($userid, $day, $balance)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $sql = "UPDATE overtime_balance SET balance = $balance WHERE userid = ".$userid." AND day = '$day'";
-      $g_db->query($sql);
+      $db->query($sql);
     }
     
     function getPercentage($id)
     {
-      global $g_db;
+      $db = &atkGetDb();
       if ($id!="")
       {
-        $result = $g_db->getRows("SELECT percentage FROM workperiod WHERE id = ".$id);
+        $result = $db->getRows("SELECT percentage FROM workperiod WHERE id = ".$id);
       }
       return (count($result) ? $result[0]["percentage"] : 100);
     }
     
     function updateOvertimeBalance($userid, $day, $balance)
     {
-      global $g_db;
-      $recs = $g_db->getrows("SELECT id FROM overtime_balance WHERE userid = $userid AND day = '$day'");
+      $db = &atkGetDb();
+      $recs = $db->getrows("SELECT id FROM overtime_balance WHERE userid = $userid AND day = '$day'");
       if (!count($recs))
       {
-        $newid = $g_db->nextid("overtime_balance");
-        $g_db->query("INSERT INTO overtime_balance (id, userid, day, balance, manual)
+        $newid = $db->nextid("overtime_balance");
+        $db->query("INSERT INTO overtime_balance (id, userid, day, balance, manual)
                   VALUES ('$newid', '$userid', '$day', '$balance', 0)");
         return $newid;
       }
       else
       {
-        $g_db->query("UPDATE overtime_balance SET balance = $balance WHERE userid = $userid AND day = '$day'");
+        $db->query("UPDATE overtime_balance SET balance = $balance WHERE userid = $userid AND day = '$day'");
         return $recs[0]["id"];
       }
     }
@@ -194,15 +192,15 @@
     
     function getUserHours($begin, $end, $userid)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $sql = "SELECT * FROM hours WHERE userid = '$userid' AND activitydate >= '$begin' AND activitydate <= '$end'";
-      return $g_db->getRows($sql);
+      return $db->getRows($sql);
     }
     
     function getPercentages()
     {
-      global $g_db;
-      $res = $g_db->getRows("SELECT id, percentage FROM workperiod");
+      $db = &atkGetDb();
+      $res = $db->getRows("SELECT id, percentage FROM workperiod");
       $result = array();
       for ($i=0;$i<count($res);$i++)
       {
@@ -213,14 +211,14 @@
     
     function getContractHours($begin, $end, $userid)
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       $begindate = date("Ymd", adodb_mktime(0,0,0,substr($begin,5,2),substr($begin,8,2),substr($begin,0,4)));
       $enddate = date("Ymd", adodb_mktime(0,0,0,substr($end,5,2),substr($end,8,2),substr($end,0,4)));
       
       //$sql = "SELECT uc_hours, startdate, enddate, WorkingDays FROM usercontract WHERE userid = '$userid' AND ((startdate <= '$begin' AND enddate >= '$begin') OR (startdate <= '$end' AND enddate >= '$end'))";
       $sql = "SELECT uc_hours, startdate, enddate, WorkingDays FROM usercontract WHERE userid = '$userid' AND startdate <= '$end' AND (enddate >= '$begin' OR enddate IS NULL)";
-      $contracts = $g_db->getRows($sql);
+      $contracts = $db->getRows($sql);
       
       if (count($contracts) > 1)
       {

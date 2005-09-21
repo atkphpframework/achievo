@@ -15,7 +15,7 @@
     
     function action_search(&$handler)
     {
-      global $g_layout, $g_sessionManager;
+      global $g_sessionManager;
 
       // Searchstring is a stackvar. We get it through the post_vars, 
       // but we need to store it in the session stack, so the system
@@ -63,11 +63,14 @@
       {       
         $res = '<br>'.text("search_emptysearchstring");       
       }
-      $g_layout->initGui();
-      $g_layout->ui_top(text("search"));
-      $g_layout->output($res.'<br><br>'.text('search_again').':<br>');
-      $g_layout->output($this->simpleSearchForm($searchstring, "", SESSION_DEFAULT).'<br><br>');
-      $g_layout->ui_bottom();
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
+
+      $layout->initGui();
+      $layout->ui_top(text("search"));
+      $layout->output($res.'<br><br>'.text('search_again').':<br>');
+      $layout->output($this->simpleSearchForm($searchstring, "", SESSION_DEFAULT).'<br><br>');
+      $layout->ui_bottom();
     }
     
     function simpleSearchForm($searchstring, $targetframe="", $sessionstatus=SESSION_NESTED)

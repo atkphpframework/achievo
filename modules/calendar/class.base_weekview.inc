@@ -73,12 +73,11 @@
     function getAppointments($user, $begindate, $enddate)
     {
       // crosscomparison to match all appointments in range.
-      global $g_db;
+      $db = &atkGetDb();
 
       $date = $this->year."-".$this->month."-".$this->day;
 
-      $name = "atk".atkconfig("database")."query";
-      $query = new $name();
+      $query = &$db->createQuery();
       $query->addTable('schedule');
       $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
       $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
@@ -109,7 +108,7 @@
 
       $query->addOrderBy('starttime');
       $querystring = $query->buildSelect(TRUE);
-      $recs = $g_db->getrows($querystring);                    
+      $recs = $db->getrows($querystring);                    
 
       // now add them to a nice array
       for ($i=0;$i<count($recs);$i++)
@@ -189,21 +188,24 @@
    */
     function dumpMatrix()
     {
-     global $g_layout, $g_user;
+      global $g_user;
+     
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
 
-      $buff   = $g_layout->initGUI();
-      $buff .= $g_layout->data_top();
+      $buff   = $layout->initGUI();
+      $buff .= $layout->data_top();
 
-      $buff .= $g_layout->tr_top();
-      $buff .= $g_layout->ret_td_datatitle();
+      $buff .= $layout->tr_top();
+      $buff .= $layout->ret_td_datatitle();
 
       for ($i=1;$i<=7;$i++)
       {
         $text  = text($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
         $href  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
-        $buff .= $g_layout->ret_td_datatitle(href($href, $text), 'align="center"');
+        $buff .= $layout->ret_td_datatitle(href($href, $text), 'align="center"');
       }
-      $buff .= $g_layout->tr_bottom();
+      $buff .= $layout->tr_bottom();
 
       $dayparts = array("allday","morning","afternoon","evening");
 
@@ -211,8 +213,8 @@
       {
 
         // show different color when daypartname = allday.
-        $buff .= $g_layout->tr_top($daypart_name=="allday");
-        $buff .= $g_layout->ret_td(text($daypart_name));
+        $buff .= $layout->tr_top($daypart_name=="allday");
+        $buff .= $layout->ret_td(text($daypart_name));
 
         for ($i=1;$i<=7;$i++)
         {
@@ -256,22 +258,22 @@
 
             if ($j!=count($dayappointments)-1) $str.="<br>";
           }
-          $buff .= $g_layout->ret_td($str);
+          $buff .= $layout->ret_td($str);
         }
-        $buff .= $g_layout->tr_bottom();
+        $buff .= $layout->tr_bottom();
       }
 
-      $buff .= $g_layout->tr_top();
-      $buff .= $g_layout->ret_td_datatitle();
+      $buff .= $layout->tr_top();
+      $buff .= $layout->ret_td_datatitle();
       for ($i=1;$i<=7;$i++)
       {
         $text  = text("add");
         $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
-        $buff .= $g_layout->ret_td_datatitle(href($href, $text, SESSION_NESTED), 'align="center"');
+        $buff .= $layout->ret_td_datatitle(href($href, $text, SESSION_NESTED), 'align="center"');
       }
-      $buff .= $g_layout->tr_bottom();
+      $buff .= $layout->tr_bottom();
 
-      $buff .= $g_layout->data_bottom();
+      $buff .= $layout->data_bottom();
       $buff .= "<br><br>";
 
       return $buff;
@@ -279,10 +281,9 @@
 
     function get_attendees($scheduleid)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
+     $query = &$db->createQuery();
      $query->addTable('schedule_attendee');
      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
 
@@ -294,7 +295,7 @@
      $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
 
      $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
+     return $db->getRows($querystring);
     }
 
    }

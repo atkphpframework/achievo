@@ -7,7 +7,7 @@ useattrib("atkdateattribute");
 useattrib("atktextattribute");
 useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
-useattrib("utils.fuzzysearchattribute");
+useattrib("atkfuzzysearchattribute");
 
 class contracts extends atkNode
 {
@@ -88,13 +88,13 @@ class contracts extends atkNode
   
   function addProjects($rec, $projects)
   {
-    global $g_db;
+    $db = &atkGetDb();
     
     // Add the first found match as project.
     for ($i=0, $_i=count($projects); $i<$_i; $i++)
     {
       // Only add projects that are not already linked to another deposit.
-      $g_db->query("UPDATE project SET contract_id = ".$rec["id"]."
+      $db->query("UPDATE project SET contract_id = ".$rec["id"]."
                        WHERE 
                          project.id = '".$projects[$i]["id"]."' 
                          AND 

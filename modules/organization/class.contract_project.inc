@@ -32,11 +32,11 @@
      * Remove a project from a contract. 
      */
     function action_remove(&$handler)
-    {
-      global $g_db;
+    {      
       if ($this->m_postvars["project_id"]!="")
       {
-        $g_db->query("UPDATE project SET contract_id = NULL WHERE id = '".$this->m_postvars["project_id"]."'");
+        $db = &atkGetDb();
+        $db->query("UPDATE project SET contract_id = NULL WHERE id = '".$this->m_postvars["project_id"]."'");
       }
       $this->redirect();
     }

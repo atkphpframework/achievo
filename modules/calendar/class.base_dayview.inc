@@ -105,13 +105,12 @@
    * fills an array with the items
    */
     function getItems()
-    {
-     global $g_db;
-
+    {     
      $date = $this->year."-".$this->month."-".$this->day;
-
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
+     
+     $db = &atkGetDb();
+     
+     $query = &$db->createQuery();
      $query->addTable('schedule');
      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
@@ -142,7 +141,7 @@
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);
-     $recs = $g_db->getrows($querystring);
+     $recs = $db->getrows($querystring);
      for ($i=0, $_i=count($recs); $i<$_i; $i++)
      {
        $query->deAlias($recs[$i]);
@@ -157,11 +156,11 @@
    */
    function getColors()
    {
-    global $g_db;
+    $db = &atkGetDb();
 
     // get the defined colors for each scheduler-type
     $q = "SELECT * FROM schedule_type ORDER BY id";
-    $r = $g_db->getRows($q);
+    $r = $db->getRows($q);
 
     $colors  = array();
     $legend  = "<TABLE border='0' cellPadding='1'><TBODY><TR><TD bgColor='#000000'><TABLE width='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY>";
@@ -325,22 +324,20 @@
 
     function get_attendees($scheduleid)
     {
-      global $g_db;
-
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
-     $query->addTable('schedule_attendee');
-     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
-
-     $query->addField('userid', ' ', 'person');
-     $query->addField('lastname', ' ', 'person');
-     $query->addField('firstname', ' ', 'person');
-     $query->addField('role', ' ', 'person');
-
-     $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
-
-     $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
+      $db = &atkGetDb();
+      $query = &$db->createQuery();
+      $query->addTable('schedule_attendee');
+      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+      
+      $query->addField('userid', ' ', 'person');
+      $query->addField('lastname', ' ', 'person');
+      $query->addField('firstname', ' ', 'person');
+      $query->addField('role', ' ', 'person');
+      
+      $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
+      
+      $querystring = $query->buildSelect(TRUE);
+      return $db->getRows($querystring);
     }
 
   /**

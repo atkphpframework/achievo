@@ -73,7 +73,7 @@
 
     function action_report(&$handler)
     {
-      global $g_layout, $g_user, $g_sessionManager;
+      global $g_user, $g_sessionManager;
 
       // Manual sort config
       $orderby =            $this->m_postvars["orderby"];
@@ -217,20 +217,23 @@
 
       if ($outputType==0)
       {
-        $g_layout->initGUI();
-        $g_layout->ui_top(text('parameters', $this->m_type, $this->m_module));
+        atkimport("atk.layout");
+        $layout = &layout::getInstance();
 
-        $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');
-        $g_layout->output(session_form());
+        $layout->initGUI();
+        $layout->ui_top(text('parameters', $this->m_type, $this->m_module));
 
-        $this->_addHiddenFields($g_layout);
-        $g_layout->table_simple();
-        $g_layout->output('<tr>');
-        $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
-        $g_layout->output('</tr><tr>');
-        $g_layout->td('<hr>'.text('searchbyprojectorphase').':','colspan="2"');
-        $g_layout->output('</tr><tr>');
-        $g_layout->td(text('project').':');
+        $layout->output('<form action="dispatch.php" method="get" name="entryform">');
+        $layout->output(session_form());
+
+        $this->_addHiddenFields($layout);
+        $layout->table_simple();
+        $layout->output('<tr>');
+        $layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
+        $layout->output('</tr><tr>');
+        $layout->td('<hr>'.text('searchbyprojectorphase').':','colspan="2"');
+        $layout->output('</tr><tr>');
+        $layout->td(text('project').':');
         
         // we have to pass a 'dummy' record to the attributes to set their default value.
         $dummyrec = array("projectid"=>$projectid,
@@ -256,80 +259,80 @@
           $dummyrec["subtotal[$i]"]=($columnConfig->hasSubTotalByOrder($i+1)?1:0);
         }
 
-        $g_layout->td($projectatt->edit($dummyrec));
-        $g_layout->output('</tr>');
-        $this->_addOr($g_layout);
-        $g_layout->output('<tr>');
-        $g_layout->td(text('phase').':');
+        $layout->td($projectatt->edit($dummyrec));
+        $layout->output('</tr>');
+        $this->_addOr($layout);
+        $layout->output('<tr>');
+        $layout->td(text('phase').':');
         $phaseatt = $hoursnode->m_attribList["phaseid"];
         $phaseatt->m_flags = $phaseatt->m_flags&~AF_JS_UPDATEACTIVITY;
         $phaseatt->m_nested = false;
         $g_sessionManager->stackVar("reportnodetype","hoursurvey");
-        $g_layout->td($phaseatt->edit($dummyrec));
+        $layout->td($phaseatt->edit($dummyrec));
 
-        $g_layout->output('</tr>');
-        $this->_addOr($g_layout);
-        $g_layout->output('<tr>');
+        $layout->output('</tr>');
+        $this->_addOr($layout);
+        $layout->output('<tr>');
 
-        $g_layout->td(text("organization").':');
+        $layout->td(text("organization").':');
         $organizationatt = new atkManyToOneRelation("organizationid", "organization.organization");
-        $g_layout->td('<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.
+        $layout->td('<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.
 
         $organizationatt->edit($dummyrec));
-        $g_layout->output('</tr>');
-        $this->_addOr($g_layout);
-        $g_layout->output('<tr>');
+        $layout->output('</tr>');
+        $this->_addOr($layout);
+        $layout->output('<tr>');
 
-        $g_layout->td(text("department").':');
+        $layout->td(text("department").':');
         $departmentatt = new atkManyToOneRelation("departmentid","employee.department");
-        $g_layout->td('<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
-        $g_layout->output('</tr><tr>');
+        $layout->td('<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td('<hr>','colspan="2"');
-        $g_layout->output('</tr><tr>');
-        $g_layout->td(text('employee').':');
+        $layout->td('<hr>','colspan="2"');
+        $layout->output('</tr><tr>');
+        $layout->td(text('employee').':');
 
         if($view_all)
         {
-          $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>'.
+          $layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>'.
           ' <SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
         }
         else
         {
           $userid = $g_user["id"];
-          $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
+          $layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
         }
-        $g_layout->output('</tr>');
-        $this->_addOr($g_layout);
-        $g_layout->output('<tr>');
+        $layout->output('</tr>');
+        $this->_addOr($layout);
+        $layout->output('<tr>');
         
         // selecting functionlevel:
-        $g_layout->td(text('functionlevel').':');
-        $g_layout->td('<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
+        $layout->td(text('functionlevel').':');
+        $layout->td('<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
         
-        $g_layout->output('</tr><tr>');
+        $layout->output('</tr><tr>');
 
         
-        $g_layout->td('<hr>','colspan="2"');
-        $g_layout->output('</tr><tr>');
-        $g_layout->td(text('activity').': ');
-        $g_layout->td('<SELECT name="activity_id">'.$this->get_activities($activity_id).'</SELECT>');
-        $g_layout->output('</tr><tr>');
-        $g_layout->td('<hr>','colspan="2"');
-        $g_layout->output('</tr><tr>');
+        $layout->td('<hr>','colspan="2"');
+        $layout->output('</tr><tr>');
+        $layout->td(text('activity').': ');
+        $layout->td('<SELECT name="activity_id">'.$this->get_activities($activity_id).'</SELECT>');
+        $layout->output('</tr><tr>');
+        $layout->td('<hr>','colspan="2"');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td(text("timespan").': ');
+        $layout->td(text("timespan").': ');
 
         $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
         $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
 
-        $g_layout->td('<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
+        $layout->td('<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
         text("until").
         '&nbsp; </td><td align="right">'.$enddateatt->edit($dummyrec).'</td></tr></table>');
 
-        $g_layout->output('</tr><tr>');
-        $g_layout->register_script(atkconfig("atkroot")."javascript/timereg.js");
-        $g_layout->td(text("lookbackperiod").': ');
+        $layout->output('</tr><tr>');
+        $layout->register_script(atkconfig("atkroot")."javascript/timereg.js");
+        $layout->td(text("lookbackperiod").': ');
         $output = '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="33%">';
         $output .= '<select name="startperiod" onchange="setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").'); document.entryform.endperiod.value = 0; setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").');">
                         <option value="0" selected>---</option> 
@@ -356,28 +359,28 @@
                         <option value="8">6 '.strtolower(text("months")).'</option>
                        </select></td></tr></table>';
 
-        $g_layout->td($output);
-        $g_layout->output('</tr><tr>');
-        $g_layout->td('<hr>','colspan="2"');
-        $g_layout->output('</tr><tr>');
+        $layout->td($output);
+        $layout->output('</tr><tr>');
+        $layout->td('<hr>','colspan="2"');
+        $layout->output('</tr><tr>');
 
         if (moduleExists("billing"))
         {
           $rateattr = new atkListAttribute("ratetype", array(text("salary"), text("commercial")),array(0,1), AF_OBLIGATORY);
-          $g_layout->td(text('ratetype').': ');
-          $g_layout->td($rateattr->edit($dummyrec));
-          $g_layout->output('</tr><tr>');
-          $g_layout->td('<hr>','colspan="2"');
-          $g_layout->output('</tr><tr>');
+          $layout->td(text('ratetype').': ');
+          $layout->td($rateattr->edit($dummyrec));
+          $layout->output('</tr><tr>');
+          $layout->td('<hr>','colspan="2"');
+          $layout->output('</tr><tr>');
         }
 
         $remarkattr = new atkAttribute("remark", 0, 80);
-        $g_layout->td(text('remark').': ');
-        $g_layout->td($remarkattr->edit($dummyrec));
+        $layout->td(text('remark').': ');
+        $layout->td($remarkattr->edit($dummyrec));
 
-        $g_layout->output('</tr><tr>');
-        $g_layout->td('<hr>','colspan="2"');
-        $g_layout->output('</tr>');
+        $layout->output('</tr><tr>');
+        $layout->td('<hr>','colspan="2"');
+        $layout->output('</tr>');
 
         // Get default selection items.
         $selitems = $hoursnode->getSelectionItems();
@@ -386,32 +389,32 @@
         {
           foreach ($selitems as $label=>$html)
           {
-            $g_layout->output('<tr>');
-            $g_layout->td(text($label, $hoursnode->m_type).":");
-            $g_layout->td($html);
-            $g_layout->output('</tr><tr>');
-            $g_layout->td('<hr>','colspan="2"');
-            $g_layout->output('</tr>');
+            $layout->output('<tr>');
+            $layout->td(text($label, $hoursnode->m_type).":");
+            $layout->td($html);
+            $layout->output('</tr><tr>');
+            $layout->td('<hr>','colspan="2"');
+            $layout->output('</tr>');
           }
         }
 
 
-        $g_layout->output('<tr>');
+        $layout->output('<tr>');
 
-        $g_layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
+        $layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
 
-        $g_layout->output('</tr><tr>');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td(text("report_output_type").": ");
-        $g_layout->td('<select name="outputType">
+        $layout->td(text("report_output_type").": ");
+        $layout->td('<select name="outputType">
                          <option VALUE="0" selected>'.text("report_output_standard").'
                          <option value="1">'.text("report_output_printable").'
                          <option value="2">'.text("report_output_export").'
                          </select>');
 
-        $g_layout->output('</tr><tr>');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td(text("report_output_showcollumns"));
+        $layout->td(text("report_output_showcollumns"));
 
         $cell="";
         for($i=0,$_i=count($arr_col);$i<$_i;$i++)
@@ -419,11 +422,11 @@
           $checked = (in_array($arr_col[$i],$col) ? "checked" : "");
           $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.text($arr_col[$i]).'&nbsp;';
         }
-        $g_layout->td($cell);
+        $layout->td($cell);
 
-        $g_layout->output('</tr><tr>');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td(text("orderby").': ', 'valign="top"');
+        $layout->td(text("orderby").': ', 'valign="top"');
 
         //$listcol = array();
         //for($i=0,$_i=count($arr_col);$i<$_i;$i++) $listcol[] = "hours.".$arr_col[$i];
@@ -446,16 +449,16 @@
           $orderstr.=($i+1).". ".$field->edit($dummyrec)." ".$direction->edit($dummyrec)." ".$total->edit($dummyrec)." ".text('subtotal')."<br>";
         }
 
-        $g_layout->td($orderstr);
+        $layout->td($orderstr);
 
-        $g_layout->output('</tr><tr>');
+        $layout->output('</tr><tr>');
 
-        $g_layout->td(text("aggregate").": ");
+        $layout->td(text("aggregate").": ");
 
         $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY);
-        $g_layout->td($boolattrib->edit($dummyrec));
+        $layout->td($boolattrib->edit($dummyrec));
 
-        $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
+        $layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
 
       }
 
@@ -516,10 +519,10 @@
         
       if ($outputType=="0")
       {
-        $g_layout->ui_bottom();
-        $g_layout->ui_top(text("title_hoursurvey_hours")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
+        $layout->ui_bottom();
+        $layout->ui_top(text("title_hoursurvey_hours")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
 
-        $g_layout->output('<br>'.(atkLevel()>0?atkButton('<< '.text("back"), "", SESSION_BACK)."<br>":"").'<br>');
+        $layout->output('<br>'.(atkLevel()>0?atkButton('<< '.text("back"), "", SESSION_BACK)."<br>":"").'<br>');
 
         $actions = array();
         if (!$aggregate)
@@ -527,15 +530,15 @@
           $actions = $hoursnode->defaultActions("list");
         }
 
-        $g_layout->output($hoursnode->normalRecordList($data, $actions, RL_EXT_SORT, $suppress));
-        $g_layout->output('<br>'.(atkLevel()>0?atkButton('<< '.text("back"), "", SESSION_BACK)."<br>":"").'<br>');
+        $layout->output($hoursnode->normalRecordList($data, $actions, RL_EXT_SORT, $suppress));
+        $layout->output('<br>'.(atkLevel()>0?atkButton('<< '.text("back"), "", SESSION_BACK)."<br>":"").'<br>');
 
-        $g_layout->ui_bottom();
+        $layout->ui_bottom();
       }
 
       if ($outputType=="1")
       {
-        $g_layout->output($hoursnode->specialRecordList($data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
+        $layout->output($hoursnode->specialRecordList($data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
       }
       if ($outputType=="2")
       {
@@ -551,7 +554,7 @@
      */
     function _getRatesPerTimereg($timereg)
     {
-      global $g_db, $g_sessionManager;
+      global $g_sessionManager;
       static $phase_project= array();
       
       $organizationarr = decodeKeyValuePair($this->m_postvars["organizationid"]);
@@ -560,7 +563,8 @@
 
       if (!$phase_project[$timereg["phaseid"]["phaseid"]])
       {
-        $projectid = $g_db->getrows("SELECT projectid
+        $db = &atkGetDb();
+        $projectid = $db->getrows("SELECT projectid
                         FROM phase 
                         WHERE phase.id = '".$timereg["phaseid"]["phaseid"]."'");
         $phase_project[$timereg["phaseid"]["phaseid"]] = $projectid[0]["projectid"];
@@ -822,13 +826,13 @@
     
     function _getRatesFromDb($userid, $month, $activityid, $projectid, $organization_id, $ratetype=0, $phaseid=-1)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $date = $month."01";
         
       if (atkconfig("use_duration", true)) $fields = "rate";
       else $fields = "rate, starttime, endtime";
               
-      $raterecs = $g_db->getrows("SELECT $fields FROM 
+      $raterecs = $db->getrows("SELECT $fields FROM 
                                       billing_rate
                                     WHERE
                                            (startdate IS NULL OR '$date' > date_format(startdate, '%Y%m%d') OR '$date' = date_format(startdate, '%Y%m%d'))
@@ -844,14 +848,13 @@
                                     ORDER BY priority DESC");
                                        
       if(empty($raterecs) )
-      {
-        global $g_db;    	     	
-        $PersonFunctionLevel = $g_db->getrows("SELECT functionlevel  from person where person.id = '".
+      {        
+        $PersonFunctionLevel = $db->getrows("SELECT functionlevel  from person where person.id = '".
       										$userid . "'");
         $PersonFunctionLevel = $PersonFunctionLevel[0]["functionlevel"];
       
       	// no personal rate so get the rate for the functionlevel
-      	$raterecs = $g_db->getrows("SELECT $fields FROM 
+      	$raterecs = $db->getrows("SELECT $fields FROM 
                                       billing_rate
                                     WHERE
         								  (startdate IS NULL OR '$date' > date_format(startdate, '%Y%m%d' OR '$date' = date_format(startdate, '%Y%m%d')))
@@ -923,13 +926,13 @@
     
     function get_activities($act_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
       // Get the activities
       $sql = "SELECT id,name
               FROM activity
               ORDER BY name
              ";
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       if($act_id==-1) { $sel="SELECTED"; } else { $sel=""; }
       $activity_code='<OPTION VALUE="" '.$sel.'>'.text('allactivities').'</OPTION>';
       for($i=0,$_i=count($records);$i<$_i;$i++)
@@ -942,13 +945,13 @@
     
     function get_departments($depname)
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       $sql = "SELECT name
               FROM employee_department
               ORDER BY name";
       
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       $depcode = "<OPTION VALUE='all'>".text('alldepartments')."</OPTION>";
       foreach ($records as $onedep)
       {
@@ -960,7 +963,7 @@
 
     function get_employees($user_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $sql = "SELECT id,lastname,userid, firstname
               FROM person
@@ -968,7 +971,7 @@
               ORDER BY lastname
              ";
 
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       if ($user_id == "new" || !$user_id || $user_id=="") $sel = " SELECTED";
       $employee_code='<OPTION VALUE="all"'.$sel.'>'.text("allusers");
       for($i=0,$_i=count($records);$i<$_i;$i++)
@@ -981,13 +984,13 @@
 
     function get_roles($role)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $sql = "SELECT name, id
               FROM role
               ORDER BY name";
 
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       $role_code='<OPTION VALUE="">'.text("allroles");
       for($i=0,$_i=count($records);$i<$_i;$i++)
       {
@@ -999,11 +1002,11 @@
     
     function get_functionlevels($selected)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $sql = "  SELECT DISTINCT functionlevel.id as id, functionlevel.name as name
                 FROM functionlevel
                 LEFT JOIN person ON (person.functionlevel = functionlevel.id)";
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       
       $sel = !$selected || $selected == "all" ? " selected" : "";
       $func_code = '<OPTION VALUE="all"'.$sel.'>'.text("allfunctionlevels").'</OPTION>';
@@ -1017,25 +1020,25 @@
     
     /**
      * adds a row with 'or' in it
-     * @param g_layout object the layout object we have to hook ourselves in to
+     * @param layout object the layout object we have to hook ourselves in to
      * @return void
      */
-    function _addOr(&$g_layout)
+    function _addOr(&$layout)
     {
-      $g_layout->output('<tr>');
-      $g_layout->td(text('or'),'colspan="2"');
-      $g_layout->output('</tr>');
+      $layout->output('<tr>');
+      $layout->td(text('or'),'colspan="2"');
+      $layout->output('</tr>');
     }
     
     /**
      * adds all required hidden fields to the form
-     * @param g_layout object the layout object we have to hook ourselves in to
+     * @param layout object the layout object we have to hook ourselves in to
      * @return void
      */
-    function _addHiddenFields(&$g_layout)
+    function _addHiddenFields(&$layout)
     {
-      $g_layout->output('<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">');
-      $g_layout->output('<input type="hidden" name="atkaction" value="report">'); 
+      $layout->output('<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">');
+      $layout->output('<input type="hidden" name="atkaction" value="report">'); 
     }
   }
 

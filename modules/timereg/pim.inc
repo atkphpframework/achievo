@@ -2,7 +2,7 @@
 
   function pimTimeReg()
   {
-    global $g_layout, $g_user;
+    global $g_user;
     $hoursnode = &getNode("timereg.hours");
 
     $hoursnode = getNode("timereg.hours");
@@ -29,10 +29,10 @@
     $todayhours.= '<br>'.href("dispatch.php?atknodetype=$nodetype&atkaction=add",text('add'),SESSION_NESTED);
     if (!$pda) $todayhours.= ' &nbsp; '.href("dispatch.php?atknodetype=$nodetype&atkaction=admin",text('pim_gototimeregistration'),SESSION_NESTED);
 
-    $res.= $g_layout->ret_table_simple();
+    $res.= '<table border="0">';
     $res.= '<tr>';
-    if (!$pda) $res.= $g_layout->ret_td('&nbsp;','width="15"'); // spacer
-    $res.= $g_layout->ret_td($todayhours, 'valign="top"');
+    if (!$pda) $res.= '<td width="15">&nbsp;</td>'; // spacer
+    $res.= '<td valign="top">'.$todayhours.'</td>';
     $res.= '</tr></table>';
     
     return $res;

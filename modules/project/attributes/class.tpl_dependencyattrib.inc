@@ -17,7 +17,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
 
   function getPhases($projectid)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $query = "SELECT
                 id, name
@@ -27,14 +27,12 @@ class tpl_dependencyAttribute extends dependencyAttribute
                 id = phaseid
                 AND projectid = ".$projectid." ORDER BY name";
 
-    $recs = $g_db->getrows($query);
+    $recs = $db->getrows($query);
     return $recs;
   }
 
   function load($notused, $rec)
   {
-    global $g_db;
-// @TODO JvdW 10-01-2004 ROW is Oracle keyword
     $query = "SELECT
                 phaseid_row as first,
                 ROW1.name as firstname,
@@ -48,12 +46,13 @@ class tpl_dependencyAttribute extends dependencyAttribute
                 AND COL1.id = phaseid_col
                 ORDER BY phaseid_row";
 
-    return array("deps"=>$g_db->getrows($query));
+    $db = &atkGetDb();
+    return array("deps"=>$db->getrows($query));
   }
 
   function store($notused, $rec)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $values = $rec[$this->fieldName()];
 
@@ -70,7 +69,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
                        AND phaseid_row = ".$delarr[$i]["first"]."
                        AND phaseid_col = ".$delarr[$i]["last"];
 
-        $g_db->query($delquery);
+        $db->query($delquery);
       }
     }
 
@@ -81,7 +80,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
                   INTO tpl_dependency (projectid,phaseid_row,phaseid_col)
                   VALUES (".$rec["id"].",".$values["first"].",".$values["last"].")";
 
-      $g_db->query($query);
+      $db->query($query);
     }
   }
 }

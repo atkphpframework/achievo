@@ -1,7 +1,9 @@
 <?php
   function pimSchedule()
   {
-    global $g_user, $g_layout, $g_db;
+    global $g_user;
+    
+    $db = &atkGetDb();
 
     $me = $g_user["id"];
 
@@ -11,8 +13,7 @@
     $date = date('Y-m-d');
 
     //search for appointments where user is owner and where user is attendee
-    $name = "atk".atkconfig("database")."query";
-    $query = new $name();
+    $query = &$db->createQuery();
     $query->addTable('schedule');
     $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
     $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
@@ -36,7 +37,7 @@
 
     $query->addOrderBy('starttime');
     $querystring = $query->buildSelect(TRUE);
-    $recs = $g_db->getRows($querystring);
+    $recs = $db->getRows($querystring);
     $actions = array();
 
     for ($i=0;$i<count($recs);$i++)
@@ -61,10 +62,10 @@
     }
     $todayschedule.='<br>'.href("dispatch.php?atknodetype=calendar.schedule&atkaction=admin",text('pim_gotoschedule'),SESSION_NESTED);
 
-    $res.= $g_layout->ret_table_simple();
+    $res.= '<table border="0" cellpadding="2">';
     $res.= '<tr>';
-    $res.= $g_layout->ret_td('&nbsp;','width="15"'); // spacer
-    $res.= $g_layout->ret_td($todayschedule, 'valign="top"');
+    $res.= '<td width="15">&nbsp;</td>'; // spacer
+    $res.= '<td valign="top">'.$todayschedule.'</td>';
     $res.= '</tr></table>';
     return $res;
   }

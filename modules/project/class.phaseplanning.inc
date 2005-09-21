@@ -48,12 +48,12 @@
     
     function postAdd($rec)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $phase_id = $rec["phaseid"]["id"];
       $person_id = $rec["personid"]["id"]; 
       // person may allready exist
-      $recs = $g_db->getrows("SELECT count(*) as cnt 
+      $recs = $db->getrows("SELECT count(*) as cnt 
                               FROM phase, project,project_person
                               WHERE phase.projectid = project.id
                                 AND project.id = project_person.projectid
@@ -62,21 +62,19 @@
                               GROUP BY project.id");
       if(!count($recs)|| $recs[0]["cnt"]==0)
       {
-        $recs = $g_db->getrows("SELECT project.id FROM phase,project
+        $recs = $db->getrows("SELECT project.id FROM phase,project
                                 WHERE phase.projectid = project.id
                                   AND phase.id = $phase_id");
         $project_id = $recs[0]["id"];
         // Add person to members, role will be empty
-        $g_db->query("INSERT INTO project_person (projectid,personid)
+        $db->query("INSERT INTO project_person (projectid,personid)
                       values ($project_id,$person_id)");
       }
       
     }
     
     function storePhases($phases)
-    {
-      global $g_db;
-      
+    {            
       foreach ($phases as $phaseid=>$persons)
       {
         foreach ($persons as $personid=>$current_planning)

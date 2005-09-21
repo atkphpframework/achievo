@@ -38,10 +38,10 @@ class role extends atkNode
   
   function recordActions($record, &$actions)
   {
-    global $g_db;
+    $db = &atkGetDb();
     $role_id = $record["id"];
     // Check if role is being used.
-    $recs = $g_db->getrows("select count(1) as cnt from project_person where role='".$role_id."'");
+    $recs = $db->getrows("select count(1) as cnt from project_person where role='".$role_id."'");
     if ($recs[0]["cnt"]>0)
     {
       unset($actions["delete"]);

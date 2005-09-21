@@ -110,7 +110,9 @@ class atkProjectAttribute extends atkAttribute
 
   function getRecentProjects()
   {
-    global $g_db, $g_user;
+    global $g_user;
+    
+    $db = &atkGetDb();
 
     $query = "SELECT project.name as name, project.id as id FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."'
@@ -120,7 +122,7 @@ class atkProjectAttribute extends atkAttribute
     $query.= "ORDER BY hours.entrydate DESC";
 
     // 100 should be enough to get 5 unique recent projects.
-    $arr = $g_db->getrows($query,'0','100');
+    $arr = $db->getrows($query,'0','100');
     $j=0;
     $alreadyhad = Array();
     $newarr = Array();
@@ -139,12 +141,12 @@ class atkProjectAttribute extends atkAttribute
 
   function getProject($projectid)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $query = "SELECT id,name FROM project ";
     $query.= "WHERE id = $projectid ";
 
-    $arr = $g_db->getrows($query);
+    $arr = $db->getrows($query);
 
     $project = $arr[0];
     return $project;

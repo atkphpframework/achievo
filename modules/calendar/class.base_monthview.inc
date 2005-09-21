@@ -166,10 +166,9 @@
   */
    function getItems($date)
    {
-     global $g_db;
+     $db = &atkGetDb();
 
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
+     $query = &$db->createQuery();
      $query->addTable('schedule');
      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
@@ -198,7 +197,7 @@
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
+     return $db->getRows($querystring);
    }
 
   }

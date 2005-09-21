@@ -24,14 +24,14 @@ class tpl_project_phase extends atkNode
   function postDel($rec)
   {
     // delete dependencies..      
-    global $g_db;
+    $db = &atkGetDb();
     $delquery = "DELETE FROM 
                  tpl_dependency 
                WHERE 
                  projectid = ".$rec["projectid"]["id"]."
                  AND (phaseid_row = ".$rec["phaseid"]["id"]." OR phaseid_col = ".$rec["phaseid"]["id"].")";
 
-    $g_db->query($delquery);
+    $db->query($delquery);
   }    
 }
 ?>

@@ -37,9 +37,7 @@
    * the actual displaying function
    */
    function dumpMatrix($selemployee)
-   {
-    global $g_db;
-
+   {    
     if (strlen($this->month) == 1) $month = "0".$this->month; else $month = $this->month;
     if (strlen($this->day) == 1) $day = "0".$this->day; else $day = $this->day;
     $date = $this->year."-".$month."-".$day;
@@ -58,12 +56,13 @@
     //if all users is checked then loop all users else loop only the selected users
     if ($selemployee[0] == "all")
     {
+      $db = &atkGetDb();
       $employees = array();
       $sql = "SELECT userid,  id
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname";
-      $employees = $g_db->getrows($sql);
+      $employees = $db->getrows($sql);
     }
     else
     {
@@ -103,10 +102,9 @@
   */
    function getItems($time, $date, $employee)
    {
-     global $g_db;
+     $db = &atkGetDb();
 
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
+     $query = &$db->createQuery();
      $query->addTable('schedule');
      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
      $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
@@ -132,7 +130,7 @@
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
+     return $db->getRows($querystring);
    }
 
   }

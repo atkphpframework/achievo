@@ -64,21 +64,21 @@
     
     function getDbStatus()
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       // We don't want the db class to display error messages, because
       // we handle the error ourselves.
-      $g_db->m_haltonerror = false;            
+      $db->m_haltonerror = false;            
       
-      $res = $g_db->connect();
+      $res = $db->connect();
       
       if ($res==DB_SUCCESS && atkconfig("database") == "mysql")
       {        
         // This can't be trusted. Mysql returns DB_SUCCESS even
         // if the user doesn't have access to the database. We only get an
         // error for this after we performed the first query.
-        $g_db->table_names();  // this triggers a query
-        $res = $g_db->_translateError($g_db->m_errno);
+        $db->table_names();  // this triggers a query
+        $res = $db->_translateError($db->m_errno);
       }
           
       return $res;
@@ -156,10 +156,8 @@
     
     function setupScreen($title, $output, $nextaction="", $params=array())
     {
-      global $g_layout;
-      
-      $g_layout->initGui();
-      $g_layout->ui_top($title);
+      atkimport("atk.ui.atkui");
+      $ui = &atkUI::getInstance();      
       
       $form = '<div align="left"><b>'.$title.'</b><br><br>';
                                
@@ -194,18 +192,20 @@
       }
                              
       $form.= '</form></div>';
-      $g_layout->output($form);
-      $g_layout->ui_bottom();
+      
+      $page = &atkPage::getInstance();
+      $theme = &atkTheme::getInstance();
+      $page->register_style($theme->stylePath("style.css"));
+      $page->addContent($ui->renderBox(array("content"=>$form, "title"=>$title)));      
       
     }
     
     function getTableNames()
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       $tablenames=array();
-      $tables = $g_db->table_names();
-      atk_var_dump($tables);
+      $tables = $db->table_names();      
       for ($i=0, $_i=count($tables); $i<$_i; $i++)
       {
         $tablenames[] = $tables[$i]["table_name"];
@@ -326,16 +326,14 @@
     
     function action_installdb(&$handler)
     {
-      global $g_modules, $g_layout, $g_modifiers;
+      global $g_modules, $g_modifiers;
       
       // We must clear the modifiers. Modifiers will cause extra fields to be
       // installed, but this should be done by the extension modules
       // themselves. Not clearing the modifiers will lead to 'column already
       // exists' errors.
       $old_modifiers = $g_modifiers;
-      $g_modifiers = array();
-      
-      $g_layout->initGui();                                     
+      $g_modifiers = array();      
       
       // We loop through the modules to install them. 
       // The setup module contains essential table needed for the installation process,
@@ -546,8 +544,8 @@
     
     function includeInstallFile($modname, $installfile)
     {
-      // give included file access to $g_db and $this ("$setup");
-      global $g_db;        
+      // give included file access to $db and $this ("$setup");
+      $db = &atkGetDb();
       $setup = &$this;
         
       // also set 'current module' to the module were now installing. This will 
@@ -597,11 +595,11 @@
         {       
           // for fresh installations the versioninfo doesn't exist. we set
           // errorreporting to silent, because we don't want to know this.
-          global $g_db;
-          $curhaltval = $g_db->m_haltonerror;
-          $g_db->m_haltonerror = false;
+          $db = &atkGetDb();
+          $curhaltval = $db->m_haltonerror;
+          $db->m_haltonerror = false;
           $rows = $versioninfo->selectDb();
-          $g_db->m_haltonerror = $curhaltval; // reset to original state.        
+          $db->m_haltonerror = $curhaltval; // reset to original state.        
           for ($i=0, $_i=count($rows); $i<$_i; $i++)
           {
             $result[$rows[$i]["module"]] = $rows[$i]["version"];
@@ -624,9 +622,8 @@
       {
         // We have to check if the table already exists. If it exists, we may need to
         // add columns to it.
-        global $g_db;        
-        $meta = $g_db->metadata($node->m_table, true);                
-        atk_var_dump($meta, 'metadata '.$this->m_table);
+        $db = &atkGetDb();
+        $meta = $db->metadata($node->m_table, true);                        
         
         if ((!is_array($meta)||count($meta)<=0) && in_array($node->m_table, $this->getTableNames()))
         {
@@ -734,8 +731,8 @@
     
     function columnExists($table, $column)
     {
-      global $g_db;
-      $meta = $g_db->metadata($table, true);                
+      $db = &atkGetDb();
+      $meta = $db->metadata($table, true);                
       for ($i=0, $_i=count($meta); $i<$_i; $i++)
       {
         if (strtolower($meta[$i]["name"]) == strtolower($column))
@@ -808,17 +805,17 @@
     
     function renameSequence($seq_name,$new_name)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $sql = "UPDATE db_sequence SET seq_name='".$new_name."'
                 WHERE seq_name='".$seq_name."'";
-      $res = $g_db->query($sql);  
+      $res = $db->query($sql);  
     }
     
     function renameTable($old, $new)
     {
-      global $g_db;    
+      $db = &atkGetDb();
       $sql = "ALTER TABLE $old RENAME $new";
-      $res = $g_db->query($sql);    
+      $res = $db->query($sql);    
       
       //change db_sequence name
       $this->renameSequence($old, $new);  
@@ -826,40 +823,39 @@
     
     function addColumn($table, $col, $type, $nullable=true, $default="")
     {
-      global $g_db;
+      $db = &atkGetDb();
     
       $sql = "ALTER TABLE $table ADD $col $type";
       if (!$nullable) $sql.=" NOT NULL";
       if ($default!="") $sql.= " DEFAULT '$default'";
-      $g_db->query($sql);        
+      $db->query($sql);        
     }
     
     function alterColumn($table, $col, $newname, $type, $nullable=true, $default="")
     {
-      global $g_db;
+      $db = &atkGetDb();
       $sql = "ALTER TABLE $table CHANGE $col $newname $type";
       if (!$nullable) $sql.=" NOT NULL";
       if ($default!="") $sql.= " DEFAULT '$default'";
-      $g_db->query($sql);
+      $db->query($sql);
     }
     
     function dropColumn($table, $col)
     {
-      global $g_db;
+      $db = &atkGetDb();
     
       $sql = "ALTER TABLE $table DROP $col";      
-      $res = $g_db->query($sql);        
+      $res = $db->query($sql);        
     }        
     
     function dropTable($table)
     { 
-      global $g_db;
-      $g_db->query("DROP TABLE $table");
+      $db = &atkGetDb();
+      $db->query("DROP TABLE $table");
     }
     
     function action_legacyupgrade(&$handler)
     {          
-      global $g_db; 
       
       $orgversion = $this->m_postvars["orgversion"];      
       $history = array("0.4", "0.6", "0.8", "0.9", "0.9.1", "0.9.2");
@@ -879,8 +875,9 @@
           set_time_limit(0); 
           
           // Like with install db, we pass the upgrade scripts a pointer
-          // to $setup and $g_db.
+          // to $setup and $db.
           $setup = &$this;
+          $db = &atkGetDb();
           
           // clear the report.
           $this->m_report = array();
@@ -943,34 +940,25 @@
     
     function renderResult($result)
     {
-    	    	
-      global $g_layout;
-      $output="";
+      $table = &atknew("atk.utils.atktablerenderer");      
+      
+      $data=array();
       if (count($result)>0)
       {        
-        $output = $g_layout->data_top();
-        $output.= $g_layout->tr_top();
-        $output.= $g_layout->ret_td_datatitle("Module");
-        $output.= $g_layout->ret_td_datatitle("Result");
-        $output.= $g_layout->tr_bottom();
+        $data[0][] = "Module";
+        $data[0][] = "Result";
+        
         foreach ($result as $modname => $result)
         {
-          $output.= $g_layout->tr_top();
-          $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td((!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
-          $output.= $g_layout->tr_bottom();
-        }
-        $output.= $g_layout->data_bottom();
+          $data[] = array($modname, (!empty($this->m_resultmsg[$result])?$this->m_resultmsg[$result]:$result));
+        } 
+        return $table->render($data, TBL_HEADER, "recordlist");
       }
-      return $output;
+      return "";
     }
     
     function action_upgradedb(&$handler)
-    {
-      global $g_layout;
-      
-      $g_layout->initGui();
-      
+    {         
       $result = array();
       
       if ($this->upgradedb($result))
@@ -1059,9 +1047,7 @@
     
     function upgradeCheck()
     {
-      global $g_modules, $g_layout;
-      
-      $g_layout->initGui();
+      global $g_modules;           
 
       $installedmodules = $this->getInstalledModules();            
       
@@ -1105,28 +1091,25 @@
       }
       
       if (count($installs)||count($patches))
-      {
+      {        
+        $table = atknew("atk.utils.atktablerenderer");       
+        
+
         // things must be installed or patched
-        $output = $g_layout->data_top();
-        $output.= $g_layout->tr_top();
-        $output.= $g_layout->ret_td_datatitle("Module");
-        $output.= $g_layout->ret_td_datatitle("Necessary action");
-        $output.= $g_layout->tr_bottom();
+        $data[0][] = "Module";
+        $data[0][] = "Necessary action";
+
         foreach ($installs as $modname)
         {
-          $output.= $g_layout->tr_top();
-          $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td("Install");
-          $output.= $g_layout->tr_bottom();
+          $data[] = array($modname, "Install");          
         }
         foreach ($patches as $modname=>$modpatches)
         {
-          $output.= $g_layout->tr_top();
-          $output.= $g_layout->ret_td($modname);          
-          $output.= $g_layout->ret_td(count($modpatches)." patch".(count($modpatches)>1?"es":""));
-          $output.= $g_layout->tr_bottom();
+          $data[] = array($modname, count($modpatches)." patch".(count($modpatches)>1?"es":""));          
         }
-        $output.= $g_layout->data_bottom();
+        
+        $output = $table->render($data, TBL_HEADER, "recordlist");
+        
         return $this->setupScreen("Database needs to be updated", "The following actions must be taken in order to update the Achievo database:<br><br>".$output."<br>Please click the 'continue' button below to start the update.", "upgradedb");
       }
       else      

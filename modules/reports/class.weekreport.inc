@@ -50,8 +50,8 @@ class weekreport extends atkNode
     $this->add(new timeDisplayAttribute("sat"));
     $this->add(new timeDisplayAttribute("sun"));
     
-    global $g_db;
-    $periods = $g_db->getRows("SELECT * FROM workperiod ORDER BY percentage");
+    $db = &atkGetDb();
+    $periods = $db->getRows("SELECT * FROM workperiod ORDER BY percentage");
     for($i=0;$i<count($periods);$i++)
     {
       $this->add(new timeDisplayAttribute($periods[$i]["name"], AF_TOTAL));
@@ -71,15 +71,15 @@ class weekreport extends atkNode
 
   function get_employee($user_id)
   {
-    global $g_db;
+    $db = &atkGetDb();
     $sql = "SELECT * FROM person WHERE status='active' AND id='$user_id'";
-    $record = $g_db->getrows($sql);
+    $record = $db->getrows($sql);
     return $record[0];
   }
 
   function get_employees($userid)
   {
-    global $g_db;
+    $db = &atkGetDb();
 
     $sql = "SELECT id, lastname,firstname,userid
             FROM person
@@ -87,7 +87,7 @@ class weekreport extends atkNode
             ORDER BY lastname
            ";
 
-    $records = $g_db->getrows($sql);
+    $records = $db->getrows($sql);
 
     $employee_code.='<OPTION VALUE="all">'.text("all_users").'</OPTION>';
     for($i=0;$i<count($records);$i++)
@@ -107,7 +107,7 @@ class weekreport extends atkNode
 
   function action_report(&$handler)
 	{
-    global $g_layout, $g_securityManager, $g_user, $g_db, $g_sessionManager;
+    global $g_securityManager, $g_user, $g_sessionManager;
     $atkorderby = $g_sessionManager->pageVar("atkorderby");
     $userid = $g_sessionManager->pageVar("userid");
     $nameswitch = $g_sessionManager->pageVar("nameswitch");
@@ -167,17 +167,20 @@ class weekreport extends atkNode
 
     if ($outputType==0)
     {
-      $g_layout->initGUI();
-      $g_layout->ui_top(text("parameters", $this->m_type, $this->m_module));
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
 
-      $g_layout->output('<form action="dispatch.php" method="get" name="entryform">');
+      $layout->initGUI();
+      $layout->ui_top(text("parameters", $this->m_type, $this->m_module));
 
-      $g_layout->output('<input type="hidden" name="atknodetype" value="reports.weekreport">');
-      $g_layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
-      $g_layout->table_simple();
-      $g_layout->output('<tr>');
-      $g_layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
-      $g_layout->output('</tr><tr>');
+      $layout->output('<form action="dispatch.php" method="get" name="entryform">');
+
+      $layout->output('<input type="hidden" name="atknodetype" value="reports.weekreport">');
+      $layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
+      $layout->table_simple();
+      $layout->output('<tr>');
+      $layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
+      $layout->output('</tr><tr>');
 
       // we have to pass a 'dummy' record to the attributes to set their default value.
       $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
@@ -186,72 +189,71 @@ class weekreport extends atkNode
                         "enddate"=>array("year"=>substr($enddate,0,4),
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));
-
-      //$g_layout->td(text("name").':</b> ');
-      $g_layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');
+      
+      $layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');
 
       if($view_all)
       {
-        $g_layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
+        $layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
       }
       else
       {
         $userid = $g_user["id"];
-        $g_layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
+        $layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
       }
 
       /*// TODO: Even if you don't have view_all right, you should still be able to view employees
       // that you supervise.
       if($view_all)
       {
-        $g_layout->output('</tr><tr>');
-        $g_layout->td(text("supervisor").':</b> ');
-        $g_layout->td('<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');
+        $layout->output('</tr><tr>');
+        $layout->td(text("supervisor").':</b> ');
+        $layout->td('<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');
       }    */
 
-      $g_layout->output('</tr><tr>');
+      $layout->output('</tr><tr>');
 
-      $g_layout->td(text("timespan").': ');
+      $layout->td(text("timespan").': ');
 
       $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
       $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
 
-      $g_layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
+      $layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
                       text("until").
                       '&nbsp; '.$enddateatt->edit($dummyrec));
 
-      $g_layout->output('</tr><tr>');
+      $layout->output('</tr><tr>');
 
-      $g_layout->td(text("status"));
-      $g_layout->td('<select name="showstatus">
+      $layout->td(text("status"));
+      $layout->td('<select name="showstatus">
                      <option VALUE="both" '.($showstatus=="both"?"selected":"").'>'.text("both").'
                      <option VALUE="locked" '.($showstatus=="locked"?"selected":"").'>'.text("locked").'
                      <option VALUE="unlocked" '.($showstatus=="unlocked"?"selected":"").'>'.text("unlocked").'
                      </select>');
-      $g_layout->output('</tr><tr>');
+      $layout->output('</tr><tr>');
 
 
-      $g_layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
+      $layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
 
-      $g_layout->output('</tr><tr>');
+      $layout->output('</tr><tr>');
 
-      $g_layout->td(text("report_output_type"));
-      $g_layout->td('<select name="outputType">
+      $layout->td(text("report_output_type"));
+      $layout->td('<select name="outputType">
                      <option VALUE="0" selected>'.text("report_output_standard").'
                      <option value="1">'.text("report_output_printable").'
                      <option value="2">'.text("report_output_export").'
                      </select>');
 
-      $g_layout->output('</tr><tr>');
-      $g_layout->td(text("report_show_details"));
+      $layout->output('</tr><tr>');
+      $layout->td(text("report_show_details"));
       if ($showdetails==1) $checked = "checked"; else $checked = "";
-      $g_layout->td('<input type="checkbox" name="showdetails" value="1" '.$checked.'>');
+      $layout->td('<input type="checkbox" name="showdetails" value="1" '.$checked.'>');
 
-      $g_layout->output('</tr><tr>');
+      $layout->output('</tr><tr>');
 
-      $g_layout->td(text("orderby").': ');
+      $layout->td(text("orderby").': ');
 
-      $g_layout->td('<select name="atkorderby">
+      $layout->td('<select name="atkorderby">
                      <option VALUE="week" '.($atkorderby=="week"?"selected":"").'>'.text("week").'
                      <option VALUE="status" '.($atkorderby=="status"?"selected":"").'>'.text("status").'
                      <option VALUE="userid" '.($atkorderby=="userid"?"selected":"").'>'.text("userid").'
@@ -259,9 +261,9 @@ class weekreport extends atkNode
 
 
 
-      $g_layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
+      $layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
 
-      $g_layout->ui_bottom();
+      $layout->ui_bottom();
     }
 
     if ($userid!="") // If we haven't got a userid by now, don't display the
@@ -320,7 +322,8 @@ class weekreport extends atkNode
                   AND usercontract.userid = person.id
                 ORDER BY
                   startdate";
-      $contracts = $g_db->getrows($query);
+      $db = &atkGetDb();
+      $contracts = $db->getrows($query);
 
       $end = endOfWeek(date("Y-m-d", $endstamp));
       $newendstamp = adodb_mktime(0,0,0,substr($end,5,2),substr($end,8,2)+1,substr($end,0,4));
@@ -340,9 +343,8 @@ class weekreport extends atkNode
           $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
-
-      global $g_db;
-      $periods = $g_db->getRows("SELECT * FROM workperiod");
+      
+      $periods = $db->getRows("SELECT * FROM workperiod");
       // collect data..
       $query = "SELECT
                   sum(time) as time, activitydate, hours.userid, person.lastname, person.firstname, workperiod
@@ -369,7 +371,7 @@ class weekreport extends atkNode
  // If you are not getting the results you expect from your query, please read the GROUP BY description.
  // See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."
           
-      $raw = $g_db->getrows($query);
+      $raw = $db->getrows($query);
           
       $strdow = array("sun","mon","tue","wed","thu","fri","sat");
           
@@ -418,7 +420,7 @@ class weekreport extends atkNode
           $query.="AND (userid = '$userid' OR userid IS NULL OR userid = '')";
         }
       }
-      $locks = $g_db->getrows($query);
+      $locks = $db->getrows($query);
       for ($i=0;$i<count($locks);$i++)
       {
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
@@ -502,13 +504,13 @@ class weekreport extends atkNode
 
       if ($outputType=="0")
       {
-        $g_layout->ui_top(text("weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
+        $layout->ui_top(text("weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
 
         if ($userid!="all")
         {
           $emprec = $this->get_employee($userid);      ;
 
-          $employeedata = '<br>'.$g_layout->ret_table_simple().'<tr>';
+          $employeedata = '<br>'.$layout->ret_table_simple().'<tr>';
 
           if ($nameswitch=="supervisor")
           {
@@ -518,25 +520,25 @@ class weekreport extends atkNode
           {
             $label = text("name");
           }
-          $employeedata.= $g_layout->ret_td($label.": ");
-          $employeedata.= $g_layout->ret_td($emprec["lastname"].", ".$emprec["firstname"]);
+          $employeedata.= $layout->ret_td($label.": ");
+          $employeedata.= $layout->ret_td($emprec["lastname"].", ".$emprec["firstname"]);
           $employeedata.= '</tr><tr>';
-          $employeedata.= $g_layout->ret_td(text("email").": ");
-          $employeedata.= $g_layout->ret_td($emprec["email"]);
+          $employeedata.= $layout->ret_td(text("email").": ");
+          $employeedata.= $layout->ret_td($emprec["email"]);
           $employeedata.= '</tr></table>';
 
-          $g_layout->output($employeedata);
-          $g_layout->output('<br>');
+          $layout->output($employeedata);
+          $layout->output('<br>');
         }
 
 
-        $g_layout->output('<br>'.$this->recordList($rldata, array(),false,$suppress));
-        $g_layout->output('<br><br>');
-        $g_layout->ui_bottom();
+        $layout->output('<br>'.$this->recordList($rldata, array(),false,$suppress));
+        $layout->output('<br><br>');
+        $layout->ui_bottom();
       }
       else if ($outputType=="1")
       {
-        $g_layout->output($this->specialRecordList($rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
+        $layout->output($this->specialRecordList($rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
       }
       else if ($outputType=="2")
       {

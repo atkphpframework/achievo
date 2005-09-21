@@ -27,13 +27,13 @@ class hours_lock extends atkNode
   
   function postAdd($record)
   {
-    global $g_db;
+    $db = &atkGetDb();
     atkdebug("postAdd");
     // After adding a lock for all users, we delete individual locks for that same week.  
     if ($this->m_attribList["userid"]->isEmpty($record))
     {
       $query = "DELETE FROM hours_lock WHERE week='".$record['week']."' AND userid IS NOT NULL AND id<>".$record["id"];
-      $g_db->query($query);
+      $db->query($query);
     }
   }
   

@@ -51,8 +51,8 @@
      */
     function clearDuplicateDefaults($default_id)
     {
-      global $g_db;
-      $g_db->query("UPDATE workperiod SET defaultrate = 0 WHERE id <> ".$default_id);
+      $db = &atkGetDb();
+      $db->query("UPDATE workperiod SET defaultrate = 0 WHERE id <> ".$default_id);
     }
     
     function postAdd($rec)

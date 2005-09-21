@@ -139,9 +139,7 @@ class todo extends atkNode
   }
 
   function postAdd($rec)
-  {
-   global $g_db;
-
+  { 
    // obtain some project info
    $assignTo = $rec["assigned_to"]["id"];
    $assigner = $rec["owner"]["id"];
@@ -149,12 +147,13 @@ class todo extends atkNode
 
    // get project name
    $q       = "SELECT name FROM project WHERE id=$pid";
-   $r       = $g_db->getRows($q);
+   $db = &atkGetDb();
+   $r       = $db->getRows($q);
    $project = $r[0]["name"];
 
    // now get her/his email address
    $q  = "SELECT email, lastname, firstname, userid, id FROM person WHERE id IN ('$assignTo','".$assigner."')";
-   $emails  = $g_db->getrows($q);
+   $emails  = $db->getrows($q);
 
    // now assemble the mail body
    $subj  = text("todoadded").": ".$rec["title"];
@@ -203,7 +202,7 @@ class todo extends atkNode
 
   function postUpdate($rec)
   {
-   global $g_db, $g_user;
+   global $g_user;
 
    if ($this->todoChanged($rec,$rec["atkorgrec"]))
    {
@@ -215,11 +214,12 @@ class todo extends atkNode
      $query = "SELECT DISTINCT lastname, firstname, email, userid, id
                FROM person
                WHERE id IN('$owner','".$g_user["id"]."','$newassign','$oldassign')";
-     $emails    = $g_db->getrows($query);
+     $db = &atkGetDb();
+     $emails    = $db->getrows($query);
      $pid  = $rec["projectid"]["id"];
      // get project name
      $query = "SELECT name FROM project WHERE id=$pid";
-     $res   = $g_db->getrows($query);
+     $res   = $db->getrows($query);
      $project = $res[0]["name"];
 
      $body = text("todo").": ".$rec["title"]."\n";

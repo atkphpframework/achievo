@@ -27,7 +27,7 @@
   useattrib("atkdummyattribute");
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
-  useattrib("utils.fuzzysearchattribute");
+  useattrib("atkfuzzysearchattribute");
 
   class schedule extends atkNode
   {
@@ -174,7 +174,7 @@
 
     function get_employees($user_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $sql = "SELECT lastname,firstname,userid,id
               FROM person
@@ -182,7 +182,7 @@
               ORDER BY lastname
              ";
 
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
       $employee_code='<OPTION VALUE="all">'.text("allusers");
       for($i=0;$i<count($records);$i++)
       {
@@ -194,14 +194,14 @@
 
     function get_employees2($selemployee)
     {
-      global $g_db;
+      $db = &atkGetDb();
 
       $sql = "SELECT lastname,firstname,userid,id
               FROM person
               WHERE status='active' AND role='employee'
               ORDER BY lastname
              ";
-      $records = $g_db->getrows($sql);
+      $records = $db->getrows($sql);
 
       if ($selemployee["all"] == "all") { $sel="CHECKED"; } else { $sel=""; }
       $employee_code='<INPUT TYPE="checkbox" VALUE="all" NAME="employee[]" '.$sel.'><font size="-1">'.text("allusers")."</font><br>";
@@ -214,8 +214,9 @@
     }
 
     function adminPage(&$handler)
-    {
-      global $g_layout;
+    {      
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
 
       if (method_exists($this, $this->m_view))
       {
@@ -230,17 +231,15 @@
         $result = "Niet bestaande view (".$this->m_view.")";
       }
 
-      $g_layout->initGUI();
-      $g_layout->ui_top(text($this->m_type)." - ".text($this->m_view));
-      $g_layout->output($this->statusbar());
-      $g_layout->output($result);
-      $g_layout->ui_bottom();
+      $layout->initGUI();
+      $layout->ui_top(text($this->m_type)." - ".text($this->m_view));
+      $layout->output($this->statusbar());
+      $layout->output($result);
+      $layout->ui_bottom();
     }
 
     function monthview($viewdate)
-    {
-      global $g_db;
-
+    {      
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
       $year  = substr($viewdate, 0,4);
@@ -290,9 +289,7 @@
     }
 
     function employeeview($viewdate)
-    {
-      global $g_db;
-
+    {      
       $selemployee = $_REQUEST["selemployee"];
 
       if (!is_array($viewdate))
@@ -348,8 +345,6 @@
 
     function dayview($viewdate)
     {
-      global $g_db;
-
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
       $month = substr($viewdate, 5,2);
@@ -398,9 +393,7 @@
     }
 
     function weekview($viewdate)
-    {
-      global $g_db;
-
+    {      
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
       $month = substr($viewdate, 5,2);
@@ -430,7 +423,6 @@
     function postAdd($rec, $mode)
     {
       // insert the owner as first attendee.
-      global $g_db;
       $this->_addAttendeeRecord($rec["id"], $rec["owner"]["id"]);      
     }
 
@@ -444,13 +436,13 @@
     
     function _addAttendeeRecord($schedule_id, $person_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       // attendee may already exist.
-      $recs = $g_db->getrows("SELECT count(*) AS cnt FROM schedule_attendee WHERE schedule_id = $schedule_id AND person_id = $person_id");
+      $recs = $db->getrows("SELECT count(*) AS cnt FROM schedule_attendee WHERE schedule_id = $schedule_id AND person_id = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
       {
-        $g_db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ($schedule_id, $person_id)");
+        $db->query("INSERT INTO schedule_attendee (schedule_id, person_id) VALUES ($schedule_id, $person_id)");
       }
     }
   }

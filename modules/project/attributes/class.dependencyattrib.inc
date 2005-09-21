@@ -48,7 +48,9 @@ class dependencyAttribute extends atkAttribute
    */
   function edit($record="")
   {       
-    global $g_layout;
+    atkimport("atk.layout");
+    $layout = &layout::getInstance();
+
     $deps = $record[$this->fieldname()]["deps"];
     
     if (count($deps)==0)
@@ -62,17 +64,17 @@ class dependencyAttribute extends atkAttribute
    
     if (count($deps)>0)
     {
-      $result=$g_layout->data_top();
-      $result.=$g_layout->ret_td_datatitle(text('dependencies'));
-      $result.=$g_layout->ret_td_datatitle(text('delete'));
+      $result=$layout->data_top();
+      $result.=$layout->ret_td_datatitle(text('dependencies'));
+      $result.=$layout->ret_td_datatitle(text('delete'));
       for ($i=0;$i<count($deps);$i++)
       {
-        $result.=$g_layout->tr_top(($i%2)!=0);
-        $result.=$g_layout->ret_td(text("phase")." '".$deps[$i]["firstname"]."' ".text("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'");
-        $result.=$g_layout->ret_td('&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">');
-        $result.=$g_layout->tr_bottom();
+        $result.=$layout->tr_top(($i%2)!=0);
+        $result.=$layout->ret_td(text("phase")." '".$deps[$i]["firstname"]."' ".text("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'");
+        $result.=$layout->ret_td('&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">');
+        $result.=$layout->tr_bottom();
       }
-      $result.=$g_layout->data_bottom().'<br>';
+      $result.=$layout->data_bottom().'<br>';
     }
         
     $recs = $this->getPhases($record["id"]);
@@ -100,7 +102,7 @@ class dependencyAttribute extends atkAttribute
   
   function getPhases($projectid)
   {
-    global $g_db;
+    $db = &atkGetDb();
     
     $query = "SELECT 
                 id, name
@@ -109,7 +111,7 @@ class dependencyAttribute extends atkAttribute
               WHERE                
                 projectid = ".$projectid." ORDER BY name";
     
-    $recs = $g_db->getrows($query);
+    $recs = $db->getrows($query);
     return $recs;
   }
     
@@ -129,12 +131,9 @@ class dependencyAttribute extends atkAttribute
   } 
   
   function load($notused, $rec)
-  {
-    global $g_db;
-    
+  {    
     if ($rec["id"]!="")
     {
-// @TODO JvdW 10-01-2004 ROW is Oracle keyword
       $query = "SELECT 
                   phaseid_row as first, 
                   ROW1.name as firstname, 
@@ -148,8 +147,8 @@ class dependencyAttribute extends atkAttribute
                   AND (ROW1.projectid = ".$rec["id"]." OR COL1.projectid = ".$rec["id"].")
                   ORDER BY phaseid_row";
     
-    
-      return array("deps"=>$g_db->getrows($query));
+      $db = &atkGetDb();
+      return array("deps"=>$db->getrows($query));
     }
     else
     {
@@ -159,7 +158,7 @@ class dependencyAttribute extends atkAttribute
   
   function store($notused, $rec)
   {
-    global $g_db;
+    $db = &atkGetDb();
         
     $values = $rec[$this->fieldName()];
     
@@ -176,7 +175,7 @@ class dependencyAttribute extends atkAttribute
                        phaseid_row = ".$delarr[$i]["first"]."
                        AND phaseid_col = ".$delarr[$i]["last"];
         
-        $g_db->query($delquery);
+        $db->query($delquery);
       }
     }
     
@@ -187,7 +186,7 @@ class dependencyAttribute extends atkAttribute
                   INTO dependency (phaseid_row,phaseid_col)
                   VALUES (".$values["first"].",".$values["last"].")";
       
-      $g_db->query($query);
+      $db->query($query);
     }
     return true;
   }

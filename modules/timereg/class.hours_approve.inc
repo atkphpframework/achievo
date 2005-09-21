@@ -17,9 +17,9 @@ class hours_approve extends hours
   
   function convertheck()
   {
-    global $g_db;
+    $db = &atkGetDb();
     
-    $showtable = $g_db->getrows("SHOW TABLES LIKE 'hours_approved'");
+    $showtable = $db->getrows("SHOW TABLES LIKE 'hours_approved'");
     
     if (!empty($showtable[0]))
     {
@@ -29,11 +29,13 @@ class hours_approve extends hours
   
   function action_admin(&$handler)
   {
-    global $viewdate, $g_layout, $_POST, $ATK_VARS;
+    global $viewdate;
     
     $formbegin = '<form name="entryform" enctype="multipart/form-data" '."\n".
                  'action="dispatch.php" method="post" onsubmit="globalSubmit(this)">'."\n".session_form();
-    $g_layout->output($formbegin);
+    
+    $output = &atkOutput::getInstance();            
+    $output->output($formbegin);
     
     if ($viewdate) $output = $this->approvescreen();
     $output.= $this->approvedweekview();
@@ -61,7 +63,10 @@ class hours_approve extends hours
   
   function approvedweekview()
   {
-    global $g_layout, $g_user, $g_db;
+    global $g_user;
+    
+    atkimport("atk.layout");
+    $layout = &layout::getInstance();
     
     if (is_numeric($this->m_postvars['year']) && strlen($this->m_postvars['year'])==4)
       $year = trim($this->m_postvars['year']);
@@ -69,19 +74,19 @@ class hours_approve extends hours
      $year = date('Y');
     
     $yearattrib = new atkNumberAttribute("year",0,6);
-    $g_layout->initGUI();
-    $g_layout->ui_top(text('title_houradmin_approve'));
+    $layout->initGUI();
+    $layout->ui_top(text('title_houradmin_approve'));
 
-    $g_layout->output(text('year')." : ".$yearattrib->edit(array("year"=>$year)));
-    $g_layout->output('<input type="submit" name="atkbtn1" value="'.text("view").'">');
+    $layout->output(text('year')." : ".$yearattrib->edit(array("year"=>$year)));
+    $layout->output('<input type="submit" name="atkbtn1" value="'.text("view").'">');
     
     $formend = '</form>';
-    $g_layout->output($formend);
+    $layout->output($formend);
     
-    $g_layout->output($this->showEmployees($g_user['id'], $year));
-    $g_layout->output('<br />'.text('hours_approve_color_explain'));
-    $g_layout->output("<br /><br />".$this->convertheck());
-    $g_layout->ui_bottom();
+    $layout->output($this->showEmployees($g_user['id'], $year));
+    $layout->output('<br />'.text('hours_approve_color_explain'));
+    $layout->output("<br /><br />".$this->convertheck());
+    $layout->ui_bottom();
   }
   
   function getdatefromweek($yearweek)
@@ -100,7 +105,7 @@ class hours_approve extends hours
     
   function showEmployees($userid, $year)
   {
-    global $prevnextlinks, $g_db;
+    global $prevnextlinks;
 
     $employeenode = new atkNode("tools");
     $employeenode = &getNode("employee.employee");
@@ -131,10 +136,8 @@ class hours_approve extends hours
   }
    
   function makeLinks($users, $year)
-  {
-    global $g_layout;
-    
-    $output.= $g_layout->ret_table_simple();
+  {       
+    $output.= '<table border="0">';
     
     $output.="<thead><tr><th>".text('user')."</th><th align='center'>".text('weeks')."</th></tr></thead>\n";
     
@@ -194,10 +197,10 @@ class hours_approve extends hours
   
   function action_convert_old(&$handler)
   {
-    global $g_db;
+    $db = &atkGetDb();
     $lockedhoursbyweek = array();
-    $approvedhours = $g_db->getrows("SELECT * FROM hours_approved");
-    $lockedhours = $g_db->getrows("SELECT * FROM hours_lock");
+    $approvedhours = $db->getrows("SELECT * FROM hours_approved");
+    $lockedhours = $db->getrows("SELECT * FROM hours_lock");
     
     foreach ($lockedhours as $lockedhour)
     {
@@ -208,15 +211,15 @@ class hours_approve extends hours
     {
       if ($lockedhoursbyweek[$approvedhour['week']][$approvedhour['userid']])
       {
-        $g_db->query("UPDATE `hours_lock` SET `approved` = '1' WHERE `id` = '".$lockedhoursbyweek[$approvedhour['week']][$approvedhour['userid']]['id']."'");
+        $db->query("UPDATE `hours_lock` SET `approved` = '1' WHERE `id` = '".$lockedhoursbyweek[$approvedhour['week']][$approvedhour['userid']]['id']."'");
       }
       else 
       {
-        $g_db->query("INSERT INTO `hours_lock` (`week`,`userid` ,`approved`) VALUES ('".$approvedhour['week']."', '".$approvedhour['userid']."', '1');");
+        $db->query("INSERT INTO `hours_lock` (`week`,`userid` ,`approved`) VALUES ('".$approvedhour['week']."', '".$approvedhour['userid']."', '1');");
       }
     }
     
-    $g_db->query("DROP TABLE `hours_approved`");
+    $db->query("DROP TABLE `hours_approved`");
   }
 }
 

@@ -66,20 +66,21 @@
     
     function action_stats(&$handler)
     {
-      global $g_layout;
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
       
       include_once("achievotools.inc");
       
-      $g_layout->initGui();
-      $g_layout->ui_top(text("parameters", "employeestats", "employee")); 
+      $layout->initGui();
+      $layout->ui_top(text("parameters", "employeestats", "employee")); 
       
       $startdate = $this->m_viewstart;
       $enddate = $this->m_viewend;
       $employeeid = $this->m_employeeid;
       
-      $g_layout->output('<br>'.$this->navigator().'<br>');
+      $layout->output('<br>'.$this->navigator().'<br>');
       
-      $g_layout->ui_bottom();
+      $layout->ui_bottom();
       
       $empnode = &getNode("employee.employee");
       
@@ -91,7 +92,7 @@
         $descriptor = $empnode->descriptor($recs[0]);
       }
       
-      $g_layout->ui_top(text("stats").($descriptor!=""?" - ".$descriptor:""));
+      $layout->ui_top(text("stats").($descriptor!=""?" - ".$descriptor:""));
          
       $backbtn = "";
       if (atkLevel()>0)
@@ -153,9 +154,9 @@
       
       $output.="<br>".$backbtn."<br>";
       
-      $g_layout->output($output);   
+      $layout->output($output);   
       
-      $g_layout->ui_bottom();
+      $layout->ui_bottom();
     }
     
     function _paramForm($contents)
@@ -209,7 +210,7 @@
     
     function _tableStats($itemheader, $dataset, $datasetdescriptors, $detailparams, $idparam="")
     {
-      global $g_layout, $g_securityManager;            
+      global $g_securityManager;            
       
       // Totals count
       $total = 0;
@@ -222,17 +223,20 @@
       
       if ($detailparams["userid"]=="") $detailparams["userid"]="all"; // workaround, the hoursurvey will select current user if no user is passed.
       
-      $res = $g_layout->data_top();
-      $res.= $g_layout->tr_top();
-      $res.= $g_layout->ret_td_datatitle($itemheader);
-      $res.= $g_layout->ret_td_datatitle(text("time"));
-      $res.= $g_layout->ret_td_datatitle(text("percentage"));
-      if ($mayviewdetail) $res.= $g_layout->ret_td_datatitle(text("details"));
-      $res.= $g_layout->tr_bottom();
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
+      
+      $res = $layout->data_top();
+      $res.= $layout->tr_top();
+      $res.= $layout->ret_td_datatitle($itemheader);
+      $res.= $layout->ret_td_datatitle(text("time"));
+      $res.= $layout->ret_td_datatitle(text("percentage"));
+      if ($mayviewdetail) $res.= $layout->ret_td_datatitle(text("details"));
+      $res.= $layout->tr_bottom();
       
       for($i=0, $_i=count($dataset); $i<$_i; $i++)
       {
-        $res.= $g_layout->tr_top($i%2!=0);
+        $res.= $layout->tr_top($i%2!=0);
         
         $descriptor = array();
         // datasetdescriptors is an array contain information on which fields in $dataset are
@@ -243,27 +247,27 @@
         }
         $value = $dataset[$i]["total"];
                 
-        $res.= $g_layout->ret_td(implode(" ", $descriptor));
-        $res.= $g_layout->ret_td(time_format($value, true), 'align="right"');
+        $res.= $layout->ret_td(implode(" ", $descriptor));
+        $res.= $layout->ret_td(time_format($value, true), 'align="right"');
         $percentage = ($total<=0?0:(($value/$total)*100));
-        $res.= $g_layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
+        $res.= $layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
         if ($mayviewdetail)
         {          
           $detailparams[$idparam] = $dataset[$i]["id"];
           $detailurl = href(dispatch_url("reports.hoursurvey", "report", $detailparams), text("view"), SESSION_NESTED);
-          $res.= $g_layout->ret_td($detailurl);
+          $res.= $layout->ret_td($detailurl);
         }
-        $res.= $g_layout->tr_bottom();
+        $res.= $layout->tr_bottom();
       }
       
-      $res.= $g_layout->tr_top();
-      $res.= $g_layout->ret_td_datatitle(text("total"));
-      $res.= $g_layout->ret_td_datatitle(time_format($total, true), 'align="right"');
-      $res.= $g_layout->ret_td_datatitle('100.00%', 'align="right"');
-      if ($mayviewdetail) $res.= $g_layout->ret_td_datatitle("");
-      $res.= $g_layout->tr_bottom();
+      $res.= $layout->tr_top();
+      $res.= $layout->ret_td_datatitle(text("total"));
+      $res.= $layout->ret_td_datatitle(time_format($total, true), 'align="right"');
+      $res.= $layout->ret_td_datatitle('100.00%', 'align="right"');
+      if ($mayviewdetail) $res.= $layout->ret_td_datatitle("");
+      $res.= $layout->tr_bottom();
       
-      $res.= $g_layout->data_bottom();
+      $res.= $layout->data_bottom();
       
       return $res;
     }

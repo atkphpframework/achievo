@@ -6,7 +6,7 @@
   useattrib("atknumberattribute");
   useattrib("atkdurationattribute");
   useattrib("atkdateattribute");
-  useattrib("utils.fuzzysearchattribute");  
+  useattrib("atkfuzzysearchattribute");  
   useattrib("project.spendhoursattribute");
   userelation("atkmanytoonerelation");
   userelation("atkmanyboolrelation");
@@ -84,12 +84,12 @@
   
     function postDel($rec)
     {
-      global $g_db;
+      $db = &atkGetDb();
       $delphase = $rec["id"];
   
       // delete dependencies for this phase./
       $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
-      $g_db->query($query);
+      $db->query($query);
     }  
   
     function action_select(&$handler)
@@ -131,13 +131,13 @@
     
     function _addPlanningRecord($phase_id, $person_id, $initial_planning)
     {
-      global $g_db;
+      $db = &atkGetDb();
       
       // attendee may already exist.
-      $recs = $g_db->getrows("SELECT count(*) AS cnt FROM project_phaseplanning WHERE phaseid = $phase_id AND personid = $person_id");
+      $recs = $db->getrows("SELECT count(*) AS cnt FROM project_phaseplanning WHERE phaseid = $phase_id AND personid = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
       {
-        $g_db->query("INSERT INTO project_phaseplanning (phaseid, personid, current_planning, initial_planning)
+        $db->query("INSERT INTO project_phaseplanning (phaseid, personid, current_planning, initial_planning)
                            VALUES ($phase_id, $person_id, $initial_planning, $initial_planning)");
       }
       $this->_addTeamMemberRecord($phase_id,$person_id);
@@ -152,9 +152,9 @@
     */
     function _addTeamMemberRecord($phase_id,$person_id)
     {
-      global $g_db;
+      $db = &atkGetDb();
       // person may allready exist
-      $recs = $g_db->getrows("SELECT count(*) as cnt 
+      $recs = $db->getrows("SELECT count(*) as cnt 
                               FROM phase, project,project_person
                               WHERE phase.projectid = project.id
                                 AND project.id = project_person.projectid
@@ -163,12 +163,12 @@
                               GROUP BY project.id");
       if(!count($recs)|| $recs[0]["cnt"]==0)
       {
-        $recs = $g_db->getrows("SELECT project.id FROM phase,project
+        $recs = $db->getrows("SELECT project.id FROM phase,project
                                 WHERE phase.projectid = project.id
                                   AND phase.id = $phase_id");
         $project_id = $recs[0]["id"];
         // Add person to members, role will be empty
-        $g_db->query("INSERT INTO project_person (projectid,personid)
+        $db->query("INSERT INTO project_person (projectid,personid)
                       values ($project_id,$person_id)");
       }
     }
@@ -192,12 +192,12 @@
 
   function postDel($rec)
   {
-    global $g_db;
+    $db = &atkGetDb();
     $delphase = $rec["id"];
 
     // delete dependencies for this phase./
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
-    $g_db->query($query);
+    $db->query($query);
     return true;
   }  
 
