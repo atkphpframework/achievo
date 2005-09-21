@@ -29,7 +29,7 @@ class contracts extends atkNode
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
     $this->add(new atkDummyAttribute("projectaddhint", text("fuzzyprojectaddhint", "contracts"), AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-    $this->add(new fuzzySearchAttribute("projectadd", "project.project", "addProjects", FSA_MULTISELECT));  
+    $this->add(new atkFuzzySearchAttribute("projectadd", "project.project", "addProjects", FSA_MULTISELECT));  
 
     $this->setTable("contract","contract");
     $this->setOrder("startdate");

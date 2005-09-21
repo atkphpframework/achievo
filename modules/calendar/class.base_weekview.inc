@@ -189,23 +189,18 @@
     function dumpMatrix()
     {
       global $g_user;
+      
+      $matrix = &atknew("atk.utils.atktablerenderer");
      
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
-
-      $buff   = $layout->initGUI();
-      $buff .= $layout->data_top();
-
-      $buff .= $layout->tr_top();
-      $buff .= $layout->ret_td_datatitle();
+      $cells[0][] = ""; // empty corner cell
 
       for ($i=1;$i<=7;$i++)
       {
         $text  = text($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
         $href  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
-        $buff .= $layout->ret_td_datatitle(href($href, $text), 'align="center"');
-      }
-      $buff .= $layout->tr_bottom();
+        $cells[0][$i] = href($href, $text);
+        $matrix->setColAlignment($i, TBL_CENTER);
+      }      
 
       $dayparts = array("allday","morning","afternoon","evening");
 
@@ -213,8 +208,8 @@
       {
 
         // show different color when daypartname = allday.
-        $buff .= $layout->tr_top($daypart_name=="allday");
-        $buff .= $layout->ret_td(text($daypart_name));
+        $row = array();
+        $row[0] = text($daypart_name);
 
         for ($i=1;$i<=7;$i++)
         {
@@ -257,26 +252,23 @@
             if ($this->showGlobal!=$dayappointments[$j]["owner"]) $str.=" (".$dayappointments[$j]["owneruser"]["userid"].")";
 
             if ($j!=count($dayappointments)-1) $str.="<br>";
-          }
-          $buff .= $layout->ret_td($str);
+          }          
+          $row[$i] = $str;
         }
-        $buff .= $layout->tr_bottom();
+        $cells[] = $row;
       }
 
-      $buff .= $layout->tr_top();
-      $buff .= $layout->ret_td_datatitle();
+      $row[0] = ""; // empty left bottom corner cell
+      
       for ($i=1;$i<=7;$i++)
       {
         $text  = text("add");
-        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
-        $buff .= $layout->ret_td_datatitle(href($href, $text, SESSION_NESTED), 'align="center"');
+        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];        
+        $row[$i] = href($href, $text, SESSION_NESTED);
       }
-      $buff .= $layout->tr_bottom();
+      $cells[] = $row;            
 
-      $buff .= $layout->data_bottom();
-      $buff .= "<br><br>";
-
-      return $buff;
+      return $matrix->render($cells, TBL_HEADER|TBL_FOOTER, "recordlist")."<br><br>";
     }
 
     function get_attendees($scheduleid)
