@@ -107,11 +107,6 @@ function convertDurationToHours(&$record, $int = false)
       $record['starttime']['seconds'] = $record['starttime']['seconds']*1;
     }
   }
-  else 
-  {
-    halt("No starttime or duration!");
-    atk_var_dump($record, "<h1>record</h1>");
-  }
 }
 
 class to_date extends atkDateAttribute
