@@ -45,8 +45,6 @@
   //
   $config_language="en";
 
-  // The menu layout that achievo uses
-  $config_menu_layout = "achievo";
 
   // -------------------------------------------
   //           SECURITY CONFIGURATION
