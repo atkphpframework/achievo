@@ -1,6 +1,6 @@
 <?php
 
-  $g_db->query("CREATE TABLE schedule (
+  $db->query("CREATE TABLE schedule (
                    id int(10) NOT NULL,
                    startdate date DEFAULT '0000-00-00' NOT NULL,
                    enddate date DEFAULT '0000-00-00' NOT NULL,
@@ -16,13 +16,13 @@
                    PRIMARY KEY (id)   
                 )");      
 
-  $g_db->query("CREATE TABLE schedule_attendees (
+  $db->query("CREATE TABLE schedule_attendees (
                    scheduleid int(10) DEFAULT '0' NOT NULL,
                    userid varchar(15) NOT NULL,
                    PRIMARY KEY (scheduleid, userid)   
                 )");      
    
-  $g_db->query("CREATE TABLE schedule_types (
+  $db->query("CREATE TABLE schedule_types (
                    id int(10) NOT NULL,
                    description varchar(50) NOT NULL,
                    bgcolor varchar(7) NOT NULL,

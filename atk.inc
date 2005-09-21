@@ -13,12 +13,8 @@
    }
   
   // Atknode is required. Don't remove it.
-  include_once($config_atkroot."atk/modules/class.atkmodule.inc"); // need to include this file
+  include_once($config_atkroot."atk/include/initial.inc"); // need to include this file
                                                                    // now, because achievoModule needs it.
-  include_once($config_atkroot."modules/class.achievomodule.inc"); 
-  include_once($config_atkroot."atk/class.atknode.inc"); 
-  include_once($config_atkroot."atk/utils/adodb-time.inc.php"); 
-  
   // Some global achievo definitions we use in nodes.
   
   // Uniform textbox sizes

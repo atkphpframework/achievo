@@ -13,7 +13,8 @@
     $g_theme["Name"] = atkconfig("defaulttheme"); // default from configfile 
   
     $sql = "SELECT theme from person where userid='".$g_user["name"]."'";
-    $result = $g_db->getrows($sql);
+    $db = &atkGetDb();
+    $result = $db->getrows($sql);
     
     if(count($result)==1&&$result[0]["theme"]!="")
     {
@@ -25,7 +26,11 @@
     }
   }
   if (browserInfo::detectPDA()) $g_theme["Name"]="pda";
-  $g_layout->initTheme();
-  $g_layout->import_layout();
+  
+  atkimport("atk.layout");
+  $layout = &layout::getInstance();
+
+  $layout->initTheme();
+  $layout->import_layout();
   
 ?>

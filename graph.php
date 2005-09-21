@@ -63,7 +63,8 @@
   
   if (!$res)
   {
-    $g_layout->outputFlush();
+    $output = &atkOutput::getInstance();
+    $output->outputFlush();
   }
   
 ?>

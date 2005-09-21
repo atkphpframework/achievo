@@ -3,7 +3,7 @@
   $setup->report("Start conversion of 0.4 -> 0.6", "info");
  
   $setup->dropTable("accessright");
-  $g_db->query("CREATE TABLE accessright (
+  $db->query("CREATE TABLE accessright (
                    node varchar(25) NOT NULL,
                    action varchar(25) NOT NULL,
                    entity int(11) DEFAULT '0' NOT NULL,
@@ -14,7 +14,7 @@
                   between Achievo 0.4 and 0.6. Please review the security profiles after conversion.", 
                  "important");
   
-  $g_db->query("CREATE TABLE customer (
+  $db->query("CREATE TABLE customer (
                    id int(10) NOT NULL,
                    name varchar(100) NOT NULL,
                    address varchar(100),
@@ -29,7 +29,7 @@
                    PRIMARY KEY (id)
                 )");
                  
-  $g_db->query("CREATE TABLE contact (
+  $db->query("CREATE TABLE contact (
                    id int(10) NOT NULL,
                    lastname varchar(50),
                    firstname varchar(50),
@@ -46,13 +46,13 @@
                    PRIMARY KEY (id)
                 )");
                 
-  $g_db->query("CREATE TABLE db_sequence (
+  $db->query("CREATE TABLE db_sequence (
                   seq_name varchar(20) NOT NULL,
                   nextid int(10) unsigned DEFAULT '0' NOT NULL,
                   PRIMARY KEY (seq_name)
                 )");
                 
-  $g_db->query("CREATE TABLE dependency (
+  $db->query("CREATE TABLE dependency (
                   phaseid_row int(10) DEFAULT '0' NOT NULL,
                   phaseid_col int(10) DEFAULT '0' NOT NULL,
                   PRIMARY KEY (phaseid_row, phaseid_col)
@@ -68,29 +68,29 @@
   $setup->addColumn("employee", "theme", "varchar(50)");
   $setup->addColumn("employee", "entity", "int(10)");
   
-  $g_db->query("ALTER TABLE employee DROP PRIMARY KEY, ADD PRIMARY KEY(userid)");
+  $db->query("ALTER TABLE employee DROP PRIMARY KEY, ADD PRIMARY KEY(userid)");
   
-  $g_db->query("CREATE TABLE profile (
+  $db->query("CREATE TABLE profile (
                    id int(10) NOT NULL,
                    name varchar(50) NOT NULL,
                    PRIMARY KEY (id)
                 )");
     
-  $g_db->query("INSERT INTO profile (id,name) VALUES (".$g_db->nextid("profile").",'Default group')");  
+  $db->query("INSERT INTO profile (id,name) VALUES (".$db->nextid("profile").",'Default group')");  
 
   $setup->report("Due to the way password handling changed between 0.4 and 0.6, 
                   all user passwords have been reset to 'default'. 
                   Users should change their password after they first log in.", 
                  "important");                
  
-  $g_db->query("UPDATE employee SET password='".md5('default')."', theme='outlook', entity=1");
+  $db->query("UPDATE employee SET password='".md5('default')."', theme='outlook', entity=1");
   
   $setup->addColumn("project", "startdate", "date");
   $setup->addColumn("project", "customer", "int(10)");
   
-  $g_db->query("UPDATE project SET startdate='".date("Y-m-d")."'");
+  $db->query("UPDATE project SET startdate='".date("Y-m-d")."'");
   
-  $g_db->query("CREATE TABLE phase (
+  $db->query("CREATE TABLE phase (
                    id int(10) unsigned NOT NULL,
                    name varchar(50) NOT NULL,
                    projectid int(10) NOT NULL,
@@ -101,7 +101,7 @@
                    PRIMARY KEY (id)
                 )");
                 
-  $g_db->query("CREATE TABLE phase_activity (
+  $db->query("CREATE TABLE phase_activity (
                    phaseid int(10) unsigned NOT NULL,
                    activityid int(10) unsigned NOT NULL,
                    billable tinyint(4) DEFAULT '0' NOT NULL,
@@ -109,34 +109,34 @@
                 )");                
   
   // For each project, create a main phase
-  $projects = $g_db->getrows("SELECT id, status FROM project");
+  $projects = $db->getrows("SELECT id, status FROM project");
   $phaseidlookup = array();
   
   for ($i=0, $_i=count($projects); $i<$_i; $i++)
   {
-    $id = $g_db->nextid("phase");
+    $id = $db->nextid("phase");
       
-    $g_db->query("INSERT INTO phase (id,name,projectid,status,description,max_phasetime,max_hours)
+    $db->query("INSERT INTO phase (id,name,projectid,status,description,max_phasetime,max_hours)
                           VALUES ('$id','Main','".$projects[$i]["id"]."','".$projects[$i]["status"]."','Default phase',
                           0,0)");    
     $phaseidlookup[$projects[$i]["id"]] = $id;
   }
           
   //Convert the projectactivitys to phase activities
-  $projact = $g_db->getrows("SELECT * FROM projectactivity");
+  $projact = $db->getrows("SELECT * FROM projectactivity");
   
   for ($i=0, $_i=count($projact); $i<$_i; $i++)
   {
     $sql = "INSERT INTO phase_activity (phaseid,activityid)
             VALUES ('".$phaseidlookup[$projact[$i]["projectid"]]."','".$projact[$i]["activityid"]."')";
-    $g_db->query($sql);     
+    $db->query($sql);     
   }
   
   $setup->dropTable("projectactivity");
   
   $setup->addColumn("hours", "time", "int(10)", false, 0);
   
-  $g_db->query("UPDATE hours SET time = (hours*60)+minutes");
+  $db->query("UPDATE hours SET time = (hours*60)+minutes");
   
   $setup->dropColumn("hours", "hours");
   $setup->dropColumn("hours", "minutes"); 
@@ -147,68 +147,68 @@
   
   foreach ($phaseidlookup as $proj=>$phase)
   {
-    $g_db->query("UPDATE hours SET phaseid = '$phase' WHERE projectid='$proj'");
+    $db->query("UPDATE hours SET phaseid = '$phase' WHERE projectid='$proj'");
   }
   $setup->dropColumn("hours", "projectid");
     
-  $g_db->query("CREATE TABLE tpl_dependency (
+  $db->query("CREATE TABLE tpl_dependency (
                    phaseid_row int(10) NOT NULL,
                    phaseid_col int(10) NOT NULL,
                    projectid int(10) NOT NULL,
                    PRIMARY KEY (phaseid_row, phaseid_col, projectid)
                 )");
 
-  $g_db->query("CREATE TABLE tpl_phase (
+  $db->query("CREATE TABLE tpl_phase (
                    id int(10) NOT NULL,
                    name varchar(50) NOT NULL,
                    description text,
                    PRIMARY KEY (id)
                 )");
   
-  $g_db->query("CREATE TABLE tpl_phase_activity (
+  $db->query("CREATE TABLE tpl_phase_activity (
                    phaseid int(10) unsigned NOT NULL,
                    activityid int(10) unsigned NOT NULL,
                    PRIMARY KEY (phaseid, activityid)
                 )");
   
-  $g_db->query("CREATE TABLE tpl_project (
+  $db->query("CREATE TABLE tpl_project (
                    id int(10) unsigned NOT NULL,
                    name varchar(50) NOT NULL,
                    description text,
                    PRIMARY KEY (id)
                 )");
   
-  $g_db->query("CREATE TABLE tpl_project_phase (
+  $db->query("CREATE TABLE tpl_project_phase (
                    projectid int(10) NOT NULL,
                    phaseid int(10) NOT NULL,
                    PRIMARY KEY (projectid, phaseid)
                 )");
   
   //Convert the templates, 
-  $tpls = $g_db->getrows("SELECT * FROM template");
+  $tpls = $db->getrows("SELECT * FROM template");
   
   $tplphaselookup = array();
   
   for ($i=0, $_i=count($tpls); $i<$_i; $i++)
   {
-    $pid = $g_db->nextid("tpl_project");
-    $g_db->query("INSERT INTO tpl_project (id,name,description)
+    $pid = $db->nextid("tpl_project");
+    $db->query("INSERT INTO tpl_project (id,name,description)
                          VALUES ('$pid','".addslashes($tpls[$i]["name"])."','')");        
 
-    $phid = $g_db->nextid("tpl_phase");
-    $g_db->query("INSERT INTO tpl_phase (id,name,description)
+    $phid = $db->nextid("tpl_phase");
+    $db->query("INSERT INTO tpl_phase (id,name,description)
            VALUES ('$phid','Main phase for ".addslashes($tpls[$i]["name"])."','Default phase')");
     
-    $g_db->query("INSERT INTO tpl_project_phase (projectid,phaseid)
+    $db->query("INSERT INTO tpl_project_phase (projectid,phaseid)
                          VALUES ('$pid','$phid')");    
     $tplphaselookup[$tpls[$i]["id"]] = $phid;
   }
 
   //Convert the templates, create for every template a main phase
-  $tplact = $g_db->getrows("SELECT * FROM templateactivity");
+  $tplact = $db->getrows("SELECT * FROM templateactivity");
   for ($i=0, $_i=count($tplact); $i<$_i; $i++)
   {
-    $g_db->query("INSERT INTO tpl_phase_activity (phaseid,activityid)
+    $db->query("INSERT INTO tpl_phase_activity (phaseid,activityid)
                       VALUES ('".$tplphaselookup[$tplact[$i]["templateid"]]."','".$tplact[$i]["activityid"]."')");
   }
   
@@ -218,23 +218,23 @@
   
   function setSequence($seq, $value)
   {
-    global $g_db;
-    $rows = $g_db->getrows("SELECT * FROM db_sequence WHERE seq_name='$seq'");
+    $db = &atkGetDb();
+    $rows = $db->getrows("SELECT * FROM db_sequence WHERE seq_name='$seq'");
     if (count($rows))
     {
-      $g_db->query("UPDATE db_sequence SET nextid = $value WHERE seq_name='$seq'");
+      $db->query("UPDATE db_sequence SET nextid = $value WHERE seq_name='$seq'");
     }
     else
     {
-      $g_db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('$seq', '$value')");
+      $db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('$seq', '$value')");
     }
     
   }
 
   function calcSequence($table, $field)
   {
-    global $g_db;
-    $recs = $g_db->getrows("SELECT max($field) as curid FROM $table");
+    $db = &atkGetDb();
+    $recs = $db->getrows("SELECT max($field) as curid FROM $table");
     if (count($recs))
     {
       setSequence($table, ($recs[0]['curid']+1));

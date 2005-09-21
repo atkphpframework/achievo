@@ -12,7 +12,7 @@
 
   function updateSelectedProjects()
   {
-    global $g_sessionManager, $g_db, $g_layout, $g_projectnamesize;   
+    global $g_sessionManager, $g_projectnamesize;   
 
     atkdebug("updateSelectedProject");
     $prj = array();
@@ -71,8 +71,9 @@
          $selectedPrj['projectid'] = $prjId;
 
          //Get project name
+         $db = &atkGetDb();
          $query = "SELECT name FROM project WHERE id='".$selectedPrj['projectid']."'";
-         $arr = $g_db->getrows($query);
+         $arr = $db->getrows($query);
          $selectedPrj['projectname'] = $arr[0]['name'];
          if (strlen($arr[0]['name']) > $g_projectnamesize)
          {           
@@ -96,8 +97,9 @@
 
        }
          //Reload the menu frame by creating javascript
+         $output = &atkOutput::getInstance();
          $js = "<script language='JavaScript'> parent.menu.location=\"menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId."\";</script>";
-         $g_layout->output($js);
+         $output->output($js);
      }
 
 
@@ -117,13 +119,15 @@
 
   function getRecentProjects()
   {
-    global $g_db, $g_user, $g_projectnamesize;
+    global $g_user, $g_projectnamesize;
+    
+    $db = &atkGetDb();
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";    
     $query.= "ORDER BY projectname";
 
-    $arr = $g_db->getrows($query,'0','100');
+    $arr = $db->getrows($query,'0','100');
         
     $newarr = Array();
     

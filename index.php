@@ -4,9 +4,12 @@
   include_once("atk/atkbrowsertools.inc");
   atksession(); 
   atksecure();
+  
+  atkimport("atk.layout");
+  $layout = &layout::getInstance();
  
-  $g_layout->output('<html>');
-  $g_layout->head(text("app_title"));
+  $layout->output('<html>');
+  $layout->head(text("app_title"));
   
   $user = getUser();
   $pda = browserInfo::detectPDA();
@@ -27,19 +30,19 @@
   
   if (!$pda)
   {
-  $g_layout->output('
+  $layout->output('
         <frameset rows="80,*" frameborder="0" border="0">
           <frame name="top" scrolling="no" noresize src="top.php" marginwidth="0" marginheight="0">
        ');    
     
-    $g_layout->output('
+    $layout->output('
       <frameset cols="190,*" frameborder="0" border="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
         <frame name="main" scrolling="auto" noresize src="'.$default_url.'" marginwidth="0" marginheight="0">
     ');
-    $g_layout->output('</frameset>');
+    $layout->output('</frameset>');
 
-    $g_layout->output('
+    $layout->output('
         <noframes>
           <body bgcolor="#CCCCCC" text="#000000">
             <p>Your browser doesnt support frames, but this is required to run '.text("app_title").'</p>
@@ -52,7 +55,7 @@
   else 
   {    
     $config_defaulttheme="default";
-    $g_layout->output('
+    $layout->output('
     <frameset rows="30,*" frameborder="0">
       <frame name="top" src="top.php">
       <frame name="main" src="'.$default_url.'">
@@ -64,6 +67,6 @@
     </frameset>
   </html>');  
   }
-  $g_layout->outputFlush();
+  $layout->outputFlush();
 
 ?>

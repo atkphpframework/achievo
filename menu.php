@@ -31,6 +31,8 @@
   atksession();
   atksecure();
   
+  atkimport("atk.ui.atktheme");
+  
   $output = &atkOutput::getInstance();
   $page = &atknew("atk.ui.atkpage");
   $theme = &atkTheme::getInstance();  
@@ -45,6 +47,9 @@
   $menu = &atkMenu::getMenu();
   
   if (is_object($menu)) $menu->render();
-  else error("no menu object created!");;
+  else atkerror("no menu object created!");;
+
+  $output = &atkOutput::getInstance();
+  $output->outputFlush();
 
 ?>

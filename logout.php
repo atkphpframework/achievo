@@ -1,18 +1,21 @@
 <?php
   include_once("atk.inc");
   include_once("./theme.inc");
+  
+  atkimport("atk.layout");
+  $layout = &layout::getInstance();
 
-  $g_layout->output('<html>');
-  $g_layout->head($txt_app_title);
-  $g_layout->body();
+  $layout->output('<html>');
+  $layout->head($txt_app_title);
+  $layout->body();
 
-  $g_layout->ui_top($txt_app_title);
-  $g_layout->output("<font size=+2>Thanks for using Achievo</font>");
-  $g_layout->output("<hr>");
-  $g_layout->output('<center><a href="index.php">Login</a></center>');
-  $g_layout->ui_bottom();
-  $g_layout->output('</body>');
-  $g_layout->output('</html>');
+  $layout->ui_top($txt_app_title);
+  $layout->output("<font size=+2>Thanks for using Achievo</font>");
+  $layout->output("<hr>");
+  $layout->output('<center><a href="index.php">Login</a></center>');
+  $layout->ui_bottom();
+  $layout->output('</body>');
+  $layout->output('</html>');
 
-  $g_layout->outputFlush();
+  $layout->outputFlush();
 ?>

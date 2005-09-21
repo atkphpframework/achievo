@@ -15,20 +15,20 @@
   function useridConvert($table, $field, $setup)
   {
     static $s_users="";
-    global $g_db;
+    $db = &atkGetDb();
     
     // One time retrieval of all employees.
     if ($s_users=="")
     {
       $sql = "SELECT id, userid FROM person WHERE role='employee'";
-      $s_users = $g_db->getrows($sql);
+      $s_users = $db->getrows($sql);
     }
     
     if (count($s_users) > 0)
     {
       for ($i=0;$i<count($s_users);$i++)
       {                
-        $g_db->query("UPDATE $table SET $field='".$s_users[$i]["id"]."' WHERE $field = '".$s_users[$i]["userid"]."'");
+        $db->query("UPDATE $table SET $field='".$s_users[$i]["id"]."' WHERE $field = '".$s_users[$i]["userid"]."'");
       }
     }    
     $setup->alterColumn($table, $field, $field, "int(10)", false);    
@@ -65,16 +65,16 @@
  
   //set role = "contact" for all persons in person table
   //these persons are only contacts at this moment  
-  $g_db->query("UPDATE person SET role = 'contact' WHERE role IS NULL OR role=''");  
+  $db->query("UPDATE person SET role = 'contact' WHERE role IS NULL OR role=''");  
 
   //copy employees to persons table  
-  $employees = $g_db->getrows("SELECT * FROM employee");
+  $employees = $db->getrows("SELECT * FROM employee");
 
   if (count($employees)>0)
   {
     for ($j=0;$j<count($employees);$j++)
     {      
-      $id = $g_db->nextid("person");
+      $id = $db->nextid("person");
       
       // Assume names are in the format 'Jay Random Hacker'.
       // Firstname will become 'Jay', Lastname will become 'Random Hacker'.
@@ -82,7 +82,7 @@
       $firstname = array_shift($names);
       $lastname = implode(" ", $names);
       
-      $g_db->query("INSERT INTO person (id, 
+      $db->query("INSERT INTO person (id, 
                                         userid, 
                                         password, 
                                         lastname, 
@@ -120,13 +120,13 @@
   $setup->installNode("project.role");  
 
   //insert roles in table role  
-  $res = $g_db->query("INSERT INTO role (id, name) VALUES (1, 'Developer')");    
-  $res = $g_db->query("INSERT INTO role (id, name) VALUES (2, 'Customer')");  
-  $res = $g_db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('role', 2)");  
+  $res = $db->query("INSERT INTO role (id, name) VALUES (1, 'Developer')");    
+  $res = $db->query("INSERT INTO role (id, name) VALUES (2, 'Customer')");  
+  $res = $db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('role', 2)");  
 
   //copy contact of a project into project_person
   $sql = "SELECT project.* FROM project";
-  $projects = $g_db->getrows($sql);
+  $projects = $db->getrows($sql);
  
   $customer_defaultcontacts = array(); 
   
@@ -134,7 +134,7 @@
   {  
     if ($projects[$i]["contact"] != 0)
     {     
-      $g_db->query("INSERT INTO project_person (personid, projectid, role)
+      $db->query("INSERT INTO project_person (personid, projectid, role)
                          VALUES ('".$projects[$i]["contact"]."', '".$projects[$i]["id"]."', 2)");      
     }
     else
@@ -145,8 +145,8 @@
         if (empty($customer_defaultcontacts[$projects[$i]["customer"]])) // check if we already added a default contact for this customer.
         {
         
-          $id = $g_db->nextid("person");
-          $g_db->query("INSERT INTO person (id, 
+          $id = $db->nextid("person");
+          $db->query("INSERT INTO person (id, 
                                             firstname,
                                             lastname, 
                                             company, 
@@ -158,7 +158,7 @@
                                             'contact')");      
           $customer_defaultcontacts[$projects[$i]["customer"]] = $id;          
         }
-        $g_db->query("INSERT INTO project_person (personid, projectid, role)
+        $db->query("INSERT INTO project_person (personid, projectid, role)
                        VALUES ('".$customer_defaultcontacts[$projects[$i]["customer"]]."', '".$projects[$i]["id"]."', 2)");          
       }      
     }
@@ -192,22 +192,22 @@
     
   // employee_project records will be converted to project_person
   $sql = "SELECT employeeid FROM employee_project";
-  $res = $g_db->getrows($sql);
+  $res = $db->getrows($sql);
   if (count($res) > 0)
   {
     for ($i=0;$i<count($res);$i++)
     {
       //search employee id with given userid      
-      $result = $g_db->getrows("SELECT id FROM person WHERE userid ='".$res[$i]["employeeid"]."' AND role='employee'");
-      $g_db->query("UPDATE employee_project SET employeeid='".$result[0]["id"]."' WHERE employeeid = '".$res[$i]["employeeid"]."'");
+      $result = $db->getrows("SELECT id FROM person WHERE userid ='".$res[$i]["employeeid"]."' AND role='employee'");
+      $db->query("UPDATE employee_project SET employeeid='".$result[0]["id"]."' WHERE employeeid = '".$res[$i]["employeeid"]."'");
     }
   }
 
   //copy all employees to the project_person table  
-  $projects = $g_db->getrows("SELECT * FROM employee_project");
+  $projects = $db->getrows("SELECT * FROM employee_project");
   for ($i=0;$i<count($projects);$i++)
   {
-    $g_db->query("INSERT INTO project_person (personid, projectid, role)
+    $db->query("INSERT INTO project_person (personid, projectid, role)
                        VALUES ('".$projects[$i]["employeeid"]."', '".$projects[$i]["projectid"]."', 1)");    
   }
   
@@ -232,24 +232,24 @@
  
   // We must give all records a unique value to be able to use the id
   // field as a primary key.
-  $recs = $g_db->getrows("SELECT * FROM hours_lock");
+  $recs = $db->getrows("SELECT * FROM hours_lock");
   for ($i=0, $_i=count($recs); $i<$_i; $i++)
   {
-    $g_db->query("UPDATE hours_lock 
+    $db->query("UPDATE hours_lock 
                      SET id=".($i+1)." 
                    WHERE userid='".$recs[$i]["userid"]."' 
                      AND week='".$recs[$i]["week"]."'");
   }
-  $res = $g_db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('hours_lock', $i)");  
+  $res = $db->query("INSERT INTO db_sequence (seq_name, nextid) VALUES ('hours_lock', $i)");  
   
-  $g_db->query("ALTER TABLE hours_lock DROP PRIMARY KEY, ADD PRIMARY KEY(id)");  
-  $g_db->query("UPDATE hours_lock SET userid = '' WHERE userid='*'"); // We can't set it to null
+  $db->query("ALTER TABLE hours_lock DROP PRIMARY KEY, ADD PRIMARY KEY(id)");  
+  $db->query("UPDATE hours_lock SET userid = '' WHERE userid='*'"); // We can't set it to null
                                                                       // yet, but we must remove
                                                                       // the '*' values to be
                                                                       // able to convert it to int
   useridConvert("hours_lock", "userid", $setup);    
   $setup->alterColumn("hours_lock", "userid", "userid", "int(10)", true); // for hours_lock, the userid field may be null  
-  $g_db->query("UPDATE hours_lock SET userid = NULL WHERE userid=''");
+  $db->query("UPDATE hours_lock SET userid = NULL WHERE userid=''");
   
   
   // Perform some additional alterations to make db more compatible
@@ -338,19 +338,19 @@
   $setup->alterColumn("tpl_project", "description", "description", "text", true);  
  
   //change the node rights in the accessright table to this format: modulename.nodename
-  $g_db->query("UPDATE accessright SET node = CONCAT('calendar.', node) WHERE node IN ('schedule', 'schedule_types', 'schedule_notes', 'schedule_attendees')");    
-  $g_db->query("UPDATE accessright SET node = CONCAT('costreg.', node) WHERE node = 'costregistration'");  
-  $g_db->query("UPDATE accessright SET node = CONCAT('employee.', node) WHERE node IN ('employee', 'profile', 'usercontracts', 'userprefs')");    
-  $g_db->query("UPDATE accessright SET node = CONCAT('finance.', node) WHERE node IN ('rates', 'finance_customer', 'finance_project', 'billing_project', 'currency', 'bill', 'bill_line')");  
-  $g_db->query("UPDATE accessright SET node = CONCAT('notes.', node) WHERE node IN ('project_notes', 'project_notesview')");    
-  $g_db->query("UPDATE accessright SET node = 'organization.organization' WHERE node = 'customer'");    
-  $g_db->query("UPDATE accessright SET node = CONCAT('organization.', node) WHERE node IN ('contact', 'contracts', 'contracttype')");    
-  $g_db->query("UPDATE accessright SET node = CONCAT('project.', node) WHERE node IN ('project', 'phase', 'activity', 'tpl_phase', 'tpl_project')");  
-  $g_db->query("UPDATE accessright SET node = 'reports.hoursurvey', action='report' WHERE node='hours' AND action='hoursurvey'");
-  $g_db->query("UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport')");      
-  $g_db->query("UPDATE accessright SET node = CONCAT('resource_planning.', node) WHERE node = 'resource_planning'");    
-  $g_db->query("UPDATE accessright SET node = CONCAT('timereg.', node) WHERE node IN ('hours', 'hours_lock')");  
-  $g_db->query("UPDATE accessright SET node = CONCAT('todo.', node) WHERE node = 'todo'");  
+  $db->query("UPDATE accessright SET node = CONCAT('calendar.', node) WHERE node IN ('schedule', 'schedule_types', 'schedule_notes', 'schedule_attendees')");    
+  $db->query("UPDATE accessright SET node = CONCAT('costreg.', node) WHERE node = 'costregistration'");  
+  $db->query("UPDATE accessright SET node = CONCAT('employee.', node) WHERE node IN ('employee', 'profile', 'usercontracts', 'userprefs')");    
+  $db->query("UPDATE accessright SET node = CONCAT('finance.', node) WHERE node IN ('rates', 'finance_customer', 'finance_project', 'billing_project', 'currency', 'bill', 'bill_line')");  
+  $db->query("UPDATE accessright SET node = CONCAT('notes.', node) WHERE node IN ('project_notes', 'project_notesview')");    
+  $db->query("UPDATE accessright SET node = 'organization.organization' WHERE node = 'customer'");    
+  $db->query("UPDATE accessright SET node = CONCAT('organization.', node) WHERE node IN ('contact', 'contracts', 'contracttype')");    
+  $db->query("UPDATE accessright SET node = CONCAT('project.', node) WHERE node IN ('project', 'phase', 'activity', 'tpl_phase', 'tpl_project')");  
+  $db->query("UPDATE accessright SET node = 'reports.hoursurvey', action='report' WHERE node='hours' AND action='hoursurvey'");
+  $db->query("UPDATE accessright SET node = CONCAT('reports.', node) WHERE node IN ('weekreport')");      
+  $db->query("UPDATE accessright SET node = CONCAT('resource_planning.', node) WHERE node = 'resource_planning'");    
+  $db->query("UPDATE accessright SET node = CONCAT('timereg.', node) WHERE node IN ('hours', 'hours_lock')");  
+  $db->query("UPDATE accessright SET node = CONCAT('todo.', node) WHERE node = 'todo'");  
   
   // As of this release, we use version numbers. After running this conversion script, the 
   // database is fully up to date with version 1 of all modules.

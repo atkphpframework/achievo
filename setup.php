@@ -272,6 +272,7 @@
     $config_debug = 1;
   }      
 
-  $g_layout->outputFlush();
+  $output = &atkOutput::getInstance();
+  $output->outputFlush();
   
 ?>

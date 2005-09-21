@@ -11,13 +11,13 @@
   $setup->alterColumn("project", "status", "status", "varchar(15)", false, "active");
   $setup->addColumn("project", "contact", "int(10)");
 
-  $g_db->query("CREATE TABLE hours_lock (
+  $db->query("CREATE TABLE hours_lock (
                    week varchar(6) NOT NULL,
                    userid varchar(15) NOT NULL,
                    PRIMARY KEY (week, userid)
                 )");
 
-  $g_db->query("CREATE TABLE contract (
+  $db->query("CREATE TABLE contract (
                    id int(10) unsigned DEFAULT '0' NOT NULL,
                    billing_period varchar(30) NOT NULL,
                    period_price decimal(13,5) DEFAULT '0.00' NOT NULL,
@@ -29,13 +29,13 @@
                    PRIMARY KEY (id)
                 )");
                 
-  $g_db->query("CREATE TABLE contracttype (
+  $db->query("CREATE TABLE contracttype (
                    id int(10) unsigned DEFAULT '0' NOT NULL,
                    description varchar(100) NOT NULL,
                    PRIMARY KEY (id)
                 )");  
 
-  $g_db->query("CREATE TABLE usercontract (
+  $db->query("CREATE TABLE usercontract (
                    id int(10) unsigned NOT NULL,
                    description text,
                    startdate date NOT NULL,
@@ -45,7 +45,7 @@
                    PRIMARY KEY (id)
                 )");
 
-  $g_db->query("CREATE TABLE todo (
+  $db->query("CREATE TABLE todo (
                    id int(10) unsigned NOT NULL,
                    projectid int(10) unsigned NOT NULL,
                    owner varchar(15) NOT NULL,
@@ -59,7 +59,7 @@
                    PRIMARY KEY (id)
                 );");
 
-  $g_db->query("CREATE TABLE project_notes (
+  $db->query("CREATE TABLE project_notes (
                    id int(10) unsigned DEFAULT '0' NOT NULL,
                    projectid int(10) unsigned DEFAULT '0' NOT NULL,
                    owner varchar(15) NOT NULL,

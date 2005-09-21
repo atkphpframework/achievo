@@ -4,12 +4,15 @@
   atksession();
   atksecure();
   require "theme.inc";
+  
+  atkimport("atk.layout");
+  $layout = &layout::getInstance();
 
-  $g_layout->output("<html>");
-  $g_layout->head($txt_app_title);
-  $g_layout->body();
-  $g_layout->ui_top($txt_app_title);
-  $g_layout->output('
+  $layout->output("<html>");
+  $layout->head($txt_app_title);
+  $layout->body();
+  $layout->ui_top($txt_app_title);
+  $layout->output('
 
 <br><br><br><br><br>
 
@@ -20,9 +23,9 @@ At some point, in the very, very distant future, a complete annotated reference 
 
  ');
 
-$g_layout->ui_bottom();
-$g_layout->output("</body>");
-$g_layout->output("</html>");
-$g_layout->outputFlush();
+$layout->ui_bottom();
+$layout->output("</body>");
+$layout->output("</html>");
+$layout->outputFlush();
 
 ?>
