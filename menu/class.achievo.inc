@@ -1,8 +1,8 @@
 <?php
 
-atkimport("atk.menu.atkplainmenu");
+atkimport("atk.menu.atkframesmenu");
 
-class achievo extends atkPlainMenu 
+class achievo extends atkFramesMenu 
 {
 
   function getHeader($atkmenutop)
