@@ -135,6 +135,7 @@ class organization extends atkNode
     Header("Content-Type: text/x-vCard; name=$filename");
 
     echo $output; 
+    exit;
   }
   
 }
