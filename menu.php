@@ -44,7 +44,6 @@
   atkimport("atk.menu.atkmenu");
   $menu = &atkMenu::getMenu();
   
-  $output = &atkOutput::getInstance();
   if (is_object($menu)) $output->output($menu->render());
   else atkerror("no menu object created!");;
 
