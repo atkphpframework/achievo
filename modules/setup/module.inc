@@ -5,17 +5,17 @@
     
     function getMenuItems()
     {
-     menuitem("setup","","main",true,700);    
+     $this->menuitem("setup","","main",true,700);    
    
-     menuitem("support","","main",true,800);
-     menuitem("achievo_docs", "http://www.achievo.org/support/manual", "support");
-     menuitem("-", "", "support");
-     menuitem("achievo_license", "license.php", "support");
-     menuitem("-", "", "support");
-     menuitem("online_support", "http://www.achievo.org/support", "support");
-     menuitem("sponsorship", "http://www.achievo.org/support/sponsor", "support");
-     menuitem("-", "", "support");
-     menuitem("achievo_home", "http://www.achievo.org/","support");  
+     $this->menuitem("support","","main",true,800);
+     $this->menuitem("achievo_docs", "http://www.achievo.org/support/manual", "support");
+     $this->menuitem("-", "", "support");
+     $this->menuitem("achievo_license", "license.php", "support");
+     $this->menuitem("-", "", "support");
+     $this->menuitem("online_support", "http://www.achievo.org/support", "support");
+     $this->menuitem("sponsorship", "http://www.achievo.org/support/sponsor", "support");
+     $this->menuitem("-", "", "support");
+     $this->menuitem("achievo_home", "http://www.achievo.org/","support");  
  
     }
   }

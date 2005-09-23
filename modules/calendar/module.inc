@@ -12,9 +12,9 @@
 
     function getMenuItems()
     {
-      menuitem("schedule", dispatch_url("calendar.schedule","admin"),"main",true,300);
-      menuitem("-","","main",true,320);
-      menuitem("schedule_types", dispatch_url("calendar.schedule_types","admin"),"setup");
+      $this->menuitem("schedule", dispatch_url("calendar.schedule","admin"),"main",true,300);
+      $this->menuitem("-","","main",true,320);
+      $this->menuitem("schedule_types", dispatch_url("calendar.schedule_types","admin"),"setup");
     }
 
     function getPimItems()

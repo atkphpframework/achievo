@@ -13,15 +13,16 @@
     
     function getMenuItems()
     {
-      menuitem("time_registration", dispatch_url("timereg.hours", "admin"), "main",true,100);
-      menuitem("hours_admin", dispatch_url("timereg.hours", "admin"),"time_registration",true);
-      menuitem("-","","time_registration");
-      menuitem("hours_lock", dispatch_url("timereg.hours_lock", "admin"),"time_registration",array("timereg.hours_lock","admin"));
-      if (is_allowed("timereg.hours_approve", "admin"))menuitem("hours_approve", dispatch_url("timereg.hours_approve", "admin"),"time_registration",array("timereg.hours_approve","admin"));
-      menuitem("workperiod_admin", dispatch_url("timereg.workperiod", "admin"), "setup", array("timereg.workperiod", "admin"));
+      $this->menuitem("time_registration", dispatch_url("timereg.hours", "admin"), "main",true,100);
+      $this->menuitem("hours_admin", dispatch_url("timereg.hours", "admin"),"time_registration",true);
+      $this->menuitem("-","","time_registration");
+      $this->menuitem("hours_lock", dispatch_url("timereg.hours_lock", "admin"),"time_registration",array("timereg.hours_lock","admin"));
+      if (is_allowed("timereg.hours_approve", "admin"))
+        $this->menuitem("hours_approve", dispatch_url("timereg.hours_approve", "admin"),"time_registration",array("timereg.hours_approve","admin"));
+      $this->menuitem("workperiod_admin", dispatch_url("timereg.workperiod", "admin"), "setup", array("timereg.workperiod", "admin"));
       //menuitem("overtimebalance_admin", dispatch_url("timereg.overtime_balance", "admin"), "setup", array("timereg.overtime_balance", "admin"));
     
-      menuitem("-","","main",true,120);
+      $this->menuitem("-","","main",true,120);
     }
     
     function getPimItems()

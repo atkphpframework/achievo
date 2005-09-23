@@ -6,5 +6,5 @@
   $setup->installNode("employee.usercontracts"); 
   $setup->installNode("employee.functionlevel");
   $setup->installNode("employee.department");
-  $setup->setVersion(9);
+  $setup->setVersion(10);
 ?>
