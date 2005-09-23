@@ -13,6 +13,7 @@
 
       $me = $g_user["name"];
       $ui = &$this->getUi();
+      $this->addStyle("style.css");
       if (is_object($ui))
       {
         $page = &$this->getPage();
