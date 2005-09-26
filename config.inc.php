@@ -161,7 +161,7 @@
   // -------------------------------------------
   //             PROJECT MODULE
   // -------------------------------------------
-  // This variable indicated wheter contacts in the project module are
+  // This variable indicated whether contacts in the project module are
   // obligatory
   $config_project_contact_obligatory = true;
   
@@ -175,23 +175,6 @@
   // it can be found as the second parameter.
   //
   // module("somemodule","../achievo_modules/somemodule/");
-  module("docserver","../achievo_modules/docserver/"); // semichecked
-  module("autoduty", "../achievo_modules/autoduty/"); // checked
-  module("secrets", "../achievo_modules/secrets/"); // checked
-  module("athos", "../achievo_modules/athos/"); //checked
-  module("quotation", "../achievo_modules/quotation/"); // checked
-  module("storing", "../achievo_modules/storing/"); // checked: niet buggier dan ie al was ;-)
-  module("holidayreport", "../achievo_modules/holidayreport/");
-  module("ibscustomizations", "../achievo_modules/ibscustomizations/"); // checked
-  module("domein_verhuizing", "../achievo_modules/domein_verhuizing/");
-  module("projectsoftware", "../achievo_modules/projectsoftware/");
-  module("xp", "../achievo_modules/xp/");
-  module("ibscontract", "../achievo_modules/ibscontract/");
-
-  $config_mailreport = "ivo@ibuildings.nl"; // mail errors naar ivo
-
-  // cookie onthouden
-  $config_authentication_cookie = true;
 
   // -------------------------------------------
   //            END OF CONFIGURATION
