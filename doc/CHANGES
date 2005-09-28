@@ -27,6 +27,9 @@ Changes in Achievo 1.2RC1
 + Added banknumber and social security number to employee. [Boy]
 + Made hoursurvey display rates and costs per timeregistration. [Boy]
 + Added vcard export for employees/contacts/organizations. [Ivo]
+* Updated Italian language file. [Fabrizio]
+* Updated Danish language file. [Morten, Kent]
+* Updated Spanish language file. [Ernesto]
 
 Changes in Achievo 1.1.0
 ------------------------
