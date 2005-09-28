@@ -56,7 +56,7 @@ class organization extends atkNode
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST));
     $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
     $this->add(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", text("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_LIST), NULL, 10000);
+    $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", text("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
     $this->m_securityMap["vcard"] = "view";
     
     $this->setTable("organization", "organization");
