@@ -62,7 +62,7 @@
   $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
   $content.="&nbsp;&nbsp;&nbsp; ".$searchpiece;
   
-  $title = text("app_title","","core")." ".$achievo_version;
+  $title = text("app_title")." ".$achievo_version;
   ($achievo_state!=="stable")?$title.=" ($achievo_state)":"";
   
   $top = $ui->renderTop(array("content"=> $content,
