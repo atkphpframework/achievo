@@ -14,6 +14,7 @@ Changes in Achievo 1.2RC1
 * Fixed small bug in displaying the weeknumber on windows in the timereg 
   weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
+* Title field for persons is now a dropdown instead of free input. [Ivo]
 + Made chart height/width configurable. [Harrie]
 + Added ability to assign department to employee. [Harrie]
 + Hoursurvey is now able to search on department and functionlevel. [Harrie]
@@ -27,7 +28,7 @@ Changes in Achievo 1.2RC1
 + Added banknumber and social security number to employee. [Boy]
 + Made hoursurvey display rates and costs per timeregistration. [Boy]
 + Added vcard export for employees/contacts/organizations. [Ivo]
-+ Added invoice address. [Ivo]
++ Added invoice address to organization. [Ivo]
 + Added Japanese language file. [James]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
