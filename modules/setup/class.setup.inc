@@ -551,7 +551,11 @@
       // also set 'current module' to the module were now installing. This will 
       // be used by setup functions called from the install file.
       $this->m_currentmodule = $modname;      
-      include($installfile);
+      if (file_exists($installfile))
+      {
+        include($installfile);
+        return true;
+      }
     }
     
     function needsInstall($modname)
@@ -1033,9 +1037,15 @@
               for($i=0, $_i=count($availablepatches); $i<$_i; $i++)
               {
                 $patchfile = moduleDir($modname)."install/patch-".$availablepatches[$i].".inc";
-                $this->includeInstallFile($modname, $patchfile);
-                $this->setVersion($availablepatches[$i]);
-                $result[$modname] = "patched";
+                if ($this->includeInstallFile($modname, $patchfile))
+                {
+                  $this->setVersion($availablepatches[$i]);
+                  $result[$modname] = "patched";
+                }
+                else 
+                {
+                  $result[$modname] = "patch failed";
+                }
               }
             }
           }
