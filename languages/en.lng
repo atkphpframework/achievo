@@ -478,6 +478,13 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  "invoice_address" => "Address",
+  "invoice_address2" => "Address 2",
+  "invoice_city" => "City",
+  "invoice_country" => "Country",
+  "invoice_state" => "State/Province",
+  "invoice_zipcode" => "Zipcode",
+  "organization_invoiceaddress" => "Billing address",
 );
 
 ?>

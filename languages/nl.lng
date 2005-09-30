@@ -478,6 +478,13 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  "invoice_address" => "Adres",
+  "invoice_address2" => "Adres 2",
+  "invoice_city" => "Stad",
+  "invoice_country" => "Land",
+  "invoice_state" => "Staat/Provincie",
+  "invoice_zipcode" => "Postcode",
+  "organization_invoiceaddress" => "Factuur adres",
 );
 
 ?>
