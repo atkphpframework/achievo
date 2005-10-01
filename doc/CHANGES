@@ -30,6 +30,7 @@ Changes in Achievo 1.2RC1
 + Added vcard export for employees/contacts/organizations. [Ivo]
 + Added invoice address to organization. [Ivo]
 + Added Japanese language file. [James]
++ Added robots.txt file so Achievo installations do not get spidered. [Ivo]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
