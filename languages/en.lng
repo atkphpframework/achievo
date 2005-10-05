@@ -372,6 +372,7 @@
   "tab_default" => "General",
   "tab_organization_details" => "Organization details",
   "tab_stats" => "Statistics",
+  "target_declarability" => "Target declarability (%)",
   "template" => "Template",
   "theme" => "Theme",
   "thisweek" => "This week",

@@ -372,6 +372,7 @@
   "tab_default" => "Algemeen",
   "tab_organization_details" => "Organisatiedetails",
   "tab_stats" => "Statistieken",
+  "target_declarability" => "Beoogde declarabiliteit (%)",
   "template" => "Template",
   "theme" => "Thema",
   "thisweek" => "Deze week",
