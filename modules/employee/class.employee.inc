@@ -3,7 +3,6 @@
 userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
 useattrib("atklistattribute");
-useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
 useattrib("atkdateattribute");
@@ -67,10 +66,6 @@ class employee extends person
     $this->add(new atkOneToManyRelation("contract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
     
     $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
-    
-    $attr = new atkNumberAttribute("target_declarability", AF_HIDE_LIST);
-    $attr->setRange(0, 100);
-    $this->add($attr);
     
     if (atkconfig("authentication")=="db")
     {      
