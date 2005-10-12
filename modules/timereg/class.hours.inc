@@ -60,46 +60,46 @@ function convertDurationToHours(&$record, $int = false)
     // Seperate minutes from hours
     $minutes = $record['time']%60;
     $record['time']               = $record['time']-$minutes;
-    
+
     // Add the hours to the begintime so we'll get the hours of the endtime
     if ($int)
       $record['endtime']['hours'] = $record['starttime']['hours'] + $record['time']/60;
-    else 
+    else
       $record['endtime']['hours'] = "".$record['starttime']['hours'] + $record['time']/60 ."";
-      
+
     // Next we'll do the minutes
     $record['time']               = $minutes;
 
     // Seperate seconds from minutes
     $seconds = $record['time']%1;
     $record['time']               = $record['time']-$seconds;
-    
+
     // Check wether we don't have more than 60 minutes, otherwise we add another hour
     $record['endtime']['hours'] += intval(($record['starttime']['minutes']+$record['time'])/60);
     $record['time'] = ($record['starttime']['minutes']+$record['time'])%60;
-    
+
     // Add the minutes to the begintime so we'll get the minutes of the endtime
     if ($int)
       $record['endtime']['minutes'] = $record['time']/1;
-    else 
-      $record['endtime']['minutes'] = "".$record['time']/1 ."";    
-        
+    else
+      $record['endtime']['minutes'] = "".$record['time']/1 ."";
+
     // Next we'll do the seconds
     $record['time']               = $seconds;
 
     // All we have left is the seconds, so we round that
     $record['time']=round($record['time']*60);
-    
+
     // Check wether we don't have more than 60 seconds, otherwise we add another minute
     $record['endtime']['minutes'] += intval(($record['starttime']['seconds']+$record['time'])/60);
     $record['time'] = ($record['starttime']['seconds']+$record['time'])%60;
-    
+
     // Add the seconds to the starttime to get the endtime seconds
     if ($int)
       $record['endtime']['seconds']   = $record['time'];
-    else 
+    else
       $record['endtime']['seconds']   = "".$record['time'] ."";
-      
+
     if ($int)
     {
       $record['starttime']['hours'] = $record['starttime']['hours']*1;
@@ -114,10 +114,10 @@ class to_date extends atkDateAttribute
   function to_date()
   {
     $this->atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_NO_LABEL|AF_HIDE);
-  }  
-  
+  }
+
   function load() {}
-  function store() {}  
+  function store() {}
   function addtoeditarray() {}
 }
 
@@ -127,13 +127,13 @@ class to_time extends atkTimeAttribute
   {
     $this->atkTimeAttribute("endtime","0","23",array(0,15,30,45),"12", AF_OBLIGATORY);
   }
-  
-  function display($record) 
+
+  function display($record)
   {
-    convertDurationToHours($record); 
+    convertDurationToHours($record);
     return parent::display($record);
   }
-  
+
   function load() {}
   function store() {}
   function getOrderByStatement(){}
@@ -143,9 +143,9 @@ class hours extends atkNode
 {
   var $m_lock = "";
   var $m_viewdate = "";
-  var $m_weekview = "";  
+  var $m_weekview = "";
   var $m_user = "";
-  var $m_insertmode = ""; // can be set to 'day' or 'multi'  
+  var $m_insertmode = ""; // can be set to 'day' or 'multi'
 
   function hours()
   {
@@ -156,12 +156,12 @@ class hours extends atkNode
     $this->m_viewdate = $g_sessionManager->pageVar("viewdate");
     $this->m_user = $g_sessionManager->pageVar("viewuser");
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
-    {            
+    {
       $this->m_viewdate = sprintf("%04d-%02d-%02d", $this->m_viewdate["year"], $this->m_viewdate["month"],$this->m_viewdate["day"]);
     }
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
     if ($this->m_user == "") $this->m_user = $g_user["id"];
-   
+
     $flags=NF_NO_VIEW|NF_TRACK_CHANGES|NF_NO_IMPORT;
 
     $this->atkNode("hours",$flags|NF_MRA|NF_NO_ADD); // node() constructor is *not* called automatically!
@@ -175,16 +175,16 @@ class hours extends atkNode
     $this->add(new atkAttribute("id",AF_AUTOKEY));
 
     $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
-    $this->add(new to_date());                
+    $this->add(new to_date());
 
-    // force_load flag is set for userid, since several features rely on the 
+    // force_load flag is set for userid, since several features rely on the
     // userid, even if it's not displayed on screen.
-    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));    
+    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
 
-	  $this->addPhaseAndActivity();
+    $this->addPhaseAndActivity();
     $this->add(new atkTextAttribute("remark", atkconfig("timereg_remark_lines", 1), 0));
     $this->addTime();
-    
+
     // If we don't use duration, then we won't need this
     // Because we can set the rates with the billing module
     if (atkconfig("use_duration", true))
@@ -193,7 +193,7 @@ class hours extends atkNode
       $relation->setHideWhenEmpty(true);
       $this->add($relation);
     }
-    
+
     $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_OBLIGATORY));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
@@ -201,7 +201,7 @@ class hours extends atkNode
 
     $this->setTable("hours","hours");
   }
-  
+
   function addTime()
   {
     $durationflags = AF_TOTAL;
@@ -219,16 +219,29 @@ class hours extends atkNode
 
     $this->add(new atkDurationAttribute("time",atkconfig("timereg_resolution", "15m"), atkconfig("max_bookable",10).'h',$durationflags));
   }
+
+  /**
+   * Determine the number of available activities 
+   */
+  function getActivityCount()
+  {
+    $db = &atkGetDb();
+    $result = $db->getrows("SELECT count(*) as activitycount FROM activity");
+    return $result[0]['activitycount'];
+  }
   
   /**
-   * Adds the projectphase attribute and the activity attribute
+   * Adds the projectphase attribute and, if there are more than 1 activities, the activity attribute
    */
   function addPhaseAndActivity()
   {
-    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_JS_UPDATEACTIVITY));
-    $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10));
+    // Determine wheter the activity attribute should be displayed or not.
+    $displayactivityattribute = $this->getActivityCount() != 1;
+
+    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|($displayactivityattribute ? AF_JS_UPDATEACTIVITY : 0)));
+    $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY|($displayactivityattribute ? 0 : AF_HIDE), 10));
   }
-    
+
   function setLock()
   {
     $this->m_lock = $this->getLockType(strtolower($this->m_user),$this->m_viewdate);
@@ -239,9 +252,9 @@ class hours extends atkNode
       $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
     }
   }
-  
+
   function getInitialDate()
-  {    
+  {
     if ($this->m_viewdate!="")
     {
        $initial_date = Array("year"=>substr($this->m_viewdate,0,4),
@@ -255,18 +268,29 @@ class hours extends atkNode
                             "day"=>date("d"));
     }
     return $initial_date;
-   
+
   }
 
   function initial_values()
   {
-     return array("userid"=>array("id"=>$this->m_user),
-                  "entrydate"=>Array("year"=>date("Y"),
-                             "month"=>date("m"),
-                             "day"=>date("d")),
-                  "activitydate"=>$this->getInitialDate(),
-                  "todate"=>$this->getInitialDate()
-                  );
+    // Setup the initial values array
+    $values = array("userid"=>array("id"=>$this->m_user),
+                    "entrydate"=>Array("year"=>date("Y"),
+                    "month"=>date("m"),
+                    "day"=>date("d")),
+                    "activitydate"=>$this->getInitialDate(),
+                    "todate"=>$this->getInitialDate()
+                   );
+
+    // Set an initial activityid if there's exactly one activity
+    if ($this->getActivityCount() == 1) {
+      $db = &atkGetDb();
+      $result = $db->getrows("SELECT id FROM activity");
+      $values["activityid"] = $result[0]["id"];
+    }
+    
+    // Return the initial values
+    return $values;
   }
 
   function activityid_display($rec)
@@ -277,10 +301,10 @@ class hours extends atkNode
 
   function action_edit(&$handler)
   {
-    $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));        
-    
+    $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));
+
     $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],
-                      sprintf("%02d-%02d-%02d", $recs[0]["activitydate"]["year"], 
+                      sprintf("%02d-%02d-%02d", $recs[0]["activitydate"]["year"],
                                                 $recs[0]["activitydate"]["month"],
                                                 $recs[0]["activitydate"]["day"]));
     if ($this->m_lock=="")
@@ -345,7 +369,7 @@ class hours extends atkNode
   function action_admin(&$handler)
   {
     $page = &$this->getPage();
-    
+
     global $g_user;
 
     $this->setLock();
@@ -363,7 +387,7 @@ class hours extends atkNode
       if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $res[] = $handler->invoke("addPage");
       $res[] = $this->weekview();
     }
-    
+
     $page->addContent($this->renderActionPage("admin", $res));
   }
 
@@ -381,12 +405,12 @@ class hours extends atkNode
 
       // we add 3601 seconds to account for Daylight Savings Time
       $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
-      
+
       $today = date('Y-m-d');
 
       $res.= href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$yesterday, text("previousday"));
-      if ($this->m_viewdate<date('Y-m-d')) 
-      { 
+      if ($this->m_viewdate<date('Y-m-d'))
+      {
         // If current is not today we can also move forward
         $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$tomorrow, text("nextday"));
         $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$today, text("today", "houradmin"));
@@ -416,16 +440,16 @@ class hours extends atkNode
       return $res;
     }
   }
-  
+
   function getDateJumper()
   {
     $dummy_rec = array("viewdate"=>$this->getInitialDate());
     $datebox = new atkDateAttribute("viewdate","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
     return $datebox->edit($dummy_rec);
   }
-  
+
   function getUserSelect()
-  {    
+  {
     if ($this->allowed("any_user"))
     {
       $db = &atkGetDb();
@@ -435,8 +459,8 @@ class hours extends atkNode
       {
         $res .= '<option value="'.$users[$i]["id"].'" '.($this->m_user == $users[$i]["id"] ? 'selected' : '').'>'.$users[$i]["lastname"].', '.$users[$i]["firstname"];
       }
-      $res .= '</select>'; 
-    }  
+      $res .= '</select>';
+    }
     return $res;
   }
 
@@ -452,11 +476,11 @@ class hours extends atkNode
       $viewtime = time();
     }
     $this->addStyle("style.css");
-    
+
     return $this->getWeekviewData($viewtime);
-    
+
   }
-  
+
   function getWeekviewData($viewtime)
   {
     $userid = $this->m_user;
@@ -494,7 +518,7 @@ class hours extends atkNode
     $output.=   $this->weekviewHeader($weekdates, $viewtime);
 
     $weekdata = array();
-    
+
     $table = &atknew("atk.utils.atktablerenderer");
 
     $weekdata[0][] = text('project').'/'.text('phase');
@@ -513,19 +537,19 @@ class hours extends atkNode
 
     }
     $weekdata[0][] = text('total');
-    
+
     $row = 1;
     while (list($proj, $times)=each($week))
-    {      
+    {
       $weekdata[$row][] = $proj;
       for ($i=1;$i<=7;$i++)
       {
         $weekdata[$row][] = time_format($times[$weekdates[$i]['date']]);
       }
-      $weekdata[$row][] = time_format($projtotals[$proj]);      
+      $weekdata[$row][] = time_format($projtotals[$proj]);
       $row++;
     }
-    
+
     $weekdata[$row][] = text('total');
 
     for ($i=1;$i<=7;$i++)
@@ -541,14 +565,14 @@ class hours extends atkNode
       $weekdata[$row][] = '<font color="'.$color.'">'.time_format($daytotals[$weekdates[$i]['date']]).'</font>';
     }
     $weekdata[$row][] = time_format($total);
-        
+
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
     $ui = &atknew("atk.ui.atkui");
     return $ui->renderBox(array("title"=>text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime),
                                     "content"=>$output));
 
   }
-  
+
   function weekviewHeader($weekdates, $viewtime)
   {
     global $g_user;
@@ -607,18 +631,18 @@ class hours extends atkNode
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
     $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
-    
+
     // update overtime balance
     $this->calculateNewBalance($rec, "edit");
     return true;
   }
-  
+
   function postDel($rec)
   {
     // update overtime balance
     $this->calculateNewBalance($rec, "delete");
   }
-  
+
   function calculateNewBalance($rec, $mode)
   {
     $balancenode = &getNode("timereg.overtime_balance");
@@ -629,7 +653,7 @@ class hours extends atkNode
     $day = date("Y-m-d", adodb_mktime(0,0,0,$month,$activityday,$year));
     $yesterday = date("Y-m-d", adodb_mktime(0,0,0,$month,$activityday-1,$year));
     $balance = $balancenode->getBalance($day, $userid);
-    
+
     // only update balance if balance was not set manually
     if ($balance["manual"] == 0)
     {
@@ -644,21 +668,21 @@ class hours extends atkNode
           $balancenode->addOvertimeBalance($userid, $day, $newbalance["balance"]);
         }
       }
-      
+
       $percentage = $balancenode->getPercentage($rec["workperiod"]["id"]);
-      $hours = ($rec["time"]/60);      
-           
+      $hours = ($rec["time"]/60);
+
       if ($mode == "add") $newbalance = ($balance["balance"] + (($percentage/100) * $hours));
       elseif ($mode == "edit")
       {
-        $oldpercentage = $balancenode->getPercentage($rec["atkorgrec"]["workperiod"]["id"]);        
+        $oldpercentage = $balancenode->getPercentage($rec["atkorgrec"]["workperiod"]["id"]);
         $oldhours = $rec["atkorgrec"]["time"]/60;
         $newbalance = (($balance["balance"] - (($oldpercentage/100) * $oldhours)) + (($percentage/100) * $hours));
       }
       elseif($mode == "delete") $newbalance = ($balance["balance"] - (($percentage/100) * $hours));
-      
+
       $balancenode->saveOvertimeBalance($rec["userid"]["id"], $day, $newbalance);
-    }  
+    }
     $manual = $balancenode->getLatestManualCorrection($rec["userid"]["id"], $yesterday);
     if ($manual != $yesterday)
     {
@@ -674,14 +698,14 @@ class hours extends atkNode
   //          "all"       - locked for everybody (can only be unlocked by administrator)
   function getLockType($userid, $date)
   {
-    static $s_locks = array();    
-    
+    static $s_locks = array();
+
     $week = weekstamp(adodb_mktime(0,0,0,substr($date,5,2),
                                      substr($date,8,2),
                                      substr($date,0,4)));
-    
+
     if ($s_locks[$userid][$week]=="")
-    {      
+    {
       $query = "SELECT
                   week, userid
                 FROM
@@ -692,19 +716,19 @@ class hours extends atkNode
                   week = '$week'";
       $db = &atkGetDb();
       $res = $db->getrows($query);
-      
+
       if (count($res))
       {
         $all = false;
         for ($i=0;$i<count($res);$i++)
         {
-          if (empty($res[$i]["userid"])) 
+          if (empty($res[$i]["userid"]))
           {
             $s_locks[$userid][$week] = "all";
             $all = true;
           }
         }
-    
+
         // apparently not locked for everybody.
         if (!$all)
         {
@@ -715,19 +739,19 @@ class hours extends atkNode
       {
         $s_locks[$userid][$week]="none";
       }
-    } 
-        
+    }
+
     return ($s_locks[$userid][$week]=="none"?"":$s_locks[$userid][$week]);
   }
 
   function action_lock(&$handler)
   {
     if (atkconfig("lock_week_approval_required"))
-      $this->lockWeek();    
-    else 
+      $this->lockWeek();
+    else
       $this->lockWeek("1");
   }
-  
+
   function lockWeek($approved=null)
   {
     $viewdate = $this->m_postvars["viewdate"];
@@ -773,7 +797,7 @@ class hours extends atkNode
     $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
                 AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
     $result = $db->getRows($sql);
-    
+
     // get the total of time already registered this week
     $query = "SELECT sum(time) as totaal
               FROM
@@ -795,10 +819,10 @@ class hours extends atkNode
 
   function activitydate_validate(&$rec)
   {
-    // when inserting multiple days at once, we don't break on invalid days 
+    // when inserting multiple days at once, we don't break on invalid days
     // (we will just skip them later on).
     if ($rec["activitydate"]["multi"]!=1)
-    {    
+    {
       if ($this->getLockType($this->m_user,sprintf("%04d-%02d-%02d",
                                                    $rec["activitydate"]["year"],
                                                    $rec["activitydate"]["month"],
@@ -806,7 +830,7 @@ class hours extends atkNode
       {
         triggerError($rec, "activitydate", "weeklocked");
       }
-      
+
       // Here we check for non-valid days, this should be no problem for the normal hours node
       // As it is (near) impossible to insert false dates without some serious hacking
       // However the PDA version doensn't have the protection of DHTML, so it IS relevant there
@@ -825,27 +849,33 @@ class hours extends atkNode
    * need to override validate.)
    */
   function validate(&$record, $mode)
-  {  
-    $obj = getNode("project.activity");
-    $act = $obj->selectDb("id=".$record["activityid"]);
-    if (count($act)==1)
-    {
-      if ($act[0]["remarkrequired"]==1)
+  {
+    // If no activities available, trigger an error:
+    if ($this->getActivityCount() == 0) {
+      triggerError($record, "activityid", "Please add one or more activities first");
+    }
+    else {
+      $obj = getNode("project.activity");
+      $act = $obj->selectDb("id=".$record["activityid"]);
+      if (count($act)==1)
       {
-        // Specification is required. So we set the obligatory flag.
-        // The validation of this flag is done later on by the default 
-        // ::validate() method of the base class.
-        $this->m_attribList["remark"]->m_flags |= AF_OBLIGATORY;
+        if ($act[0]["remarkrequired"]==1)
+        {
+          // Specification is required. So we set the obligatory flag.
+          // The validation of this flag is done later on by the default
+          // ::validate() method of the base class.
+          $this->m_attribList["remark"]->m_flags |= AF_OBLIGATORY;
+        }
+      }
+      else // something is wrong with the chosen activity if we can't find
+           // a record for it.
+      {
+        triggerError($record, "activityid", "error_obligatoryfield");
       }
     }
-    else // something is wrong with the chosen activity if we can't find
-         // a record for it.
-    {
-      triggerError($record, "activityid", "error_obligatoryfield");
-    }
-    
-    // when inserting multiple days at once, we don't break on invalid days 
-    // (we will just skip them later on).    
+
+    // when inserting multiple days at once, we don't break on invalid days
+    // (we will just skip them later on).
     if ($record["activitydate"]["multi"]!=1)
     {
       $activitydate = sprintf("%04d-%02d-%02d", $record["activitydate"]["year"], $record["activitydate"]["month"], $record["activitydate"]["day"]);
@@ -859,7 +889,7 @@ class hours extends atkNode
     else // when inserting multiple days at once, we must verify if end is not smaller than start.
     {
       $start = date("Y-m-d", adodb_mktime(12,0,0,$record["activitydate"]["month"],$record["activitydate"]["day"],$record["activitydate"]["year"]));
-      $todate = $this->m_postvars["todate"]; // todate is not part of $record, because the todate attrib isn't really a part of the node.      
+      $todate = $this->m_postvars["todate"]; // todate is not part of $record, because the todate attrib isn't really a part of the node.
       $end = date("Y-m-d", adodb_mktime(12,0,0,$todate["month"],$todate["day"],$todate["year"]));
       atkdebug("validating $start vs $end");
       if ($start>$end)
@@ -887,17 +917,17 @@ class hours extends atkNode
     return array("activitydate","userid","phaseid","activityid","remark","time","functionlevel");
   }
 
-  
+
   function exceed_hrs_in_day($userid, $date, $new_minutes, $recordid="")
   {
     $db = &atkGetDb();
 
     $query = "SELECT sum(time) + $new_minutes minutes_in_day
-              FROM hours 
-              WHERE 
-                userid = '$userid' 
+              FROM hours
+              WHERE
+                userid = '$userid'
                 AND activitydate = '$date'";
-                
+
     // If we are editing a record, than the old value of the current record
     // must not be counted, but the new value (which was already added as
     // $new_minutes).
@@ -912,45 +942,45 @@ class hours extends atkNode
     {
       return ($res[0]["minutes_in_day"] > 24*60 );
     }
-  }    
-  
+  }
+
   function addPage(&$handler, $record="")
   {
     global $g_sessionManager;
    // Insert mode can be "" (normal) or "multi" (multiple days at once).
-    $this->m_insertmode = $g_sessionManager->stackVar("insertmode");    
+    $this->m_insertmode = $g_sessionManager->stackVar("insertmode");
     if ($this->m_insertmode=="multi")
     {
       // When in multidate mode, add an extra attribute for filtering
-      // what days we want to filter.      
+      // what days we want to filter.
       $this->add(new atkDummyAttribute("dayfilter", "", AF_HIDE_EDIT|AF_HIDE_LIST));
     }
-   
+
     return $handler->addPage($record);
   }
-  
+
   function activitydate_edit($record, $prefix="", $mode="")
-  {  
+  {
     if ($mode=="add")
     {
       // We support 2 modes... one for single day entry, one for multiday entry.
       if ($this->m_insertmode=="multi")
       {
         $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
-        $toDate = new atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY);                
-        
+        $toDate = new atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY);
+
         $res.= " ".text("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
         $res.= '<input type="hidden" name="'.$prefix.'activitydate[multi]" value="1">';
         $newmode = "day";
       }
       else
       {
-        $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);      
+        $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
         $newmode = "multi";
       }
-      $res.= " ".href("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=".$this->m_action."&insertmode=".$newmode, 
-                      text("insert_".$newmode, $this->m_type, $this->m_module), 
-                      SESSION_DEFAULT, 
+      $res.= " ".href("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=".$this->m_action."&insertmode=".$newmode,
+                      text("insert_".$newmode, $this->m_type, $this->m_module),
+                      SESSION_DEFAULT,
                       true);
       return $res;
     }
@@ -959,12 +989,12 @@ class hours extends atkNode
       return $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
     }
   }
-  
+
   function dayfilter_edit($record, $prefix="", $mode="")
   {
     $res= "<BR>".text("filterdays", $this->m_type, $this->m_module)."<BR>";
-    $days = array("mon", "tue", "wed", "thu", "fri", "sat", "sun");    
-    
+    $days = array("mon", "tue", "wed", "thu", "fri", "sat", "sun");
+
     // we use a hidden variable to indicate that the dayfilter has been edited.
     // If it has not been edited, dayfilter[edited] will not be 1, and we will
     // assume a default dayfilter of mon-fri. TODOFIXME: take the correct
@@ -984,23 +1014,23 @@ class hours extends atkNode
     }
     return $res;
   }
-  
+
   function addDb(&$record, $exectrigger=true)
   {
     global $g_user;
-    
+
     $res = true;
-    
+
     if ($record["activitydate"]["multi"]==1)
-    {      
-      // We're registering multiple days at once. 
+    {
+      // We're registering multiple days at once.
       $walkerStamp = adodb_mktime(12,0,0,$record["activitydate"]["month"],$record["activitydate"]["day"],$record["activitydate"]["year"]);
-      $walker = date("Y-m-d", $walkerStamp);      
-      
+      $walker = date("Y-m-d", $walkerStamp);
+
       $todate = $this->m_postvars["todate"]; // todate is not part of $record, because the todate attrib isn't really a part of the node.
-      
+
       $end = date("Y-m-d", adodb_mktime(12,0,0,$todate["month"],$todate["day"],$todate["year"]));
-      
+
       // Make a quick lookup array in which we can easily see if a day was checked.
       $doDays=array();
       for ($i=0; $i<7; $i++)
@@ -1009,10 +1039,10 @@ class hours extends atkNode
         {
           $doDays[] = (($i+1)%7); // we started with monday as 0, but php date() function counts sunday as 0.
         }
-      }      
-      
+      }
+
       for ($i=1; $walker <= $end ; $i++)
-      {                       
+      {
         $dow = date("w", $walkerStamp);
         if (!in_array($dow, $doDays) || $this->getLockType($this->m_user,$walker)!="")
         {
@@ -1027,13 +1057,13 @@ class hours extends atkNode
                                              "day"=>date("d", $walkerStamp));
           $res = parent::addDb($newRecord);
         }
-        
+
         // End of day, add 1 day and reloop.
         $walkerStamp = adodb_mktime(12,0,0,$record["activitydate"]["month"],
                                      $record["activitydate"]["day"]+$i,
                                      $record["activitydate"]["year"]);
         $walker = date("Y-m-d", $walkerStamp);
-                              
+
       }
     }
     else
@@ -1042,21 +1072,21 @@ class hours extends atkNode
     }
     return $res;
   }
- 
+
   /**
-   * This method is called by the framework to determine the allowed actions on 
+   * This method is called by the framework to determine the allowed actions on
    * the hours node.
    * In this case, the edit and delete actions are disabled if the record does
    * not belong to the current user.
-   * TODO/FIXME: add some supervisor right so some users may edit other users' 
+   * TODO/FIXME: add some supervisor right so some users may edit other users'
    * entries.
    */
   function recordActions($rec, &$actions, &$mraactions)
   {
-    $user = getUser();        
-    if ($user["id"]=="" || $rec["userid"]["id"]!=$user["id"] 
+    $user = getUser();
+    if ($user["id"]=="" || $rec["userid"]["id"]!=$user["id"]
         || $this->getLockType($rec["userid"]["id"],
-                              sprintf("%02d-%02d-%02d", $rec["activitydate"]["year"], 
+                              sprintf("%02d-%02d-%02d", $rec["activitydate"]["year"],
                                                         $rec["activitydate"]["month"],
                                                         $rec["activitydate"]["day"]))!="")
     {
@@ -1070,16 +1100,16 @@ class hours extends atkNode
           unset($mraactions[$idx]);
         }
       }
-      else 
+      else
       {
         $actionbase = $_SERVER["PHP_SELF"].'?atknodetype='.$this->atknodetype().'&atkselector=[pk]&viewuser='.$this->m_user;
         $actions = array();
         $actions["edit"] = $actionbase."&atkaction=edit";
         $actions["delete"] = $actionbase."&atkaction=delete";
-      }  
+      }
     }
   }
-  
+
   function getLockIcon()
   {
     if ($this->m_lock!="")
@@ -1101,30 +1131,30 @@ class hours extends atkNode
     $hoursnode =   &getNode("timereg.hours");
     $record = $this->updateRecord();
     $user = getUser();
-    
+
     $excludelist = $this->_getExcludeListForNode($phasenode, array("projectid"));
     $phaserecs = $phasenode->selectDb($phasenode->m_table.".id='{$record['phaseid']['phaseid']}'",null,null, $excludelist);
-    
+
     $excludelist = $this->_getExcludeListForNode($phasenode, array("id", "projectid"));
-    
+
     $phases = $phasenode->selectDb($phasenode->m_table.".projectid='{$phaserecs[0]['projectid']['id']}'",null,null,$excludelist);
-    
+
     $inphase = array();
     foreach ($phases as $phase)
     {
       $inphase[] = $phase["id"];
     }
-    
+
     $in = implode(",",$inphase);
     if ($in) $instr = "IN (".$in.")";
     $timeregcount = $hoursnode->countDb("{$hoursnode->m_table}.phaseid $instr AND {$hoursnode->m_table}.userid = '{$user['id']}'");
     atkdebug("$timeregcount timeregistrations on this project by this user");
-    if ($timeregcount>0) 
+    if ($timeregcount>0)
       return false;
-    else                 
+    else
         return true;
   }
-  
+
   function _getExcludeListForNode($node, $include)
   {
     $excludelist = array_keys($node->m_attribList);
@@ -1135,9 +1165,9 @@ class hours extends atkNode
     sort($excludelist);
     return $excludelist;
   }
-  
+
   function preAdd(&$record)
-  {    
+  {
     $this->modifyfortime($record);
   }
 
@@ -1177,19 +1207,19 @@ class hours extends atkNode
     $RECstartH = $record["starttime"]["hours"]*1;
     $RECstartM = $record["starttime"]["minutes"]*1;
     $RECstartS = $record["starttime"]["seconds"]*1;
-    
+
     $RECendH = $record["endtime"]["hours"]*1;
     $RECendM = $record["endtime"]["minutes"]*1;
     $RECendS = $record["endtime"]["seconds"]*1;
-    
+
     // Check if the endtime isn't before the starttime
-    if ($RECstartH>$RECendH || 
+    if ($RECstartH>$RECendH ||
          ($RECstartH==$RECendH && $RECstartM>$RECendM) || ($RECstartH==$RECendH && $RECstartM==$RECendM && $RECstartS>$RECendS))
     {
       triggerError($record, "starttime", "error_begintime_before_endtime");
       return;
     }
-    
+
     if (($RECstartH==$RECendH)&&($RECstartM==$RECendM)&&($RECstartS==$RECendS))
     {
       triggerError($record, "starttime", "error_begintime_equals_endtime");
@@ -1203,27 +1233,27 @@ class hours extends atkNode
     // normally this would fail, however, because this function is only called in
     // a special mode and never directly from the constructor, it should always work.
     $select = $this->selectDb("activitydate = '".$record['activitydate']['year']."-".$record['activitydate']["month"]."-".$record['activitydate']["day"]."'");
-    
+
     foreach ($select as $dbrecord)
     {
       convertDurationToHours($dbrecord,true);
-      
+
       $DBstartH = $dbrecord["starttime"]["hours"];
       $DBstartM = $dbrecord["starttime"]["minutes"];
       $DBstartS = $dbrecord["starttime"]["seconds"];
-    
+
       $DBendH = $dbrecord["endtime"]["hours"];
       $DBendM = $dbrecord["endtime"]["minutes"];
       $DBendS = $dbrecord["endtime"]["seconds"];
-      
+
       if (
       // Check if endtime of this record is earlier or the same as the starttime of this entry
-      !($DBstartH>$RECendH || ($DBstartH==$RECendH && $DBstartM>$RECendM) || 
+      !($DBstartH>$RECendH || ($DBstartH==$RECendH && $DBstartM>$RECendM) ||
           ($DBstartH==$RECendH && $DBstartM>$RECendM ||
             ($DBstartM==$RECendM && $DBstartS>=$RECendS))
       ||
       // Check if starttime of the record is later or the same as the endtime of this entry
-      ($RECstartH>$DBendH || ($RECstartH==$DBendH && $RECstartM>$DBendM) || 
+      ($RECstartH>$DBendH || ($RECstartH==$DBendH && $RECstartM>$DBendM) ||
           ($RECstartH==$DBendH && $RECstartM<$DBendM ||
             ($DBstartM== $RECendM && $RECstartS>=$DBendS)))))
       {
