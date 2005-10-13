@@ -178,57 +178,6 @@
 
 
   // -------------------------------------------
-  //        TEST FRAMEWORK CONFIGURATION
-  // -------------------------------------------
-
-  // The test framework can automatically run tests on achievos
-  // functionallity. In order to do this, the framework needs a valid
-  // login (username and password) with all access rights. Because the
-  // tests may take a long time to complete, it is also wise to set a
-  // high time-out value on connections and total test duration.
-  //
-  // NOTE: the test framework is intended to provide achievo and achievo
-  // module developers with an automatic unit and webtesting feature. If
-  // you just want to use achievo, then it won't be nescecerry for you to
-  // configure these settings.
-
-  // The url used by the testing framework in order to reach your achievo
-  // installation through the webserver's http interface. A trailing slash
-  // *must* be present in this url!
-  //
-  $config_test_achievourl = "http://yourhost/yourachievopath/";
-
-  // The username used for automated testing. Be sure to specify a user
-  // having sufficient rights to access all areas you want to test.
-  //
-  $config_test_username = "username";
-
-  // The password belonging to the username specified above. Please mind
-  // that password's are case sensitive.
-  //
-  $config_test_password = "password";
-
-  // The maximum duration of all tests in seconds. This overrides the
-  // webserver's default value in order to provide the tests with enough
-  // time to complete all tests. Setting this value too low will cause
-  // the webserver to stop the testscript before completing all tests.
-  // On the other side, setting this value too high will increase the risk
-  // of hanged tests being active for a much too long time. To find the
-  // right value, you may need to experiment a little bit. It mostly
-  // depends on how fast your webserver is and how many tests you run
-  //
-  $config_test_maxexecutiontime = 600;
-
-  // The maximum duration of a page-request by the webtester, measured in
-  // seconds. Set this timeout as high as you want your page requests to
-  // last at most. But be carefull about setting this value too low, it
-  // may cause tests to fail, without giving you any clue it was caused
-  // by a time-out when requesting a page.
-  //
-  $config_test_connectiontimeout = 60;
-
-
-  // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------
 
