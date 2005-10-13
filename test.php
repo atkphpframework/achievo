@@ -15,17 +15,10 @@
    *
    * @version $Revision$
    * $Id$
-   */  
-  
-  // Test configuration
-  $config_atkroot = "./";                                              // Path in which achievo exists
-  $config_achievourl = "http://nikita/zandbak/guido/achievo_current/"; // URL wherein achievo can be reached through http from the php interpretor
-  $config_achievousername = "webtest";                                 // User account used for webtesting
-  $config_achievopassword = "webtest";                                 // Password for the webtesting account
-  
-  // Include ATK library and Achievo extended web tester (features loginAchievo function)
-  include_once($config_atkroot . "atk.inc");
-  atkimport("test.achievowebtestcase");
+   */
+
+  // Include ATK library
+  include_once("atk.inc");
 
   // Require ATK authentication if not running in text mode
   if(!$_SERVER['PWD'])
@@ -33,6 +26,12 @@
     atksession();
     atksecure();
   }
+
+  // Set the maximum execution time of all tests together
+  set_time_limit(atkconfig("test_maxexecutiontime"));
+
+  // Include the Achievo extended webtestcase (features loginAchievo function)
+  atkimport("test.achievowebtestcase");
 
   // Let the atktestsuite run all test files having a name starting with "class.test_"
   $suite = &atknew("atk.test.atktestsuite");
