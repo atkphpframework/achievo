@@ -152,7 +152,8 @@ class hours extends atkNode
     global $g_sessionManager,$g_user;
 
     // weekview and viewdate are variables that we need to remember..
-    $this->m_weekview = $g_sessionManager->pageVar("weekview");
+    $this->m_weekview = $g_sessionManager->pageVar("weekview");        
+    
     $this->m_viewdate = $g_sessionManager->pageVar("viewdate");
     $this->m_user = $g_sessionManager->pageVar("viewuser");
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
@@ -504,8 +505,8 @@ class hours extends atkNode
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
-      $time = ($rec["time"]["hours"]*60)+$rec["time"]["minutes"];
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];      
+      $time = $rec["time"];
       $week[$key][$date] += $time;
       $projtotals[$key] += $time;
       $daytotals[$date] += $time;
