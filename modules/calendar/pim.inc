@@ -2,7 +2,7 @@
   function pimSchedule()
   {
     global $g_user;
-    
+
     $db = &atkGetDb();
 
     $me = $g_user["id"];
@@ -30,7 +30,7 @@
     $query->addField('publicitem', ' ', 'schedule');
     $query->addField('owner', ' ', 'schedule');
     $query->addField('status', ' ', 'schedule');
-    $query->addField('scheduletype', ' ', 'schedule');    
+    $query->addField('scheduletype', ' ', 'schedule');
 
     $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
     $query->addCondition("(schedule.owner='".$me."' OR person.id='".$me."' OR schedule.all_users = 1)");
@@ -54,7 +54,8 @@
 
     if (count($recs)>0)
     {
-      $todayschedule = $schedulenode->recordList($recs,$actions,false, array('publicitem','allday','location','scheduletype','enddate','all_users'));
+      $rl = &atknew("atk.recordlist.atkrecordlist");
+      $todayschedule = $rl->render($schedulenode, $recs, $actions, 0, array('publicitem','allday','location','scheduletype','enddate','all_users'));
     }
     else
     {
