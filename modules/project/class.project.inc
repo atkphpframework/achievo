@@ -6,13 +6,14 @@
   useattrib("atktextattribute");
   useattrib("atkdateattribute");
   useattrib("atklistattribute");
+  useattrib("atkboolattribute");
   useattrib("project.dependencyattrib");
   useattrib("project.projecttemplateattribute");
   useattrib("atknumberattribute");
   useattrib("graph.datagraphattribute");
   useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
-  
+
   define("PRJ_TIMEREG_ALL_USERS", 0);
   define("PRJ_TIMEREG_MEMBERS_ONLY", 1);
 
@@ -25,14 +26,14 @@
       $this->atkNode($name,$flags|NF_EDITAFTERADD|NF_EXT_SORT);
 
       $this->add(new atkAttribute("id",AF_AUTOKEY));
-      
+
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST, 10));
 
-      $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));            
+      $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
-      $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 5));      
+      $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 5));
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.
@@ -56,49 +57,50 @@
       {
       	$flags = 0;
       }
-      
-      $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));      
+
+      $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
+      $this->add(new atkBoolAttribute("alwaysvisibleintimereg", AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", text("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
       $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
-      
+
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
       $this->add(new atkListAttribute("timereg_limit", array("all users", "members_only"), array(PRJ_TIMEREG_ALL_USERS, PRJ_TIMEREG_MEMBERS_ONLY), AF_HIDE_ADD|AF_HIDE_LIST), "planning");
-      
+
       $this->add(new atkDummyAttribute("separator", "<br><hr><br>", AF_HIDE_LIST|AF_HIDE_ADD), "planning");
-      $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");      
-      $this->add(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_HIDE_LIST), "planning");      
+      $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
+      $this->add(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_HIDE_LIST), "planning");
 
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE), "planning");
 
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW), "planning");
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-      
+
       $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
       $this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
-      
+
       $timeline = &new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]", "resolution"=>"auto"), "line", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT);
       $timeline->addDynamicParam("resolution", array("day", "week", "month", "auto"));
       $this->add($timeline, "stats");
       $this->add(new dataGraphAttribute("phasetimedistribution", "phasetime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");
       $this->add(new dataGraphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");
-      $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");      
+      $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");
 
       $this->setTable("project","project");
 
       $this->setOrder("name");
       $this->setIndex("name");
-    
+
       atkdebug("project::project()");
-    }   
-    
+    }
+
     function graph_topprojects($params)
     {
       $db = &atkGetDb();
 
       $start = $params["startdate"];
       $end   = $params["enddate"];
-      $max   = $params["max"];      
+      $max   = $params["max"];
       $from  = $params["from"];
 
       $query = &$db->createQuery();
@@ -126,7 +128,7 @@
       }
       return array(text("registeredtimeperproj")=>$dataset);
     }
-    
+
     // We override the dispatch function, to intercept projectid's. We use this
     // to update the list of recent projects etc. So whatever action you perform
     // on the project node, the current project you are using (if any) is stored
@@ -156,7 +158,7 @@
                                     "day"=>date(d)),
                    "timereg_limit"=>PRJ_TIMEREG_MEMBERS_ONLY,
                    "status"=>"active");
-    }   
+    }
 
     function action_planning(&$handler)
     {
@@ -166,18 +168,18 @@
 
       $prjid = $this->m_postvars["selectedprojectid"];
       $imgurl = moduleDir("project")."ganttchart.php?projectid=".$prjid;
-      
+
       $records = $this->selectDb("project.id=".$prjid);
       $record = $records[0];
-      
+
       $projectinfo = '<br><table border=0>';
       $projectinfo.= '<tr><td align="right"><b>'.text("name").': </b></td><td>'.$record['name'].'</td></tr>';
       $projectinfo.= '<tr><td align="right"><b>'.text("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
-      $projectinfo.= '</table><br>';   
-      
+      $projectinfo.= '</table><br>';
+
       $legend = text("legend").": [".text("booked").", ".text("hoursleft")."]<br>";
       $legend.= text("ganttexplanation");
-      
+
       $layout->ui_top(text("title_projectplanning"));
       $layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
       $layout->ui_bottom();
@@ -208,219 +210,219 @@
     {
       return $this->m_attribList["fixed_price"]->edit($rec)." ".atkconfig("currency_symbol");
     }
-    
+
     function graph_phasetime($params, $raw=false)
-    {          
+    {
       $db = &atkGetDb();
-      $data = $db->getrows("SELECT 
+      $data = $db->getrows("SELECT
                                 phase.id, phase.name, SUM(time) as total
-                              FROM 
+                              FROM
                                 hours, phase
-                              WHERE 
+                              WHERE
                                 hours.phaseid = phase.id
                                 AND phase.projectid = ".$params["projectid"].
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                                 ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
-                            " GROUP BY 
+                            " GROUP BY
                                 phase.name
-                              ORDER BY 
+                              ORDER BY
                                 phase.name");
-                            
+
       if ($raw) return $data;
-      
+
       // convert records to graph-compatible array.
       $dataset = array();
       for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {        
-        $dataset[$data[$i]["name"]] = $data[$i]["total"];        
+      {
+        $dataset[$data[$i]["name"]] = $data[$i]["total"];
       }
-      
+
       return array("registeredtimeperphase"=>$dataset);
     }
-    
+
     function graph_emptime($params, $raw=false)
-    {      
+    {
       $db = &atkGetDb();
-      $data = $db->getrows("SELECT 
+      $data = $db->getrows("SELECT
                                 person.id, person.firstname, person.lastname, SUM(time) as total
-                              FROM 
+                              FROM
                                 hours, phase, person
-                              WHERE 
+                              WHERE
                                 hours.phaseid = phase.id
                                 AND hours.userid = person.id
                                 AND phase.projectid = ".$params["projectid"].
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                                 ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
-                            " GROUP BY 
+                            " GROUP BY
                                 person.id
-                              ORDER BY 
+                              ORDER BY
                                 person.lastname");
-                            
+
       if ($raw)
       {
         return $data;
       }
-                         
+
        // convert records to graph-compatible array.
-      $dataset = array();                         
+      $dataset = array();
       for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {                    
-        $dataset[$data[$i]["firstname"]." ".$data[$i]["lastname"]] = $data[$i]["total"];              
+      {
+        $dataset[$data[$i]["firstname"]." ".$data[$i]["lastname"]] = $data[$i]["total"];
       }
-      
+
       return array("registeredtimeperemp"=>$dataset);
     }
-    
+
     function graph_activitytime($params, $raw=false)
-    {            
+    {
       $db = &atkGetDb();
-      $data = $db->getrows("SELECT 
+      $data = $db->getrows("SELECT
                                 activity.id, activity.name, SUM(time) as total
-                              FROM 
+                              FROM
                                 hours, phase, activity
-                              WHERE 
+                              WHERE
                                 hours.phaseid = phase.id
                                 AND phase.projectid = ".$params["projectid"].
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                                 ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
                             "   AND hours.activityid = activity.id
-                              GROUP BY 
+                              GROUP BY
                                 activity.name
-                              ORDER BY 
-                                activity.name");                                      
+                              ORDER BY
+                                activity.name");
       // In raw mode the data is sufficient.
       if ($raw) return $data;
-       
+
       // convert records to graph-compatible array.
-      $dataset = array();       
-      
+      $dataset = array();
+
       for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {                
-        $dataset[$data[$i]["name"]] = $data[$i]["total"];                
+      {
+        $dataset[$data[$i]["name"]] = $data[$i]["total"];
       }
-      
+
       return array("registeredtimeperactivity"=>$dataset);
     }
-    
+
     function graph_dowtime($params, $raw=false)
-    {            
+    {
       $db = &atkGetDb();
-      
+
       $days = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-      
-      $data = $db->getrows("SELECT 
+
+      $data = $db->getrows("SELECT
                                 date_format(hours.activitydate, '%w') as dow, SUM(time) as total
-                              FROM 
+                              FROM
                                 hours, phase, activity
-                              WHERE 
+                              WHERE
                                 hours.phaseid = phase.id
                                 AND phase.projectid = ".$params["projectid"].
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                                 ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
                             "   AND hours.activityid = activity.id
-                              GROUP BY 
+                              GROUP BY
                                 date_format(hours.activitydate, '%w')
-                              ORDER BY 
-                                dow");                                      
-                            
+                              ORDER BY
+                                dow");
+
       // Add weekday names.
-      for ($i=0, $_i=count($data); $i<$_i; $i++)                            
+      for ($i=0, $_i=count($data); $i<$_i; $i++)
       {
         $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
       }
-                            
+
       // In raw mode the data is sufficient.
       if ($raw) return $data;
-       
+
       // convert records to graph-compatible array.
-      $dataset = array();       
-      
+      $dataset = array();
+
       for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {                
-        $dataset[$data[$i]["dow"]] = $data[$i]["total"];                
+      {
+        $dataset[$data[$i]["dow"]] = $data[$i]["total"];
       }
-      
+
       return array("registeredtimeperweekday"=>$dataset);
     }
-    
+
     function graph_timeline($params)
     {
       $db = &atkGetDb();
-   
-      // First find out if a timeline would make more sense per week, per 
-      // month or per day. This all depends on the amount of time between the 
+
+      // First find out if a timeline would make more sense per week, per
+      // month or per day. This all depends on the amount of time between the
       // first and last time entry.
-      $range = $db->getrows("SELECT 
-                                 min(activitydate) as minimum, 
+      $range = $db->getrows("SELECT
+                                 min(activitydate) as minimum,
                                  max(activitydate) as maximum
-                               FROM 
+                               FROM
                                  hours, phase
-                               WHERE 
+                               WHERE
                                  hours.phaseid = phase.id
                                  AND phase.projectid = ".$params["projectid"].
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));      
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));
       $maxdate = array();
       $mindate = array();
       list ($maxyear, $maxmonth, $maxday) = explode("-", $range[0]["maximum"]);
-      list ($minyear, $minmonth, $minday) = explode("-", $range[0]["minimum"]);      
-      
-      $secondsinaday = 24*60*60;      
-      
+      list ($minyear, $minmonth, $minday) = explode("-", $range[0]["minimum"]);
+
+      $secondsinaday = 24*60*60;
+
       $resolution = $params["resolution"];
-   
+
       // Do we need to autodetect a resolution?
       if ($resolution=="auto"||$resolution=="")
       {
-        $daysbetween = (adodb_mktime(12,0,0,$maxmonth,$maxday,$maxyear)-adodb_mktime(12,0,0,$minmonth,$minday,$minyear))/$secondsinaday;      
+        $daysbetween = (adodb_mktime(12,0,0,$maxmonth,$maxday,$maxyear)-adodb_mktime(12,0,0,$minmonth,$minday,$minyear))/$secondsinaday;
         if ($daysbetween <= 31)
         {
-          // one month range. Daybased stat makes the most sense.          
+          // one month range. Daybased stat makes the most sense.
           $resolution="day";
-        } 
+        }
         else if ($daysbetween <= 5*31)
         {
-          // five month range. Week based stat makes the most sense.        
+          // five month range. Week based stat makes the most sense.
           $resolution="week";
         }
         else
-        { 
-          // > 5 month range. Month based stat makes most sense.       
+        {
+          // > 5 month range. Month based stat makes most sense.
           $resolution="month";
-        }                        
-      }    
-      
+        }
+      }
+
       switch ($resolution)
       {
         case "month": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')"; break;
         case "week": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')"; break;
         default: $groupbybystmt = "";
       }
-      
+
       $query = "SELECT
                   ".($groupbystmt==""?"activitydate":$groupbystmt)." as label, sum(time) as total
                 FROM
                   hours, phase
-                WHERE 
+                WHERE
                   hours.phaseid = phase.id
                   AND phase.projectid = ".$params["projectid"].
                   ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                  ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").      
+                  ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
               " GROUP BY
-                  ".($groupbystmt==""?"activitydate":$groupbystmt);                
+                  ".($groupbystmt==""?"activitydate":$groupbystmt);
       $data = $db->getrows($query);
-            
+
       // convert records to graph-compatible array.
-      $dataset = array();       
+      $dataset = array();
       for ($i=0, $_i=count($data); $i<$_i; $i++)
-      {        
+      {
         $dataset[$this->_graphLabel($data[$i]["label"], $resolution)] = sprintf("%.2f", ($data[$i]["total"]/60));
       }
-      
+
       return array("registeredtimeper".$resolution=>$dataset);
-      
+
     }
-    
+
     function _graphLabel($label, $scale)
     {
       if ($scale=="month")
@@ -435,29 +437,29 @@
       {
         return $label;
       }
-    }    
-      
+    }
+
     function member_add_edit($record, $mode)
     {
       $org = $this->m_attribList["member_add"]->edit($record, $mode);
-      
+
       $rolesel = new atkManyToOneRelation("member_add_role", "project.role", AF_OBLIGATORY);
-      
+
       $dummy = array();
       $org.= " ".$rolesel->edit($dummy);
       return $org;
     }
-    
+
     function storeMembers($rec, $members)
-    {     
+    {
       $role_id = $this->fetchRoleId();
-      
+
       for ($i=0, $_i=count($members); $i<$_i; $i++)
-      {        
+      {
         $this->_addMemberRecord($rec["id"], $members[$i]["id"], $role_id);
       }
     }
-    
+
     function fetchRoleId()
     {
       //$raw = $this->m_postvars["member_add_role"];
@@ -465,11 +467,11 @@
       $role_id = $rolesel->fetchValue($this->m_postvars);
       return $role_id["id"];
     }
-    
+
     function _addMemberRecord($project_id, $person_id, $role_id)
     {
       $db = &atkGetDb();
-      
+
       // attendee may already exist.
       $recs = $db->getrows("SELECT count(*) AS cnt FROM project_person WHERE projectid = $project_id AND personid = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
@@ -477,7 +479,7 @@
         $db->query("INSERT INTO project_person (projectid, personid, role) VALUES ($project_id, $person_id, $role_id)");
       }
     }
-    
+
      /**
      * Are we in 'active' emps or 'archive' mode?
      */
@@ -491,7 +493,7 @@
       }
       return $view;
     }
-  
+
     function action_admin(&$handler)
     {
       $view = $this->getView();
@@ -505,11 +507,11 @@
       }
       return $handler->action_admin();
     }
-  
+
     function adminFooter()
     {
       $view = $this->getView();
-  
+
       if ($view=="active")
       {
         return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
@@ -521,11 +523,11 @@
                     '&view=active', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
       }
     }
-    
+
     function contract_id_edit($record, $mode)
-    {      
-      $fromdate = $this->m_attribList["startdate"]->value2db($record);      
-      
+    {
+      $fromdate = $this->m_attribList["startdate"]->value2db($record);
+
       $filter = "(contract.status='active'";
       if ($fromdate!="NULL")
       {
@@ -537,9 +539,9 @@
         // if a current record is selected, we must include that record, even if it falls outside the filter
         $filter.= " OR contract.id=".$record["contract_id"]["id"];
       }
-      
+
       $this->m_attribList["contract_id"]->m_destinationFilter = $filter;
-      
+
       return $this->m_attribList["contract_id"]->edit($record, $mode);
     }
 
