@@ -37,6 +37,7 @@
   "allroles" => "All roles",
   "allusers" => "All users",
   "all_users" => "All users",
+  "alwaysvisibleintimereg" => "Always visible in time registration",
   "appointments" => "Appointments",
   "app_shorttitle" => "Achievo",
   "app_title" => "Achievo",
