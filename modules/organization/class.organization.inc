@@ -104,7 +104,8 @@ class organization extends atkNode
     $recs = $projectnode->selectDb("", "", "", $projectnode->m_listExcludes);
     if (count($recs)>0)
     {
-      return $projectnode->normalRecordList($recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
+      $rl = &atknew("atk.recordlist.atkrecordlist");
+      return $rl->render($projectnode, $recs, $projectnode->defaultActions($mode), RL_NO_SEARCH|RL_NO_SORT);
     }
     return text("none");
   }
