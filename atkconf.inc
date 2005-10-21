@@ -12,8 +12,10 @@
   $config_auth_userfield = "userid";
   $config_auth_accesstable = "accessright";
   $config_auth_passwordfield = "password";
-  $config_auth_leveltable  = "person";
-  $config_auth_levelfield  = "entity";
+  $config_auth_leveltable  = "employeerole";
+  $config_auth_levelfield  = "role_id";
+  $config_auth_userpk = "id";
+  $config_auth_userfk = "employee_id";
   $config_max_loginattempts = 0;
   $config_auth_loginform = true;
   $config_auth_userdescriptor = "[userid]";

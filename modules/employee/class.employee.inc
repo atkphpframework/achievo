@@ -2,6 +2,7 @@
 
 userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
+userelation("atkmanyboolrelation");
 useattrib("atklistattribute");
 useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
@@ -50,7 +51,11 @@ class employee extends person
     $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
     
-    $this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
+    //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
+    $rel = &$this->add(new atkManyBoolRelation("roles", "employee.employeerole", "employee.profile", AF_HIDE_LIST));
+    $rel->setLocalKey("employee_id");
+    $rel->setRemoteKey("role_id");
+    
 
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
     $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
