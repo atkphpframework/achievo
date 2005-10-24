@@ -232,9 +232,9 @@
   $dbconfig = atkconfig("db");
   if (!function_exists($dbs[$dbconfig["default"]["driver"]]))
   {
-    $errors[] = "Your PHP installation seems to be compiled without <b>".atkconfig("database")."</b>
+    $errors[] = "Your PHP installation seems to be compiled without <b>" . $dbconfig["default"]["driver"] . "</b>
                  database support.
-                 <br>Please recompile PHP with support for ".atkconfig("database").", or, if you
+                 <br>Please recompile PHP with support for " . $dbconfig["default"]["driver"] . ", or, if you
                  installed from rpm, install the php rpm for this database.
                  <br>Alternatively, select a different database in the config.inc.php file (<b>\$config_database</b>).";
   }

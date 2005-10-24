@@ -50,9 +50,11 @@ for ($i=0;$i<$cntrec;$i++)
  $querydep->deAlias($dbrecordsdep[$i]);
 }
 
+// Get the database configuration parameters
+$dbconfig = atkconfig("db");
 
 // Select the PHASES which belong to the project
-$name = "atk".atkconfig("database")."query";
+$name = "atk" . $dbconfig["default"]["driver"] . "query";
 $queryphase = new $name();
 $queryphase->addTable('project');
 $queryphase->addJoin('phase', '', 'project.id=phase.projectid', FALSE);
@@ -83,7 +85,7 @@ for($i=0;$i<count($dbrecordsphase);$i++)
 $dep = load_dependencies($phase_ids,$dbrecordsdep);
 
 // Select the TIMES that have been booked on the project
-$name = "atk".atkconfig("database")."query";
+$name = "atk" . $dbconfig["default"]["driver"] . "query";
 $querybooked = new $name();
 $querybooked->addTable('phase');
 $querybooked->addJoin('hours', '', 'hours.phaseid=phase.id', FALSE);
@@ -105,7 +107,7 @@ for ($i=0;$i<$cntrec;$i++)
 }
 
 // Select the TIMES that have been planned on the project
-$name = "atk".atkconfig("database")."query";
+$name = "atk" . $dbconfig["default"]["driver"] . "query";
 $queryplanned  = new $name();
 $queryplanned->addTable('project');
 $queryplanned->addJoin('phase', '', 'project.id=phase.projectid', FALSE);
@@ -138,7 +140,7 @@ for($i=0;$i<count($dbrecordsphase);$i++)
   $gant[($dbrecordsphase[$i]['phase_id'])]['name'] = $dbrecordsphase[$i]['phase_name'];
   $gant[($dbrecordsphase[$i]['phase_id'])]['maxphasetime'] = $dbrecordsphase[$i]['phase_current_planning'];
   $gant[($dbrecordsphase[$i]['phase_id'])]['startdate'] = $dbrecordsphase[$i]['phase_startdate'];
-  $gant[($dbrecordsphase[$i]['phase_id'])]['enddate'] = $dbrecordsphase[$i]['phase_enddate'];  
+  $gant[($dbrecordsphase[$i]['phase_id'])]['enddate'] = $dbrecordsphase[$i]['phase_enddate'];
 }
 
 //extend the gant array with the booked hours of the phase
@@ -187,7 +189,7 @@ $activity=array();
 
 foreach ($gant as $id=>$gantphase)
 {
-  
+
   $activity[$i] = &new GanttBar($i*2, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
   $activity[$i]->SetPattern(BAND_RDIAG, "yellow");
   $activity[$i]->SetFillColor("red");
@@ -214,11 +216,11 @@ foreach ($gant as $id=>$gantphase)
       {
         $tempb = $gantphase['booked']/$gantphase['planned'];
         $tempp = $gantphase['planned'];
-        $activity[$i]->progress->Set($tempb);        
+        $activity[$i]->progress->Set($tempb);
 
         $caption .= '['.round($gantphase['booked']/60).'/';
         $caption .= round($gantphase['planned']/60).']';
-      }      
+      }
     }
     else
     {
@@ -228,13 +230,13 @@ foreach ($gant as $id=>$gantphase)
         $activity[$i]->progress->Set((0.0000000001), $tempp);
 
         $caption .= '[0/'.round($gantphase['planned']/60).']';
-      }      
-    }        
+      }
+    }
   }
   else
   {
-    $activity[$i]->SetPattern(BAND_RDIAG, "red");    
-  }  
+    $activity[$i]->SetPattern(BAND_RDIAG, "red");
+  }
   $activity[$i]->caption->Set($caption);
   $graph->Add($activity[$i]);
   $i++;
