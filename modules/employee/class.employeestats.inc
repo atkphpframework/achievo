@@ -17,6 +17,7 @@
       
       if ($this->m_viewstart=="") 
       {
+        include_once(atkconfig("atkroot")."atk/utils/adodb-time.inc.php");
         $this->m_viewstart = date("Y-m-d",adodb_mktime(0,0,0,date("m")-1,date("d"),date("Y")));
       }
       else if (is_array($this->m_viewstart))
