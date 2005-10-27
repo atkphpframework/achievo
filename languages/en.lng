@@ -487,6 +487,9 @@
   "invoice_state" => "State/Province",
   "invoice_zipcode" => "Zipcode",
   "organization_invoiceaddress" => "Billing address",
+  "project_tab_finance" => "Finance",
+  "department" => "Department",
+  "hours_approve" => "Approve timeregistration",
 );
 
 ?>

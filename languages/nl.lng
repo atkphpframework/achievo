@@ -487,6 +487,9 @@
   "invoice_state" => "Staat/Provincie",
   "invoice_zipcode" => "Postcode",
   "organization_invoiceaddress" => "Factuur adres",
+  "project_tab_finance" => "Financieel",
+  "department" => "Afdeling",
+  "hours_approve" => "Uren goedkeuren",
 );
 
 ?>
