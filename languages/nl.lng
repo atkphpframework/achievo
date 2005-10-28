@@ -490,6 +490,11 @@
   "project_tab_finance" => "Financieel",
   "department" => "Afdeling",
   "hours_approve" => "Uren goedkeuren",
+  "billing_expensereg_limit" => "Uitgaven toegang",  // TODO WEGHALEN!
+  "billing_type" => "Projecttype", // TODO WEGHALEN
+  "income" => "Ontvangsten", // TODO WEGHALEN
+  "deliverable" => "Deliverable",
+  "deliverable_remind_days" => "Herinnering (dagen)",
 );
 
 ?>
