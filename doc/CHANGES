@@ -27,6 +27,7 @@ Changes in Achievo 1.2RC1
 + Added invoice address to organization. [Ivo]
 + Added Japanese language file. [James]
 + Added robots.txt file so Achievo installations do not get spidered. [Ivo]
++ Added deliverables feature to project management. [Ivo]
 * Upgraded to ATK5 backend. [Ivo,Sandy]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg
