@@ -15,6 +15,7 @@
       $this->menuitem("schedule", dispatch_url("calendar.schedule","admin"),"main",true,300);
       $this->menuitem("-","","main",true,320);
       $this->menuitem("schedule_types", dispatch_url("calendar.schedule_types","admin"),"setup");
+      $this->menuitem("holiday_admin", dispatch_url("calendar.holidays","admin"),"setup");
     }
 
     function getPimItems()
@@ -30,15 +31,15 @@
     {
       return array("person");
     }
-    
+
     function userprefs_modifier(&$node)
     {
-      useattrib("atklistattribute");      
-      $usernode = &getNode("employee.employee");      
-      $node->add(new atkListAttribute("calendar_defaultuserview", 
-                                      array($usernode->descriptor(getUser()), 
-                                            "allusers"), 
-                                      array("", 
+      useattrib("atklistattribute");
+      $usernode = &getNode("employee.employee");
+      $node->add(new atkListAttribute("calendar_defaultuserview",
+                                      array($usernode->descriptor(getUser()),
+                                            "allusers"),
+                                      array("",
                                             "*"), AF_OBLIGATORY), "calendar");
     }
   }
