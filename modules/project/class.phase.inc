@@ -6,133 +6,161 @@
   useattrib("atknumberattribute");
   useattrib("atkdurationattribute");
   useattrib("atkdateattribute");
-  useattrib("atkfuzzysearchattribute");  
+  useattrib("atkfuzzysearchattribute");
   useattrib("project.spendhoursattribute");
   userelation("atkmanytoonerelation");
   userelation("atkmanyboolrelation");
   userelation("atkonetomanyrelation");
-  
-  
-  /** 
+
+
+  /**
    * Override of default atkManyBoolRelation because isEmpty depends not only on
    * setting of phase_activity but also of template.
    */
-  class phaseManyBoolRelation extends atkManyBoolRelation 
+  class phaseManyBoolRelation extends atkManyBoolRelation
   {
     function isEmpty($record)
-    {    
+    {
       return (parent::isEmpty($record) && $record["template"]["id"]=="");
     }
   }
-  
+
   class phase extends atkNode
   {
     function phase()
     {
       global $g_securityManager;
-      
+
       $this->atkNode("phase",NF_AUTOSELECT|NF_EDITAFTERADD); // node() constructor is *not* called automatically!
-  
+
       $this->add(new atkAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
       $this->add(new atkManyToOneRelation("projectid","project.project",AF_OBLIGATORY|AF_HIDE_LIST|AF_HIDE_EDIT));
-  
+
       $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_LIST));
       $this->add(new atkListAttribute("status",array("active","nonactive")));
-      
+
       $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY);
       $tmp->m_localKey = "phaseid";
       $tmp->m_remoteKey = "activityid";
       $this->add($tmp);
-  
+
       // template *must* come after phase_activity, because phase_activity does a delete of all
       // records on store, so template must be stored after phase_activity.
       $this->add(new phasetemplateAttribute("template","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_EDIT));
-      
+
       $this->add(new atkDateAttribute("startdate", "F d Y", "d F Y"));
       $this->add(new atkDateAttribute("enddate", "F d Y", "d F Y"));
-  
+
       //$this->add(new atkNumberAttribute("max_phasetime"));
       $this->add(new atkDurationAttribute("initial_planning",'','', ($g_securityManager->allowed("project.project","initialplanning")?0:AF_READONLY_EDIT)|AF_TOTAL|AF_DURATION_STRING));
       $this->add(new atkDurationAttribute("current_planning",'','', AF_HIDE_ADD|AF_TOTAL|AF_DURATION_STRING));
       $this->add(new spendHoursAttribute("spend_hours","id",AF_TOTAL));
-      
+
       $this->add(new atkOneToManyRelation("phaseplanning", "project.phaseplanning", "phaseid", AF_HIDE_LIST));
-      
+
       $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL, 20));
-  
+
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
     }
-  
+
     function descriptor_def()
     {
       return "[name]";
     }
-  
+
     function initial_values()
     {
       return Array("status"=>"active");
     }
-    
+
     function addDb(&$record, $exectrigger=true, $mode="add")
     {
       // This override makes sure that the current_planning is set equal to the number of initial_planning.
       $record["current_planning"] = $record["initial_planning"];
       return parent::addDb($record, $exectrigger, $mode);
     }
-  
+
     function postDel($rec)
     {
       $db = &atkGetDb();
       $delphase = $rec["id"];
-  
+
       // delete dependencies for this phase./
       $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
       $db->query($query);
-    }  
-  
+    }
+
     function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
       $this->addFilter("status='active'");
-  
+
       // Also, we hide the status field (we're showing only active phases,
       // so this column is not necessary.
       $this->m_attribList["status"]->m_flags|=AF_HIDE;
-  
+
       // call parent method.
       return $handler->action_select();
     }
-    
+
     function phaseplanning_add_edit($record, $mode)
     {
       $org = $this->m_attribList["phaseplanning_add"]->edit($record, $mode);
-      
+
       $hours = new atkAttribute("phaseplanning_initial");
-      
+
       $dummy = array();
       return text("plan_employee", "phase")." ".$org." ".text("for")." ".$hours->edit($dummy)." ".text("hours");
-      
+
     }
-    
+
+    /**
+     * Validates a phase record before saving its changes.
+     *
+     * Validates unique fields, required fields, dataformat etc.
+     *
+     * @param array &$record The record to validate
+     * @param String $mode The mode for which validation is performed ('add' or 'update')
+     * @param array $ignoreList The list of attributes that should not be validated
+     */
+    function validate(&$record, $mode, $ignoreList=array())
+    {
+      // Get the date of the first registration for this node (or set $earliesttimeregdate to null if not found)
+      $hoursNode = getNode("timereg.hours");
+      $earliesttimeregforphase = $hoursNode->selectDb("phaseid='" . $record["id"] . "'", "hours.activitydate ASC", 1);
+      $earliesttimeregdate = empty($earliesttimeregforphase) ? null : adodb_getdate(adodb_mktime(0, 0, 0, $earliesttimeregforphase["0"]["activitydate"]["month"], $earliesttimeregforphase["0"]["activitydate"]["day"], $earliesttimeregforphase["0"]["activitydate"]["year"]));
+
+      // Get the start date of this phase record
+      $phasestartdate = adodb_getdate(adodb_mktime(0, 0, 0, $record["startdate"]["month"], $record["startdate"]["day"], $record["startdate"]["year"]));
+
+      // Trigger an error on the startdate attribute if the earliesttimeregdate is not null and the startdate of this record is higher than de first earliesttimeregdate
+      if ((!is_null($earliesttimeregdate)) && ($phasestartdate > $earliesttimeregdate)) {
+        triggerError($record, "startdate", "error_cannot_set_startdate_later_than_first_timereg");
+      }
+
+      // Call the parents validate function to perform the default validation on the record
+      atkNode::validate($record, $mode, $ignoreList);
+    }
+
     function storePhaseplanning($rec, $people)
-    {     
+    {
       $initial_planning = $this->m_postvars["phaseplanning_initial"];
-      
+
       if ($initial_planning>0)
       {
         for ($i=0, $_i=count($people); $i<$_i; $i++)
-        {        
+        {
           $this->_addPlanningRecord($rec["id"], $people[$i]["id"], $initial_planning);
         }
       }
     }
-    
+
     function _addPlanningRecord($phase_id, $person_id, $initial_planning)
     {
       $db = &atkGetDb();
-      
+
       // attendee may already exist.
       $recs = $db->getrows("SELECT count(*) AS cnt FROM project_phaseplanning WHERE phaseid = $phase_id AND personid = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
@@ -142,19 +170,19 @@
       }
       $this->_addTeamMemberRecord($phase_id,$person_id);
     }
-    
-   /**
-    * Check if the person is allready a teammember
-    * if not, add the person
-    *
-    * @param int $phase_id
-    * @param int $person_id
-    */
+
+    /**
+     * Check if the person is allready a teammember
+     * if not, add the person
+     *
+     * @param int $phase_id
+     * @param int $person_id
+     */
     function _addTeamMemberRecord($phase_id,$person_id)
     {
       $db = &atkGetDb();
       // person may allready exist
-      $recs = $db->getrows("SELECT count(*) as cnt 
+      $recs = $db->getrows("SELECT count(*) as cnt
                               FROM phase, project,project_person
                               WHERE phase.projectid = project.id
                                 AND project.id = project_person.projectid
@@ -173,12 +201,11 @@
       }
     }
 
-  
     function rowColor($record)
-    { 
-      if($record["current_planning"]["hours"]>0)  
-      {   
-        if($record["spend_hours"]>($record["current_planning"]["hours"])) 
+    {
+      if($record["current_planning"]["hours"]>0)
+      {
+        if($record["spend_hours"]>($record["current_planning"]["hours"]))
         {
           return COLOR_ERROR;
         }
@@ -199,7 +226,7 @@
     $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
     $db->query($query);
     return true;
-  }  
+  }
 
   function action_select(&$handler)
   {

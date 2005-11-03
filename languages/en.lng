@@ -108,6 +108,7 @@
   "endtime" => "Endtime",
   "entity" => "Profile",
   "entrydate" => "Entrydate",
+  "error_cannot_set_startdate_later_than_first_timereg" => "Cannot set phase startdate to a date later than the first timeregistration on this phase",
   "error_date" => "Enddate must be later than startdate",
   "error_hoursindayexceeded" => "You can't book more than 24 hours in one day",
   "error_invalidweek" => "A week-entry must contain a valid year and a valid week number.",

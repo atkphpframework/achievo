@@ -108,6 +108,7 @@
   "endtime" => "Eindtijd",
   "entity" => "Profiel",
   "entrydate" => "Invoerdatum",
+  "error_cannot_set_startdate_later_than_first_timereg" => "De startdatum van een fase kan niet later gekozen worden dan de eerste tijdregistratie op een fase",
   "error_date" => "Einddatum omet na startdatum liggen",
   "error_hoursindayexceeded" => "Je kunt niet meer dan 24 uur per dag boeken",
   "error_invalidweek" => "Een week-entry moet een geldig jaar en een geldig weeknummer bevatten.",
