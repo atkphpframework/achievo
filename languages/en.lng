@@ -491,6 +491,7 @@
   "project_tab_finance" => "Finance",
   "department" => "Department",
   "hours_approve" => "Approve timeregistration",
+  "title_id" => "Title",
 );
 
 ?>
