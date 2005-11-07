@@ -59,7 +59,6 @@
       }
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
-      $this->add(new atkBoolAttribute("alwaysvisibleintimereg", AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", text("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
       $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
@@ -67,6 +66,7 @@
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
       $this->add(new atkListAttribute("timereg_limit", array("all users", "members_only"), array(PRJ_TIMEREG_ALL_USERS, PRJ_TIMEREG_MEMBERS_ONLY), AF_HIDE_ADD|AF_HIDE_LIST), "planning");
 
+      $this->add(new atkBoolAttribute("alwaysvisibleintimereg", AF_HIDE_LIST|AF_HIDE_ADD), "planning");
       $this->add(new atkDummyAttribute("separator", "<br><hr><br>", AF_HIDE_LIST|AF_HIDE_ADD), "planning");
       $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
       $this->add(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD|AF_HIDE_LIST), "planning");
