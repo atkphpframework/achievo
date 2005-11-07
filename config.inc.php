@@ -77,7 +77,7 @@
   // set up the entire system and enable it only when you need it.
   // (disable it by putting // in front of it)
   //
-  $config_administratorpassword = "topsecret";
+  $config_administratorpassword = "demo";
 
   // If you set $config_auth_dropdown to true, the login screen will contain
   // a list of available usernames. If you set it to false, there will be
