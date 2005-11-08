@@ -8,6 +8,7 @@
     {
       registerNode("calendar.schedule", array("admin", "add", "edit", "delete", "edit_all"));
       registerNode("calendar.schedule_types", array("admin", "add", "edit", "delete"));
+      registerNode("calendar.holidays", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
