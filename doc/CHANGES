@@ -37,6 +37,8 @@ Changes in Achievo 1.2RC1
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
+* Fixed: postAdd in modules/calender/class.schedule.inc should return a
+  boolean [Yury]
 
 Changes in Achievo 1.1.0
 ------------------------
