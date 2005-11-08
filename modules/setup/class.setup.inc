@@ -1133,6 +1133,16 @@
       }
     }
 
+    /**
+     * Re-compiles the theme in order to activate any template changes
+     */
+    function compileTheme()
+    {
+      atkimport("atk.ui.atktheme");
+      $compiler = &atknew("atk.ui.atkthemecompiler");
+      $compiler->compile();
+    }
+
   }
 
 ?>
