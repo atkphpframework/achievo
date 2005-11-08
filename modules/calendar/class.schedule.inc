@@ -46,7 +46,7 @@
         $default_start_time = $time; // passed from the url.
 
         // endtime is half an hour later than starttime by default
-        $default_end_time = strftime("%H:%M", adodb_mktime(substr($time,0,2), substr($time,3,2)+30,0,1,1,2000)); // datepart is obligatory for adodb_mktime but not used 
+        $default_end_time = strftime("%H:%M", adodb_mktime(substr($time,0,2), substr($time,3,2)+30,0,1,1,2000)); // datepart is obligatory for adodb_mktime but not used
       }
       else
       {
@@ -214,7 +214,7 @@
     }
 
     function adminPage(&$handler)
-    {      
+    {
       atkimport("atk.layout");
       $layout = &layout::getInstance();
 
@@ -239,7 +239,7 @@
     }
 
     function monthview($viewdate)
-    {      
+    {
       // viewdate is something like 2001-07-23
       $month = substr($viewdate, 5,2);
       $year  = substr($viewdate, 0,4);
@@ -289,7 +289,7 @@
     }
 
     function employeeview($viewdate)
-    {      
+    {
       $selemployee = $_REQUEST["selemployee"];
 
       if (!is_array($viewdate))
@@ -365,7 +365,7 @@
 
       // link to weekview and monthview and employeeview
       //$buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
-     
+
       // assign our output buffer
       $buff= "<br><br><table width='".$dummy->viewerWidth."'><tr>";
       $buff .= "<td valign='top' align='left'>".$dummy->dayNav()."</td>";
@@ -393,7 +393,7 @@
     }
 
     function weekview($viewdate)
-    {      
+    {
       // viewdate is something like 2001-07-23
       $day   = substr($viewdate, 8,2);
       $month = substr($viewdate, 5,2);
@@ -423,21 +423,24 @@
     function postAdd($rec, $mode)
     {
       // insert the owner as first attendee.
-      $this->_addAttendeeRecord($rec["id"], $rec["owner"]["id"]);      
+      $this->_addAttendeeRecord($rec["id"], $rec["owner"]["id"]);
+
+      // Return true to report a succesfull operation.
+      return true;
     }
 
     function storeAttendees($rec, $attendees)
-    {      
+    {
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
-      {        
+      {
         $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"]);
       }
     }
-    
+
     function _addAttendeeRecord($schedule_id, $person_id)
     {
       $db = &atkGetDb();
-      
+
       // attendee may already exist.
       $recs = $db->getrows("SELECT count(*) AS cnt FROM schedule_attendee WHERE schedule_id = $schedule_id AND person_id = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
