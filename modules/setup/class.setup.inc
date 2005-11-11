@@ -969,8 +969,9 @@
     function action_upgradedb(&$handler)
     {
       $result = array();
-
-      if ($this->upgradedb($result))
+      $upgraderesult = $this->upgradedb($result);
+      $this->compileTheme();
+      if ($upgraderesult)
       {
         // things have been installed. Show result.
         $output = $this->renderResult($result);
