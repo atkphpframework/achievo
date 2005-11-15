@@ -15,7 +15,7 @@ class contracts extends atkNode
 
   function contracts()
   {
-    $this->atkNode("contracts",NF_ADD_LINK);
+    $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD);
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE, 20));
@@ -27,9 +27,18 @@ class contracts extends atkNode
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
+    
+    //show attached projects
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
-    $this->add(new atkDummyAttribute("projectaddhint", text("fuzzyprojectaddhint", "contracts"), AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-    $this->add(new atkFuzzySearchAttribute("projectadd", "project.project", "addProjects", FSA_MULTISELECT));  
+
+    //return link to current page
+    $return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));    
+    
+    //link to project selection page
+    $contractprojectsurl = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+    
+    //add link $contractprojectsurl
+    $this->add(new atkDummyAttribute("projectadd",href($contractprojectsurl,"projectadd", SESSION_NESTED,false), AF_HIDE_LIST ));
 
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
@@ -67,6 +76,26 @@ class contracts extends atkNode
 
       return $handler->action_admin();
     }
+
+    
+  /**
+   * Updates contract_id in table project after adding a project to a contract.
+   *
+   * @param type name description
+   * @return type description
+  */
+  function action_edit(&$handler)
+  {
+    if ($this->m_postvars["projectid"]!="" && $this->m_postvars["atkselector"] != "")
+    {
+      $record = $this->selectDb($this->m_postvars["atkselector"]);
+      $contractid = $record[0]["id"];
+    	
+    	$db = &atkGetDb();
+      $db->query("UPDATE project SET contract_id = $contractid WHERE project.id = ".$this->m_postvars["projectid"]);
+    }
+    return $handler->action_edit();
+  }
 
 
   function period_price_edit($rec)
