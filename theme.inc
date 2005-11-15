@@ -25,6 +25,7 @@
       $g_sessionManager->globalVar("atkTheme", $g_theme["Name"], true);
     }
   }
+
   if (browserInfo::detectPDA()) $g_theme["Name"]="pda";
   
   atkimport("atk.layout");

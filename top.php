@@ -31,6 +31,8 @@
 
   atksession();
   atksecure();   
+  require "theme.inc";
+
   
   $page = &atknew("atk.ui.atkpage");  
   $ui = &atknew("atk.ui.atkui");  

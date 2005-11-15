@@ -30,6 +30,8 @@
 
   atksession();
   atksecure();
+  require "theme.inc";
+
   
   atkimport("atk.ui.atktheme");
   
