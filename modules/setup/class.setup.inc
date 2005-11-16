@@ -29,6 +29,10 @@
 
     function action_intro(&$handler)
     {
+      // We start setup by clearing the theme cache, as setup might be run after an update,
+      // which warrants a clear.
+      $this->clearThemeCache();
+
       $this->setupScreen("Introduction",
                           "I am the Achievo setup script. I can do several things for you:
                           <ul>
@@ -44,6 +48,7 @@
                           have to specify the database I should use and a valid username and password.
                           ",
                           "dbcheck");
+
     }
 
     function action_dbcheck(&$handler)
@@ -970,7 +975,6 @@
     {
       $result = array();
       $upgraderesult = $this->upgradedb($result);
-      $this->compileTheme();
       if ($upgraderesult)
       {
         // things have been installed. Show result.
@@ -1135,13 +1139,23 @@
     }
 
     /**
-     * Re-compiles the theme in order to activate any template changes
+     * Re-compiles all themes in order to activate any template changes
      */
-    function compileTheme()
+    function clearThemeCache()
     {
-      atkimport("atk.ui.atktheme");
-      $compiler = &atknew("atk.ui.atkthemecompiler");
-      $compiler->compile();
+      atkdebug("Clearing theme cache");
+      // We don't use the themecompiler to recompile the theme, as that would
+      // only compile the current theme. We need to recompile all themes, so
+      // we just clear the compiled theme directory.
+      $dt = atknew("atk.utils.atkdirectorytraverser");
+      $dt->addCallBackObject($this);
+      $dt->traverse(atkconfig("atktempdir")."themes/");
+    }
+
+    function visitFile($file)
+    {
+      // clean compiled template file
+      unlink($file);
     }
 
   }
