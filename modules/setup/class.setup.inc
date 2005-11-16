@@ -1149,7 +1149,7 @@
       // we just clear the compiled theme directory.
       $dt = atknew("atk.utils.atkdirectorytraverser");
       $dt->addCallBackObject($this);
-      $dt->traverse(atkconfig("atktempdir")."themes/");
+      $dt->traverse(atkconfig("atktempdir", "achievotmp")."themes/");
     }
 
     function visitFile($file)
