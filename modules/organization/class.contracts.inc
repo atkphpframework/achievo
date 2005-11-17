@@ -9,6 +9,8 @@ useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkfuzzysearchattribute");
 
+useattrib("organization.atkhiddenattrib");
+
 class contracts extends atkNode
 {
   var $m_archive;
@@ -31,51 +33,133 @@ class contracts extends atkNode
     //show attached projects
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
 
-    //return link to current page
-    $return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));    
-    
-    //link to project selection page
-    $contractprojectsurl = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
-    
-    //add link $contractprojectsurl
-    $this->add(new atkDummyAttribute("projectadd",href($contractprojectsurl,"projectadd", SESSION_NESTED,false), AF_HIDE_LIST ));
+    //hidden attribute needed for the use of two save buttons.
+    $this->add(new atkHiddenAttribute("postaddaction","",AF_HIDE));
 
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
   }
-
-   function adminFooter()
+  
+  function getFormButtons($mode, $record)
+  {
+		$result = array();
+    
+		$onclickstringnew = "onclick=\"document.getElementById('postaddaction').value='newproject';alert(document.getElementById('postaddaction').value);\"";
+		$onclickstringselect = "onclick=\"document.getElementById('postaddaction').value='selectproject';alert(document.getElementById('postaddaction').value);\"";
+		$onclickstringnone = "onclick=\"document.getElementById('postaddaction').value='';alert(document.getElementById('postaddaction').value);\"";
+		
+    if ($mode=="add")
     {
-      $res = "" ;
-      if ($this->m_archive!=1)
+      $result[] = '<input type="submit" class="btn_save" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" '.$onclickstringselect.' value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
+      if ($this->m_action=="add")
       {
-        return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                    '&archive=1', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+        // if action is admin, we don't show the cancelbutton..
+        $result[] ='<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';
       }
-      else
+    }
+    // edit mode
+    else if ($mode == "edit")
+    { 
+    	// if atklevel is 0 or less, we are at the bottom of the session stack,
+      // which means that 'saveandclose' doesn't close anyway, so we leave out
+      // the 'saveandclose' button. Unless, a feedback screen is configured.
+      if (atkLevel() >0 || hasFlag($this->m_feedback["update"], ACTION_SUCCESS))
       {
-        return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                    '&archive=0', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" '.$onclickstringnone.'value="'.text('saveandclose').'">';
       }
-      return $res."<br>";
+      
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';
     }
 
-   function action_admin(&$handler)
-    {
-      global $g_sessionManager;
-      $this->m_archive = $g_sessionManager->pageVar("archive");
+    //return parent::getFormButtons($mode,$record);
+    return $result;
+  }
+  
+  
+  
+  function postAdd($record)
+  {
+  	  	
+  	atk_var_dump($record,"POSTADDACTION");
+  	  	  	
+  	$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
+  	
+  	if($record["postaddaction"] == "newproject")
+  	{
+  		$target_url = dispatch_url("organization.contract_projectselector", "add", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+  		$this->redirect(session_url($target_url,SESSION_NESTED));
+  	}
+  	else if($record["postaddaction"] == "selectproject")
+  	{
+  		$target_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+  		$this->redirect(session_url($target_url,SESSION_NESTED));
+  	}
+  	
+  	return true;
+  }
+  	
+ 	function postUpdate($record)
+ 	{
+ 		atk_var_dump("<h1>TESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTEST</h1>");
+ 		//atk_var_dump($record,"POSTADDACTION");
+  	 	
+  	$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
+  	
+  	if($record["postaddaction"] == "newproject")
+  	{
+  		$target_url = dispatch_url("organization.contract_projectselector", "add", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+  		$this->redirect(session_url($target_url,SESSION_NESTED));
+  	}
+  	else if($record["postaddaction"] == "selectproject")
+  	{
+  		$target_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+  		$this->redirect(session_url($target_url,SESSION_NESTED));
+  	}
+ 		
+ 		return true; 		
+ 	}
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
 
-      if ($this->m_archive==1)
-      {
-        $this->addFilter("contract.status='archived'");
-      }
-      else
-      {
-        $this->addFilter("contract.status='active'");
-      }
+	function adminFooter()
+	{
+	  $res = "" ;
+	  if ($this->m_archive!=1)
+	  {
+	    return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=1', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+	  }
+	  else
+	  {
+	    return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=0', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+	  }
+	  return $res."<br>";
+	}
 
-      return $handler->action_admin();
-    }
+	function action_admin(&$handler)
+	{
+	  global $g_sessionManager;
+	  $this->m_archive = $g_sessionManager->pageVar("archive");
+	
+	  if ($this->m_archive==1)
+	  {
+	    $this->addFilter("contract.status='archived'");
+	  }
+	  else
+	  {
+	    $this->addFilter("contract.status='active'");
+	  }
+	
+	  return $handler->action_admin();
+	}
 
     
   /**
