@@ -1,4 +1,5 @@
-<?  
+<?php
+  
 class department extends atkNode
 {
   function department()
@@ -14,4 +15,5 @@ class department extends atkNode
     $this->setTable("employee_department");
   }
 }
+
 ?>
