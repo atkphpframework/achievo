@@ -12,7 +12,7 @@
 
   function updateSelectedProjects()
   {
-    global $g_sessionManager, $g_projectnamesize;   
+    global $g_sessionManager, $g_projectnamesize;
 
     atkdebug("updateSelectedProject");
     $prj = array();
@@ -23,7 +23,7 @@
     //If session var is empty fill with recent projects
     if (count($prj) == 0)
     {
-      $prj = getRecentProjects();      
+      $prj = getRecentProjects();
     }
 
     //Delete atkselector from global vars, because the stackVar
@@ -33,7 +33,7 @@
 
  //Check if selected project already exists in session var
     $atkselect = $g_sessionManager->stackVar("atkselector");
-       
+
     if (($atkselect != "") && isset($atkselect))
     {
        $projectid = sscanf($atkselect, "project.id='%d'");
@@ -76,16 +76,16 @@
          $arr = $db->getrows($query);
          $selectedPrj['projectname'] = $arr[0]['name'];
          if (strlen($arr[0]['name']) > $g_projectnamesize)
-         {           
+         {
            $selectedPrj['projectname'] = substr($arr[0]['name'],0,$g_projectnamesize-2).".."; //update because of phases
          }
          else
-         {         
+         {
            $selectedPrj['projectname'] = $arr[0]['name']; //update because of phases
          }
 
          //Check maximum number of projects in session var
-         if (count($prj) >= atkconfig("numberofrecentprojects")) 
+         if (count($prj) >= atkconfig("numberofrecentprojects"))
          {
            array_shift($prj); // remove the first
            $prj[count($prj)-1] = $selectedPrj;
@@ -120,30 +120,30 @@
   function getRecentProjects()
   {
     global $g_user, $g_projectnamesize;
-    
+
     $db = &atkGetDb();
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";    
+    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     $query.= "ORDER BY projectname";
 
     $arr = $db->getrows($query,'0','100');
-        
+
     $newarr = Array();
-    
-    // For some reason, the above query returns double results (even though I 
+
+    // For some reason, the above query returns double results (even though I
     // do a 'select distinct'!)
     // I fail to see why, but I'll work around it by checking for doubles.
-    $alreadyhad = array();    
+    $alreadyhad = array();
     for ($i=0, $_i=count($arr); $i<$_i;$i++)
-    {                    
+    {
       if (!in_array($arr[$i]['projectid'], $alreadyhad))
       {
-        $alreadyhad[] = $arr[$i]['projectid'];        
+        $alreadyhad[] = $arr[$i]['projectid'];
         if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
         {
-          $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases        
-        } 
+          $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases
+        }
         $newarr[] = $arr[$i];
       }
     }
@@ -157,15 +157,15 @@
   function weekstamp($timestamp)  // in achievotools.inc
   {
     /*
-     * JN 02-06-26: FIX: Time locks based on week numbers not working on win32.                    
+     * JN 02-06-26: FIX: Time locks based on week numbers not working on win32.
      *                   Reason is PHP: not all strftime functions are working on win32.
      *                   Solution: We have to calculate week of year manually.
      */
-    
+
     $year = strftime("%Y",$timestamp);
     $yearStart = mktime(0,0,0,1,1,$year);
     $yearEnd = mktime(0,0,0,12,31,$year);
-    
+
     $daysLost = strftime("%w",$yearStart);
     if ($daysLost > 4) {
       $daysLost -= 9;
@@ -174,7 +174,7 @@
     }
     // $week = bcdiv(strftime("%j",$timestamp)+$daysLost+7,7,0);
     $week = "".floor((strftime("%j",$timestamp)+$daysLost+7)/7);
-            
+
     /*
     atkdebug("(weekstamp): date: ".strftime("%a %d %m %Y",$timestamp).
              " week: ".$week.
@@ -183,27 +183,28 @@
              " dec31: ".strftime("%a",$yearEnd).
              " w1dLastY: ".($daysLost+1));
     */
-    
+
     if ($week == 0) {
       //atkdebug("(weekstamp): adjust to previous year");
       return weekstamp(mktime(0,0,0,12,31,($year-1)));
     }
 
-    if ($week == 53) 
+    if ($week == 53)
     {
-      if ((strftime("%w", $yearEnd) >= 1) && (strftime("%w", $yearEnd)<= 3)) 
+      if ((strftime("%w", $yearEnd) >= 1) && (strftime("%w", $yearEnd)<= 3))
       {
         //atkdebug("(weekstamp): adjust to following year");
-        return ($year+1)."1";
+        return ($year+1)."01";
       }
-    }  
+    }
 
-    return $year.$week;
+    return $year.sprintf("%02d", $week);
   }
 
   /*
    * Given a date in the form "2001-03-25", this function returns the date of the first
    * day (monday) of that week.
+   * @deprecated use dateUtil::startOfWeek instead (note that it has a slightly different format)
    */
   function startOfWeek($date)
   {
@@ -216,6 +217,7 @@
   /*
    * Given a date in the form "2001-03-25", this function returns the date of the last
    * day (friday) of that week.
+   * @deprecated use dateUtil::endOfWeek instead (note that it has a slightly different format)
    */
   function endOfWeek($date)
   {
