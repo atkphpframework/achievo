@@ -49,14 +49,14 @@ class weekreport extends atkNode
     $this->add(new timeDisplayAttribute("fri"));
     $this->add(new timeDisplayAttribute("sat"));
     $this->add(new timeDisplayAttribute("sun"));
-    
+
     $db = &atkGetDb();
     $periods = $db->getRows("SELECT * FROM workperiod ORDER BY percentage");
     for($i=0;$i<count($periods);$i++)
     {
       $this->add(new timeDisplayAttribute($periods[$i]["name"], AF_TOTAL));
     }
-    
+
     $this->add(new timeDisplayAttribute("total",AF_TOTAL));
     $this->add(new timeDisplayAttribute("contract",AF_TOTAL));
     $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));
@@ -128,7 +128,7 @@ class weekreport extends atkNode
     $view_all = $g_securityManager->allowed('reports.weekreport','view_all');
 
     $startdate = $g_sessionManager->pageVar("startdate");
-    $enddate = $g_sessionManager->pageVar("enddate");    
+    $enddate = $g_sessionManager->pageVar("enddate");
 
     if (is_array($startdate))
     {
@@ -189,7 +189,7 @@ class weekreport extends atkNode
                         "enddate"=>array("year"=>substr($enddate,0,4),
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));
-      
+
       $layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');
 
       if($view_all)
@@ -343,7 +343,7 @@ class weekreport extends atkNode
           $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
-      
+
       $periods = $db->getRows("SELECT * FROM workperiod");
       // collect data..
       $query = "SELECT
@@ -370,11 +370,11 @@ class weekreport extends atkNode
  // "MySQL has extended the use of GROUP BY to allow you to select fields that are not mentioned in the GROUP BY clause.
  // If you are not getting the results you expect from your query, please read the GROUP BY description.
  // See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."
-          
+
       $raw = $db->getrows($query);
-          
+
       $strdow = array("sun","mon","tue","wed","thu","fri","sat");
-          
+
       for ($i=0;$i<count($raw);$i++)
       {
         $stamp = adodb_mktime(12,0,0,substr($raw[$i]["activitydate"],5,2),
@@ -388,7 +388,7 @@ class weekreport extends atkNode
         $weekdata[$key]["userdata"][$uid][$raw[$i]["workperiod"]] += $raw[$i]["time"];
         $weekdata[$key]["userdata"][$uid]["total"] += $raw[$i]["time"];
         $weekdata[$key]["userdata"][$uid]["name"] = $raw[$i]["lastname"].", ".$raw[$i]["firstname"];
-            
+
         // We need to display the first date and last date of each week.
         // Since we are looping days now, it is easiest if we calculate the
         // beginning of a week here.
@@ -532,18 +532,21 @@ class weekreport extends atkNode
         }
 
 
-        $layout->output('<br>'.$this->recordList($rldata, array(),false,$suppress));
+        $rl = &atknew("atk.recordlist.atkrecordlist");
+        $layout->output('<br>'.$rl->render($this, $rldata, array(),false,$suppress));
         $layout->output('<br><br>');
         $layout->ui_bottom();
       }
       else if ($outputType=="1")
       {
-        $layout->output($this->specialRecordList($rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
+        $rl = &atknew("atk.recordlist.atkcustomrecordlist");
+        $layout->output($rl->render($this, $rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
       }
       else if ($outputType=="2")
       {
         // special RecordList can export to file
-        $this->specialRecordList($rldata, "", '"', '";', "\r\n", "1", "",$suppress);
+        $rl = &atknew("atk.recordlist.atkcustomrecordlist");
+        $rl->render($this, $rldata, "", '"', '";', "\r\n", "1", "",$suppress);
       }
 
     }
