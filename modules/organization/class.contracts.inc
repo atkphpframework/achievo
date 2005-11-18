@@ -9,7 +9,7 @@ useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkfuzzysearchattribute");
 
-useattrib("organization.atkhiddenattrib");
+useattrib("organization.hiddenattribute");
 
 class contracts extends atkNode
 {
@@ -28,13 +28,12 @@ class contracts extends atkNode
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
-    
-    //show attached projects
+    $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
 
     //hidden attribute needed for the use of two save buttons.
-    $this->add(new atkHiddenAttribute("postaddaction","",AF_HIDE));
+    $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));    
+    //$this->add(new atkDummyAttribute("postprojectaction","<input type=\"hidden\" id=\"postprojectaction\" >",AF_HIDE));
 
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
@@ -44,9 +43,9 @@ class contracts extends atkNode
   {
 		$result = array();
     
-		$onclickstringnew = "onclick=\"document.getElementById('postaddaction').value='newproject';alert(document.getElementById('postaddaction').value);\"";
-		$onclickstringselect = "onclick=\"document.getElementById('postaddaction').value='selectproject';alert(document.getElementById('postaddaction').value);\"";
-		$onclickstringnone = "onclick=\"document.getElementById('postaddaction').value='';alert(document.getElementById('postaddaction').value);\"";
+		$onclickstringnew = "onclick=\"document.getElementById('postprojectaction').value='add';\"";
+		$onclickstringselect = "onclick=\"document.getElementById('postprojectaction').value='select';\"";
+		$onclickstringnone = "onclick=\"document.getElementById('postprojectaction').value='';\"";
 		
     if ($mode=="add")
     {
@@ -70,58 +69,39 @@ class contracts extends atkNode
       }
       
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
-      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_link_existing_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';
     }
 
-    //return parent::getFormButtons($mode,$record);
     return $result;
   }
   
   
   
   function postAdd($record)
-  {
-  	  	
-  	atk_var_dump($record,"POSTADDACTION");
-  	  	  	
-  	$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
-  	
-  	if($record["postaddaction"] == "newproject")
-  	{
-  		$target_url = dispatch_url("organization.contract_projectselector", "add", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
-  		$this->redirect(session_url($target_url,SESSION_NESTED));
-  	}
-  	else if($record["postaddaction"] == "selectproject")
-  	{
-  		$target_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
-  		$this->redirect(session_url($target_url,SESSION_NESTED));
-  	}
-  	
-  	return true;
+  {  	  	
+  	$this->HandleRedirect($record); 		
+ 		return true; 		
   }
   	
  	function postUpdate($record)
- 	{
- 		atk_var_dump("<h1>TESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTESTTESTESTEST</h1>");
- 		//atk_var_dump($record,"POSTADDACTION");
-  	 	
-  	$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
-  	
-  	if($record["postaddaction"] == "newproject")
-  	{
-  		$target_url = dispatch_url("organization.contract_projectselector", "add", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
-  		$this->redirect(session_url($target_url,SESSION_NESTED));
-  	}
-  	else if($record["postaddaction"] == "selectproject")
-  	{
-  		$target_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
-  		$this->redirect(session_url($target_url,SESSION_NESTED));
-  	}
- 		
+ 	{  	 	
+  	$this->HandleRedirect($record); 		
  		return true; 		
  	}
  	
+ 	
+ 	function HandleRedirect($record)
+ 	{		
+		$action = $record["postprojectaction"];
+		
+ 		if($action != "")
+ 		{
+ 			$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
+ 			$target_url = dispatch_url("organization.contract_projectselector", $action, array("atkfilter" => "projectid=[id]","atktarget" => atkurlencode($return_url)));
+ 			$this->redirect(session_url($target_url,SESSION_NESTED));
+ 		}
+ 	}
  	
  	
  	
@@ -163,15 +143,19 @@ class contracts extends atkNode
 
     
   /**
-   * Updates contract_id in table project after adding a project to a contract.
+   * Updates contract_id in table project
    *
    * @param type name description
    * @return type description
   */
   function action_edit(&$handler)
   {
+  	//atk_var_dump($this->m_postvars, "THE POSTVARS");
+  	//atk_var_dump($this->m_postvars["projectid"], '$this->m_postvars["projectid"]');
+    //atk_var_dump($this->m_postvars["atkselector"], '$this->m_postvars["atkselector"]');    	
+    	
     if ($this->m_postvars["projectid"]!="" && $this->m_postvars["atkselector"] != "")
-    {
+    {    	
       $record = $this->selectDb($this->m_postvars["atkselector"]);
       $contractid = $record[0]["id"];
     	
@@ -199,7 +183,7 @@ class contracts extends atkNode
                                   "day"=>date("d")));
   }
   
-  function addProjects($rec, $projects)
+ /* function addProjects($rec, $projects)
   {
     $db = &atkGetDb();
     
@@ -213,7 +197,7 @@ class contracts extends atkNode
                          AND 
                            (contract_id IS NULL OR contract_id = '')");
     }
-  }
+  }*/
 }
 
 ?>
