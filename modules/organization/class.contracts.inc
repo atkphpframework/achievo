@@ -31,7 +31,9 @@ class contracts extends atkNode
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
 
-    //hidden attribute needed for the use of two save buttons.
+    
+    //@todo: remove HiddenAttribute, use the name of a button to check if it has been clicked
+    //example : $this->m_postvars["atkselector"]
     $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));    
     //$this->add(new atkDummyAttribute("postprojectaction","<input type=\"hidden\" id=\"postprojectaction\" >",AF_HIDE));
 
@@ -39,6 +41,9 @@ class contracts extends atkNode
     $this->setOrder("startdate");
   }
   
+  
+  //@todo use atkButton 
+  //$result[] = atkButton("knipje", dispath...
   function getFormButtons($mode, $record)
   {
 		$result = array();
@@ -71,6 +76,8 @@ class contracts extends atkNode
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_link_existing_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';
+      
+      
     }
 
     return $result;
@@ -150,11 +157,9 @@ class contracts extends atkNode
   */
   function action_edit(&$handler)
   {
-  	//atk_var_dump($this->m_postvars, "THE POSTVARS");
-  	//atk_var_dump($this->m_postvars["projectid"], '$this->m_postvars["projectid"]');
-    //atk_var_dump($this->m_postvars["atkselector"], '$this->m_postvars["atkselector"]');    	
-    	
-    if ($this->m_postvars["projectid"]!="" && $this->m_postvars["atkselector"] != "")
+    global $g_sessionManager;			//post values will be stored in this variable until overwritten with another value.
+    
+    if ($g_sessionManager->pageVar("projectid")!="" && $this->m_postvars["atkselector"] != "")
     {    	
       $record = $this->selectDb($this->m_postvars["atkselector"]);
       $contractid = $record[0]["id"];
