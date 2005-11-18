@@ -180,7 +180,7 @@
   "menu_activity_admin" => "Activiteiten",
   "menu_activity_stats" => "Activiteit Statistieken",
   "menu_contact_admin" => "Contactpersonen",
-  "menu_contracts" => "<b>Klant overeenkomsten</b>",
+  "menu_contracts" => "Klant overeenkomsten",
   "menu_contracttype" => "Klant overeenkomsten",
   "menu_costregistration_admin" => "Kostenregistratie",
   "menu_costregistration_costreport" => "Kosten rapport",
