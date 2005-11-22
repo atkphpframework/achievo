@@ -492,6 +492,7 @@
   "department" => "Department",
   "hours_approve" => "Approve timeregistration",
   "title_id" => "Title",
+  "usercontract"=>"Contract",
 );
 
 ?>

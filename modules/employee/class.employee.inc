@@ -68,7 +68,7 @@ class employee extends person
     {
       $this->addFilter("person.status","active");
     }
-    $this->add(new atkOneToManyRelation("contract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
     
     $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
     

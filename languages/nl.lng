@@ -138,7 +138,7 @@
   "hours" => "Uren",
   "hoursleft" => "Uren nog beschikbaar",
   "hoursurvey" => "Uren overzicht",
-  "hours_lock" => "Uren blokkeren",  
+  "hours_lock" => "Uren blokkeren",
   "id" => "ID",
   "initial_planning" => "Initiele planning",
   "lastname" => "Achternaam",
@@ -496,6 +496,7 @@
   "income" => "Ontvangsten", // TODO WEGHALEN
   "deliverable" => "Deliverable",
   "deliverable_remind_days" => "Herinnering (dagen)",
+  "usercontract"=>"Contract",
 );
 
 ?>
