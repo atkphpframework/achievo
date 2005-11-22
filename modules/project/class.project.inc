@@ -171,7 +171,7 @@
       $prjid = $this->m_postvars["selectedprojectid"];
       $imgurl = moduleDir("project")."ganttchart.php?projectid=".$prjid;
 
-      $records = $this->selectDb("project.id=".$prjid);
+      $records = $this->selectDb("project.id=".$prjid, "", "", "", array("name", "coordinator"));
       $record = $records[0];
 
       $projectinfo = '<br><table border=0>';
