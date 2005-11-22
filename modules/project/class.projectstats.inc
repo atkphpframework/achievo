@@ -1,5 +1,7 @@
 <?php
 
+require_once(atkconfig("atkroot")."atk/utils/adodb-time.inc.php");
+
 class projectstats extends atkNode
 {
   var $m_viewstart = "";
@@ -96,7 +98,7 @@ class projectstats extends atkNode
       $params["max"] = ($this->m_zoom=="topprojects"?20:10);
       $max = ($this->m_zoom=="topprojects"?0:10);
       useattrib("graph.dataGraphAttribute");
-      
+
       $db = &atkGetDb();
 
       $query = &$db->createQuery();
@@ -112,7 +114,7 @@ class projectstats extends atkNode
         $query->setLimit(0,$max);
       }
       $query->addOrderBy("totaltime DESC");
-      $query->addGroupBy("project.name");      
+      $query->addGroupBy("project.name");
       $projects = $db->getrows($query->buildSelect());
 
       for ( $i=0; $i < count($projects); $i=$i+20 )
@@ -259,7 +261,7 @@ class projectstats extends atkNode
       $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"0")), sprintf(text("top_projects"), 10));
     }
     $output.=')<br>';
-    
+
     atkimport("atk.layout");
     $layout = &layout::getInstance();
 
@@ -300,7 +302,7 @@ class projectstats extends atkNode
     }
 
     $mayviewdetail = ($idparam!="" && $g_securityManager->allowed("reports.hoursurvey", "view_all"));
-    
+
     atkimport("atk.layout");
     $layout = &layout::getInstance();
 
