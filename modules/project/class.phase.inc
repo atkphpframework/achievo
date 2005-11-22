@@ -99,7 +99,7 @@
     function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
-      $this->addFilter("status='active'");
+      $this->addFilter("phase.status='active'");
 
       // Also, we hide the status field (we're showing only active phases,
       // so this column is not necessary.
