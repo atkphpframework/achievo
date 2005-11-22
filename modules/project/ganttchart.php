@@ -18,9 +18,11 @@ include_once($config_atkroot."atk.inc");
 include_once(moduleDir("graph")."jpgraph/jpgraph.php");
 include_once(moduleDir("graph")."jpgraph/jpgraph_gantt.php");
 
+atksession();
+
 $projectid = $_REQUEST['projectid'];
 
-function load_dependencies($phase_record,$dep_record)
+/*function load_dependencies($phase_record,$dep_record)
 {
   for ($i=0;$i<count($dep_record);$i++)
   {
@@ -29,7 +31,7 @@ function load_dependencies($phase_record,$dep_record)
   }
 
   return array("befores"=>$before, "afters"=>$after);
-}
+}*/
 
 
 // Select the dependency's  for the gantchart
@@ -82,7 +84,7 @@ for($i=0;$i<count($dbrecordsphase);$i++)
   $phase_maxtimes[$i] = ($dbrecordsphase[$i]['phase_current_planning']/60)/8; // convert minutes to days
 }
 
-$dep = load_dependencies($phase_ids,$dbrecordsdep);
+//$dep = load_dependencies($phase_ids,$dbrecordsdep);
 
 // Select the TIMES that have been booked on the project
 $name = "atk" . $dbconfig["default"]["driver"] . "query";
@@ -187,25 +189,17 @@ $graph->SetLabelVMarginFactor(1);
 $i=0;
 $activity=array();
 
+$reverselookup = array();
+
 foreach ($gant as $id=>$gantphase)
 {
 
-  $activity[$i] = &new GanttBar($i*2, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
+  $activity[$i] = &new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
   $activity[$i]->SetPattern(BAND_RDIAG, "yellow");
   $activity[$i]->SetFillColor("red");
   $activity[$i]->SetHeight(10);
 
-  //to let each phase ends with an circle containing the number of current milestone, include the code beneath
-  //$activity[$i]->rightMark->Show();
-  //$activity[$i]->rightMark->title->Set("M".($i+1));
-  //$activity[$i]->rightMark->SetType(MARK_FILLEDCIRCLE);
-  //$activity[$i]->rightMark->SetWidth(10);
-  //$activity[$i]->rightMark->SetColor("red");
-  //$activity[$i]->rightMark->SetFillColor("red");
-
-  // to show the milestones between the phase, include the code beneath
-  //$milestone = new MileStone(($i*2)+1,"  Milestone ".($i+1),$gantphase['enddate'],"M ".($i+1));
-  //$graph->Add($milestone);
+  $reverselookup[$gantphase["id"]] = $i;
 
   $caption='';
   if($gantphase['booked'] <= $gantphase['planned'])
@@ -224,7 +218,7 @@ foreach ($gant as $id=>$gantphase)
     }
     else
     {
-      if(!empty($gantphase['planned']))
+      if(!empty($gantphase['planned'])&&$gantphase["maxhours"]>0)
       {
         $tempp = $gantphase['planned'] / (($gantphase['maxhours'])*60);
         $activity[$i]->progress->Set((0.0000000001), $tempp);
@@ -238,8 +232,31 @@ foreach ($gant as $id=>$gantphase)
     $activity[$i]->SetPattern(BAND_RDIAG, "red");
   }
   $activity[$i]->caption->Set($caption);
-  $graph->Add($activity[$i]);
+  //$graph->Add($activity[$i]);
   $i++;
+}
+
+atkimport("module.utils.dateutil");
+
+// milestones
+$milestonenode = &getNode("project.deliverable");
+$deliverables = $milestonenode->selectDb("project_id=".$projectid, "duedate");
+for( $i=0, $_i=count($deliverables); $i<$_i; $i++)
+{
+  $due = date("Y-m-d", dateutil::arr2stamp($deliverables[$i]["duedate"]));
+  $ms = &new MileStone((count($gant))+($i), $deliverables[$i]["name"], $due, $due." (".$deliverables[$i]["name"].")");
+  $graph->Add($ms);
+}
+
+// dependencies
+for ($i=0, $_i=count($dbrecordsdep); $i<$_i; $i++)
+{
+  $activity[$reverselookup[$dbrecordsdep[$i]["dependency_phaseid_row"]]]->SetConstrain($reverselookup[$dbrecordsdep[$i]["dependency_phaseid_col"]], CONSTRAIN_ENDSTART);
+}
+
+for ($i=0, $_i=count($activity); $i<$_i; $i++)
+{
+  $graph->Add($activity[$i]);
 }
 
 //TO DO: find a good solution for errorhandling

@@ -28,17 +28,19 @@ Changes in Achievo 1.2RC1
 + Added Japanese language file. [James]
 + Added robots.txt file so Achievo installations do not get spidered. [Ivo]
 + Added deliverables feature to project management. [Ivo]
++ Added deliverables and phase dependencies to Gantt chart. [Ivo]
 * Upgraded to ATK5 backend. [Ivo,Sandy]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg
   weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
 * Title field for persons is now a dropdown instead of free input. [Ivo]  
+* Fixed: postAdd in modules/calender/class.schedule.inc should return $a
+  boolean. [Yury]
+* Fixed several Gantt chart bugs. [Ivo]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
-* Fixed: postAdd in modules/calender/class.schedule.inc should return a
-  boolean [Yury]
 
 Changes in Achievo 1.1.0
 ------------------------
