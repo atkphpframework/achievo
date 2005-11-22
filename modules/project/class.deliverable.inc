@@ -71,6 +71,10 @@
           return COLOR_WARNING;
         }
       }
+      else if ($record["status"]=="complete")
+      {
+        return COLOR_OK;
+      }
     }
   }
 
