@@ -52,8 +52,7 @@
      */
     function descriptor_def()
     {
-      // @todo: replace this with proper descriptor fields.
-      return "[id]";
+      return "[name]";
     }
 
     function rowColor($record)

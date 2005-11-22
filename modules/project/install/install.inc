@@ -15,6 +15,6 @@
   $setup->installNode("project.tpl_project_phase");
   $setup->installNode("project.tpl_dependency");
   $setup->installNode("project.deliverable");
-  $setup->setVersion(7);
+  $setup->setVersion(8);
 
 ?>

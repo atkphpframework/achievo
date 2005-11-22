@@ -52,6 +52,10 @@
       $this->add(new atkDateAttribute("startdate", "F d Y", "d F Y"));
       $this->add(new atkDateAttribute("enddate", "F d Y", "d F Y"));
 
+      // deliverable dependency
+      $depends = &$this->add(new atkManyToOneRelation("dependsondeliverable", "project.deliverable"));
+      $depends->setDestinationFilter("project_id=[projectid.id]");
+
       //$this->add(new atkNumberAttribute("max_phasetime"));
       $this->add(new atkDurationAttribute("initial_planning",'','', ($g_securityManager->allowed("project.project","initialplanning")?0:AF_READONLY_EDIT)|AF_TOTAL|AF_DURATION_STRING));
       $this->add(new atkDurationAttribute("current_planning",'','', AF_HIDE_ADD|AF_TOTAL|AF_DURATION_STRING));
@@ -130,13 +134,15 @@
       // Get the date of the first registration for this node (or set $earliesttimeregdate to null if not found)
       $hoursNode = getNode("timereg.hours");
       $earliesttimeregforphase = $hoursNode->selectDb("phaseid='" . $record["id"] . "'", "hours.activitydate ASC", 1);
-      $earliesttimeregdate = empty($earliesttimeregforphase) ? null : adodb_getdate(adodb_mktime(0, 0, 0, $earliesttimeregforphase["0"]["activitydate"]["month"], $earliesttimeregforphase["0"]["activitydate"]["day"], $earliesttimeregforphase["0"]["activitydate"]["year"]));
+      atkimport("module.utils.dateutil");
+      $earliesttimeregdate = empty($earliesttimeregforphase) ? null : dateutil::arr2stamp($earliesttimeregforphase["0"]["activitydate"]);
 
       // Get the start date of this phase record
-      $phasestartdate = adodb_getdate(adodb_mktime(0, 0, 0, $record["startdate"]["month"], $record["startdate"]["day"], $record["startdate"]["year"]));
+      $phasestartdate = dateutil::arr2stamp($record["startdate"]);
 
       // Trigger an error on the startdate attribute if the earliesttimeregdate is not null and the startdate of this record is higher than de first earliesttimeregdate
-      if ((!is_null($earliesttimeregdate)) && ($phasestartdate > $earliesttimeregdate)) {
+      if ((!is_null($earliesttimeregdate)) && ($phasestartdate > $earliesttimeregdate))
+      {
         triggerError($record, "startdate", "error_cannot_set_startdate_later_than_first_timereg");
       }
 
