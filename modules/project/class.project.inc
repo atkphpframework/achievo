@@ -60,7 +60,7 @@
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
-      $this->add(new atkDummyAttribute("hint", text("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
+      $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
       $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
 
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
@@ -128,7 +128,7 @@
       {
         $dataset[$data[$i]["name"]] = $data[$i]["totaltime"];
       }
-      return array(text("registeredtimeperproj")=>$dataset);
+      return array(atktext("registeredtimeperproj")=>$dataset);
     }
 
     // We override the dispatch function, to intercept projectid's. We use this
@@ -175,14 +175,14 @@
       $record = $records[0];
 
       $projectinfo = '<br><table border=0>';
-      $projectinfo.= '<tr><td align="right"><b>'.text("name").': </b></td><td>'.$record['name'].'</td></tr>';
-      $projectinfo.= '<tr><td align="right"><b>'.text("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
+      $projectinfo.= '<tr><td align="right"><b>'.atktext("name").': </b></td><td>'.$record['name'].'</td></tr>';
+      $projectinfo.= '<tr><td align="right"><b>'.atktext("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
       $projectinfo.= '</table><br>';
 
-      $legend = text("legend").": [".text("booked").", ".text("hoursleft")."]<br>";
-      $legend.= text("ganttexplanation");
+      $legend = atktext("legend").": [".atktext("booked").", ".atktext("hoursleft")."]<br>";
+      $legend.= atktext("ganttexplanation");
 
-      $layout->ui_top(text("title_projectplanning"));
+      $layout->ui_top(atktext("title_projectplanning"));
       $layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
       $layout->ui_bottom();
     }
@@ -330,7 +330,7 @@
       // Add weekday names.
       for ($i=0, $_i=count($data); $i<$_i; $i++)
       {
-        $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
+        $data[$i]["dow"] = atktext($days[$data[$i]["dow"]]);
       }
 
       // In raw mode the data is sufficient.
@@ -433,7 +433,7 @@
         $months = array("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",  "nov", "dec");
         $shortyear = substr($label, 2, 2);
         $month = sprintf("%d", substr($label, 4, 2));
-        return text($months[$month-1])." '".$shortyear;
+        return atktext($months[$month-1])." '".$shortyear;
       }
       else
       {
@@ -516,13 +516,13 @@
 
       if ($view=="active")
       {
-        return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                    '&view=nonactive', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+        return atktext("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+                    '&view=nonactive', atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
       }
       else
       {
-        return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                    '&view=active', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+        return atktext("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+                    '&view=active', atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
       }
     }
 
