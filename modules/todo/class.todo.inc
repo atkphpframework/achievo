@@ -56,9 +56,9 @@ class todo extends atkNode
   // overide display of priority (set high to a red font)
   function priority_display($rec)
   {
-   $prio = $rec["priority"];   
+   $prio = $rec["priority"];
    $org = $this->m_attribList["priority"]->display($rec);
-   $result = "";      
+   $result = "";
 
    switch ($prio)
    {
@@ -74,26 +74,26 @@ class todo extends atkNode
    }
    return $result;
   }
-  
+
   function duedate_display($rec)
   {
-    $duedate = sprintf("%d-%02d-%02d", $rec["duedate"]["year"], $rec["duedate"]["month"], $rec["duedate"]["day"]);            
-    $open = (in_array($rec["status"], array(1, 3, 4)));    
+    $duedate = sprintf("%d-%02d-%02d", $rec["duedate"]["year"], $rec["duedate"]["month"], $rec["duedate"]["day"]);
+    $open = (in_array($rec["status"], array(1, 3, 4)));
     $org = $this->m_attribList["duedate"]->display($rec);
-    
+
     if (!$open)
     {
       return $org;
     }
     else
-    {                 
-      $days_left = $this->daysLeft(date("Y-m-d"), $duedate);         
-      
+    {
+      $days_left = $this->daysLeft(date("Y-m-d"), $duedate);
+
       if ($days_left>2) return $org; // normal
       if ($days_left<0) return '<font color="#FF0000"><b>'.$org.'</b></font>'; // expired
       return '<font color="#ee6c22"><b>'.$org.'</b></font>'; // almost expired
-      
-    }         
+
+    }
   }
 
   function descriptor_def()
@@ -139,7 +139,7 @@ class todo extends atkNode
   }
 
   function postAdd($rec)
-  { 
+  {
    // obtain some project info
    $assignTo = $rec["assigned_to"]["id"];
    $assigner = $rec["owner"]["id"];
@@ -179,6 +179,7 @@ class todo extends atkNode
    // send mail
    $header = $this->prioHeader($rec["priority"]);
    usermail($to, $subj, $body, $header);
+   return true;
   }
 
   function todoChanged($new, $old)
@@ -253,14 +254,15 @@ class todo extends atkNode
                                                // points to the current todoid.
      $historynode->addDb($rec["atkorgrec"]);
    }
+   return true;
   }
-  
+
   /** Workaround for bug #194.
    * By setting this method, the owner field is always filled with something, so ownerless
    * todo's will not complain that they can't be saved.
-   * Note that this will not actually store the new owner, for that would be even more 
+   * Note that this will not actually store the new owner, for that would be even more
    * dangerous.
-   * Since this only happens to very few todo's that were converted when a certain 
+   * Since this only happens to very few todo's that were converted when a certain
    * conversion bug was still present, this workaround suffices.
    */
   function edit_values($record)
@@ -268,18 +270,18 @@ class todo extends atkNode
     if ($record["owner"]["id"]=="")
     {
       $record["owner"]=getUser();
-    }    
+    }
     return $record;
   }
-  
-   function daysLeft($start, $end)  
-   {                      
-     if ($start==""||$end=="") return 0;    
-      
-     $d1 = adodb_mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));    
-     $d2 = adodb_mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));    
-     return floor(($d2-$d1)/(60*60*24));  
-   }   
+
+   function daysLeft($start, $end)
+   {
+     if ($start==""||$end=="") return 0;
+
+     $d1 = adodb_mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));
+     $d2 = adodb_mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));
+     return floor(($d2-$d1)/(60*60*24));
+   }
 
 }
 
