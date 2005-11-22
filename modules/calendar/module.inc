@@ -15,8 +15,8 @@
     {
       $this->menuitem("schedule", dispatch_url("calendar.schedule","admin"),"main",true,300);
       $this->menuitem("-","","main",true,320);
-      $this->menuitem("schedule_types", dispatch_url("calendar.schedule_types","admin"),"setup");
-      $this->menuitem("holiday_admin", dispatch_url("calendar.holidays","admin"),"setup");
+      $this->menuitem("schedule_types", dispatch_url("calendar.schedule_types","admin"),"setup", array("calendar.schedule_types", "admin"));
+      $this->menuitem("holiday_admin", dispatch_url("calendar.holidays","admin"),"setup", array("calendar.holidays", "admin"));
     }
 
     function getPimItems()
