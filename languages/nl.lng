@@ -497,6 +497,7 @@
   "deliverable" => "Deliverable",
   "deliverable_remind_days" => "Herinnering (dagen)",
   "usercontract"=>"Contract",
+  "dependsondeliverable"=>"Start afhankelijk van",
 );
 
 ?>
