@@ -35,6 +35,7 @@ Changes in Achievo 1.2RC1
 * Fixed small bug in displaying the weeknumber on windows in the timereg
   weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
+* Moved employee financial fields to separate 'finance' tab. [Ivo]
 * Title field for persons is now a dropdown instead of free input. [Ivo]  
 * Fixed: postAdd in modules/calender/class.schedule.inc should return $a
   boolean. [Yury]

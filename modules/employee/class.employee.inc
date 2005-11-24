@@ -44,18 +44,18 @@ class employee extends person
 
     $this->addFilter("person.role='employee'");
     $this->add(new atkDateAttribute("birthdate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
-    
-    $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST));
-    $this->add(new atkAttribute("socialsecuritynumber", AF_HIDE_LIST));
-    
+
+    $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST), "finance");
+    $this->add(new atkAttribute("socialsecuritynumber", AF_HIDE_LIST), "finance");
+
     $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
-    
+
     //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
     $rel = &$this->add(new atkManyBoolRelation("roles", "employee.employeerole", "employee.profile", AF_HIDE_LIST));
     $rel->setLocalKey("employee_id");
     $rel->setRemoteKey("role_id");
-    
+
 
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
     $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
@@ -69,18 +69,18 @@ class employee extends person
       $this->addFilter("person.status","active");
     }
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
-    
+
     $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
-    
+
     if (atkconfig("authentication")=="db")
-    {      
+    {
       $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
       $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
     }
-    $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.    
+    $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.
 
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
-    
+
     $this->setOrder("lastname");
   }
 
@@ -150,7 +150,7 @@ class employee extends person
   }
 
   function action_deactivate(&$handler)
-  {    
+  {
     if ($this->m_postvars["atkselector"]!="")
     {
       $db = &atkGetDb();
@@ -221,13 +221,13 @@ class employee extends person
 
     return array("registeredtimeperactivity"=>$dataset);
   }
-  
+
   function graph_dowtime($params, $raw=false)
   {
     $db = &atkGetDb();
     $days = array("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-    
-    $data = $db->getrows("SELECT 
+
+    $data = $db->getrows("SELECT
                               date_format(hours.activitydate, '%w') as dow, SUM(time) as total
                             FROM
                               hours, activity
@@ -236,17 +236,17 @@ class employee extends person
                               ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                               ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
                               ($params["employeeid"]!=""?" AND hours.userid = ".$params["employeeid"]:"")."
-                            GROUP BY 
+                            GROUP BY
                               date_format(hours.activitydate, '%w')
-                            ORDER BY 
+                            ORDER BY
                               dow");
-                          
+
     // Add weekday names.
-    for ($i=0, $_i=count($data); $i<$_i; $i++)                            
+    for ($i=0, $_i=count($data); $i<$_i; $i++)
     {
       $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
     }
-                          
+
     // In raw mode the data is sufficient.
     if ($raw) return $data;
 
@@ -260,16 +260,16 @@ class employee extends person
 
     return array("registeredtimeperweekday"=>$dataset);
   }
-  
+
   function rowColor($record)
-  {            
+  {
     $contractnode = &getNode("employee.usercontracts");
-    $contract = $contractnode->getMostRecentContract($record["id"]);                
-    
+    $contract = $contractnode->getMostRecentContract($record["id"]);
+
     if ($record["status"]=="active")
-    {        
-      $enddate = dateutil::arr2str($contract["enddate"]);                      
-      
+    {
+      $enddate = dateutil::arr2str($contract["enddate"]);
+
       if (!count($contract)||($enddate!=""&&$enddate<date("Ymd")))
       {
         return COLOR_ERROR;
@@ -280,7 +280,7 @@ class employee extends person
       }
     }
   }
-        
+
 
 }
 
