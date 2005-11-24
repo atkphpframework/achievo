@@ -59,9 +59,9 @@
     }
     else
     {
-      $todayschedule = text('pim_schedule_empty').'<br>';
+      $todayschedule = atktext('pim_schedule_empty').'<br>';
     }
-    $todayschedule.='<br>'.href("dispatch.php?atknodetype=calendar.schedule&atkaction=admin",text('pim_gotoschedule'),SESSION_NESTED);
+    $todayschedule.='<br>'.href("dispatch.php?atknodetype=calendar.schedule&atkaction=admin",atktext('pim_gotoschedule'),SESSION_NESTED);
 
     $res.= '<table border="0" cellpadding="2">';
     $res.= '<tr>';

@@ -74,7 +74,7 @@
       $this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), "", AF_HIDE_ADD));
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
 
-      $this->add(new atkDummyAttribute("hint", text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
+      $this->add(new atkDummyAttribute("hint", atktext("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
       $this->add(new atkFuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", FSA_MULTISELECT));
       $this->add(new atkFuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
 
@@ -183,7 +183,7 @@
              ";
 
       $records = $db->getrows($sql);
-      $employee_code='<OPTION VALUE="all">'.text("allusers");
+      $employee_code='<OPTION VALUE="all">'.atktext("allusers");
       for($i=0;$i<count($records);$i++)
       {
         if($user_id==$records[$i]["userid"]) { $sel="SELECTED"; } else { $sel=""; }
@@ -204,7 +204,7 @@
       $records = $db->getrows($sql);
 
       if ($selemployee["all"] == "all") { $sel="CHECKED"; } else { $sel=""; }
-      $employee_code='<INPUT TYPE="checkbox" VALUE="all" NAME="employee[]" '.$sel.'><font size="-1">'.text("allusers")."</font><br>";
+      $employee_code='<INPUT TYPE="checkbox" VALUE="all" NAME="employee[]" '.$sel.'><font size="-1">'.atktext("allusers")."</font><br>";
       for($i=0;$i<count($records);$i++)
       {
         if($selemployee[$records[$i]["userid"]]==$records[$i]["userid"]) { $sel="CHECKED"; } else { $sel=""; }
@@ -222,7 +222,7 @@
       {
         $funcname = $this->m_view;
               // link to weekview and monthview and employeeview
-        $result= href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",text("dayview")) ."&nbsp;".href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
+        $result= href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",atktext("dayview")) ."&nbsp;".href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",atktext("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", atktext("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
 
         $result.= $this->$funcname($this->m_viewdate);
       }
@@ -232,7 +232,7 @@
       }
 
       $layout->initGUI();
-      $layout->ui_top(text($this->m_type)." - ".text($this->m_view));
+      $layout->ui_top(atktext($this->m_type)." - ".atktext($this->m_view));
       $layout->output($this->statusbar());
       $layout->output($result);
       $layout->ui_bottom();
@@ -267,19 +267,19 @@
 
       $tmpLegend  = "<TR bgcolor='#FFFFFF'><TD>\n";
       $tmpLegend .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='#FFFFFF'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".text("no_appointments")."</font></TD>";
+      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".atktext("no_appointments")."</font></TD>";
       $tmpLegend .= "</TR>";
       $tmpLegend .= "<TR bgcolor='#FFFFFF'><TD>\n";
       $tmpLegend .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='#FFFF00'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".text("appointments")."</font></TD>";
+      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".atktext("appointments")."</font></TD>";
       $tmpLegend .= "</TR>";
       $tmpLegend .= "<TR bgcolor='#FFFFFF'><TD>\n";
       $tmpLegend .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='#FFCC33'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".text("today")."</font></TD>";
+      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".atktext("today")."</font></TD>";
       $tmpLegend .= "</TR>";
       $tmpLegend .= "<TR bgcolor='#FFFFFF'><TD>\n";
       $tmpLegend .= "<table border='0' cellpadding='0' cellspacing='0'><tr><td bgcolor='#FF0000'><img src='images/trans.gif' border='1' width='10' height='10'></td></tr></table>";
-      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".text("today_and_appointments")."</font></TD>";
+      $tmpLegend .= "</TD><TD><font color='#000000' face='verdana' size='-1'>".atktext("today_and_appointments")."</font></TD>";
       $tmpLegend .= "</TR>";
       $legend    .= $tmpLegend;
 
@@ -325,14 +325,14 @@
       $dateattrib = new atkDateAttribute("viewdate"  , "F d Y","d F Y", 0, 0);
       $form .= $dateattrib->edit($recs,"","");
       $form .= "<br>";
-      $form .= "&nbsp;<br><input type='submit' value='".text("refresh")."'>\n";
+      $form .= "&nbsp;<br><input type='submit' value='".atktext("refresh")."'>\n";
       $form .= "</FORM>\n";
 
       $dummy = new employeeView($day, $month, $year);
       $dummy->viewerWidth = "600";
 
-      $buff  = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$viewdate",text("dayview"))."<br><br>";
-      $buff .= "<font size='-1'>".text("seluserdate")."</font><br><br>";
+      $buff  = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$viewdate",atktext("dayview"))."<br><br>";
+      $buff .= "<font size='-1'>".atktext("seluserdate")."</font><br><br>";
 
       // assign our output buffer
       $buff .= "<table width='".$dummy->viewerWidth."'><tr>";
@@ -364,7 +364,7 @@
       $legend .= $dummy->legend;
 
       // link to weekview and monthview and employeeview
-      //$buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",text("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", text("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", text("employeeview"));
+      //$buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",atktext("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", atktext("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
 
       // assign our output buffer
       $buff= "<br><br><table width='".$dummy->viewerWidth."'><tr>";
@@ -387,7 +387,7 @@
       $form .= "<SELECT name='user'>\n";
       $form .= $this->get_employees($this->m_user);
       $form .= "</SELECT>\n";
-      $form .= "&nbsp;<input type='submit' value='".text("refresh")."'>\n";
+      $form .= "&nbsp;<input type='submit' value='".atktext("refresh")."'>\n";
       $form .= "</FORM>\n";
       return $form;
     }

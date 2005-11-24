@@ -42,7 +42,7 @@ class person extends atkNode
     $this->add(new atkAttribute("function", AF_HIDE_LIST, 50));
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_HIDE, 15)); //discriminator
-    $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", text("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
+    $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
     $this->m_securityMap["vcard"] = "view";
 
     $this->setTable("person", "person");
@@ -50,7 +50,7 @@ class person extends atkNode
     $this->setIndex("lastname");
     atkdebug("person::person()");
   }
-  
+
   function lastname_display($record, $mode)
   {
     if ($mode=="list")
@@ -62,7 +62,7 @@ class person extends atkNode
       return $this->m_attribList["lastname"]->display($record, $mode);
     }
   }
-  
+
   function phone_display($record, $mode)
   {
     if ($mode=="list") // in listmode, group the numbers
@@ -70,15 +70,15 @@ class person extends atkNode
       $res = array();
       if ($record["phone"]!="")
       {
-        $res[] = "<b>".substr(text("phone"),0,1).":</b> ".$record["phone"];
+        $res[] = "<b>".substr(atktext("phone"),0,1).":</b> ".$record["phone"];
       }
       if ($record["cellular"]!="")
       {
-        $res[] = "<b>".substr(text("cellular"),0,1).": </b>".$record["cellular"];
+        $res[] = "<b>".substr(atktext("cellular"),0,1).": </b>".$record["cellular"];
       }
       if ($record["fax"]!="")
       {
-        $res[] = "<b>".substr(text("fax"),0,1).": </b>".$record["fax"];
+        $res[] = "<b>".substr(atktext("fax"),0,1).": </b>".$record["fax"];
       }
       return implode("<BR>", $res);
     }
@@ -92,29 +92,29 @@ class person extends atkNode
   {
     return "[lastname], [firstname] ([role])";
   }
-  
+
   function action_vcard()
   {
     return $this->createVCard($this->m_postvars["id"]);
   }
-  
+
   function createVCard($id)
   {
     include_once(moduleDir("utils")."vcard.php");
     $v = new vCard();
-    
+
     $recs = $this->selectDb("id='".$id."'", "", "", "", array("phone", "cellular", "lastname", "firstname",
-                                                              "address", "city", "state", "zipcode", 
+                                                              "address", "city", "state", "zipcode",
                                                               "country", "email", "remark"));
     $record = $recs[0];
 
     $v->setPhoneNumber($record["phone"], "PREF;WORK;VOICE");
     $v->setPhoneNumber($record["cellular"], "CELL");
-    $v->setName($record["lastname"], $record["firstname"], "", "");    
+    $v->setName($record["lastname"], $record["firstname"], "", "");
     $v->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"]);
     $v->setEmail($record["email"]);
-    $v->setNote($record["remark"]);    
-    
+    $v->setNote($record["remark"]);
+
     $output = $v->getVCard();
     $filename = $v->getFileName();
 
@@ -123,9 +123,9 @@ class person extends atkNode
     Header("Connection: close");
     Header("Content-Type: text/x-vCard; name=$filename");
 
-    echo $output; 
+    echo $output;
   }
-    
+
 }
 
 ?>

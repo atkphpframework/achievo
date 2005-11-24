@@ -74,7 +74,7 @@ class employee extends person
 
     if (atkconfig("authentication")=="db")
     {
-      $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
+      $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
       $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
     }
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.
@@ -121,13 +121,13 @@ class employee extends person
 
     if ($view=="active")
     {
-      return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                  '&view=nonactive', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+      return atktext("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+                  '&view=nonactive', atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
     }
     else
     {
-      return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                  '&view=active', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+      return atktext("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+                  '&view=active', atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
     }
   }
 
@@ -244,7 +244,7 @@ class employee extends person
     // Add weekday names.
     for ($i=0, $_i=count($data); $i<$_i; $i++)
     {
-      $data[$i]["dow"] = text($days[$data[$i]["dow"]]);
+      $data[$i]["dow"] = atktext($days[$data[$i]["dow"]]);
     }
 
     // In raw mode the data is sufficient.
