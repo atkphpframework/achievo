@@ -29,6 +29,7 @@ Changes in Achievo 1.2RC1
 + Added robots.txt file so Achievo installations do not get spidered. [Ivo]
 + Added deliverables feature to project management. [Ivo]
 + Added deliverables and phase dependencies to Gantt chart. [Ivo]
++ Added projectstatus report. [Ivo]
 * Upgraded to ATK5 backend. [Ivo,Sandy]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg

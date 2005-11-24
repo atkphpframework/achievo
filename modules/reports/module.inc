@@ -6,8 +6,9 @@
     {
       registerNode("reports.weekreport",array("report","view_all"));
       registerNode("reports.hoursurvey",array("report","view_all"));
+      registerNode("reports.projectstatus",array("report", "any_user"));
     }
-    
+
     function pdaNodes()
     {
       return array(
@@ -21,6 +22,7 @@
       // be in a separate class in this module that delegates to the hours class.
       $this->menuitem("hours_hoursurvey", dispatch_url("reports.hoursurvey", "report"),"reports", array("reports.hoursurvey", "report"));
       $this->menuitem("weekreport", dispatch_url("reports.weekreport", "report"),"reports",array("reports.weekreport","report"));
+      $this->menuitem("projectstatus", dispatch_url("reports.projectstatus", "report"), "reports", array("reports.projectstatus", "report"));
     }
   }
 
