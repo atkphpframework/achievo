@@ -374,7 +374,6 @@
   "tab_default" => "Algemeen",
   "tab_organization_details" => "Organisatiedetails",
   "tab_stats" => "Statistieken",
-  "target_declarability" => "Beoogde declarabiliteit (%)",
   "template" => "Template",
   "theme" => "Thema",
   "thisweek" => "Deze week",
@@ -488,16 +487,17 @@
   "invoice_state" => "Staat/Provincie",
   "invoice_zipcode" => "Postcode",
   "organization_invoiceaddress" => "Factuur adres",
-  "project_tab_finance" => "Financieel",
+  "tab_finance" => "Financieel",
   "department" => "Afdeling",
   "hours_approve" => "Uren goedkeuren",
-  "billing_expensereg_limit" => "Uitgaven toegang",  // TODO WEGHALEN!
-  "billing_type" => "Projecttype", // TODO WEGHALEN
-  "income" => "Ontvangsten", // TODO WEGHALEN
   "deliverable" => "Deliverable",
+  "socialsecuritynumber" => "SOFI nummer",
   "deliverable_remind_days" => "Herinnering (dagen)",
+  "title_id" => "Titel",
   "usercontract"=>"Contract",
   "dependsondeliverable"=>"Start afhankelijk van",
+  "showonlyphasesfrom"=>"Toon alleen fasen die vallen in de periode van",
+  "menu_projectstatus"=>"Projectstatus",
 );
 
 ?>
