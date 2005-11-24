@@ -1,0 +1,228 @@
+<?php
+    
+
+/**
+ * Create an array with contracts per expire_date
+ * when retrieving the contracts for a new expiration date, overwrite the older ones
+ * This way only one mail is send to a specific user for his/her expiration date.
+ * Also filter contracts that already are extended
+ *
+ * Full description of the function
+ *
+ * @param type name description
+ * @return type description
+ */
+	function createExpiringContractsArrays($expire_dates)
+	{ 		
+		// Initialize the contracts array
+		$contracts = array();
+		
+		// Loop through all expire dates
+		foreach ($expire_dates as $expire_date)
+		{			
+			// Find all contracts that expire on the given date
+			$contractstoexpire = getContractsByExpireDate($expire_date);
+					
+			// Loop through all contracts that expire on the given expire date
+			foreach ($contractstoexpire as $contract) 
+			{
+				//does this user have extendeded contracts? 
+				$extended_contracts = getExtendedContracts($contract, $expire_date);
+
+				//if user has extended contract, the mail should not be send
+				if($extended_contracts == array())
+				{
+					// Is the contract already listed in the array contracts
+					$contracts[$contract["id"]] = $contract;
+				}
+			}
+		}		
+		
+		return $contracts;
+	}
+		
+	/**
+	 * Gets all contracts that expire on the specified date (NOT BEFORE), therefore this script should run
+	 * daily.	 
+	 * 
+	 * If mails should be sent each day a contract is expired the '=' should be replaced by a '<='
+	 *
+	 * Full description of the function
+	 *
+	 * @param date expirationdate
+	 * @return array contracts
+	 */
+	function getContractsByExpireDate($dt)
+	{
+		$db = &atkGetDb();
+	
+		$query = "SELECT * FROM usercontract WHERE enddate = '$dt'";
+		return $db->getrows($query);	
+	}
+	
+	//check if users have a contract that is not expired 
+	function getExtendedContracts($contract, $expire_date)
+	{	
+		$max_days = atkconfig("employee_usercontracts_expiration_max_expired_extended_days");
+				
+		$year = substr($expire_date,0,4);
+		$month = substr($expire_date,5,2);
+		$day = substr($expire_date,8,2);
+		$seconds = mktime(12,0,0,$month, $day+$max_days, $year);
+		$newdate = date("Y-m-d",$seconds);
+				
+		$db = &atkGetDb();				
+		$query = "SELECT * FROM usercontract WHERE userid = ".$contract['userid'] ." AND id != ".$contract['id']." AND startdate <= '".$newdate."'";
+		echo "Query".$query."\n";
+		return $db->getrows($query);		
+	}
+	 	
+	
+	function sendEmails($contracts)
+	{
+		$warn_user = atkconfig("employee_usercontracts_expiration_send_warning_to_user");
+		$dest_addr = atkconfig("employee_usercontracts_expiration_supervisors");
+		
+		//send mail per contract    	
+		foreach ($contracts as $contract)
+		{
+			if($contract != array())
+			{
+				$usr = getUserById($contract['userid']);    			
+				mailwarning($usr[0], $contract, $dest_addr, $warn_user);    		
+			}
+		}    	
+	}
+	
+	/**
+	 * Retrieve a user that belongs by his/her id
+	 *
+	 * Full description of the function
+	 *
+	 * @param type name description
+	 * @return type description
+	 */
+	function getUserById($id)
+	{			
+		$db = &atkGetDb();
+		$query = "SELECT * FROM person WHERE id=$id";		
+		return $db->getrows($query);
+	}
+			
+	/**
+	 * Send an email to the supervisor(s) that a usercontract will expire on a specific date.
+	 *
+	 * Full description of the function
+	 *
+	 * @param type name description
+	 * @return type description
+	 */
+	function mailwarning($user, $usercontract, $supervisors, $warn_user)
+	{
+		$body= "The contract of employee ".$user['firstname']." ".$user['lastname']." expires on ".$usercontract["enddate"]."\n\n";						
+		$body.= "Employee information:\n\n";
+		$body.= $user['firstname']." ".$user['lastname']."\n";
+		$body.= "Email: ".$user['email']."\n\n\n";
+		$body.= "Contract information:\n\n";
+		$body.= "Contract period: ".$usercontract['startdate']." to ".$usercontract['enddate']."\n";						
+		
+		foreach($supervisors as $supervisor)
+		{
+			echo "sending mail to supervisor: ".$supervisor."\n";
+			
+			$to = $supervisor;
+	  	$cc = "";
+	  	usermail($to, text("usercontract_expiration_warning"), $body, $cc);
+	  	echo "mail sent.\n";
+		}
+		
+		if($warn_user && ($user['email'] != ""))
+		{
+			echo "sending mail to user: ".$user['email']."\n";
+			$body= "Youre contract will expire on".$usercontract['enddate']."\n\n";
+					
+			$body.= "Employee information:\n\n";
+			$body.= $user['firstname']." ".$user['lastname']."\n\n\n";				
+			$body.= "Contract information:\n\n";
+			$body.= "Contract period: ".$usercontract['startdate']." to ".$usercontract['enddate']."\n";	
+							
+			$to = $user['email'];
+	  	$cc = "";
+	  	
+	  	usermail($to, text("usercontract_expiration_warning"), $body, $cc);
+	  	echo "mail sent.\n";
+		}			
+	}
+	
+	/**
+	 * Sort array with expirevalues
+	 *
+	 * Full description of the function
+	 *
+	 * @param type name description
+	 * @return type description
+	 */
+	function sortExpireValues(&$arr) 
+	{
+		usort($arr, "compareCallback");
+	}
+	
+	/**
+	 * Compares two arrays with the following format:
+	 * $a is array('year'=>?, 'month'=>?, 'day'=>?)
+	 * $b is array('year'=>?, 'month'=>?, 'day'=>?)
+	 * Full description of the function
+	 *
+	 * @param type name description
+	 * @return type description
+	 */		
+	function compareCallback($a, $b)
+	{
+		$a_y = $a['year'];
+		$a_m = $a['month'];
+		$a_d = $a['day'];
+		
+		$b_y = $b['year'];
+		$b_m = $b['month'];
+		$b_d = $b['day'];
+		
+		if($a_y != $b_y)			
+			return ($a_y < $b_y) ? 1 : -1;			
+		else 
+		{
+			if($a_m != $b_m)				
+				return ($a_m < $b_m) ? 1 : -1;
+			else 
+			{
+				if($a_d != $b_d)
+					return ($a_d < $b_d) ? 1 : -1;
+				else 
+					return 0;					
+			}				
+		}		
+	}
+	
+?>
+<?php	
+  echo "Starting usercontracts.cron\n";
+	$expirevalues = atkconfig("employee_usercontracts_expiration_dates");
+	
+	$today = date("Y-m-d");
+	$now_year = substr($today,0,4);
+	$now_month = substr($today,5,2);
+	$now_day = substr($today,8,2);
+
+	sortExpireValues($expirevalues);  		
+	
+	//create expire dates  		
+	$expire_dates = array();  		
+	for($i=0; $i<count($expirevalues);$i++)
+	{
+		$expire_dates[$i] = date("Y-m-d",mktime(12,0,0,$now_month+$expirevalues[$i]['month'], $now_day+$expirevalues[$i]['day'], $now_year+$expirevalues[$i]['year']));
+	}
+	  		
+	$contracts = createExpiringContractsArrays($expire_dates);
+	
+	sendEmails($contracts);
+	echo "Finished usercontracts.cron\n";
+?>
