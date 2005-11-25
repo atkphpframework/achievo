@@ -20,7 +20,7 @@
   // the database to use and the user/password.
   //
   $config_db["default"]["host"] = "localhost";
-  $config_db["default"]["db"] = "dennisluitwieler_achievo";
+  $config_db["default"]["db"] = "achievo_2_0";
   $config_db["default"]["user"] = "demo";
   $config_db["default"]["password"] = "demo";
 
@@ -43,7 +43,7 @@
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
-  $config_language="nl";
+  $config_language="en";
 
 
   // -------------------------------------------
@@ -175,57 +175,8 @@
   // it can be found as the second parameter.
   //
   // module("somemodule","../achievo_modules/somemodule/");
-  
-  //public modules
-//  module("achilles","../achievo_modules/achilles/");
-//  module("autoduty","../achievo_modules/autoduty/");
-//  module("billing","../achievo_modules/billing/");
-//  module("costreg","../achievo_modules/costreg/");
-//  module("crm","../achievo_modules/crm/");
-//  module("docmanager","../achievo_modules/docmanager/");
-//  module("holidayreport","../achievo_modules/holidayreport/");
-//  module("hourdeposit","../achievo_modules/hourdeposit/");
-//  module("legal","../achievo_modules/legal/");
-//  module("location","../achievo_modules/location/");
-//  module("moduleinfo","../achievo_modules/moduleinfo/");
-//  module("pinboard","../achievo_modules/pinboard/");
-//  module("projectplan","../achievo_modules/projectplan/");
-//  module("qdocument","../achievo_modules/qdocument/");
-//  module("quotation","../achievo_modules/quotation/");
-//  module("resourceplanning","../achievo_modules/resourceplanning/");
-//  module("rss_news","../achievo_modules/rss_news/");
-  module("weektimereg","../achievo_modules/weektimereg/");
-  
-	module("weekplanning","../achievo_modules/weekplanning/");
-	module("xp","../achievo_modules/xp/");
-  $config_lock_week_approval_required=true;
-  
-  //private modules
-  //module("corvee","../achievo_modules_priv/corvee/");
-  //module("docserver","../achievo_modules_priv/docserver/");
-  //module("effectivity_sw","../achievo_modules_priv/effectivity_sw/");
-  //module("funding","../achievo_modules_priv/funding/");
-  module("ibscontract","../achievo_modules_priv/ibscontract/");
-  //module("ibuildings","../achievo_modules_priv/ibuildings/");
-  //module("kern8","../achievo_modules_priv/kern8/");
-  //module("mod_offerte","../achievo_modules_priv/mod_offerte/");
-  module("storing","../achievo_modules_priv/storing/");
-  //module("hourdeposit", "../achievo_modules/hourdeposit/");
-  //module("sw","../achievo_modules_priv/sw/");  
-  //module("tryllian","../achievo_modules_priv/tryllian/"); 
 
-	// ----------------------------------------------------------
-  //            EXTERNAL MODULE STORING CONFIGURATION
-  // ----------------------------------------------------------
-  
-  // This variable configures which projects should be visible
-  // in project dropdownlist the 'add storing'. If omitted the default value
-  // of 'storingsdienst' is used. This means that only projects that have a contract of 
-  // the contracttype 'storingsdienst' (or some other value) will be visible in this list.
-  // Other projects will not appear in the list.
-  $config_storing_storingtoevoegen = "";
 
-  
   // -------------------------------------------
   //            END OF CONFIGURATION
   // -------------------------------------------
