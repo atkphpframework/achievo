@@ -82,6 +82,7 @@ class tpl_dependencyAttribute extends dependencyAttribute
 
       $db->query($query);
     }
+    return true;
   }
 }
 ?>

@@ -11,11 +11,17 @@ class projecttemplateAttribute extends atkManyToOneRelation
   {
     $this->atkManyToOneRelation($name, $target, $flags);
   }
-
+/*
   function addToQuery($query)
   {
     // do nothing
   }
+*/
+  function storageType($mode)
+  {
+    return ADDTOQUERY|POSTSTORE;
+  }
+
 
   function store($db, $record, $type)
   {
@@ -72,11 +78,11 @@ class projecttemplateAttribute extends atkManyToOneRelation
     }
     return true;
   }
-  
-  function dbFieldType()
+
+  /*function dbFieldType()
   {
     return "";
-  }
+  }*/
 }
 
 ?>
