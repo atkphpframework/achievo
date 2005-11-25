@@ -63,7 +63,7 @@
 	//check if users have a contract that is not expired 
 	function getExtendedContracts($contract, $expire_date)
 	{	
-		$max_days = atkconfig("employee_usercontracts_expiration_max_expired_extended_days");
+		$max_days = atkconfig("employee_usercontracts_expiration_max_expired_extended_days", 0);
 				
 		$year = substr($expire_date,0,4);
 		$month = substr($expire_date,5,2);
@@ -72,16 +72,19 @@
 		$newdate = date("Y-m-d",$seconds);
 				
 		$db = &atkGetDb();				
-		$query = "SELECT * FROM usercontract WHERE userid = ".$contract['userid'] ." AND id != ".$contract['id']." AND startdate <= '".$newdate."'";
-		echo "Query".$query."\n";
+		$query = "SELECT * FROM usercontract WHERE userid = ".$contract['userid'] ." AND id != ".$contract['id']." AND startdate <= '".$newdate."'";		
 		return $db->getrows($query);		
 	}
 	 	
 	
 	function sendEmails($contracts)
 	{
-		$warn_user = atkconfig("employee_usercontracts_expiration_send_warning_to_user");
-		$dest_addr = atkconfig("employee_usercontracts_expiration_supervisors");
+		$warn_user = atkconfig("employee_usercontracts_expiration_send_warning_to_user", false);
+		$dest_addr = atkconfig("employee_usercontracts_expiration_supervisors", array());
+		
+		if($dest_addr == array()) 									echo ("No supervisor emailaddresses provided in config file.\n");			
+		if(!$warn_user) 														echo "Owners of usercontract will not recieve a warning mail.\n.";		
+		if(!$warn_user && ($dest_addr == array())) 	exit ("Nothing to do.\nExiting.\n");
 		
 		//send mail per contract    	
 		foreach ($contracts as $contract)
@@ -139,7 +142,7 @@
 		if($warn_user && ($user['email'] != ""))
 		{
 			echo "sending mail to user: ".$user['email']."\n";
-			$body= "Youre contract will expire on".$usercontract['enddate']."\n\n";
+			$body= "Your contract will expire on ".$usercontract['enddate']."\n\n";
 					
 			$body.= "Employee information:\n\n";
 			$body.= $user['firstname']." ".$user['lastname']."\n\n\n";				
@@ -204,25 +207,34 @@
 	
 ?>
 <?php	
-  echo "Starting usercontracts.cron\n";
-	$expirevalues = atkconfig("employee_usercontracts_expiration_dates");
+  echo "Starting cronjob: usercontracts.cron\n\n";
+  
+  $configfile = "modules/employee/employee.config.inc";
+  include_once($configfile);
+  
+	$expirevalues = atkconfig("employee_usercontracts_expiration_values", array());
 	
+	if($expirevalues == array())
+		exit ("No expirevalues in config file ".$configfile." or file does not exist.\nNothing to do.\nExiting.\n");
+	
+	sortExpireValues($expirevalues);  	
+		
 	$today = date("Y-m-d");
 	$now_year = substr($today,0,4);
 	$now_month = substr($today,5,2);
-	$now_day = substr($today,8,2);
-
-	sortExpireValues($expirevalues);  		
+	$now_day = substr($today,8,2);		
 	
-	//create expire dates  		
-	$expire_dates = array();  		
-	for($i=0; $i<count($expirevalues);$i++)
-	{
+	//create expire dates
+	$expire_dates = array();
+	for($i=0; $i<count($expirevalues);$i++)	
 		$expire_dates[$i] = date("Y-m-d",mktime(12,0,0,$now_month+$expirevalues[$i]['month'], $now_day+$expirevalues[$i]['day'], $now_year+$expirevalues[$i]['year']));
-	}
-	  		
+	
+		  		
 	$contracts = createExpiringContractsArrays($expire_dates);
 	
+	if($contracts == array())
+		exit ("No contracts will in on the dates provided in the config file $configfile.\nNothing to do\nExiting.\n");
+	
 	sendEmails($contracts);
-	echo "Finished usercontracts.cron\n";
+	echo "Finished cronjob: usercontracts.cron\n\n";
 ?>
