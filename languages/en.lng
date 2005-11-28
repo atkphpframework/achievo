@@ -307,7 +307,7 @@
   "project_select" => "Select project",
   "project_select_none" => "No project selected",
   "project_tab_default" => "General",
-  "project_tab_documents" => "Documents",
+  "tab_documents" => "Documents",
   "project_tab_notes" => "Notes",
   "project_tab_planning" => "Planning",
   "project_tab_todos" => "Todo's",

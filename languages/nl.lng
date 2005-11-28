@@ -307,7 +307,7 @@
   "project_select" => "Selecteer een project",
   "project_select_none" => "Geen project geselecteerd",
   "project_tab_default" => "Algemeen",
-  "project_tab_documents" => "Documenten",
+  "tab_documents" => "Documenten",
   "project_tab_notes" => "Notities",
   "project_tab_planning" => "Planning",
   "project_tab_todos" => "Todo's",
