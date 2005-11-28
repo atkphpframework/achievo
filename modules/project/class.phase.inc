@@ -209,13 +209,14 @@
 
     function rowColor($record)
     {
-      if($record["current_planning"]["hours"]>0)
+      if($record["current_planning"]>0)
       {
-        if($record["spend_hours"]>($record["current_planning"]["hours"]))
+        atk_var_dump($record, 'for comparison');
+        if($record["spend_hours"]>($record["current_planning"]/60))
         {
           return COLOR_ERROR;
         }
-        elseif($record["spend_hours"]>=($record["current_planning"]["hours"])*0.9)
+        elseif($record["spend_hours"]>=($record["current_planning"]/60)*0.9)
         {
           return COLOR_WARNING;
         }
