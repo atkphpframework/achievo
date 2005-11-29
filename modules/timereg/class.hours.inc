@@ -152,8 +152,8 @@ class hours extends atkNode
     global $g_sessionManager,$g_user;
 
     // weekview and viewdate are variables that we need to remember..
-    $this->m_weekview = $g_sessionManager->pageVar("weekview");        
-    
+    $this->m_weekview = $g_sessionManager->pageVar("weekview");
+
     $this->m_viewdate = $g_sessionManager->pageVar("viewdate");
     $this->m_user = $g_sessionManager->pageVar("viewuser");
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
@@ -222,7 +222,7 @@ class hours extends atkNode
   }
 
   /**
-   * Determine the number of available activities 
+   * Determine the number of available activities
    */
   function getActivityCount()
   {
@@ -230,7 +230,7 @@ class hours extends atkNode
     $result = $db->getrows("SELECT count(*) as activitycount FROM activity");
     return $result[0]['activitycount'];
   }
-  
+
   /**
    * Adds the projectphase attribute and, if there are more than 1 activities, the activity attribute
    */
@@ -289,7 +289,7 @@ class hours extends atkNode
       $result = $db->getrows("SELECT id FROM activity");
       $values["activityid"] = $result[0]["id"];
     }
-    
+
     // Return the initial values
     return $values;
   }
@@ -491,7 +491,7 @@ class hours extends atkNode
     for ($i=0; $i<=8;$i++)
     {
       $weekdates[$i]['date']=date("Y-m-d" ,$viewtime-(86400*($weekday-$i)));
-      $weekdates[$i]['day']=text(strtolower(date("D" ,$viewtime-(86400*($weekday-$i)))));
+      $weekdates[$i]['day']=atktext(strtolower(date("D" ,$viewtime-(86400*($weekday-$i)))));
       $weekdates[$i]['stamp']=$viewtime-(86400*($weekday-$i));
     }
 
@@ -505,7 +505,7 @@ class hours extends atkNode
     {
       $rec = $data[$i];
       $key = $rec["phaseid"]["projname"]."-".$rec["phaseid"]["phasename"];
-      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];      
+      $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
       $time = $rec["time"];
       $week[$key][$date] += $time;
       $projtotals[$key] += $time;
@@ -513,31 +513,29 @@ class hours extends atkNode
       $total += $time;
     }
 
-    //$weekviewheader = $this->weekviewHeader($weekdates, $viewtime);
-
     $output.= $prevnextlinks;
-    $output.=   $this->weekviewHeader($weekdates, $viewtime);
+    $output.= $this->weekviewHeader($weekdates, $viewtime);
 
     $weekdata = array();
 
     $table = &atknew("atk.utils.atktablerenderer");
 
-    $weekdata[0][] = text('project').'/'.text('phase');
+    $weekdata[0][] = atktext("project")."/".atktext("phase");
     for ($i=1;$i<=7;$i++)
     {
       if ($weekdates[$i]['date'] <= date("Y-m-d"))
       {
         $url = 'dispatch.php?viewdate='.$weekdates[$i]['date']."&weekview=0";
-        $weekdata[0][] = href($url,text($weekdates[$i]['day'])).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
+        $weekdata[0][] = href($url,$weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
       }
       else
       {
-        $weekdata[0][] = text($weekdates[$i]['day']).'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
+        $weekdata[0][] = $weekdates[$i]['day'].'<br>('.substr($weekdates[$i]['date'],5,2).'-'.substr($weekdates[$i]['date'],8,2).')';
       }
       $table->setColAlignment($i, TBL_CENTER);
 
     }
-    $weekdata[0][] = text('total');
+    $weekdata[0][] = atktext('total');
 
     $row = 1;
     while (list($proj, $times)=each($week))
@@ -551,7 +549,7 @@ class hours extends atkNode
       $row++;
     }
 
-    $weekdata[$row][] = text('total');
+    $weekdata[$row][] = atktext('total');
 
     for ($i=1;$i<=7;$i++)
     {
@@ -568,8 +566,9 @@ class hours extends atkNode
     $weekdata[$row][] = time_format($total);
 
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
+    $output.= $this->weekviewFooter($weekdates, $viewtime);
     $ui = &atknew("atk.ui.atkui");
-    return $ui->renderBox(array("title"=>text('title_houradmin_weekview').' '.strftime('%V, %Y',$viewtime),
+    return $ui->renderBox(array("title"=>atktext("title_houradmin_weekview")." ".strftime("%V, %Y",$viewtime),
                                     "content"=>$output));
 
   }
@@ -610,6 +609,15 @@ class hours extends atkNode
 
     $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.text("week").' '.adodb_date('W, Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
     return $output;
+  }
+
+  /**
+   * Can be overriden to add a weekviewdata footer
+   *
+   * @return String HTML Footer to be embedded in the weekviewdata box
+   */
+  function weekviewFooter($weekdates, $viewtime)
+  {
   }
 
   function postAdd($rec)

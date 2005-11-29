@@ -12,9 +12,9 @@ class hours_lock extends atkNode
     $this->atkNode("hours_lock",NF_NO_EDIT|NF_NO_EXTENDED_SEARCH|NF_NO_VIEW|NF_MRA);
 
     $this->add(new atkAttribute("id", AF_AUTOKEY));
-    $this->add(new atkDummyAttribute("weekexplain",text("hourlock_week_explanation"),AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("weekexplain",atktext("hourlock_week_explanation"),AF_HIDE_LIST));
     $this->add(new atkNumberAttribute("week",AF_SEARCHABLE|AF_OBLIGATORY, 6));
-    $this->add(new atkDummyAttribute("useridexplain",text("hourlock_userid_explanation"),AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("useridexplain",atktext("hourlock_userid_explanation"),AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("userid","employee.employee", AF_SEARCHABLE));
 		$hideapproved = (atkconfig("lock_week_approval_required") && is_allowed("hours_lock", "approve")) ? AF_HIDE : 0;
 		$this->add(new atkBoolAttribute("approved", AF_HIDE_ADD|$hideapproved));
@@ -22,19 +22,20 @@ class hours_lock extends atkNode
     $this->setOrder("week DESC");
     $this->setTable("hours_lock");
   }
-  
+
   function postAdd($record)
   {
     $db = &atkGetDb();
     atkdebug("postAdd");
-    // After adding a lock for all users, we delete individual locks for that same week.  
+    // After adding a lock for all users, we delete individual locks for that same week.
     if ($this->m_attribList["userid"]->isEmpty($record))
     {
       $query = "DELETE FROM hours_lock WHERE week='".$record['week']."' AND userid IS NOT NULL AND id<>".$record["id"];
       $db->query($query);
     }
+    return true;
   }
-  
+
   function week_validate(&$record, $mode)
   {
     $value = $record["week"];
@@ -45,7 +46,7 @@ class hours_lock extends atkNode
       triggerError($record, "week", "error_invalidweek");
     }
   }
-  
+
   function userid_display($rec, $mode)
   {
     if ($this->m_attribList["userid"]->isEmpty($rec))
