@@ -136,10 +136,7 @@ class weekreport extends atkNode
     }
     else
     {
-      if (!isset($startdate)||$startdate=="")
-      {
-        $startdate =  date("Y-m-d" ,time()-(86400*7));
-      }
+      if (!isset($startdate)||$startdate=="")	$startdate =  date("Y-m-d" ,time()-(86400*7));      
     }
     if (is_array($enddate))
     {
@@ -147,29 +144,23 @@ class weekreport extends atkNode
     }
     else
     {
-      if (!isset($enddate)||$enddate=="")
-      {
-        $enddate = date('Y-m-d');
-      }
+      if (!isset($enddate)||$enddate=="")			$enddate = date('Y-m-d');      
     }
 
-    if (!isset($userid)||$userid=="")
-    {
-      $userid=$g_user["id"];
-    }
-
-    if (!isset($nameswitch)||$nameswitch=="")
-    {
-      $nameswitch="name";
-    }
-
+    if (!isset($userid)||$userid=="")   			$userid=$g_user["id"];
+    if (!isset($nameswitch)||$nameswitch=="")	$nameswitch="name";
     if (!isset($showstatus)||$showstatus=="") $showstatus = "both";
 
+    
+    //Only import when using standard or printer-friendly output
+    if(($outputType==0) || ($outputType==1))
+    {
+    	atkimport("atk.layout");
+    	$layout = &layout::getInstance();
+    }
+      
     if ($outputType==0)
     {
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
-
       $layout->initGUI();
       $layout->ui_top(text("parameters", $this->m_type, $this->m_module));
 
@@ -246,7 +237,10 @@ class weekreport extends atkNode
 
       $layout->output('</tr><tr>');
       $layout->td(text("report_show_details"));
-      if ($showdetails==1) $checked = "checked"; else $checked = "";
+      
+      //if ($showdetails==1) $checked = "checked"; else $checked = "";
+      $checked = ($showdetails==1) ? "checked" : "";
+      
       $layout->td('<input type="checkbox" name="showdetails" value="1" '.$checked.'>');
 
       $layout->output('</tr><tr>');
@@ -266,8 +260,8 @@ class weekreport extends atkNode
       $layout->ui_bottom();
     }
 
-    if ($userid!="") // If we haven't got a userid by now, don't display the
-                     // report.
+    // If we haven't got a userid by now, don't display the report
+    if ($userid!="")                      
     {
       $weekdata = array();
 
@@ -364,6 +358,7 @@ class weekreport extends atkNode
                   AND hours.userid = person.id
                 GROUP BY
                   hours.userid, activitydate, person.lastname, person.firstname, workperiod";
+      
  // @todo JvdW 12-01-2004 Oracle needs all columns not used in aggregate functions to be in the group by clause.
  // There might be more places in the code where this is true and need adjusting.
  // MySQL has an extended GROUP BY which doesn't need this according to the documentation:
@@ -502,6 +497,9 @@ class weekreport extends atkNode
       }
       if ($nameswitch=="name" && $userid!="all") $suppress[] = "userid";
 
+      
+      
+      
       if ($outputType=="0")
       {
         $layout->ui_top(text("weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
