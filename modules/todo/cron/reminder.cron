@@ -15,10 +15,12 @@
   * $Id$
   *
   */  
-
+ 	 	
+ 	$db = &atkGetDb();
+ 	
   // check which todo's have a duedate of today or earlier, and which have a
   // status of new, in_progress or on_hold.
-  $todos = $g_db->getrows("SELECT
+  $todos = $db->getrows("SELECT
                              todo.title,
                              todo.description,
                              todo.duedate,
@@ -35,7 +37,7 @@
                              person OWNER
                             WHERE
                              todo.assigned_to = ASSIGNED.id
-                             AND todo.owner = OWNER.userid
+                             AND todo.owner = OWNER.id
                              AND todo.duedate<=NOW()
                              AND todo.status IN (1,3,4)
                             ORDER BY
