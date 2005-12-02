@@ -9,13 +9,17 @@
   * $Id$
   *
   */
-
+ 	
   $today = date("Y-m-d");
   $year = substr($today,0,4);
   $month = substr($today,5,2);
   $day = substr($today,8,2);
   $incomplete_weeks = array();
 
+  $db = &atkGetDb();
+  
+  require_once(atkconfig("atkroot")."atk/utils/adodb-time.inc.php");
+  
   // get emailaddresses for all users and presort them
   $query = "SELECT
               id, userid, firstname, lastname, email
@@ -25,7 +29,7 @@
               status = 'active' AND role='employee'
            ";
 
-  $users = $g_db->getrows($query);
+  $users = $db->getrows($query);
   for ($i=0;$i<count($users);$i++)
   {
     $userInfo[$users[$i]["id"]]["mail"] = $users[$i]["email"];
@@ -38,8 +42,9 @@
   {
     // generate a date in the correct week (doesn't matter which, so day-7 should
     // always work.
+    //$prevweekstamp = adodb_mktime(12,12,12,$month,$day-($weekloop*7),$year);
     $prevweekstamp = adodb_mktime(12,12,12,$month,$day-($weekloop*7),$year);
-
+		
     $startdate = startOfWeek(date("Y-m-d",$prevweekstamp));
     $enddate =  endOfWeek(date("Y-m-d",$prevweekstamp));
 
@@ -63,7 +68,7 @@
                 AND usercontract.userid = person.id
                 AND person.status='active' AND person.role = 'employee'";
 
-    $contracts = $g_db->getrows($query);
+    $contracts = $db->getrows($query);
 
     for ($i=0;$i<count($contracts);$i++)
     {
@@ -84,7 +89,7 @@
                 AND activitydate between '$startdate' and '$enddate'
               GROUP BY hours.userid";
 
-    $hours = $g_db->getrows($query);
+    $hours = $db->getrows($query);
     for ($i=0;$i<count($hours);$i++)
     {
       $user = $hours[$i]["userid"];
