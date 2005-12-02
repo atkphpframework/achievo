@@ -147,7 +147,7 @@ class hours extends atkNode
   var $m_user = "";
   var $m_insertmode = ""; // can be set to 'day' or 'multi'
 
-  function hours()
+  function hours($type="hours", $flags=0)
   {
     global $g_sessionManager,$g_user;
 
@@ -163,9 +163,9 @@ class hours extends atkNode
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
     if ($this->m_user == "") $this->m_user = $g_user["id"];
 
-    $flags=NF_NO_VIEW|NF_TRACK_CHANGES|NF_NO_IMPORT;
+    $flags|=NF_NO_VIEW|NF_TRACK_CHANGES|NF_NO_IMPORT;
 
-    $this->atkNode("hours",$flags|NF_MRA|NF_NO_ADD); // node() constructor is *not* called automatically!
+    $this->atkNode($type,$flags|NF_MRA|NF_NO_ADD); // node() constructor is *not* called automatically!
 
     // default view if none is set
     if (!isset($this->m_weekview)||$this->m_weekview=="")
@@ -568,9 +568,14 @@ class hours extends atkNode
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
     $output.= $this->weekviewFooter($weekdates, $viewtime);
     $ui = &atknew("atk.ui.atkui");
-    return $ui->renderBox(array("title"=>atktext("title_houradmin_weekview")." ".strftime("%V, %Y",$viewtime),
+    return $ui->renderBox(array("title"=>$this->weekviewTitle($userid, $viewtime),
                                     "content"=>$output));
 
+  }
+
+  function weekviewTitle($userid, $viewtime)
+  {
+    return atktext("title_houradmin_weekview")." ".strftime("%V, %Y",$viewtime);
   }
 
   function weekviewHeader($weekdates, $viewtime)

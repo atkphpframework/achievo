@@ -41,15 +41,53 @@
 	  function hours_approve()
 	  {
 	    // Call the base class constructor
-	    $this->hours();
+	    $this->hours("hours_approve");
 
 	    // Get a reference to the global sessionmanager
 	  	global $g_sessionManager;
 
-	  	// Make sure the weekid and approved session variables are available at all times
-	    $g_sessionManager->pageVar("weekid");
-	    $g_sessionManager->pageVar("approved");
+	  	// Make sure the year session variable is available at all times
+  	  $g_sessionManager->pageVar("year");
+  	  $g_sessionManager->pageVar("viewdate");
+  	  $g_sessionManager->pageVar("weekid");
+  	  $g_sessionManager->pageVar("viewuser");
+
+//$hourslocknode = &getNode("timereg.hours_lock");
+//$users=array(367,794);
+//atk_var_dump($users);
+//foreach($users as $userid)
+//{
+//  atkdebug("<h1>CHECK</h1>");
+//  atk_var_dump($userid);
+//  $min=rand(1, 30);
+//  $max=rand($min, 40);
+//  for($i=$min; $i<=$max; $i++)
+//  {
+//    $record = $hourslocknode->initial_values();
+//    $record["week"] = "2005" . $i;
+//    $record["userid"] = array("id"=>$userid);
+//    $record["approved"] = (rand(0,1)==1)?1:null;
+//    $hourslocknode->addDb($record);
+//  }
+//}
 	  }
+
+    /**
+     * Creates a custom titlebar for the weekview
+     *
+     * Full description of the function
+     *
+     * @param type name description
+     * @return type description
+     */
+	  function weekviewTitle($userid, $viewtime)
+    {
+      $employeenode = &getNode("employee.employee");
+      $employees = $employeenode->selectDb("person.id=" . $userid);
+      $employeedesc = (count($employees) > 0) ? $employees[0]["firstname"]." ".$employees[0]["lastname"] : "";
+
+      return sprintf(atktext("title_hoursapprove_weekview"), $employeedesc, strftime("%V, %Y",$viewtime));
+    }
 
     /**
      * weekviewHeader override function
@@ -68,11 +106,48 @@
 	   */
 	  function weekviewFooter()
 	  {
-	    // Add an approve or disapprove button to the weekview
-	    if ($this->m_postvars['approved']==1)
-  	    $output = "<br />".atkButton(atktext("disapprove"),dispatch_url("timereg.hours_approve","disapprove"));
-	    else if ($this->m_postvars['approved']==0)
-	      $output = "<br />".atkButton(atktext("approve"),dispatch_url("timereg.hours_approve","approve"));
+	    // Read the hours_lock id
+	    $weekid = $this->m_postvars["weekid"];
+
+	    // If the weekid isnt numeric, then throw an error, no action can be taken so no buttons are added to the footer.
+	    if (!is_numeric($weekid))
+	    {
+	      atkerror("Posted weekid isn't numeric");
+	      return "";
+	    }
+
+	    // Retrieve the hours_lock record for the specified weekid
+	    $hourslocknode = &getNode("timereg.hours_lock");
+      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."' AND hours_lock.userid='".$this->m_user."'");
+
+      // Don't display any buttons if there are no hourlocks found
+      if (count($hourlocks)==0)
+      {
+        return "";
+      }
+
+      // Determine the approval status
+      $hourlockapproved = ($hourlocks[0]["approved"]==1);
+
+
+      $output = '<br />' . atktext("hours_approve_thestatusofthisweekis") . ": ";
+      if ($hourlockapproved)
+      {
+        $output.= '<font color="#009900">' . atktext("approved") . '</font><br /><br />';
+      }
+      else
+      {
+        $output.= '<font color="#ff0000">' . atktext("not_approved_yet") . '</font><br /><br />';
+      }
+
+      // Add an approve or disapprove button to the weekview
+	    if ($hourlockapproved)
+  	    $output.= atkButton(atktext("disapprove"), dispatch_url("timereg.hours_approve","disapprove", array("weekid"=>$weekid)), SESSION_NESTED);
+	    else
+	    {
+	      $output.= atkButton(atktext("approve"), dispatch_url("timereg.hours_approve","approve"));
+  	    $output.= "&nbsp;&nbsp;".atkButton(atktext("disapprove"), dispatch_url("timereg.hours_approve","disapprove", array("weekid"=>$weekid)), SESSION_NESTED);
+	    }
 
 	    // Return the weekview including button
 	    return $output;
@@ -98,6 +173,10 @@
 	    {
 	      return href(dispatch_url("timereg.hours_approve","convert_old"), "Converteer oude gegevens"); // @todo translate
 	    }
+	    else
+	    {
+	      return "";
+	    }
 	  }
 
 	  /**
@@ -111,69 +190,124 @@
 	    // Get the atkpage singleton instance
 	    $page = &atkpage::getInstance();
 
-	    // Start the output using a session form
-	    $formbegin = '<form name="entryform" enctype="multipart/form-data" action="dispatch.php" method="post" onsubmit="globalSubmit(this)">';
-	    $formbegin.= session_form();
-	    $page->addContent($formbegin);
+	    // Add the stylesheet to the page
+	    $this->addStyle("style.css");
 
 	    // If a week is selected for a specific employee, then show the approval screen
-	    if ($this->m_viewdate)
+	    if ((!is_null($this->m_postvars["viewuser"])) && (!is_null($this->m_postvars["viewdate"])) && (($this->m_postvars["year"] == null) || ($this->m_postvars["year"] == substr($this->m_postvars["viewdate"], 0, 4))))
 	    {
-	    	$page->addContent($this->approvescreen());
+	    	// Try to find the hour_lock in de database
+	    	$hourslocknode = &getNode("timereg.hours_lock");
+	    	$hourlocks = $hourslocknode->selectDb("hours_lock.id='" . $this->m_postvars["weekid"] . "'");
+
+	    	// Only show the weekview if the lock still exists:
+	    	if (count($hourlocks) > 0)
+	    	{
+
+	    	  // Store the employeeid and viewdate in class vars
+    	  	$this->m_user = $this->m_postvars["viewuser"];
+  	    	$this->m_viewdate = $this->m_postvars["viewdate"];
+
+  	    	// Add the approve screen to the page
+  	    	$page->addContent($this->weekview());
+	    	}
+
 	    }
 
 	    // Add the approvedweekview to the page
 	    $page->addContent($this->approvedweekview());
-
-	    // Close the form
-	    $formend = '</form>';
-	    $page->addContent($formend);
 
 	    // Return an empty string (output is handled through the page
 	    return "";
 	  }
 
 	  /**
-	   * Loads the viewdate sessionmanager var and returns the weekview html result
+	   * One line description of the function
 	   *
-	   * @return string HTML representation of the weekview
+	   * Full description of the function
+	   *
+	   * @param type name description
+	   * @return type description
 	   */
-	  function approvescreen()
-	  {
-	    // Get a reference to the global sessionmanager
-	  	global $g_sessionManager;
-
-	    // Get the viewdate from the sesssion manager and store it in this node
-	  	$this->m_viewdate = $g_sessionManager["viewdate"];
-
-	    // Return the weekview result
-	  	return $this->weekview();
-	  }
-
 	  function approvedweekview()
 	  {
 	    // Get the current user
 	    $user = getUser();
 
-	    if (is_numeric($this->m_postvars['year']) && strlen($this->m_postvars['year'])==4)
-	      $year = trim($this->m_postvars['year']);
+	    // If the year is given in postvars, then view the approvedweekview for the specified year
+	    if (is_numeric($this->m_postvars["year"]) && strlen($this->m_postvars["year"])==4)
+	      $year = trim($this->m_postvars["year"]);
+
+	    // Else use the current year
 	    else
 	      $year = date('Y');
 
+	    // Get the singleton instance of the ui renderer
+	    $ui = &atkui::getInstance();
+
+      // Compose the tplvars containing content and legend
+      $tplvars_contentwithlegend = array(
+        "content" => $this->getEmployeesTable($user["id"], $year),
+        "legenditems" => $this->getLegendData()
+      );
+
+      $contentwithlegend = $ui->render("contentwithlegend.tpl", $tplvars_contentwithlegend);
+
+	    // Use a numberattrib to get a display for the year inputbox
 	    $yearattrib = new atkNumberAttribute("year",0,6);
 
-	    $result = atktext('year')." : ".$yearattrib->edit(array("year"=>$year));
-	    $result.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'"><br>';
-	    $result.= '<br>';
+      // Display the year input form
+      $header = atktext("year")." : ".$yearattrib->edit(array("year"=>$year));
+      $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'"><br>';
+      //$header.= atkbutton(atktext("view"), dispatch_url("timereg.hours_approve", "admin"), SESSION_REPLACE);
 
-	    $result.= $this->showEmployees($user['id'], $year);
-	    $result.= '<br />' . atktext('hours_approve_color_explain');
-	    $result.= "<br /><br />".$this->convertheck();
+      // Add an explanation to the approvedweekview
+	    $footer = atktext("remark") . ": ";
+      $footer.= (!$this->allowed("any_user")) ? atktext("hours_approve_remarkmanager") . '<br />' : '';
+	    $footer.= atktext("hours_approve_remarkweekblock");
+	    $footer.= $this->convertheck();
 
-	    $ui = &atkui::getInstance();
-	    $boxedresult = $ui->renderBox(array("title"=>atktext('title_houradmin_approve'),"content"=>$result));
+	    // Start the output using a session form
+	    $formstart = '<form name="entryform" enctype="multipart/form-data" action="dispatch.php" method="post" onsubmit="globalSubmit(this)">';
+	    $formstart.= session_form();
+	    // Close the form
+	    $formend = '</form>';
 
+	    // Compose the tplvars containing the
+	    $tplvars_vertical = array(
+	      "formstart" => $formstart,
+	      "formend" => $formend,
+	      "blocks" => array(
+                      $header,
+                      $contentwithlegend,
+                      $footer
+                    ),
+        "align" => "center"
+      );
+
+      $boxcontents = $ui->render("vertical.tpl", $tplvars_vertical);
+
+	    // Add a conversion link to the approvedweekview if datastructurs outdated
+
+	    // Put the result into a box
+	    $boxedresult = $ui->renderBox(array("title"=>atktext("title_houradmin_approve"),"content"=>$boxcontents));
+
+	    // Return the boxed result HTML
 	    return $boxedresult;
+	  }
+
+	  /**
+	   * Returns the legend HTML code
+	   *
+	   * @return String HTML code used to display the legend
+	   */
+	  function getLegendData()
+	  {
+      // Return the legenditems array
+      return array(
+        "#22BB22" => atktext("approved"),
+        "#FF2222" => atktext("not_approved_yet"),
+      );
 	  }
 
 	  function getdatefromweek($yearweek)
@@ -190,14 +324,23 @@
 	    return $date;
 	  }
 
-
-	  function showEmployees($userid, $year)
+    /**
+     * Showemployees for
+     *
+     * Full description of the function
+     *
+     * @param type name description
+     * @return type description
+     */
+	  function getEmployeesData($userid, $year)
 	  {
-	    global $prevnextlinks;
-
-	    $employeenode = new atkNode("tools");
+	    // Load the employee node
 	    $employeenode = &getNode("employee.employee");
-	    if ($userid) $where = "person.supervisor = '$userid'";
+
+	    // Do we select only the employees the current user is maanger of, or all employees
+	    $where = $this->allowed("any_user") ? "" : "person.supervisor = '$userid'";
+
+	    // Get the employees from the database
 	    $data = $employeenode->selectDb($where, null, null, null, array('id', 'lastname', 'firstname', 'supervisor'));
 
 	    $users = array();
@@ -220,53 +363,62 @@
 	      }
 	      ksort($users[$key]["weeks"]);
 	    }
-	    return $this->makeLinks($users,$year);
+	    return $users;
 	  }
 
-	  function makeLinks($users, $year)
+	  function getEmployeesTable($userid, $year)
 	  {
-	    $result.= "<table border=\"0\">";
+	    // Get the employees/weeks data from the database
+	    $users = $this->getEmployeesData($userid, $year);
 
-	    $result.= "<thead><tr><th>".atktext("employee")."</th><th align='center'>".atktext('weeks')."</th></tr></thead>\n";
+	    // Initialize the tabledata array
+	    $tabledata = array();
 
+	    // Add the header columns to the tabledata
+	    $tabledata[] = array(atktext("employee"), atktext('weeks'));
+
+	    // Loop through the users array in order to add a row for every user
 	    foreach ($users as $user)
 	    {
-	      $result.= "\n<tr>";
-	      $result.= "<td>".$user["name"]."</td>\n";
-
+	      // Add all weeks as links into the weeks string
+	      $weeks = "";
 	      foreach ($user['weeks'] as $weeknumber => $weekdata)
 	      {
+
+	        // Prefix weeknumbers below 10 with a padding zero
 	        if ($weeknumber<10) $prefix = 0;
 	        else $prefix = null;
 
-	        if ($weekdata["approved"]==1)
+	        // Determine the color to be used when displaying the weeknumber
+	        if ($weekdata["approved"]=="1")
 	          $color = "#009900";
 	        else
 	          $color = "#FF0000";
 
-	        $weeks.=href('dispatch.php?viewuser='.$user["id"].'&weekview=1&viewdate='.date("Y-m-d",$this->getdatefromweek($year.$prefix.$weeknumber))."&weekid=".$weekdata["id"]."&approved=".$weekdata["approved"],$weeknumber, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
+	        // Add a weeknumberlink to the weeks string
+	        $weeks.=href('dispatch.php?viewuser='.$user["id"].'&viewdate='.date("Y-m-d",$this->getdatefromweek($year.$prefix.$weeknumber))."&weekid=".$weekdata["id"],$weeknumber, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
 	      }
-	      $result.= "<td>$weeks</td>\n";
-	      $result.= "</tr>";
-	      $weeks = "";
+
+	      if ($weeks == "")
+	      {
+	        $weeks = atktext("hours_approve_noblockedweeksyet");
+	      }
+
+	      // Add a row to the table containing the employeename and the week links
+	      $tabledata[] = array($user["name"], $weeks);
 	    }
-	    $result.= "</table>";
-	    return $result;
+
+	    // Let the tablerenderer do the rendering job
+	    $tablerenderer = &atknew("atk.utils.atktablerenderer");
+      $result = $tablerenderer->render($tabledata, TBL_DATA, "recordlist");
+
+	    // Return the HTML output form the tablerenderer
+      return $result;
 	  }
 
 	  function action_approve(&$handler)
 	  {
-	    $this->updateHoursLockApproval("1");
-	  }
-
-	  function action_disapprove(&$handler)
-	  {
-	    $this->updateHoursLockApproval("0");
-	  }
-
-	  function updateHoursLockApproval($approval)
-	  {
-	    global $ATK_VARS, $g_sessionManager;
+	    global $g_sessionManager;
 	    $viewdate = $this->m_postvars['viewdate'];
 	    $weekid = $this->m_postvars["weekid"];
 
@@ -277,11 +429,138 @@
 	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'");
 	      $hourlock = $hourlocks[0];
 
-	      $hourlock["approved"] = $approval;
+	      $hourlock["approved"] = 1;
 	      $hourslocknode->updateDb($hourlock);
 	    }
 
 	    $g_sessionManager->pageVar("viewdate","");
+	    $this->redirect();
+	  }
+
+	  function action_disapprove(&$handler)
+	  {
+      if (isset($this->m_postvars["atkcancel"]))
+      {
+        $this->redirect();
+        return $handler;
+      }
+
+      // Get the weekid
+	    $weekid = $this->m_postvars["weekid"];
+
+	    // Throw an error if the weekid is not numeric
+	    if (!is_numeric($weekid))
+	    {
+	      atkerror("Given weekid is not numeric");
+  	    return "";
+	    }
+
+	    // Get a reference to the hours_lock node
+	    $hourslocknode = &getNode("timereg.hours_lock");
+
+	    // Get the lock
+	    $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'");
+	    $hourlock = $hourlocks[0];
+      $hoursapproved = $hourlock["approved"];
+
+	    // Check if the lock exists
+	    if (count($hourlocks)==0)
+	    {
+	      atkerror("The given week lock can not be found");
+	      return "";
+	    }
+
+	    // Get a reference to the global sessionmanager
+	  	global $g_sessionManager;
+
+	  	// Make sure the reason session variable is available at all times
+	  	$g_sessionManager->pageVar("reason");
+
+      $page = &$this->getPage();
+      $theme = &atkTheme::getInstance();
+
+      if (!isset($this->m_postvars["reason"]))
+      {
+
+        $reqimg = '<img align="top" onMouseOver="javascript:window.status=\''.
+                     addslashes(atktext("field_obligatory")).'\';" src="'.$theme->imgPath("required_field.gif").'" border="0" alt="'.
+                     atktext("field_obligatory").'">';
+
+        // Show reason input dialog
+        $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove") . '" method="post">';
+        $content.= session_form($hoursapproved ? SESSION_DEFAULT : SESSION_BACK);
+        $content.= '<table name="entryform" id="entryform" cellspacing="0">';
+        $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . atktext("hours_approve_disapprovegivereason", "timereg") . '</b></td></tr>';
+        $content.= '<tr><td colspan="2" class="fieldlabel">&nbsp;</td></tr>';
+        $content.= '<tr valign="top">';
+        $content.= '<td class="fieldlabel">' . atktext("reason") . ' ' . $reqimg . '</td>';
+        $content.= '<td><input id="reason" name="reason" value=""></td>';
+        $content.= '</tr>';
+        $content.= '</table>';
+        $content.= '<br>';
+        $content.= '<input type="submit" class="btn_save" name="atk' . ($hoursapproved ? "confirm" : "do") . 'disapprove" value="'.atktext('disapprove').'">&nbsp;&nbsp;';
+        $content.= '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext('cancel').'">';
+        $content.= '</form>';
+        $content.= '<br>';
+
+        $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
+
+        $ui = $this->getUi();
+        $boxedcontent = $ui->renderbox(array("title"=>$title,"content"=>$content));
+
+        $page->register_style($theme->stylePath("style.css"));
+        $page->addContent($boxedcontent);
+        return $handler;
+      }
+
+
+      if (!isset($this->m_postvars["atkdodisapprove"]))
+      {
+
+        // Show confirmation dialog
+        $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove", array("weekid"=>$this->m_postvars["weekid"],"reason"=>$this->m_postvars["reason"])) . '" method="post">';
+        $content.= session_form(SESSION_BACK);
+        $content.= '<table name="entryform" id="entryform" cellspacing="0">';
+        $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . atktext("hours_approve_disapproveofapprovedweekconfirmation", "timereg") . '</b></td></tr>';
+        $content.= '</table>';
+        $content.= '<br>';
+        $content.= '<input type="submit" class="btn_save" name="atkdodisapprove" value="'.atktext('disapprove').'">&nbsp;&nbsp;';
+        $content.= '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext('cancel').'">';
+        $content.= '</form>';
+        $content.= '<br>';
+
+        $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
+
+        $ui = $this->getUi();
+        $boxedcontent = $ui->renderbox(array("title"=>$title,"content"=>$content));
+
+        $page->register_style($theme->stylePath("style.css"));
+        $page->addContent($boxedcontent);
+        return $handler;
+      }
+
+      // Get the employee
+      $employeenode = &getNode("employee.employee");
+      $employees = $employeenode->selectDb("person.id = '".$hourlock["userid"]["id"]."'");
+      if (count($employees)==0)
+      {
+        atkerror("Could not find the owner of the hours lock");
+        return "";
+      }
+      $employee = $employees[0];
+
+      // Send an e-mail
+      $to = $employee["email"];
+      $subject = atktext("hours_approve_registrationdisapprovedsubject");
+      $weekno = substr($hourlock["week"], 4);
+      $yearno = substr($hourlock["week"], 0, 4);
+      $body = sprintf(atktext("hours_approve_registrationdisapprovedbody"), $weekno, $yearno, $this->m_postvars["reason"]);
+      usermail($to, $subject, $body);
+
+      // Delete the hours_lock
+	    $hourslocknode->deleteDb("hours_lock.id='".$weekid."'");
+
+	    // Redirect to the hours_approve view
 	    $this->redirect();
 	  }
 
@@ -304,7 +583,7 @@
 	      $lockedhoursbyweek[$lockedhour['week']][$lockedhour['userid']] = $lockedhour;
 	    }
 
-	    //
+	    // Convert to the new datastructures
 	    foreach ($approvedhours as $approvedhour)
 	    {
 	      if ($lockedhoursbyweek[$approvedhour['week']][$approvedhour['userid']])
