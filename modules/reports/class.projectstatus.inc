@@ -49,7 +49,7 @@
       if ($s_record==NULL)
       {
         $s_record = array();
-        $s_record["supervisor"] = $g_sessionManager->pageVar("supervisor");
+        $s_record["coordinator"] = $g_sessionManager->pageVar("coordinator");
         $s_record["from"] = $g_sessionManager->pageVar("from");
         $s_record["to"] = $g_sessionManager->pageVar("to");
 
@@ -81,7 +81,7 @@
     {
       useattrib("employee.myemployeesattribute");
 
-      $attrs["supervisor"] = &new myEmployeesAttribute("supervisor", "reports.projectstatus.any_user");
+      $attrs["coordinator"] = &new myEmployeesAttribute("coordinator", "reports.projectstatus.any_user");
 
       $attrs["from"] = &new atkDateAttribute("from");
       $attrs["to"] = &new atkDateAttribute("to");
@@ -101,7 +101,7 @@
 
       if ($this->hasAnyUserPrivilege())
       {
-        $output.= atktext("supervisor").": ".$attrs["supervisor"]->edit($record)." ";
+        $output.= atktext("coordinator").": ".$attrs["coordinator"]->edit($record)." ";
       }
 
       $output.= "<br/>";
@@ -153,9 +153,9 @@
         $strto = dateutil::arr2str($filterrecord["to"]);
 
         $empfilter = "";
-        if ($filterrecord["supervisor"]!=NULL)
+        if ($filterrecord["coordinator"]!=NULL)
         {
-          $empfilter = " AND p.coordinator=".$filterrecord["supervisor"]["id"];
+          $empfilter = " AND p.coordinator=".$filterrecord["coordinator"]["id"];
         }
         else if (!$this->hasAnyUserPrivilege()) // only show your own employees
         {

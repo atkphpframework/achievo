@@ -507,6 +507,18 @@
       {
         $this->addFilter("project.status<>'active'");
       }
+      
+      
+      // Access control
+      if (!$this->allowed("any_project"))
+      {
+        $user = getUser();
+        $this->addFilter("project.coordinator=".$user["id"]);
+        // we can hide the coordinator column from the list in this case.
+        $attr = &$this->getAttribute("coordinator");
+        $attr->addFlag(AF_HIDE_LIST);
+      }
+      
       return $handler->action_admin();
     }
 
