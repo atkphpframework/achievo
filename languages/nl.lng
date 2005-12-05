@@ -520,6 +520,14 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  "error_colorconfig_overlap" => "Record mag niet met bestaande records overlappen.",
+  "mastergantt_colorconfig" => "Master-Gantt kleurconfiguratie",
+  "menu_mastergantt_colorconfig" => "Master-Gantt kleuren",
+  "mastergantt_colorconfig_hours_min" => "Uren van",
+  "mastergantt_colorconfig_hours_max" => "Uren tot",
+  "color"=>"Kleur",
+  "menu_mastergantt"=>"Master-Gantt",
+  "display"=>"Toon",
 );
 
 ?>

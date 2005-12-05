@@ -520,6 +520,14 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  "error_colorconfig_overlap" => "Record may not overlap with existing records.",
+  "mastergantt_colorconfig" => "Master-Gantt colorconfiguration",
+  "menu_mastergantt_colorconfig" => "Master-Gantt colors",
+  "mastergantt_colorconfig_hours_min" => "Hours from",
+  "mastergantt_colorconfig_hours_max" => "Hours to",
+  "color"=>"Color",
+  "menu_mastergantt"=>"Master-Gantt",
+  "display"=>"Display",
 );
 
 ?>
