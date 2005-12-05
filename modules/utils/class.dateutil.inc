@@ -1,5 +1,9 @@
 <?php
 
+  define("ONEDAY", 24*60*60);
+  define("ONEWEEK", ONEDAY*7);
+
+
   class dateutil
   {
     /**
@@ -83,6 +87,47 @@
       $weekday = strftime("%w",$viewtime);
       if ($weekday==0) $weekday=7;
       return date("Ymd" ,$viewtime-(86400*($weekday-7)));
+    }
+    
+    /**
+     * Calculates the weeknumber, startdate/enddate of the week for each week 
+     * within the passed date range.
+     *
+     * @return array Array containing arrays like "week"=>weeknumber,"startdate"=>startdate,
+     * "enddate"=>enddate
+     */
+    function weeksBetween($strstart, $strend)
+    {      
+      // Initialize the weekdata array
+      $weekdata = array();
+
+      // First fill the weeks and start/end dates..
+      $startstamp = dateUtil::str2stamp($strstart);
+      $endstamp = dateUtil::str2stamp($strend);
+
+      // Calculate the number of dates between the selected start and end date
+      $nrofdays = dateUtil::date_diff($strstart, $strend);
+
+      // Loop through the days, starting at the day selected as "from"
+      for ($i = 0; $i <= $nrofdays; $i++)
+      {
+        // Calculate the current day depending on the startdate and iterator
+        $curstamp = $startstamp + (ONEDAY * $i);
+
+        // If the day is a monday, then register the weekid, startdate and
+        // enddate of the week in the weekdata array and jump one week ahead
+        if (strftime("%w",$curstamp)==1)
+        {
+          $key = weekstamp($curstamp);
+          $weekdata[$key]["week"] = $key;
+          $weekdata[$key]["startdate"] = date("Ymd",$curstamp);
+          $weekdata[$key]["enddate"] = date("Ymd",$curstamp+(6*ONEDAY));
+          $i+=6;
+        }
+      }
+
+      // Return the array containing the weekid, start- and enddate for each week within the given from and to dates     
+      return $weekdata;    
     }
 
   }
