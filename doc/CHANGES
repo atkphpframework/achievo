@@ -30,6 +30,7 @@ Changes in Achievo 1.2RC1
 + Added deliverables feature to project management. [Ivo]
 + Added deliverables and phase dependencies to Gantt chart. [Ivo]
 + Added projectstatus report. [Ivo]
++ Added Master Gantt chart. [Ivo]
 * Upgraded to ATK5 backend. [Ivo,Sandy]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg
