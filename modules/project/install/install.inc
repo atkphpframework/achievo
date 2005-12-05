@@ -15,6 +15,9 @@
   $setup->installNode("project.tpl_project_phase");
   $setup->installNode("project.tpl_dependency");
   $setup->installNode("project.deliverable");
-  $setup->setVersion(9);
+  $setup->installNode("project.mastergantt_colorconfig");       
+  
+  $setup->setVersion(10);
+    
 
 ?>
