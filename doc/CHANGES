@@ -40,6 +40,8 @@ Changes in Achievo 1.2RC1
 * Fixed: postAdd in modules/calender/class.schedule.inc should return $a
   boolean. [Yury]
 * Fixed several Gantt chart bugs. [Ivo]
+* Fixed bug in setup module that installed patches in the wrong order if
+  there are 10 or more patches. [Dennis, Ivo]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]

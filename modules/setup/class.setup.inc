@@ -1043,6 +1043,9 @@
               $stufftodo = true;
               // We need to install patches.
               natcasesort($availablepatches); // We must install patches in the correct order.
+              
+              // Fix key associations
+              $availablepatches = array_values($availablepatches);
 
               for($i=0, $_i=count($availablepatches); $i<$_i; $i++)
               {
