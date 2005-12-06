@@ -1,26 +1,26 @@
 <?php
 
-  userelation("atkmanytoonerelation");  
+  userelation("atkmanytoonerelation");
   useattrib("atkdurationattribute");
   useattrib("atkboolattribute");
   useattrib("atklistattribute");
-  
+
   // special case of the duration attrib, that uses a sum(), to facilitate aggregations
-  class sumAttribute extends atkDurationAttribute 
+  class sumAttribute extends atkDurationAttribute
   {
     var $m_groupbyfields;
-    
+
     function sumAttribute($name, $groupbyfields)
-    {      
+    {
       $this->atkDurationAttribute($name, atkconfig("timereg_resolution", "15m"), '10h',AF_OBLIGATORY|AF_TOTAL);
-      
+
       $this->m_groupbyfields = $groupbyfields;
     }
-    
+
     function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level, $mode)
-    {      
-      $query->addField("SUM(".$tablename.".".$this->fieldName().")","","",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));    
-      
+    {
+      $query->addField("SUM(".$tablename.".".$this->fieldName().")","","",$fieldaliasprefix,!$this->hasFlag(AF_NO_QUOTES));
+
       foreach($this->m_groupbyfields as $field)
       {
         if ($field!=$this->fieldName()) // can't aggregate on ourselves
@@ -29,14 +29,14 @@
         }
       }
     }
-    
+
     function db2value($rec)
     {
       $rec["time"] = $rec['SUM(hours.time)'];
       return parent::db2value($rec);
     }
   }
-  
+
   // hack: the activity attribute is a hack, and not a relation. It is populated by the project phase attrib.
   // Because of this, it is not very well sortable.
   class sortableActivity extends atkListAttribute
@@ -45,25 +45,13 @@
     {
       $this->atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY, 10);
     }
-    
+
     function getOrderByStatement()
     {
       return "C.name";
     }
   }
-  
-  class fakeAttrib extends atkAttribute 
-  {
-    function fakeAttrib($name, $flags=0, $size="")
-    {
-      $this->atkAttribute($name, $flags|AF_TOTAL, $size);
-    }
-    
-    function load() {}
-    function store() {}  
-    function addtoeditarray() {}
-  }
-  
+
   class hoursurvey extends atkNode
   {
     function hoursurvey()
@@ -219,6 +207,7 @@
       {
         atkimport("atk.layout");
         $layout = &layout::getInstance();
+        $this->addStyle("style.css");
 
         $layout->initGUI();
         $layout->ui_top(text('parameters', $this->m_type, $this->m_module));
@@ -234,7 +223,7 @@
         $layout->td('<hr>'.text('searchbyprojectorphase').':','colspan="2"');
         $layout->output('</tr><tr>');
         $layout->td(text('project').':');
-        
+
         // we have to pass a 'dummy' record to the attributes to set their default value.
         $dummyrec = array("projectid"=>$projectid,
         "organizationid"=>array("id"=>$organizationid), // manytoonerelation needs subarray
@@ -305,14 +294,14 @@
         $layout->output('</tr>');
         $this->_addOr($layout);
         $layout->output('<tr>');
-        
+
         // selecting functionlevel:
         $layout->td(text('functionlevel').':');
         $layout->td('<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
-        
+
         $layout->output('</tr><tr>');
 
-        
+
         $layout->td('<hr>','colspan="2"');
         $layout->output('</tr><tr>');
         $layout->td(text('activity').': ');
@@ -335,8 +324,8 @@
         $layout->td(text("lookbackperiod").': ');
         $output = '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="33%">';
         $output .= '<select name="startperiod" onchange="setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").'); document.entryform.endperiod.value = 0; setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").');">
-                        <option value="0" selected>---</option> 
-                        <option value="1">1 '.strtolower(text("week")).'</option> 
+                        <option value="0" selected>---</option>
+                        <option value="1">1 '.strtolower(text("week")).'</option>
                         <option value="2">2 '.strtolower(text("weeks")).'</option>
                         <option value="3">3 '.strtolower(text("weeks")).'</option>
                         <option value="4">4 '.strtolower(text("weeks")).'</option>
@@ -348,8 +337,8 @@
 
         $output .= '<td width="34%" align="center">&nbsp;</td>';
         $output .= '<td width="33%" align="right"><select name="endperiod" onchange="setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").'); document.entryform.startperiod.value = 0; setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").');">
-                        <option value="0" selected>---</option> 
-                        <option value="1">1 '.strtolower(text("week")).'</option> 
+                        <option value="0" selected>---</option>
+                        <option value="1">1 '.strtolower(text("week")).'</option>
                         <option value="2">2 '.strtolower(text("weeks")).'</option>
                         <option value="3">3 '.strtolower(text("weeks")).'</option>
                         <option value="4">4 '.strtolower(text("weeks")).'</option>
@@ -471,7 +460,7 @@
       //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
       if($department_name && $department_name != "all") $filter.=" AND userid.department='".escapeSQL($department_name)."'";
       if($functionlevelswitch && $functionlevelswitch != "all") $filter.=" AND userid.functionlevel='$functionlevelswitch'";
-      
+
       // employee table is not yet added to the query. Force that by adding a manytoonerel,
       // so we display a users name.
       $hoursnode->add(new atkManyToOneRelation("userid", "employee.employee"));
@@ -497,7 +486,7 @@
       {
         if ($userid!="all") $filter.= " AND hours.userid ='$userid' ";
       }
-      
+
       $orderbystatement = array();
       if ($orderby)
       {
@@ -507,16 +496,14 @@
             $orderbystatement[] = $itsOrderby . " " . $orderdirection[$key];
         }
       }
-      $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "");
+
+      $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
 
       if (moduleExists("billing"))
       {
-        $hoursnode->add(new fakeAttrib("rate"));
-        $hoursnode->add(new fakeAttrib("costs"));
-
-        $this->_addRateAndCosts($data);
+         // todo, add columns with rate and costs (are stored flat in the table, no reason to perform calculations)
       }
-        
+
       if ($outputType=="0")
       {
         $layout->ui_bottom();
@@ -530,7 +517,8 @@
           $actions = $hoursnode->defaultActions("list");
         }
 
-        $layout->output($hoursnode->normalRecordList($data, $actions, RL_EXT_SORT, $suppress));
+        $rl = &atknew("atk.recordlist.atkrecordlist");
+        $layout->output($rl->render($hoursnode, $data, $actions, RL_EXT_SORT, $suppress));
         $layout->output('<br>'.(atkLevel()>0?atkButton('<< '.text("back"), "", SESSION_BACK)."<br>":"").'<br>');
 
         $layout->ui_bottom();
@@ -538,7 +526,8 @@
 
       if ($outputType=="1")
       {
-        $layout->output($hoursnode->specialRecordList($data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
+        $rl = &atknew("atk.recordlist.atkcustomrecordlist");
+        $layout->output($rl->render($hoursnode, $data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
       }
       if ($outputType=="2")
       {
@@ -546,384 +535,7 @@
         $hoursnode->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
       }
     }
-    
-    /**
-     * Gets the rates for the current timeregistration item
-     * @param array    $timereg         The data of the timeregistration
-     * @return array                    The rates associated with that timeregistration
-     */
-    function _getRatesPerTimereg($timereg)
-    {
-      global $g_sessionManager;
-      static $phase_project= array();
-      
-      $organizationarr = decodeKeyValuePair($this->m_postvars["organizationid"]);
-      $organizationid =  $organizationarr["organization.id"];
-      $ratetype =        $g_sessionManager->pageVar("ratetype");
 
-      if (!$phase_project[$timereg["phaseid"]["phaseid"]])
-      {
-        $db = &atkGetDb();
-        $projectid = $db->getrows("SELECT projectid
-                        FROM phase 
-                        WHERE phase.id = '".$timereg["phaseid"]["phaseid"]."'");
-        $phase_project[$timereg["phaseid"]["phaseid"]] = $projectid[0]["projectid"];
-      }
-
-      if (!atkconfig("use_duration", true))
-      {
-        $duration = $timereg["time"];
-        convertDurationToHours($timereg);
-        $timereg["time"] = $duration;
-      }
-
-      $rates = $this->_getRate($timereg['userid']['id'], $timereg['activitydate']['year'].$timereg['activitydate']['month'],
-      $timereg['activityid'],   $phase_project[$timereg['phaseid']['phaseid']],
-      $organizationid,          $ratetype, $timereg["phaseid"]["phaseid"]);
-
-      return $rates;
-    }
-    
-    function _addRateAndCosts(&$data)
-    {
-      global $g_sessionManager;
-      
-      $timeregs = array();
-      $counter = 0;
-      
-      foreach ($data as $key => $timereg)
-      {
-        $oldtime = $timereg["time"];
-        convertDurationToHours($timereg);
-        $timereg["time"] = $oldtime;
-        
-        $rateused = false;
-        $timereg["rate"] = $this->_getRatesPerTimereg($timereg);
-       
-    		foreach ($timereg["rate"] as $rate)
-    		{
-    		  if (!$rateused) $rateused = $this->_addRateAndCostsPerRate($timeregs, $timereg, $rate, $counter);
-    		}
-    		
-    		if (!$rateused && $timereg["starttime"]!==$timereg["endtime"])
-    		{
-    		  if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		    $counter++;
-    		  $timereg["rate"]=0;
-    		  $timereg["costs"]=0; 
-    		  $timeregs[$counter]=$timereg;
-    		}
-      }
-      $data = $timeregs;
-    }
-
-    function _addRateAndCostsPerRate(&$timeregs,$timereg, $rate, &$counter)
-    {
-//      atkdebug("<h1>situation 1 if: ".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"].">=".$rate["starttime"]." && ".$timereg["endtime"]["hours"].":".$timereg["endtime"]["minutes"].":".$timereg["endtime"]["seconds"]."<=".$rate["endtime"]."</h1>");
-//    	atkdebug("<h1>situation 2 if: ".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"]."<=".$rate["starttime"]." && ".$timereg["endtime"]["hours"].":".$timereg["endtime"]["minutes"].":".$timereg["endtime"]["seconds"].">=".$rate["endtime"]."</h1>");
-//    	atkdebug("<h1>situation 3 if: (".$timereg["endtime"]["hours"].":".$timereg["endtime"]["minutes"].":".$timereg["endtime"]["seconds"]."<".$rate["endtime"]." && ".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"].">".$rate["endtime"].")
-//    	&& ".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"].">".$rate["starttime"]."</h1>");
-//    	atkdebug("<h1>situation 4 if: (".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"].">".$rate["starttime"]." && ".$timereg["endtime"]["hours"].":".$timereg["endtime"]["minutes"].":".$timereg["endtime"]["seconds"]."<".$rate["endtime"].")
-//    	&& ".$timereg["starttime"]["hours"].":".$timereg["starttime"]["minutes"].":".$timereg["starttime"]["seconds"].">".$rate["starttime"]."</h1>");      
-//    	atk_var_dump($timereg, "<h1>timereg</h1>");
-    	$this->_makeTimeStamps($rate,$timereg["starttime"],$timereg["endtime"], $timereg["activitydate"]);
-    	$this->_makeTimeStamps($timereg["rate"],$timereg["starttime"],$timereg["endtime"], $timereg["activitydate"]);
-    	
-//    	atk_var_dump($timereg, "<h1>timereg</h1>");
-//    	atkdebug("<h1>timereg[starttime]: ".$timereg["starttime"]."</h1>");
-//    	atkdebug("<h1>timereg[endtime]: ".$timereg["endtime"]."</h1>");
-//    	atkdebug("<h1>rate[starttime]: ".$rate["starttime"]."</h1>");
-//    	atkdebug("<h1>rate[endtime]: ".$rate["endtime"]."</h1>");
-//    	atkdebug("<h1>situation 1 if: ".$timereg["starttime"].">=".$rate["starttime"]." && ".$timereg["endtime"]."<=".$rate["endtime"]."</h1>");
-//    	atkdebug("<h1>situation 2 if: ".$timereg["starttime"]."<=".$rate["starttime"]." && ".$timereg["endtime"].">=".$rate["endtime"]."</h1>");
-//    	atkdebug("<h1>situation 3 if: (".$timereg["starttime"]."<".$rate["endtime"]." && ".$timereg["starttime"].">".$rate["starttime"].")".
-//    	"&& ".$timereg["starttime"].">".$rate["starttime"]."</h1>");
-//    	atkdebug("<h1>situation 4 if: (".$timereg["starttime"].">".$rate["starttime"]." && ".$timereg["endtime"].">".$rate["starttime"].")
-//    	&& ".$timereg["starttime"].">".$rate["starttime"]."</h1>");
-    	
-    	if ($timeregs[$counter]["starttime"] && $timeregs[$counter]["id"]) $counter++;
-//    	atkdebug("<h1>counter: $counter</h1>");
-//    	atk_var_dump($timereg, "<h1>called with timereg for counter $counter</h1>");
-//      atk_var_dump($rate, "<h1>called with rate for counter $counter</h1>");
-    	
-    	// We have 5 situations
-    	if ($timereg['starttime']==$timereg['endtime'])
-    	{
-    	  // Plain ridiculous, we don't add this
-    	}
-    	// 1. The timeregistration completely falls in this rate
-    	else if ($timereg["starttime"]>=$rate["starttime"] && $timereg["endtime"]<=$rate["endtime"])
-    	{
-//    		atkdebug("<H1>situation 1</H1>");
-    		$timeregs[$counter] = $timereg;
-    		$this->_addTimeRateAndCosts($timeregs[$counter], $rate["rate"]);
-    		return true;
-    	}
-
-    	// 2. The timeregistration encompasses this rate
-    	elseif ($timereg["starttime"]<=$rate["starttime"] && $timereg["endtime"]>=$rate["endtime"])
-    	{
-//    		atkdebug("<H1>situation 2</H1>");
-    		
-    		$beforerate = $timereg;
-    		$beforerate["endtime"]= $rate["starttime"];
-    		$beforerate["time"] = ($beforerate["endtime"]-$beforerate["starttime"])/60;
-    		
-    		foreach ($timereg["rate"] as $subrate)
-    		{
-    		  if (!$rateused) $rateused = $this->_addRateAndCostsPerRate(&$timeregs, $beforerate, $subrate, $counter);
-    		}
-    		if (!$rateused && $beforerate["starttime"]!==$beforerate["endtime"])
-    		{
-    		  if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		    $counter++;
-    		  $this->_addTimeRateAndCosts($beforerate, 0);
-    		  $timeregs[$counter]=$beforerate;
-    		}
-    		$rateused=false;
-        
-    		if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		  $counter++;
-    		
-    		$timeregs[$counter] = $timereg;
-    		$timeregs[$counter]["starttime"] = $rate["starttime"];
-    		$timeregs[$counter]["endtime"] = $rate["endtime"];
-    		
-    		$this->_addTimeRateAndCosts($timeregs[$counter], $rate["rate"]);
-    		
-    		$afterrate = $timereg;
-    		$afterrate["starttime"]= $rate["endtime"];
-    		$afterrate["time"] = ($afterrate["endtime"]-$afterrate["starttime"])/60;
-    		
-    		foreach ($timereg["rate"] as $subrate)
-    		{
-    		  if (!$rateused) $rateused = $this->_addRateAndCostsPerRate(&$timeregs, $afterrate, $subrate, $counter);
-    		}
-    		if (!$rateused && $afterrate["starttime"]!==$afterrate["endtime"])
-    		{
-    		  if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		    $counter++;
-    		  $this->_addTimeRateAndCosts($afterrate, 0);
-    		  $timeregs[$counter]=$afterrate;
-    		}
-    		return true;
-    	}
-
-    	// 3. The end of the rate falls in the timeregistration but not the start
-    	elseif (($timereg["starttime"]<$rate["endtime"] && $timereg["starttime"]>$rate["starttime"])
-    	&& $timereg["starttime"]>$rate["starttime"])
-    	{
-//    		atkdebug("<H1>situation 3</H1>");
-    		
-    		$timeregs[$counter] = $timereg;
-    		$timeregs[$counter]["endtime"] = $rate["endtime"];
-    		
-    		$this->_addTimeRateAndCosts($timeregs[$counter], $rate["rate"]);
-    		
-    		$afterrate = $timereg;
-    		$afterrate["starttime"]= $rate["endtime"];
-    		$afterrate["time"] = ($afterrate["endtime"]-$afterrate["starttime"])/60;
-    		
-    		foreach ($timereg["rate"] as $subrate)
-    		{
-    		  if (!$rateused) $rateused = $this->_addRateAndCostsPerRate(&$timeregs, $afterrate, $subrate, $counter);
-    		}
-    		if (!$rateused && $afterrate["starttime"]!==$afterrate["endtime"])
-    		{
-    		  if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		    $counter++;
-    		  $this->_addTimeRateAndCosts($afterrate, 0);
-    		  $timeregs[$counter]=$afterrate;
-    		}
-    		return true;
-    	}
-
-    	// 4. The start of the rate falls in the timeregistration but not the end
-    	elseif (($timereg["starttime"]>$rate["starttime"] && $timereg["starttime"]<$rate["endtime"])
-    	&& $timereg["endtime"]>$rate["endtime"])
-    	{
-//    	  atkdebug("<H1>situation 4</H1>");
-    	  $beforerate = $timereg;
-    		$beforerate["endtime"]= $rate["starttime"];
-    		$beforerate["time"] = ($beforerate["endtime"]-$beforerate["starttime"])/60;
-    		
-    		foreach ($timereg["rate"] as $subrate)
-    		{
-    		  if (!$rateused) $rateused = $this->_addRateAndCostsPerRate(&$timeregs, $beforerate, $subrate, $counter);
-    		}
-    		if (!$rateused && $beforerate["starttime"]!==$beforerate["endtime"])
-    		{
-    		  if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		    $counter++;
-    		  $this->_addTimeRateAndCosts($beforerate, 0);
-    		  $timeregs[$counter]=$beforerate;
-    		}
-    	  $rateused=false;
-    		if ($timeregs[$counter]['starttime'] && $timeregs[$counter]['id'])
-    		  $counter++;
-    		
-    		$timeregs[$counter] = $timereg;
-    		$timeregs[$counter]["starttime"] = $rate["starttime"];
-    		foreach ($timereg["rate"] as $rate)
-    		{
-    		  $this->_addTimeRateAndCosts($timeregs[$counter], $rate["rate"]);
-    		}
-    		return true;
-    	}
-
-    	// And that should be it
-    	else
-    	{
-//    		atk_var_dump($timereg, "timereg for ignored rate");
-//    		atk_var_dump($rate, "rate for ignored rate");
-    	}
-    }
-    
-    function _addTimeRateAndCosts(&$timereg, $rate)
-    {
-    	$timereg["time"] = ($timereg["endtime"]-$timereg["starttime"])/60;
-    	$timereg["rate"] = $rate;
-    	$timereg["costs"]= $rate*($timereg["time"]/60);
-    	
-    	$this->_makeTime($timereg["starttime"], $timereg["endtime"], $timereg["activitydate"]);
-    }
-
-   /**
-    * Get user level
-    * @param string $userid User-id
-    * @return int Level
-    */
-    function _getLevel($userid)
-    {
-      $users = $this->_getUsers();      
-      return $users[$userid]["level"];
-    }
-    
-    
-    /**
-    * Get rates
-    * @param string $userid           User-id
-    * @param string $month            Month
-    * @param int    $activityid       Activity-id
-    * @param int    $projectid        Project-id
-    * @param int    $organization_id  Organization-id
-    * @param int    $ratetype         The type of the rate
-    * @return array User Rates
-    */
-    function _getRate($userid, $month, $activityid, $projectid, $organization_id, $ratetype=0, $phaseid=-1)
-    {     
-      static $rates = array();
-      $currentrates = &$rates[$userid][$month][$activityid][$projectid][$organization_id][$ratetype][$phaseid][0];
-      
-      if (!$currentrates)
-      {      	
-        $raterecs = $this->_getRatesFromDb($userid, $month, $activityid, $projectid, $organization_id, $ratetype, $phaseid);
-        $currentrates = $raterecs;
-      }
-      
-      return $currentrates;
-    }
-    
-    function _getRatesFromDb($userid, $month, $activityid, $projectid, $organization_id, $ratetype=0, $phaseid=-1)
-    {
-      $db = &atkGetDb();
-      $date = $month."01";
-        
-      if (atkconfig("use_duration", true)) $fields = "rate";
-      else $fields = "rate, starttime, endtime";
-              
-      $raterecs = $db->getrows("SELECT $fields FROM 
-                                      billing_rate
-                                    WHERE
-                                           (startdate IS NULL OR '$date' > date_format(startdate, '%Y%m%d') OR '$date' = date_format(startdate, '%Y%m%d'))
-                                       AND (enddate IS NULL OR '$date' < date_format(enddate, '%Y%m%d') OR '$date' = date_format(enddate, '%Y%m%d'))
-                                       AND (user_id IS NULL OR user_id=0 OR user_id = '$userid') ".($activityid!=''?
-                                       "AND (activity_id IS NULL OR activity_id = 0 OR activity_id = '$activityid')":"")."
-                                       AND (project_id IS NULL OR project_id=0 OR project_id='$projectid')
-                                       AND (customer_id IS NULL OR customer_id=0 OR customer_id='$organization_id')
-                                       AND (phaseid IS NULL".(($phaseid!==-1)?" OR phaseid='$phaseid'":'').")
-                                       AND ratetype='$ratetype'
-                                       AND functionlevel_id = 0
-                                       
-                                    ORDER BY priority DESC");
-                                       
-      if(empty($raterecs) )
-      {        
-        $PersonFunctionLevel = $db->getrows("SELECT functionlevel  from person where person.id = '".
-      										$userid . "'");
-        $PersonFunctionLevel = $PersonFunctionLevel[0]["functionlevel"];
-      
-      	// no personal rate so get the rate for the functionlevel
-      	$raterecs = $db->getrows("SELECT $fields FROM 
-                                      billing_rate
-                                    WHERE
-        								  (startdate IS NULL OR '$date' > date_format(startdate, '%Y%m%d' OR '$date' = date_format(startdate, '%Y%m%d')))
-                                       AND (enddate IS NULL OR '$date' < date_format(enddate, '%Y%m%d') OR '$date' = date_format(enddate, '%Y%m%d'))
-                                       AND (user_id IS NULL OR user_id=0 OR user_id = '$userid') ".($activityid!=''?
-                                       "AND (activity_id IS NULL OR activity_id = 0 OR activity_id = '$activityid')":"")."
-                                       AND (project_id IS NULL OR project_id=0 OR project_id='$projectid')
-                                       AND (customer_id IS NULL OR customer_id=0 OR customer_id='$organization_id')
-                                       AND (phaseid IS NULL".(($phaseid!==-1)?" OR phaseid=0 OR phaseid='$phaseid'":'').")
-                                       AND ratetype='$ratetype'
-                                       AND functionlevel_id ='$PersonFunctionLevel'
-                                       
-                                    ORDER BY priority DESC");     	
-      	
-      }
-                                  atk_var_dump($raterecs, "<h1>returning</h1>");     
-      return $raterecs;
-    }
-    
-    function _makeTimeStamps(&$rates, &$starttime, &$endtime, $activitydate=array("year"=>2005, "month"=>01, "day"=>01))
-    {
-      if ($starttime["hours"]!==null)
-      {
-        $starttime = mktime($starttime["hours"], $starttime["minutes"],$starttime["seconds"],"1","1","1970");
-        $endtime =   mktime($endtime["hours"], $endtime["minutes"],$endtime["seconds"],"1","1","1970");
-      }
-      if (!$rates['starttime'])
-      {
-        foreach ($rates as $ratekey=>$rate)
-        {
-          $explodedtime = explode(":", $rate['starttime']);
-          if ($explodedtime[1])
-          {
-            $rates[$ratekey]['starttime'] = mktime($explodedtime[0], $explodedtime[1],$explodedtime[2],"1","1","1970");
-
-            $explodedtime = explode(":", $rate['endtime']);
-            $rates[$ratekey]['endtime'] =   mktime($explodedtime[0], $explodedtime[1],$explodedtime[2],"1","1","1970");
-          }
-        }
-      }
-      else
-      {
-        $explodedtime = explode(":", $rates['starttime']);
-        if ($explodedtime[1])
-        {
-          $rates['starttime'] = mktime($explodedtime[0], $explodedtime[1],$explodedtime[2],"1","1","1970");
-
-          $explodedtime = explode(":", $rates['endtime']);
-          $rates['endtime'] =   mktime($explodedtime[0], $explodedtime[1],$explodedtime[2],"1","1","1970");
-        }
-      }
-    }
-    
-    function _makeTime(&$starttime, &$endtime)
-    {
-      $oldstarttime = $starttime;
-      $oldendtime = $endtime;
-      
-      $starttime = array();
-    	$starttime['hours'] 	= strftime('%H',$oldstarttime);
-    	$starttime['minutes'] = strftime('%M',$oldstarttime);
-    	$starttime['seconds'] = strftime('%S',$oldstarttime);
-    	
-      $endtime = array();
-    	$endtime['hours'] 	= strftime('%H',$oldendtime);
-    	$endtime['minutes'] = strftime('%M',$oldendtime);
-    	$endtime['seconds'] = strftime('%S',$oldendtime);
-    }
-    
     function get_activities($act_id)
     {
       $db = &atkGetDb();
@@ -942,22 +554,22 @@
       }
       return $activity_code;
     }
-    
+
     function get_departments($depname)
     {
       $db = &atkGetDb();
-      
+
       $sql = "SELECT name
               FROM employee_department
               ORDER BY name";
-      
+
       $records = $db->getrows($sql);
       $depcode = "<OPTION VALUE='all'>".text('alldepartments')."</OPTION>";
       foreach ($records as $onedep)
       {
         $sel = $onedep['name'] == $depname ? " SELECTED" : "";
         $depcode .= "<OPTION VALUE='".$onedep['name']."'$sel>".$onedep['name']."</OPTION>";
-      } 
+      }
       return $depcode;
     }
 
@@ -999,7 +611,7 @@
       }
       return $role_code;
     }
-    
+
     function get_functionlevels($selected)
     {
       $db = &atkGetDb();
@@ -1007,7 +619,7 @@
                 FROM functionlevel
                 LEFT JOIN person ON (person.functionlevel = functionlevel.id)";
       $records = $db->getrows($sql);
-      
+
       $sel = !$selected || $selected == "all" ? " selected" : "";
       $func_code = '<OPTION VALUE="all"'.$sel.'>'.text("allfunctionlevels").'</OPTION>';
       foreach($records as $record)
@@ -1017,7 +629,7 @@
       }
       return $func_code;
     }
-    
+
     /**
      * adds a row with 'or' in it
      * @param layout object the layout object we have to hook ourselves in to
@@ -1029,7 +641,7 @@
       $layout->td(text('or'),'colspan="2"');
       $layout->output('</tr>');
     }
-    
+
     /**
      * adds all required hidden fields to the form
      * @param layout object the layout object we have to hook ourselves in to
@@ -1038,7 +650,7 @@
     function _addHiddenFields(&$layout)
     {
       $layout->output('<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">');
-      $layout->output('<input type="hidden" name="atkaction" value="report">'); 
+      $layout->output('<input type="hidden" name="atkaction" value="report">');
     }
   }
 
