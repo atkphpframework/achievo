@@ -463,6 +463,7 @@
   "title_reports" => "Reports",
   "title_setup_setup" => "Achievo Setup",
   "title_timereg" => "Time registration",
+  "to" => "To",
   "today" => "Today",
   "today_and_appointments" => "Today & appointments",
   "todo_assignedto" => "Assigned to",
