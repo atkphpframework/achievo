@@ -63,6 +63,8 @@
     {
       global $g_user, $g_sessionManager;
 
+      $this->addStyle("style.css");
+
       // Manual sort config
       $orderby =            $this->m_postvars["orderby"];
       $orderdirection =     $this->m_postvars["orderdirection"];
@@ -207,7 +209,6 @@
       {
         atkimport("atk.layout");
         $layout = &layout::getInstance();
-        $this->addStyle("style.css");
 
         $layout->initGUI();
         $layout->ui_top(text('parameters', $this->m_type, $this->m_module));
@@ -352,16 +353,6 @@
         $layout->output('</tr><tr>');
         $layout->td('<hr>','colspan="2"');
         $layout->output('</tr><tr>');
-
-        if (moduleExists("billing"))
-        {
-          $rateattr = new atkListAttribute("ratetype", array(text("salary"), text("commercial")),array(0,1), AF_OBLIGATORY);
-          $layout->td(text('ratetype').': ');
-          $layout->td($rateattr->edit($dummyrec));
-          $layout->output('</tr><tr>');
-          $layout->td('<hr>','colspan="2"');
-          $layout->output('</tr><tr>');
-        }
 
         $remarkattr = new atkAttribute("remark", 0, 80);
         $layout->td(text('remark').': ');
