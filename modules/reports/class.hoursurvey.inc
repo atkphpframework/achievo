@@ -205,11 +205,11 @@
       // workarounds like these should not be necessary.
       $hoursnode->m_attribList["activitydate"]->m_flags = ($hoursnode->m_attribList["activitydate"]->m_flags&(~AF_HIDE_LIST));
 
+      atkimport("atk.layout");
+      $layout = &layout::getInstance();
+      
       if ($outputType==0)
       {
-        atkimport("atk.layout");
-        $layout = &layout::getInstance();
-
         $layout->initGUI();
         $layout->ui_top(text('parameters', $this->m_type, $this->m_module));
 
@@ -523,7 +523,9 @@
       if ($outputType=="2")
       {
         // specail RecordList can export to file
-        $hoursnode->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
+        //$hoursnode->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
+        $rl = &atknew("atk.recordlist.atkcustomrecordlist");
+        $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress);
       }
     }
 
