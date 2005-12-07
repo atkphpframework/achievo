@@ -23,20 +23,25 @@ class contracts extends atkNode
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE, 20));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-    $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));
+    
+    $attr = new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST);    
+//    $type 	= "document.getElementById('billing_type')";
+//    $ar_period = "document.getElementById('ar_billing_period')";
+//    $period = "document.getElementById('billing_period')";
+//    $attr->addOnChangeHandler("$ar_period.style.visibility=($type.options[$type.selectedIndex].value == 'period' ? 'visible' : 'hidden'); $period.selectedIndex = ($ar_period.style.visibility=='hidden') ? 0 : $period.selectedIndex;");
+    $this->add($attr);
+    
+    $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST|AF_LIST_NO_NULL_ITEM));
     $this->add(new atkNumberAttribute("period_price",AF_OBLIGATORY|AF_HIDE_LIST, 13, 5));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
-
+		    
+    //@todo: remove HiddenAttribute, use the name of a button to check if it has been clicked   
+    $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));        
     
-    //@todo: remove HiddenAttribute, use the name of a button to check if it has been clicked
-    //example : $this->m_postvars["atkselector"]
-    $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));    
-    //$this->add(new atkDummyAttribute("postprojectaction","<input type=\"hidden\" id=\"postprojectaction\" >",AF_HIDE));
-
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
   }
@@ -75,9 +80,7 @@ class contracts extends atkNode
       
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_link_existing_project","organization","contracts").'">';
-      $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';
-      
-      
+      $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';            
     }
 
     return $result;
