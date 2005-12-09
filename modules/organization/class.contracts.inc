@@ -35,12 +35,15 @@ class contracts extends atkNode
     $this->add(new atkNumberAttribute("period_price",AF_OBLIGATORY|AF_HIDE_LIST, 13, 5));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
+    $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
 		    
     //@todo: remove HiddenAttribute, use the name of a button to check if it has been clicked   
     $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));        
+    
     
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
@@ -59,6 +62,14 @@ class contracts extends atkNode
 		
     if ($mode=="add")
     {
+    	// if atklevel is 0 or less, we are at the bottom of the session stack,
+      // which means that 'saveandclose' doesn't close anyway, so we leave out
+      // the 'saveandclose' button. Unless, a feedback screen is configured.
+      if (atkLevel() >0 || hasFlag($this->m_feedback["update"], ACTION_SUCCESS))
+      {
+        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" '.$onclickstringnone.'value="'.text('saveandclose').'">';
+      }
+    	
       $result[] = '<input type="submit" class="btn_save" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_save" '.$onclickstringselect.' value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
       if ($this->m_action=="add")
