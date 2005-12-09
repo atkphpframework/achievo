@@ -114,9 +114,9 @@ class organization extends atkNode
     return atktext("none");
   }
 
-   function action_vcard(&$handler)
-  {
-    return $this->createVCard($this->m_postvars["id"]);
+  function action_vcard(&$handler)
+  {  	
+    return $this->createVCard($this->m_postvars["id"]);    
   }
 
   function createVCard($id)
@@ -138,9 +138,13 @@ class organization extends atkNode
     $v->setEmail($record["email"]);
     $v->setURL($record["website"]);
     $v->setNote($record["remark"]);
-
+		
     $output = $v->getVCard();
-    $filename = $v->getFileName();
+    
+    //$filename = $v->getFileName();        
+    //Remove spaces that would break the vcard filename
+    $name = str_replace(" ", "_", $record['name'] );    
+    $filename = $name.".vcf";
 
     Header("Content-Disposition: attachment; filename=$filename");
     Header("Content-Length: ".strlen($output));
