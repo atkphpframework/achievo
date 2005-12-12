@@ -9,8 +9,6 @@ useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkfuzzysearchattribute");
 
-useattrib("organization.hiddenattribute");
-
 class contracts extends atkNode
 {
   var $m_archive;
