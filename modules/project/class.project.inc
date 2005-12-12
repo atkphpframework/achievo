@@ -37,7 +37,10 @@
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.
-      $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
+      if (!$_SERVER['PWD'])
+        $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
+      else
+        $reportnodetype = "";
       if ($ATK_VARS["atknodetype"]=="project.project"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit","search", "view")) || $reportnodetype=="hoursurvey")
       {
         $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE_ADD|AF_HIDE_LIST, 15));
@@ -507,8 +510,8 @@
       {
         $this->addFilter("project.status<>'active'");
       }
-      
-      
+
+
       // Access control
       if (!$this->allowed("any_project"))
       {
@@ -518,7 +521,7 @@
         $attr = &$this->getAttribute("coordinator");
         $attr->addFlag(AF_HIDE_LIST);
       }
-      
+
       return $handler->action_admin();
     }
 
