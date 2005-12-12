@@ -66,7 +66,8 @@ class employee extends person
     $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST|AF_HIDE_ADD|AF_FORCE_LOAD));
     if ($ATK_VARS["atknodetype"]=="employee.employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
     {
-      $this->addFilter("person.status","active");
+      $statusfilter = ($this->getView() == "active") ? "active" : "nonactive";
+      $this->addFilter("person.status",$statusfilter);
     }
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
 
