@@ -92,7 +92,7 @@ class contracts extends atkNode
   
   function postAdd($record)
   {
-  	atk_var_dump($this->m_postvars,"<h1>POSTVARS</h1>");
+  	//atk_var_dump($this->m_postvars,"<h1>POSTVARS</h1>");
   	$this->HandleRedirect($record); 		
  		return true; 		
   }
