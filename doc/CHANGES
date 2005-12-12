@@ -6,6 +6,13 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.2RC1
 ---------------------------
+* Projects can now be selected from a list to add to contract. [Dennis]
++ Added cronjob for checking expiring dates of usercontracts [Dennis]
+* Fixed several timereg bugs [Dennis]
+* Fixed reports printer-friendly view and export to CSV file. [Dennis]
++ Added attributes (billing_type, aftercalculation and priceperhour) 
+	in organization.contracts [Dennis]
+* Made some fields obligatory and some non-obligarory [Dennis]
 + Added installation support for PostgreSQL. [Peter]
 + Now possible to make the 'contact' field obligatory by changing 
   a var in config.inc.php. [Harrie]
@@ -46,6 +53,7 @@ Changes in Achievo 1.2RC1
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
+* Updated Dutch language file [Dennis]
 
 Changes in Achievo 1.1.0
 ------------------------
