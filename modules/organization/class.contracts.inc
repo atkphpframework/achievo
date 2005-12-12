@@ -40,25 +40,16 @@ class contracts extends atkNode
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
-		    
-    //@todo: remove HiddenAttribute, use the name of a button to check if it has been clicked   
-    $this->add(new atkHiddenAttribute("postprojectaction","",AF_HIDE));        
-    
     
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
   }
   
   
-  //@todo use atkButton 
-  //$result[] = atkButton("knipje", dispath...
+  //@todo use atkButton   
   function getFormButtons($mode, $record)
   {
 		$result = array();
-    
-		$onclickstringnew = "onclick=\"document.getElementById('postprojectaction').value='add';\"";
-		$onclickstringselect = "onclick=\"document.getElementById('postprojectaction').value='select';\"";
-		$onclickstringnone = "onclick=\"document.getElementById('postprojectaction').value='';\"";
 		
     if ($mode=="add")
     {
@@ -93,14 +84,15 @@ class contracts extends atkNode
       $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_link_existing_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';            
     }
-
+    
     return $result;
   }
   
   
   
   function postAdd($record)
-  {  	  	
+  {
+  	atk_var_dump($this->m_postvars,"<h1>POSTVARS</h1>");
   	$this->HandleRedirect($record); 		
  		return true; 		
   }
@@ -113,9 +105,14 @@ class contracts extends atkNode
  	
  	
  	function HandleRedirect($record)
- 	{		
-		$action = $record["postprojectaction"];
-		
+ 	{	
+ 		$action = "";
+ 		
+ 		if($this->m_postvars["atknoclose"] != "")	
+ 		{ 			
+			$action = ($this->m_postvars["atknoclose"] == "Save and create new project") ? "add" : "select";
+ 		}
+ 				
  		if($action != "")
  		{
  			$return_url = dispatch_url("organization.contracts", "edit", array("projectid"=>"[id]", "atklevel"=>atkLevel()));
@@ -123,8 +120,6 @@ class contracts extends atkNode
  			$this->redirect(session_url($target_url,SESSION_NESTED));
  		}
  	}
- 	
- 	
  	
  	
  	
