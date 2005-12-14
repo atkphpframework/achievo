@@ -116,7 +116,10 @@ class person extends atkNode
     $v->setNote($record["remark"]);
 
     $output = $v->getVCard();
-    $filename = $v->getFileName();
+    //$filename = $v->getFileName();        
+    //Remove spaces that would break the vcard filename
+    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );    
+    $filename = $name.".vcf";
 
     Header("Content-Disposition: attachment; filename=$filename");
     Header("Content-Length: ".strlen($output));
