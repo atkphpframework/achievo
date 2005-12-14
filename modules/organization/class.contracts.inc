@@ -7,7 +7,7 @@ useattrib("atkdateattribute");
 useattrib("atktextattribute");
 useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
-useattrib("atkfuzzysearchattribute");
+useattrib("atkboolattribute");
 
 class contracts extends atkNode
 {
@@ -39,6 +39,15 @@ class contracts extends atkNode
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST|AF_READONLY));
     
+    //@todo translate all these attrs with translation tool, using module 'core'    
+    $this->add(new atkDateAttribute("contract_date", "F d Y", "d F Y", 0, 0, AF_HIDE_LIST | AF_HIDE_ADD));        
+    $this->add(new atkDummyAttribute("extrefnumhint",atktext("extrefnumhinttext","organization","contracts"), AF_HIDE_LIST | AF_HIDE_ADD));
+    $this->add(new atkAttribute("extrefnum", AF_HIDE_LIST | AF_HIDE_ADD));
+    $this->add(new atkNumberAttribute("price", AF_HIDE_LIST | AF_HIDE_ADD, 10, 2));
+    $this->add(new atkListAttribute("pricepayed", array("no","yes"), array(0,1), AF_HIDE_LIST | AF_HIDE_ADD | AF_LIST_NO_NULL_ITEM));
+    $this->add(new atkManyToOneRelation("editedby", "employee.employee", AF_HIDE_LIST | AF_HIDE_ADD | AF_LIST_NO_NULL_ITEM ));
+    $this->add(new atkTextAttribute("comment", TEXT_LARGE, AF_HIDE_LIST | AF_HIDE_ADD));
+    
     $this->setTable("contract","contract");
     $this->setOrder("startdate");
   }
@@ -56,11 +65,12 @@ class contracts extends atkNode
       // the 'saveandclose' button. Unless, a feedback screen is configured.
       if (atkLevel() >0 || hasFlag($this->m_feedback["update"], ACTION_SUCCESS))
       {
-        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" '.$onclickstringnone.'value="'.text('saveandclose').'">';
+        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" value="'.text('saveandclose').'">';
       }
     	
-      $result[] = '<input type="submit" class="btn_save" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
-      $result[] = '<input type="submit" class="btn_save" '.$onclickstringselect.' value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
+      //$result[] = '<input type="submit" class="btn_save" value="'.atktext("save_and_create_new_project","organization","contracts").'">';
+      //$result[] = '<input type="submit" class="btn_save" value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" value="'.atktext("save","organization","contracts").'">';
       if ($this->m_action=="add")
       {
         // if action is admin, we don't show the cancelbutton..
@@ -75,24 +85,15 @@ class contracts extends atkNode
       // the 'saveandclose' button. Unless, a feedback screen is configured.
       if (atkLevel() >0 || hasFlag($this->m_feedback["update"], ACTION_SUCCESS))
       {
-        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" '.$onclickstringnone.'value="'.text('saveandclose').'">';
+        $result[] = '<input type="submit" class="btn_save" name="atksaveandclose" value="'.text('saveandclose').'">';
       }
       
-      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringnew.' value="'.atktext("save_and_create_new_project","organization","contracts").'">';
-      $result[] = '<input type="submit" class="btn_save" name="atknoclose" '.$onclickstringselect.' value="'.atktext("save_and_link_existing_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" value="'.atktext("save_and_create_new_project","organization","contracts").'">';
+      $result[] = '<input type="submit" class="btn_save" name="atknoclose" value="'.atktext("save_and_select_existing_project","organization","contracts").'">';
       $result[] = '<input type="submit" class="btn_cancel" name="atkcancel" value="'.atktext("cancel","organization","contracts").'">';            
     }
     
     return $result;
-  }
-  
-  
-  
-  function postAdd($record)
-  {
-  	//atk_var_dump($this->m_postvars,"<h1>POSTVARS</h1>");
-  	$this->HandleRedirect($record); 		
- 		return true; 		
   }
   	
  	function postUpdate($record)
@@ -105,10 +106,10 @@ class contracts extends atkNode
  	function HandleRedirect($record)
  	{	
  		$action = "";
- 		
+ 	 		
  		if($this->m_postvars["atknoclose"] != "")	
  		{ 			
-			$action = ($this->m_postvars["atknoclose"] == "Save and create new project") ? "add" : "select";
+			$action = ($this->m_postvars["atknoclose"] == atktext("save_and_create_new_project", "organization", "contracts")) ? "add" : "select";
  		}
  				
  		if($action != "")
@@ -190,10 +191,12 @@ class contracts extends atkNode
 
   function initial_values()
   {
-    return array("enddate"=>array("year"=>(date("Y")+1),
-                                  "month"=>date("m"),
-                                  "day"=>date("d")));
+  	
+    return array("enddate"	=>	array("year"=>(date("Y")+1),	
+    															"month"=>date("m"),		
+    															"day"=>date("d")));
   }
+    
   
  /* function addProjects($rec, $projects)
   {
