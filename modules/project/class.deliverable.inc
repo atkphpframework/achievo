@@ -3,6 +3,7 @@
   useattrib("atkdateattribute");
   useattrib("atklistattribute");
   useattrib("atknumberattribute");
+  useattrib("atkboolattribute");
   userelation("atkmanytoonerelation");
 
   /**
@@ -24,6 +25,9 @@
       // Tracking
       $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY|AF_READONLY));
       $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_READONLY|AF_OBLIGATORY));
+
+      $this->add(new atkBoolAttribute("deadlineneared",AF_HIDE|AF_FORCE_LOAD));
+      $this->add(new atkBoolAttribute("deadlinereached",AF_HIDE|AF_FORCE_LOAD));
 
       $this->setTable("deliverable");
       $this->setOrder("duedate", "name");
