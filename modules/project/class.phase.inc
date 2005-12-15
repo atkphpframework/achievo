@@ -211,7 +211,6 @@
     {
       if($record["current_planning"]>0)
       {
-        atk_var_dump($record, 'for comparison');
         if($record["spend_hours"]>($record["current_planning"]/60))
         {
           return COLOR_ERROR;
