@@ -10,15 +10,15 @@ system.
 
 General instructions
 --------------------
-If you want to use one of the scripts, edit your crontab (crontab -e on 
+If you want to use one of the scripts, edit your crontab (crontab -e on
 most Unix systems), and add a line in the form of:
 
 0 9 * * tue   cd /var/www/achievo; /usr/bin/php runcron todo.reminder > /dev/null
 
-This will run the reminder.cron script from the todo module every tuesday 
+This will run the reminder.cron script from the todo module every Tuesday
 morning at 9 o'clock.
 
-(assuming your php binary is in /usr/bin and Achievo is installed in 
+(assuming your php binary is in /usr/bin and Achievo is installed in
 /var/www/, if this is not the case, change the values accordingly.)
 
 
@@ -28,55 +28,64 @@ Currently, the following scripts can be used from cron:
 
 * timereg.reminder
 
-   This script checks if all users have registered enough hours in the 
-   previous week. 
-   It compares the number of hours in the contract of that user with the 
-   number of hours actually booked. If the number of booked hours is not 
+   This script checks if all users have registered enough hours in the
+   previous week.
+   It compares the number of hours in the contract of that user with the
+   number of hours actually booked. If the number of booked hours is not
    enough, an email reminder is sent to that user.
 
-   Note: This script always counts the hours in the previous week from 
-   monday to sunday, regardless of the day on which you run the script. This 
-   means you can run the script multiple times a week, so people will be 
+   Note: This script always counts the hours in the previous week from
+   Monday to Sunday, regardless of the day on which you run the script. This
+   means you can run the script multiple times a week, so people will be
    reminded more than once if they keep forgetting to register their hours.
-   
+
    Suggested run frequency: once or twice a week.
-   Suggested run time: monday morning (and the second one on wednesday 
+   Suggested run time: Monday morning (and the second one on Wednesday
                        morning)
-                      
+
 * todo.reminder
- 
+
    This script sends reminders to people if they have one or more todo's
    open, that are due today, or that are overdue. A cc is sent to the owner
    of the todo.
-   If a user has more than one todo assigned, the todos are grouped in a 
+   If a user has more than one todo assigned, the todos are grouped in a
    single mail per owner, to prevent users from being spammed with lots
    of todo reminders.
-  
+
    Suggested run frequency: daily
    Suggested run time: in the morning, just before office opening time.
-  
+
 * employee.usercontracts
 
-	This script checks if there are any usercontracts are about to expire
-	in a specified amount of time. If such users are found an email is sent 
-	to one (or more) specified mailaddresses. More information in config file
-	achievo/configs/employee.inc.php
-		
-	Suggested frequency:	In mode 1: 	daily
-												In mode 2:	weekly
-	Suggested run time:		In mode 1:	daily at 12:00
-												In mode 2:	monday morning
-		
- 
+   This script checks if there are any usercontracts are about to expire
+   in a specified amount of time. If such users are found an email is sent
+   to one (or more) specified mailaddresses. More information in configuration
+   file achievo/configs/employee.inc.php
+
+   Suggested run frequency: In mode 1: daily
+                            In mode 2: weekly
+   Suggested run time: In mode 1: daily at 12:00
+                       In mode 2: Monday morning
+
+* project.deliverables:
+
+   The deliverables script checks for deliverables that have neared or
+   reached the due date. If such a deliverable is found, an e-mail is sent
+   to the project coordinator of the project to which the deliverable
+   belongs.
+
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+
 Add-on modules
 --------------
 
 Add-on modules may have their own useful cron scripts. These are usually
 located in the cron subdirectory of the module. They can be run using
-runcron, like above. 
+runcron, like above.
 
 Example: suppose you have a module 'mymodule' with a file 'dailycheck.cron'
-in its cron/ subdirectory. You can run this script by adding this to your 
+in its cron/ subdirectory. You can run this script by adding this to your
 crontab:
 
 0 9 * * *   cd /var/www/achievo; /usr/bin/php runcron mymodule.dailycheck
