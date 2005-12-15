@@ -1,0 +1,245 @@
+<?php
+  /**
+   * Deliverables reminder cronjob script
+   *
+   * @package achievo
+   * @subpackage modules
+   *
+   * @author guido <guido@ibuildings.nl>
+   *
+   * @copyright (c) 2005 Ibuildings.nl BV
+   * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
+   *
+   * @version $Revision$
+   * $Id$
+   */
+
+	/**
+	 * Send an email to the supervisor(s) that a usercontract will expire on a specific date.
+	 *
+	 * @param array $deliverablemaildata Maildata array containing elements in an array("deliverable"=>Full deliverable record,"projectname"=>Project name,"coordinatorname"=>Coordinators name, "coordinatoremail"=>Coordinators e-mail address) format.
+	 * @param string $status "reached" or "neared"
+	 * @return boolean True if succesfull or False if not
+	 */
+  function sendMail($deliverablemaildata, $status)
+	{
+	  // return false if no e-mail address is given
+	  if ($deliverablemaildata["coordinatoremail"] == "")
+	    return False;
+
+    // Setup the recipient, subject and message body
+	  $to = $deliverablemaildata["coordinatoremail"];
+		$subject = atktext("deliverable_" . $status . "_deadline");
+	  $body = atktext("project") . ": ". $deliverablemaildata["projectname"] . "\r\n";
+		$body.= atktext("deliverable"). ": " . $deliverablemaildata["deliverable"]["name"] . "\r\n";
+		$body.= atktext("duedate") . ": " . $deliverablemaildata["deliverable"]["duedate"] . "\r\n";
+		$body.= atktext("status") . ": " . $deliverablemaildata["deliverable"]["status"] . "\r\n";
+
+
+  	// Call usermail to send the mail and use its result as return value
+		return usermail($to, $subject, $body);
+	}
+
+	/**
+	 * Updates a deliverable including it's deadline status
+	 *
+	 * @param array $deliverable Full deliverable record that should be updated
+	 * @return boolean True if succesful, false if not.
+	 */
+	function updateDeliverableDeadlineStatus($deliverable)
+	{
+    // Get the deliverables node and initialize it for updating the
+    $deliverablesnode = &getNode("project.deliverable");
+
+    // Some black flagging magic (needed to let the update include this attribute in the update query)
+    // What we exactly do is remove the AF_HIDE_EDIT flag from the emailstatus
+    // attribute so they aren't ignored when updating the deliverable in the database.
+	  $deadlinereachedattribute = &$deliverablesnode->getAttribute("emailstatus");
+	  $deadlinereachedattribute->m_flags ^= AF_HIDE_EDIT;
+
+	  // Update the record in the database
+	  return $deliverablesnode->updateDb($deliverable);
+	}
+
+  /**
+   * Gets deliverable records and their related project and projectcoordinators info
+   *
+   * @param String $conditions Conditions to which the deliverable must conform in order to be included in the getMailData result
+   * @return array Maildata array containing elements in an array("deliverable"=>Full deliverable record,"projectname"=>Project name,"coordinatorname"=>Coordinators name, "coordinatoremail"=>Coordinators e-mail address) format.
+   */
+  function getMailData($conditions)
+  {
+    // Get the deliverables node
+    $deliverablesnode = &getNode("project.deliverable");
+
+    // Get records of all deliverable sthat are before the maximum deadline
+    // day and for which no e-mail has been sent to the project manager yet
+	  $deliverables = $deliverablesnode->selectDb($conditions);
+
+	  // Initialize the maildata array
+	  $maildata = array();
+
+	  // If no deliverables found, dont try to get any more info
+	  if (count($deliverables) == 0)
+    {
+      return $maildata;
+    }
+
+    // Else, loop through the deadlines and send mails to the project managers
+    else
+    {
+
+      // Get the project and employee node
+      $projectnode = &getNode("project.project");
+      $employeenode = &getNode("employee.employee");
+
+      // Loop through all deliverables for which an e-mail should be sent
+      foreach ($deliverables as $deliverable)
+      {
+
+        // Try to find the project to which the deliverable belongs
+        $projects = $projectnode->selectDb("project.id='".$deliverable["project_id"]["id"] ."'");
+
+        // If no project found, show an error
+        if (count($projects) == 0)
+        {
+          echo("Project belonging to deliverable not found");
+        }
+
+        // Else try to find the project's coordinator
+        else
+        {
+
+          // Try to find the project coordinator
+          $coordinators = $employeenode->selectDb("person.id='".$projects[0]["coordinator"]["id"]."'");
+
+          // If no coordinator found, show an error
+          if (count($coordinators) == 0)
+          {
+            echo("Coordinator for project not found");
+          }
+
+          // Else save the maildata record
+          else
+          {
+
+            // Save the maildata record
+            $maildata[] = array(
+              "deliverable" => $deliverable,
+              "projectname" => $projects[0]["name"],
+              "coordinatorname" => $employeenode->descriptor($coordinators[0]),
+              "coordinatoremail" => $coordinators[0]["email"],
+            );
+          }
+        }
+      }
+
+      // Report how much mails were sent
+      return $maildata;
+    }
+  }
+
+  /**
+   * Filters out maildata that doesn't match the given evaluatedstatus
+   *
+   * @param array $maildatarecords Maildata array containing elements in an array("deliverable"=>Full deliverable record,"projectname"=>Project name,"coordinatorname"=>Coordinators name, "coordinatoremail"=>Coordinators e-mail address) format.
+   * @param string $evaluatedstatus "1" for neared status, "2" for reached status
+   * @return array Filtered maildata array containing elements in an array("deliverable"=>Full deliverable record,"projectname"=>Project name,"coordinatorname"=>Coordinators name, "coordinatoremail"=>Coordinators e-mail address) format.
+   */
+  function filterMailData($maildatarecords, $evaluatedstatus)
+  {
+	  // Initialize the filtered data array
+	  $filteredMailData = array();
+
+    // Loop through the given maildata records
+	  foreach ($maildatarecords as $maildatarecord)
+	  {
+      // Convert the duedate array to a string in Ymd format
+	    $duedate = dateutil::arr2str($maildatarecord["deliverable"]["duedate"]);
+
+	    // Only, evaluate if duedate is available
+	    if ($duedate != "")
+	    {
+
+	      // Check if record matches evaluated status, which it does when:
+	      // - We evaluate the duedate-reached (2) status and the duedate is today or a day in the past, or
+	      // - we evaluate the duedate-neared (1) status and the number of days until the duedate equals or is smaller than the remind_days value
+	      if ((($evaluatedstatus == "2") && ($duedate <= date("Ymd"))) ||
+            (($evaluatedstatus == "1") && (dateutil::date_diff(date("Ymd"), $duedate) <= $maildatarecord["deliverable"]["remind_days"])))
+
+          // Add the record to the filtered maildata if it matches the criteria given above
+          $filteredMailData[] = $maildatarecord;
+	    }
+	  }
+
+    // Return the fileterd Maildata
+    return $filteredMailData;
+  }
+
+  /**
+   * Main cronjob function
+   */
+  function main()
+  {
+    // Output some text to show this script has started
+    echo "\nStarting cronjob: deliverables.cron\n";
+
+    // First, find all deliverables that reached the deadline and then the deadlines that neared the deadline
+    foreach(array("2"=>"reached", "1"=>"neared") as $statusid => $status)
+	  {
+	    // Get all non-complete deliverables for which no email was sent about the currently evaluated status yet
+	    $nonfiltereddeliverablesmaildataconditions = "deliverable.emailstatus < " . $statusid . " AND deliverable.status <> 'complete'";
+	    $nonfiltereddeliverablesmaildata = getMailData($nonfiltereddeliverablesmaildataconditions);
+
+	    // Filter the maildata that does not meet the currently evaluated status
+	    $deliverablesmaildata = filterMailData($nonfiltereddeliverablesmaildata, $statusid);
+
+      // Output the total number of deliverables that matched the current status
+      echo(sprintf("%d Deliverables %s the deadline.\n", count($deliverablesmaildata), $status));
+
+      // Initialize counter for failed mails
+	    $mailfailedcounter = 0;
+
+	    // Loop through all maildata
+	    foreach ($deliverablesmaildata as $deliverablemaildata)
+      {
+
+        // Output a log message showing the deliverablename, projectname,
+        // coordinatorname and coordinatoremail
+        echo(sprintf("Deliverable %s for project %s %s the deadline. Sending mail to %s (%s)... ", $deliverablemaildata["deliverable"]["name"], $deliverablemaildata["projectname"], $status, $deliverablemaildata["coordinatorname"], $deliverablemaildata["coordinatoremail"]));
+
+        // Send the mail according to the current status which applies to
+        // the current deliverablemaildata. If succesfull,
+        if (sendMail($deliverablemaildata, $status))
+        {
+
+          // Update the deliverable record in the database so e-mails aren't sent again
+          $deliverablemaildata["deliverable"]["emailstatus"] = $statusid;
+      	  updateDeliverableDeadlineStatus($deliverablemaildata["deliverable"]);
+
+      	  // Output OK
+      	  echo("OK\n");
+        }
+
+        // If sendMail failed,
+        else
+        {
+
+          // Output FAILED and update failedcounter
+      	  echo("FAILED\n");
+      	  $mailfailedcounter++;
+        }
+      }
+
+      // If some sendMail calls failed, show the user how much of them failed
+      if ($mailfailedcounter > 0)
+        echo(sprintf("ERROR: %d e-mails were not sent.\n", $mailfailedcounter));
+    }
+
+    // Output some text to show this script has ended
+    echo("Finished cronjob: deliverables.cron\n\n");
+  }
+
+  // Run the main function of this cronjob
+	main();
+?>
