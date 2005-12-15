@@ -230,8 +230,8 @@
   /**
    * Generic achievo mail function used when sending mails
    *
-   * @param string/array $to Recipients e-mail address(es)
-   * @param string $subject Subject to be used when sending the mail
+   * @param string/array $to Recipients e-mail address(es) (may not be empty, otherwise usermail fails and returns false)
+   * @param string $subject Subject to be used when sending the mail (will be prefixed by [achievo notice], but may not be empty, otherwise usermail fails and returns false)
    * @param string $body Mail content
    * @param string $add_header SMTP Mail headers to be added to the mail
    * @return boolean True if succesfull, false if not
@@ -247,10 +247,10 @@
       $to = implode(",", $to);
     }
 
-    // If no recipient found, dont attempt to sent
-    if ($to=="")
+    // If no recipient or subject found, dont attempt to sent
+    if (($to=="") || ($subject==""))
     {
-      atkdebug("No mail sent, missing to");
+      atkdebug("No mail sent, missing to or subject");
       return false;
     }
 
