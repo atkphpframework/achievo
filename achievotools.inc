@@ -227,23 +227,41 @@
     return date("Y-m-d" ,$viewtime-(86400*($weekday-7)));
   }
 
+  /**
+   * Generic achievo mail function used when sending mails
+   *
+   * @param string/array $to Recipients e-mail address(es)
+   * @param string $subject Subject to be used when sending the mail
+   * @param string $body Mail content
+   * @param string $add_header SMTP Mail headers to be added to the mail
+   * @return boolean True if succesfull, false if not
+   */
   function usermail($to, $subject, $body, $add_header="")
   {
+    // Determine the sender's name by using the mail_sender configuration variable
     $sender = atkconfig("mail_sender", "achievo");
 
+    // If multiple recipients in array, then convert the recipients array to a comma seperated string
     if (is_array($to) && count($to)>0)
     {
-      $to = implode(",",$to);
+      $to = implode(",", $to);
     }
-    if ($to!="" && $subject!="")
+
+    // If no recipient found, dont attempt to sent
+    if ($to=="")
     {
-      mail($to,"[achievo notice] ".$subject,$body,"From: ".$sender."\r\n".$add_header);
-      atkdebug("Sent mail to $to");
+      atkdebug("No mail sent, missing to");
+      return false;
     }
-    else
-    {
-      atkdebug("No mail sent, missing to or subject");
-    }
+
+    // Attempt to send the mail, and store the result in $result
+    $result = mail($to, "[achievo notice] " . $subject, $body, "From: " . $sender . "\r\n" . $add_header);
+
+    // Show debug info
+    atkdebug($result ? "Sent mail to $to" : "Sending of mail to $to failed");
+
+    // Use the mail result as return value
+    return $result;
   }
 
   function time_format($time, $displayzero=false)
