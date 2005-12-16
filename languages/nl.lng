@@ -529,6 +529,10 @@
   "color"=>"Kleur",
   "menu_mastergantt"=>"Master-Gantt",
   "display"=>"Toon",
+  "the_phase_is_not_started_yet"=>"De fase is nog niet gestart",
+  "the_deliverable_on_which_this_phase_depense_is_not_complete_yet"=>"De deliverable waarvan de fase afhankelijk is, is nog niet compleet",
+  "the_following_problems_occured_while_employee_%s_registered_time_on_phase_%s_of_project_%s"=>"De volgende problemen zijn ontstaan bij de urenregistratie van medewerker %s op fase %s van project %s",
+  "problems_occured_while_registering_hours_on_phase_%s"=>"Problemen ontstaan bij het registreren van uren op fase %s",
 );
 
 ?>
