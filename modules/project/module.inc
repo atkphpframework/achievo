@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @internal modifiers
+   */
+  $modifiers[] = "timereg.hours";
+
   class mod_project extends achievoModule
   {
     function getNodes()
@@ -40,7 +45,7 @@
       $this->menuitem("activity_admin", dispatch_url("project.activity", "admin"), "setup", array("project.activity", "admin"));
       $this->menuitem("tpl_phase_admin", dispatch_url("project.tpl_phase", "admin"), "setup", array("project.tpl_phase", "admin"));
       $this->menuitem("tpl_project_admin", dispatch_url("project.tpl_project", "admin"), "setup", array("project.tpl_project", "admin"));
-      $this->menuitem("role_admin", dispatch_url("project.role", "admin"), "setup", array("project.role", "admin"));      
+      $this->menuitem("role_admin", dispatch_url("project.role", "admin"), "setup", array("project.role", "admin"));
       $this->menuitem("mastergantt_colorconfig", dispatch_url("project.mastergantt_colorconfig", "admin"), "setup", array("project.mastergantt_colorconfig", "admin"));
     }
 
@@ -54,6 +59,17 @@
       $prjnode = &getNode("project.project");
       return array("projects"=>$this->recLinks($prjnode->searchDb($expression), "project.project"));
     }
+
+    /**
+     * Adds a listener to the timereg.hours node
+     *
+     * @param hours $atknode hours node instance
+     */
+    function timereg_hours_modifier(&$node)
+    {
+      atkimport("module.project.hourslistener");
+      $node->addListener(new hoursListener(array("save", "update")));
+    }
   }
-  
+
 ?>
