@@ -655,6 +655,7 @@ class hours extends atkNode
   {
     // update overtime balance
     $this->calculateNewBalance($rec, "delete");
+    return true;
   }
 
   function calculateNewBalance($rec, $mode)
