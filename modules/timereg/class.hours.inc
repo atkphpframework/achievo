@@ -17,7 +17,7 @@ function date_format($datestamp,$dateformat)
   {
     return date($dateformat,$datestamp);
   }
-  return date("m-d",$datestamp)." (".text(strtolower(date("D",$datestamp))).")";
+  return date("m-d",$datestamp)." (".atktext(strtolower(date("D",$datestamp))).")";
 }
 
 /**
@@ -409,21 +409,21 @@ class hours extends atkNode
 
       $today = date('Y-m-d');
 
-      $res.= href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$yesterday, text("previousday"));
+      $res.= href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$yesterday, atktext("previousday"));
       if ($this->m_viewdate<date('Y-m-d'))
       {
         // If current is not today we can also move forward
-        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$tomorrow, text("nextday"));
-        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$today, text("today", "houradmin"));
+        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$tomorrow, atktext("nextday"));
+        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$today, atktext("today", "", "houradmin"));
       }
-      $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$this->m_viewdate.'&weekview=1', text("gotoweekview"));
+      $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$this->m_viewdate.'&weekview=1', atktext("gotoweekview"));
       $res.='</td><td align="right" valign="top">';
       $res.=session_form();
       $res.=$this->getUserSelect().'&nbsp;';
       $res.=$this->getDateJumper();
-      $res.='&nbsp;<input type="submit" value="'.text("goto").'">';
+      $res.='&nbsp;<input type="submit" value="'.atktext("goto").'">';
       $res.='</td></tr></table></form>';
-      $res.='<b>'.text(strtolower(date("l", $viewdatestamp)))." ".text(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>'.$this->getLockIcon();
+      $res.='<b>'.atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>'.$this->getLockIcon();
     }
     return $res;
   }
@@ -436,8 +436,8 @@ class hours extends atkNode
       $balance = $balancenode->getBalance(date("Y-m-d", adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4))), $this->m_user);
       $res.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
       $res.='<tr><td align="left" valign="top">';
-      $res.= href('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate='.$this->m_viewdate, text("viewschedule"), SESSION_NESTED);
-      $res.='</td><td align="right">'.text("current_balance").': '.time_format((60*$balance["balance"]),true).'&nbsp;</td></tr></table>';
+      $res.= href('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate='.$this->m_viewdate, atktext("viewschedule"), SESSION_NESTED);
+      $res.='</td><td align="right">'.atktext("current_balance").': '.time_format((60*$balance["balance"]),true).'&nbsp;</td></tr></table>';
       return $res;
     }
   }
@@ -588,31 +588,31 @@ class hours extends atkNode
     $output.=session_form();
     $output.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
     $output.='<tr><td valign="top" align="left">';
-    $output.= ''.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], text('previousweek'));
+    $output.= ''.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], atktext('previousweek'));
     if ($weekdates[8]['date'] <= date("Y-m-d"))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],text('nextweek'));
+      $output.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],atktext('nextweek'));
     }
-    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.date("Y-m-d"), text('thisweek'));
-    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=0&viewdate='.date("Y-m-d"), text('dayview'));
+    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.date("Y-m-d"), atktext('thisweek'));
+    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=0&viewdate='.date("Y-m-d"), atktext('dayview'));
 
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("unlock").'</b>');
+      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.atktext("unlock").'</b>');
     }
     // users may only lock weeks that are not already locked. they must have the proper permission
     // and, if configured, they may only lock a week once they have booked all their hours.
     else if ($this->m_lock=="" && $this->allowed("lock") && (atkconfig("timereg_incompleteweeklock") || $this->weekComplete($userid, $this->m_viewdate)))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.text("lock").'</b>');
+      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.atktext("lock").'</b>');
     }
 
     $output.='</td><td valign="top" align="right">';
     $output.=$this->getDateJumper();
-    $output.='&nbsp;<input type="submit" value="'.text("goto").'">';
+    $output.='&nbsp;<input type="submit" value="'.atktext("goto").'">';
     $output.='</td></tr></table></form>';
 
-    $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.text("week").' '.adodb_date('W, Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
+    $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.atktext("week").' '.adodb_date('W, Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
     return $output;
   }
 
@@ -675,11 +675,11 @@ class hours extends atkNode
       if ($mode == "add")
       {
         // check if a record already exists for this day
-        if ($balance["balance"] == text("not_inserted"))
+        if ($balance["balance"] == atktext("not_inserted"))
         {
           // insert a new record with the balance of yesterday or 0
           $newbalance = $balancenode->getBalance($yesterday, $userid);
-          if ($newbalance["balance"] == text("not_inserted")) $newbalance["balance"] = 0;
+          if ($newbalance["balance"] == atktext("not_inserted")) $newbalance["balance"] = 0;
           $balancenode->addOvertimeBalance($userid, $day, $newbalance["balance"]);
         }
       }
@@ -984,7 +984,7 @@ class hours extends atkNode
         $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
         $toDate = new atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY);
 
-        $res.= " ".text("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
+        $res.= " ".atktext("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
         $res.= '<input type="hidden" name="'.$prefix.'activitydate[multi]" value="1">';
         $newmode = "day";
       }
@@ -994,7 +994,7 @@ class hours extends atkNode
         $newmode = "multi";
       }
       $res.= " ".href("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=".$this->m_action."&insertmode=".$newmode,
-                      text("insert_".$newmode, $this->m_type, $this->m_module),
+                      atktext("insert_".$newmode, $this->m_module, $this->m_type),
                       SESSION_DEFAULT,
                       true);
       return $res;
@@ -1007,7 +1007,7 @@ class hours extends atkNode
 
   function dayfilter_edit($record, $prefix="", $mode="")
   {
-    $res= "<BR>".text("filterdays", $this->m_type, $this->m_module)."<BR>";
+    $res= "<BR>".atktext("filterdays", $this->m_module, $this->m_type)."<BR>";
     $days = array("mon", "tue", "wed", "thu", "fri", "sat", "sun");
 
     // we use a hidden variable to indicate that the dayfilter has been edited.
@@ -1025,7 +1025,7 @@ class hours extends atkNode
       {
         $checked = ($i<5?"checked":"");
       }
-      $res.= text($days[$i]).': <input type="checkbox" name="'.$prefix.'dayfilter['.$i.']" value="1" '.$checked.'> &nbsp; ';
+      $res.= atktext($days[$i]).': <input type="checkbox" name="'.$prefix.'dayfilter['.$i.']" value="1" '.$checked.'> &nbsp; ';
     }
     return $res;
   }
