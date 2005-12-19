@@ -165,29 +165,52 @@
                    "status"=>"active");
     }
 
+    /**
+     * Shows the planning for a project
+     *
+     * @param atkActionHandler &$handler Default atk action handler
+     */
     function action_planning(&$handler)
     {
-      //include_once moduleDir('project').'projectplanning.inc';   // MILESTONES FUNCTIONS
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
+      // Get a singleton reference to the page, theme and ui
+      $page = &$this->getPage();
+      $theme = &atkTheme::getInstance();
+      $ui = &$this->getUi();
 
-      $prjid = $this->m_postvars["selectedprojectid"];
-      $imgurl = moduleDir("project")."ganttchart.php?projectid=".$prjid;
+      // Register the default style with this page
+      $page->register_style($theme->stylePath("style.css"));
 
-      $records = $this->selectDb("project.id=".$prjid, "", "", "", array("name", "coordinator"));
+      // Determine the selected project
+      $projectid = $this->m_postvars["selectedprojectid"];
+
+      // Compose the image html code
+      $imageurl = moduleDir("project")."ganttchart.php?projectid=".$projectid;
+      $image = '<img src="'.$imageurl.'" alt="'.atktext("title_projectplanning").'"><br>';
+
+      // Select the name and coordinator of the selected project
+      $records = $this->selectDb("project.id=".$projectid, "", "", "", array("name", "coordinator"));
       $record = $records[0];
 
-      $projectinfo = '<br><table border=0>';
+      // Put the projectname and coordinator in a html layout
+      $projectinfo = '<table border="0">';
       $projectinfo.= '<tr><td align="right"><b>'.atktext("name").': </b></td><td>'.$record['name'].'</td></tr>';
       $projectinfo.= '<tr><td align="right"><b>'.atktext("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].','.$record['coordinator']['firstname'].'</td></tr>';
-      $projectinfo.= '</table><br>';
+      $projectinfo.= '</table>';
 
+      // Make a text-based legend and an explanation
       $legend = atktext("legend").": [".atktext("booked").", ".atktext("hoursleft")."]<br>";
       $legend.= atktext("ganttexplanation");
 
-      $layout->ui_top(atktext("title_projectplanning"));
-      $layout->output('<br>'.$projectinfo.'<br><img src="'.$imgurl.'"><br><br>'.$legend);
-      $layout->ui_bottom();
+      // Compose the complete content
+      $content = $projectinfo . '<br>';
+      $content.= $image . '<br>';
+      $content.= $legend . '<br>';
+
+      // Put the result into a box
+      $boxedcontent = $ui->renderBox(array("title"=>atktext("title_projectplanning"),"content"=>$content));
+
+      // Add the boxed content to the page
+      $page->addContent($boxedcontent);
     }
 
     function action_billsetup(&$handler)
