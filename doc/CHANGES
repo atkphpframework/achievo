@@ -6,7 +6,8 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.2RC1
 ---------------------------
-* Projects can now be selected from a list to add to contract. [Dennis]
+* When editing a contract, a new project can be created which is then automatically added to the contract [Dennis]
+* When editing a contract, existing projects can be linked to the contract. [Dennis]
 + Added cronjob for checking expiring dates of usercontracts [Dennis]
 * Fixed several timereg bugs [Dennis]
 * Fixed reports printer-friendly view and export to CSV file. [Dennis]
