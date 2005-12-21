@@ -16,9 +16,9 @@
     function contract_project()
     {
       $this->project();
-      $this->m_flags |= NF_NO_EDIT|NF_NO_ADD;
+      $this->m_flags |= NF_NO_EDIT;
       $this->m_type = "contract_project";
-      
+                        
       // Anyone who may edit contracts, may remove a project from the
       // deposit. 
       $this->m_securityMap["remove"] = "contracts.edit";
@@ -43,9 +43,18 @@
     
     function recordActions($record, &$actions, &$mraactions)
     {
-      $actions = array(); // Remove all default actions. 
+    	$actions = array(); // Remove all default actions.
       $actions["remove"] = dispatch_url($this->atkNodeType(), "remove", array("project_id"=>$record["id"]));
-      $actions["view"] = dispatch_url("project.project", "view", array("atkselector"=>$this->primaryKey($record)));
+      $actions["view"] = dispatch_url("project.project", "view", array("atkselector"=>$this->primaryKey($record)));          	
+    }
+    
+    function initial_values()
+    {
+    	$selector = $this->m_postvars['atkselector'];
+    	$node = &getNode("organization.contracts");    	    	
+    	$rec = $node->selectDb($selector, "", "", "", array("subject"));    	
+    	
+    	return array("name" => $rec[0]['subject']);    	
     }
   }
 

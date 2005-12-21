@@ -7,15 +7,10 @@
     {
       $this->project($name,$flags);
       //$this->m_filters = array();		//clear parent filters
-       	
+      
       //only show projects that are not linked to a contract yet
-      $this->addFilter("project.contract_id IS NULL");            
+      $this->addFilter("(project.contract_id IS NULL OR project.contract_id = '')");            
       $this->setSecurityAlias("organization.contracts");
-    }    
-    
-    function action_select(&$handler)
-    {
-    	return $handler->action_select();
     }
   }
 ?>
