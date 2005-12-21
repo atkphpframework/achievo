@@ -23,7 +23,7 @@
     {
       global $ATK_VARS, $g_sessionManager;
 
-      $this->atkNode($name,$flags|NF_EDITAFTERADD|NF_EXT_SORT);
+      $this->atkNode($name,$flags|NF_EDITAFTERADD);
 
       $this->add(new atkAttribute("id",AF_AUTOKEY));
 
