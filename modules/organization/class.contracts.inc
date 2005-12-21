@@ -95,13 +95,7 @@ class contracts extends atkNode
     } 		
     $this->redirect(session_url("", SESSION_BACK, 2));
  	}
-	
- 	function postUpdate($record)
- 	{  	 	
-  	$this->HandleRedirect($record); 		
- 		return true; 		
- 	}
-	
+		
 
 	function adminFooter()
 	{
