@@ -435,6 +435,7 @@
       {
         $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"]);
       }
+      return true;
     }
 
     function _addAttendeeRecord($schedule_id, $person_id)
