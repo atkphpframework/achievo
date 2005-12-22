@@ -93,7 +93,7 @@ class contracts extends atkNode
  		$select = session_url($target_url,SESSION_NESTED);
   	  	
  		//Add link to result
-    return $result." ".href($select,"selectandaddnewproject")."<br />";  	
+    return $result."&nbsp;&nbsp;&nbsp;".href($select,atktext("selectandaddnewproject","organization","contracts"))."<br />";  	
   }
   
   function action_linkproject(&$handler)
