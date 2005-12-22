@@ -9,6 +9,21 @@ useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkboolattribute");
 
+//Hack
+//The is some bug in class.contracts.inc. No time to fix that now.
+//Use project.project instead.
+class projectRelation extends atkOneToManyRelation 
+{
+	function _addAddLink($myrecords, $record,$saveform=true)
+	{
+		$dest = $this->m_destination;
+		$this->m_destination = "project.project";
+		$url = parent::_addAddLink($myrecords, $record, $saveform);
+		$this->m_destination = $dest;
+		return $url;
+	}
+}
+
 class contracts extends atkNode
 {
   var $m_archive;
@@ -37,7 +52,7 @@ class contracts extends atkNode
     $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
-    $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
+    $this->add(new projectRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
         
     //The linkproject action is allowed by people who may edit contracts
     $this->addAllowedAction("linkproject");    
