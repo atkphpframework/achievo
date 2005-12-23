@@ -451,11 +451,11 @@
       //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
       if($department_name && $department_name != "all") $filter.=" AND userid.department='".escapeSQL($department_name)."'";
       if($functionlevelswitch && $functionlevelswitch != "all") $filter.=" AND userid.functionlevel='$functionlevelswitch'";
-
+      
       // employee table is not yet added to the query. Force that by adding a manytoonerel,
       // so we display a users name.
       $hoursnode->add(new atkManyToOneRelation("userid", "employee.employee"));
-
+			
       // organization and person_organization tables are not yet added to the query.
       // Since this is a many:many thing between projects and organizations, with the
       // contactpersons als intermediairy, we have to add a special attribute which
@@ -465,6 +465,7 @@
         useattrib("project.filterprojectbyorganizationattrib");
         $hoursnode->add(new filterProjectByOrganizationAttrib($organizationid, $roleid, "B")); // the projectphaseattribute uses 'B' as alias for the project table.
       }
+      
 
       if ($nameswitch=="supervisor")
       {
@@ -477,19 +478,25 @@
       {
         if ($userid!="all") $filter.= " AND hours.userid ='$userid' ";
       }
-
+      
       $orderbystatement = array();
       if ($orderby)
       {
         foreach($orderby as $key => $itsOrderby)
         {
           if ($itsOrderby && $itsOrderby != "-")
+          {          	
+						//hack we need to add the tablename before the attribute. all attributes except for functionlevel has the table name hours
+						$itsOrderby = ($itsOrderby == "functionlevel") ? "person.".$itsOrderby : "hours.".$itsOrderby;
+						
             $orderbystatement[] = $itsOrderby . " " . $orderdirection[$key];
+          }
         }
       }
-
+      
+			
       $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
-
+			      
       if (moduleExists("billing"))
       {
          // todo, add columns with rate and costs (are stored flat in the table, no reason to perform calculations)
@@ -570,10 +577,10 @@
     {
       $db = &atkGetDb();
 
-      $sql = "SELECT id,lastname,userid, firstname
+      $sql = "SELECT person.id,person.lastname,person.userid, person.firstname
               FROM person
-              WHERE status='active' AND role='employee'
-              ORDER BY lastname
+              WHERE person.status='active' AND person.role='employee'
+              ORDER BY person.lastname
              ";
 
       $records = $db->getrows($sql);
@@ -591,9 +598,9 @@
     {
       $db = &atkGetDb();
 
-      $sql = "SELECT name, id
+      $sql = "SELECT role.name, role.id
               FROM role
-              ORDER BY name";
+              ORDER BY role.name";
 
       $records = $db->getrows($sql);
       $role_code='<OPTION VALUE="">'.text("allroles");
