@@ -8,6 +8,7 @@ useattrib("atktextattribute");
 useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
 useattrib("atkboolattribute");
+useattrib("atkcurrencyattribute");
 
 //Hack
 //The is some bug in class.contracts.inc. No time to fix that now.
@@ -44,8 +45,8 @@ class contracts extends atkNode
 //    $attr->addOnChangeHandler("$ar_period.style.visibility=($type.options[$type.selectedIndex].value == 'period' ? 'visible' : 'hidden'); $period.selectedIndex = ($ar_period.style.visibility=='hidden') ? 0 : $period.selectedIndex;");
     $this->add($attr);
     
-    $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST|AF_LIST_NO_NULL_ITEM));
-    $this->add(new atkNumberAttribute("period_price",AF_OBLIGATORY|AF_HIDE_LIST, 13, 5));
+    $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));   	
+    $this->add(new atkCurrencyAttribute("period_price", AF_OBLIGATORY|AF_HIDE_LIST,13,"",2));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
@@ -54,7 +55,7 @@ class contracts extends atkNode
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new projectRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
         
-    //The linkproject action is allowed by people who may edit contracts
+    //The linkproject action is allowed by all
     $this->addAllowedAction("linkproject");    
     
     //@todo translate all these attrs with translation tool, using module 'core'    
@@ -95,6 +96,43 @@ class contracts extends atkNode
  		//Add link to result
     return $result."&nbsp;&nbsp;&nbsp;".href($select,atktext("selectandaddnewproject","organization","contracts"))."<br />";  	
   }
+    
+   /**
+   * Make the dropdownlist show an 'empty' option.
+   *
+   * Hack! Needed to make the dropdownlist show an 'empty' option, even though the field is obligatory.
+   * todo: remove this when atk has a feature for this.
+   *
+   * @param type name description
+   * @return type description
+   */
+  function contracttype_edit($record, $prefix="", $mode="")
+  { 
+  	$attr = &$this->getAttribute("contracttype");
+  	
+  	//Check if the behaviour change is actually needed.
+  	if($this->isConfigValue("list_obligatory_null_item", false) && ($attr->hasFlag(AF_OBLIGATORY)))//yes needed
+  	{
+  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.				
+  		$this->setConfigValue("list_obligatory_null_item", true);  					
+			$result = $attr->edit($record, $prefix, $mode);
+			//Change back to normal behaviour
+			$this->setConfigValue("list_obligatory_null_item", false);  					
+			return $result;
+  	}
+  	else   //not needed
+			return $attr->edit($record, $prefix, $mode);  	
+  }
+  
+  function isConfigValue($tag, $value)
+  {
+  	return ($GLOBALS["config_".$tag] == $value) ? true : false;
+  }
+  
+  function setConfigValue($tag, $value)
+  {  	
+		$GLOBALS["config_".$tag] = $value;
+  }
   
   function action_linkproject(&$handler)
  	{	
@@ -110,23 +148,6 @@ class contracts extends atkNode
     } 		
     $this->redirect(session_url("", SESSION_BACK, 2));
  	}
-		
-
-	function adminFooter()
-	{
-	  $res = "" ;
-	  if ($this->m_archive!=1)
-	  {
-	    return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=1', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
-	  }
-	  else
-	  {
-	    return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=0', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
-	  }
-	  return $res."<br>";
-	}
 
 	function action_admin(&$handler)
 	{
@@ -145,7 +166,25 @@ class contracts extends atkNode
 	  return $handler->action_admin();
 	}
 
-  function period_price_edit($rec)
+	
+
+	function adminFooter()
+	{
+	  $res = "" ;
+	  if ($this->m_archive!=1)
+	  {
+	    return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=1', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+	  }
+	  else
+	  {
+	    return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=0', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+	  }
+	  return $res."<br>";
+	}
+  
+	function period_price_edit($rec)
   {
     return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
   }
@@ -158,10 +197,11 @@ class contracts extends atkNode
   function initial_values()
   {
   	
-    return array("enddate"	=>	array("year"=>(date("Y")+1),	
-    															"month"=>date("m"),		
-    															"day"=>date("d")));
+	  return array(	"enddate" =>	array("year"=>(date("Y")+1),	
+	  																	"month"=>date("m"),		
+	  														"day"=>date("d")));
   }
+  
 }
 
 ?>
