@@ -7,11 +7,11 @@ Additional Development
 ----------------------
 Sandy Pleyte       <sandy@achievo.org>
 Peter Verhage      <peter@achievo.org>
-Rene Bakx          <rene@ibuildings.nl>
 Wim Kosten         <wim@ibuildings.nl>
 Maurice Maas       <maurice@ibuildings.nl>
 Martin Roest       <martin@ibuildings.nl>
 Lineke Willems     <lineke@achievo.org>
+Boy Baukema        <boy@ibuildings.nl>
 
 
 Marketing and Support
@@ -26,7 +26,7 @@ Achievo grows not only through contributions from the Open Source community,
 but also through financial donations from sponsors, who finance the
 development of new features.
 
-* Ibuildings.nl BV, Netherlands (http://www.ibuildings.nl) sponsors the 
+* Ibuildings.nl BV, Netherlands (http://www.ibuildings.nl) sponsors the
   development of Achievo and sponsors Achievo's hosting and development
   facilities (site, mailinglists, cvs etc).
 
@@ -36,8 +36,8 @@ development of new features.
   hoursurvey improvements.
 
 * S&W Consultancy BV, Netherlands (http://www.s-w.nl) sponsored the following
-  enhancements: contactpersons per project, userinterface improvements, 
-  improvements to the extended search feature, and several additional fields 
+  enhancements: contactpersons per project, userinterface improvements,
+  improvements to the extended search feature, and several additional fields
   for customers and projects.
 
 * Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
@@ -49,14 +49,14 @@ development of new features.
   registration to team-members only.
 
 * Prosa.dk, Denmark (http://www.prosa.dk) sponsored the development of the
-  weektimereg add-on module, the weekday stats and the multi-sort and 
+  weektimereg add-on module, the weekday stats and the multi-sort and
   subtotals/aggregation for the hoursurvey report.
-  
+
 * Kern8, The Netherlands (http://www.kern8.nl) sponsored the development
-  of cumulative usercontracts, the displaying of shortages in the employee 
+  of cumulative usercontracts, the displaying of shortages in the employee
   weekreport and the holidayreport add-on module.
 
-* Petrosys Pty, Australia (http://www.petrosys.com.au) sponsored the 
+* Petrosys Pty, Australia (http://www.petrosys.com.au) sponsored the
   fix for bug #269.
 
 * Langzaam Verkeer, Belgium (http://www.langzaamverkeer.be) sponsored the
@@ -66,7 +66,7 @@ development of new features.
 
 * Dataroomservices, The Netherlands (http://www.dataroomservices.nl) sponsored
   the PDA mode, the configurable timereg confirmation message, the ability to
-  register based on time indication instead of duration and several 
+  register based on time indication instead of duration and several
   enhancements to employee management.
 
 * Veronica Digitaal, The Netherlands (http://www.veronicadigitaal.nl) sponsored
@@ -78,7 +78,7 @@ development of new features.
 * De Koning & Renes Advocaten, The Netherlands (http://www.dekoning-renes.nl)
   sponsored development of the Legal module, the Open Office document
   engine and several enhancements to the billing and docmanager modules.
-  
+
 To become a sponsor, please read http://www.achievo.org/support/sponsor.
 
 
@@ -132,7 +132,7 @@ Norwegian       : Stein Bjorndal       <stein@proact.no>
 Polish          : Lech Nowak           <lechnowak@op.pl>
 Portuguese      : Pedro Vieira         <pedro.vieira@filbox.com>
 Russian         : Vitaliy Perekupka    <vit@uptsoft.com>
-                  Maryia I. Davidouskaia <maryia@iatp.by> 
+                  Maryia I. Davidouskaia <maryia@iatp.by>
                   Konstantin Starodubtsev <kostya@ptc.spbu.ru>
 Slovak          : Daniel Kulifaj [danielk] <kulifaj@emark.sk>
 Spanish         : Jorge Ibsen          <jibsen@eso.org>
@@ -154,7 +154,7 @@ significant contributions to the Achievo project.
 
 Stefan Niederhauser <sn@atelier-w.ch>
 
-  Stefan came up with the idea and design of the 'node' concept, which 
+  Stefan came up with the idea and design of the 'node' concept, which
   later became the basis of the ATK backend.
 
 William Rhee <willrhee@umich.edu>
@@ -214,6 +214,7 @@ Christian Lotz           [ChristianL] <cl@plan42.de>
 Joop van de Wege                      <joopvandewege@mococo.nl>
 Ruhshad Master                        <rmaster@csi-wireless.com>
 Brian Gillis                          <brian@thegillis.net>
+Rene Bakx                             <rene@ibuildings.nl>
 Dennis Luitwieler                     <dennis@ibuildings.nl>
 
 Names between [] are the names they are refered by in the CHANGES file. (If
