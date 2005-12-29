@@ -19,13 +19,15 @@
       $this->m_flags |= NF_NO_EDIT;
       $this->m_type = "contract_project";
                         
-      // Anyone who may edit contracts, may remove a project from the
-      // deposit. 
+      // Anyone who may edit contracts, may remove a project from the deposit. 
       $this->m_securityMap["remove"] = "contracts.edit";
       
-      // The rest of the actions has equal privileges to 
-      // the original node. 
-      $this->setSecurityAlias("project.project");
+      // The rest of the actions has equal privileges to the original node. 
+      $this->setSecurityAlias("project.project");            
+      
+      //clear parent filters.
+      $this->m_fuzzyFilters = array();
+      $this->m_filters = array();
     }
     
     /**

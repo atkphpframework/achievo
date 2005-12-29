@@ -51,6 +51,8 @@ class contracts extends atkNode
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
     $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
+    
+    $this->add(new atkDummyAttribute("status_change_warning", atktext("status_change_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));    
     $this->add(new projectRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
@@ -165,9 +167,7 @@ class contracts extends atkNode
 	
 	  return $handler->action_admin();
 	}
-
 	
-
 	function adminFooter()
 	{
 	  $res = "" ;
@@ -201,7 +201,28 @@ class contracts extends atkNode
 	  																	"month"=>date("m"),		
 	  														"day"=>date("d")));
   }
-  
+
+  //todo: updateDb doesn't update the status for some reason. Query should be changed to using updateDb.
+  // but for that the updateDb problem should be found.
+  function postUpdate($rec)
+  {   	
+  	//When status changes to 'archived' All linked projects are set to non-active
+  	if($rec['status'] == 'archived')
+  	{
+  		$db = &atkGetDb();
+  		$contractid = $rec['id'];
+  		$node = &getNode("project.project");
+  	
+  		//Select projects linked to this contract that are active.  		
+  		$projects = $node->selectDb("(project.contract_id='$contractid' AND project.status='active')","","","",array("id","name"));			
+  		foreach($projects as $record)
+  		{  			
+  			$query = "UPDATE project SET project.status='nonactive' WHERE project.id='".$record['id']."'";  			
+  			$db->query($query);				
+  		}  		
+  	}
+  	return true;
+  }
 }
 
 ?>

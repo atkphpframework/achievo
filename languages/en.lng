@@ -408,6 +408,7 @@
   "stats_chooseactivity" => "Choose the activity that you want to view statistics about by clicking on the activityname.",
   "stats_chooseemployee" => "Choose the employee that you want to view statistics about by clicking on his/her name.",
   "status" => "Status",
+  "status_change_warning" => "When changing the status to archived, the status of linked projects will be automatically set to nonactive!",
   "subtotal" => "Subtotal",
   "supervisor" => "Supervisor",
   "tab_calendar" => "Scheduler",
