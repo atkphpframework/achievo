@@ -46,7 +46,15 @@ have a working webserver with PHP support and a MySQL database installed.
 
    $ ln -s achievo_x.x achievo                # make a symbolic link 
 
-2) Create an empty database in mysql and a user that has create, alter, 
+2) Make the 'achievotmp' directory (and its subdirectories) writable for the 
+   webserver. On Linux/Unix you can run the following command:
+  
+   $ chown -R username achievotmp 
+                                  
+   Replace 'username' with the username that you use to run the webserver,
+   for example 'nobody', 'apache' or 'www'.
+
+3) Create an empty database in mysql and a user that has create, alter, 
    select, insert, update and delete-access on the database.
 
    example (assuming your mysql root password is 'secret'):
@@ -68,7 +76,7 @@ have a working webserver with PHP support and a MySQL database installed.
    Note 2: if you are using MySQL 4, you must also grant the 'lock tables' 
    privilege to the user.
 
-3) Edit the file config.inc.php in the achievo directory, and set the
+4) Edit the file config.inc.php in the achievo directory, and set the
    $config_databasehost, $config_databasename, $config_databaseuser and
    $config_databasepassword, $config_database variables to match your setup.
 
@@ -80,14 +88,14 @@ have a working webserver with PHP support and a MySQL database installed.
     $config_databasepassword = "secret";
     $config_database         = "mysql";
 
-4) In the same configuration file there is a variable 
+5) In the same configuration file there is a variable 
    $config_administratorpassword. This is the password you need on your 
    first login. You might want to change this password.
    
    There are some other things in the config-file that you can change, but 
    for your first configuration, you can leave those settings to the default.      
 
-5) After editing the configuration file, point your browser to the setup.php
+6) After editing the configuration file, point your browser to the setup.php
    script in the Achievo directory. For example:
    
    http://yourserver/achievo/setup.php
@@ -95,12 +103,12 @@ have a working webserver with PHP support and a MySQL database installed.
    You'll be prompted to login. Enter 'administrator' as username and the 
    password you've set in step 4. 
    
-6) Follow the instructions. Achievo will first perform some system checks, to
+7) Follow the instructions. Achievo will first perform some system checks, to
    see if your PHP configuration is up to date. If it discovers any problems,
    it will tell you how to solve them. If everything is ok, it will install 
    the database for you.
 
-7) Once the setup.php script is completed, you'll be ready to run Achievo.
+8) Once the setup.php script is completed, you'll be ready to run Achievo.
    You can point your browser to the Achievo directory, like this:
    
    http://yourserver/achievo/
@@ -109,7 +117,7 @@ have a working webserver with PHP support and a MySQL database installed.
    Guided Tour on http://www.achievo.org/support/manual/tour, which will show
    you everything you should do to make Achievo useable for your users.
 
-8) Achievo contains some useful cron scripts that can be run periodically from
+9) Achievo contains some useful cron scripts that can be run periodically from
    a cron job. See the cron/README file for available cron features and 
    instructions.
 
