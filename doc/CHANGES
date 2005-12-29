@@ -6,17 +6,12 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.2RC1
 ---------------------------
-* When editing a contract, a new project can be created which is then automatically added to the contract [Dennis]
-* When editing a contract, existing projects can be linked to the contract. [Dennis]
-+ Added cronjob for checking expiring dates of usercontracts [Dennis]
-* Fixed several timereg bugs [Dennis]
-* Fixed reports printer-friendly view and export to CSV file. [Dennis]
-+ Added attributes (billing_type, aftercalculation and priceperhour) 
-	in organization.contracts [Dennis]
-* Made some fields obligatory and some non-obligarory [Dennis]
++ Added cronjob for checking expiration dates of usercontracts. [Dennis]
++ Added attributes (billing_type, aftercalculation and priceperhour) in
+  organization contracts. [Dennis]
 + Added installation support for PostgreSQL. [Peter]
-+ Now possible to make the 'contact' field obligatory by changing 
-  a var in config.inc.php. [Harrie]
++ Now possible to make the 'contact' field obligatory by changing a var in
+  config.inc.php. [Harrie]
 + Made chart height/width configurable. [Harrie]
 + Added ability to assign department to employee. [Harrie]
 + Hoursurvey is now able to search on department and functionlevel. [Harrie]
@@ -29,7 +24,7 @@ Changes in Achievo 1.2RC1
   timeregistration to a project. [Boy]
 + Added banknumber and social security number to employee. [Boy]
 + Made hoursurvey display rates and costs per timeregistration. [Boy]
-+ An employee can now have more than one security profile (role based 
++ An employee can now have more than one security profile (role based
   security). [Ivo]
 + Added vcard export for employees/contacts/organizations. [Ivo]
 + Added invoice address to organization. [Ivo]
@@ -39,18 +34,23 @@ Changes in Achievo 1.2RC1
 + Added deliverables and phase dependencies to Gantt chart. [Ivo]
 + Added projectstatus report. [Ivo]
 + Added Master Gantt chart. [Ivo]
-* Upgraded to ATK5 backend. [Ivo,Sandy]
+* Upgraded to ATK5 backend. [Ivo, Sandy, Dennis]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg
   weekview. [Sandy]
 * Made role name obligatory. (bug #474) [Sandy]
 * Moved employee financial fields to separate 'finance' tab. [Ivo]
-* Title field for persons is now a dropdown instead of free input. [Ivo]  
-* Fixed: postAdd in modules/calender/class.schedule.inc should return $a
+* Title field for persons is now a dropdown instead of free input. [Ivo]
+* Fixed: postAdd in modules/calender/class.schedule.inc should return a
   boolean. [Yury]
 * Fixed several Gantt chart bugs. [Ivo]
-* Fixed bug in setup module that installed patches in the wrong order if
-  there are 10 or more patches. [Dennis, Ivo]
+* When editing a contract, a new project can be created which is then automatically
+  added to the contract. [Dennis]
+* When editing a contract, existing projects can be linked to the contract.
+  [Dennis]
+* Made some fields obligatory and some non-obligarory. [Dennis]
+* Fixed bug in setup module that installed patches in the wrong order if there
+  are 10 or more patches. [Dennis, Ivo]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
@@ -89,7 +89,7 @@ Changes in Achievo 1.1RC2
 * Project contract dropdown only shows valid contracts. (bug #328) [Sandy, Ivo]
 * Removed the erroneous 'todate' column from timeregscreens. [Ivo]
 * Fixed possible date incompatibilities on Windows installs. (bug #337) [Ivo]
-* When the session expires after long period of inactivity, a message is 
+* When the session expires after long period of inactivity, a message is
   displayed instead of an error message. (bug #325) [Ivo]
 * Gantt chart is now displayed again. (bug #332) [Ivo]
 * Updated the FAQ. (bug #329) [Ruhshad]
@@ -127,7 +127,7 @@ Changes in Achievo 1.1RC1
 * Updated the support menu with new links to Achievo.org. [Ivo]
 * Fixed sorting by relations. (bug #269) [Ivo]
 * Improvements to Oracle 8i support. (bug #244) [Joop]
-+ Size of the remark field can now be configured with 
++ Size of the remark field can now be configured with
   $config_timereg_remark_lines. (bug #192) [Ivo]
 * Fixed bug in example cron lines for cron documentation (cron/README). [Ivo]
 + Todo duedate is now colored when expired/nearly expired. (bug #262) [Ivo]
@@ -147,7 +147,7 @@ Changes in Achievo 1.1RC1
 
 Changes in Achievo 1.0.4
 ------------------------
-+ Sender field of Achievo mails can now be configured with 
++ Sender field of Achievo mails can now be configured with
   $config_mail_sender. [Ivo]
 + Added missing scheduler navigation links. (bug #247) [Sandy]
 + Added 'all users' option to the employee statistics. (bug #261) [Ivo]
@@ -274,11 +274,11 @@ Changes in Achievo 0.9.4
 + Added jpGraph graphs support. [Ivo]
 + Added statistical graphs for projects. [Ivo]
 + Hour entries can now be edited directly from the time survey (only your own
-  hours and only if the entries are not from locked weeks) (bug #22). [Ivo]  
+  hours and only if the entries are not from locked weeks) (bug #22). [Ivo]
 + View/edit/delete screens now show the active record in the title bar. [Ivo]
 * Fixed bug in 'recent projects' dropdown in projects menu. (bug #122) [Ivo]
 * Fixed php error message when deleting todo's. (bug #71) [Ivo]
-* When converting from an older version than 0.9.2, projects without a 
+* When converting from an older version than 0.9.2, projects without a
   contact person now automatically get an auto-generated contact-person.
   (bug #110) [Ivo]
 * Fixed sql error in weekreport when user was administrator. (bug #123) [Ivo]
@@ -291,7 +291,7 @@ Changes in Achievo 0.9.4
 * Fixed bug in timreg_check cron script. [Ivo]
 * Fixed bug where scheduler could add wrong attendees. (bug #133) [Ivo]
 * Cleaned up project menu. (bug #138) [Ivo]
-* Added current record indication to the title of view-/edit- and delete 
+* Added current record indication to the title of view-/edit- and delete
   screens. (bug #138) [Ivo]
 * Bugfixes for bugs #121, #128, #135, #136 and #137. [Ivo]
 * Updated English and Dutch languagefiles. [Ivo]
@@ -299,10 +299,10 @@ Changes in Achievo 0.9.4
 Changes in Achievo 0.9.3
 ------------------------
 + Added calendar popup to all date fields. [Ivo]
-+ Newly added employee contracts now have default values depending on 
++ Newly added employee contracts now have default values depending on
   the previous contract of that employee. [Ivo]
 * Fixed bug: In new employee contracts, sunday was always selected. [Ivo]
-* Fixed bugs where wrong userid foreign key was used. (bug #113) 
+* Fixed bugs where wrong userid foreign key was used. (bug #113)
   [Jean-Charles, Ivo]
 * Setup.php now correctly checks PHP 4.1.0 requirement. (bug #112) [Kevin]
 * Setup.php now correctly detects Achievo 0.9 database. (bug #118) [Jonas]
@@ -313,12 +313,12 @@ Changes in Achievo 0.9.3
 
 Changes in Achievo 0.9.2
 ------------------------
-* Reorganised Achievo codebase. Everything is now located in modules. 
+* Reorganised Achievo codebase. Everything is now located in modules.
   [Lineke, Ivo]
 + Added a cron script that sends reminders for todo's. [Ivo]
 + The search box in the top frame now works for contacts, projects and
   customers. [Ivo]
-* Contactpersons and employees are generalized to 'person'. (Both stored in 
+* Contactpersons and employees are generalized to 'person'. (Both stored in
   one table now) [Lineke]
 + Instead of one 'customer' and one 'contactperson', a project now has
   multiple teammembers, each having a configurable 'role'. [Lineke]
@@ -336,10 +336,10 @@ Changes in Achievo 0.9.2
 * Fixed numerous bugs in the scheduler. [Lineke]
 + Added attendees (which can be employees or contactpersons) feature to the
   scheduler. [Lineke]
-+ Added feature to compare schedules of employees for easy planning of 
++ Added feature to compare schedules of employees for easy planning of
   meetings. [Lineke]
 * Achievo should now work with register_globals = Off. (bug #107) [Ivo]
-+ Added initial version of setup.php, which can be used to install and/or 
++ Added initial version of setup.php, which can be used to install and/or
   upgrade the Achievo database. [Ivo]
 * In the 'security profiles' screen, you can no longer grant rights that you
   don't have yourself. [Maurice]
@@ -347,38 +347,38 @@ Changes in Achievo 0.9.2
   has been renamed to 'Access'. (bug #100) [Ivo]
 + All screens have now default 'view' links for readonly access to the data,
   which is enabled if the user has the 'Access' right. (bug #41) [Ivo]
-+ In the employee contracts, you can now configure on which day people 
++ In the employee contracts, you can now configure on which day people
   work. [Ivo]
 + Added PIM API. All modules can now add information to the PIM screen. [Ivo]
-+ Added Search API. All modules can now return searchresults when using the 
++ Added Search API. All modules can now return searchresults when using the
   search feature from the topframe.  [Ivo]
 + Implemented search feature for contactpersons and projects. [Ivo]
-+ Added timeregistration feature to register multiple days at once (bug #21) 
++ Added timeregistration feature to register multiple days at once (bug #21)
   [Ivo]
 * You can now no longer register time on nonactive project phases. (bug #51)
   [Ivo]
 + Improved navigation in timeregistration (date jump) [Sandy]
 * Registering more than 24 hours per day is no longer possible. [Ajit]
-* Updated Brazilian-Portuguese, French, German, Spanish and Dutch language 
+* Updated Brazilian-Portuguese, French, German, Spanish and Dutch language
   files.
-+ Added a report for organizations which contains all information regarding 
++ Added a report for organizations which contains all information regarding
   the organization and the contacts. [Lineke]
 * Bugfix in IMAP authentication. [Soh]
-* Users now have a numerical id as primary key (the userid string is still 
-  present but no longer primary key). Module developers should take note of 
-  this. (Most Achievo modules still refer to the string userid but this will 
+* Users now have a numerical id as primary key (the userid string is still
+  present but no longer primary key). Module developers should take note of
+  this. (Most Achievo modules still refer to the string userid but this will
   change in the future) [Lineke]
 * Bugfix for bug #56. [Kevin]
 * Bugfix for bug #9. [Ivo]
 - Removed about 80 unnecessary strings from the language files. In some
   cases this unfortunately means that some strings have to be retranslated.
   [Ivo]
-- Finance, Costregistration and Resource_planning modules have been 
+- Finance, Costregistration and Resource_planning modules have been
   deprecated and moved into separately downloadable add-on modules. [Ivo]
 
 Changes in Achievo 0.9.1
 ------------------------
-+ Added form based login, so Achievo should now work with php running as a 
++ Added form based login, so Achievo should now work with php running as a
   cgi-binary. [Martin]
 + Added todo history. [Daniel]
 + Added initial version of resource planning feature. [Ludo]
@@ -387,11 +387,11 @@ Changes in Achievo 0.9.1
   record at the same time). [Peter]
 + Added Chinese language file. [Xiaogang]
 + Added Danish language file. [Morten]
-+ Added 'default' screen to menuitems. (brings back 'one click' 
++ Added 'default' screen to menuitems. (brings back 'one click'
   timeregistration) [Ivo]
 + Added search box to the top frame (doesn't find anything yet though). [Ivo]
 + Added multiline select to extended search feature. (bug #30) [Ivo]
-* Changed include structure (include classes only when needed), resulting in 
+* Changed include structure (include classes only when needed), resulting in
   better performance. [Ivo]
 * Achievo now works with allow_call_time_pass_reference=Off in php.ini. [Ivo]
 * Achievo no longer behaves weird when having multiple open browser windows.
@@ -403,12 +403,12 @@ Changes in Achievo 0.9.1
 Changes in Achievo 0.9.0
 ------------------------
 + Re-enabled all 0.7.3 unstable features that were turned off for the stable
-  0.8.0 release: 
+  0.8.0 release:
   finance menu (billing)
-  cost registration 
-  scheduler 
+  cost registration
+  scheduler
   postgres/oracle database install files.
-+ Added a Personal Information Manager which is now the default startup 
++ Added a Personal Information Manager which is now the default startup
   screen.
 * Bugfixes to the scheduler.
 * Bugfixes to the billing section (still broken though).
@@ -424,7 +424,7 @@ Changes in Achievo 0.8.4
 ------------------------
 * Fixed bug in javascript include which caused date input to malfunction
   on PHP versions older than 4.1.0. (bug #62 and #63)
-* Fixed bug: downloading fileversion of hoursurvey from an https server 
+* Fixed bug: downloading fileversion of hoursurvey from an https server
   with IE6 should now work again. (bug #57)
 * Fixed sql error when editing hour entry that used a phase which was
   deleted. (bug #15)
@@ -440,7 +440,7 @@ Changes in Achievo 0.8.3
 
 Changes in Achievo 0.8.2
 ------------------------
-* Security bugfix: Achievo releases 0.7.0 to 0.9.1 contain a vulnerability 
+* Security bugfix: Achievo releases 0.7.0 to 0.9.1 contain a vulnerability
   that allows users to execute arbitrary code on any Achievo installation.
 
 Changes in Achievo 0.8.1
@@ -458,7 +458,7 @@ Changes in Achievo 0.8.1
 
 Changes in Achievo 0.8.0
 ------------------------
-* Language files now generated by Achievo Translation Tool. 
+* Language files now generated by Achievo Translation Tool.
 * Updated all source to reflect achievo.com -> achievo.org move.
 
 Changes in Achievo 0.8.RC2
@@ -490,7 +490,7 @@ Changes in Achievo 0.8.RC1
 * Fixed a Daylight Savings Time bug in time registration.
 * Fixed bug in previous/next day links in time registration.
 * Fixed validation of activities that have 'remark required' option checked.
-* Fixed bug in time registration that allowed hours to be booked on a locked 
+* Fixed bug in time registration that allowed hours to be booked on a locked
   week in some cases.
 * Fixed some small other bugs and typos.
 - Removed unstable 0.7.* features (costregistration, schedular, finance menu).
@@ -506,10 +506,10 @@ Changes in Achievo 0.7.3
 + Added configuration options for time registration.
 + Added CSV export function to hoursurvey.
 + Added finance menu (not fully functional yet).
-+ Added employee contracts. 
++ Added employee contracts.
 + Added cron script for checking incomplete timeregistration.
 + Added customer contracts.
-+ Added an extended search feature for all views. 
++ Added an extended search feature for all views.
 + Added alphabetical indexes to employee, customer and project views.
 + Added external module API.
 + Added Hungarian language files.
@@ -539,9 +539,9 @@ Changes in Achievo 0.7.1
 Changes in Achievo 0.7
 ----------------------
 + Added support for the PostgreSQL database server.
-* Improvements to the atk backend: major performance improvements, 
+* Improvements to the atk backend: major performance improvements,
   a new module system and session support.
-+ Support for submenu's. 
++ Support for submenu's.
 - Achievo is now PHP4 based. PHP3 is no longer supported.
 
 Changes in Achievo 0.6.5
@@ -613,7 +613,7 @@ Changes in Achievo 0.5.9
 Changes in Achievo 0.5.8
 ------------------------
 + Added previous/next day feature to houradmin
-+ Better navigation in record lists (pagenumbers in addition to 
++ Better navigation in record lists (pagenumbers in addition to
   prev/next links)
 + Added Italian language file
 + Added Dutch language file
@@ -643,7 +643,7 @@ Changes in Achievo 0.5.6
 
 Changes in Achievo 0.5.5
 ------------------------
-* Fixed a bug in atk javascript that prevented houradministration 
+* Fixed a bug in atk javascript that prevented houradministration
   from working.
 * Fixed a bug in recent projects/phases dropdown that prevented
   houradministration from working.
@@ -666,7 +666,7 @@ Changes in Achievo 0.5.3
 
 Changes in Achievo 0.5.2
 ------------------------
-* Major enhancements to atk (again :) 
+* Major enhancements to atk (again :)
 + Search functionality for all node types
 + preliminary Oracle support (undocumented)
 + ported more old stuff to atk (again :)
@@ -685,8 +685,8 @@ Changes in Achievo 0.5
 ----------------------
 * Major step towards new base code. Eventually all current features
   will be ported to the new, more flexible, system. With the new system
-  it will be easier to implement new features and new modules. The 
-  application core logic is now separated into a separate codebase, 
+  it will be easier to implement new features and new modules. The
+  application core logic is now separated into a separate codebase,
   called atk.
 + Hoursurvey now has a line with the total time.
 - config_activities is no longer used. If you don't want activitybased
@@ -701,14 +701,14 @@ Changes in Achievo 0.5
 
 Changes in Achievo 0.4.2
 ------------------------
-* Fixed some localization bugs 
+* Fixed some localization bugs
 * Achievo now works under PHP4 (some incompatibilityproblems)
 
 Changes in Achievo 0.4.1
 ------------------------
-+ Added german language file 
-* Users were unable to change their password. Fixed. 
-* Fixed an untranslated button 
++ Added german language file
+* Users were unable to change their password. Fixed.
+* Fixed an untranslated button
 
 Changes in Achievo 0.4
 ----------------------
