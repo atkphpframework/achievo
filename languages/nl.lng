@@ -269,6 +269,7 @@
   "nextday" => "Dag verder",
   "nextweek" => "Week verder",
   "no_appointments" => "Geen afspraken",
+  "no_billing_period" => "Geen facturatie",
   "nonactive" => "Non-aktief",
   "nophasesdefined" => "Het project heeft geen fasen!",
   "normal" => "Normaal",

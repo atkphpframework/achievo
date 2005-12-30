@@ -267,6 +267,7 @@
   "nextday" => "Next day",
   "nextweek" => "Next week",
   "no_appointments" => "No appointments",
+  "no_billing_period" => "No billing period",
   "nonactive" => "Non-active",
   "nophasesdefined" => "The project does not have any phases!",
   "normal" => "Normal",
