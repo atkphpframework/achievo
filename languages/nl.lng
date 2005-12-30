@@ -133,7 +133,7 @@
   "evening" => "Avond",
   "extrefnum" => "Extern nummer",
   "extrefnumhinttext" => "Referentie nummer naar extern boekhoud-pakket",
-  "enddate_expire_warning" => "Als de einddatum van een contract verlopen is wordt bij het opslaan de status automatisch op 'Gearchiveerd' gezet!",
+  "enddate_expire_warning" => "Als de einddatum van een contract verlopen is wordt bij het opslaan de status automatisch op 'Gearchiveerd' gezet!<br />Alle gekoppelde projecten worden vervolgens op non-actief gezet!",
   "fax" => "Fax",
   "fgcolor" => "Tekstkleur",
   "firstname" => "Voornaam",
