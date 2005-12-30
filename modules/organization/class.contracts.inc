@@ -234,11 +234,10 @@ class contracts extends atkNode
     }
 	
 	/**
-   * Register scripts for initial visibility of warnings
+   * Register scripts for visibility of period_price
    *
    * Function registers a script that runs on page load.
-   * script checks if the method and/or status dropdownlists contain a legitimate value, if
-   * not: then show the warning message for that dropdownlist          
+   * script checks if the period price should be visible or not           
    */
   function registerLoadScripts()
   {
