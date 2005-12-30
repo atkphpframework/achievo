@@ -37,16 +37,19 @@ class contracts extends atkNode
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE, 20));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
+        
+    $this->add(new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST));
     
-    $attr = new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST);    
-//    $type 	= "document.getElementById('billing_type')";
-//    $ar_period = "document.getElementById('ar_billing_period')";
-//    $period = "document.getElementById('billing_period')";
-//    $attr->addOnChangeHandler("$ar_period.style.visibility=($type.options[$type.selectedIndex].value == 'period' ? 'visible' : 'hidden'); $period.selectedIndex = ($ar_period.style.visibility=='hidden') ? 0 : $period.selectedIndex;");
+	  //create sourceattrib
+	  $attr = new atkListAttribute("billing_period",array("no_billing_period","monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST);
+	  	  
+	  //add listener	  
+	  $attr->addOnChangeHandler("check_billing_period('billing_period', 'ar_period_price', 'period_price');");
+    
+    //Add billing_period
     $this->add($attr);
     
-    $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));   	
-    $this->add(new atkCurrencyAttribute("period_price", AF_OBLIGATORY|AF_HIDE_LIST,13,"",2));
+    $this->add(new atkCurrencyAttribute("period_price", AF_HIDE_LIST,13,"",2));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
@@ -101,6 +104,7 @@ class contracts extends atkNode
  		//Add link to result
     return $result."&nbsp;&nbsp;&nbsp;".href($select,atktext("selectandaddnewproject","organization","contracts"))."<br />";  	
   }
+  
     
    /**
    * Make the dropdownlist show an 'empty' option.
@@ -116,28 +120,74 @@ class contracts extends atkNode
   	$attr = &$this->getAttribute("contracttype");
   	
   	//Check if the behaviour change is actually needed.
-  	if($this->isConfigValue("list_obligatory_null_item", false) && ($attr->hasFlag(AF_OBLIGATORY)))//yes needed
-  	{
+  	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
+  	{  		
   		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.				
-  		$this->setConfigValue("list_obligatory_null_item", true);  					
+  		$attr->m_flags ^= AF_OBLIGATORY;
 			$result = $attr->edit($record, $prefix, $mode);
 			//Change back to normal behaviour
-			$this->setConfigValue("list_obligatory_null_item", false);  					
+			$attr->m_flags |= AF_OBLIGATORY;
 			return $result;
   	}
   	else   //not needed
 			return $attr->edit($record, $prefix, $mode);  	
   }
   
-  function isConfigValue($tag, $value)
-  {
-  	return ($GLOBALS["config_".$tag] == $value) ? true : false;
+  /**
+   * Make the dropdownlist show an 'empty' option.
+   *
+   * Hack! Needed to make the dropdownlist show an 'empty' option, even though the field is obligatory.
+   * todo: remove this when atk has a feature for this.
+   *
+   * @param type name description
+   * @return type description
+   */
+  function customer_edit($record, $prefix="", $mode="")
+  { 
+  	$attr = &$this->getAttribute("customer");
+  	
+  	//Check if the behaviour change is actually needed.
+  	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
+  	{  		
+  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.				
+  		$attr->m_flags ^= AF_OBLIGATORY;
+			$result = $attr->edit($record, $prefix, $mode);
+			//Change back to normal behaviour
+			$attr->m_flags |= AF_OBLIGATORY;
+			return $result;
+  	}
+  	else   //not needed
+			return $attr->edit($record, $prefix, $mode);  	
+  }
+    
+   /**
+   * Make the dropdownlist show an 'empty' option.
+   *
+   * Hack! Needed to make the dropdownlist show an 'empty' option, even though the field is obligatory.
+   * todo: remove this when atk has a feature for this.
+   *
+   * @param type name description
+   * @return type description
+   */
+  function billing_period_edit($record, $prefix="", $mode="")
+  { 
+  	$attr = &$this->getAttribute("billing_period");
+  	
+  	//Check if the behaviour change is actually needed.
+  	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
+  	{  		
+  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.				
+  		$attr->m_flags ^= AF_OBLIGATORY;
+			$result = $attr->edit($record, $prefix, $mode);
+			//Change back to normal behaviour
+			$attr->m_flags |= AF_OBLIGATORY;
+			return $result;
+  	}
+  	else   //not needed
+			return $attr->edit($record, $prefix, $mode);  	
   }
   
-  function setConfigValue($tag, $value)
-  {  	
-		$GLOBALS["config_".$tag] = $value;
-  }
+
   
   function action_linkproject(&$handler)
  	{	
@@ -167,9 +217,51 @@ class contracts extends atkNode
 	  {
 	    $this->addFilter("contract.status='active'");
 	  }
-	
+		  
 	  return $handler->action_admin();
 	}
+	
+	function action_edit(&$handler)
+    {    	     
+    	$this->registerLoadScripts();
+      return $handler->action_edit();
+    }
+    
+    function action_add(&$handler)
+    {
+    	$this->registerLoadScripts();
+    	return $handler->action_add();    	
+    }
+	
+	/**
+   * Register scripts for initial visibility of warnings
+   *
+   * Function registers a script that runs on page load.
+   * script checks if the method and/or status dropdownlists contain a legitimate value, if
+   * not: then show the warning message for that dropdownlist          
+   */
+  function registerLoadScripts()
+  {
+  	$page = &$this->getPage();      
+    $page->register_scriptcode("
+      function check_billing_period(srcid, destid, destVarId) {
+        var src = document.getElementById(srcid);
+    		var dest_ar = document.getElementById(destid);  
+    		var dest = document.getElementById(destVarId);      		  		
+    		if(src.options[src.selectedIndex].value == 'no_billing_period')
+    		{
+	    		dest_ar.style.visibility = 'hidden';
+    			dest.value = '';
+    		}
+    		else
+    		{
+    			dest_ar.style.visibility = 'visible';
+    		}
+      }
+    ");      
+    
+    $page->register_loadscript("check_billing_period('billing_period', 'ar_period_price', 'period_price');");
+  }
 	
 	function adminFooter()
 	{
