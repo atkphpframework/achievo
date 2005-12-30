@@ -48,6 +48,7 @@ class contracts extends atkNode
     $this->add(new atkListAttribute("billing_period",array("monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));   	
     $this->add(new atkCurrencyAttribute("period_price", AF_OBLIGATORY|AF_HIDE_LIST,13,"",2));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
     $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
@@ -69,8 +70,10 @@ class contracts extends atkNode
     $this->add(new atkManyToOneRelation("editedby", "employee.employee", AF_HIDE_LIST | AF_HIDE_ADD | AF_LIST_NO_NULL_ITEM ));
     $this->add(new atkTextAttribute("comment", TEXT_LARGE, AF_HIDE_LIST | AF_HIDE_ADD));
     
+    
+    
     $this->setTable("contract","contract");
-    $this->setOrder("startdate");
+    $this->setOrder("startdate");    
   }
     
   /**
@@ -206,10 +209,36 @@ class contracts extends atkNode
   // but for that the updateDb problem should be found.
   function postUpdate($rec)
   {   	
-  	//When status changes to 'archived' All linked projects are set to non-active
-  	if($rec['status'] == 'archived')
+  	$expired = false;
+  	
+  	//Does this contract have an enddate?
+  	if($rec['enddate'] != array() || !isset($rec['enddate']))
+  	{
+	  	//get current date as a timestamp
+	  	$now = mktime(12,0,0,date("m"),date("d"),date("Y"));
+	  	
+	  	//get enddate of record as a timestamp.
+	  	$enddate = mktime(12,0,0,$rec['enddate']['month'],$rec['enddate']['day'],$rec['enddate']['year']);	  	  	
+  	
+	  	//did it expire?
+  		$expired = ($now > $enddate);
+  	}
+  	
+  	  	
+  	//When status changes to 'archived' All linked projects are set to non-active.
+  	//Or if the enddate has passed, all linked projects are set to non-active as well.
+  	if(($rec['status'] == 'archived') || $expired)
   	{
   		$db = &atkGetDb();
+  		
+  		//If contract expired, set its status to archived
+  		if($expired)
+  		{
+  			//set contract status to archived
+  			$query = "UPDATE contract SET contract.status='archived' WHERE contract.id='".$rec['id']."'";  			
+  			$db->query($query);
+  		}	
+  		
   		$contractid = $rec['id'];
   		$node = &getNode("project.project");
   	
@@ -217,10 +246,10 @@ class contracts extends atkNode
   		$projects = $node->selectDb("(project.contract_id='$contractid' AND project.status='active')","","","",array("id","name"));			
   		foreach($projects as $record)
   		{  			
-  			$query = "UPDATE project SET project.status='nonactive' WHERE project.id='".$record['id']."'";  			
-  			$db->query($query);				
+  			$query = "UPDATE project SET project.status='nonactive' WHERE project.id='".$record['id']."'";  			  		
+  			$db->query($query);
   		}  		
-  	}
+  	}  	
   	return true;
   }
 }

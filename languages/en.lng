@@ -131,6 +131,7 @@
   "evening" => "Evening",
   "extrefnum" => "External reference number",
   "extrefnumhinttext" => "Reference number in external accounting software",
+  "enddate_expire_warning" => "If the enddate of this contract has expired, when saving the contract the status will automatically be set to 'archived'!",
   "fax" => "Faxnumber",
   "fgcolor" => "Textcolor",
   "firstname" => "First name",
