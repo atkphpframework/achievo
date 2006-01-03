@@ -166,6 +166,7 @@
   "hoursurvey" => "Time Survey",
   "id" => "ID",
   "initial_planning" => "Initial planning",
+  "initials" => "Initials",
   "invoice_address" => "Address",
   "invoice_address2" => "Address 2",
   "invoice_city" => "City",

@@ -24,8 +24,6 @@
   "activityid" => "Activiteit",
   "activitytemplate" => "Activiteiten template",
   "activitytimedistribution" => "Per activiteit",
-  "" => "",
-  
   "addnewdependency" => "Voeg een afhankelijkheid toe",
   "address" => "Adres",
   "address2" => "Adres 2",
@@ -168,6 +166,7 @@
   "hoursurvey" => "Uren overzicht",
   "id" => "ID",
   "initial_planning" => "Initiele planning",
+  "initials" => "Initialen",
   "invoice_address" => "Adres",
   "invoice_address2" => "Adres 2",
   "invoice_city" => "Stad",
