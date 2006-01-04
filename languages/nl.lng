@@ -392,7 +392,7 @@
   "scheduletype" => "Afspraaktype",
   "search_again" => "Opnieuw zoeken",
   "search_emptysearchstring" => "Geen trefwoord opgegeven.",
-  "search_noresults" => "Je zoekoprdacht '%s' leverde geen resultaat op.",
+  "search_noresults" => "Je zoekopdracht '%s' leverde geen resultaat op.",
   "searchallprojects" => "Zoek in alle projecten",
   "searchallprojectsphases" => "Zoek in alle projecten en fasen",
   "searchbyprojectorphase" => "U kunt zoeken per project, of per fase van een project",
