@@ -28,7 +28,7 @@ class project_personcontact extends atkNode
     $this->setSecurityAlias("project.project"); // if you may edit the project, you may also add contactpersons to it.
     $this->setTable("project_person", "project_person");
   }
-  
+
   function action_delete(&$handler)
   {
     // When deleting, the above filter won't work. But that doesn't matter, we
@@ -37,6 +37,29 @@ class project_personcontact extends atkNode
     return $handler->action_delete();
   }
 
+  function assignDocumentVars(&$handler, &$documentWriter, $selector)
+  {
+    // Load the selected record from the database
+    $project_personcontactrecord = $this->selectDb($selector);
+
+    // Assign the referenced project
+    $projectnode = &getNode("project.project");
+    $projectrecord = $projectnode->selectDb("project.id='".$project_personcontactrecord[0]["projectid"]["id"]."'");
+    $handler->assignDocumentSingleRecord($documentWriter, $projectnode, $projectrecord[0], "project_");
+
+    // Assign the referenced personcontact
+    $personcontactnode = &getNode("project.select_contact");
+    $personcontactrecord = $personcontactnode->selectDb("person.id='".$project_personcontactrecord[0]["personid"]["id"]."'");
+    $handler->assignDocumentSingleRecord($documentWriter, $personcontactnode, $personcontactrecord[0], "person_");
+
+    // Assign the referenced coordinator
+    $employeenode = &getNode("employee.employee");
+    $coordinatorrecord = $employeenode->selectDb("person.id='".$projectrecord[0]["coordinator"]["id"]."'");
+    $handler->assignDocumentSingleRecord($documentWriter, $employeenode, $coordinatorrecord[0], "coordinator_");
+
+    // Also assign the generic (date) vars tot the documentWriter
+    $handler->assignDocumentGenericVars($documentWriter);
+  }
 }
 
 ?>
