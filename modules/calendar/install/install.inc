@@ -8,6 +8,6 @@
 
   $setup->addColumn("person", "calendar_defaultuserview", "char(1)", true);
 
-  $setup->setVersion(3);
+  $setup->setVersion(4);
 
 ?>
