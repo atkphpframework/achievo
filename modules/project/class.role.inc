@@ -1,52 +1,64 @@
 <?php
+  /**
+   * Role class file
+   *
+   * This class is used to define roles for persons.
+   * At this moment it is not possible to delete roles that
+   * are referenced in one or more project_person records
+   *
+   * @package achievo
+   * @subpackage modules
+   *
+   * @author L. Willems  <lineke@ibuildings.nl>
+   *
+   * @copyright (c) 2006 Ibuildings.nl BV
+   * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
+   *
+   * @version $Revision$
+   * $Id$
+   */
 
-/**
- * Module Organization
- * Class role
- *
- * This class is used to define roles for persons.
- * At this moment it is not possible to delete roles.
- *
- * $Id$
- * @author L. Willems  <lineke@ibuildings.nl>
- * @version $Revision$
- *
- */
-
-class role extends atkNode
-{
-  function role()
+  /**
+   * The node class for Role.
+   *
+   * @author L. Willems  <lineke@ibuildings.nl>
+   * @package achievo
+   * @subpackage modules
+   */
+  class role extends atkNode
   {
-    $this->atkNode("role");
 
-    $this->add(new atkAttribute("id", AF_AUTOKEY));
-    $this->add(new atkAttribute("name",AF_OBLIGATORY));
-
-    $this->setTable("role");
-    $this->setOrder("name");
-  }
-
-  function descriptor_def()
-  {
-    return text("[name]");
-  }
-
-  function descriptor($record)
-  {
-    return text($record["name"]);
-  }
-  
-  function recordActions($record, &$actions)
-  {
-    $db = &atkGetDb();
-    $role_id = $record["id"];
-    // Check if role is being used.
-    $recs = $db->getrows("select count(1) as cnt from project_person where role='".$role_id."'");
-    if ($recs[0]["cnt"]>0)
+    /**
+     * Constructor
+     */
+    function role()
     {
-      unset($actions["delete"]);
+      $this->atkNode("role");
+
+      $this->add(new atkAttribute("id", AF_AUTOKEY));
+      $this->add(new atkAttribute("name",AF_FORCE_LOAD|AF_OBLIGATORY));
+
+      $this->setTable("role");
+      $this->setOrder("role.name ASC");
+      $this->setDescriptorTemplate("[name]");
+    }
+
+    /**
+     * Determines the set of actions that can be performed on a record
+     *
+     * @param Array $record Record containing role data for which the actions should be determined
+     * @param Array $actions Array containing the default set of records which can be modified as it is passed by reference
+     */
+    function recordActions($record, &$actions)
+    {
+      $db = &atkGetDb();
+      $role_id = $record["id"];
+      // Check if role is being used.
+      $recs = $db->getrows("select count(1) as cnt from project_person where role='".$role_id."'");
+      if ($recs[0]["cnt"]>0)
+      {
+        unset($actions["delete"]);
+      }
     }
   }
-}
-
 ?>
