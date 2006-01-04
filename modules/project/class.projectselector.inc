@@ -36,6 +36,7 @@
     {
       $user = getUser();
       $query->addJoin("project_person", "members", "members.projectid = project.id", true);      
+      $query->addGroupBy("project.id");
       $query->addCondition("(members.personid = ".$user["id"]." OR project.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")");
     }
   }
