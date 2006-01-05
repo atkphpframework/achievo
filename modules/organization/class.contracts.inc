@@ -303,7 +303,7 @@ class contracts extends atkNode
   	$expired = false;
   	
   	//Does this contract have an enddate?
-  	if($rec['enddate'] != array() || !isset($rec['enddate']))
+  	if($rec['enddate'] != array() && isset($rec['enddate']))
   	{
 	  	//get current date as a timestamp
 	  	$now = mktime(12,0,0,date("m"),date("d"),date("Y"));
