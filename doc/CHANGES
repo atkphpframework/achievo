@@ -11,6 +11,8 @@ Changes in Achievo 1.2RC1
 * When saving a contract with the status set to 'archived' the linked projects are
 	all set to status 'nonactive'. [Dennis]	
 + Added cronjob for checking expiration dates of usercontracts. [Dennis]
++ Added cronjob to check expired contracts and change their status. 
+  The status of active linked projects is also changed [Dennis]
 + Added attributes (billing_type, aftercalculation and priceperhour) in
   organization contracts. [Dennis]
 + Added installation support for PostgreSQL. [Peter]
