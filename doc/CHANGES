@@ -53,6 +53,10 @@ Changes in Achievo 1.2RC1
 * When editing a contract, existing projects can be linked to the contract.
   [Dennis]
 * Made some fields obligatory and some non-obligarory. [Dennis]
+* In contracts added option 'no_billing_period'. [Dennis]
+* In contracts added empty options for 'customer' and 'billing_period'. [Dennis]
+* In contracts added javascript for dynamically hiding 'period_price' when 
+  choosing 'no_billing_period'. [Dennis]
 * Fixed bug in setup module that installed patches in the wrong order if there
   are 10 or more patches. [Dennis, Ivo]
 * Updated Italian language file. [Fabrizio]
