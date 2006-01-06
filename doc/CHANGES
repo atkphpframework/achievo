@@ -12,7 +12,10 @@ Changes in Achievo 1.2RC1
 	all set to status 'nonactive'. [Dennis]	
 + Added cronjob for checking expiration dates of usercontracts. [Dennis]
 + Added cronjob to check expired contracts and change their status. 
-  The status of active linked projects is also changed [Dennis]
+  The status of active linked projects is also changed 
+  The cronjob also checks contracts that are not active (i.e. archived or
+  nonactive) and makes sure all linked projects have the status 
+  'nonactive' [Dennis]
 + Added attributes (billing_type, aftercalculation and priceperhour) in
   organization contracts. [Dennis]
 + Added installation support for PostgreSQL. [Peter]
