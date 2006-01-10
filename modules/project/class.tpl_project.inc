@@ -3,7 +3,7 @@
 useattrib("project.tpl_dependencyattrib");
 useattrib("atktextattribute");
 userelation("atkonetomanyrelation");
-    
+
 class tpl_project extends atkNode
 {
   function tpl_project()
@@ -18,15 +18,13 @@ class tpl_project extends atkNode
 
     $this->setTable("tpl_project","tpl_project");
     $this->setOrder("name");
-
-    atkdebug("tpl_project::tpl_project()");
   }
 
   function descriptor_def()
   {
     return "[name]";
   }
-  
+
   function initial_values()
   {
     return array("status"=>"active");
