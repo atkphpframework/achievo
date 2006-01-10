@@ -36,7 +36,7 @@
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.
-      if (!$_SERVER['PWD'])
+      if (!isset($_SERVER["PWD"]))
         $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
       else
         $reportnodetype = "";
@@ -63,7 +63,7 @@
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
-      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
+      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
 
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
       $this->add(new atkListAttribute("timereg_limit", array("all_users", "members_only"), array(PRJ_TIMEREG_ALL_USERS, PRJ_TIMEREG_MEMBERS_ONLY), AF_HIDE_ADD|AF_HIDE_LIST), "planning");
@@ -94,8 +94,6 @@
 
       $this->setOrder("name");
       $this->setIndex("name");
-
-      atkdebug("project::project()");
     }
 
     function graph_topprojects($params)
