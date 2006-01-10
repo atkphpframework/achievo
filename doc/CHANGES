@@ -6,15 +6,11 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.2RC1
 ---------------------------
-* Contracts that have expired are automatically set to status 'archived' at
-	save-time. Also, its linked projects will be set to status 'nonactive' [Dennis]
-* When saving a contract with the status set to 'archived' the linked projects are
-	all set to status 'nonactive'. [Dennis]	
 + Added cronjob for checking expiration dates of usercontracts. [Dennis]
-+ Added cronjob to check expired contracts and change their status. 
-  The status of active linked projects is also changed 
++ Added cronjob to check expired contracts and change their status.
+  The status of active linked projects is also changed
   The cronjob also checks contracts that are not active (i.e. archived or
-  nonactive) and makes sure all linked projects have the status 
+  nonactive) and makes sure all linked projects have the status
   'nonactive' [Dennis]
 + Added attributes (billing_type, aftercalculation and priceperhour) in
   organization contracts. [Dennis]
@@ -43,6 +39,15 @@ Changes in Achievo 1.2RC1
 + Added deliverables and phase dependencies to Gantt chart. [Ivo]
 + Added projectstatus report. [Ivo]
 + Added Master Gantt chart. [Ivo]
++ an e-mail will be sent to project coordinators as soon as an employee
+  registers time on a phase that hasn't started yet, or a phase that depens
+  on a non-complete deliverable.
++ Added an initials field to persons (contacts and employees). [Guido]
+* Contracts that have expired are automatically set to status 'archived' at
+  save-time. Also, its linked projects will be set to status 'nonactive'.
+  [Dennis]
+* When saving a contract with the status set to 'archived' the linked
+  projects are all set to status 'nonactive'. [Dennis]
 * Upgraded to ATK5 backend. [Ivo, Sandy, Dennis]
 * Improved themability. [Boy]
 * Fixed small bug in displaying the weeknumber on windows in the timereg
@@ -53,21 +58,25 @@ Changes in Achievo 1.2RC1
 * Fixed: postAdd in modules/calender/class.schedule.inc should return a
   boolean. [Yury]
 * Fixed several Gantt chart bugs. [Ivo]
-* When editing a contract, a new project can be created which is then automatically
-  added to the contract. [Dennis]
+* When editing a contract, a new project can be created which is then
+  automatically added to the contract. [Dennis]
 * When editing a contract, existing projects can be linked to the contract.
   [Dennis]
 * Made some fields obligatory and some non-obligarory. [Dennis]
 * In contracts added option 'no_billing_period'. [Dennis]
-* In contracts added empty options for 'customer' and 'billing_period'. [Dennis]
-* In contracts added javascript for dynamically hiding 'period_price' when 
+* In contracts added empty options for 'customer' and 'billing_period'.
+  [Dennis]
+* In contracts added javascript for dynamically hiding 'period_price' when
   choosing 'no_billing_period'. [Dennis]
 * Fixed bug in setup module that installed patches in the wrong order if there
   are 10 or more patches. [Dennis, Ivo]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
-* Updated Dutch language file [Dennis]
+* Updated Dutch language file. [Dennis]
+* Replaced some deprecated text() calls with atktext(). [Guido]
+* Resolved some php notices. [Guido]
+* Removed some unused atkdebug commands. [Guido]
 
 Changes in Achievo 1.1.0
 ------------------------
