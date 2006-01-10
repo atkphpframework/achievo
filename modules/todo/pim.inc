@@ -36,7 +36,7 @@
     }
     $todo_assignedbyme.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add",atktext('add'),SESSION_NESTED);
 
-    $res.= '<table border="0">';
+    $res = '<table border="0">';
     $res.= '<tr>';
     $res.= '<td valign="top">'.$todo_assignedtome.'</td>';
     $res.= '</tr><tr><td>&nbsp;</td></tr><tr>';

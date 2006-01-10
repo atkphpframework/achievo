@@ -63,7 +63,7 @@
     }
     $todayschedule.='<br>'.href("dispatch.php?atknodetype=calendar.schedule&atkaction=admin",atktext('pim_gotoschedule'),SESSION_NESTED);
 
-    $res.= '<table border="0" cellpadding="2">';
+    $res = '<table border="0" cellpadding="2">';
     $res.= '<tr>';
     $res.= '<td width="15">&nbsp;</td>'; // spacer
     $res.= '<td valign="top">'.$todayschedule.'</td>';
