@@ -18,18 +18,18 @@
     if (count($recs)>0)
     {
       $recordlist = &atknew("atk.recordlist.atkrecordlist");
-      $todayhours.= $recordlist->render($hoursnode, $recs, $actions);
+      $todayhours = $recordlist->render($hoursnode, $recs, $actions);
     }
     else
     {
-      $todayhours.= atktext('pim_timeregistration_empty').'<br>';
+      $todayhours = atktext('pim_timeregistration_empty').'<br>';
     }
     if ($pda) $nodetype = "timereg.hourspda";
     else $nodetype = "timereg.hours";
     $todayhours.= '<br>'.href("dispatch.php?atknodetype=$nodetype&atkaction=add",atktext('add'),SESSION_NESTED);
     if (!$pda) $todayhours.= ' &nbsp; '.href("dispatch.php?atknodetype=$nodetype&atkaction=admin",atktext('pim_gototimeregistration'),SESSION_NESTED);
 
-    $res.= '<table border="0">';
+    $res = '<table border="0">';
     $res.= '<tr>';
     if (!$pda) $res.= '<td width="15">&nbsp;</td>'; // spacer
     $res.= '<td valign="top">'.$todayhours.'</td>';
