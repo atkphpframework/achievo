@@ -63,7 +63,7 @@
 
       $this->add(new atkOneToManyRelation("phaseplanning", "project.phaseplanning", "phaseid", AF_HIDE_LIST));
 
-      $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", FSA_MULTISELECT, AF_HIDE_ADD|AF_BLANK_LABEL, 20));
+      $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL, 20));
 
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
