@@ -85,6 +85,24 @@ class atkProjectPhaseAttribute extends atkAttribute
     if (count($phaseid_arr)>0)
     {
       $activities = $this->getActivities($phaseid_arr);
+      
+      //create an empty element
+      $emptyelement = array (
+                          'phaseid' => 0,
+                          'id' => '0',
+                          'name' => atktext('no_activity_selected',"project","projects"),
+                          'description' => '',
+                          'remarkrequired' => '0',
+                      );      
+      
+      //add an empty action option for each phase
+      foreach($phases as $phase)
+      {
+        //Link this empty option to a phase
+        $emptyelement["phaseid"] = $phase["id"];    
+        array_unshift($activities,$emptyelement);
+      }
+      
       for ($i=0, $_i=count($activities);$i<$_i;$i++)
       {
         $phasearray[$activities[$i]["phaseid"]][] = $activities[$i];
@@ -103,7 +121,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     $result.= '<option value="">' . text('select');  
     
     for ($i=0;$i<count($phases);$i++)
-    {
+    {      
       $result .= '<option value="'.$phases[$i]["id"].'" ';
       
       // de juiste default selecteren

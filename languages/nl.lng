@@ -269,6 +269,7 @@
   "next_month" => "Volgende maand",
   "nextday" => "Dag verder",
   "nextweek" => "Week verder",
+  "no_activity_selected" => "Geen activiteit geselecteerd",
   "no_appointments" => "Geen afspraken",
   "no_billing_period" => "Geen facturatie",
   "nonactive" => "Non-aktief",

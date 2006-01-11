@@ -269,6 +269,7 @@
   "next_month" => "Next month",
   "nextday" => "Next day",
   "nextweek" => "Next week",
+  "no_activity_selected" => "No activity selected",
   "no_appointments" => "No appointments",
   "no_billing_period" => "No billing period",
   "nonactive" => "Non-active",
