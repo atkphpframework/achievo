@@ -63,18 +63,7 @@ class contracts extends atkNode
         
     //The linkproject action is allowed by all
     $this->addAllowedAction("linkproject");    
-    
-    //@todo translate all these attrs with translation tool, using module 'core'    
-    $this->add(new atkDateAttribute("contract_date", "F d Y", "d F Y", 0, 0, AF_HIDE_LIST | AF_HIDE_ADD));        
-    $this->add(new atkDummyAttribute("extrefnumhint",atktext("extrefnumhinttext","organization","contracts"), AF_HIDE_LIST | AF_HIDE_ADD));
-    $this->add(new atkAttribute("extrefnum", AF_HIDE_LIST | AF_HIDE_ADD));
-    $this->add(new atkNumberAttribute("price", AF_HIDE_LIST | AF_HIDE_ADD, 10, 2));
-    $this->add(new atkListAttribute("pricepayed", array("no","yes"), array(0,1), AF_HIDE_LIST | AF_HIDE_ADD | AF_LIST_NO_NULL_ITEM));
-    $this->add(new atkManyToOneRelation("editedby", "employee.employee", AF_HIDE_LIST | AF_HIDE_ADD | AF_LIST_NO_NULL_ITEM ));
-    $this->add(new atkTextAttribute("comment", TEXT_LARGE, AF_HIDE_LIST | AF_HIDE_ADD));
-    
-    
-    
+        
     $this->setTable("contract","contract");
     $this->setOrder("startdate");    
   }
