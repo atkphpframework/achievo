@@ -250,7 +250,7 @@ class hours extends atkNode
     if ($this->m_lock != "")
     {
       // This week is locked..
-      $flags |= NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT;
+      $this->addFlag(NF_NO_ADD|NF_NO_DELETE|NF_NO_EDIT);
     }
   }
 
