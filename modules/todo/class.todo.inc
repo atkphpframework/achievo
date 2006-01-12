@@ -53,6 +53,11 @@ class todo extends atkNode
                  "priority"=>3);
   }
 
+  function title_display($record)
+  {
+    return href(dispatch_url("todo.todo", "edit", array("atkselector"=>"todo.id='".$record["id"]."'")), $record["title"], SESSION_NESTED);
+  }
+
   // overide display of priority (set high to a red font)
   function priority_display($rec)
   {
