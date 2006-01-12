@@ -27,7 +27,7 @@ class person extends atkNode
     $this->atkNode($name, $flags|NF_ADD_LINK);
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("title_id", "person.title", AF_RELATION_AUTOLINK|AF_HIDE_LIST));
+    $this->add(new atkManyToOneRelation("title_id", "person.title", AF_RELATION_AUTOLINK|AF_HIDE_LIST|AF_OBLIGATORY));
     $this->add(new atkAttribute("lastname",AF_SEARCHABLE|AF_OBLIGATORY, 50));
     $this->add(new atkAttribute("initials", AF_HIDE_LIST|AF_FORCE_LOAD, 50));
     $this->add(new atkAttribute("firstname",AF_HIDE_LIST|AF_FORCE_LOAD, 50));
