@@ -74,6 +74,11 @@
       return "[name]";
     }
 
+    function name_display($record)
+    {
+      return href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $record["name"], SESSION_NESTED);
+    }
+
     function initial_values()
     {
       return Array("status"=>"active");
