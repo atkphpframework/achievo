@@ -116,8 +116,8 @@ class to_date extends atkDateAttribute
     $this->atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_NO_LABEL|AF_HIDE);
   }
 
-  function load() {}
-  function store() {}
+  function load() { return array();}
+  function store() { return true;}
   function addtoeditarray() {}
 }
 
@@ -134,8 +134,8 @@ class to_time extends atkTimeAttribute
     return parent::display($record);
   }
 
-  function load() {}
-  function store() {}
+  function load() { return array();}
+  function store() { return true;}
   function getOrderByStatement(){}
 }
 
