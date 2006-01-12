@@ -75,8 +75,8 @@
       $this->add(new atkOneToManyRelation("attendees", "calendar.schedule_attendee", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
 
       $this->add(new atkDummyAttribute("hint", atktext("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
-      $this->add(new atkFuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", FSA_MULTISELECT));
-      $this->add(new atkFuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
+      $this->add(new atkFuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees","multiselect"));
+      $this->add(new atkFuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", "multiselect"));
 
       $this->add(new atkOneToManyRelation("notes", "calendar.schedule_notes", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE_ADD|AF_OBLIGATORY));
