@@ -119,10 +119,13 @@
 
     function initial_values()
     {
+      //get initial status
+      $initialstatus = atkConfig::get("calendar", "calendar_schedule_defaultstatus","unconfirmed");
+      
       $user = getUser();
       $initial["owner"]["id"] = $user["id"];
       $initial["publicitem"] = 1;
-      $initial["status"] = "unconfirmed";
+      $initial["status"] = $initialstatus;
 
       if ($this->m_viewdate!="")
       {
