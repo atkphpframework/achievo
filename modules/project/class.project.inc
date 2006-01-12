@@ -483,6 +483,8 @@
       {
         $this->_addMemberRecord($rec["id"], $members[$i]["id"], $role_id);
       }
+      
+      return true;
     }
 
     function fetchRoleId()
