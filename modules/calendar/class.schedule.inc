@@ -51,7 +51,7 @@
       else
       {
         $default_start_time = strftime("%H:%M");
-        $default_end_time = strftime("%H:%M", adodb_mktime(substr($default_start_time,0,2),substr($default_end_time,3,2)+30,0,1,1,2000));
+        $default_end_time = strftime("%H:%M", adodb_mktime(substr($default_start_time,0,2),substr($default_start_time,3,2)+30,0,1,1,2000));
       }
 
       $aItemBegin = array("08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30","24:00");
@@ -121,7 +121,7 @@
     {
       //get initial status
       $initialstatus = atkConfig::get("calendar", "calendar_schedule_defaultstatus","unconfirmed");
-      
+
       $user = getUser();
       $initial["owner"]["id"] = $user["id"];
       $initial["publicitem"] = 1;
