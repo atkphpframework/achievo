@@ -494,9 +494,12 @@
         }
       }
       
-			
+      //The id field needs to be added too, or else the dispatch url doesn't know which record to edit.			
+      if(!in_array("id",$col))      
+        $col[] = "id";
+      
       $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
-			      
+      			      
       if (moduleExists("billing"))
       {
          // todo, add columns with rate and costs (are stored flat in the table, no reason to perform calculations)
