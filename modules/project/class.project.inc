@@ -29,7 +29,9 @@
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST, 10));
 
-      $this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+      $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));      
+      $attr->setDestinationFilter("status='active'");
+      
       $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 5), "finance");
