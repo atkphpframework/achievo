@@ -43,7 +43,7 @@ Changes in Achievo 1.2RC1
   registers time on a phase that hasn't started yet, or a phase that depens
   on a non-complete deliverable.
 + Added an initials field to persons (contacts and employees). [Guido]
-+ Added ability to configure initial status of a scheduled item in 
++ Added ability to configure initial status of a scheduled item in
   calendar. [Dennis]
 * Contracts that have expired are automatically set to status 'archived' at
   save-time. Also, its linked projects will be set to status 'nonactive'.
@@ -187,7 +187,6 @@ Changes in Achievo 1.0.4
 * Updated Italian language file. [Andrea]
 * Updated German language file. (bug #267 & #268) [Christian]
 
->>>>>>> 4.91.2.123
 Changes in Achievo 1.0.3
 ------------------------
 + Added piecharts and textual stats for employees. [Ivo]
