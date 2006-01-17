@@ -36,7 +36,7 @@ class userprefs extends atkNode
     $this->add(new atkAttribute("userid", AF_HIDE));
     if (atkconfig("authentication")=="db")
     {
-      $this->add(new atkDummyAttribute("passwordexplanation", text("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkPasswordAttribute("password",AF_OBLIGATORY));
     }
     $themes = getThemes();
@@ -52,20 +52,20 @@ class userprefs extends atkNode
 
   function postUpdate($record)
   {
-    global $g_user, $g_sessionManager, $g_securityManager;    
+    global $g_user, $g_sessionManager, $g_securityManager;
 
     if($record["id"]==$g_user["id"])
     {
       // If the theme was updated, we must change it in the session (or you won't
       // see the update.
       $g_sessionManager->globalVar("atkTheme", $record["theme"], true);
-      
+
       // Also, if we edited userpreferences, then the current record
       // should be stored in the session as user record, so Achievo
       // will immediately start to use the new settings.
       $g_securityManager->reloadUser();
-      
-      // Also, we must refresh the screen.    
+
+      // Also, we must refresh the screen.
       echo '<script language="javascript">';
       echo 'parent.location = "index.php"';
       echo '</script>';
