@@ -89,6 +89,13 @@
       $functionlevelswitch =$g_sessionManager->pageVar("functionlevelswitch");
       $outputType =         $this->m_postvars["outputType"];
 
+      $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
+
+      foreach($externalHourSurveyColumns as $module => $attr)
+      {
+        eval("\$external$attr = '".$g_sessionManager->pageVar($attr)."';");
+      }
+
       if (empty($outputType))
       {
         $outputType=0;   //default=standard
@@ -207,7 +214,7 @@
 
       atkimport("atk.layout");
       $layout = &layout::getInstance();
-      
+
       if ($outputType==0)
       {
         $layout->initGUI();
@@ -237,6 +244,12 @@
         "day"=>substr($enddate,8,2)),
         "aggregate"=>$aggregate,
         "remark"=>$remark);
+
+        foreach ($externalHourSurveyColumns as $module => $attr)
+        {
+          $var = "external$attr";
+          $dummyrec[$attr] = $$var;
+        }
 
         $projectatt = new atkProjectAttribute('projectid');
 
@@ -358,6 +371,25 @@
         $layout->td(text('remark').': ');
         $layout->td($remarkattr->edit($dummyrec));
 
+        foreach ($externalHourSurveyColumns as $module => $attr)
+        {
+          $currentattr = &$hoursnode->getAttribute($attr);
+          $layout->output('</tr><tr>');
+          $layout->td('<hr>','colspan="2"');
+          $layout->output('</tr><tr>');
+          $layout->td(atktext($attr, $module).': ');
+
+          if (get_class($currentattr) == "atkboolattribute")
+          {
+            $output = '<select name="'.$attr.'"><option value="" selected>---</option><option value="0">'.atktext("no","atk").'</option><option value="1">'.atktext("yes","atk").'</option></select>';
+          }
+          else
+          {
+            $output = $currentattr->edit($dummyrec);
+          }
+          $layout->td($output);
+        }
+
         $layout->output('</tr><tr>');
         $layout->td('<hr>','colspan="2"');
         $layout->output('</tr>');
@@ -451,11 +483,18 @@
       //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
       if($department_name && $department_name != "all") $filter.=" AND userid.department='".escapeSQL($department_name)."'";
       if($functionlevelswitch && $functionlevelswitch != "all") $filter.=" AND userid.functionlevel='$functionlevelswitch'";
-      
+
+      foreach ($externalHourSurveyColumns as $module => $attr)
+      {
+        $var = "external$attr";
+        $value = $$var;
+        if (!empty($value)) $filter.=" AND hours.$attr = $value";
+      }
+
       // employee table is not yet added to the query. Force that by adding a manytoonerel,
       // so we display a users name.
       $hoursnode->add(new atkManyToOneRelation("userid", "employee.employee"));
-			
+
       // organization and person_organization tables are not yet added to the query.
       // Since this is a many:many thing between projects and organizations, with the
       // contactpersons als intermediairy, we have to add a special attribute which
@@ -465,7 +504,7 @@
         useattrib("project.filterprojectbyorganizationattrib");
         $hoursnode->add(new filterProjectByOrganizationAttrib($organizationid, $roleid, "B")); // the projectphaseattribute uses 'B' as alias for the project table.
       }
-      
+
 
       if ($nameswitch=="supervisor")
       {
@@ -478,28 +517,28 @@
       {
         if ($userid!="all") $filter.= " AND hours.userid ='$userid' ";
       }
-      
+
       $orderbystatement = array();
       if ($orderby)
       {
         foreach($orderby as $key => $itsOrderby)
         {
           if ($itsOrderby && $itsOrderby != "-")
-          {          	
+          {
 						//hack we need to add the tablename before the attribute. all attributes except for functionlevel has the table name hours
 						$itsOrderby = ($itsOrderby == "functionlevel") ? "person.".$itsOrderby : "hours.".$itsOrderby;
-						
+
             $orderbystatement[] = $itsOrderby . " " . $orderdirection[$key];
           }
         }
       }
-      
-      //The id field needs to be added too, or else the dispatch url doesn't know which record to edit.			
-      if(!in_array("id",$col))      
+
+      //The id field needs to be added too, or else the dispatch url doesn't know which record to edit.
+      if(!in_array("id",$col))
         $col[] = "id";
-      
+
       $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
-      			      
+
       if (moduleExists("billing"))
       {
          // todo, add columns with rate and costs (are stored flat in the table, no reason to perform calculations)

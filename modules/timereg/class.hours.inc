@@ -962,9 +962,10 @@ class hours extends atkNode
 
   function getHourSurveyColumns()
   {
-    return array("activitydate","userid","phaseid","activityid","remark","time","functionlevel");
+    $defaultcolumns = array("activitydate","userid","phaseid","activityid","remark","time","functionlevel");
+    $additionalcolumns = atkHarvestModules("getHourSurveyColumns");
+    return array_merge($defaultcolumns, $additionalcolumns);
   }
-
 
   function exceed_hrs_in_day($userid, $date, $new_minutes, $recordid="")
   {
