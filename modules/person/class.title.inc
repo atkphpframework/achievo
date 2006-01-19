@@ -13,6 +13,7 @@
      $this->add(new atkAttribute("title", 0, 25));
      
      $this->setTable("title");
+     $this->setSecurityAlias("organization.contact");
    }
    
    /**
