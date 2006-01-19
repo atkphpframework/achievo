@@ -47,7 +47,7 @@ class userprefs extends atkNode
 
   function descriptor_def()
   {
-    return "";
+    return "[userid]";
   }
 
   function postUpdate($record)
