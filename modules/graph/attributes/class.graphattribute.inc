@@ -32,6 +32,8 @@
    * GNU General Public License for more details.
    *
    */
+
+  useattrib("atkattribute");
   
   class graphAttribute extends atkAttribute
   {
