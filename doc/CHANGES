@@ -79,6 +79,7 @@ Changes in Achievo 1.2RC1
 * Replaced some deprecated text() calls with atktext(). [Guido]
 * Resolved some php notices. [Guido]
 * Removed some unused atkdebug commands. [Guido]
+* Scheduler menuitem is no longer displayed for users withoutaccess. [Ivo]
 
 Changes in Achievo 1.1.0
 ------------------------
