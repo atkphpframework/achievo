@@ -203,6 +203,14 @@ class hours extends atkNode
     $this->setTable("hours","hours");
   }
 
+  function descriptor(&$record)
+  {
+    $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
+    $employeenode = &getNode("employee.employee");
+    $users = $employeenode->selectDb("`person`.`id`='{$record["userid"]["id"]}'");
+    return sprintf("%s, %s (%s)", $users[0]["lastname"], $users[0]["firstname"],$datestr);
+  }
+
   function addTime()
   {
     $durationflags = AF_TOTAL;
@@ -365,16 +373,16 @@ class hours extends atkNode
 
     return $result;
   }
-  
+
   /**
    * Updates the activitydate in atkformdata to the value of m_viewdate
    *
    * Function needed to override standard behaviour of atk when using initial_values.
-   * Normally initial values are only used if the form value is NOT YET present in 
+   * Normally initial values are only used if the form value is NOT YET present in
    * the m_postvars["atkformdata"]. Since atk stores attributes in atkformdata when
-   * performing an action (o.e. select a project and phase for registering hours) 
+   * performing an action (o.e. select a project and phase for registering hours)
    * the initial_values are ignored.
-   * 
+   *
    * We override this behaviour by manually overriding the atkformdata value of activitydate.
    *
    * @param nothing
@@ -382,12 +390,12 @@ class hours extends atkNode
    */
   function updatesessionrecordviewdate()
   {
-    //we override the atkformadata value of activity date to make sure it keeps using our own m_viewdate 
+    //we override the atkformadata value of activity date to make sure it keeps using our own m_viewdate
     // attribute.
     if (isset($this->m_postvars["atkformdata"]["activitydate"]))
       $this->m_postvars["atkformdata"]["activitydate"] = $this->getInitialDate();
   }
-  
+
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin(&$handler)
   {
@@ -398,10 +406,10 @@ class hours extends atkNode
     $this->setLock();
 
     $this->addFilter("hours.userid",$this->m_user);
-    
+
     //we need to make sure the activitydate has the same value as $this->m_viewdate.
     $this->updatesessionrecordviewdate();
-    
+
     if ($this->m_weekview!=1)
     {
       if ($this->m_lock=="") $res[] = $handler->invoke("addPage");
