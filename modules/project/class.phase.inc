@@ -92,15 +92,13 @@
     }
 
     function postDel($rec)
-    {
-      $db = &atkGetDb();
-      $delphase = $rec["id"];
-
-      // delete dependencies for this phase./
-      $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
-      $db->query($query);
+    {    
+      $node = &getNode("project.dependency");   
+      $delphase = $rec["id"];    
+      $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");    
+      return true;
     }
-
+    
     function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
@@ -228,27 +226,26 @@
     }
   }
 
-  function postDel($rec)
-  {
-    $db = &atkGetDb();
-    $delphase = $rec["id"];
-
-    // delete dependencies for this phase./
-    $query = "DELETE FROM dependency WHERE phaseid_row = $delphase OR phaseid_col = $delphase";
-    $db->query($query);
-    return true;
-  }
-
-  function action_select(&$handler)
-  {
-    // In select mode, we place a filter, because we may only select active phases.
-    $this->addFilter("status='active'");
-
-    // Also, we hide the status field (we're showing only active phases,
-    // so this column is not necessary.
-    $this->m_attribList["status"]->m_flags|=AF_HIDE;
-
-    // call parent method.
-    return $handler->action_select();
-  }
+  
+  
+//    function postDel($rec)
+//    {    
+//      $node = &getNode("project.dependency");   
+//      $delphase = $rec["id"];    
+//      $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");    
+//      return true;
+//    }
+//
+//  function action_select(&$handler)
+//  {
+//    // In select mode, we place a filter, because we may only select active phases.
+//    $this->addFilter("status='active'");
+//
+//    // Also, we hide the status field (we're showing only active phases,
+//    // so this column is not necessary.
+//    $this->m_attribList["status"]->m_flags|=AF_HIDE;
+//
+//    // call parent method.
+//    return $handler->action_select();
+//  }
 ?>
