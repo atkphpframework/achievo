@@ -72,6 +72,7 @@ Changes in Achievo 1.2RC1
   choosing 'no_billing_period'. [Dennis]
 * Fixed bug in setup module that installed patches in the wrong order if there
   are 10 or more patches. [Dennis, Ivo]
+* Fixed: Error message appeared when deleting a phase. [Dennis]
 * Updated Italian language file. [Fabrizio]
 * Updated Danish language file. [Morten, Kent]
 * Updated Spanish language file. [Ernesto]
