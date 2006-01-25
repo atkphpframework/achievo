@@ -40,7 +40,7 @@
       $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_LIST));
       $this->add(new atkListAttribute("status",array("active","nonactive")));
 
-      $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY);
+      $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY|AF_MANYBOOLRELATION_ADDLINK);
       $tmp->m_localKey = "phaseid";
       $tmp->m_remoteKey = "activityid";
       $this->add($tmp);
@@ -92,13 +92,13 @@
     }
 
     function postDel($rec)
-    {    
-      $node = &getNode("project.dependency");   
-      $delphase = $rec["id"];    
-      $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");    
+    {
+      $node = &getNode("project.dependency");
+      $delphase = $rec["id"];
+      $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");
       return true;
     }
-    
+
     function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
