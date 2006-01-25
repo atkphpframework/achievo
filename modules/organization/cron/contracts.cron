@@ -40,15 +40,21 @@
    * @param string modus should be either $modus or $expired
    * @return nothing
    */
-  function mailmessage($contract, $projects, $newcontractstatus, $newprojectstatus, $mailto, $modus)
-	{	  
-	  $body = "";
-	  $subject = "";
+  function mailmessage($contract, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, $modus)
+	{
+	  // we need to create two types of email:
+	  // 1. For the specified mailto addresses, which should consist of all 
+	  //    changed contracts AND/OR changed projects	  
+	  // 2. For the coordinator of a changed project.
+	  
+	  $body = "";            //mail body for mailto addresses	  
+	  $body2 = "";           //mail body for coordinators
+	  $subject = "";	  
 	  
 	  if($modus == "expired")
   	{
-  	  $subject = "Contract expired";
-  	  
+  	  $subject = "Contract expired";  	  
+  	    	  
       $body = "The following contract has expired:\n\n";
       $body.= "id: ".$contract["id"]."\n";    
       $body.= "subject: ".$contract["subject"]."\n";
@@ -56,14 +62,15 @@
       $body.= "The status has been set to $newcontractstatus\n\n\n";
       
       if($projects != array())
-      {
-       $body.= "The following active projects were linked to this contract:\n\n";
+      {       
+       $body.= "The following active projects were linked to this contract:\n\n";       
        
        foreach ($projects as $project)
        {	       
          $body.= "Project id: ".$project["id"]."\n";
          $body.= "name: ".$project["name"]."\n\n";       
-         $body.= "The status has been set to $newprojectstatus\n\n\n";
+         $body.= "coordinator: ".$project["coordinator"]["email"];
+         $body.= "The status has been set to $newprojectstatus\n\n\n";         
        }
       }
       else
@@ -95,15 +102,42 @@
         $body.= "name: ".$project["name"]."\n\n";       
         $body.= "The status has been set to $newprojectstatus\n\n\n";
       }
-	  }
+	  }	  
 	  
+	  //if $mailtocoordinator=true and we have changed projects: create coordinator email and get emailaddresses
+	  $coordinatormails = array();
+	  if($mailtocoordinator && $projects != array())
+	  {     
+      $body2= "Your receive this email because you are coordinator of one or more projects mentioned in this email.\n\n".$body;
+      
+      //get coordinator mailadresses for these projects
+      $coordinatormails = getCoordinatorEmailAddresses($projects);
+	  }
+     
+	  //send coordiantor emails 	  
+	  foreach($coordinatormails as $mail)
+  	{  	 	
+  	 	//usermail($mail, $subject, $body2, "");
+  	 	echo "mail sent to $mail.\n";    	 	
+  	}      	
+  	
 	  foreach($mailto as $mail)
   	{  	 	
-  	 	usermail($mail, $subject, $body, "");
-  	 	echo "mail sent to $mail.\n";
-  	}	    
+  	 	//usermail($mail, $subject, $body, "");
+  	 	echo "mail sent to $mail.\n";    	 	
+  	}
 	}
 
+	function getCoordinatorEmailAddresses($projects)
+	{
+	  //first we retrieve all the coordinator addresses from the projects
+	  $alladresses = array();	  
+	  foreach($projects as $p) $alladresses[] = $p["coordinator"]["email"];
+	  
+	  //we remove the duplicates and return the result
+	  return array_unique($alladresses);
+	}
+	
 	/**
 	 * Get expired active contracts
 	 *
@@ -120,7 +154,7 @@
     
     if($hascolumnandvalue != array())   $selector.= " AND ".$hascolumnandvalue[0]." = '".$hascolumnandvalue[1]."'";
         
-    return $node->selectDb($selector, "", "", "", array("id", "enddate", "status", "name", "subject"));    
+    return $node->selectDb($selector, "", "", "", array("id", "enddate", "status", "name", "subject", "description"));    
   }
   
   
@@ -131,16 +165,16 @@
 	 *	 
 	 * @return array contracts
 	 */
-  function getEndedContracts($statussen)
+  function getEndedContracts($status)
   {    
     $node = &getNode("organization.contracts");    
     
     //add 'contract.status=' before each element and '' around the element.
-    for($i=0,$_i=count($statussen);$i<$_i;$i++)    
-      $statussen[$i] = "contract.status = '".$statussen[$i]."'";
+    for($i=0,$_i=count($status);$i<$_i;$i++)    
+      $status[$i] = "contract.status = '".$status[$i]."'";
       
     //create WHERE clause
-    $selector = "(".implode(" OR ",$statussen).")";    
+    $selector = "(".implode(" OR ",$status).")";    
     return $node->selectDb($selector, "", "", "", array("id","status","subject"));
   }
   
@@ -155,8 +189,20 @@
   function getActiveLinkedProjects($contractid)
   { 
     $node = &getNode("organization.contract_project");
+    $nodeemp = &getNode("employee.employee");
+    
     $selector = "project.contract_id=$contractid AND project.status = 'active'";
-    return $node->selectDb($selector, "", "", "", array("id", "contract_id", "status", "name"));        
+    $records = $node->selectDb($selector, "", "", "", array("id", "contract_id", "status", "name", "coordinator", "description"));
+        
+    //get the coordinators mailadress from each project and add it to the project
+    for($i=0,$_i=count($records);$i<$_i;$i++)
+    {
+      $selector = "person.id=".$records[$i]["coordinator"]["id"];      
+      $recordemp = $nodeemp->selectDb($selector, "", "", "", array("id", "email"));      
+      $records[$i]["coordinator"]["email"] = $recordemp[0]["email"];
+    }        
+    
+    return $records;    
   }
   
   
@@ -168,7 +214,7 @@
    */
   function main()
   {    
-    echo "\nStarting cronjob: contracts.cron\n\n";
+    echo "\nStarting cronjob: contracts.cron\n\n";    
     
     //get nodes
     $node         = &getNode("organization.contracts");
@@ -176,63 +222,74 @@
       
     //get configurations    
     $mailto             = atkConfig::get("organization", "organization_contracts_mailto",array());
+    $mailtocoordinator  = atkConfig::get("organization", "organization_contracts_mailtocoordinator", false);
     $newprojectstatus   = atkConfig::get("organization", "organization_contracts_projects_newstatus","nonactive");    
     $newcontractstatus  = atkConfig::get("organization", "organization_expiredcontracts_contracts_newstatus","archived");    
     $hascolumnandvalue  = atkConfig::get("organization", "organization_expiredcontracts_hascolumnandvalue",array());
-    $statussen          = atkConfig::get("organization", "organization_endedcontracts_statussen",array("nonactive","archived"));
+    $status             = atkConfig::get("organization", "organization_endedcontracts_status",array("nonactive","archived"));
+    
         
     /*
      * expired contracts have a status of 'active'
      * ended contracts have status that is not 'active'
     */
     
-    echo "Checking for expired contracts...\n\n"; 
+    echo "Checking for expired contracts...\n\n";     
     
     //Check active contracts that have an enddate that is expired
     $expiredcontracts = getActiveExpiredContracts($hascolumnandvalue);
            
     if(count($expiredcontracts) > 0)
-    {      
+    { 
       foreach ($expiredcontracts as $c)
       { 
-        echo "contract ".$c["id"]."(".$c["subject"].") expired!"; 
+        echo "contract ".$c["id"]."(".$c["subject"].") expired!";         
         
         //get active linked projects
         $projects = getActiveLinkedProjects($c["id"]);
             
         if(count($projects) > 0)
-        {           
+        {                 
           echo " and has ".count($projects)." linked active projects\n";  
+          
           foreach ($projects as $p)
-          { 
+          {             
+            $desc = "\n\n".date("d-m-Y").": Achievo changed the project status from ".$p["status"]." to ".$newprojectstatus.".";
+    	      $desc.= "\nComment: The contract has expired.";
+            $p["description"] = $p["description"].$desc;
             $p["status"] = $newprojectstatus;
+            
+            //update the record in the database
             $projectnode->updateDb($p);            
           }
         }
         else 
         {
-          echo " no linked projects found!\n";            
+          echo " no linked projects found!\n";
         }
              
+    	  $desc = "\n\n".date("d-m-Y").": Achievo changed the contract status from ".$c["status"]." to ".$newcontractstatus.".";
+    	  $desc.= "\nComment: The contract has expired.";
+    	  $c["description"] = $c["description"].$desc;
     	  $c["status"] = $newcontractstatus;
     	  
     	  // Update the record in the database
-    	  $node->updateDb($c);
+    	  $node->updateDb($c);    	      	  
     	  
     	  //Send a mail when we changed a contract and perhaps its linked projects
-    	  if($mailto != array())  
-            mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto, "expired");
+    	  if($mailto != array() || $mailtocoordinator)  
+            mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, "expired");
       }      
     }
     else
-      echo "No expiring contracts found!\n";  
+      echo "No expiring contracts found!\n";        
       
-    echo "\nDone checking for expired contracts...\n\n";  
+    echo "\nDone checking for expired contracts...\n\n";      
     
-    echo "Checking for ended contracts with active linked projects...\n\n"; 
+    echo "Checking for ended contracts with active linked projects...\n\n";     
         
     //Check contracts that have ended
-    $endedcontracts = getEndedContracts($statussen);
+    $endedcontracts = getEndedContracts($status);
     
     if(count($endedcontracts) > 0)
     {            
@@ -243,32 +300,35 @@
 
         if(count($projects) > 0)   
         {
-          echo "contract with id: ".$c["id"]." has ended and has ".count($projects)." linked active projects\n";  
+          echo "contract with id: ".$c["id"]." has ended and has ".count($projects)." linked active projects\n";            
           
           foreach ($projects as $p)
           { 
-             $p["status"] = $newprojectstatus;
-             $projectnode->updateDb($p);            
+            $desc = "\n\n".date("d-m-Y").": Achievo changed the project status from ".$p["status"]." to ".$newprojectstatus.".";
+    	      $desc.= "\nComment: The contract has ended.";
+            $p["description"] = $p["description"].$desc;
+            $p["status"] = $newprojectstatus;
+            $projectnode->updateDb($p);
           }
            
           //Only if we changed any projects we want to send a mail
-          if($mailto != array())          
-            mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto, "ended");             
+          if($mailto != array() || $mailtocoordinator)
+            mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto,  $mailtocoordinator, "ended");             
         }        
         else
-          echo "Ended contract ".$c["id"]." doesn't have any active linked projects!\n";  
+          echo "Ended contract ".$c["id"]." doesn't have any active linked projects!\n";            
       }
     }
     else 
-      echo "No ended contracts found!\n";   
+      echo "No ended contracts found!\n";         
 
-    echo "Done checking for ended contracts with active linked projects...\n\n";  
+    echo "Done checking for ended contracts with active linked projects...\n\n";      
       
-    echo("Finished cronjob: contracts.cron\n\n"); 
+    echo("Finished cronjob: contracts.cron\n\n");     
   }
 
   // Run the main function of this cronjob  
-	main();
+	//main();
 ?>
 
 
