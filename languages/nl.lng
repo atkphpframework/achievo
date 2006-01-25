@@ -341,6 +341,7 @@
   "profile" => "Profiel",
   "profile_explanation" => "<br>Hieronder kunt u aangeven wat een medewerker in dit profiel wel of niet mag doen.<br><br>",
   "profile_hours_lock" => "Globale week-blokkering",
+  "profiles" => "Profielen",
   "project" => "Project",
   "project_member_fuzzyhint" => "Vul een komma-gescheiden lijst van toe te voegen teamleden in, en kies een rol voor de nieuwe leden.",
   "project_members" => "Teamleden",

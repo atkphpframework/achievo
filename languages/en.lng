@@ -341,6 +341,7 @@
   "profile" => "Security Profiles",
   "profile_explanation" => "<br>Below you can indicate what an employee in this profile may or may not do.<br><br>",
   "profile_hours_lock" => "Global week locks",
+  "profiles" => "Profiles",
   "project" => "Project",
   "project_member_fuzzyhint" => "Add a comma-separated list of members below, and select a role for the new members.",
   "project_members" => "Team members",
