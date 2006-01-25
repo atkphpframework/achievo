@@ -38,6 +38,9 @@
       $contactnode = &getNode("organization.contact");
       $res["contacts"] = $this->recLinks($contactnode->searchDb($expression), "organization.contact");
 
+      $contractnode = &getNode("organization.contracts");
+      $res["contracts"] = $this->recLinks($contractnode->searchDb($expression), "organization.contracts");
+
       return $res;
     }
   }
