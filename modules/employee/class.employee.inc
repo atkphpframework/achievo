@@ -37,14 +37,14 @@ class employee extends person
     {
       if (!in_array($attribname, array("lastname", "firstname","email")))
       {
-        $p_attrib = &$this->m_attribList[$attribname];        
+        $p_attrib = &$this->m_attribList[$attribname];
         $p_attrib->m_flags|=AF_HIDE_ADD;
       }
     }
-    
+
     //the title_id field is not used for employees and is not obligatory
-    $attrib = &$this->getAttribute("title_id");    
-    $attrib->m_flags = AF_HIDE;  
+    $attrib = &$this->getAttribute("title_id");
+    $attrib->m_flags = AF_HIDE;
 
     $this->addFilter("person.role='employee'");
     $this->add(new atkDateAttribute("birthdate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
@@ -56,11 +56,9 @@ class employee extends person
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
 
     //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
-    $rel = &$this->add(new atkManyBoolRelation("roles", "employee.employeerole", "employee.profile", AF_HIDE_LIST));
+    $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOLRELATION_ADDLINK));
     $rel->setLocalKey("employee_id");
     $rel->setRemoteKey("role_id");
-
-    
 
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
     $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
