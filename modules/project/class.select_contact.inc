@@ -10,12 +10,22 @@ class select_contact extends person
     $this->person("select_contact");
     $this->addFilter("person.role = 'contact'");
 
-    $this->remove("role");
+    // Hide the role attribute
+    $attr = &$this->getAttribute("role");
+    $attr->addFlag(AF_HIDE);
+
     $this->remove("fax");
     $this->remove("cellular");
     $this->add(new atkManyToOneRelation("company","organization.organization"));
 
     $this->setSecurityAlias("organization.contact");
+  }
+
+  function initial_values()
+  {
+    return array(
+      "role" => "contact",
+    );
   }
 
   function descriptor_def()
