@@ -56,7 +56,7 @@ class employee extends person
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
 
     //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
-    $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOLRELATION_ADDLINK));
+    $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOL_AUTOLINK));
     $rel->setLocalKey("employee_id");
     $rel->setRemoteKey("role_id");
 

@@ -40,7 +40,7 @@
       $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_LIST));
       $this->add(new atkListAttribute("status",array("active","nonactive")));
 
-      $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY|AF_MANYBOOLRELATION_ADDLINK);
+      $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY|AF_MANYBOOL_AUTOLINK);
       $tmp->m_localKey = "phaseid";
       $tmp->m_remoteKey = "activityid";
       $this->add($tmp);
