@@ -14,7 +14,13 @@
   $user = getUser();
   $pda = browserInfo::detectPDA();
   
-  if (strtolower($user["name"]) == "administrator")
+
+  if(isset($ATK_VARS["atknodetype"]) && isset($ATK_VARS["atkaction"]))
+  {
+    $default_url = "dispatch.php?atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
+    if (isset($ATK_VARS["atkselector"])) $default_url.="&atkselector=".$ATK_VARS["atkselector"];
+  }
+  else if (strtolower($user["name"]) == "administrator")
   {
     $default_url = session_url("dispatch.php?atknodetype=pim.pim&atkaction=adminpim",SESSION_NEW);
   }

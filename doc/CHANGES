@@ -45,6 +45,8 @@ Changes in Achievo 1.2RC1
 + Added an initials field to persons (contacts and employees). [Guido]
 + Added ability to configure initial status of a scheduled item in
   calendar. [Dennis]
++ Added the ability to create direct links to Achievo by passing atknodetype,
+  atkaction and atkselector to index.php. [Ivo]
 * Contracts that have expired are automatically set to status 'archived' at
   save-time. Also, its linked projects will be set to status 'nonactive'.
   [Dennis]
