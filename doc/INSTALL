@@ -19,11 +19,19 @@ Requirements
 
 - A webserver capable of running php4 scripts
   (Apache is a good choice, http://www.apache.org)
-- PHP4 (http://www.php.net, version 4.1 or greater)
+- PHP4 (http://www.php.net, version 4.2 or newer)
 - MySQL (http://www.mysql.org) 
 
-There are several graphical charts in Achievo. For these to work, PHP should 
-be installed/compiled with GD support (http://www.php.net/gd).
+The following are requirements for optional features of Achievo:
+
+- There are several graphical charts in Achievo. For these to work, PHP should 
+  be installed/compiled with GD support (http://www.php.net/gd).
+
+- To make use of the OpenOffice document generator, both the 'zip' and 'unzip'
+  binaries should be in the path. 
+ 
+- To make use of the cronned reminder scripts, you must be able to setup cron
+  on the machine where you install Achievo.
 
 Installation Procedure
 ----------------------
