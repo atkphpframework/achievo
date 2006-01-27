@@ -27,10 +27,10 @@ class person extends atkNode
     $this->atkNode($name, $flags|NF_ADD_LINK);
 
     $this->add(new atkAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("title_id", "person.title", AF_RELATION_AUTOLINK|AF_HIDE_LIST|AF_OBLIGATORY));
+    $this->add(new atkManyToOneRelation("title_id", "person.title", AF_RELATION_AUTOLINK|AF_HIDE_LIST));
     $this->add(new atkAttribute("lastname",AF_SEARCHABLE|AF_OBLIGATORY, 50));
-    $this->add(new atkAttribute("initials", AF_HIDE_LIST|AF_FORCE_LOAD, 50));
     $this->add(new atkAttribute("firstname",AF_HIDE_LIST|AF_FORCE_LOAD, 50));
+    $this->add(new atkAttribute("initials", AF_HIDE_LIST|AF_FORCE_LOAD, 50));
     $this->add(new atkAttribute("address",AF_HIDE_LIST, 100));
     $this->add(new atkAttribute("zipcode",AF_HIDE_LIST, 20));
     $this->add(new atkAttribute("city",AF_HIDE_LIST, 100));
@@ -116,9 +116,9 @@ class person extends atkNode
     $v->setNote($record["remark"]);
 
     $output = $v->getVCard();
-    //$filename = $v->getFileName();        
+    //$filename = $v->getFileName();
     //Remove spaces that would break the vcard filename
-    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );    
+    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );
     $filename = $name.".vcf";
 
     Header("Content-Disposition: attachment; filename=$filename");
