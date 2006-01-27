@@ -33,7 +33,7 @@
       $custnode = &getNode("organization.organization");
       $recs = $custnode->searchDb($expression);
             
-      $res["customers"] = $this->recLinks($recs, "organization.organization");
+      $res["organizations"] = $this->recLinks($recs, "organization.organization");
 
       $contactnode = &getNode("organization.contact");
       $res["contacts"] = $this->recLinks($contactnode->searchDb($expression), "organization.contact");

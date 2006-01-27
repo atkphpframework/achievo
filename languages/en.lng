@@ -553,6 +553,7 @@
   "the_deliverable_on_which_this_phase_depense_is_not_complete_yet"=>"The deliverable on which this phase depense is not complete yet",
   "the_following_problems_occured_while_employee_%s_registered_time_on_phase_%s_of_project_%s"=>"The following problems occured while employee %s registered time on phase %s of project %s",
   "problems_occured_while_registering_hours_on_phase_%s"=>"Problems occured while registering hours on phase %s",
+  "organizations" => "Organizations",
 );
 
 ?>
