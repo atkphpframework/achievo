@@ -190,7 +190,7 @@ class hours extends atkNode
     // Because we can set the rates with the billing module
     if (atkconfig("use_duration", true))
     {
-      $relation = &new atkManyToOneRelation("workperiod","timereg.workperiod", AF_HIDE_LIST|AF_OBLIGATORY);
+      $relation = &new atkManyToOneRelation("workperiod","timereg.workperiod", AF_HIDE_LIST|AF_RELATION_NO_NULL_ITEM);
       $relation->setHideWhenEmpty(true);
       $this->add($relation);
     }
