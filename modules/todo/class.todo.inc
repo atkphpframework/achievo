@@ -26,7 +26,7 @@ class todo extends atkNode
     $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
-    $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE|AF_OBLIGATORY));
     $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
