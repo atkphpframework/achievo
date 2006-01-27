@@ -33,6 +33,12 @@ $projectid = $_REQUEST['projectid'];
   return array("befores"=>$before, "afters"=>$after);
 }*/
 
+function addDefaultConditions(&$query, $projectid)
+{
+  $querydep->addCondition("project.id='".$projectid."'");
+  $querydep->addCondition("phase.startdate IS NOT null");
+  $querydep->addCondition("phase.enddate IS NOT null");
+}
 
 // Select the dependency's  for the gantchart
 $db = &atkGetDb();
@@ -42,7 +48,7 @@ $querydep->addJoin('project', '' ,'project.id=phase.projectid', FALSE);
 $querydep->addJoin('dependency', '' ,'dependency.phaseid_row=phase.id', FALSE);
 $querydep->addField('phaseid_row', ' ', 'dependency', 'dependency_');
 $querydep->addField('phaseid_col', ' ', 'dependency', 'dependency_');
-$querydep->addCondition("project.id='".$projectid."'");
+addDefaultConditions($querydep, $projectid);
 $querystringdep = $querydep->buildSelect(TRUE);
 $dbrecordsdep = $db->getrows($querystringdep);
 
@@ -67,7 +73,7 @@ $queryphase->addField('current_planning', ' ', 'phase', 'phase_');
 $queryphase->addField('startdate', ' ', 'project', 'project_');
 $queryphase->addField('phase.startdate AS phase_startdate');
 $queryphase->addField('phase.enddate AS phase_enddate');
-$queryphase->addCondition("project.id='".$projectid."'");
+addDefaultConditions($queryphase, $projectid);
 $querystringphase = $queryphase->buildSelect(TRUE);
 $dbrecordsphase = $db->getrows($querystringphase);
 
@@ -95,7 +101,7 @@ $querybooked->addField('id', ' ', 'phase', 'phase_');
 $querybooked->addField('name', ' ', 'phase', 'phase_');
 $querybooked->addField('SUM(hours.time) AS hours');
 $querybooked->addField('current_planning', ' ', 'phase', 'phase_');
-$querybooked->addCondition("phase.projectid='".$projectid."'");
+addDefaultConditions($querybooked, $projectid);
 
 $querybooked->addGroupBy("phase.id");
 
@@ -119,8 +125,7 @@ $queryplanned->addField('project.name AS project_name');
 $queryplanned->addField('phase.name AS phase_name');
 $queryplanned->addField('SUM(phase.current_planning) AS planning');
 $queryplanned->addField('phase.id AS phase_id');
-
-$queryplanned->addCondition("project.id='".$projectid."'");
+addDefaultConditions($queryplanned, $projectid);
 
 $queryplanned->addGroupBy("project.id");
 $queryplanned->addGroupBy("phase.id");
@@ -164,7 +169,6 @@ function cmp ($a, $b) {
 }
 
 usort ($gant, "cmp");
-
 $graph = new GanttGraph(0,0,"auto");
 $graph->SetBox();
 $graph->SetShadow();
@@ -185,7 +189,6 @@ $graph->scale->month->SetBackgroundColor("blue");
 // 0 % vertical label margin
 $graph->SetLabelVMarginFactor(1);
 
-//var_dump($gant);
 $i=0;
 $activity=array();
 
@@ -193,7 +196,6 @@ $reverselookup = array();
 
 foreach ($gant as $id=>$gantphase)
 {
-
   $activity[$i] = &new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
   $activity[$i]->SetPattern(BAND_RDIAG, "yellow");
   $activity[$i]->SetFillColor("red");
@@ -264,6 +266,12 @@ for ($i=0, $_i=count($activity); $i<$_i; $i++)
 //here you can set a subtitle
 //$graph->subtitle->Set('title');
 
+
+if (count($gant) == 0)
+{
+  $graph->SetDateRange(time(), time()+86400);
+}
+
 //Add only a vertical line with the actual date when this actual date is between the start- and enddate of the project
 $startdateproject=$gant[0]["startdate"];
 $enddateproject=$gant[count($gant)-1]["enddate"];
@@ -275,5 +283,4 @@ if($startdateproject <= (date("Y-m-d")) AND $enddateproject >= (date("Y-m-d")))
 }
 
 $graph->Stroke();
-
 ?>
