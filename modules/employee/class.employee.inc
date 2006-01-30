@@ -42,10 +42,6 @@ class employee extends person
       }
     }
 
-    //the title_id field is not used for employees and is not obligatory
-    $attrib = &$this->getAttribute("title_id");
-    $attrib->m_flags = AF_HIDE;
-
     $this->addFilter("person.role='employee'");
     $this->add(new atkDateAttribute("birthdate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
 
