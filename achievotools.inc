@@ -96,19 +96,19 @@
          }
 
        }
-         //Reload the menu frame by creating javascript
-         $output = &atkOutput::getInstance();
-         $js = "<script language='JavaScript'> parent.menu.location=\"menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId."\";</script>";
-         $output->output($js);
-     }
 
+       //Reload the menu frame by creating javascript
+       $script = "var newlocation=\"menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId."\";
+                  var oldlocation=parent.menu.location.toString();
+                  if (oldlocation.indexOf(newlocation) == -1) {parent.menu.location = newlocation;}";
+       $page = &atkinstance("atk.ui.atkpage");
+       $page->register_loadScript($script);
+     }
 
      // Copy prj to session var
      // Use global session because menu.php uses
      // a different namespace
-     $g_sessionManager->globalVar("selectedprj",$prj, true);
-
-    //atk_var_dump($g_sessionData);
+     $g_sessionManager->globalVar("selectedprj", $prj, true);
   }
 
  /**
