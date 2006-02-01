@@ -90,7 +90,11 @@
       $outputType =         $this->m_postvars["outputType"];
 
       $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
-
+     
+      //The orderby postvar is only filled when clicking on the refresh button.
+      //Atk uses the postvar atkorderby when a user clicks on a column to sort on it. Powers combined
+      if(!isset($orderby) && isset($this->m_postvars["atkorderby"])) $orderby[] = $this->m_postvars["atkorderby"];
+      
       foreach($externalHourSurveyColumns as $module => $attr)
       {
         eval("\$external$attr = '".$g_sessionManager->pageVar($attr)."';");
@@ -110,6 +114,7 @@
 
       $columnConfig = &$hoursnode->getColumnConfig();
 
+      
       if (is_array($orderby))
       {
         $columnConfig->clearOrder();
