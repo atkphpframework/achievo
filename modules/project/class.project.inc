@@ -161,12 +161,12 @@
 
     function initial_values()
     {
-      return array("startdate"=>array("year"=>date(Y),
-                                      "month"=>date(m),
-                                      "day"=>date(d)),
-                   "enddate"=>array("year"=>(date(Y)+1),
-                                    "month"=>date(m),
-                                    "day"=>date(d)),
+      return array("startdate"=>array("year"=>date("Y"),
+                                      "month"=>date("m"),
+                                      "day"=>date("d")),
+                   "enddate"=>array("year"=>(date("Y")+1),
+                                    "month"=>date("m"),
+                                    "day"=>date("d")),
                    "timereg_limit"=>PRJ_TIMEREG_MEMBERS_ONLY,
                    "status"=>"active");
     }
