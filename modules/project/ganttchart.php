@@ -103,8 +103,7 @@ $querybooked->addField('name', ' ', 'phase', 'phase_');
 $querybooked->addField('SUM(hours.time) AS hours');
 $querybooked->addField('current_planning', ' ', 'phase', 'phase_');
 $querybooked->addCondition("phase.projectid='".$projectid."'");
-$querybooked->addCondition("phase.startdate IS NOT null");
-$querybooked->addCondition("phase.enddate IS NOT null");
+addDefaultConditions($querybooked);
 
 $querybooked->addGroupBy("phase.id");
 
