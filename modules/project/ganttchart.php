@@ -33,12 +33,12 @@ $projectid = $_REQUEST['projectid'];
   return array("befores"=>$before, "afters"=>$after);
 }*/
 
-function addDefaultConditions(&$query, $projectid)
+function addDefaultConditions(&$query)
 {
-  $querydep->addCondition("project.id='".$projectid."'");
-  $querydep->addCondition("phase.startdate IS NOT null");
-  $querydep->addCondition("phase.enddate IS NOT null");
+  $query->addCondition("phase.startdate IS NOT null");
+  $query->addCondition("phase.enddate IS NOT null");
 }
+
 
 // Select the dependency's  for the gantchart
 $db = &atkGetDb();
@@ -48,7 +48,8 @@ $querydep->addJoin('project', '' ,'project.id=phase.projectid', FALSE);
 $querydep->addJoin('dependency', '' ,'dependency.phaseid_row=phase.id', FALSE);
 $querydep->addField('phaseid_row', ' ', 'dependency', 'dependency_');
 $querydep->addField('phaseid_col', ' ', 'dependency', 'dependency_');
-addDefaultConditions($querydep, $projectid);
+$querydep->addCondition("project.id='".$projectid."'");
+addDefaultConditions($querydep);
 $querystringdep = $querydep->buildSelect(TRUE);
 $dbrecordsdep = $db->getrows($querystringdep);
 
@@ -73,7 +74,8 @@ $queryphase->addField('current_planning', ' ', 'phase', 'phase_');
 $queryphase->addField('startdate', ' ', 'project', 'project_');
 $queryphase->addField('phase.startdate AS phase_startdate');
 $queryphase->addField('phase.enddate AS phase_enddate');
-addDefaultConditions($queryphase, $projectid);
+$queryphase->addCondition("project.id='".$projectid."'");
+addDefaultConditions($queryphase);
 $querystringphase = $queryphase->buildSelect(TRUE);
 $dbrecordsphase = $db->getrows($querystringphase);
 
@@ -91,7 +93,6 @@ for($i=0;$i<count($dbrecordsphase);$i++)
 }
 
 //$dep = load_dependencies($phase_ids,$dbrecordsdep);
-
 // Select the TIMES that have been booked on the project
 $name = "atk" . $dbconfig["default"]["driver"] . "query";
 $querybooked = new $name();
@@ -101,7 +102,9 @@ $querybooked->addField('id', ' ', 'phase', 'phase_');
 $querybooked->addField('name', ' ', 'phase', 'phase_');
 $querybooked->addField('SUM(hours.time) AS hours');
 $querybooked->addField('current_planning', ' ', 'phase', 'phase_');
-addDefaultConditions($querybooked, $projectid);
+$querybooked->addCondition("phase.projectid='".$projectid."'");
+$querybooked->addCondition("phase.startdate IS NOT null");
+$querybooked->addCondition("phase.enddate IS NOT null");
 
 $querybooked->addGroupBy("phase.id");
 
@@ -125,7 +128,8 @@ $queryplanned->addField('project.name AS project_name');
 $queryplanned->addField('phase.name AS phase_name');
 $queryplanned->addField('SUM(phase.current_planning) AS planning');
 $queryplanned->addField('phase.id AS phase_id');
-addDefaultConditions($queryplanned, $projectid);
+$queryplanned->addCondition("project.id='".$projectid."'");
+addDefaultConditions($queryplanned);
 
 $queryplanned->addGroupBy("project.id");
 $queryplanned->addGroupBy("phase.id");
@@ -169,6 +173,7 @@ function cmp ($a, $b) {
 }
 
 usort ($gant, "cmp");
+
 $graph = new GanttGraph(0,0,"auto");
 $graph->SetBox();
 $graph->SetShadow();
