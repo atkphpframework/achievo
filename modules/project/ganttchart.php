@@ -63,8 +63,7 @@ for ($i=0;$i<$cntrec;$i++)
 $dbconfig = atkconfig("db");
 
 // Select the PHASES which belong to the project
-$name = "atk" . $dbconfig["default"]["driver"] . "query";
-$queryphase = new $name();
+$queryphase = &$db->createQuery();
 $queryphase->addTable('project');
 $queryphase->addJoin('phase', '', 'project.id=phase.projectid', FALSE);
 $queryphase->addField('id', ' ', 'phase', 'phase_');
@@ -94,8 +93,7 @@ for($i=0;$i<count($dbrecordsphase);$i++)
 
 //$dep = load_dependencies($phase_ids,$dbrecordsdep);
 // Select the TIMES that have been booked on the project
-$name = "atk" . $dbconfig["default"]["driver"] . "query";
-$querybooked = new $name();
+$querybooked = &$db->createQuery();
 $querybooked->addTable('phase');
 $querybooked->addJoin('hours', '', 'hours.phaseid=phase.id', FALSE);
 $querybooked->addField('id', ' ', 'phase', 'phase_');
@@ -117,8 +115,7 @@ for ($i=0;$i<$cntrec;$i++)
 }
 
 // Select the TIMES that have been planned on the project
-$name = "atk" . $dbconfig["default"]["driver"] . "query";
-$queryplanned  = new $name();
+$queryplanned  = &$db->createQuery(); 
 $queryplanned->addTable('project');
 $queryplanned->addJoin('phase', '', 'project.id=phase.projectid', FALSE);
 
