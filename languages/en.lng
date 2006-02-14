@@ -486,6 +486,8 @@
   "to" => "To",
   "today" => "Today",
   "today_and_appointments" => "Today & appointments",
+  "todo" => "Todo",
+  "todos" => "Todo's",
   "todo_assignedto" => "Assigned to",
   "todo_changedby" => "Changed by",
   "todo_completed" => "Completed",

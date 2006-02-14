@@ -486,6 +486,8 @@
   "to" => "Tot",
   "today" => "Vandaag",
   "today_and_appointments" => "Vandaag en afspraken",
+  "todo" => "Todo",
+  "todos" => "Todo's",
   "todo_assignedto" => "Toegewezen aan",
   "todo_changedby" => "Veranderd door",
   "todo_completed" => "Afgerond",
