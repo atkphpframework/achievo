@@ -54,6 +54,18 @@ class project_personcontact extends atkNode
     $personcontactrecord = $personcontactnode->selectDb("person.id='".$project_personcontactrecord[0]["personid"]["id"]."'");
     $documentWriter->assignDocumentSingleRecord($personcontactnode, $personcontactrecord[0], "person_");
 
+    // Assign the referenced personcontact's organization (if available)
+    $organizationnode = &getNode("organization.organization");
+    $organizationrecord = $organizationnode->selectDb("organization.id='".$personcontactrecord[0]["company"]["id"]."'");
+    if (count($organizationrecord) > 0)
+    {
+      $documentWriter->assignDocumentSingleRecord($organizationnode, $organizationrecord[0], "organization_");
+    }
+
+    // Use an evil global to let the tbsooo engine use the precence of an organization
+    global $documentvar_organizationpresent;
+    $documentvar_organizationpresent = (count($organizationrecord) > 0) ? 1 : 0;
+
     // Assign the referenced coordinator
     $employeenode = &getNode("employee.employee");
     $coordinatorrecord = $employeenode->selectDb("person.id='".$projectrecord[0]["coordinator"]["id"]."'");
