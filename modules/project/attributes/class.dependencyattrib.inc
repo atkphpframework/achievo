@@ -61,10 +61,11 @@ class dependencyAttribute extends atkAttribute
       $deps = $rows["deps"];
     }
 
+    $result = "";
 
     if (count($deps)>0)
     {
-      $result=$layout->data_top();
+      $result.=$layout->data_top();
       $result.=$layout->ret_td_datatitle(text('dependencies'));
       $result.=$layout->ret_td_datatitle(text('delete'));
       for ($i=0;$i<count($deps);$i++)

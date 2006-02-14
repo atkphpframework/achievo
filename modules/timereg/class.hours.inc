@@ -467,11 +467,15 @@ class hours extends atkNode
     {
       $balancenode = &getNode("timereg.overtime_balance");
       $balance = $balancenode->getBalance(date("Y-m-d", adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4))), $this->m_user);
-      $res.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
+      $res ='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
       $res.='<tr><td align="left" valign="top">';
       $res.= href('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate='.$this->m_viewdate, atktext("viewschedule"), SESSION_NESTED);
       $res.='</td><td align="right">'.atktext("current_balance").': '.time_format((60*$balance["balance"]),true).'&nbsp;</td></tr></table>';
       return $res;
+    }
+    else
+    {
+      return "";
     }
   }
 
