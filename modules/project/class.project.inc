@@ -55,11 +55,11 @@
 
       if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && atkconfig("project_contact_obligatory"))
       {
-      	$flags = AF_OBLIGATORY;
+        $flags = AF_OBLIGATORY;
       }
       else
       {
-      	$flags = 0;
+        $flags = 0;
       }
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
@@ -98,8 +98,12 @@
       $this->setIndex("name");
     }
 
-    function name_display($record)
+    function name_display($record, $mode)
     {
+      // Do not return a html link in plain or csv mode
+      if (($mode=="plain") || ($mode=="csv"))
+        return $record["name"];
+
       // Make all project links clickable
       $defaultaction = $this->allowed("edit") ? "edit" : "view";
       return href(dispatch_url("project.project", $defaultaction, array("atkselector"=>"project.id='{$record["id"]}'")), $record["name"], SESSION_NESTED);
