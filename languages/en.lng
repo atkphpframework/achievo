@@ -290,6 +290,7 @@
   "organization_visitaddress" => "Visit address",
   "organizationid" => "Organization",
   "overtime" => "Overtime",
+  "overtimecompensation" => "Overtime compensation",
   "overtime_balance" => "Overtime balance",
   "owner" => "Owner",
   "parameters" => "Parameters",

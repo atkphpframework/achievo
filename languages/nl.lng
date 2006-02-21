@@ -290,6 +290,7 @@
   "organization_visitaddress" => "Bezoek adres",
   "organizationid" => "Organisatie",
   "overtime" => "Overwerk",
+  "overtimecompensation" => "Tijd voor tijd",
   "overtime_balance" => "Overuren saldo",
   "owner" => "Eigenaar",
   "parameters" => "Parameters",
