@@ -48,18 +48,20 @@ class weekreport extends atkNode
     $this->add(new timeDisplayAttribute("thu"));
     $this->add(new timeDisplayAttribute("fri"));
     $this->add(new timeDisplayAttribute("sat"));
-    $this->add(new timeDisplayAttribute("sun"));
+    $this->add(new timeDisplayAttribute("sun"));    
 
     $db = &atkGetDb();
     $periods = $db->getRows("SELECT * FROM workperiod ORDER BY percentage");
     for($i=0;$i<count($periods);$i++)
     {
       $this->add(new timeDisplayAttribute($periods[$i]["name"], AF_TOTAL));
-    }
-
+    }    
+    $this->add(new timeDisplayAttribute("overtimecompensation",AF_TOTAL));
     $this->add(new timeDisplayAttribute("total",AF_TOTAL));
     $this->add(new timeDisplayAttribute("contract",AF_TOTAL));
-    $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));
+    $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));    
+    
+    
     $this->add(new atkAttribute("balance"));
     $this->add(new atkAttribute("status"));
   }
@@ -105,6 +107,99 @@ class weekreport extends atkNode
     return $node->getOvertimeLink($rec);
   }
 
+  function isOvertimeCompensationActivity($id, $overtimeactivities)
+  {        
+    foreach($overtimeactivities as $item)
+    {      
+      if($item==$id) return true;      
+    }    
+    return false;
+  }
+  
+  function getOvertimeCompensationActivities()
+  {
+    $db = &atkGetDb();
+    $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
+    
+    if($res == array())
+     return array();
+    else 
+      return $res[0];
+  }
+  
+  /**
+   * One line description of the function
+   *
+   * @todo JvdW 12-01-2004 Oracle needs all columns not used in aggregate functions to be in the group by clause.
+   * There might be more places in the code where this is true and need adjusting.
+   * MySQL has an extended GROUP BY which doesn't need this according to the documentation:
+   * "MySQL has extended the use of GROUP BY to allow you to select fields that are not mentioned in the GROUP BY clause.
+   * If you are not getting the results you expect from your query, please read the GROUP BY description.
+   * See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."   
+   *
+   * @param type name description
+   * @return type description
+   */
+  function collectData($nameswitch, $userid, $startdate, $enddate)
+  {
+    $db = &atkGetDb();
+    
+    $query = "SELECT
+                  hours.time, activityid, activitydate, hours.userid, person.lastname, person.firstname, workperiod
+                FROM
+                  hours, person
+                WHERE ";
+      if ($nameswitch=="supervisor")
+      {
+        if ($userid!="all") $query.= " person.supervisor = '$userid' AND ";
+      }
+      else
+      {
+        if ($userid!="all") $query.= " hours.userid ='$userid' AND ";
+      }
+      $query.= "  activitydate >= '$startdate'
+                  AND activitydate <= '$enddate'
+                  AND hours.userid = person.id
+                ORDER BY
+                  hours.userid, activitydate, person.lastname, person.firstname, workperiod";
+      
+   
+      
+      return $db->getrows($query);
+  }
+  
+  function getLocks($nameswitch, $userid, $report_start_week, $report_end_week)
+  {
+    $db = &atkGetDb();
+    if ($nameswitch=="supervisor" && $userid!='all')
+    {
+      $query = "SELECT
+                  week, hours_lock.userid
+                FROM
+                  hours_lock, person
+                WHERE
+                  ((hours_lock.userid = person.id AND person.supervisor='$userid')
+                  OR hours_lock.userid IS NULL OR hours_lock.userid='')
+                  AND
+                    week between '$report_start_week' and '$report_end_week' ";
+    }
+    else
+    {
+      // Collect locks..
+      $query = "SELECT
+                  week, userid
+                FROM
+                  hours_lock
+                WHERE
+                  week between '$report_start_week' and '$report_end_week' ";
+      if ($nameswitch=="name"&&$userid!="all")
+      {
+        $query.="AND (userid = '$userid' OR userid IS NULL OR userid = '')";
+      }
+    }
+    return $db->getrows($query);
+  }
+  
   function action_report(&$handler)
 	{
     global $g_securityManager, $g_user, $g_sessionManager;
@@ -337,86 +432,46 @@ class weekreport extends atkNode
           $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
-
-      $periods = $db->getRows("SELECT * FROM workperiod");
-      // collect data..
-      $query = "SELECT
-                  sum(time) as time, activitydate, hours.userid, person.lastname, person.firstname, workperiod
-                FROM
-                  hours, person
-                WHERE ";
-      if ($nameswitch=="supervisor")
-      {
-        if ($userid!="all") $query.= " person.supervisor = '$userid' AND ";
-      }
-      else
-      {
-        if ($userid!="all") $query.= " hours.userid ='$userid' AND ";
-      }
-      $query.= "  activitydate >= '$startdate'
-                  AND activitydate <= '$enddate'
-                  AND hours.userid = person.id
-                GROUP BY
-                  hours.userid, activitydate, person.lastname, person.firstname, workperiod";
+        
+      $periods      = $db->getRows("SELECT * FROM workperiod");      
+      $overtimeids = $this->getOvertimeCompensationActivities();
+      $strdow       = array("sun","mon","tue","wed","thu","fri","sat");
       
- // @todo JvdW 12-01-2004 Oracle needs all columns not used in aggregate functions to be in the group by clause.
- // There might be more places in the code where this is true and need adjusting.
- // MySQL has an extended GROUP BY which doesn't need this according to the documentation:
- // "MySQL has extended the use of GROUP BY to allow you to select fields that are not mentioned in the GROUP BY clause.
- // If you are not getting the results you expect from your query, please read the GROUP BY description.
- // See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."
+      // collect data..      
+      $raw = $this->collectData($nameswitch, $userid, $startdate, $enddate);      
 
-      $raw = $db->getrows($query);
-
-      $strdow = array("sun","mon","tue","wed","thu","fri","sat");
-
-      for ($i=0;$i<count($raw);$i++)
+      for ($i=0,$_i=count($raw);$i<$_i;$i++)
       {
+        //is this timeregistration a overtimecompensation?
+        $isovertimecompensation = $this->isOvertimeCompensationActivity($raw[$i]["activityid"],$overtimeids);
+        
         $stamp = adodb_mktime(12,0,0,substr($raw[$i]["activitydate"],5,2),
-        substr($raw[$i]["activitydate"],8,2),
-        substr($raw[$i]["activitydate"],0,4));
+                                      substr($raw[$i]["activitydate"],8,2),
+                                      substr($raw[$i]["activitydate"],0,4));
         $dow = strftime("%w",$stamp);
         $key = weekstamp($stamp);
         $weekdata[$key]["week"] = $key;
-        $uid = $raw[$i]["userid"];
-        $weekdata[$key]["userdata"][$uid][$strdow[$dow]] = $raw[$i]["time"];
+        $uid = $raw[$i]["userid"];        
+                
+        $weekdata[$key]["userdata"][$uid][$strdow[$dow]]          += $raw[$i]["time"];
         $weekdata[$key]["userdata"][$uid][$raw[$i]["workperiod"]] += $raw[$i]["time"];
-        $weekdata[$key]["userdata"][$uid]["total"] += $raw[$i]["time"];
+        
+        //we do not add overtimecompensation hours to the total
+        if($isovertimecompensation)                
+          $weekdata[$key]["userdata"][$uid]["overtimecompensation"] += $raw[$i]["time"];        
+        else 
+          $weekdata[$key]["userdata"][$uid]["total"]                += $raw[$i]["time"];
+          
         $weekdata[$key]["userdata"][$uid]["name"] = $raw[$i]["lastname"].", ".$raw[$i]["firstname"];
-
+        
         // We need to display the first date and last date of each week.
         // Since we are looping days now, it is easiest if we calculate the
         // beginning of a week here.
-      }
-
-      if ($nameswitch=="supervisor" && $userid!='all')
-      {
-        $query = "SELECT
-                    week, hours_lock.userid
-                  FROM
-                    hours_lock, person
-                  WHERE
-                    ((hours_lock.userid = person.id AND person.supervisor='$userid')
-                    OR hours_lock.userid IS NULL OR hours_lock.userid='')
-                    AND
-                      week between '$report_start_week' and '$report_end_week' ";
-      }
-      else
-      {
-        // Collect locks..
-        $query = "SELECT
-                    week, userid
-                  FROM
-                    hours_lock
-                  WHERE
-                    week between '$report_start_week' and '$report_end_week' ";
-        if ($nameswitch=="name"&&$userid!="all")
-        {
-          $query.="AND (userid = '$userid' OR userid IS NULL OR userid = '')";
-        }
-      }
-      $locks = $db->getrows($query);
-      for ($i=0;$i<count($locks);$i++)
+      }      
+     
+      $locks = $this->getLocks($nameswitch, $userid, $report_start_week, $report_end_week);
+      
+      for($i=0,$_i=count($locks);$i<$_i;$i++)
       {
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
         {
@@ -449,17 +504,22 @@ class weekreport extends atkNode
           {
             $record["userid"] = $userdata["name"];
             $newtotal = 0;
-            for($i=0;$i<count($periods);$i++)
+            
+            //count total hours of working periods
+            for($i=0,$_i=count($periods);$i<$_i;$i++)
             {
               $record[$periods[$i]["name"]] = $userdata[$periods[$i]["id"]];
               $newtotal += ($periods[$i]["percentage"]/100) * $userdata[$periods[$i]["id"]];
-            }
+            }            
             $newtotal += $userdata[0];
             if ($newtotal == 0) $newtotal = $userdata["total"];
+            //subtract overtimecompensation hours from newtotal
+            $newtotal -= $userdata["overtimecompensation"];
+            $record["overtimecompensation"] = $userdata["overtimecompensation"];
             $record["total"] = $userdata["total"];
             $record["contract"] = $userdata["contract"];
             $record["overtime"] = $newtotal-$userdata["contract"];
-
+            
             if ($userdata["status"]!="")
             {
               $record["status"] = $userdata["status"];
@@ -470,8 +530,8 @@ class weekreport extends atkNode
             }
             $cmpstatus = (($record["status"]=="locked")?"locked":"unlocked");
             if ($showstatus=="both" || $cmpstatus==$showstatus)
-            {
-              for ($i=0;$i<count($strdow);$i++)
+            {              
+              for($i=0,$_i=count($strdow);$i<$_i;$i++)
               {
                 $record[$strdow[$i]] = $userdata[$strdow[$i]];
               }
@@ -483,6 +543,7 @@ class weekreport extends atkNode
 
       // sorting..
       if ($atkorderby=="") $atkorderby = "week";
+      
       usort($rldata,$atkorderby."_cmp");
 
       if ($showdetails==1)
@@ -497,8 +558,6 @@ class weekreport extends atkNode
       }
       if ($nameswitch=="name" && $userid!="all") $suppress[] = "userid";
 
-      
-      
       
       if ($outputType=="0")
       {
@@ -528,7 +587,6 @@ class weekreport extends atkNode
           $layout->output($employeedata);
           $layout->output('<br>');
         }
-
 
         $rl = &atknew("atk.recordlist.atkrecordlist");
         $layout->output('<br>'.$rl->render($this, $rldata, array(),false,$suppress));

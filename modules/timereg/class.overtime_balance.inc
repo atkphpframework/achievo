@@ -176,6 +176,7 @@
     function calculateNewBalance($userid, $begin, $end, $oldbalance)
     {
       $percentages = $this->getPercentages();
+      $overtimeids = $this->getOvertimeCompensationActivities();
       $contracthours = $this->getContractHours($begin, $end, $userid);
 
       $hours = $this->getUserHours($begin, $end, $userid);
@@ -185,7 +186,8 @@
         $time = $hours[$i]["time"]/60;
         if (count($percentages) && $hours[$i]["workperiod"] != 0) $percentage = $percentages[$hours[$i]["workperiod"]];
         else $percentage = 1;
-        $total += $percentage * $time;
+        if(!$this->isOvertimeCompensationActivity($hours[$i]["activityid"], $overtimeids));
+          $total += $percentage * $time;
       }
       return ($oldbalance + ($total - $contracthours));
     }
@@ -209,6 +211,26 @@
       return $result;
     }
 
+    function getOvertimeCompensationActivities()
+    {
+      $db = &atkGetDb();
+      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
+      
+      if($res == array())
+       return array();
+      else 
+        return $res[0];
+    }
+    
+    function isOvertimeCompensationActivity($id, $overtimeactivities)
+    {        
+      foreach($overtimeactivities as $item)
+      {      
+        if($item==$id) return true;      
+      }    
+      return false;
+    }
+    
     function getContractHours($begin, $end, $userid)
     {
       $db = &atkGetDb();
