@@ -214,19 +214,15 @@
     function getOvertimeCompensationActivities()
     {
       $db = &atkGetDb();
-      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
-      
-      if($res == array())
-       return array();
-      else 
-        return $res[0];
+      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");            
+      return $res;
     }
     
     function isOvertimeCompensationActivity($id, $overtimeactivities)
     {        
       foreach($overtimeactivities as $item)
       {      
-        if($item==$id) return true;      
+        if($item["id"]==$id) return true;      
       }    
       return false;
     }

@@ -108,10 +108,10 @@ class weekreport extends atkNode
   }
 
   function isOvertimeCompensationActivity($id, $overtimeactivities)
-  {        
+  { 
     foreach($overtimeactivities as $item)
-    {      
-      if($item==$id) return true;      
+    { 
+      if($item["id"]==$id) return true;      
     }    
     return false;
   }
@@ -121,10 +121,7 @@ class weekreport extends atkNode
     $db = &atkGetDb();
     $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
     
-    if($res == array())
-     return array();
-    else 
-      return $res[0];
+    return $res;
   }
   
   /**
@@ -439,7 +436,7 @@ class weekreport extends atkNode
       
       // collect data..      
       $raw = $this->collectData($nameswitch, $userid, $startdate, $enddate);      
-
+      
       for ($i=0,$_i=count($raw);$i<$_i;$i++)
       {
         //is this timeregistration a overtimecompensation?
