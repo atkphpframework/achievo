@@ -43,6 +43,7 @@ class project_personcontact extends atkNode
   {
     // Load the selected record from the database
     $project_personcontactrecord = $this->selectDb($selector);
+    $documentWriter->assignDocumentSingleRecord($this, $project_personcontactrecord[0]);
 
     // Assign the referenced project
     $projectnode = &getNode("project.project");
