@@ -100,8 +100,8 @@
 
     function name_display($record, $mode)
     {
-      // Do not return a html link in plain or csv mode
-      if (($mode=="plain") || ($mode=="csv"))
+      // Do not return a html link in plain or csv mode or select screen
+      if (($mode=="plain") || ($mode=="csv") || (isset($this->m_postvars["atkaction"]) && $this->m_postvars["atkaction"]=="select"))
         return $record["name"];
 
       // Make all project links clickable
