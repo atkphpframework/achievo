@@ -18,5 +18,5 @@
    * Theme definition
    */
   $theme["customtpls"] = 'scan templates/';
-
+  $theme["graphBgColor"]="#eeeeee";
 ?>
