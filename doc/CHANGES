@@ -47,6 +47,7 @@ Changes in Achievo 1.2RC1
   calendar. [Dennis]
 + Added the ability to create direct links to Achievo by passing atknodetype,
   atkaction and atkselector to index.php. [Ivo]
++ The user can now enter a remark for overtime balance corrections. [Ivo]
 * Contracts that have expired are automatically set to status 'archived' at
   save-time. Also, its linked projects will be set to status 'nonactive'.
   [Dennis]
