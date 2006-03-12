@@ -867,6 +867,28 @@
       $db = &atkGetDb();
       $db->query("DROP TABLE $table");
     }
+    
+    function dropSequence($sequence)
+    {
+      $db = &atkGetDb();
+      // Only delete sequence with mysql, since postgress and oracle use they own sequences
+      if($db->m_type=="mysql" || $db->m_type=="mysql41")
+        $db->query("DELETE FROM ".$db->m_seq_table."WHERE ".$this->m_seq_namefield." = '$sequence'");
+    }
+    
+     /**
+      * Delete nodes db table and nodes sequence from db_sequence. 
+      * Use it in uninstall.inc
+      */
+    function dropNode($node)
+    {
+      $node = &getNode($node);
+      $table = $node->m_table;
+      $seg = $node->m_seg;
+      
+      $this->dropTable($table);
+      if($seg>"") $this->dropSequence($seg);    
+    }
 
     function action_legacyupgrade(&$handler)
     {
