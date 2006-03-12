@@ -8,6 +8,7 @@
     $hoursnode = getNode("timereg.hours");
     $pda = browserInfo::detectPDA();
     $actions = array();
+    $actions["edit"] = "dispatch.php?atknodetype=timereg.hours&atkaction=edit&atkselector=[pk]";
 
     // Show only todays bookings, and only your own.
     $hoursnode->addFilter("activitydate",strftime("%Y-%m-%d"));
