@@ -310,6 +310,7 @@ class hours extends atkNode
 
   function action_edit(&$handler)
   {
+    global $g_user;
     $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));
 
     $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],

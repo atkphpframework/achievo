@@ -27,9 +27,15 @@
 
     function getPimItems()
     {
-      include_once(moduleDir("timereg")."pim.inc");
-      return array("timeregistration"=>pimTimeReg());
+      return array("timeregistration"=>"getTimeRegistration");
     }
+
+    function getTimeregistration()
+    {
+      include_once(moduleDir("timereg")."pim.inc");
+      return pimTimeReg();
+    }
+
 
     function getDependencies($mode)
     {

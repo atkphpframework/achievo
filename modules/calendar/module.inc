@@ -21,12 +21,18 @@
 
     function getPimItems()
     {
+      return array("schedule"=>"getPimListView");
+    }
+
+    function getPimListView()
+    {
       if (!(browserInfo::detectPDA()))
       {
         include_once(moduleDir("calendar")."pim.inc");
-        return array("schedule"=>pimSchedule());
+        return pimSchedule();
       }
     }
+
 
     function getDependencies($mode)
     {

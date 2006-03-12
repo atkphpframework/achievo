@@ -25,10 +25,16 @@
       return array("project");
     }
 
+    
     function getPimItems()
     {
+      return array("todos"=>"getTodo");
+    }
+    
+    function getTodo()
+    {
       include_once(moduleDir("todo")."pim.inc");
-      return array("todos"=>pimTodos());
+      return pimTodos();
     }
   }
 
