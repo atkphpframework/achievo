@@ -48,6 +48,11 @@ Changes in Achievo 1.2RC1
 + Added the ability to create direct links to Achievo by passing atknodetype,
   atkaction and atkselector to index.php. [Ivo]
 + The user can now enter a remark for overtime balance corrections. [Ivo]
++ Pim items are now configurable in the user preferences. [Sandy]
++ Module can have multiple pim items. [Sandy]
++ Added edit link to Pim timeregistration and calendar. (bug #466) [Sandy]
++ Added a dropNode method to the setup class for deleting the database
+  and sequence (if using mysql). (bug #583) [Yuri, Sandy]
 * Contracts that have expired are automatically set to status 'archived' at
   save-time. Also, its linked projects will be set to status 'nonactive'.
   [Dennis]
@@ -85,6 +90,7 @@ Changes in Achievo 1.2RC1
 * Removed some unused atkdebug commands. [Guido]
 * Scheduler menuitem is no longer displayed for users withoutaccess. [Ivo]
 * Removed project edit/view link in select mode. [Sandy]
+* Updated JpGraph to version 1.20-3. [Sandy]
 
 Changes in Achievo 1.1.0
 ------------------------
