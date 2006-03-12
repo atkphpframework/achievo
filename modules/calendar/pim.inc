@@ -39,6 +39,7 @@
     $querystring = $query->buildSelect(TRUE);
     $recs = $db->getRows($querystring);
     $actions = array();
+    $actions["edit"] = "dispatch.php?atknodetype=calendar.schedule&atkaction=edit&atkselector=[pk]";
 
     for ($i=0;$i<count($recs);$i++)
     {
