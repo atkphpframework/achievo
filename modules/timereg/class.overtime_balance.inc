@@ -191,7 +191,7 @@
         $time = $hours[$i]["time"]/60;
         if (count($percentages) && $hours[$i]["workperiod"] != 0) $percentage = $percentages[$hours[$i]["workperiod"]];
         else $percentage = 1;
-        if(!$this->isOvertimeCompensationActivity($hours[$i]["activityid"], $overtimeids));
+        if(!$this->isOvertimeCompensationActivity($hours[$i]["activityid"], $overtimeids))
           $total += $percentage * $time;
       }
       return ($oldbalance + ($total - $contracthours));
