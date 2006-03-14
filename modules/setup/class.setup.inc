@@ -873,7 +873,7 @@
       $db = &atkGetDb();
       // Only delete sequence with mysql, since postgress and oracle use they own sequences
       if($db->m_type=="mysql" || $db->m_type=="mysql41")
-        $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$this->m_seq_namefield." = '$sequence'");
+        $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
     }
     
      /**
