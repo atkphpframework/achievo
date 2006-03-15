@@ -26,7 +26,7 @@
         $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
         if(count($userDbItems)==0)
         {
-           $res = $ui->renderBox(array("title"=>atktext("pim","pim"),"content"=>atkText("pim_nopimitems","pim")));        
+           $res = $ui->renderBox(array("title"=>atktext("pim","pim"),"content"=>atkText("pim_nopimitems","pim")));
         }
         else
         {
@@ -37,16 +37,19 @@
           }
           foreach($pimItems as $modname => $item)
           {
-            foreach($item as $itemName => $itemFunc)
+            foreach($item as $itemName => $itemContent)
             {
               atkdebug("Check: ".$modname.'_'.$itemName);
               if(in_array($modname.'_'.$itemName,$userItems))
               {
                 $module = &getModule($modname);
-                if (is_object($module) && method_exists($module, $itemFunc))
+                if (is_object($module))
                 {
-  
-                  $res.= $ui->renderBox(array("title"=>text('pim_'.$itemName),"content"=>$module->$itemFunc(),"id"=>$modname.'_'.$itemName));
+                  if (method_exists($module, $itemContent))
+                  {
+                    $itemContent = $module->$itemContent();
+                  }
+                  $res.= $ui->renderBox(array("title"=>atktext('pim_'.$itemName, $modname),"content"=>$itemContent,"id"=>$modname.'_'.$itemName));
                 }
               }
             }
