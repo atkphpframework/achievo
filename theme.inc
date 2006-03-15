@@ -8,7 +8,7 @@
     $g_theme["Name"] = $g_sessionManager->getValue("atkTheme", "globals");
   }
    
-  if(empty($g_theme["Name"]))
+  if(empty($g_theme["Name"]) && ($g_user["name"]!="administrator"))
   { 
     $g_theme["Name"] = atkconfig("defaulttheme"); // default from configfile 
   
@@ -24,6 +24,11 @@
     {
       $g_sessionManager->globalVar("atkTheme", $g_theme["Name"], true);
     }
+  }
+
+  if(empty($g_theme["Name"]))
+  {
+    $g_theme["Name"] = atkconfig("defaulttheme"); // default from configfile
   }
 
   if (browserInfo::detectPDA()) $g_theme["Name"]="pda";
