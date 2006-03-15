@@ -1,6 +1,6 @@
 <?php
   /**
-   * projectstaus  node class file
+   * mastergantt node class file
    *
    * @package achievo
    * @subpackage project
@@ -25,7 +25,7 @@
   include_once("achievotools.inc");
 
   /**
-   * The node class for project status
+   * The node class for mastergantt
    *
    * @author ivo <ivo@ibuildings.nl>
    * @package achievo
@@ -34,12 +34,12 @@
   class mastergantt extends atkNode
   {
     /**
-     * projectstatus constructor
+     * mastergantt constructor
      */
     function mastergantt()
     {
-      $this->atkNode("projectstatus");
-      $this->setSecurityAlias("project.project");      
+      $this->atkNode("mastergantt");
+      $this->setSecurityAlias("project.project");
     }
 
     function getFilterRecord()
@@ -84,10 +84,10 @@
       useattrib("employee.myemployeesattribute");
 
       $attrs["coordinator"] = &new myEmployeesAttribute("coordinator", "project.project.any_project");
-      
+
       useattrib("atklistattribute");
       $attrs["plannedbooked"] = &new atkListAttribute("plannedbooked", array("planned", "booked"), "", AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM);
-      
+
       $attrs["from"] = &new atkDateAttribute("from");
       $attrs["to"] = &new atkDateAttribute("to");
 
@@ -108,7 +108,7 @@
       {
         $output.= atktext("coordinator").": ".$attrs["coordinator"]->edit($record)." ";
       }
-      
+
       $output.= atktext("display").": ".$attrs["plannedbooked"]->edit($record)." ";
 
       $output.= "<br/>";
@@ -121,18 +121,18 @@
 
       return $output;
     }
-    
+
     function hasAnyProjectPrivilege()
     {
       return $this->allowed("any_project");
     }
 
     function action_planning()
-    {           
+    {
       $filter = $this->getFilterRecord();
-      
+
       $content = $this->getFilterBar();
-      
+
       if ($this->m_postvars["go"]==1)
       {
         if (!$this->hasAnyProjectPrivilege())
@@ -140,14 +140,14 @@
           $user = getUser();
           $coordinator = $user["id"];
         }
-        else 
+        else
         {
           $coordinator = $filter["coordinator"]["id"];
         }
         $imgurl = moduleDir("project")."mastergantt.php?coordinator=".$coordinator.
                   "&from=".dateUtil::arr2str($filter["from"])."&to=".dateUtil::arr2str($filter["to"]).
                   "&plannedbooked=".$filter["plannedbooked"];
-              
+
         $content.= '<br/><br/><img src="'.$imgurl.'" border="0"/><br/><br/>';
       }
 
