@@ -186,12 +186,12 @@
 		if($warn_user && ($user['email'] != ""))
 		{
 			echo "sending mail to user: ".$user['email']."\n";
-			$body= "Your contract will expire on ".$usercontract['enddate']."\n\n";
+			$body= "Your contract will expire on ".$enddate."\n\n";
 					
 			$body.= "Employee information:\n\n";
 			$body.= $user['firstname']." ".$user['lastname']."\n\n\n";				
 			$body.= "Contract information:\n\n";
-			$body.= "Contract period: ".$usercontract['startdate']." to ".$usercontract['enddate']."\n";	
+			$body.= "Contract period: ".$startdate." to ".$enddate."\n";	
 							
 			$to = $user['email'];
 	  	$cc = "";
