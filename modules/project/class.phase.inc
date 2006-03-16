@@ -93,9 +93,12 @@
 
     function postDel($rec)
     {
-      $node = &getNode("project.dependency");
-      $delphase = $rec["id"];
-      $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");
+      if(isset($rec["id"]))
+      {
+        $node = &getNode("project.dependency");
+        $delphase = $rec["id"];
+        $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");
+      }
       return true;
     }
 
