@@ -557,6 +557,16 @@
   "the_following_problems_occured_while_employee_%s_registered_time_on_phase_%s_of_project_%s"=>"The following problems occured while employee %s registered time on phase %s of project %s",
   "problems_occured_while_registering_hours_on_phase_%s"=>"Problems occured while registering hours on phase %s",
   "organizations" => "Organizations",
+  
+  "pim_nopimitems"=>"No pim items configured, goto the user preferences for adding pim items to your pim page.",
+  "pimitems"=>"Pim items",
+  "pimitem"=>"Pim item",
+  "userpimitems"=>"Pim items",
+  "link_userpimitems_add"=>"Add pim items",
+  "timereg"=>"Time registration",
+  "timeregistration"=>"Time registration",
+  "pim_orderby_help"=>"An item with a value of 10 will apear above an item with a value of 20",
+  "archivedprojects"=>"Archived projects"
 );
 
 ?>
