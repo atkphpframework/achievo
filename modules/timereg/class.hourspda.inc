@@ -216,6 +216,7 @@ class hoursPDA extends hours
       sessionStore("atkerror_record", $record);
       header("Location: $url");exit;
     }
+    return true;
   }
 
   /**
