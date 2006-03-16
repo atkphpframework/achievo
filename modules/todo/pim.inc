@@ -9,7 +9,7 @@
     $todonode = getNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
     $todonode->addFilter("todo.status NOT IN (5,2)");
-
+    $actions = array();
     $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
 
     $recs = $todonode->selectDb("assigned_to='".$userid."' AND assigned_to <> 0");
