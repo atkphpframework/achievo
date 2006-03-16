@@ -123,12 +123,24 @@
 			if($contract != array())
 			{
 				$usr = getUserById($contract['userid']['id']); 
-				$supervisor = getUserById($usr[0]['supervisor']['id']);
 				
-				if (isset($supervisor[0]['email'])) 
+				if ($usr[0]['supervisor']['id'] != '') 
 				{
-				  $dest_addr[] = $supervisor[0]['email'];				   				
-				}   
+					$supervisor = getUserById($usr[0]['supervisor']['id']);
+					
+					if ($supervisor[0]['email'] != '')
+					{
+					  $dest_addr[] = $supervisor[0]['email'];
+					}
+					else 
+					{
+						echo ("The supervisor (".$supervisor[0]['firstname']." ".$supervisor[0]['lastname'].") of employee (".$usr[0]['firstname']." ".$usr[0]['lastname'].") has no emailaddress.\n");
+					}
+				}	
+				else 
+				{
+					echo ("Employee (".$usr[0]['firstname']." ".$usr[0]['lastname'].") has no supervisor.\n");		   	
+				}			   
 				
 				if($dest_addr == array()) 									echo ("No supervisor emailaddresses provided in config file.\n");	
 				if(!$warn_user && ($dest_addr == array())) 	exit ("Nothing to do.\nExiting.\n");
