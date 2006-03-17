@@ -2,7 +2,7 @@
 
 atkimport("atk.menu.atkframesmenu");
 
-class achievo extends atkFramesMenu 
+class achievo extends atkFramesMenu
 {
 
   function getHeader($atkmenutop)
@@ -11,18 +11,18 @@ class achievo extends atkFramesMenu
     {
       global $g_sessionManager;
       include_once "achievotools.inc";
-      $projects = $g_sessionManager->getValue("selectedprj","globals");  
-      
+      $projects = $g_sessionManager->getValue("selectedprj","globals");
+
       if (count($projects) == 0)
       {
         //updateSelectedProjects();
         $projects = $g_sessionManager->getValue("selectedprj","globals");
-      }        
-      
+      }
+
       $prj .= text("project_select").":";
-      $prj .="<FORM><SELECT name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
+      $prj .="<FORM><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
       $prj .= "<OPTION value=\"0\">".text("project_select_none")."</OPTION>";
-  
+
       for ($i=0;$i < count($projects); $i++)
       {
         $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
@@ -31,7 +31,7 @@ class achievo extends atkFramesMenu
       }
       $prj .="</SELECT></FORM>";
       return $prj;
-  
+
     }
   }
 }
