@@ -13,7 +13,7 @@ IMPORTANT
 Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE before
 attempting to upgrade. A good way to do the upgrade is to copy the entire 
 database. For example, if your database is achievo_0_6, and you want to 
-upgrade to Achievo 1.1, then copy the database to achievo_1_1. Then proceed
+upgrade to Achievo 1.2, then copy the database to achievo_1_2. Then proceed
 with the instructions below.
 
 Support
