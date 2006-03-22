@@ -14,7 +14,7 @@ class userpimitems extends atkNode
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.userprefs",AF_HIDE));
     $pimitems = $this->getPimItems();
-    $this->add(new atkListAttribute("pimitem",array_values($pimitems),array_keys($pimitems),AF_OBLIGATORY,255));
+    $this->add(new atkListAttribute("pimitem",array_values($pimitems),array_keys($pimitems),AF_OBLIGATORY|AF_NO_TRANSLATION,255));
     $this->add(new atkDummyAttribute("pim_orderby_help",atktext("pim_orderby_help"),AF_BLANK_LABEL|AF_HIDE_LIST));
     $this->add(new atkNumberAttribute("orderby"));
     $this->setSecurityAlias("employee.userprefs");
@@ -22,6 +22,7 @@ class userpimitems extends atkNode
     $this->addSecurityMap("delete","edit");
     $this->setOrder("orderby");
     $this->setTable("userpimitems");
+    $this->setDescriptorTemplate("[pimitem]");
   }
 
   function getPimItems()
@@ -33,14 +34,12 @@ class userpimitems extends atkNode
       foreach($items as $itemName => $itemFunc)
       {
         $item = $module.'_'.$itemName;
-        $ret[$item] = atkText($module,$module).' - '.atkText($itemName,$module);
+        $ret[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
       }
     }
 
     return $ret;
   }
 }
-
-
 
 ?>

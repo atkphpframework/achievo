@@ -49,7 +49,7 @@
                   {
                     $itemContent = $module->$itemContent();
                   }
-                  $res.= $ui->renderBox(array("title"=>atktext('pim_'.$itemName, $modname),"content"=>$itemContent,"id"=>$modname.'_'.$itemName));
+                  $res.= $ui->renderBox(array("title"=>atktext(array("pim_$itemName", $itemName), $modname),"content"=>$itemContent,"id"=>$modname.'_'.$itemName));
                 }
               }
             }
