@@ -17,7 +17,7 @@
   //
   $nl = array(
   "abbreviation" => "Afkorting",
-  "active" => "Aktief",
+  "active" => "Actief",
   "activity" => "Activiteit",
   "activitydate" => "Datum",
   "activityid" => "Activiteit",
@@ -45,8 +45,8 @@
   "approved" => "Goed gekeurd",
   "app_shorttitle" => "Achievo",
   "app_title" => "Achievo",
-  "archived" => "Archived",
-  "archivedprojects" => "Archived projects", // Missing string!!!
+  "archived" => "Gearchiveerd",
+  "archivedprojects" => "Gearchiveerde projecten",
   "assigned_to" => "Toegewezen aan",
   "attendee_contactsearch" => "Voeg contactpersoon toe",
   "attendee_empsearch" => "Voeg medewerker toe",
@@ -60,7 +60,7 @@
   "booked" => "Geboekt",
   "both" => "Beide",
   "by_period" => "Per periode",
-  "calendar_defaultuserview" => "Default gebruiker in agenda overzichten",
+  "calendar_defaultuserview" => "Standaard gebruiker in agenda overzichten",
   "cancelled" => "Geannuleerd",
   "cellular" => "Mobiel",
   "city" => "Woonplaats",
@@ -98,7 +98,7 @@
   "deadline" => "Deadline",
   "defaultrate" => "Standaard",
   "deliverable" => "Deliverable",
-  "deliverables" => "Deliverables", // Missing string!!!
+  "deliverables" => "Deliverables",
   "deliverable_remind_days" => "Herinnering (dagen)",
   "department" => "Afdeling",
   "dependencies" => "Afhankelijkheden",
@@ -123,7 +123,7 @@
   "employee_showallemployees" => "Klik hier om ze te tonen.",
   "emptimedistribution" => "Per medewerker",
   "enddate" => "Einddatum",
-  "enddate_expire_warning" => "If the enddate of this contract has expired, when saving the contract the status will automatically be set to 'archived'!<br />All linked projects will be set to status 'nonactive'!", // Missing string!!!
+  "enddate_expire_warning" => "Wanneer dit contract verlopen is, zal de status bij het opslaan automatisch op 'gearchiveerd' gezet worden!<br />Alle gekoppelde projecten zullen de status Non-actief krijgen!",
   "endtime" => "Eindtijd",
   "entity" => "Profiel",
   "entrydate" => "Invoerdatum",
@@ -171,7 +171,7 @@
   "hours_approve_thestatusofthisweekis" => "De status van deze week is",
   "hours_lock" => "Uren blokkeren",
   "id" => "ID",
-  "initials" => "Initials", // Missing string!!!
+  "initials" => "Initialen",
   "initial_planning" => "Initiele planning",
   "invoice_address" => "Adres",
   "invoice_address2" => "Adres 2",
@@ -193,7 +193,7 @@
   "link_todo_add" => "Todo item toevoegen",
   "link_tpl_project_phase_add" => "Voeg een nieuwe fase toe aan dit project",
   "link_usercontracts_add" => "Overeenkomst toevoegen",
-  "link_userpimitems_add" => "Add pim items", // Missing string!!!
+  "link_userpimitems_add" => "Voeg Pim item toe",
   "location" => "Locatie",
   "lock" => "Blokkeren",
   "locked" => "Geblokkeerd",
@@ -215,8 +215,8 @@
   "mastergantt_colorconfig_hours_max" => "Uren tot",
   "mastergantt_colorconfig_hours_min" => "Uren van",
   "max_phasetime" => "Doorlooptijd (dagen)",
-  "members_only" => "Members only", // Missing string!!!
-  "menu" => "Main menu",
+  "members_only" => "Alleen voor leden",
+  "menu" => "Hoofdmenu",
   "menu_achievo_docs" => "Online documentatie",
   "menu_achievo_home" => "Achievo homepage",
   "menu_achievo_license" => "Achievo licentie",
@@ -280,15 +280,15 @@
   "nextweek" => "Week verder",
   "next_day" => "Volgende dag",
   "next_month" => "Volgende maand",
-  "nonactive" => "Non-aktief",
+  "nonactive" => "Non-actief",
   "nophasesdefined" => "Het project heeft geen fasen!",
   "normal" => "Normaal",
   "notes" => "Notities",
   "not_approved_yet" => "Nog niet goedgekeurd",
   "not_inserted" => "niet berekend",
-  "no_activity_selected" => "No activity selected", // Missing string!!!
+  "no_activity_selected" => "Geen activiteit geselecteerd",
   "no_appointments" => "Geen afspraken",
-  "no_billing_period" => "No billing period", // Missing string!!!
+  "no_billing_period" => "Geen factureringsperiode",
   "number" => "Huisnr.",
   "of" => "van",
   "onlyactiverecordsareshown" => "Alleen actieve records worden getoond.",
@@ -297,12 +297,12 @@
   "orderby" => "Sorteren op",
   "organization" => "Organisatie",
   "organizationid" => "Organisatie",
-  "organizations" => "Organizations", // Missing string!!!
+  "organizations" => "Organisaties",
   "organization_invoiceaddress" => "Factuur adres",
   "organization_mailaddress" => "Post adres",
   "organization_visitaddress" => "Bezoek adres",
   "overtime" => "Overwerk",
-  "overtimecompensation" => "Overtime compensation", // Missing string!!!
+  "overtimecompensation" => "Overuren compensatie",
   "overtime_balance" => "Overuren saldo",
   "owner" => "Eigenaar",
   "parameters" => "Parameters",
@@ -330,14 +330,14 @@
   "phase_select" => "Selecteer een fase",
   "phone" => "Telefoon",
   "pim" => "Pim",
-  "pimitem" => "Pim item", // Missing string!!!
-  "pimitems" => "Pim items", // Missing string!!!
+  "pimitem" => "Pim item",
+  "pimitems" => "Pim items",
   "pim_assignedbyyou" => "Door jou toegewezen aan anderen",
   "pim_assignedtoyou" => "Toegewezen aan jou",
   "pim_gotoschedule" => "Ga naar agenda",
   "pim_gototimeregistration" => "Ga naar tijdregistratie",
-  "pim_nopimitems" => "No pim items configured, goto the user preferences for adding pim items to your pim page.", // Missing string!!!
-  "pim_orderby_help" => "An item with a value of 10 will apear above an item with a value of 20", // Missing string!!!
+  "pim_nopimitems" => "Geen Pim items ingesteld. Ga naar Gebruikersinstellingen om items aan je Pim pagina toe te voegen.",
+  "pim_orderby_help" => "Een item met een waarde van 10 zal boven een item met waarde 20 verschijnen.",
   "pim_resplanning" => "Resource planning",
   "pim_schedule" => "Je afspraken voor vandaag",
   "pim_schedule_empty" => "Nog geen afspraken voor vandaag",
@@ -358,7 +358,7 @@
   "priority" => "Prioriteit",
   "problems_occured_while_registering_hours_on_phase_%s" => "Problemen ontstaan bij het registreren van uren op fase %s",
   "profile" => "Profiel",
-  "profiles" => "Profiles", // Missing string!!!
+  "profiles" => "Profielen",
   "profile_explanation" => "<br>Hieronder kunt u aangeven wat een medewerker in dit profiel wel of niet mag doen.<br><br>",
   "profile_hours_lock" => "Globale week-blokkering",
   "project" => "Project",
@@ -368,7 +368,7 @@
   "project_member_fuzzyhint" => "Vul een komma-gescheiden lijst van toe te voegen teamleden in, en kies een rol voor de nieuwe leden.",
   "project_notes" => "Project notities",
   "project_notesview" => "Project notities",
-  "project_personcontact" => "Contact person", // Missing string!!!
+  "project_personcontact" => "Contactpersoon",
   "project_select" => "Selecteer een project",
   "project_select_none" => "Geen project geselecteerd",
   "project_tab_default" => "Algemeen",
@@ -422,7 +422,7 @@
   "search_again" => "Opnieuw zoeken",
   "search_emptysearchstring" => "Geen trefwoord opgegeven.",
   "search_noresults" => "Je zoekoprdacht '%s' leverde geen resultaat op.",
-  "selectandaddnewproject" => "Select and link an existing project", // Missing string!!!
+  "selectandaddnewproject" => "Selecteer en koppel een bestaand project",
   "seluserdate" => "Selecteer medewerkers en een datum om agenda's te vergelijken",
   "setcostsfilter" => "Selecteer welke kosten U wilt zien:",
   "sethoursfilter" => "Selecteer welke uren u wilt zien:",
@@ -437,7 +437,7 @@
   "stats_chooseactivity" => "Kies de activiteit waarvan u statistieken wilt zien door op de activiteitnaam te klikken.",
   "stats_chooseemployee" => "Kies de medewerker waarvan u statistieken wilt zien door op zijn/haar naam te klikken.",
   "status" => "Status",
-  "status_change_warning" => "When changing the status to archived, the status of linked projects will be automatically set to nonactive!", // Missing string!!!
+  "status_change_warning" => "Wanneer de status op gearchiveerd wordt gezet, zullen de gekoppelde projecten automatisch de status Non-actief krijgen!",
   "subtotal" => "Subtotaal",
   "supervisor" => "Manager",
   "tab_calendar" => "Agenda",
@@ -460,8 +460,8 @@
   "timeguard_mail_line" => "In week [week] ([startdate] t/m [enddate]) ontbreken [hours] uren.",
   "timeguard_mail_subject" => "Urenregistratie niet compleet",
   "timeline" => "Timeline",
-  "timereg" => "Time registration", // Missing string!!!
-  "timeregistration" => "Time registration", // Missing string!!!
+  "timereg" => "Tijd registratie",
+  "timeregistration" => "Tijd registratie",
   "timereg_hours_filterdays" => "Als je een periode selecteert, kun je hier aangeven op welke dagen de tijd geregistreerd moet worden:",
   "timereg_hours_insert_day" => "1 dag tegelijk",
   "timereg_hours_insert_multi" => "Selecteer periode",
@@ -511,7 +511,7 @@
   "to" => "Tot",
   "today" => "Vandaag",
   "today_and_appointments" => "Vandaag en afspraken",
-  "todo" => "Todo", // Missing string!!!
+  "todo" => "Todo",
   "todoadded" => "Nieuw todo item",
   "todochanged" => "Todo item is veranderd",
   "todocheck_mail_assigned_byyou" => "Todo's door jou toegewezen",
@@ -519,7 +519,7 @@
   "todocheck_mail_duetoday" => "De volgende todo's moeten vandaag zijn afgerond:",
   "todocheck_mail_late" => "De volgende todo's hadden al voor vandaag af moeten zijn:",
   "todocheck_mail_subject" => "Todo herinnering",
-  "todos" => "Todo's", // Missing string!!!
+  "todos" => "Todo's",
   "todo_assignedto" => "Toegewezen aan",
   "todo_changedby" => "Veranderd door",
   "todo_completed" => "Afgerond",
@@ -547,7 +547,7 @@
   "usercontract" => "Contract",
   "usercontracts" => "Medewerker contracten",
   "userid" => "Gebruikersnaam",
-  "userpimitems" => "Pim items", // Missing string!!!
+  "userpimitems" => "Pim items",
   "userprefs" => "Gebruikersinstellingen",
   "vatnumber" => "BTW nummer",
   "vcard" => "vCard",
