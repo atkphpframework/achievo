@@ -12,6 +12,7 @@
   {
     var $m_report = array();
     var $m_cancontinue = true;
+    var $m_currentmodule = "";
 
     var $m_resultmsg = array("ok" => "Installation completed",
                              "n/a" => "No installation required",
