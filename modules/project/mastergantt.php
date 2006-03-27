@@ -124,7 +124,7 @@
     if ($gantphase['enddate']>$to || $gantphase['enddate']=='') $gantphase['enddate']=$to;
     
     $caption = "[".time_format($gantphase[$plannedbooked], true)."]";    
-    $activity[$i] = &new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate'], $caption);
+    $activity[$i] = new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate'], $caption);
     
     $colorbase = $gantphase[$plannedbooked];
     
