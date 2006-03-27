@@ -53,7 +53,7 @@
     // on a 'dynamic' class (where the name is inside a
     // variable), we use a companion plotter class to 
     // plot stuff.
-    $plotter = &new $plotterclass();
+    $plotter = new $plotterclass();
     $res = $plotter->plot($ATK_VARS);
   }
   else
