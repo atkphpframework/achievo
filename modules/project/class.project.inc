@@ -45,7 +45,6 @@
       if ($ATK_VARS["atknodetype"]=="project.project"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit","search", "view")) || $reportnodetype=="hoursurvey")
       {
         $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE_ADD|AF_HIDE_LIST, 15));
-        $this->addFilter("project.status<>'archived'");
       }
       else
       {
