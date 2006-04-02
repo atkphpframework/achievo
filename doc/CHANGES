@@ -4,6 +4,11 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.2
+---------------------------
+* Fixed bug with archived projects. [Sandy]
+* Updated dutch language file. [Guido]
+
 Changes in Achievo 1.2RC1
 ---------------------------
 + Added cronjob for checking expiration dates of usercontracts. [Dennis]
