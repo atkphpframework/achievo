@@ -221,13 +221,18 @@ class atkProjectPhaseAttribute extends atkAttribute
 
     $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
 
-    if (strstr($ATK_VARS["atknodetype"],"reports") || $reportnodetype=="hoursurvey")
-      $projectPhaseFilter = "phase.status<>'archived' AND project.status<>'archived'";
-    else
-      $projectPhaseFilter = "phase.status='active' AND project.status='active'";
-
-    $query = "SELECT DISTINCT phase.id, phase.name, project.name as projectname FROM phase,hours,project LEFT JOIN project_person ON (project_person.projectid = project.id)";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
+    $query = "SELECT DISTINCT phase.id, phase.name, project.name as projectname 
+              FROM phase,hours,project 
+              LEFT JOIN project_person ON (project_person.projectid = project.id)
+              WHERE phase.id=hours.phaseid 
+                AND userid='".$user["id"]."' 
+                AND phase.status='active' 
+                AND ((phase.startdate IS NULL OR phase.startdate<= NOW())
+                     AND (phase.enddate IS NULL OR phase.enddate>= NOW()))
+                AND project.status='active' 
+                AND ((project.startdate IS NULL OR project.startdate<= NOW())
+                     AND (project.enddate IS NULL OR project.enddate>= NOW()))
+                AND phase.projectid=project.id ";
 
     if (!$g_securityManager->allowed("timereg.hours", "any_project"))
     {
@@ -253,8 +258,15 @@ class atkProjectPhaseAttribute extends atkAttribute
         $j++;
       }
     }
+    usort($newarr,array("atkProjectPhaseAttribute","cmp_projectname"));
     return $newarr;
   }
+  
+  function cmp_projectname($a, $b)
+  {
+    return strcmp($a["projectname"], $b["projectname"]);
+  }
+
 
   function getPhase($phaseid)
   {
