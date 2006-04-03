@@ -11,15 +11,9 @@
   {
     function projectselector()
     {
-      global $g_securityManager;
       $this->project("projectselector", NF_READONLY);
       $this->setSecurityAlias("project.project");
-      
-      // Add filter. 
-      if (!$g_securityManager->allowed("timereg.hours", "any_project"))
-      {
-        $this->add(new projectFilter());
-      }
+      $this->add(new projectFilter());
     }
         
   }
@@ -34,10 +28,17 @@
     
     function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level, $mode)
     {
-      $user = getUser();
-      $query->addJoin("project_person", "members", "members.projectid = project.id", true);      
-      $query->addGroupBy("project.id");
-      $query->addCondition("(members.personid = ".$user["id"]." OR project.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")");
+      global $g_securityManager;
+      if (!$g_securityManager->allowed("timereg.hours", "any_project"))
+      {
+        $user = getUser();
+        $query->addJoin("project_person", "members", "members.projectid = project.id", true);      
+        $query->addGroupBy("project.id");
+        $query->addCondition("(members.personid = ".$user["id"]." OR project.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")");
+      }
+      $query->addCondition("project.status='active' 
+                            AND ((project.startdate IS NULL OR project.startdate<= NOW())
+                            AND (project.enddate IS NULL OR project.enddate>= NOW()))");
     }
   }
 
