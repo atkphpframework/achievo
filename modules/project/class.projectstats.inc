@@ -12,10 +12,10 @@ class projectstats extends atkNode
 
   function projectstats()
   {
-    global $g_sessionManager;
+    $sessionManager = &atkGetSessionManager();
     $this->atkNode("projectstats", NF_READONLY);
 
-    $this->m_viewstart = $g_sessionManager->stackVar("viewstart");
+    $this->m_viewstart = $sessionManager->stackVar("viewstart");
 
     if ($this->m_viewstart=="")
     {
@@ -28,7 +28,7 @@ class projectstats extends atkNode
       $this->m_viewstart["day"]);
     }
 
-    $this->m_viewend = $g_sessionManager->stackVar("viewend");
+    $this->m_viewend = $sessionManager->stackVar("viewend");
     if ($this->m_viewend=="")
     {
       $this->m_viewend = date("Y-m-d");
@@ -40,11 +40,11 @@ class projectstats extends atkNode
       $this->m_viewend["day"]);
     }
 
-    $this->m_zoom = $g_sessionManager->stackVar("zoom");
+    $this->m_zoom = $sessionManager->stackVar("zoom");
 
-    $this->m_projectid = $g_sessionManager->stackVar("projectid");
+    $this->m_projectid = $sessionManager->stackVar("projectid");
 
-    $this->m_resolution = $g_sessionManager->stackVar("resolution");
+    $this->m_resolution = $sessionManager->stackVar("resolution");
     if ($this->m_resolution=="") $this->m_resolution = "auto";
 
     $this->setSecurityAlias("project.project");
@@ -54,20 +54,17 @@ class projectstats extends atkNode
   {
     include_once("achievotools.inc");
 
-    atkimport("atk.layout");
-    $layout = &layout::getInstance();
-
-    $layout->initGui();
-    $layout->ui_top(text("parameters", "projectstats", "project"));
+    $ui = &$this->getUi();
+    $page = &$this->getPage();
+    $this->addStyle("style.css");
 
     $startdate = $this->m_viewstart;
     $enddate = $this->m_viewend;
     $projectid = $this->m_projectid;
 
-    $layout->output('<br>'.$this->navigator().'<br>');
-
-    $layout->ui_bottom();
-
+    $navigatorBox = $ui->renderBox(array("title"=>atkText("parameters","project"),"content"=>$this->navigator()));
+    $page->addContent($navigatorBox);
+    
     $prjnode = &getNode("project.project");
 
     $descriptor="";
@@ -78,16 +75,15 @@ class projectstats extends atkNode
       $descriptor = " - ".$prjnode->descriptor($recs[0]);
     }
 
-    $layout->ui_top(text("stats").$descriptor);
 
     $backbtn = "";
     if (atkLevel()>0)
     {
       $backbtn = '<br><form method="get">'.session_form(SESSION_BACK).
-      '<input type="submit" value="&lt;&lt; '.text('back').'"></form>';
+      '<input type="submit" value="&lt;&lt; '.atkText('back','atk').'"></form>';
     }
 
-    $output.=$backbtn;
+    $output=$backbtn;
 
     if ($this->m_projectid=="")
     {
@@ -157,7 +153,7 @@ class projectstats extends atkNode
       $output.= "<br>".$phasestats->showGraph();
 
       // Textual version:
-      $output.= "<br><br>".$this->_tableStats(text("phase"), $prjnode->graph_phasetime($params, true), array("name"), $detailparams, "phaseid");
+      $output.= "<br><br>".$this->_tableStats(atkText("phase","project"), $prjnode->graph_phasetime($params, true), array("name"), $detailparams, "phaseid");
 
       // EMPLOYEE STATS
       $empstats = &new dataGraphAttribute("emptimedistribution", "emptime", $params, "auto");
@@ -166,7 +162,7 @@ class projectstats extends atkNode
       $output.= "<br><br>".$empstats->showGraph();
 
       // Textual version:
-      $output.= "<br><br>".$this->_tableStats(text("employee"), $prjnode->graph_emptime($params, true), array("firstname", "lastname"), $detailparams, "userid");
+      $output.= "<br><br>".$this->_tableStats(atkText("employee","project"), $prjnode->graph_emptime($params, true), array("firstname", "lastname"), $detailparams, "userid");
 
       // ACTIVITY STATS
       $activitystats = &new dataGraphAttribute("activitytimedistribution", "activitytime", $params, "auto");
@@ -175,7 +171,7 @@ class projectstats extends atkNode
       $output.= "<br><br>".$activitystats->showGraph();
 
       // Textual version:
-      $output.= "<br><br>".$this->_tableStats(text("activity"), $prjnode->graph_activitytime($params, true), array("name"), $detailparams, "activity_id");
+      $output.= "<br><br>".$this->_tableStats(atkText("activity","project"), $prjnode->graph_activitytime($params, true), array("name"), $detailparams, "activity_id");
 
       // DOW STATS
       $dowstats = &new dataGraphAttribute("dowtimedistribution", "dowtime", $params, "auto");
@@ -184,20 +180,19 @@ class projectstats extends atkNode
       $output.= "<br><br>".$dowstats->showGraph();
 
       // Textual version:
-      $output.= "<br><br>".$this->_tableStats(text("day"), $prjnode->graph_dowtime($params, true), array("dow"), $detailparams);
+      $output.= "<br><br>".$this->_tableStats(atkText("day","project"), $prjnode->graph_dowtime($params, true), array("dow"), $detailparams);
     }
 
     $output.="<br>".$backbtn."<br>";
+    $contentBox = $ui->renderBox(array("title"=>atkText("stats","project").$descriptor,"content"=>$output));
+    $page->addContent($contentBox);
 
-    $layout->output($output);
-
-    $layout->ui_bottom();
   }
 
   function _paramForm($contents)
   {
     return '<form method="get">'.session_form().$contents.
-    '<input type="submit" value="'.text('refresh').'"></form>';
+    '<input type="submit" value="'.atkText('refresh','project').'"></form>';
   }
 
   function navigator()
@@ -220,10 +215,10 @@ class projectstats extends atkNode
     $output.= '<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">';
     $output.= '<input type="hidden" name="atkaction" value="'.$this->m_action.'">';
 
-    $output.= text("timespan").': '.$startdateatt->edit($dummyrec).' &nbsp;'.
-    text("until").'&nbsp; '.$enddateatt->edit($dummyrec);
+    $output.= atkText("timespan","project").': '.$startdateatt->edit($dummyrec).' &nbsp;'.
+    atkText("until","project").'&nbsp; '.$enddateatt->edit($dummyrec);
 
-    $output.= ' &nbsp;<input type="submit" value="'.text("refresh").'">';
+    $output.= ' &nbsp;<input type="submit" value="'.atkText("refresh","project").'">';
 
     $output.= '</form>';
     return $output;
@@ -252,47 +247,42 @@ class projectstats extends atkNode
 
     if ($max)
     {
-      $output ="<b>".sprintf(text("top_projects"), $max).'</b> (';
-      $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"topprojects")), text("complete_list"));
+      $output ="<b>".sprintf(atkText("top_projects","project"), $max).'</b> (';
+      $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"topprojects")), atkText("complete_list","project"));
     }
     else
     {
-      $output ="<b>".text("allprojects").'</b> (';
-      $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"0")), sprintf(text("top_projects"), 10));
+      $output ="<b>".atkText("allprojects","project").'</b> (';
+      $output.=href(dispatch_url($this->atkNodeType(), "stats", array("zoom"=>"0")), sprintf(atkText("top_projects","project"), 10));
     }
-    $output.=')<br>';
+    $output.=')<br><br>';
 
-    atkimport("atk.layout");
-    $layout = &layout::getInstance();
-
-    $output.= $layout->data_top();
-
-    $output.= $layout->tr_top();
-    $output.= $layout->ret_td_datatitle("#");
-    $output.= $layout->ret_td_datatitle(text("project"));
-    $output.= $layout->ret_td_datatitle(text("time"));
-    $output.= $layout->tr_bottom();
-
+    $data = array();
+    // Add header
+    $data[] = array("#",atkText("project","project"),atkText("time","project"));
+    // Create data
     for ($i=0, $_i=count($projects); $i<$_i; $i++)
     {
-      $output.= $layout->tr_top($i%2);
-      $output.= $layout->ret_td($i+1);
-      $output.= $layout->ret_td(href("dispatch.php?atknodetype=".$this->atkNodeType().
-      "&atkaction=".$this->m_action.
-      "&projectid=".$projects[$i]["id"],
-      $projects[$i]["name"],
-      SESSION_NESTED));
-      $output.= $layout->ret_td(time_format($projects[$i]["totaltime"], true));
-      $output.= $layout->tr_bottom();
-    }
-
-    $output.= $layout->data_bottom();
+       $row = array();
+       $row[]=($i+1);
+       $row[]=href("dispatch.php?atknodetype=".$this->atkNodeType().
+                   "&atkaction=".$this->m_action.
+                   "&projectid=".$projects[$i]["id"],
+                   $projects[$i]["name"],
+                   SESSION_NESTED);
+       $row[] = time_format($projects[$i]["totaltime"], true);
+       $data[] = $row;
+    }  
+    
+    $tbl = &atknew("atk.utils.atktablerenderer");
+    $tbl->setColAlignment(2,TBL_RIGHT);
+    $output.=$tbl->render($data, TBL_DATA, "recordlist");
     return $output;
   }
 
   function _tableStats($itemheader, $dataset, $datasetdescriptors, $detailparams, $idparam="")
   {
-    global $g_securityManager;
+    $securityManager = &atkGetSecurityManager();
 
     // Totals count
     $total = 0;
@@ -301,22 +291,23 @@ class projectstats extends atkNode
       $total+=$dataset[$i]["total"];
     }
 
-    $mayviewdetail = ($idparam!="" && $g_securityManager->allowed("reports.hoursurvey", "view_all"));
+    $mayviewdetail = ($idparam!="" && $securityManager->allowed("reports.hoursurvey", "view_all"));
 
+    $data = array();
+    // Add header
+    $data[] = array($itemheader,
+                    atkText("time","project"),
+                    atkText("percentage","project"));
+    if($mayviewdetail) $data[0][] = atkText("details","project");
+    
     atkimport("atk.layout");
     $layout = &layout::getInstance();
 
-    $res = $layout->data_top();
-    $res.= $layout->tr_top();
-    $res.= $layout->ret_td_datatitle($itemheader);
-    $res.= $layout->ret_td_datatitle(text("time"));
-    $res.= $layout->ret_td_datatitle(text("percentage"));
-    if ($mayviewdetail) $res.= $layout->ret_td_datatitle(text("details"));
-    $res.= $layout->tr_bottom();
+  
 
     for($i=0, $_i=count($dataset); $i<$_i; $i++)
     {
-      $res.= $layout->tr_top($i%2!=0);
+      $row = array();
 
       $descriptor = array();
       // datasetdescriptors is an array contain information on which fields in $dataset are
@@ -327,28 +318,29 @@ class projectstats extends atkNode
       }
       $value = $dataset[$i]["total"];
 
-      $res.= $layout->ret_td(implode(" ", $descriptor));
-      $res.= $layout->ret_td(time_format($value, true), 'align="right"');
+      $row[] = implode(" ",$descriptor);
+      $row[] = time_format($value, true); // align right
       $percentage = ($total<=0?0:(($value/$total)*100));
-      $res.= $layout->ret_td(sprintf("%02.02f", $percentage)."%", 'align="right"');
+      $row[] = sprintf("%02.02f", $percentage)."%"; // align right
       if ($mayviewdetail)
       {
         $detailparams[$idparam] = $dataset[$i]["id"];
-        $detailurl = href(dispatch_url("reports.hoursurvey", "report", $detailparams), text("view"), SESSION_NESTED);
-        $res.= $layout->ret_td($detailurl);
+        $detailurl = href(dispatch_url("reports.hoursurvey", "report", $detailparams), atkText("view","project"), SESSION_NESTED);
+        $row[] = $detailurl;
       }
-      $res.= $layout->tr_bottom();
+      $data[] = $row;
     }
 
-    $res.= $layout->tr_top();
-    $res.= $layout->ret_td_datatitle(text("total"));
-    $res.= $layout->ret_td_datatitle(time_format($total, true), 'align="right"');
-    $res.= $layout->ret_td_datatitle('100.00%', 'align="right"');
-    if ($mayviewdetail) $res.= $layout->ret_td_datatitle("");
-    $res.= $layout->tr_bottom();
+    // Add Footer
+    $footer = array(atkText("total","project"),time_format($total, true), '100.00%');
+    if($mayviewdetail) $footer[] = "";
+    $data[] = $footer;
 
-    $res.= $layout->data_bottom();
+    $tbl = &atknew("atk.utils.atktablerenderer");
+    $tbl->setColAlignment(1,TBL_RIGHT);
+    $tbl->setColAlignment(2,TBL_RIGHT);
 
+    $res.=$tbl->render($data, TBL_DATA|TBL_FOOTER, "recordlist");
     return $res;
   }
 
