@@ -1,7 +1,8 @@
 <?php
+  $config_atkroot = "./";
   include_once("atk.inc");
   include_once("./theme.inc");
-  
+
   atkimport("atk.layout");
   $layout = &layout::getInstance();
 

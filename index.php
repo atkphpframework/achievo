@@ -1,19 +1,20 @@
 <?php
-  
+
+  $config_atkroot = "./";
   include_once("atk.inc");
   include_once("atk/atkbrowsertools.inc");
-  atksession(); 
+  atksession();
   atksecure();
-  
+
   atkimport("atk.layout");
   $layout = &layout::getInstance();
- 
+
   $layout->output('<html>');
   $layout->head(text("app_title"));
-  
+
   $user = getUser();
   $pda = browserInfo::detectPDA();
-  
+
 
   if(isset($ATK_VARS["atknodetype"]) && isset($ATK_VARS["atkaction"]))
   {
@@ -32,15 +33,15 @@
   {
     $default_url = session_url("dispatch.php?atknodetype=pim.pim&atkaction=pim",SESSION_NEW);
   }
-  
-  
+
+
   if (!$pda)
   {
   $layout->output('
         <frameset rows="80,*" frameborder="0" border="0">
           <frame name="top" scrolling="no" noresize src="top.php" marginwidth="0" marginheight="0">
-       ');    
-    
+       ');
+
     $layout->output('
       <frameset cols="190,*" frameborder="0" border="0">
         <frame name="menu" scrolling="no" noresize src="menu.php" marginwidth="0" marginheight="0">
@@ -56,10 +57,10 @@
         </noframes>
       </frameset>
       </html>
-       ');  
+       ');
   }
-  else 
-  {    
+  else
+  {
     $config_defaulttheme="default";
     $layout->output('
     <frameset rows="30,*" frameborder="0">
@@ -71,7 +72,7 @@
         </body>
       </noframes>
     </frameset>
-  </html>');  
+  </html>');
   }
   $layout->outputFlush();
 

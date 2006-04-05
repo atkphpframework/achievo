@@ -1,4 +1,4 @@
-<?php   
+<?php
 
   /**
    * graph.php
@@ -28,43 +28,44 @@
    *
    */
 
-  /* Setup the system */    
-  include_once("atk.inc");    
+  /* Setup the system */
+  $config_atkroot = "./";
+  include_once("atk.inc");
 
   include_once("theme.inc");
-  
+
   include_once(moduleDir("graph")."jpgraph/jpgraph.php");
-    
+
   atksession("img", false);
   atksecure();
-  
-  // Create attribute. 
+
+  // Create attribute.
   $plottersource = $ATK_VARS["plotter"];
   useattrib($plottersource);
   list($module, $attribname) = explode(".", $plottersource);
-  
+
   $plotterclass = $attribname."Plotter";
 
   $res = false;
-  
+
   if (class_exists($plotterclass))
   {
     // Since php does not support calling static methods
     // on a 'dynamic' class (where the name is inside a
-    // variable), we use a companion plotter class to 
+    // variable), we use a companion plotter class to
     // plot stuff.
     $plotter = new $plotterclass();
     $res = $plotter->plot($ATK_VARS);
   }
   else
-  {  
+  {
     atkerror("Graph: plotter ".$plotterclass." not found.");
-  }  
-  
+  }
+
   if (!$res)
   {
     $output = &atkOutput::getInstance();
     $output->outputFlush();
   }
-  
+
 ?>

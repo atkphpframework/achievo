@@ -1,10 +1,11 @@
 <?php
 
+  $config_atkroot = "./";
   include_once("atk.inc");
   atksession();
   atksecure();
   require "theme.inc";
-  
+
   atkimport("atk.layout");
   $layout = &layout::getInstance();
 

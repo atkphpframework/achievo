@@ -1,12 +1,13 @@
-<?php  
+<?php
   header("Content-Type: text/css");
+  $config_atkroot = "./";
   include_once("atk.inc");
-  
+
   // dummy namespace. if we don't use dummy here, the session is corrupted
   // because style.php is loaded between two dispatch.php calls.
   atksession("dummy");
   atksecure();
-  include_once("./theme.inc");      
+  include_once("./theme.inc");
 ?>
 
 BODY
@@ -22,7 +23,7 @@ BODY
    echo "background: url(".$g_theme["BgUrl"].");\n";
  }
  ?>
- 
+
 }
 
 A:link
@@ -77,7 +78,7 @@ A:hover
   font-size: <?php echo $g_theme["TableFontSize"]; ?>pt;
   font-weight: <?php echo $g_theme["TableFontWeight"]; ?>;
   color: <?php echo $g_theme["TableFgColor"]; ?>;
- 	
+
 }
 .backtable
 {

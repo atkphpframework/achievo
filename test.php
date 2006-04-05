@@ -18,6 +18,7 @@
    */
 
   // Include ATK library
+  $config_atkroot = "./";
   include_once("atk.inc");
 
   // Require ATK authentication if not running in text mode
