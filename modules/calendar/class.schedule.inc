@@ -25,6 +25,7 @@
   useattrib("atktimeattribute");
   useattrib("atklistattribute");
   useattrib("atkdummyattribute");
+  useattrib("atknumberattribute");
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
   useattrib("atkfuzzysearchattribute");
@@ -59,7 +60,7 @@
 
       $this->atkNode("schedule", NF_ADD_LINK|NF_EDITAFTERADD);
 
-      $this->add(new atkAttribute("id"              , AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id"              , AF_AUTOKEY));
       $this->add(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $default_start_time, 0));

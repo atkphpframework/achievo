@@ -14,6 +14,7 @@
 
 useattrib("atkdateattribute");
 useattrib("atktextattribute");
+useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 
 class schedule_notes extends atkNode
@@ -22,7 +23,7 @@ class schedule_notes extends atkNode
   {
     $this->atkNode("schedule_notes");
 
-    $this->add(new atkAttribute("id", AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_HIDE_ADD|AF_READONLY|AF_OBLIGATORY));
     $this->add(new atkManyToOneRelation("schedule_id", "calendar.schedule", AF_HIDE|AF_OBLIGATORY));
     $this->add(new atkDateAttribute("entrydate", "F d Y","d F Y", date("Ymd"), 0, AF_HIDE_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
