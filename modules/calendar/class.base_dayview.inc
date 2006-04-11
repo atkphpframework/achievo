@@ -136,7 +136,8 @@
 
      if ($this->showGlobal != "all")
      {
-       $query->addCondition("(schedule.owner='".(!isset($this->showGlobal)?0:$this->showGlobal)."' OR person.userid='".$this->showGlobal."' OR schedule.all_users = 1)");
+       $user = getUser();
+       $query->addCondition("(schedule.owner='".(!isset($this->showGlobal)?0:$user["id"])."' OR person.userid='".$this->showGlobal."' OR schedule.all_users = 1)");
      }
 
      $query->addOrderBy('starttime');

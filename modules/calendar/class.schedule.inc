@@ -226,7 +226,13 @@
       {
         $funcname = $this->m_view;
               // link to weekview and monthview and employeeview
-        $result= href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",atktext("dayview")) ."&nbsp;".href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",atktext("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", atktext("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
+        $result = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",atktext("dayview")) ."&nbsp;";
+        $result.= href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",atktext("weekview")) ."&nbsp;";
+        $result.= href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", atktext("monthview"))."&nbsp;";
+        // Employee view doens't work in postgresql cause this calendar uses 24:00 as time (which is invalid)
+        $dbconfig = atkconfig("db");
+        if($dbconfig["default"]["driver"]!="pgsql")
+          $result.= href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
 
         $result.= $this->$funcname($this->m_viewdate);
       }
