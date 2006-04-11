@@ -221,7 +221,7 @@ class atkProjectPhaseAttribute extends atkAttribute
 
     $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
 
-    $query = "SELECT DISTINCT phase.id, phase.name, project.name as projectname 
+    $query = "SELECT DISTINCT phase.id, phase.name, project.name as projectname, hours.entrydate
               FROM phase,hours,project 
               LEFT JOIN project_person ON (project_person.projectid = project.id)
               WHERE phase.id=hours.phaseid 

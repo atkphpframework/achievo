@@ -208,7 +208,7 @@ class hours extends atkNode
   {
     $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
     $employeenode = &getNode("employee.employee");
-    $users = $employeenode->selectDb("`person`.`id`='{$record["userid"]["id"]}'");
+    $users = $employeenode->selectDb("person.id='{$record["userid"]["id"]}'");
     return sprintf("%s, %s (%s)", $users[0]["lastname"], $users[0]["firstname"],$datestr);
   }
 
@@ -765,7 +765,7 @@ class hours extends atkNode
                 FROM
                   hours_lock
                 WHERE
-                  (userid = '$userid' OR userid IS NULL OR userid='')
+                  (userid = '$userid' OR userid IS NULL)
                 AND
                   week = '$week'";
       $db = &atkGetDb();
@@ -977,7 +977,7 @@ class hours extends atkNode
   {
     $db = &atkGetDb();
 
-    $query = "SELECT sum(time) + $new_minutes minutes_in_day
+    $query = "SELECT (sum(time) + $new_minutes) as minutes_in_day
               FROM hours
               WHERE
                 userid = '$userid'

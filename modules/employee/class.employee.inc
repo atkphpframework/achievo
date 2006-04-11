@@ -167,7 +167,7 @@ class employee extends person
                               ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                               ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
                           " GROUP BY
-                              project.id
+                              project.id,project.name
                             ORDER BY
                               project.name");
 

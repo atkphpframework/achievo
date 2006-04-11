@@ -47,7 +47,7 @@
 
       // Try to get the incomplete delverable form the database
       $deliverablenode = &getNode("project.deliverable");
-      $deliverablerecords = $deliverablenode->selectDb("deliverable.id='".$phase["dependsondeliverable"]["id"]."' AND deliverable.status<>'complete'");
+      $deliverablerecords = $deliverablenode->selectDb("deliverable.id='".($phase["dependsondeliverable"]["id"]!=""?$phase["dependsondeliverable"]["id"]:0)."' AND deliverable.status<>'complete'");
 
       // Return records
       return $deliverablerecords;
