@@ -12,6 +12,7 @@
   useattrib("graph.datagraphattribute");
   useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
+  useattrib("atknumberattribute");
 
   define("PRJ_TIMEREG_ALL_USERS", 0);
   define("PRJ_TIMEREG_MEMBERS_ONLY", 1);
@@ -24,7 +25,7 @@
 
       $this->atkNode($name,$flags|NF_EDITAFTERADD);
 
-      $this->add(new atkAttribute("id",AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST, 10));

@@ -33,7 +33,7 @@ class contracts extends atkNode
   {
     $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD);
 
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE, 20));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));

@@ -23,6 +23,7 @@ function getThemes()
 }
 
 useattrib("atkdummyattribute");
+useattrib("atknumberattribute");
 useattrib("atkpasswordattribute");
 useattrib("atklistattribute");
 
@@ -32,7 +33,7 @@ class userprefs extends atkNode
   {
     $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE);
 
-    $this->add(new atkAttribute("id", AF_PRIMARY|AF_HIDE));
+    $this->add(new atkNumberAttribute("id", AF_PRIMARY|AF_HIDE));
     $this->add(new atkAttribute("userid", AF_HIDE));
     if (atkconfig("authentication")=="db")
     {

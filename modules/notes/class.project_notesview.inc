@@ -4,6 +4,7 @@ userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
 useattrib("atktextattribute");
 useattrib("atkdateattribute");
+useattrib("atknumberattribute");
 
 class project_notesview extends atkNode
 {
@@ -13,7 +14,7 @@ class project_notesview extends atkNode
 
     $this->atkNode("project_notesview",NF_NO_ADD|NF_NO_DELETE);
 
-    $this->add(new atkAttribute("id"                                , AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id"                                , AF_AUTOKEY));
     $this->add(new atkAttribute("name"                              , AF_READONLY));
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description" ,TEXT_LARGE, AF_READONLY));

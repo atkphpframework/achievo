@@ -11,7 +11,7 @@ class hours_lock extends atkNode
   {
     $this->atkNode("hours_lock",NF_NO_EDIT|NF_NO_EXTENDED_SEARCH|NF_NO_VIEW|NF_MRA);
 
-    $this->add(new atkAttribute("id", AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkDummyAttribute("weekexplain",atktext("hourlock_week_explanation"),AF_HIDE_LIST));
     $this->add(new atkNumberAttribute("week",AF_SEARCHABLE|AF_OBLIGATORY, 6));
     $this->add(new atkDummyAttribute("useridexplain",atktext("hourlock_userid_explanation"),AF_HIDE_LIST));

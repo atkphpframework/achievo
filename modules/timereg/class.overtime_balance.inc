@@ -5,13 +5,14 @@
   useattrib("atknumberattribute");
   useattrib("atkdateattribute");
   useattrib("timereg.manualattribute");
+  useattrib("atknumberattribute");
 
   class overtime_balance extends atkNode
   {
     function overtime_balance()
     {
       $this->atkNode("overtime_balance");
-      $this->add(new atkAttribute("id",AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
       $this->add(new atkManyToOneRelation("userid", "employee.employee", AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
       $this->add(new atkDateAttribute("day","F j Y","F j Y", 0, date("Y-m-d"), AF_SEARCHABLE|AF_OBLIGATORY));
       $this->add(new atkNumberAttribute("balance", AF_OBLIGATORY, 10,2));

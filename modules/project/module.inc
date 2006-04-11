@@ -31,6 +31,7 @@
         $this->menuitem("project_planning",  dispatch_url("project.project", "select", array("atktarget" => atkurlencode($target_planning))), "projectmanagement", array("project.project", "planning"));
         $this->menuitem("-","","projectmanagement");
         $this->menuitem("project_stats", dispatch_url("project.projectstats", "stats"), "projectmanagement", array("project.project", "stats"));
+        $this->menuitem("activity_stats", dispatch_url("project.activity", "stats"), "projectmanagement", array("project.activity", "stats"));
       }
       else
       {

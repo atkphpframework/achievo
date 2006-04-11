@@ -10,20 +10,6 @@ useattrib("atkdateattribute");
 include_once (moduleDir("person")."class.person.inc");
 include_once (moduleDir("utils")."class.dateutil.inc");
 
-class useridAttribute extends atkAttribute
-{
-  function useridAttribute($name, $flags=0)
-  {
-    /* base class constructor */
-    $this->atkAttribute($name, $flags, 15);
-  }
-
-  function value2db($rec)
-  {
-    return escapeSQL(str_replace(" ", "_", strtolower($rec["userid"])));
-  }
-}
-
 class employee extends person
 {
   function employee()
@@ -35,10 +21,16 @@ class employee extends person
     // In employee edit screen, we hide most fields in the add screen.
     foreach (array_keys($this->m_attribList) as $attribname)
     {
-      if (!in_array($attribname, array("lastname", "firstname","email")))
+      atkdebug("Attribute: $attribname");
+      if (!in_array($attribname, array("userid","lastname", "firstname","email")))
       {
-        $p_attrib = &$this->m_attribList[$attribname];
+        $p_attrib = &$this->getAttribute($attribname);
         $p_attrib->m_flags|=AF_HIDE_ADD;
+      }
+      elseif($attribname=="userid")
+      {
+        $p_attrib = &$this->getAttribute($attribname);
+        $p_attrib->m_flags|=AF_OBLIGATORY;
       }
     }
 
@@ -70,7 +62,7 @@ class employee extends person
     }
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
 
-    $this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
+    //$this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
 
     if (atkconfig("authentication")=="db")
     {
@@ -83,6 +75,7 @@ class employee extends person
 
     $this->setOrder("lastname");
   }
+
 
   function initial_values()
   {
@@ -107,6 +100,7 @@ class employee extends person
 
   function action_admin($handler)
   {
+
     $view = $this->getView();
     if ($view=="active")
     {

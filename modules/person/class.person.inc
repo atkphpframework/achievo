@@ -19,6 +19,8 @@ useattrib("atkemailattribute");
 useattrib("atktextattribute");
 useattrib("atklistattribute");
 useattrib("atkparserattribute");
+useattrib("atknumberattribute");
+useattrib("person.useridattribute");
 
 class person extends atkNode
 {
@@ -26,8 +28,9 @@ class person extends atkNode
   {
     $this->atkNode($name, $flags|NF_ADD_LINK);
 
-    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("title_id", "person.title", AF_RELATION_AUTOLINK|AF_HIDE_LIST));
+    $this->add(new useridAttribute("userid" ,AF_UNIQUE|AF_SEARCHABLE), 1); // first field
     $this->add(new atkAttribute("lastname",AF_SEARCHABLE|AF_OBLIGATORY, 50));
     $this->add(new atkAttribute("firstname",AF_HIDE_LIST|AF_FORCE_LOAD, 50));
     $this->add(new atkAttribute("initials", AF_HIDE_LIST|AF_FORCE_LOAD, 50));

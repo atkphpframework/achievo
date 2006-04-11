@@ -9,6 +9,7 @@ useattrib("atktextattribute");
 useattrib("atkdurationattribute");
 useattrib("atkdummyattribute");
 useattrib("atktimeattribute");
+useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 
 function date_format($datestamp,$dateformat)
@@ -173,7 +174,7 @@ class hours extends atkNode
       if (atkconfig("timereg_defaultview")=="week") $this->m_weekview=1;
     }
 
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
     $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
     $this->add(new to_date());

@@ -15,6 +15,7 @@
 
 useattrib("atktextattribute");
 useattrib("atkdummyattribute");
+useattrib("atknumberattribute");
 useattrib("atkparserattribute");
 useattrib("atkdocumentattribute");
 userelation("atkonetomanyrelation");
@@ -25,7 +26,7 @@ class organization extends atkNode
   {
     $this->atkNode("organization", NF_EDITAFTERADD);
 
-    $this->add(new atkAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
     $this->add(new atkDummyAttribute("visitheader", "<B>".atktext("organization_visitaddress", "organization")."<B>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
 

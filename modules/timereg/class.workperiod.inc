@@ -3,13 +3,14 @@
   useattrib("atktimeattribute");
   useattrib("atknumberattribute");
   useattrib("atkboolattribute");
+  useattrib("atknumberattribute");
 
   class workperiod extends atkNode 
   {
     function workperiod()
     {
       $this->atkNode("workperiod");
-      $this->add(new atkAttribute("id",AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50)); 
       $this->add(new atkTimeAttribute("starttime", 0, 23, array("00","15","30","45"), "", AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("endtime", 0, 23, array("00","15","30","45"), "", AF_OBLIGATORY));

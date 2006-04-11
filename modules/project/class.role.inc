@@ -17,7 +17,7 @@
    * @version $Revision$
    * $Id$
    */
-
+  useattrib("atknumberattribute");
   /**
    * The node class for Role.
    *
@@ -35,7 +35,7 @@
     {
       $this->atkNode("role");
 
-      $this->add(new atkAttribute("id", AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_FORCE_LOAD|AF_OBLIGATORY));
 
       $this->setTable("role");

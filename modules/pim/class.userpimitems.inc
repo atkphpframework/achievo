@@ -2,6 +2,7 @@
 useattrib("atkListAttribute");
 useattrib("atknumberattribute");
 useattrib("atkdummyattribute");
+useattrib("atknumberattribute");
 userelation("atkManyToOneRelation");
 
 class userpimitems extends atkNode
@@ -11,7 +12,7 @@ class userpimitems extends atkNode
   {
     $this->atkNode("userpimitems");
     $this->setTable("userpimitems");
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.userprefs",AF_HIDE));
     $pimitems = $this->getPimItems();
     $this->add(new atkListAttribute("pimitem",array_values($pimitems),array_keys($pimitems),AF_OBLIGATORY|AF_NO_TRANSLATION,255));

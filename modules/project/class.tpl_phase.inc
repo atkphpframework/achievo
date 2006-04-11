@@ -1,6 +1,7 @@
 <?php
 
 useattrib("atktextattribute");
+useattrib("atknumberattribute");
 userelation("atkmanyboolrelation");
 
 class tpl_phase extends atkNode
@@ -9,7 +10,7 @@ class tpl_phase extends atkNode
   {
     $this->atkNode("tpl_phase",NF_EDITAFTERADD);
 
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
     $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_ADD));
 

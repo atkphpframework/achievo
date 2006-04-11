@@ -7,6 +7,7 @@ useattrib("atkdateattribute");
 useattrib("atktextattribute");
 useattrib("atknumberattribute");
 useattrib("atkmultiselectattribute");
+useattrib("atknumberattribute");
 
 class usercontracts extends atkNode
 {
@@ -14,7 +15,7 @@ class usercontracts extends atkNode
   {
     $this->atkNode("usercontracts"); // this is a support module who's called directly
 
-    $this->add(new atkAttribute("id", AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY|AF_OBLIGATORY));
     $this->add(new atkNumberAttribute("uc_hours", AF_OBLIGATORY, 3,2));
     $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0, AF_OBLIGATORY));

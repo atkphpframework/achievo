@@ -1,5 +1,6 @@
 <?php
 
+useattrib("atknumberattribute");
  /**
   * The node class for title.
   */
@@ -8,7 +9,7 @@
    function title()
    {
      $this->atkNode("title");
-     $this->add(new atkAttribute("id", AF_AUTOKEY));
+     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
      
      $this->add(new atkAttribute("title", 0, 25));
      

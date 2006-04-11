@@ -14,7 +14,7 @@
     function deliverable()
     {
       $this->atkNode("deliverable");
-      $this->add(new atkAttribute("id", AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
 
       $this->add(new atkAttribute("name", AF_OBLIGATORY, 50));
       $this->add(new atkManyToOneRelation("project_id", "project.project", AF_HIDE|AF_OBLIGATORY));

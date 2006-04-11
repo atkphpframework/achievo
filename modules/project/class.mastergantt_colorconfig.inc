@@ -11,7 +11,7 @@
     function mastergantt_colorconfig()
     {
       $this->atkNode("mastergantt_colorconfig", NF_ADD_LINK);
-      $this->add(new atkAttribute("id", AF_AUTOKEY));
+      $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
       
       $this->add(new atkNumberAttribute("hours_min"));
       $this->add(new atkNumberAttribute("hours_max"));

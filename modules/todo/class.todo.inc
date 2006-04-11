@@ -7,6 +7,7 @@ useattrib("atkupdatestampattribute");
 useattrib("atkdateattribute");
 useattrib("atklistattribute");
 useattrib("atktextattribute");
+useattrib("atknumberattribute");
 
 class todo extends atkNode
 {
@@ -17,7 +18,7 @@ class todo extends atkNode
   {
     $this->atkNode("todo", NF_TRACK_CHANGES);
 
-    $this->add(new atkAttribute("id"                   , AF_AUTOKEY));
+    $this->add(new atkNumberAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE|AF_OBLIGATORY));
     $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_OBLIGATORY|AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
