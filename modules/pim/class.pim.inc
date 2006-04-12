@@ -17,7 +17,7 @@
       if (is_object($ui))
       {
         $page = &$this->getPage();
-        $page->head(text("title_pim"));
+        $page->head(atktext("title_pim"));
         $page->body();
 
         $pimItems = atkHarvestModules("getPimItems","",true);
