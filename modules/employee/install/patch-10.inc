@@ -2,7 +2,7 @@
 
 	if(!$setup->columnExists("person", "department"))
 	{
-		$setup->addColumn("person", "department", "int(10)");  
+		$setup->addColumn("person", "department", "varchar(100)");  
 	}
 
 ?>
