@@ -81,7 +81,20 @@
 
     function initial_values()
     {
-      return Array("status"=>"active");
+      // Compose the default initual values array
+      $initial_values = array("status"=>"active");
+
+      // If there is just one activity, it should be selected by default:
+      $activitynode = &getNode("project.activity");
+      $count = $activitynode->countDb("");
+      if ($count == 1)
+      {
+        $activity = $activitynode->selectDb("", "", "", "", array("id"));
+        $initial_values["phase_activity"] = array(array("activityid"=>$activity[0]["id"]));
+      }
+
+      // Return the initual values:
+      return $initial_values;
     }
 
     function addDb(&$record, $exectrigger=true, $mode="add")
@@ -105,7 +118,7 @@
     function action_select(&$handler)
     {
       // In select mode, we place a filter, because we may only select active phases.
-      $this->addFilter("phase.status='active' 
+      $this->addFilter("phase.status='active'
                         AND ((phase.startdate IS NULL OR phase.startdate<= NOW())
                               AND (phase.enddate IS NULL OR phase.enddate>= NOW()))");
 
