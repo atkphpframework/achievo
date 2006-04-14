@@ -13,8 +13,9 @@
     {      
       list($module, $script)=explode(".", escapeshellcmd($_SERVER["argv"][1]));
       
-      include_once("atk.inc");
-      include_once("achievotools.inc");          
+      include_once("atk.inc");      
+      include_once("achievotools.inc");
+      atksession("default", false);
 
       $filename = moduleDir($module)."cron/".$script.".cron";
       if (file_exists($filename))
