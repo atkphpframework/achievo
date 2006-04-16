@@ -1,53 +1,8 @@
 <?php
-useattrib("atkListAttribute");
 useattrib("atknumberattribute");
+useattrib("pim.pimitemattribute");
 useattrib("atkdummyattribute");
-useattrib("atknumberattribute");
 userelation("atkManyToOneRelation");
-
-class pimItemAttribute extends atkListAttribute
-{
-
-  var $m_pimitemsloaded = false;
-
-  function pimItemAttribute($name, $flags=0, $size=255)
-  {
-    $this->atkListAttribute($name, array(), array(), $flags, $size);
-    $this->m_dbfieldtype = "string";
-  }
-
-  function loadpimitems()
-  {
-    if ($this->m_pimitemsloaded)
-      return;
-
-    $pimItems = atkHarvestModules("getPimItems","",true);
-    $this->m_lookup = array();
-    foreach ($pimItems as $module => $items)
-    {
-      foreach($items as $itemName => $itemFunc)
-      {
-        $item = $module.'_'.$itemName;
-        $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
-      }
-    }
-    $this->m_options = array_values($this->m_lookup);
-    $this->m_values = array_keys($this->m_lookup);
-    $this->m_pimitemsloaded = true;
-  }
-
-  function display($record)
-  {
-    $this->loadpimitems();
-    return parent::display($record);
-  }
-
-  function edit($record="", $fieldprefix="")
-  {
-    $this->loadpimitems();
-    return parent::edit($record, $fieldprefix);
-  }
-}
 
 class userpimitems extends atkNode
 {
