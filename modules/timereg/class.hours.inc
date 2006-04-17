@@ -207,7 +207,7 @@ class hours extends atkNode
   function descriptor(&$record)
   {
     $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
-    $employeenode = &getNode("employee.employee");
+    $employeenode = &atkGetNode("employee.employee");
     $users = $employeenode->selectDb("person.id='{$record["userid"]["id"]}'");
     return sprintf("%s, %s (%s)", $users[0]["lastname"], $users[0]["firstname"],$datestr);
   }
@@ -467,7 +467,7 @@ class hours extends atkNode
   {
     if ($this->m_weekview!=1)
     {
-      $balancenode = &getNode("timereg.overtime_balance");
+      $balancenode = &atkGetNode("timereg.overtime_balance");
       $balance = $balancenode->getBalance(date("Y-m-d", adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4))), $this->m_user);
       $res ='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
       $res.='<tr><td align="left" valign="top">';
@@ -699,7 +699,7 @@ class hours extends atkNode
 
   function calculateNewBalance($rec, $mode)
   {
-    $balancenode = &getNode("timereg.overtime_balance");
+    $balancenode = &atkGetNode("timereg.overtime_balance");
     $userid = $rec["userid"]["id"];
     $year  = $rec["activitydate"]["year"];
     $month = $rec["activitydate"]["month"];
@@ -815,7 +815,7 @@ class hours extends atkNode
                                    substr($viewdate,8,2),
                                    substr($viewdate,0,4)));
     $record["approved"] = $approved;
-    $locknode = &getNode("timereg.hours_lock");
+    $locknode = &atkGetNode("timereg.hours_lock");
     $locknode->addDb($record);
     $this->redirect();
   }
@@ -909,7 +909,7 @@ class hours extends atkNode
       triggerError($record, "activityid", "Please add one or more activities first");
     }
     else {
-      $obj = getNode("project.activity");
+      $obj = &atkGetNode("project.activity");
       $act = $obj->selectDb("id=".$record["activityid"]);
       if (count($act)==1)
       {
@@ -1181,9 +1181,9 @@ class hours extends atkNode
    */
   function _isThisTheFirstTimeRegForThisProject()
   {
-    $phasenode =   &getNode("project.phase");
-    $projectnode = &getNode("project.project");
-    $hoursnode =   &getNode("timereg.hours");
+    $phasenode =   &atkGetNode("project.phase");
+    $projectnode = &atkGetNode("project.project");
+    $hoursnode =   &atkGetNode("timereg.hours");
     $record = $this->updateRecord();
     $user = getUser();
 

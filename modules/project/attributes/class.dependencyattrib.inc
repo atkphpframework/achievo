@@ -48,9 +48,6 @@ class dependencyAttribute extends atkAttribute
    */
   function edit($record="")
   {
-    atkimport("atk.layout");
-    $layout = &layout::getInstance();
-
     $deps = $record[$this->fieldname()]["deps"];
 
     if (count($deps)==0)
@@ -61,21 +58,20 @@ class dependencyAttribute extends atkAttribute
       $deps = $rows["deps"];
     }
 
-    $result = "";
+    $result = "<br>";
 
     if (count($deps)>0)
     {
-      $result.=$layout->data_top();
-      $result.=$layout->ret_td_datatitle(text('dependencies'));
-      $result.=$layout->ret_td_datatitle(text('delete'));
+      $data = array();
+      $data[] = array(atktext('dependencies'),atktext('delete'));
       for ($i=0;$i<count($deps);$i++)
       {
-        $result.=$layout->tr_top(($i%2)!=0);
-        $result.=$layout->ret_td(text("phase")." '".$deps[$i]["firstname"]."' ".text("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'");
-        $result.=$layout->ret_td('&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">');
-        $result.=$layout->tr_bottom();
+        $label = atktext("phase")." '".$deps[$i]["firstname"]."' ".atktext("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'";
+        $delete = '&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">';
+        $data[] = array($label,$delete);
       }
-      $result.=$layout->data_bottom().'<br>';
+      $tbl = &atknew("atk.utils.atktablerenderer");
+      $result.=$tbl->render($data,TBL_HEADER|TBL_ALTERNATE,"recordlist")."<br>";
     }
 
     $recs = $this->getPhases($record["id"]);
@@ -94,8 +90,8 @@ class dependencyAttribute extends atkAttribute
 
     if (count($names)>2)
     {
-      $result.=text("addnewdependency").":<br>";
-      $result.=text("phase")." ".$phaselist1->edit()." ".text("mustbecompletedbeforephase")." ".$phaselist2->edit();
+      $result.=atktext("addnewdependency").":<br>";
+      $result.=atktext("phase")." ".$phaselist1->edit()." ".atktext("mustbecompletedbeforephase")." ".$phaselist2->edit();
     }
 
     return $result;

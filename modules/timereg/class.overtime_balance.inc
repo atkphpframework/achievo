@@ -86,7 +86,7 @@
 
     function getBalance($day, $userid)
     {
-      $node = &getNode("timereg.overtime_balance");
+      $node = &atkGetNode("timereg.overtime_balance");
       $result = $node->selectDb("day <= '$day' AND userid.id = '$userid'", "day DESC", 1);
       if (!count($result)) return $this->getDummyBalance($day, $userid);
       else
@@ -125,7 +125,7 @@
 
     function getLatestManualCorrection($userid, $default, $day="")
     {
-      $node = &getNode("timereg.overtime_balance");
+      $node = &atkGetNode("timereg.overtime_balance");
       $result = $node->selectDb("userid.id = '$userid' AND manual = 1 ".($day != "" ? "AND day <= '$day' " : ""), "day DESC", 1);
       return (count($result[0]) ? $result[0] : $default);
     }
@@ -220,19 +220,19 @@
     function getOvertimeCompensationActivities()
     {
       $db = &atkGetDb();
-      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");            
+      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
       return $res;
     }
-    
+
     function isOvertimeCompensationActivity($id, $overtimeactivities)
-    {        
+    {
       foreach($overtimeactivities as $item)
-      {      
-        if($item["id"]==$id) return true;      
-      }    
+      {
+        if($item["id"]==$id) return true;
+      }
       return false;
     }
-    
+
     function getContractHours($begin, $end, $userid)
     {
       $db = &atkGetDb();

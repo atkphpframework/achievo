@@ -46,7 +46,7 @@
         return array();
 
       // Try to get the incomplete delverable form the database
-      $deliverablenode = &getNode("project.deliverable");
+      $deliverablenode = &atkGetNode("project.deliverable");
       $deliverablerecords = $deliverablenode->selectDb("deliverable.id='".($phase["dependsondeliverable"]["id"]!=""?$phase["dependsondeliverable"]["id"]:0)."' AND deliverable.status<>'complete'");
 
       // Return records
@@ -97,7 +97,7 @@
       }
 
       // Get the phase record from the database and throw an error if not found
-      $phasenode = &getNode("project.phase");
+      $phasenode = &atkGetNode("project.phase");
       $phaserecords = $phasenode->selectDb("phase.id='".$record["phaseid"]["phaseid"]."'");
       if (count($phaserecords) == 0)
       {
@@ -119,7 +119,7 @@
       {
 
         // Get the project and throw an error if not found
-        $projectnode = &getNode("project.project");
+        $projectnode = &atkGetNode("project.project");
         $projectrecords = $projectnode->selectDb("project.id='".$phaserecords[0]["projectid"]["id"] ."'");
         if (count($projectrecords) == 0)
         {
@@ -128,7 +128,7 @@
         }
 
         // Try to find the person who registered the hours and throw an error if not found
-        $employeenode = &getNode("employee.employee");
+        $employeenode = &atkGetNode("employee.employee");
         $employeerecords = $employeenode->selectDb("person.id='".$projectrecords[0]["coordinator"]["id"]."'");
         if (count($employeerecords) == 0)
         {

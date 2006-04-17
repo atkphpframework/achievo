@@ -255,7 +255,7 @@ class todo extends atkNode
      usermail($to,text("todochanged"), $body, $header);
 
      // also store the old todo in the history table.
-     $historynode = getNode("todo.todo_history");
+     $historynode = &atkGetNode("todo.todo_history");
      $rec["atkorgrec"]["todoid"]["id"] = $rec["id"]; // the todoid in the historytable
                                                // points to the current todoid.
      $historynode->addDb($rec["atkorgrec"]);

@@ -5,7 +5,6 @@
     global $g_user;
     $hoursnode = &getNode("timereg.hours");
 
-    $hoursnode = getNode("timereg.hours");
     $pda = browserInfo::detectPDA();
     if ($pda) $nodetype = "timereg.hourspda";
     else $nodetype = "timereg.hours";
@@ -13,7 +12,7 @@
     $actions = array();
     if(!$pda)
       $actions["edit"] = "dispatch.php?atknodetype=$nodetype&atkaction=edit&atkselector=[pk]";
-    
+
     // Show only todays bookings, and only your own.
     $hoursnode->addFilter("activitydate",strftime("%Y-%m-%d"));
     $hoursnode->addFilter("hours.userid",strtolower($g_user["id"]));

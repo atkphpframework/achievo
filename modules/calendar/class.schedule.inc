@@ -38,8 +38,8 @@
 
     function schedule()
     {
-      $sessionManager = &atkGetSessionManager();      
-      
+      $sessionManager = &atkGetSessionManager();
+
       if(is_object($sessionManager))
       {
         $this->m_view     = $sessionManager->stackVar("view");
@@ -47,7 +47,7 @@
         $this->m_viewdate = $sessionManager->stackVar("viewdate");
         $time             = $sessionManager->stackVar("time");
       }
-      else 
+      else
       {
         $this->m_view     = "";
         $this->m_user     = "";
@@ -251,11 +251,12 @@
         $result = "Niet bestaande view (".$this->m_view.")";
       }
 
-      $layout->initGUI();
-      $layout->ui_top(atktext($this->m_type)." - ".atktext($this->m_view));
-      $layout->output($this->statusbar());
-      $layout->output($result);
-      $layout->ui_bottom();
+      $ui = &$this->getUi();
+      $page = &$this->getPage();
+      $this->addStyle("style.css");
+
+      $schedulerView = $ui->renderBox(array("title"=>atktext($this->m_type)." - ".atktext($this->m_view),"content"=>$this->statusbar().$result));
+      $page->addContent($schedulerView);
     }
 
     function monthview($viewdate)

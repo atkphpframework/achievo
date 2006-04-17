@@ -6,25 +6,26 @@
   atksecure();
   require "theme.inc";
 
-  atkimport("atk.layout");
-  $layout = &layout::getInstance();
+  $page = &atknew("atk.ui.atkpage");
+  $ui = &atkinstance("atk.ui.atkui");
+  $theme = &atkTheme::getInstance();
+  $output = &atkOutput::getInstance();
 
-  $layout->initGUI();
-  $layout->output("<html>");
-  $layout->head($txt_title_license);
-  $layout->body();
-  $layout->ui_top($txt_title_license);
-
+  $page->register_style($theme->stylePath("style.css"));
 
   $license = file("doc/LICENSE");
+  $tmp_output="";
   for ($i=0;$i<count($license);$i++)
   {
-    $layout->output('<br>'.$license[$i]);
+    $tmp_output.='<br>'.$license[$i];
   }
 
-  $layout->ui_bottom();
-  $layout->output("</body>");
-  $layout->output("</html>");
-  $layout->outputFlush();
 
+  $box = $ui->renderBox(array("title"=>atkText("title_licence"),
+                                            "content"=>$tmp_output));
+
+  $page->addContent($box);
+  $output->output($page->render(atkText('title_licence'), true));
+
+  $output->outputFlush();
 ?>

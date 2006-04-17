@@ -7,7 +7,7 @@
 
     $me = $g_user["id"];
 
-    $schedulenode = getNode("calendar.schedule");
+    $schedulenode = &atkGetNode("calendar.schedule");
     $schedulenode->m_flags |= NF_NO_SEARCH;
 
     $date = date('Y-m-d');

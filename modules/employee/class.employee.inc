@@ -40,7 +40,7 @@ class employee extends person
     $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST), "finance");
     $this->add(new atkAttribute("socialsecuritynumber", AF_HIDE_LIST), "finance");
 
-    $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST));
+    $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
 
     //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
@@ -259,7 +259,7 @@ class employee extends person
   {
     if ($record["status"]=="active")
     {
-      $contractnode = &getNode("employee.usercontracts");
+      $contractnode = &atkGetNode("employee.usercontracts");
 
       $endlesscontracts = $contractnode->countDb("usercontract.enddate IS NULL AND usercontract.userid='{$record["id"]}'");
 

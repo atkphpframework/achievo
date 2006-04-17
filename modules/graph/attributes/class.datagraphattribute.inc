@@ -106,7 +106,7 @@
       $callback    = $postvars["callback"];
       $graphtype   = $postvars["graphtype"];
 
-      $obj = &getNode($atknodetype);
+      $obj = &atkGetNode($atknodetype);
 
       if (is_object($obj))
       {
@@ -199,7 +199,7 @@
         $p = new LinePlot(array_values($values));
         $col = $defcolors[$i%(count($defcolors))];
         $p->SetColor($col);
-        $p->SetLegend(text($legend));
+        $p->SetLegend(atktext($legend));
 
         //$p->mark->SetType(MARK_FILLEDCIRCLE);
         $p->mark->SetFillColor($col);
@@ -235,7 +235,7 @@
       $graph->SetColor($bgColor);
 
        // Set title
-      $graph->title->Set(text($title));
+      $graph->title->Set(atktext($title));
 
       // Use built in font
       $graph->title->SetFont(FF_FONT1,FS_BOLD);

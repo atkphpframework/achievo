@@ -51,9 +51,9 @@
     $nextTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month+1, 1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".text(strtolower(date("F", adodb_mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".atktext(strtolower(date("F", adodb_mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text("previous_month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("this_month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_month"))."</font>";
+    return "<font size='-1'>".href($prevUrl, atktext("previous_month"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, atktext("this_month"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, atktext("next_month"))."</font>";
    }
 
   /**
@@ -111,14 +111,14 @@
 
     $buff .= "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
     $buff .= "<tr>\n";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("week")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("mon")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("tue")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("wed")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("thu")."</font></td>";
-    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".text("fri")."</font></td>";
-    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("sat")."</font></td>";
-    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".text("sun")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("week")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("mon")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("tue")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("wed")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("thu")."</font></td>";
+    $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("fri")."</font></td>";
+    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".atktext("sat")."</font></td>";
+    $buff .= "<td bgcolor='#A0A0A0' valign='top' align='left'><font size='-1'>".atktext("sun")."</font></td>";
     $buff .= "</tr>\n";
 
     $w = 0;

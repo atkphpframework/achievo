@@ -64,8 +64,8 @@ class projectstats extends atkNode
 
     $navigatorBox = $ui->renderBox(array("title"=>atkText("parameters","project"),"content"=>$this->navigator()));
     $page->addContent($navigatorBox);
-    
-    $prjnode = &getNode("project.project");
+
+    $prjnode = &atkGetNode("project.project");
 
     $descriptor="";
     if ($projectid!="")
@@ -272,8 +272,8 @@ class projectstats extends atkNode
                    SESSION_NESTED);
        $row[] = time_format($projects[$i]["totaltime"], true);
        $data[] = $row;
-    }  
-    
+    }
+
     $tbl = &atknew("atk.utils.atktablerenderer");
     $tbl->setColAlignment(2,TBL_RIGHT);
     $output.=$tbl->render($data, TBL_DATA, "recordlist");
@@ -299,11 +299,11 @@ class projectstats extends atkNode
                     atkText("time","project"),
                     atkText("percentage","project"));
     if($mayviewdetail) $data[0][] = atkText("details","project");
-    
+
     atkimport("atk.layout");
     $layout = &layout::getInstance();
 
-  
+
 
     for($i=0, $_i=count($dataset); $i<$_i; $i++)
     {

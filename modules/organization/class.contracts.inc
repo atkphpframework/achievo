@@ -256,13 +256,13 @@ class contracts extends atkNode
 	  $res = "" ;
 	  if ($this->m_archive!=1)
 	  {
-	    return text("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=1', text('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+	    return atktext("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=1', atktext('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
 	  }
 	  else
 	  {
-	    return text("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=0', text('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+	    return atktext("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
+	                '&archive=0', atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
 	  }
 	  return $res."<br>";
 	}
@@ -320,7 +320,7 @@ class contracts extends atkNode
   		}
 
   		$contractid = $rec['id'];
-  		$node = &getNode("project.project");
+  		$node = &atkGetNode("project.project");
 
   		//Select projects linked to this contract that are active.
   		$projects = $node->selectDb("(project.contract_id='$contractid' AND project.status='active')","","","",array("id","name"));

@@ -85,7 +85,7 @@
       $initial_values = array("status"=>"active");
 
       // If there is just one activity, it should be selected by default:
-      $activitynode = &getNode("project.activity");
+      $activitynode = &atkGetNode("project.activity");
       $count = $activitynode->countDb("");
       if ($count == 1)
       {
@@ -108,7 +108,7 @@
     {
       if(isset($rec["id"]))
       {
-        $node = &getNode("project.dependency");
+        $node = &atkGetNode("project.dependency");
         $delphase = $rec["id"];
         $deprec = $node->deleteDb("phaseid_row = $delphase OR phaseid_col = $delphase");
       }
@@ -137,7 +137,7 @@
       $hours = new atkAttribute("phaseplanning_initial");
 
       $dummy = array();
-      return text("plan_employee", "phase")." ".$org." ".text("for")." ".$hours->edit($dummy)." ".text("hours");
+      return atktext("plan_employee", "phase")." ".$org." ".atktext("for")." ".$hours->edit($dummy)." ".atktext("hours");
 
     }
 
@@ -157,7 +157,7 @@
       {
 
         // Get the date of the first registration for this node (or set $earliesttimeregdate to null if not found)
-        $hoursNode = getNode("timereg.hours");
+        $hoursNode = &atkGetNode("timereg.hours");
         $earliesttimeregforphase = $hoursNode->selectDb("phaseid='" . $record["id"] . "'", "hours.activitydate ASC", 1);
         atkimport("module.utils.dateutil");
         $earliesttimeregdate = empty($earliesttimeregforphase) ? null : dateutil::arr2stamp($earliesttimeregforphase["0"]["activitydate"]);

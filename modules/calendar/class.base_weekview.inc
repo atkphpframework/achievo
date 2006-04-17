@@ -109,14 +109,14 @@
 
       $query->addOrderBy('starttime');
       $querystring = $query->buildSelect(TRUE);
-      $recs = $db->getrows($querystring);                    
+      $recs = $db->getrows($querystring);
 
       // now add them to a nice array
       for ($i=0;$i<count($recs);$i++)
       {
-        $query->deAlias($recs[$i]);         
-        atkDataDecode($recs[$i]);        
-      
+        $query->deAlias($recs[$i]);
+        atkDataDecode($recs[$i]);
+
         $year = substr($recs[$i]["startdate"],0,4);
         $month = substr($recs[$i]["startdate"],5,2);
         $day = substr($recs[$i]["startdate"],8,2);
@@ -144,7 +144,7 @@
     function daypart($time)
     {
      list($hours, $minutes, $seconds) = explode(":", $time);
-     
+
      if ($hours < 12)
      {
        return "morning";
@@ -178,9 +178,9 @@
     $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime&user=".$this->showGlobal;
 
     $date     = $this->year."-".$this->month."-".$this->day;
-    $this->title = "<font size='-1'><b>".text("week")."&nbsp;".strftime("%V", adodb_mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
+    $this->title = "<font size='-1'><b>".atktext("week")."&nbsp;".strftime("%V", adodb_mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text('previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text('thisweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text('nextweek'))."</font>";
+    return "<font size='-1'>".href($prevUrl, atktext('previousweek'))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, atktext('thisweek'))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, atktext('nextweek'))."</font>";
    }
 
   /**
@@ -190,18 +190,18 @@
     function dumpMatrix()
     {
       global $g_user;
-      
+
       $matrix = &atknew("atk.utils.atktablerenderer");
-     
+
       $cells[0][] = ""; // empty corner cell
 
       for ($i=1;$i<=7;$i++)
       {
-        $text  = text($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
+        $text  = atktext($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
         $href  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
         $cells[0][$i] = href($href, $text);
         $matrix->setColAlignment($i, TBL_CENTER);
-      }      
+      }
 
       $dayparts = array("allday","morning","afternoon","evening");
 
@@ -210,7 +210,7 @@
 
         // show different color when daypartname = allday.
         $row = array();
-        $row[0] = text($daypart_name);
+        $row[0] = atktext($daypart_name);
 
         for ($i=1;$i<=7;$i++)
         {
@@ -239,7 +239,7 @@
               else
               {
                 // not a public item. Show private appointment
-                $link = text("private_appointment");
+                $link = atktext("private_appointment");
               }
             }
 
@@ -253,21 +253,21 @@
             if ($this->showGlobal!=$dayappointments[$j]["owner"]) $str.=" (".$dayappointments[$j]["owneruser"]["userid"].")";
 
             if ($j!=count($dayappointments)-1) $str.="<br>";
-          }          
+          }
           $row[$i] = $str;
         }
         $cells[] = $row;
       }
 
       $row[0] = ""; // empty left bottom corner cell
-      
+
       for ($i=1;$i<=7;$i++)
       {
-        $text  = text("add");
-        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];        
+        $text  = atktext("add");
+        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
         $row[$i] = href($href, $text, SESSION_NESTED);
       }
-      $cells[] = $row;            
+      $cells[] = $row;
 
       return $matrix->render($cells, TBL_HEADER|TBL_FOOTER, "recordlist")."<br><br>";
     }

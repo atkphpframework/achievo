@@ -3,20 +3,23 @@
   include_once("atk.inc");
   include_once("./theme.inc");
 
-  atkimport("atk.layout");
-  $layout = &layout::getInstance();
+  $page = &atknew("atk.ui.atkpage");
+  $ui = &atkinstance("atk.ui.atkui");
+  $theme = &atkTheme::getInstance();
+  $output = &atkOutput::getInstance();
 
-  $layout->output('<html>');
-  $layout->head($txt_app_title);
-  $layout->body();
+  $page->register_style($theme->stylePath("style.css"));
 
-  $layout->ui_top($txt_app_title);
-  $layout->output("<font size=+2>Thanks for using Achievo</font>");
-  $layout->output("<hr>");
-  $layout->output('<center><a href="index.php">Login</a></center>');
-  $layout->ui_bottom();
-  $layout->output('</body>');
-  $layout->output('</html>');
+  $tmp_output = "<font size=+2>Thanks for using Achievo</font>";
+  $tmp_output.= "<hr>";
+  $tmp_output.= '<center><a href="index.php">Login</a></center>';
 
-  $layout->outputFlush();
+  $box = $ui->renderBox(array("title"=>atkText("app_title"),
+                                            "content"=>$tmp_output));
+
+  $page->addContent($box);
+  $output->output($page->render(atkText('app_title'), true));
+
+  $output->outputFlush();
+
 ?>

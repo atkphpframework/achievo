@@ -19,10 +19,11 @@
       $this->menuitem("employee_admin", dispatch_url("employee.employee", "admin"), "employeemanagement", array("employee.employee", "admin"));
       $this->menuitem("employee_stats", dispatch_url("employee.employeestats", "stats"), "employeemanagement", array("employee.employee", "stats"));
       $this->menuitem("functionlevel_admin", dispatch_url("employee.functionlevel", "admin"), "employeemanagement", array("employee.functionlevel", "admin"));
-      
+      $this->menuitem("department_admin", dispatch_url("employee.department", "admin"), "employeemanagement", array("employee.department", "admin"));
+
       $this->menuitem("-","","main",true,620);
     }
-    
+
     function getDependencies($mode)
     {
       return array("person");

@@ -115,7 +115,7 @@ for ($i=0;$i<$cntrec;$i++)
 }
 
 // Select the TIMES that have been planned on the project
-$queryplanned  = &$db->createQuery(); 
+$queryplanned  = &$db->createQuery();
 $queryplanned->addTable('project');
 $queryplanned->addJoin('phase', '', 'project.id=phase.projectid', FALSE);
 
@@ -175,7 +175,7 @@ $graph->SetBox();
 $graph->SetShadow();
 
 // Add title and subtitle
-//$graph->title->Set(text('resource_planning_projectsurvey').': '.$dbrecordsphase[0]['project_name']);
+//$graph->title->Set(atktext('resource_planning_projectsurvey').': '.$dbrecordsphase[0]['project_name']);
 //$graph->subtitle->Set("(ganttex14.php)");
 
 // Show day, week and month scale
@@ -242,7 +242,7 @@ foreach ($gant as $id=>$gantphase)
 atkimport("module.utils.dateutil");
 
 // milestones
-$milestonenode = &getNode("project.deliverable");
+$milestonenode = &atkGetNode("project.deliverable");
 $deliverables = $milestonenode->selectDb("project_id=".$projectid, "duedate");
 for( $i=0, $_i=count($deliverables); $i<$_i; $i++)
 {

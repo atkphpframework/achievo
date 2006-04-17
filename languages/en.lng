@@ -102,6 +102,7 @@
   "deliverables" => "Deliverables",
   "deliverable_remind_days" => "Reminder (days)",
   "department" => "Department",
+  "department_admin" => "Departments",
   "dependencies" => "Dependencies",
   "dependsondeliverable" => "Start depends on",
   "description" => "Description",

@@ -14,38 +14,38 @@ See the UPGRADE file if you want to upgrade an existing Achievo installation.
 
 Contact information
 -------------------
-Technical questions regarding Achievo: Ivo Jansch <ivo@achievo.org>
+Technical questions regarding Achievo: Sandy Pleyte <sandy@achievo.org>
 Questions regarding services that ibuildings.nl provides for Achievo
 (like installation and configuration): Tom M. Schenkenberg <tom@achievo.org>
 
 The project homepage can be found at http://www.achievo.org
 
-If you want to be notified when new versions of Achievo are released, you can 
+If you want to be notified when new versions of Achievo are released, you can
 subscribe to our announcements mailinglist, by sending an empty message to
-announce-subscribe@achievo.org. 
+announce-subscribe@achievo.org.
 
 If you want to discuss Achievo features with the developers and other users,
-you can subscribe to the discussion list, by sending an empty message to
-achievo-subscribe@achievo.org.
+you can create an account on the Achievo forum (http:/www.achievo.org/forum)
+and post your messages.
 
 
 Commercial Support
 ------------------
-Ibuildings provides extensive support for Achievo. Information about the 
+Ibuildings provides extensive support for Achievo. Information about the
 support program can be found at http://www.achievo.org/support/sponsor.
 
 
 Disclaimer
 ----------
-This product is provided AS-IS. ibuildings.nl and any other party involved 
-do not warrant any functionality of the product and deny all responsibility 
-in case of failure of the product or any damage following directly or 
+This product is provided AS-IS. ibuildings.nl and any other party involved
+do not warrant any functionality of the product and deny all responsibility
+in case of failure of the product or any damage following directly or
 indirectly from use of this product.
 
 
 Getting the latest release
 --------------------------
-The latest release of Achievo can always be found at 
+The latest release of Achievo can always be found at
 http://www.achievo.org/download.
 
 
@@ -65,7 +65,7 @@ you can also send an email to ivo@achievo.org with your suggestions.
 User documentation
 ------------------
 There's a Guided Tour available on http://www.achievo.org/support/manual/tour
-It covers the most important features of Achievo, and will show you step by 
+It covers the most important features of Achievo, and will show you step by
 step how to use them.
 
 If you have any questions not covered by the guided tour, post your questions

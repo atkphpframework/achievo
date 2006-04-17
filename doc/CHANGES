@@ -8,6 +8,10 @@ Changes in Achievo 1.2
 ---------------------------
 * Fixed bug with archived projects. [Sandy]
 * Updated dutch language file. [Guido]
+* Updated employee departments. [Sandy]
+* Updated employee stats and the reports. [Sandy]
+* Updated all deprecated getNode and text calls also rewrote the code
+  that used the deprecated layout class. [Sandy]
 
 Changes in Achievo 1.2RC1
 ---------------------------

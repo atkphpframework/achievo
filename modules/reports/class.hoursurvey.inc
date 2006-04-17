@@ -63,6 +63,8 @@
     {
       global $g_user, $g_sessionManager;
 
+      $ui = &$this->getUi();
+      $page = &$this->getPage();
       $this->addStyle("style.css");
 
       // Manual sort config
@@ -90,11 +92,11 @@
       $outputType =         $this->m_postvars["outputType"];
 
       $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
-     
+
       //The orderby postvar is only filled when clicking on the refresh button.
       //Atk uses the postvar atkorderby when a user clicks on a column to sort on it. Powers combined
       if(!isset($orderby) && isset($this->m_postvars["atkorderby"])) $orderby[] = $this->m_postvars["atkorderby"];
-      
+
       foreach($externalHourSurveyColumns as $module => $attr)
       {
         eval("\$external$attr = '".$g_sessionManager->pageVar($attr)."';");
@@ -105,7 +107,7 @@
         $outputType=0;   //default=standard
       }
 
-      $hoursnode = &getNode("timereg.hours");
+      $hoursnode = &atkGetNode("timereg.hours");
       $hoursnode->m_postvars = $this->m_postvars; // Share postvars.
 
       // Hack: make sure the activities, which are populated by the project/phase column, are properly loaded.
@@ -114,7 +116,7 @@
 
       $columnConfig = &$hoursnode->getColumnConfig();
 
-      
+
       if (is_array($orderby))
       {
         $columnConfig->clearOrder();
@@ -217,25 +219,19 @@
       // workarounds like these should not be necessary.
       $hoursnode->m_attribList["activitydate"]->m_flags = ($hoursnode->m_attribList["activitydate"]->m_flags&(~AF_HIDE_LIST));
 
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
 
       if ($outputType==0)
       {
-        $layout->initGUI();
-        $layout->ui_top(atktext("parameters", $this->m_module, $this->m_type));
+        $title = atktext("parameters", $this->m_module, $this->m_type);
 
-        $layout->output('<form action="dispatch.php" method="get" name="entryform">');
-        $layout->output(session_form());
+        $content='<form action="dispatch.php" method="get" name="entryform">';
+        $content.=session_form();
 
-        $this->_addHiddenFields($layout);
-        $layout->table_simple();
-        $layout->output('<tr>');
-        $layout->td('<b>'.atktext('sethoursfilter').'</b>', 'colspan="2"');
-        $layout->output('</tr><tr>');
-        $layout->td('<hr>'.atktext('searchbyprojectorphase').':','colspan="2"');
-        $layout->output('</tr><tr>');
-        $layout->td(atktext('project').':');
+        $this->_addHiddenFields($content);
+
+        $tbl = &atknew("atk.utils.atktablerenderer");
+        $data[] = array("<b>".atkText("sethoursfilter","project")."</b>");
+        $data[] = array('<hr>'.atktext('searchbyprojectorphase','project').':');
 
         // we have to pass a 'dummy' record to the attributes to set their default value.
         $dummyrec = array("projectid"=>$projectid,
@@ -266,83 +262,62 @@
           $dummyrec["orderdirection[$i]"]=$columnConfig->getDirectionByOrder($i+1);
           $dummyrec["subtotal[$i]"]=($columnConfig->hasSubTotalByOrder($i+1)?1:0);
         }
+        $data[] = array(atktext('project','project').':',$projectatt->edit($dummyrec));
 
-        $layout->td($projectatt->edit($dummyrec));
-        $layout->output('</tr>');
-        $this->_addOr($layout);
-        $layout->output('<tr>');
-        $layout->td(atktext('phase').':');
+
+        $this->_addOr($data);
+
         $phaseatt = $hoursnode->m_attribList["phaseid"];
         $phaseatt->m_flags = $phaseatt->m_flags&~AF_JS_UPDATEACTIVITY;
         $phaseatt->m_nested = false;
         $g_sessionManager->stackVar("reportnodetype","hoursurvey");
-        $layout->td($phaseatt->edit($dummyrec));
 
-        $layout->output('</tr>');
-        $this->_addOr($layout);
-        $layout->output('<tr>');
+        $data[] = array(atktext('phase','project').':',$phaseatt->edit($dummyrec));
+        $this->_addOr($data);
 
-        $layout->td(atktext("organization").':');
         $organizationatt = new atkManyToOneRelation("organizationid", "organization.organization");
-        $layout->td('<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.
 
-        $organizationatt->edit($dummyrec));
-        $layout->output('</tr>');
-        $this->_addOr($layout);
-        $layout->output('<tr>');
+        $data[] = array(atktext("organization","project").':','<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.$organizationatt->edit($dummyrec));
+        $this->_addOr($data);
 
-        $layout->td(atktext("department").':');
         $departmentatt = new atkManyToOneRelation("departmentid","employee.department");
-        $layout->td('<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
-        $layout->output('</tr><tr>');
+        $data[] = array(atkText("department","project").':','<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
 
-        $layout->td('<hr>','colspan="2"');
-        $layout->output('</tr><tr>');
-        $layout->td(atktext('employee').':');
+        $data[] = array("<hr>");
+
 
         if($view_all)
         {
-          $layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>'.
-          ' <SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
+          $tmp = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>'.
+                 ' <SELECT name="userid">'.$this->get_employees($userid).'</SELECT>';
         }
         else
         {
           $userid = $g_user["id"];
-          $layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
+          $tmp = $g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">';
         }
-        $layout->output('</tr>');
-        $this->_addOr($layout);
-        $layout->output('<tr>');
+        $data[] = array(atktext('employee','project').':',$tmp);
+        $this->_addOr($data);
+
 
         // selecting functionlevel:
-        $layout->td(atktext('functionlevel').':');
-        $layout->td('<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
+        $data[] = array(atktext('functionlevel','project').':','<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
+        $data[] = array('<hr>');
+        $data[] = array(atktext('activity').': ','<SELECT name="activity_id">'.$this->get_activities($activity_id).'</SELECT>');
+        $data[] = array('<hr>');
 
-        $layout->output('</tr><tr>');
-
-
-        $layout->td('<hr>','colspan="2"');
-        $layout->output('</tr><tr>');
-        $layout->td(atktext('activity').': ');
-        $layout->td('<SELECT name="activity_id">'.$this->get_activities($activity_id).'</SELECT>');
-        $layout->output('</tr><tr>');
-        $layout->td('<hr>','colspan="2"');
-        $layout->output('</tr><tr>');
-
-        $layout->td(atktext("timespan").': ');
 
         $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
         $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
 
-        $layout->td('<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
-        atktext("until").
-        '&nbsp; </td><td align="right">'.$enddateatt->edit($dummyrec).'</td></tr></table>');
+        $timespan='<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
+                  atktext("until").'&nbsp; </td><td align="right">'.$enddateatt->edit($dummyrec).'</td></tr></table>';
+        $data[] = array(atktext("timespan","project"),$timespan);
 
-        $layout->output('</tr><tr>');
-        $layout->register_script(atkconfig("atkroot")."javascript/timereg.js");
-        $layout->td(atktext("lookbackperiod").': ');
-        $output = '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="33%">';
-        $output .= '<select name="startperiod" onchange="setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").'); document.entryform.endperiod.value = 0; setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").');">
+        $page->register_script(atkconfig("atkroot")."javascript/timereg.js");
+
+        $lookbackperiod = '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="33%">';
+        $lookbackperiod .= '<select name="startperiod" onchange="setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").'); document.entryform.endperiod.value = 0; setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").');">
                         <option value="0" selected>---</option>
                         <option value="1">1 '.strtolower(atktext("week")).'</option>
                         <option value="2">2 '.strtolower(atktext("weeks")).'</option>
@@ -354,8 +329,8 @@
                         <option value="8">6 '.strtolower(atktext("months")).'</option>
                        </select></td>';
 
-        $output .= '<td width="34%" align="center">&nbsp;</td>';
-        $output .= '<td width="33%" align="right"><select name="endperiod" onchange="setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").'); document.entryform.startperiod.value = 0; setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").');">
+        $lookbackperiod .= '<td width="34%" align="center">&nbsp;</td>';
+        $lookbackperiod .= '<td width="33%" align="right"><select name="endperiod" onchange="setStartEndDates(\'startdate\', \'endperiod\', '.date("Ymd").'); document.entryform.startperiod.value = 0; setStartEndDates(\'enddate\', \'startperiod\', '.date("Ymd").');">
                         <option value="0" selected>---</option>
                         <option value="1">1 '.strtolower(atktext("week")).'</option>
                         <option value="2">2 '.strtolower(atktext("weeks")).'</option>
@@ -366,23 +341,16 @@
                         <option value="7">3 '.strtolower(atktext("months")).'</option>
                         <option value="8">6 '.strtolower(atktext("months")).'</option>
                        </select></td></tr></table>';
-
-        $layout->td($output);
-        $layout->output('</tr><tr>');
-        $layout->td('<hr>','colspan="2"');
-        $layout->output('</tr><tr>');
+        $data[] = array(atktext("lookbackperiod","project"),$lookbackperiod);
+        $data[] = array("<hr>");
 
         $remarkattr = new atkAttribute("remark", 0, 80);
-        $layout->td(atktext('remark').': ');
-        $layout->td($remarkattr->edit($dummyrec));
+        $data[] = array(atktext("remark","project"),$remarkattr->edit($dummyrec));
 
         foreach ($externalHourSurveyColumns as $module => $attr)
         {
           $currentattr = &$hoursnode->getAttribute($attr);
-          $layout->output('</tr><tr>');
-          $layout->td('<hr>','colspan="2"');
-          $layout->output('</tr><tr>');
-          $layout->td(atktext($attr, $module).': ');
+          $data[] = array("<hr>");
 
           if (get_class($currentattr) == "atkboolattribute")
           {
@@ -392,13 +360,10 @@
           {
             $output = $currentattr->edit($dummyrec);
           }
-          $layout->td($output);
+          $data[]=array(atktext($attr,$module).": ",$output);
         }
 
-        $layout->output('</tr><tr>');
-        $layout->td('<hr>','colspan="2"');
-        $layout->output('</tr>');
-
+        $data[] = array('<hr>');
         // Get default selection items.
         $selitems = $hoursnode->getSelectionItems();
 
@@ -406,32 +371,17 @@
         {
           foreach ($selitems as $label=>$html)
           {
-            $layout->output('<tr>');
-            $layout->td(atktext($label, "", $hoursnode->m_type).":");
-            $layout->td($html);
-            $layout->output('</tr><tr>');
-            $layout->td('<hr>','colspan="2"');
-            $layout->output('</tr>');
+            $data[] = array(atktext($label, "", $hoursnode->m_type).":",$html);
+            $data[] = array('<hr>');
           }
         }
 
-
-        $layout->output('<tr>');
-
-        $layout->td('<b>'.atktext("report_output_options").'</b>','colspan="2"');
-
-        $layout->output('</tr><tr>');
-
-        $layout->td(atktext("report_output_type").": ");
-        $layout->td('<select name="outputType">
-                         <option VALUE="0" selected>'.atktext("report_output_standard").'
-                         <option value="1">'.atktext("report_output_printable").'
-                         <option value="2">'.atktext("report_output_export").'
+       $data[] = array('<b>'.atktext("report_output_options","project").'</b>');
+       $data[] = array(atktext("report_output_type","project").":",'<select name="outputType">
+                         <option VALUE="0" selected>'.atktext("report_output_standard","project").'
+                        <option value="1">'.atktext("report_output_printable","project").'
+                        <option value="2">'.atktext("report_output_export","project").'
                          </select>');
-
-        $layout->output('</tr><tr>');
-
-        $layout->td(atktext("report_output_showcollumns"));
 
         $cell="";
         for($i=0,$_i=count($arr_col);$i<$_i;$i++)
@@ -440,14 +390,9 @@
           $translatewithmodule = !in_array($arr_col[$i], array_values($externalHourSurveyColumns)) ? "" : array_search($arr_col[$i], $externalHourSurveyColumns);
           $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.atktext($arr_col[$i], $translatewithmodule).'&nbsp;';
         }
-        $layout->td($cell);
+        $data[] = array(atktext('report_output_showcollumns','project').':',$cell);
 
-        $layout->output('</tr><tr>');
 
-        $layout->td(atktext("orderby").': ', 'valign="top"');
-
-        //$listcol = array();
-        //for($i=0,$_i=count($arr_col);$i<$_i;$i++) $listcol[] = "hours.".$arr_col[$i];
 
         $orderattrs = array();
         $orderstr = "";
@@ -458,7 +403,6 @@
           {
             // Add empty option after the first.
             array_unshift($arr_col, "-");
-            //  array_unshift($listcol, "");
           }
 
           $field = new atkListAttribute("orderby[$i]",$arr_col);
@@ -466,18 +410,24 @@
           $total = new atkBoolAttribute("subtotal[$i]",0);
           $orderstr.=($i+1).". ".$field->edit($dummyrec)." ".$direction->edit($dummyrec)." ".$total->edit($dummyrec)." ".atktext('subtotal')."<br>";
         }
-
-        $layout->td($orderstr);
-
-        $layout->output('</tr><tr>');
-
-        $layout->td(atktext("aggregate").": ");
+        $data[] = array(atktext('orderby','project').':',$orderstr);
 
         $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY);
-        $layout->td($boolattrib->edit($dummyrec));
+        $data[] = array(atktext('aggregate','project').':',$boolattrib->edit($dummyrec));
 
-        $layout->output('</tr></table><input type="submit" value="'.atktext("refresh").'"></form><br>');
 
+        $tbl->setColSpan(0,0,2);
+        $tbl->setColSpan(1,0,2);
+        $tbl->setColSpan(3,0,2);
+        $tbl->setColSpan(5,0,2);
+        $tbl->setColSpan(7,0,2);
+        $tbl->setColSpan(9,0,2);
+        $tbl->setColSpan(11,0,2);
+        $tbl->setColSpan(13,0,2);
+        $tbl->setColSpan(15,0,2);
+        $content.=$tbl->render($data);
+        $content.='<input type="submit" value="'.atktext("refresh").'"></form><br>';
+        $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
       }
 
       // Create Filter
@@ -552,10 +502,8 @@
 
       if ($outputType=="0")
       {
-        $layout->ui_bottom();
-        $layout->ui_top(atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate);
-
-        $layout->output('<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>');
+        $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;
+        $content = '<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
 
         $actions = array();
         if (!$aggregate)
@@ -564,16 +512,15 @@
         }
 
         $rl = &atknew("atk.recordlist.atkrecordlist");
-        $layout->output($rl->render($hoursnode, $data, $actions, RL_EXT_SORT, $suppress));
-        $layout->output('<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>');
-
-        $layout->ui_bottom();
+        $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT, $suppress);
+        $content.='<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
+        $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
       }
 
       if ($outputType=="1")
       {
         $rl = &atknew("atk.recordlist.atkcustomrecordlist");
-        $layout->output($rl->render($hoursnode, $data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
+        $page->addContent($rl->render($hoursnode, $data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
       }
       if ($outputType=="2")
       {
@@ -683,11 +630,9 @@
      * @param layout object the layout object we have to hook ourselves in to
      * @return void
      */
-    function _addOr(&$layout)
+    function _addOr(&$data)
     {
-      $layout->output('<tr>');
-      $layout->td(atktext('or'),'colspan="2"');
-      $layout->output('</tr>');
+      $data[] = array(atkText("or","project"));
     }
 
     /**
@@ -695,10 +640,10 @@
      * @param layout object the layout object we have to hook ourselves in to
      * @return void
      */
-    function _addHiddenFields(&$layout)
+    function _addHiddenFields(&$content)
     {
-      $layout->output('<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">');
-      $layout->output('<input type="hidden" name="atkaction" value="report">');
+      $content.='<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">';
+      $content.='<input type="hidden" name="atkaction" value="report">';
     }
   }
 

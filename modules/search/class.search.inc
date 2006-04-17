@@ -28,10 +28,6 @@
         $results = atkHarvestModules("search", $searchstring);
         $firsturl="";
         $res = "";
-        $resultcnt = 0;  // We can't use count($results) to determine if we
-                         // found anything. Bad modules might set a category
-                         // in $results even if they haven't got results in
-                         // that category.
 
         foreach ($results as $category=>$items)
         {
@@ -63,14 +59,16 @@
       {
         $res = '<br>'.atktext("search_emptysearchstring");
       }
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
 
-      $layout->initGui();
-      $layout->ui_top(atktext("search"));
-      $layout->output($res.'<br><br>'.atktext('search_again').':<br>');
-      $layout->output($this->simpleSearchForm($searchstring, "", SESSION_DEFAULT).'<br><br>');
-      $layout->ui_bottom();
+      $res.='<br><br>'.atktext('search_again').':<br>';
+      $res.=$this->simpleSearchForm($searchstring, "", SESSION_DEFAULT).'<br><br>';
+
+      $ui = &$this->getUi();
+      $page = &$this->getPage();
+      $this->addStyle("style.css");
+      $searchResultBox = $ui->renderBox(array("title"=>atkText("search","search"),"content"=>$res));
+      $page->addContent($searchResultBox);
+      return true;
     }
 
     function simpleSearchForm($searchstring, $targetframe="", $sessionstatus=SESSION_NESTED)

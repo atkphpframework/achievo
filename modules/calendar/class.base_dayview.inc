@@ -50,7 +50,7 @@
      $this->year      = ($year  == 0) ? date("Y") : $year;
      $this->month     = ($month == 0) ? date("m") : $month;
      $this->day       = ($day   == 0) ? date("d") : $day;
-     $this->busyTitle = text("private_appointment");
+     $this->busyTitle = atktext("private_appointment");
 
      // TEMPORARY FIX FOR NETSCAPE
      // Netscape/Mozilla seems to have a problem
@@ -95,9 +95,9 @@
     $nextTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month, $this->day+1, $this->year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=$nextTime&user=".$this->showGlobal;
 
-    $this->title = "<font size='-1'><b>".text(strtolower(date("l", adodb_mktime(0, 0, 0, $this->month, $this->day, $this->year))))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
+    $this->title = "<font size='-1'><b>".atktext(strtolower(date("l", adodb_mktime(0, 0, 0, $this->month, $this->day, $this->year))))." ".$this->day."-".$this->month."-".$this->year."</b></font>";
 
-    return "<font size='-1'>".href($prevUrl, text("previous_day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, text("today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, text("next_day"))."</font>";
+    return "<font size='-1'>".href($prevUrl, atktext("previous_day"))."</font>"."&nbsp;"."<font size='-1'>".href($thisUrl, atktext("today"))."</font>"."&nbsp;"."<font size='-1'>".href($nextUrl, atktext("next_day"))."</font>";
    }
 
   /**
@@ -105,11 +105,11 @@
    * fills an array with the items
    */
     function getItems()
-    {     
+    {
      $date = $this->year."-".$this->month."-".$this->day;
-     
+
      $db = &atkGetDb();
-     
+
      $query = &$db->createQuery();
      $query->addTable('schedule');
      $query->addJoin('schedule_attendee', '', 'schedule_attendee.schedule_id=schedule.id', TRUE);
@@ -329,14 +329,14 @@
       $query = &$db->createQuery();
       $query->addTable('schedule_attendee');
       $query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
-      
+
       $query->addField('userid', ' ', 'person');
       $query->addField('lastname', ' ', 'person');
       $query->addField('firstname', ' ', 'person');
       $query->addField('role', ' ', 'person');
-      
+
       $query->addCondition("schedule_attendee.schedule_id = $scheduleid");
-      
+
       $querystring = $query->buildSelect(TRUE);
       return $db->getRows($querystring);
     }
@@ -369,7 +369,7 @@
      {
       $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='".$this->viewerWidth."'>\n";
       $buff .= "<tr>\n";
-      $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'><font color='#000000' size='-1'><b>".text("allday_appointments")."</b></font></td>\n";
+      $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'><font color='#000000' size='-1'><b>".atktext("allday_appointments")."</b></font></td>\n";
       $buff .= "</tr>\n";
 
       for ($i=0;$i<=count($this->allDayItems)-1;$i++)
@@ -382,8 +382,8 @@
        $attendees = $this->get_attendees($this->allDayItems[$i]["id"]);
        $found = 0;
 
-       $att = text("schedule_attendees").": ";
-       if ($this->allDayItems[$i]["all_users"]) $att .= text("all_users");
+       $att = atktext("schedule_attendees").": ";
+       if ($this->allDayItems[$i]["all_users"]) $att .= atktext("all_users");
        for($k=0;$k<count($attendees);$k++)
        {
          if ($attendees[$k]["userid"] == $g_user["userid"]) $found = 1;
@@ -413,12 +413,12 @@
 
        if ($this->allDayItems[$i]["publicitem"])
        {
-         $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("view")."</font>", SESSION_NESTED);
+         $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("view")."</font>", SESSION_NESTED);
        }
        if ($this->allDayItems[$i]["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_all") || ($found == 1 || $this->allDayItems[$i]["all_users"])))
        {
-        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("edit")."</font>", SESSION_NESTED);
-        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".text("delete")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("edit")."</font>", SESSION_NESTED);
+        $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$this->allDayItems[$i]["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("delete")."</font>", SESSION_NESTED);
        }
 
        $header .= "</tr></table>";
@@ -482,7 +482,7 @@
            $bgcolor = $colors[$info["scheduletype"]]["back"];
            $fgcolor = $colors[$info["scheduletype"]]["fore"];
            $descr   = $info["description"];
-           $status  = " [".text($info["status"])."]";
+           $status  = " [".atktext($info["status"])."]";
           }
 
           // if viewing public items for all users
@@ -504,8 +504,8 @@
           $attendees = $this->get_attendees($info["id"]);
           $found = 0;
 
-          $att = text("schedule_attendees").": ";
-          if ($info["all_users"]) $att .= text("all_users");
+          $att = atktext("schedule_attendees").": ";
+          if ($info["all_users"]) $att .= atktext("all_users");
           for($k=0;$k<count($attendees);$k++)
           {
             if ($attendees[$k]["userid"] == $g_user["userid"]) $found = 1;
@@ -528,13 +528,13 @@
           // you may view every calendaritem if it is a publicitem
           if ($info["publicitem"])
           {
-            $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("view")."</font>", SESSION_NESTED);
+            $header .= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("view")."</font>", SESSION_NESTED);
           }
           // you may only edit and delete a calendaritem if you are the owner, an attendee or have the right to edit and delete all calendaritems
           if ($info["owner"] == $this->owner || (is_allowed("calendar.schedule", "edit_all") || ($found == 1 || $info["all_users"])))
           {
-           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("edit")."</font>", SESSION_NESTED);
-           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".text("delete")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("edit")."</font>", SESSION_NESTED);
+           $header .= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=delete&atkselector=".rawurlencode("schedule.id=".$info["id"]), "<font size='-2' color='".$fgcolor."'>".atktext("delete")."</font>", SESSION_NESTED);
           }
 
           $header .= "</td>\n";

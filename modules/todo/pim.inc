@@ -6,7 +6,7 @@
 
     $userid = $g_user["id"];
     $rl = &atknew("atk.recordlist.atkrecordlist");
-    $todonode = getNode("todo.todo");
+    $todonode = &atkGetNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
     $todonode->addFilter("todo.status NOT IN (5,2)");
     $actions = array();

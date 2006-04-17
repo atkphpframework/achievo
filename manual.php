@@ -6,14 +6,14 @@
   atksecure();
   require "theme.inc";
 
-  atkimport("atk.layout");
-  $layout = &layout::getInstance();
+   $page = &atknew("atk.ui.atkpage");
+  $ui = &atkinstance("atk.ui.atkui");
+  $theme = &atkTheme::getInstance();
+  $output = &atkOutput::getInstance();
 
-  $layout->output("<html>");
-  $layout->head($txt_app_title);
-  $layout->body();
-  $layout->ui_top($txt_app_title);
-  $layout->output('
+  $page->register_style($theme->stylePath("style.css"));
+
+  $tmp_output='
 
 <br><br><br><br><br>
 
@@ -22,11 +22,13 @@ At some point, in the very, very distant future, a complete annotated reference 
 <br><br>For now, you can use <a href="manual/guide.html">this Achievo Guide</a>, graciously contributed by Greg Louis.
 <br><br><br><br><br>
 
- ');
+ ';
 
-$layout->ui_bottom();
-$layout->output("</body>");
-$layout->output("</html>");
-$layout->outputFlush();
+ $box = $ui->renderBox(array("title"=>atkText("app_title"),
+                                            "content"=>$tmp_output));
 
+  $page->addContent($box);
+  $output->output($page->render(atkText('app_title'), true));
+
+  $output->outputFlush();
 ?>

@@ -42,7 +42,7 @@
     function userprefs_modifier(&$node)
     {
       useattrib("atklistattribute");
-      $usernode = &getNode("employee.employee");
+      $usernode = &atkGetNode("employee.employee");
       $node->add(new atkListAttribute("calendar_defaultuserview",
                                       array($usernode->descriptor(getUser()),
                                             "allusers"),

@@ -20,7 +20,7 @@ class hoursPDA extends hours
   {
     global $g_project;
 
-    $projectnode = &getNode("project.project");
+    $projectnode = &atkGetNode("project.project");
     $projects = $projectnode->selectDb(null,null,null,array("todos","notes","members","contacts"));
 
     $this->m_projects["EMPTY"] = $this->removeVarFromCurrentURL(array("g_project", "g_phase", "g_activity"));;
@@ -48,7 +48,7 @@ class hoursPDA extends hours
   {
     global $g_project, $g_phase;
 
-    $phasenode = &getNode("project.phase");
+    $phasenode = &atkGetNode("project.phase");
 
     $phases = $phasenode->selectDb("projectid.id='$g_project'");
 
@@ -74,7 +74,7 @@ class hoursPDA extends hours
   {
     global $g_project, $g_phase, $g_activity;
 
-    $activitynode = &getNode("project.phase_activity");
+    $activitynode = &atkGetNode("project.phase_activity");
     $activities = $activitynode->selectDb("phase_activity.phaseid='$g_phase'");
 
     $this->m_activityids["EMPTY"] = $this->removeVarFromCurrentURL(array("g_activity"));
@@ -132,7 +132,7 @@ class hoursPDA extends hours
     if (is_array($errors)
     )
     {
-      $this->add(new atkDummyAttribute("formdataerror", "<b>".text("error_formdataerror")."</b>"));
+      $this->add(new atkDummyAttribute("formdataerror", "<b>".atktext("error_formdataerror")."</b>"));
 
       foreach ($errors as $error)
       {
@@ -180,7 +180,7 @@ class hoursPDA extends hours
       if ($this->m_lock=="" && !(browserInfo::detectPDA())) $this->addPage();
 
       // Set the viewnode up
-      $viewnode = &getNode("timereg.hours");
+      $viewnode = &atkGetNode("timereg.hours");
       $viewnode->m_action = "admin";
 
       if (!$atkorderby) $atkorderby = $this->m_default_order;
@@ -220,7 +220,7 @@ class hoursPDA extends hours
   }
 
   /**
-  * (evil?) Hack to ensure that, when we edit the overridden strings, 
+  * (evil?) Hack to ensure that, when we edit the overridden strings,
   * that we get the original values in the listattributes from the record
   * @param array $record the record of the overridden string
   * @return array an empty array

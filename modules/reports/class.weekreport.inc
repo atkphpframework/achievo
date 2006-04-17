@@ -48,27 +48,27 @@ class weekreport extends atkNode
     $this->add(new timeDisplayAttribute("thu"));
     $this->add(new timeDisplayAttribute("fri"));
     $this->add(new timeDisplayAttribute("sat"));
-    $this->add(new timeDisplayAttribute("sun"));    
+    $this->add(new timeDisplayAttribute("sun"));
 
     $db = &atkGetDb();
     $periods = $db->getRows("SELECT * FROM workperiod ORDER BY percentage");
     for($i=0;$i<count($periods);$i++)
     {
       $this->add(new timeDisplayAttribute($periods[$i]["name"], AF_TOTAL));
-    }    
+    }
     $this->add(new timeDisplayAttribute("overtimecompensation",AF_TOTAL));
     $this->add(new timeDisplayAttribute("total",AF_TOTAL));
     $this->add(new timeDisplayAttribute("contract",AF_TOTAL));
-    $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));    
-    
-    
+    $this->add(new timeDisplayAttribute("overtime",AF_TOTAL));
+
+
     $this->add(new atkAttribute("balance"));
     $this->add(new atkAttribute("status"));
   }
 
   function status_display($rec)
   {
-    return text($rec["status"]);
+    return atktext($rec["status"]);
   }
 
   function get_employee($user_id)
@@ -91,7 +91,7 @@ class weekreport extends atkNode
 
     $records = $db->getrows($sql);
 
-    $employee_code.='<OPTION VALUE="all">'.text("all_users").'</OPTION>';
+    $employee_code.='<OPTION VALUE="all">'.atktext("all_users").'</OPTION>';
     for($i=0;$i<count($records);$i++)
     {
       if ($userid==$records[$i]["id"]) $selected="selected";
@@ -103,27 +103,27 @@ class weekreport extends atkNode
 
   function balance_display($rec)
   {
-    $node = &getNode("timereg.overtime_balance");
+    $node = &atkGetNode("timereg.overtime_balance");
     return $node->getOvertimeLink($rec);
   }
 
   function isOvertimeCompensationActivity($id, $overtimeactivities)
-  { 
+  {
     foreach($overtimeactivities as $item)
-    { 
-      if($item["id"]==$id) return true;      
-    }    
+    {
+      if($item["id"]==$id) return true;
+    }
     return false;
   }
-  
+
   function getOvertimeCompensationActivities()
   {
     $db = &atkGetDb();
     $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
-    
+
     return $res;
   }
-  
+
   /**
    * One line description of the function
    *
@@ -132,7 +132,7 @@ class weekreport extends atkNode
    * MySQL has an extended GROUP BY which doesn't need this according to the documentation:
    * "MySQL has extended the use of GROUP BY to allow you to select fields that are not mentioned in the GROUP BY clause.
    * If you are not getting the results you expect from your query, please read the GROUP BY description.
-   * See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."   
+   * See section 6.3.7 Functions and Modifiers for Use with GROUP BY Clauses."
    *
    * @param type name description
    * @return type description
@@ -140,7 +140,7 @@ class weekreport extends atkNode
   function collectData($nameswitch, $userid, $startdate, $enddate)
   {
     $db = &atkGetDb();
-    
+
     $query = "SELECT
                   hours.time, activityid, activitydate, hours.userid, person.lastname, person.firstname, workperiod
                 FROM
@@ -159,12 +159,12 @@ class weekreport extends atkNode
                   AND hours.userid = person.id
                 ORDER BY
                   hours.userid, activitydate, person.lastname, person.firstname, workperiod";
-      
-   
-      
+
+
+
       return $db->getrows($query);
   }
-  
+
   function getLocks($nameswitch, $userid, $report_start_week, $report_end_week)
   {
     $db = &atkGetDb();
@@ -196,10 +196,15 @@ class weekreport extends atkNode
     }
     return $db->getrows($query);
   }
-  
+
   function action_report(&$handler)
 	{
     global $g_securityManager, $g_user, $g_sessionManager;
+
+    $ui = &$this->getUi();
+    $page = &$this->getPage();
+    $this->addStyle("style.css");
+
     $atkorderby = $g_sessionManager->pageVar("atkorderby");
     $userid = $g_sessionManager->pageVar("userid");
     $nameswitch = $g_sessionManager->pageVar("nameswitch");
@@ -228,7 +233,7 @@ class weekreport extends atkNode
     }
     else
     {
-      if (!isset($startdate)||$startdate=="")	$startdate =  date("Y-m-d" ,time()-(86400*7));      
+      if (!isset($startdate)||$startdate=="")	$startdate =  date("Y-m-d" ,time()-(86400*7));
     }
     if (is_array($enddate))
     {
@@ -236,34 +241,25 @@ class weekreport extends atkNode
     }
     else
     {
-      if (!isset($enddate)||$enddate=="")			$enddate = date('Y-m-d');      
+      if (!isset($enddate)||$enddate=="")			$enddate = date('Y-m-d');
     }
 
     if (!isset($userid)||$userid=="")   			$userid=$g_user["id"];
     if (!isset($nameswitch)||$nameswitch=="")	$nameswitch="name";
     if (!isset($showstatus)||$showstatus=="") $showstatus = "both";
 
-    
-    //Only import when using standard or printer-friendly output
-    if(($outputType==0) || ($outputType==1))
-    {
-    	atkimport("atk.layout");
-    	$layout = &layout::getInstance();
-    }
-      
+
+
     if ($outputType==0)
     {
-      $layout->initGUI();
-      $layout->ui_top(text("parameters", $this->m_type, $this->m_module));
+      $output='<form action="dispatch.php" method="get" name="entryform">';
 
-      $layout->output('<form action="dispatch.php" method="get" name="entryform">');
+      $output.='<input type="hidden" name="atknodetype" value="reports.weekreport">';
+      $output.='<input type="hidden" name="atkaction" value="'.$this->m_action.'">';
 
-      $layout->output('<input type="hidden" name="atknodetype" value="reports.weekreport">');
-      $layout->output('<input type="hidden" name="atkaction" value="'.$this->m_action.'">');
-      $layout->table_simple();
-      $layout->output('<tr>');
-      $layout->td('<b>'.text('sethoursfilter').'</b>', 'colspan="2"');
-      $layout->output('</tr><tr>');
+
+      $data = array();
+      $data[] = array('<b>'.atktext('sethoursfilter').'</b>');
 
       // we have to pass a 'dummy' record to the attributes to set their default value.
       $dummyrec = Array("startdate"=>array("year"=>substr($startdate,0,4),
@@ -273,87 +269,74 @@ class weekreport extends atkNode
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));
 
-      $layout->td('<SELECT name="nameswitch"><OPTION VALUE="name">'.text("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.text("supervisor").': </SELECT>');
+      $nameswitch = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>';
 
       if($view_all)
       {
-        $layout->td('<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>');
+        $users='<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>';
       }
       else
       {
         $userid = $g_user["id"];
-        $layout->td($g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">');
+        $users = $g_user["name"].'<input type="hidden" name="userid" value="'.$g_user["id"].'">';
       }
+      $data[] = array($nameswitch,$users);
 
       /*// TODO: Even if you don't have view_all right, you should still be able to view employees
       // that you supervise.
       if($view_all)
       {
-        $layout->output('</tr><tr>');
-        $layout->td(text("supervisor").':</b> ');
-        $layout->td('<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');
+        $data[] = array(atktext("supervisor"),'<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');
       }    */
-
-      $layout->output('</tr><tr>');
-
-      $layout->td(text("timespan").': ');
 
       $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
       $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
 
-      $layout->td($startdateatt->edit($dummyrec).' &nbsp;'.
-                      text("until").
+      $data[]= array(atktext("timespan"),$startdateatt->edit($dummyrec).' &nbsp;'.
+                      atktext("until").
                       '&nbsp; '.$enddateatt->edit($dummyrec));
 
-      $layout->output('</tr><tr>');
 
-      $layout->td(text("status"));
-      $layout->td('<select name="showstatus">
-                     <option VALUE="both" '.($showstatus=="both"?"selected":"").'>'.text("both").'
-                     <option VALUE="locked" '.($showstatus=="locked"?"selected":"").'>'.text("locked").'
-                     <option VALUE="unlocked" '.($showstatus=="unlocked"?"selected":"").'>'.text("unlocked").'
-                     </select>');
-      $layout->output('</tr><tr>');
-
-
-      $layout->td('<b>'.text("report_output_options").'</b>','colspan="2"');
-
-      $layout->output('</tr><tr>');
-
-      $layout->td(text("report_output_type"));
-      $layout->td('<select name="outputType">
-                     <option VALUE="0" selected>'.text("report_output_standard").'
-                     <option value="1">'.text("report_output_printable").'
-                     <option value="2">'.text("report_output_export").'
+      $data[] = array(atktext("status"),'<select name="showstatus">
+                     <option VALUE="both" '.($showstatus=="both"?"selected":"").'>'.atktext("both").'
+                     <option VALUE="locked" '.($showstatus=="locked"?"selected":"").'>'.atktext("locked").'
+                     <option VALUE="unlocked" '.($showstatus=="unlocked"?"selected":"").'>'.atktext("unlocked").'
                      </select>');
 
-      $layout->output('</tr><tr>');
-      $layout->td(text("report_show_details"));
-      
-      //if ($showdetails==1) $checked = "checked"; else $checked = "";
+
+      $data[] = array('<b>'.atktext("report_output_options").'</b>');
+
+      $data[] = array(atktext("report_output_type"),'<select name="outputType">
+                     <option VALUE="0" selected>'.atktext("report_output_standard").'
+                     <option value="1">'.atktext("report_output_printable").'
+                     <option value="2">'.atktext("report_output_export").'
+                     </select>');
+
       $checked = ($showdetails==1) ? "checked" : "";
-      
-      $layout->td('<input type="checkbox" name="showdetails" value="1" '.$checked.'>');
+      $data[] = array(atktext("report_show_details"),'<input type="checkbox" name="showdetails" value="1" '.$checked.'>');
 
-      $layout->output('</tr><tr>');
-
-      $layout->td(text("orderby").': ');
-
-      $layout->td('<select name="atkorderby">
-                     <option VALUE="week" '.($atkorderby=="week"?"selected":"").'>'.text("week").'
-                     <option VALUE="status" '.($atkorderby=="status"?"selected":"").'>'.text("status").'
-                     <option VALUE="userid" '.($atkorderby=="userid"?"selected":"").'>'.text("userid").'
+      $data[] = array(atktext("orderby"),'<select name="atkorderby">
+                     <option VALUE="week" '.($atkorderby=="week"?"selected":"").'>'.atktext("week").'
+                     <option VALUE="status" '.($atkorderby=="status"?"selected":"").'>'.atktext("status").'
+                     <option VALUE="userid" '.($atkorderby=="userid"?"selected":"").'>'.atktext("userid").'
                      </select>');
 
 
+      $tbl = &atknew("atk.utils.atktablerenderer");
+      $tbl->setColSpan(0,0,2);
+      $tbl->setColSpan(4,0,2);
+      $output.=$tbl->render($data);
+      $output.='<input type="submit" value="'.atktext("refresh").'"></form><br>';
 
-      $layout->output('</tr></table><input type="submit" value="'.text("refresh").'"></form><br>');
+      $tbl = &atknew("atk.utils.atktablerenderer");
 
-      $layout->ui_bottom();
+      $parameters = $ui->renderBox(array("title"=>atktext("parameters"),"content"=>$output));
+      $page->addContent($parameters);
+
     }
 
     // If we haven't got a userid by now, don't display the report
-    if ($userid!="")                      
+    if ($userid!="")
     {
       $weekdata = array();
 
@@ -429,45 +412,45 @@ class weekreport extends atkNode
           $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
         }
       }
-        
-      $periods      = $db->getRows("SELECT * FROM workperiod");      
+
+      $periods      = $db->getRows("SELECT * FROM workperiod");
       $overtimeids = $this->getOvertimeCompensationActivities();
       $strdow       = array("sun","mon","tue","wed","thu","fri","sat");
-      
-      // collect data..      
-      $raw = $this->collectData($nameswitch, $userid, $startdate, $enddate);      
-      
+
+      // collect data..
+      $raw = $this->collectData($nameswitch, $userid, $startdate, $enddate);
+
       for ($i=0,$_i=count($raw);$i<$_i;$i++)
       {
         //is this timeregistration a overtimecompensation?
         $isovertimecompensation = $this->isOvertimeCompensationActivity($raw[$i]["activityid"],$overtimeids);
-        
+
         $stamp = adodb_mktime(12,0,0,substr($raw[$i]["activitydate"],5,2),
                                       substr($raw[$i]["activitydate"],8,2),
                                       substr($raw[$i]["activitydate"],0,4));
         $dow = strftime("%w",$stamp);
         $key = weekstamp($stamp);
         $weekdata[$key]["week"] = $key;
-        $uid = $raw[$i]["userid"];        
-                
+        $uid = $raw[$i]["userid"];
+
         $weekdata[$key]["userdata"][$uid][$strdow[$dow]]          += $raw[$i]["time"];
         $weekdata[$key]["userdata"][$uid][$raw[$i]["workperiod"]] += $raw[$i]["time"];
-        
+
         //we do not add overtimecompensation hours to the total
-        if($isovertimecompensation)                
-          $weekdata[$key]["userdata"][$uid]["overtimecompensation"] += $raw[$i]["time"];        
-        else 
+        if($isovertimecompensation)
+          $weekdata[$key]["userdata"][$uid]["overtimecompensation"] += $raw[$i]["time"];
+        else
           $weekdata[$key]["userdata"][$uid]["total"]                += $raw[$i]["time"];
-          
+
         $weekdata[$key]["userdata"][$uid]["name"] = $raw[$i]["lastname"].", ".$raw[$i]["firstname"];
-        
+
         // We need to display the first date and last date of each week.
         // Since we are looping days now, it is easiest if we calculate the
         // beginning of a week here.
-      }      
-     
+      }
+
       $locks = $this->getLocks($nameswitch, $userid, $report_start_week, $report_end_week);
-      
+
       for($i=0,$_i=count($locks);$i<$_i;$i++)
       {
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
@@ -485,7 +468,7 @@ class weekreport extends atkNode
       // by recordlist functions.
       // we also need to calculate some numbers.
       $rldata = array();
-      $balancenode = &getNode("timereg.overtime_balance");
+      $balancenode = &atkGetNode("timereg.overtime_balance");
       foreach ($weekdata as $weeknr => $data)
       {
         $record = array();
@@ -501,13 +484,13 @@ class weekreport extends atkNode
           {
             $record["userid"] = $userdata["name"];
             $newtotal = 0;
-            
+
             //count total hours of working periods
             for($i=0,$_i=count($periods);$i<$_i;$i++)
             {
               $record[$periods[$i]["name"]] = $userdata[$periods[$i]["id"]];
               $newtotal += ($periods[$i]["percentage"]/100) * $userdata[$periods[$i]["id"]];
-            }            
+            }
             $newtotal += $userdata[0];
             if ($newtotal == 0) $newtotal = $userdata["total"];
             //subtract overtimecompensation hours from newtotal
@@ -516,7 +499,7 @@ class weekreport extends atkNode
             $record["total"] = $userdata["total"];
             $record["contract"] = $userdata["contract"];
             $record["overtime"] = $newtotal-$userdata["contract"];
-            
+
             if ($userdata["status"]!="")
             {
               $record["status"] = $userdata["status"];
@@ -527,7 +510,7 @@ class weekreport extends atkNode
             }
             $cmpstatus = (($record["status"]=="locked")?"locked":"unlocked");
             if ($showstatus=="both" || $cmpstatus==$showstatus)
-            {              
+            {
               for($i=0,$_i=count($strdow);$i<$_i;$i++)
               {
                 $record[$strdow[$i]] = $userdata[$strdow[$i]];
@@ -540,7 +523,7 @@ class weekreport extends atkNode
 
       // sorting..
       if ($atkorderby=="") $atkorderby = "week";
-      
+
       usort($rldata,$atkorderby."_cmp");
 
       if ($showdetails==1)
@@ -555,45 +538,39 @@ class weekreport extends atkNode
       }
       if ($nameswitch=="name" && $userid!="all") $suppress[] = "userid";
 
-      
+
       if ($outputType=="0")
       {
-        $layout->ui_top(text("weekreport")." ".text("report_intimespan")." ".$startdate." t/m ".$enddate);
-
         if ($userid!="all")
         {
           $emprec = $this->get_employee($userid);      ;
 
-          $employeedata = '<br>'.$layout->ret_table_simple().'<tr>';
-
           if ($nameswitch=="supervisor")
           {
-            $label = text("supervisor");
+            $label = atktext("supervisor");
           }
           else
           {
-            $label = text("name");
+            $label = atktext("name");
           }
-          $employeedata.= $layout->ret_td($label.": ");
-          $employeedata.= $layout->ret_td($emprec["lastname"].", ".$emprec["firstname"]);
-          $employeedata.= '</tr><tr>';
-          $employeedata.= $layout->ret_td(text("email").": ");
-          $employeedata.= $layout->ret_td($emprec["email"]);
-          $employeedata.= '</tr></table>';
-
-          $layout->output($employeedata);
-          $layout->output('<br>');
+          $data = array();
+          $data[] = array($label.": ",$emprec["lastname"].", ".$emprec["firstname"]);
+          $data[] = array(atktext("email"),$emprec["email"]);
         }
-
+        $tbl = &atknew("atk.utils.atktablerenderer");
+        $output = $tbl->render($data);
         $rl = &atknew("atk.recordlist.atkrecordlist");
-        $layout->output('<br>'.$rl->render($this, $rldata, array(),false,$suppress));
-        $layout->output('<br><br>');
-        $layout->ui_bottom();
+
+        $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress);
+
+        $weekreport = $ui->renderBox(array("title"=>atktext("weekreport")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate,"content"=>$output));
+        $page->addContent($weekreport);
+
       }
       else if ($outputType=="1")
       {
         $rl = &atknew("atk.recordlist.atkcustomrecordlist");
-        $layout->output($rl->render($this, $rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
+        $page->addContent($rl->render($this, $rldata,"<tr>","<td>","</td>","</tr>", "0","",$suppress));
       }
       else if ($outputType=="2")
       {

@@ -70,7 +70,7 @@
     if (!empty($lockType)) atklock();
 
     // Create node
-    $obj = &getNode($ATK_VARS["atknodetype"]);
+    $obj = &atkGetNode($ATK_VARS["atknodetype"]);
 
     if (is_object($obj))
     {

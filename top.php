@@ -59,7 +59,7 @@
   }
   $content.=$centerpiece;
 
-  $searchnode = getNode("search.search");
+  $searchnode = &atkGetNode("search.search");
   $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
   $content.="&nbsp;&nbsp;&nbsp; ".$searchpiece;
 

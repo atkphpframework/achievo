@@ -602,7 +602,7 @@
 
       if ($this->hasVersionInfo())
       {
-        $versioninfo = getNode("setup.versioninfo");
+        $versioninfo = &atkGetNode("setup.versioninfo");
 
         if (is_object($versioninfo)) // If this object doesn't exist, we don't have
                                      // a correct installer, so we can only return
@@ -631,7 +631,7 @@
 
       atkdebug("Installnode call for $nodename");
 
-      $node = &getNode($nodename);
+      $node = &atkGetNode($nodename);
 
       if (is_object($node))
       {
@@ -767,7 +767,7 @@
 
       if ($module!="" && $this->hasVersionInfo())
       {
-        $versioninfo = &getNode("setup.versioninfo");
+        $versioninfo = &atkGetNode("setup.versioninfo");
         $recs = $versioninfo->selectDb("module='".$module."'");
 
         if (count($recs)>0)
@@ -868,7 +868,7 @@
       $db = &atkGetDb();
       $db->query("DROP TABLE $table");
     }
-    
+
     function dropSequence($sequence)
     {
       $db = &atkGetDb();
@@ -876,19 +876,19 @@
       if($db->m_type=="mysql" || $db->m_type=="mysql41")
         $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
     }
-    
+
      /**
-      * Delete nodes db table and nodes sequence from db_sequence. 
+      * Delete nodes db table and nodes sequence from db_sequence.
       * Use it in uninstall.inc
       */
     function dropNode($node)
     {
-      $node = &getNode($node);
+      $node = &atkGetNode($node);
       $table = $node->m_table;
       $seg = $node->m_seg;
-      
+
       $this->dropTable($table);
-      if($seg>"") $this->dropSequence($seg);    
+      if($seg>"") $this->dropSequence($seg);
     }
 
     function action_legacyupgrade(&$handler)
@@ -1066,7 +1066,7 @@
               $stufftodo = true;
               // We need to install patches.
               natcasesort($availablepatches); // We must install patches in the correct order.
-              
+
               // Fix key associations
               $availablepatches = array_values($availablepatches);
 

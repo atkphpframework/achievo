@@ -46,17 +46,17 @@ class project_personcontact extends atkNode
     $documentWriter->assignDocumentSingleRecord($this, $project_personcontactrecord[0]);
 
     // Assign the referenced project
-    $projectnode = &getNode("project.project");
+    $projectnode = &atkGetNode("project.project");
     $projectrecord = $projectnode->selectDb("project.id='".$project_personcontactrecord[0]["projectid"]["id"]."'");
     $documentWriter->assignDocumentSingleRecord($projectnode, $projectrecord[0], "project_");
 
     // Assign the referenced personcontact
-    $personcontactnode = &getNode("project.select_contact");
+    $personcontactnode = &atkGetNode("project.select_contact");
     $personcontactrecord = $personcontactnode->selectDb("person.id='".$project_personcontactrecord[0]["personid"]["id"]."'");
     $documentWriter->assignDocumentSingleRecord($personcontactnode, $personcontactrecord[0], "person_");
 
     // Assign the referenced personcontact's organization (if available)
-    $organizationnode = &getNode("organization.organization");
+    $organizationnode = &atkGetNode("organization.organization");
     $organizationrecord = $organizationnode->selectDb("organization.id='".$personcontactrecord[0]["company"]["id"]."'");
     if (count($organizationrecord) > 0)
     {
@@ -68,7 +68,7 @@ class project_personcontact extends atkNode
     $documentvar_organizationpresent = (count($organizationrecord) > 0) ? 1 : 0;
 
     // Assign the referenced coordinator
-    $employeenode = &getNode("employee.employee");
+    $employeenode = &atkGetNode("employee.employee");
     $coordinatorrecord = $employeenode->selectDb("person.id='".$projectrecord[0]["coordinator"]["id"]."'");
     $documentWriter->assignDocumentSingleRecord($employeenode, $coordinatorrecord[0], "coordinator_");
 
