@@ -1,37 +1,59 @@
 <?php
 // Add id field and change description into text field;
-$setup->addColumn("employee_department", "id", "int(11)");
-$setup->alterColumn("employee_department", "description", "description", "text");
+// if the id doens't exist yet
+$department_lookup = NULL;
 
-// Add id's to all department records
-$department = &atkGetNode("employee.department");
-
-$nrows = $department->selectDb();
-$department_lookup = array();
-
-for($i=0,$_i=count($nrows);$i<$_i;$i++)
+if(!$setup->columnExists("employee_department", "id"))
 {
-  $nextid = $db->nextid("employee_department");
-  $sql = "UPDATE employee_department SET id = $nextid WHERE name='".escapeSQL($nrows[$i]["name"])."'";
-  $db->query($sql);
-  $department_lookup[$nrows[$i]["name"]]=$nextid;
-}
-// Change primary key
-$sql = "ALTER TABLE employee_department DROP PRIMARY KEY , ADD PRIMARY KEY ( id )";
-$db->query($sql);
+  $setup->addColumn("employee_department", "id", "int(11)");
+  $setup->alterColumn("employee_department", "description", "description", "text");
 
-
-// Update all employees
-$employee = &atkGetNode("employee.employee");
-$nrows = $employee->selectDb();
-$setup->alterColumn("person", "department", "department", "int(11)");
-for($i=0,$_i=count($nrows);$i<$_i;$i++)
-{
-  if(isset($department_lookup[$nrows[$i]["department"]["name"]]))
+  // Add id's to all department records
+  $department = &atkGetNode("employee.department");
+  
+  $nrows = $department->selectDb();
+  $department_lookup = array();
+  
+  for($i=0,$_i=count($nrows);$i<$_i;$i++)
   {
-    $sql = "UPDATE person SET department=".$department_lookup[$nrows[$i]["department"]["name"]]." WHERE userid='".escapeSQL($nrows[$i]["userid"])."'";
+    $nextid = $db->nextid("employee_department");
+    $sql = "UPDATE employee_department SET id = $nextid WHERE name='".escapeSQL($nrows[$i]["name"])."'";
     $db->query($sql);
+    $department_lookup[$nrows[$i]["name"]]=$nextid;
   }
+  // Change primary key
+  $sql = "ALTER TABLE employee_department DROP PRIMARY KEY , ADD PRIMARY KEY ( id )";
+  $db->query($sql);
+}
+ 
+
+if(!$setup->columnExists("person", "department","number"))
+{
+  // Check if the department lookup array is filled
+  if($department_lookup==NULL)
+  {
+    $department = &atkGetNode("employee.department");
+    
+    $nrows = $department->selectDb();
+    $department_lookup = array();
+    for($i=0,$_i=count($nrows);$i<$_i;$i++)
+    {
+      $department_lookup[$nrows[$i]["name"]]=$nrows[$i]["id"];
+    }
+  }
+  // Update all employees
+  $employee = &atkGetNode("employee.employee");
+  $nrows = $employee->selectDb();
+  $setup->alterColumn("person", "department", "department", "int(11)");
+  for($i=0,$_i=count($nrows);$i<$_i;$i++)
+  {
+    if(isset($department_lookup[$nrows[$i]["department"]["name"]]))
+    {
+      $sql = "UPDATE person SET department=".$department_lookup[$nrows[$i]["department"]["name"]]." WHERE userid='".escapeSQL($nrows[$i]["userid"])."'";
+      $db->query($sql);
+    }
+  }
+
 }
 
 ?>
