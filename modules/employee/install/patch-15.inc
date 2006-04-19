@@ -43,7 +43,7 @@ if(!$setup->columnExists("person", "department","number"))
   }
   // Update all employees
   $employee = &atkGetNode("employee.employee");
-  $nrows = $employee->selectDb();
+  $nrows = $db->getrows("SELECT userid,department FROM person");
   $setup->alterColumn("person", "department", "department", "int(11)");
   for($i=0,$_i=count($nrows);$i<$_i;$i++)
   {
