@@ -744,14 +744,23 @@
       return true;
     }
 
-    function columnExists($table, $column)
+    function columnExists($table, $column,$type="")
     {
       $db = &atkGetDb();
       $meta = $db->metadata($table, true);
+      atk_var_dump($meta,"META VAN $table");
       for ($i=0, $_i=count($meta); $i<$_i; $i++)
       {
         if (strtolower($meta[$i]["name"]) == strtolower($column))
         {
+          if($type!="" && strtolower($meta[$i]["gentype"]) == strtolower($type))
+          {
+            return true;
+          }
+          elseif($type!="")
+          {
+            return false;
+          }
           return true;
         }
       }
