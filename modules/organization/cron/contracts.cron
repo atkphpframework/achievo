@@ -228,7 +228,7 @@
         $records[$i]["coordinator"] = $recordemp[0];
       }
       else 
-        $records[$id]["coordinator"] = array();
+        $records[$i]["coordinator"] = array();
     }        
         
     return $records;    
