@@ -122,7 +122,7 @@
         $columnConfig->clearOrder();
         for ($i=0, $_i=count($orderby); $i<$_i; $i++)
         {
-          if ($orderby[$i]!="-")
+          if ($orderby[$i]!="-" && $orderby[$i]!="")
           {
             $columnConfig->setSortDirection($orderby[$i], $orderdirection[$i]);
             $columnConfig->setSortOrder($orderby[$i], ($i+1));
@@ -190,7 +190,8 @@
 
       $view_all = $this->allowed('view_all');
 
-      if ($aggregate==1)
+      $groupfields = $columnConfig->getOrderFields();
+      if ($aggregate==1 && count($groupfields)>0)
       {
         // determine group by fields.
         $groupfields = $columnConfig->getOrderFields();
@@ -425,6 +426,9 @@
         $tbl->setColSpan(11,0,2);
         $tbl->setColSpan(13,0,2);
         $tbl->setColSpan(15,0,2);
+        $tbl->setColSpan(18,0,2);
+        $tbl->setColSpan(20,0,2);
+
         $content.=$tbl->render($data);
         $content.='<input type="submit" value="'.atktext("refresh").'"></form><br>';
         $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
