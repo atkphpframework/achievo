@@ -175,9 +175,9 @@
     
     $selector = "contract.enddate IS NOT NULL AND contract.enddate <> '' AND contract.enddate < '$dt' AND contract.status = 'active'";    
     
-    if($hascolumnandvalue != array())   $selector.= " AND ".$hascolumnandvalue[0]." = '".$hascolumnandvalue[1]."'";    
+    if($hascolumnandvalue != array())   $selector.= " AND contract.".$hascolumnandvalue[0]." = '".$hascolumnandvalue[1]."'";    
     
-    return $node->selectDb($selector, "", "", "", array("id", "enddate", "status", "name", "subject", "description"));    
+    return $node->selectDb($selector);
   }
   
   
@@ -198,7 +198,7 @@
       
     //create WHERE clause
     $selector = "(".implode(" OR ",$status).")";    
-    return $node->selectDb($selector, "", "", "", array("id","status","subject"));
+    return $node->selectDb($selector);
   }
   
   /**
@@ -215,7 +215,7 @@
     $nodeemp = &getNode("employee.employee");
     
     $selector = "project.contract_id=$contractid AND project.status = 'active'";
-    $records = $node->selectDb($selector, "", "", "", array("id", "status", "contract_id", "name", "coordinator", "description"));
+    $records = $node->selectDb($selector);
     
     //get the coordinators mailadress from each project and add it to the project
     for($i=0,$_i=count($records);$i<$_i;$i++)
@@ -224,7 +224,7 @@
       if($coordinatorid > 0)
       {
         $selector = "person.id=".$coordinatorid;        
-        $recordemp = $nodeemp->selectDb($selector, "", "", "", array("id", "firstname", "lastname", "email"));        
+        $recordemp = $nodeemp->selectDb($selector);
         $records[$i]["coordinator"] = $recordemp[0];
       }
       else 
@@ -272,17 +272,18 @@
       {
         echo " No linked projects found.\n";
       }      
-         
       
   	  $desc = "\n\nOn ".date("d-m-Y")." Achievo changed the contract status from ".$c["status"]." to ".$newcontractstatus.".";
-  	  $desc.= "\nComment: The contract has expired.";
-  	  $c["description"] = $c["description"].$desc;
-  	  $c["status"] = $newcontractstatus;
+  	  $desc.= "\nComment: The contract has expired.";  	  
   	  
   	  // Update the record in the database
   	  if(($debug_mode==1)||($debug_mode==0))
-  	  {  	    
-        $node->updateDb($c,false);
+  	  {
+  	    $id = $c["id"];  	    
+  	    $description = $c["description"].$desc;
+  	    $db = &atkGetDb();
+  	    $query = "UPDATE contract SET status='$newcontractstatus', description='$description' WHERE id=$id";
+  	    $db->query($query);        
   	  }
       else 
       {
@@ -359,16 +360,16 @@
     foreach ($projects as $p)
     {             
       $desc = "\n\n".date("d-m-Y").": Achievo changed the project status from ".$p["status"]." to ".$newprojectstatus.".";
-      $desc.= "\nComment: The contract has ended.";
-      $p["description"] = $p["description"].$desc;
-      $p["status"] = $newprojectstatus;
+      $desc.= "\nComment: The contract has ended.";      
       
       //update the record in the database
       if(($debug_mode==1)||($debug_mode==0))
-      {        
-        //the status must be forced to update
-        $projectnode->m_attribList["status"]->m_forceupdate = true;
-        $projectnode->updateDb($p,false);            
+      {
+        $id = $p["id"];
+        $description = $p["description"].$desc;
+  	    $db = &atkGetDb();
+  	    $query = "UPDATE project SET status='$newprojectstatus', description='$description' WHERE id=$id";
+  	    $db->query($query);  
       }
       else 
       {            
