@@ -41,85 +41,104 @@
    * @return nothing
    */
   function mailmessage($contract, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, $modus, $debug_mode)
-	{
-	  // we need to create two types of email:
-	  // 1. For the specified mailto addresses, which should consist of all 
-	  //    changed contracts AND/OR changed projects	  
-	  // 2. For the coordinator of a changed project.
+	{	  
+	  $body = "";             //mail body
+	  $subject = "";	        //mail subject
 	  
-	  $body = "";            //mail body for mailto addresses	  
-	  $body2 = "";           //mail body for coordinators
-	  $subject = "";	  
-	  
+	  atkimport("module.utils.dateutil");
+    	  
 	  if($modus == "expired")
   	{
-  	  $subject = "Contract expired";  	  
-  	    	  
-      $body = "The following contract has expired:\n\n";
-      $body.= "id: ".$contract["id"]."\n";    
-      $body.= "subject: ".$contract["subject"]."\n";
-      $body.= "end date (d-m-y): ".$contract['enddate']['day']."-".$contract['enddate']['month']."-".$contract['enddate']['year']."\n\n";
-      $body.= "The status has been set to $newcontractstatus\n\n\n";
+  	  $subject = atktext("ending_contracts_subject", "organization");
+  	  
+  	  $body = atktext("ending_contracts_description", "organization");
+  	  $body.= atktext("contract","organization").": ".$contract["subject"]." (".$contract["id"].")\n";
+      $body.= str_repeat("=",56)."\n";
+      $body.= atktext("contracttype","organization").": ".$contract["contracttype"]["description"]."\n";
+      
+      $enddate = atktext("none","organization");
+      
+      //convert enddate to an array if it isn't already an array
+      if(!is_array($contract["enddate"]))      
+        $contract["enddate"] = dateutil::str2arr($contract["enddate"]);
+
+      //convert enddate to a human readable string
+      if(isset($contract["enddate"]) && $contract["enddate"]!='')
+        $enddate = $contract['enddate']['day']."-".$contract['enddate']['month']."-".$contract['enddate']['year'];
+        
+      $body.= atktext("enddate","organization").": ".$enddate."\n";      
+      $body.= atktext("statuschangedto","organization").": ".atktext($newcontractstatus,"organization")."\n\n\n";
       
       if($projects != array())
       {       
-       $body.= "The following active projects were linked to this contract:\n\n";       
-       
        foreach ($projects as $project)
        {	       
-         $body.= "Project id: ".$project["id"]."\n";
-         $body.= "name: ".$project["name"]."\n\n";       
-         $body.= "coordinator: ".$project["coordinator"]["email"];
-         $body.= "The status has been set to $newprojectstatus\n\n\n";         
+         $body.= " * ".atktext("project","project").": ".$project["name"]." (".$project["id"].")\n";         
+         
+         $enddate = atktext("none","organization");
+         
+         if(!is_array($project["enddate"]))
+          $project["enddate"] = dateutil::str2arr($project["enddate"]);
+
+         if(isset($project["enddate"]) && $project["enddate"]!='')
+          $enddate = $project['enddate']['day']."-".$project['enddate']['month']."-".$project['enddate']['year'];
+         
+         $body.= "   ".atktext("enddate","project").": ".$enddate."\n";
+         $body.= "   ".atktext("statuschangedto","organization").": ".atktext($newprojectstatus,"project")."\n\n\n";
        }
       }
       else
-        $body.= "There were no active projects linked to this contract.\n";       
+        $body.= atktext("no_active_projects_linked_to_contract","organization")."\n\n";        
 	  }
 	  elseif($modus == "ended")
 	  {
-	    $subject = "Ended contract had one or more active projects";
+	    $subject = atktext("ended_contracts_subject", "organization");
 	    
-	    $body = "The following ended contract still had active projects:\n\n";
-      $body.= "id: ".$contract["id"]."\n";    
-      $body.= "subject: ".$contract["subject"]."\n";      
-      $body.= "end date (d-m-y): ";
+	    $body = atktext("ended_contracts_description", "organization");
+  	  $body.= atktext("contract","organization").": ".$contract["subject"]." (".$contract["id"].")\n";
+      $body.= str_repeat("=",56)."\n";
+      $body.= atktext("contracttype","organization").": ".$contract["contracttype"]["description"]."\n";
       
-      //we are not sure we have an enddate, we have to check to prevent the '-' from appearing
-      //when the enddate is empty.      
-      if($contract["enddate"] != array() && isset($contract["enddate"]) && $contract["enddate"] != "")
-        $body.= $contract['enddate']['day']."-".$contract['enddate']['month']."-".$contract['enddate']['year'];
+      $enddate = atktext("none","organization");
       
-      $body.="\n\n\n";
-      
+      if(!is_array($contract["enddate"]))      
+        $contract["enddate"] = dateutil::str2arr($contract["enddate"]);
+            
+      if(isset($contract["enddate"]) && $contract["enddate"]!='')
+        $enddate = $contract['enddate']['day']."-".$contract['enddate']['month']."-".$contract['enddate']['year'];
         
+      $body.= atktext("enddate","organization").": ".$enddate."\n\n\n";
+              
       //we already know $projects != array()
-      $body.= "The following active projects were linked to this contract:\n\n";
-       
       foreach ($projects as $project)
-      {	       
-        $body.= "Project id: ".$project["id"]."\n";
-        $body.= "name: ".$project["name"]."\n\n";       
-        $body.= "The status has been set to $newprojectstatus\n\n\n";
+      {
+        $body.= " * ".atktext("project","project").": ".$project["name"]." (".$project["id"].")\n";         
+         
+        $enddate = atktext("none","organization");
+         
+        if(!is_array($project["enddate"]))
+         $project["enddate"] = dateutil::str2arr($project["enddate"]);
+  
+        if(isset($project["enddate"]) && $project["enddate"]!='')
+         $enddate = $project['enddate']['day']."-".$project['enddate']['month']."-".$project['enddate']['year'];
+         
+        $body.= "   ".atktext("enddate","project").": ".$enddate."\n";
+        $body.= "   ".atktext("statuschangedto","organization").": ".atktext($newprojectstatus,"project")."\n\n\n";
       }
 	  }	  
 	  
 	  //if $mailtocoordinator=true and we have changed projects: create coordinator email and get emailaddresses
+	  //get coordinator mailadresses for these projects
 	  $coordinatormails = array();
-	  if($mailtocoordinator && $projects != array())
-	  {     
-      $body2= "Your receive this email because you are coordinator of one or more projects mentioned in this email.\n\n".$body;
-      
-      //get coordinator mailadresses for these projects
-      $coordinatormails = getCoordinatorEmailAddresses($projects);
-	  }
+	  if($mailtocoordinator && $projects != array())	  
+      $coordinatormails = getCoordinatorEmailAddresses($projects);	  
      
 	  //send coordiantor emails 	  
 	  foreach($coordinatormails as $mail)
   	{ 
   	  if($debug_mode==0) 	 	
   	  {
-  	 	 usermail($mail, $subject, $body2, "");  	 	
+  	 	 usermail($mail, $subject, $body, "");  	 	
   	 	 echo "mail sent to $mail.\n";
   	  }
   	  else 
@@ -130,8 +149,8 @@
   	{ 
   	  if($debug_mode==0)
   	  {
-  	 	 usermail($mail, $subject, $body, "");  	 	
-  	 	 echo "mail sent to $mail.\n";    	 	
+  	 	 usermail($mail, $subject, $body, "");
+  	 	 echo "mail sent to $mail.\n";
   	  }
   	  else 
   	   echo " debug modus: Would have sent mail to $mail (if debug mode was set to 0)\n";
@@ -282,7 +301,8 @@
   	    $id = $c["id"];  	    
   	    $description = $c["description"].$desc;
   	    $db = &atkGetDb();
-  	    $query = "UPDATE contract SET status='$newcontractstatus', description='$description' WHERE id=$id";
+  	    $query = "UPDATE contract SET status='$newcontractstatus', description='".escapesql($description)."' WHERE id=$id";
+  	    echo "Query: ".$query."\n";
   	    $db->query($query);        
   	  }
       else 
@@ -368,7 +388,8 @@
         $id = $p["id"];
         $description = $p["description"].$desc;
   	    $db = &atkGetDb();
-  	    $query = "UPDATE project SET status='$newprojectstatus', description='$description' WHERE id=$id";
+  	    $query = "UPDATE project SET status='$newprojectstatus', description='".escapesql($description)."' WHERE id=$id";
+  	    echo "Query: ".$query."\n";
   	    $db->query($query);  
       }
       else 
