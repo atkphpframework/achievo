@@ -221,8 +221,8 @@
     $query->addField("description","","contract");
     $query->addField("description as contracttypedesc","","contracttype");
     $query->addTable("project");    
-    $query->addJoin("contract","","contract.id=project.contract_id");
-    $query->addJoin("contracttype","","contract.contracttype=contracttype.id");
+    $query->addJoin("contract","","contract.id=project.contract_id",true);
+    $query->addJoin("contracttype","","contract.contracttype=contracttype.id",true);
     
     //add 'contract.status=' before each element and '' around the element.
     for($i=0,$_i=count($status);$i<$_i;$i++)    
