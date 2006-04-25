@@ -97,7 +97,7 @@
 	    $body = atktext("ended_contracts_description", "organization");
   	  $body.= atktext("contract","organization").": ".$contract["subject"]." (".$contract["id"].")\n";
       $body.= str_repeat("=",56)."\n";
-      $body.= atktext("contracttype","organization").": ".$contract["contracttype"]["description"]."\n";
+      $body.= atktext("contracttype","organization").": ".$contract["contracttypedesc"]."\n";
       
       $enddate = atktext("none","organization");
       
@@ -154,7 +154,8 @@
   	  }
   	  else 
   	   echo " debug modus: Would have sent mail to $mail (if debug mode was set to 0)\n";
-  	}  	
+  	}
+  	ob_flush();    flush();
 	}
 
 	/**
@@ -204,20 +205,36 @@
 	 * Get ended contracts
 	 *
 	 * Retrieve the contracts that are not active.
+	 * And that have an active project linked to them.
 	 *	 
 	 * @return array contracts
 	 */
   function getEndedContracts($status)
   {    
-    $node = &getNode("organization.contracts");    
+    //$node = &getNode("organization.contracts");
+    $node = &getNode("project.project");
+    $db = &atkGetDb();
+    $query = $db->createQuery();
+    $query->addField("id","","contract");
+    $query->addField("subject","","contract");
+    $query->addField("status","","contract");
+    $query->addField("description","","contract");
+    $query->addField("description as contracttypedesc","","contracttype");
+    $query->addTable("project");    
+    $query->addJoin("contract","","contract.id=project.contract_id");
+    $query->addJoin("contracttype","","contract.contracttype=contracttype.id");
     
     //add 'contract.status=' before each element and '' around the element.
     for($i=0,$_i=count($status);$i<$_i;$i++)    
       $status[$i] = "contract.status = '".$status[$i]."'";
-      
+
     //create WHERE clause
-    $selector = "(".implode(" OR ",$status).")";    
-    return $node->selectDb($selector);
+    $selector = "(".implode(" OR ",$status).")";
+    $query->addCondition($selector);
+    
+    $query->addCondition("project.status='active'");
+    $sql = $query->buildSelect(true);
+    return $db->getrows($sql);
   }
   
   /**
@@ -271,50 +288,50 @@
     $node         = &getNode("organization.contracts");    
     $desc = "";
     
-    echo "**Expired contracts: (".count($expiredcontracts)." contract(s) found)**\n\n";
-       
     //loop through each expired contract      
     foreach ($expiredcontracts as $c)
-    { 
-      echo "Contract: ".$c["subject"]." (id: ".$c["id"].")\n";
-      
+    {       
+      echo "Contract: ".$c["subject"]." (id: ".$c["id"].")";
       //get active linked projects
       $projects = getActiveLinkedProjects($c["id"]);
           
       if(count($projects) > 0)
       {                 
-        echo " Linked active projects found (".count($projects)." projects found)\n"; 
-        
+        echo " -> ".count($projects)." Linked active projects\n";         
         handleLinkedProjects($projects,$newprojectstatus,$debug_mode);
       }
       else 
       {
-        echo " No linked projects found.\n";
-      }      
+        echo " -> No linked active projects.\n";
+      }
+      ob_flush();    flush();
       
-  	  $desc = "\n\nOn ".date("d-m-Y")." Achievo changed the contract status from ".$c["status"]." to ".$newcontractstatus.".";
-  	  $desc.= "\nComment: The contract has expired.";  	  
+      //'On %1$s Achievo changed the contract status from %2$s to %3$s.';
+  	  $desc = sprintf(atktext("on_date_achievo_changed_contract_status_from_to","organization"),date("d-m-Y"),atktext($c["status"],"organization"),atktext($newcontractstatus,"organization"));
   	  
+  	  $id = $c["id"];
+  	  
+  	  //echo "EXPORT: ".var_export($c)."\n";
+//  	  echo "description: ".var_export($c["description"],true)."\n";            
+  	  $description = (trim($c["description"])!='' && isset($c["description"])) ? trim($c["description"])."\n\n".$desc : $desc;
+      $query = "UPDATE contract SET status='$newcontractstatus', description='".escapesql($description)."' WHERE id=$id";  	  
   	  // Update the record in the database
   	  if(($debug_mode==1)||($debug_mode==0))
-  	  {
-  	    $id = $c["id"];  	    
-  	    $description = $c["description"].$desc;
+  	  {  	    
   	    $db = &atkGetDb();
-  	    $query = "UPDATE contract SET status='$newcontractstatus', description='".escapesql($description)."' WHERE id=$id";
-  	    echo "Query: ".$query."\n";
   	    $db->query($query);        
   	  }
       else 
       {
-        echo " - debug modus: Would have updated CONTRACT in database (if debug mode was set to 0)\n\n";        
+        echo " - debug modus: Would have updated CONTRACT in database (if debug mode was set to 0)\n";
+        echo " - Query: ".$query."\n\n";        
       }
+      ob_flush();    flush();
       
   	  //Send a mail when we changed a contract and perhaps its linked projects
   	  if($mailto != array() || $mailtocoordinator)  
           mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto, $mailtocoordinator, "expired", $debug_mode);      
-    } 
-    
+    }
     echo "\n";
   }
   
@@ -334,22 +351,19 @@
   {
     //get nodes
     $node         = &getNode("organization.contracts");
-    
-    $desc = "";
-    
-    echo "**Ended contracts: (".count($endedcontracts)." contract(s) found)**\n\n";
-    
+
+    echo "** Checking ".count($endedcontracts)." ended contract(s)**\n\n";
+
     //loop through each contract
     foreach ($endedcontracts as $c)
-    {        
-      echo "Contract: ".$c["subject"]." (id: ".$c["id"].")\n";
-      
+    {    
       //check if these ended contracts have projects that are still active.
       $projects = getActiveLinkedProjects($c["id"]);
-
-      if(count($projects) > 0)   
-      {        
-        echo " Linked active projects found (".count($projects)." projects found)\n"; 
+      $numprojects = count($projects);
+      if($numprojects > 0)
+      {
+        echo "Contract: ".$c["subject"]." (id: ".$c["id"].")\n";
+        echo " $numprojects linked active projects found\n"; 
         
         handleLinkedProjects($projects, $newprojectstatus, $debug_mode);
          
@@ -358,7 +372,9 @@
           mailmessage($c, $projects, $newcontractstatus, $newprojectstatus, $mailto,  $mailtocoordinator, "ended", $debug_mode);             
       }        
       else
-        echo "Ended contract ".$c["id"]." doesn't have any active linked projects!\n";            
+      {
+        //do nothing, show nothing
+      }
       
     }
     
@@ -378,24 +394,26 @@
     $projectnode  = &getNode("organization.contract_project");
             
     foreach ($projects as $p)
-    {             
-      $desc = "\n\n".date("d-m-Y").": Achievo changed the project status from ".$p["status"]." to ".$newprojectstatus.".";
-      $desc.= "\nComment: The contract has ended.";      
+    {
+      //'On %1$s Achievo changed the contract status from %2$s to %3$s.Comment: The contract is not active.';
+  	  $desc = sprintf(atktext("on_date_achievo_changed_project_status_from_to","organization"),date("d-m-Y"),atktext($p["status"],"project"),atktext($newprojectstatus,"project"));
       
+      $id = $p["id"];
+      $description = (trim($p["description"])!='' && isset($p["description"])) ? trim($p["description"])."\n\n".$desc : $desc;
+      $query = "UPDATE project SET status='$newprojectstatus', description='".escapesql($description)."' WHERE id=$id";
+        
       //update the record in the database
       if(($debug_mode==1)||($debug_mode==0))
-      {
-        $id = $p["id"];
-        $description = $p["description"].$desc;
-  	    $db = &atkGetDb();
-  	    $query = "UPDATE project SET status='$newprojectstatus', description='".escapesql($description)."' WHERE id=$id";
-  	    echo "Query: ".$query."\n";
+      {        
+  	    $db = &atkGetDb();  	    
   	    $db->query($query);  
       }
       else 
       {            
-        echo " - debug modus: Would have updated PROJECT ".$p["id"].": ".$p["name"]." in database (if debug mode was set to 0)\n\n";        
+        echo " - debug modus: Would have updated PROJECT ".$p["id"].": ".$p["name"]." in database (if debug mode was set to 0)\n";
+        echo " - Query: ".$query."\n\n";        
       }
+      ob_flush();    flush();
     }
   }
   
@@ -403,16 +421,21 @@
    * Main function
    */
   function main()
-  {    
-    echo "\nStarting cronjob: contracts.cron\n\n";    
-        
+  { 
+    $debug_mode         = atkConfig::get("organization", "organization_debug_mode", 2);
+
+    //Initialise flushing of output buffer.
+    ob_end_flush();
+    ob_start();
+    
+    if($debug_mode == 2)        
+      echo "\n NOTE!: Starting cronjob contracts.cron in debug_mode ($debug_mode)\n\n";
+    else     
+      echo "\nStarting cronjob: contracts.cron\n\n";    
+    
     //get nodes
     $node         = &getNode("organization.contracts");
-    $projectnode  = &getNode("organization.contract_project");
-    
-    
-    
-    $debug_mode         = atkConfig::get("organization", "organization_debug_mode", 2);
+    $projectnode  = &getNode("organization.contract_project");    
       
     //get configurations    
     $mailto             = atkConfig::get("organization", "organization_contracts_mailto",array());
@@ -428,30 +451,39 @@
     */
     
     echo "Checking for expired contracts...\n\n";     
-    
+    ob_flush();    flush();
     //get active contracts that have an enddate that is expired
     $expiredcontracts = getActiveExpiredContracts($hascolumnandvalue);
-           
-    if(count($expiredcontracts) > 0)    
-      handleExpiredContracts($expiredcontracts,$newprojectstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);    
+    $numexpiredcontracts = count($expiredcontracts);
+    if($numexpiredcontracts > 0)    
+    {
+      echo " Handling $numexpiredcontracts contracts\n";
+      handleExpiredContracts($expiredcontracts,$newprojectstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);      
+    }
     else
-      echo "No expiring contracts found!\n";        
-      
+      echo " No expiring contracts found!\n";
             
-    echo "\nDone checking for expired contracts...\n\n";    
+    echo "\n Done checking for expired contracts...\n\n";    
     echo "Checking for ended contracts with active linked projects...\n\n";
-        
+    ob_flush();    flush();
     //get contracts that have ended
     $endedcontracts = getEndedContracts($status);    
-    
-    if(count($endedcontracts) > 0)
+    $numendedcontracts = count($endedcontracts);
+    if($numendedcontracts > 0)
+    {
+      echo " Handling $numendedcontracts contracts\n";
       handleEndedContracts($endedcontracts,$newprojectstatus,$newcontractstatus,$mailto,$mailtocoordinator,$debug_mode);
+    }
     else 
-      echo "No ended contracts found!\n";         
+      echo " No ended contracts found!\n";    
 
     echo "Done checking for ended contracts with active linked projects...\n\n";      
-      
-    echo("Finished cronjob: contracts.cron\n\n");     
+
+    if($debug_mode == 2)    
+      echo "\nFinished cronjob contracts.cron in debug_mode ($debug_mode)\n\n";
+    else     
+      echo "Finished cronjob: contracts.cron\n\n";
+    ob_flush();    flush();
   }
 
   // Run the main function of this cronjob  

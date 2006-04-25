@@ -299,6 +299,8 @@
   "number" => "Nr",
   "of" => "of",
   "onlyactiverecordsareshown" => "Only active records are shown.",
+  "on_date_achievo_changed_contract_status_from_to" => 'On %1$s Achievo changed the contract status from %2$s to %3$s.'."\n".'Comment: The contract has expired.',
+  "on_date_achievo_changed_project_status_from_to" => 'On %1$s Achievo changed the project status from %2$s to %3$s.'."\n".'Comment: The contract is not active (anymore).',
   "on_delivery" => "On delivery",
   "or" => "or",
   "orderby" => "Order by",
@@ -576,7 +578,7 @@
   "year" => "Year",
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
-  "zipcode" => "Zipcode",
+  "zipcode" => "Zipcode",  
 );
 
 ?>

@@ -299,6 +299,8 @@
   "number" => "Huisnr.",
   "of" => "van",
   "onlyactiverecordsareshown" => "Alleen actieve records worden getoond.",
+  "on_date_achievo_changed_contract_status_from_to" => 'Op %1$s heeft Achievo de status van het contract gewijzigd van %2$s naar %3$s.'."\n".'Toelichting: Het contract is verlopen.',
+  "on_date_achievo_changed_project_status_from_to" => 'Op %1$s heeft Achievo de status van het project gewijzigd van %2$s naar %3$s.'."\n".'Toelichting: Het contract is niet (meer) actief.',
   "on_delivery" => "Bij oplevering",
   "or" => "of",
   "orderby" => "Sorteren op",
