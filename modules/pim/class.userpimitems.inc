@@ -23,6 +23,27 @@ class userpimitems extends atkNode
     $this->setTable("userpimitems");
     $this->setDescriptorTemplate("[pimitem]");
   }
+
+  /**
+   * Return the attributes that are used when determining a descriptor.
+   * @return array The names of the attributes forming the descriptor.
+   */
+  function descriptor_fields()
+  {
+    return array("pimitem");
+  }
+
+  /**
+   * Determine a descriptor of a record.
+   *
+   * @param array $record Array containing the record for which a descriptor should be made
+   * @return string Descriptor string
+   */
+  function descriptor(&$record)
+  {
+    $pimitemattr = &$this->getAttribute("pimitem");
+    return $pimitemattr->display($record);
+  }
 }
 
 ?>
