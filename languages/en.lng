@@ -61,6 +61,7 @@
   "booked" => "Booked",
   "both" => "Both",
   "by_period" => "By period",
+  "calendar" => "Schedule",
   "calendar_defaultuserview" => "Default user in scheduler views",
   "cancelled" => "Cancelled",
   "cellular" => "Cellular",

@@ -61,6 +61,7 @@
   "booked" => "Geboekt",
   "both" => "Beide",
   "by_period" => "Per periode",
+  "calendar" => "Agenda",
   "calendar_defaultuserview" => "Standaard gebruiker in agenda overzichten",
   "cancelled" => "Geannuleerd",
   "cellular" => "Mobiel",
