@@ -14,8 +14,6 @@ class select_contact extends person
     $attr = &$this->getAttribute("role");
     $attr->addFlag(AF_HIDE);
 
-    $this->remove("fax");
-    $this->remove("cellular");
     $this->add(new atkManyToOneRelation("company","organization.organization", AF_RELATION_AUTOLINK));
 
     $this->setSecurityAlias("organization.contact");
