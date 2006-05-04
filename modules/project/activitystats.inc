@@ -121,7 +121,7 @@
                 AND hours.phaseid = phase.id
                 AND phase.projectid = project.id
                 AND hours.activityid = $activityid";
-  
+    $db = &atkGetDb();  
     $records = $db->getrows($query);
   
     $hoursperemp = Array();
