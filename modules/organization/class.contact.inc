@@ -8,9 +8,7 @@ class contact extends person
   function contact()
   {
     $this->person("contact");
-
-    $p_attrib = &$this->getAttribute("userid");
-    $p_attrib->m_flags|=AF_HIDE;
+    $this->remove("userid");
 
     $this->addFilter("person.role='contact'");
     $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
@@ -27,7 +25,7 @@ class contact extends person
   {
     return "[lastname], [firstname]";
   }
-  
+
 }
 
 ?>
