@@ -27,7 +27,7 @@
       $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_READONLY|AF_OBLIGATORY));
 
       $this->add(new atkNumberAttribute("emailstatus", AF_HIDE|AF_FORCE_LOAD));
-
+      $this->addSecurityMap("view","project.admin");
       $this->setTable("deliverable");
       $this->setOrder("duedate", "name");
     }

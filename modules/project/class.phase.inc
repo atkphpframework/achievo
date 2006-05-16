@@ -65,6 +65,7 @@
 
       $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL, 20));
 
+      $this->addSecurityMap("view","project.admin");
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
     }
@@ -76,7 +77,11 @@
 
     function name_display($record)
     {
-      return href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $record["name"], SESSION_NESTED);
+      if($this->allowed("edit"))
+      {
+        return href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $record["name"], SESSION_NESTED);
+      }
+      return $record["name"];
     }
 
     function initial_values()
