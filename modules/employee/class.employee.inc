@@ -21,7 +21,6 @@ class employee extends person
     // In employee edit screen, we hide most fields in the add screen.
     foreach (array_keys($this->m_attribList) as $attribname)
     {
-      atkdebug("Attribute: $attribname");
       if (!in_array($attribname, array("userid","lastname", "firstname","email")))
       {
         $p_attrib = &$this->getAttribute($attribname);
