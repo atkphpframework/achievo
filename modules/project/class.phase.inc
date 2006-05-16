@@ -75,13 +75,15 @@
       return "[name]";
     }
 
-    function name_display($record)
+    function name_display($record, $mode="list")
     {
-      if($this->allowed("edit"))
+      $attr = &$this->getAttribute('name');
+      $result = $attr->display($record, $mode);
+      if ($this->allowed('edit', $record))
       {
-        return href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $record["name"], SESSION_NESTED);
+        $result = href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $result, SESSION_NESTED);
       }
-      return $record["name"];
+      return $result;
     }
 
     function initial_values()
