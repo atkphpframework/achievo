@@ -36,9 +36,7 @@
         $query->addGroupBy("project.id");
         $query->addCondition("(members.personid = ".$user["id"]." OR project.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")");
       }
-      $query->addCondition("project.status='active' 
-                            AND ((project.startdate IS NULL OR project.startdate<= NOW())
-                            AND (project.enddate IS NULL OR project.enddate>= NOW()))");
+      $query->addCondition("project.status='active'");
     }
   }
 

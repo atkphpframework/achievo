@@ -10,6 +10,8 @@ Changes in Achievo 1.2.1
 * Fixed fatal error in activity stats. [Sandy]
 * Fixed bug in project start/enddates when data was converted from an
   earlier Achievo version. [Ivo]
+* Projects/phases whose end date has expired can now still be used in time
+  registration. [Ivo]
 
 Changes in Achievo 1.2
 ---------------------------
