@@ -17,6 +17,6 @@
   $setup->installNode("project.deliverable");
   $setup->installNode("project.mastergantt_colorconfig");
 
-  $setup->setVersion(12);
+  $setup->setVersion(13);
 
 ?>
