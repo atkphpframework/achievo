@@ -227,11 +227,7 @@ class atkProjectPhaseAttribute extends atkAttribute
               WHERE phase.id=hours.phaseid 
                 AND userid='".$user["id"]."' 
                 AND phase.status='active' 
-                AND ((phase.startdate IS NULL OR phase.startdate<= NOW())
-                     AND (phase.enddate IS NULL OR phase.enddate>= NOW()))
                 AND project.status='active' 
-                AND ((project.startdate IS NULL OR project.startdate<= NOW())
-                     AND (project.enddate IS NULL OR project.enddate>= NOW()))
                 AND phase.projectid=project.id ";
 
     if (!$g_securityManager->allowed("timereg.hours", "any_project"))
