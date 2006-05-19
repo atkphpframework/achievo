@@ -12,6 +12,8 @@ Changes in Achievo 1.2.1
   earlier Achievo version. [Ivo]
 * Projects/phases whose end date has expired can now still be used in time
   registration. [Ivo]
+* Bugfix: Users with 'any user' privilege in timereg could no longer edit
+  other peoples timereg. [Ivo]
 
 Changes in Achievo 1.2
 ---------------------------
