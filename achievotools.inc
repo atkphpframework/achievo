@@ -124,7 +124,7 @@
     $db = &atkGetDb();
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND userid='".$g_user["id"]."' AND phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
+    $query.= "WHERE phase.id=hours.phaseid AND ".(isset($g_user["id"])?"userid='".$g_user["id"]."' AND ":"")."phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     $query.= "ORDER BY projectname";
 
     $arr = $db->getrows($query,'0','100');
