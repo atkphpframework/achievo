@@ -629,142 +629,136 @@
       // Check if previous calls all went ok. If one went wrong, we should stop.
       if (!$this->m_cancontinue) return false;
 
+      // Add a statement to the debuglog indication this installNode call
       atkdebug("Installnode call for $nodename");
 
+      // Get an instance of the node we're about to install
       $node = &atkGetNode($nodename);
 
-      if (is_object($node))
-      {
-        // We have to check if the table already exists. If it exists, we may need to
-        // add columns to it.
-        $db = &atkGetDb();
-        $meta = $db->metadata($node->m_table, true);
-
-        if ((!is_array($meta)||count($meta)<=0) && in_array($node->m_table, $this->getTableNames()))
-        {
-          // No metadata. It is unsafe to continue the installation.
-          atkdebug("Table exists, but metadata is not present. I cannot continue installation without metadata");
-          $this->report("I could not read metadata from the database, so I
-                         cannot continue the installation. Please verify your
-                         database setup and try again.
-                         <br>If you cannot find the problem, please post a
-                         message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
-          return false;
-        }
-        else
-        {
-          // Table does not exist.
-        }
-
-        include_once(atkconfig("atkroot")."atk/db/class.atkddl.inc");
-        $ddl = atkDDL::create();
-
-        if (is_object($ddl))
-        {
-          if (count($meta)==0 || $meta["num_fields"]==0)
-          {
-            atkdebug("Table ".$node->m_table." does not exist; creating...");
-
-            $ddl->setTable($node->m_table);
-
-            foreach ($node->m_attribList as $attribname => $attrib)
-            {
-              if (!is_a($attrib, "atkManyToOneRelation"))
-              {
-                $fieldnames = array($attribname);
-              }
-              else
-              {
-                $fieldnames = $attrib->m_refKey;
-              }
-
-              $flags = 0;
-              if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
-              if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
-              if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
-
-              // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
-
-              foreach ($fieldnames as $fieldname)
-              {
-                $ddl->addField($fieldname,
-                              $attrib->dbFieldType(),
-                              $attrib->dbFieldSize(),
-                              $flags);
-              }
-            }
-
-            $ddl->executeCreate();
-          }
-          else
-          {
-            atkdebug("Table ".$node->m_table." already exists; performing diff...");
-
-            // Create lookup table of fields.
-            for ($i=0, $_i=count($meta); $i<$_i; $i++)
-            {
-              $lookupfields[$meta[$i]["name"]] = $meta[$i];
-            }
-
-            $ddl->setTable($node->m_table);
-
-            foreach ($node->m_attribList as $attribname => $attrib)
-            {
-              if (!is_a($attrib, "atkManyToOneRelation"))
-              {
-                $fieldnames = array($attribname);
-              }
-              else
-              {
-                $fieldnames = $attrib->m_refKey;
-              }
-
-              foreach ($fieldnames as $fieldname)
-              {
-                if (in_array($fieldname, array_keys($lookupfields)))
-                {
-                  // field exists. assume it's ok.
-                  // TODO FIXME: verify size and type and if necessary, alter the column.
-                  atkdebug("Field $fieldname already exists");
-                }
-                else
-                {
-                  atkdebug("Field $fieldname does not exist. Adding to alter table queue...");
-                  $flags = 0;
-                  if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
-                  if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
-                  if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
-
-                  // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
-
-                  $ddl->addField($fieldname,
-                                $attrib->dbFieldType(),
-                                $attrib->dbFieldSize(),
-                                $flags);
-                }
-              }
-            }
-
-            if ($ddl->executeAlter())
-            {
-              atkdebug("Table ".$node->m_table." altered...");
-            }
-          }
-        }
-        else
-        {
-          atkdebug("setup::installNode: ddl class not found");
-          $this->report("Your database is not supported by the automatic
-                        installscript. If you think it should be, please
-                        post a message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
-          return false;
-        }
-      }
-      else
+      // Don't continue if the node can't be found
+      if (!is_object($node))
       {
         atkdebug("setup::installNode: node $node not found.");
         return false;
       }
+
+      // We have to check if the table already exists. If it exists, we may need to
+      // add columns to it.
+      $db = &atkGetDb();
+      $meta = $db->metadata($node->m_table, true);
+
+      // If the table is found, but no data could be retrieved, it is unsafe to continue the
+      // installation and the report should be shown to the user
+      if ((!is_array($meta)||count($meta)<=0) && in_array($node->m_table, $this->getTableNames()))
+      {
+        atkdebug("Table exists, but metadata is not present. I cannot continue installation without metadata");
+        $this->report("I could not read metadata from the database, so I
+                        cannot continue the installation. Please verify your
+                        database setup and try again.
+                        <br>If you cannot find the problem, please post a
+                        message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
+        return false;
+      }
+
+      // Get an atkDDL instance
+      atkimport("atk.db.atkddl");
+      $ddl = atkDDL::create();
+
+      // If the instance isn't created, show the user his database is probably not supported by this script
+      if (!is_object($ddl))
+      {
+        atkdebug("setup::installNode: ddl class not found");
+        $this->report("Your database is not supported by the automatic
+                      installscript. If you think it should be, please
+                      post a message in the <a href=\"http://www.achievo.org/forum\">Achievo forum</a>.", "error");
+        return false;
+      }
+
+      // Add a statement to the debuglog indicating whether we're creating or altering a
+      // table and populate the lookupfields array with metadata in case the table already
+      // exists.
+      $lookupfields = array();
+      if (count($meta)==0 || $meta["num_fields"]==0)
+      {
+        atkdebug("Table ".$node->m_table." does not exist; creating...");
+      }
+      else
+      {
+        atkdebug("Table ".$node->m_table." already exists; performing diff...");
+
+        // Fill the lookupfields array containing fieldname=>metadata key-value pairs.
+        for ($i=0, $_i=count($meta); $i<$_i; $i++)
+        {
+          $lookupfields[$meta[$i]["name"]] = $meta[$i];
+        }
+      }
+
+      // Tell the ddl object about our table name
+      $ddl->setTable($node->m_table);
+
+      // Loop through all attributes of the node we're installing
+      foreach ($node->m_attribList as $attribname => $attrib)
+      {
+        // Fill the $fieldnames, $types and $sizes arrays with field information.
+        // These are arrays because the atkManyToOneRelations can contain multiple
+        // fields per relation.
+        if(isset($attrib->m_refKey) && count($attrib->m_refKey)>1)
+        {
+          $fieldnames = $attrib->m_refKey;
+          $types = $attrib->dbFieldType();
+          $sizes = $attrib->dbFieldSize();
+        }
+        else
+        {
+          $fieldnames = array($attribname);
+          $types = array($attrib->dbFieldType());
+          $sizes = array($attrib->dbFieldSize());
+        }
+
+        // Set the ddl flags (has only to be done once per attribute, so this is not an array)
+        $flags = 0;
+        if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
+        if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
+        if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+        // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
+
+        // Iterate through all fields for this attribute
+        for($i=0, $_i=count($fieldnames); $i<$_i; $i++)
+        {
+          // Add debug info indicating whether the field already exists or not and only
+          // add the field to the ddl statement if it doesn't exist in the metadata lookup
+          if (in_array($fieldnames[$i], array_keys($lookupfields)))
+          {
+            // field exists. assume it's ok.
+            /** @todo Verify size and type and if necessary, alter the column. */
+            atkdebug("Field {$fieldnames[$i]} already exists");
+          }
+          else
+          {
+            atkdebug("Field {$fieldnames[$i]} does not exist. Adding to create/alter table queue...");
+
+            $ddl->addField($fieldnames[$i],
+                            $types[$i],
+                            $sizes[$i],
+                            $flags);
+          }
+        }
+      }
+
+      // If the table doesn't exist, create it, else alter the table.
+      if (count($meta)==0 || $meta["num_fields"]==0)
+      {
+        $ddl->executeCreate();
+      }
+      else
+      {
+        if ($ddl->executeAlter())
+        {
+          atkdebug("Table ".$node->m_table." altered...");
+        }
+      }
+
+      // If this point is reached, return true
       return true;
     }
 
