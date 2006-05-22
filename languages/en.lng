@@ -103,6 +103,7 @@
   "deliverables" => "Deliverables",
   "deliverable_remind_days" => "Reminder (days)",
   "department" => "Department",
+  "department_admin" => "Departments",
   "dependencies" => "Dependencies",
   "dependsondeliverable" => "Start depends on",
   "description" => "Description",
@@ -128,7 +129,7 @@
   "enddate_expire_warning" => "If the enddate of this contract has expired, when saving the contract the status will automatically be set to 'archived'!<br />All linked projects will be set to status 'nonactive'!",
   "ending_contracts_description" => "You recieve this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that has expired. The status of the projects has been\naltered.\n\nThe following projecs have been altered:\n\n\n",
   "ending_contracts_subject" => "Ending contracts",
-  "ended_contracts_description" => "You recieve this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that isn't active. The status of the projects has been\naltered.\n\nThe following projecs have been altered:\n\n\n",  
+  "ended_contracts_description" => "You recieve this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that isn't active. The status of the projects has been\naltered.\n\nThe following projecs have been altered:\n\n\n",
   "ended_contracts_subject" => "Ended contracts",
   "endtime" => "Endtime",
   "entity" => "Profile",
@@ -579,7 +580,7 @@
   "year" => "Year",
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
-  "zipcode" => "Zipcode",  
+  "zipcode" => "Zipcode",
 );
 
 ?>

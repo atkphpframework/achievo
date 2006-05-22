@@ -8,7 +8,7 @@
   // Translated by:
   //   Ivo Jansch <ivo@achievo.org>
   //
-  
+
   // If you want to add a new language to achievo, please translate this
   // file and send it to translations@achievo.org
   //
@@ -103,6 +103,7 @@
   "deliverables" => "Deliverables",
   "deliverable_remind_days" => "Herinnering (dagen)",
   "department" => "Afdeling",
+  "department_admin" => "Afdelingen",
   "dependencies" => "Afhankelijkheden",
   "dependsondeliverable" => "Start afhankelijk van",
   "description" => "Omschrijving",
@@ -123,11 +124,11 @@
   "employeeview" => "Vergelijk agenda's",
   "employee_select" => "Selecteer een medewerker",
   "employee_showallemployees" => "Klik hier om ze te tonen.",
-  "emptimedistribution" => "Per medewerker",  
+  "emptimedistribution" => "Per medewerker",
   "enddate" => "Einddatum",
   "enddate_expire_warning" => "Wanneer dit contract verlopen is, zal de status bij het opslaan automatisch op 'gearchiveerd' gezet worden!<br />Alle gekoppelde projecten zullen de status Non-actief krijgen!",
   "ended_contracts_description" => "Je ontvangt deze e-mail omdat 1 of meer van de projecten waar je\ncoordinator van bent een overeenkomst welke niet meer actief is.\nDe projecten zijn, vanwege het verlopen van de overeenkomst, op\nnon-aktief gezet.\n\nHet gaat om de volgende overeenkomsten:\n\n\n",
-  "ended_contracts_subject" => "Beeindigde contracten",  
+  "ended_contracts_subject" => "Beeindigde contracten",
   "ending_contracts_description" => "Je ontvangt deze e-mail omdat 1 of meer van de projecten waar je\ncoordinator van bent een overeenkomst hebben die zojuist is verlopen.\nDe projecten zijn, vanwege het verlopen van de overeenkomst, op\nnon-aktief gezet.\n\nHet gaat om de volgende overeenkomsten:\n\n\n",
   "ending_contracts_subject" => "Beeindiging contracten",
   "endtime" => "Eindtijd",
@@ -285,7 +286,7 @@
   "nextday" => "Dag verder",
   "nextweek" => "Week verder",
   "next_day" => "Volgende dag",
-  "next_month" => "Volgende maand",  
+  "next_month" => "Volgende maand",
   "nonactive" => "Non-actief",
   "none" => "Geen",
   "nophasesdefined" => "Het project heeft geen fasen!",
