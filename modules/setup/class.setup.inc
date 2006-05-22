@@ -669,6 +669,15 @@
 
             foreach ($node->m_attribList as $attribname => $attrib)
             {
+              if (!is_a($attrib, "atkManyToOneRelation"))
+              {
+                $fieldnames = array($attribname);
+              }
+              else
+              {
+                $fieldnames = $attrib->m_refKey;
+              }
+
               $flags = 0;
               if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
               if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
@@ -676,10 +685,13 @@
 
               // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
 
-              $ddl->addField($attribname,
-                             $attrib->dbFieldType(),
-                             $attrib->dbFieldSize(),
-                             $flags);
+              foreach ($fieldnames as $fieldname)
+              {
+                $ddl->addField($fieldname,
+                              $attrib->dbFieldType(),
+                              $attrib->dbFieldSize(),
+                              $flags);
+              }
             }
 
             $ddl->executeCreate();
@@ -691,33 +703,45 @@
             // Create lookup table of fields.
             for ($i=0, $_i=count($meta); $i<$_i; $i++)
             {
-              $fields[$meta[$i]["name"]] = $meta[$i];
+              $lookupfields[$meta[$i]["name"]] = $meta[$i];
             }
 
             $ddl->setTable($node->m_table);
 
             foreach ($node->m_attribList as $attribname => $attrib)
             {
-              if (in_array($attribname, array_keys($fields)))
+              if (!is_a($attrib, "atkManyToOneRelation"))
               {
-                // field exists. assume it's ok.
-                // TODO FIXME: verify size and type and if necessary, alter the column.
-                atkdebug("Field $attribname already exists");
+                $fieldnames = array($attribname);
               }
               else
               {
-                atkdebug("Field $attribname does not exist. Adding to alter table queue...");
-                $flags = 0;
-                if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
-                if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
-                if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
+                $fieldnames = $attrib->m_refKey;
+              }
 
-                // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
+              foreach ($fieldnames as $fieldname)
+              {
+                if (in_array($fieldname, array_keys($lookupfields)))
+                {
+                  // field exists. assume it's ok.
+                  // TODO FIXME: verify size and type and if necessary, alter the column.
+                  atkdebug("Field $fieldname already exists");
+                }
+                else
+                {
+                  atkdebug("Field $fieldname does not exist. Adding to alter table queue...");
+                  $flags = 0;
+                  if ($attrib->hasFlag(AF_PRIMARY)) $flags|=DDL_PRIMARY;
+                  if ($attrib->hasFlag(AF_UNIQUE)) $flags|=DDL_UNIQUE;
+                  if ($attrib->hasFlag(AF_OBLIGATORY)) $flags|=DDL_NOTNULL;
 
-                $ddl->addField($attribname,
-                               $attrib->dbFieldType(),
-                               $attrib->dbFieldSize(),
-                               $flags);
+                  // if ($attrib->hasFlag(AF_AUTO_INCREMENT)) $flags|=DDL_AUTO_INCREMENT; not yet implemented
+
+                  $ddl->addField($fieldname,
+                                $attrib->dbFieldType(),
+                                $attrib->dbFieldSize(),
+                                $flags);
+                }
               }
             }
 
