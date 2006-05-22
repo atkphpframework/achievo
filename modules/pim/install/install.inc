@@ -1,6 +1,6 @@
 <?php
-  
+
   $setup->installNode("pim.userpimitems");
-  $setup->setVersion(1);
+  $setup->setVersion(2);
 
 ?>
