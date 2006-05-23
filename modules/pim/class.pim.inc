@@ -26,7 +26,7 @@
         $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
         if(count($userDbItems)==0)
         {
-           $res = $ui->renderBox(array("title"=>atktext("pim","pim"),"content"=>atkText("pim_nopimitems","pim")));
+          $res = $ui->renderBox(array("title"=>atktext("pim","pim"),"content"=>atkText("pim_nopimitems","pim")));
         }
         else
         {
@@ -35,6 +35,7 @@
           {
              $userItems[] = $item["pimitem"];
           }
+          $res = "";
           foreach($pimItems as $modname => $item)
           {
             foreach($item as $itemName => $itemContent)
