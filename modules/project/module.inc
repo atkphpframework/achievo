@@ -22,7 +22,7 @@
 
     function getMenuItems()
     {
-      $selectedproject = $_REQUEST["selectedproject"];
+      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : 0;
       if ($selectedproject == 0)
       {
         $this->menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
