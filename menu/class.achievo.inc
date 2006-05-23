@@ -19,14 +19,15 @@ class achievo extends atkFramesMenu
         $projects = $g_sessionManager->getValue("selectedprj","globals");
       }
 
-      $prj .= atktext("project_select").":";
+      $prj  = atktext("project_select").":";
       $prj .="<FORM><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
       $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
 
+      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : null;
       for ($i=0;$i < count($projects); $i++)
       {
         $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
-        if ($_REQUEST["selectedproject"] == $projects[$i]['projectid']) $prj .=" selected";
+        if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
         $prj .= ">".$projects[$i]['projectname']."</OPTION>";
       }
       $prj .="</SELECT></FORM>";
