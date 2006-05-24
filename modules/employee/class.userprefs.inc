@@ -41,7 +41,7 @@ class userprefs extends atkNode
       $this->add(new atkPasswordAttribute("password",AF_OBLIGATORY));
     }
     $themes = getThemes();
-    $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
+    $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD|AF_NO_TRANSLATION));
 
     $this->setTable("person", "person");
   }
