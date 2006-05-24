@@ -45,9 +45,9 @@
       $usernode = &atkGetNode("employee.employee");
       $node->add(new atkListAttribute("calendar_defaultuserview",
                                       array($usernode->descriptor(getUser()),
-                                            "allusers"),
+                                            atktext("allusers")),
                                       array("",
-                                            "*"), AF_LIST_NO_NULL_ITEM), "calendar");
+                                            "*"), AF_LIST_NO_NULL_ITEM|AF_NO_TRANSLATION), "calendar");
     }
   }
 
