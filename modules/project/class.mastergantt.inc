@@ -36,10 +36,11 @@
     /**
      * mastergantt constructor
      */
-    function mastergantt()
+    function mastergantt($name="mastergantt")
     {
-      $this->atkNode("mastergantt");
+      $this->atkNode($name);
       $this->setSecurityAlias("project.project");
+      $this->m_securityMap["planninggraph"] = "planning";
     }
 
     function getFilterRecord()
@@ -144,9 +145,16 @@
         {
           $coordinator = $filter["coordinator"]["id"];
         }
-        $imgurl = moduleDir("project")."mastergantt.php?coordinator=".$coordinator.
-                  "&from=".dateUtil::arr2str($filter["from"])."&to=".dateUtil::arr2str($filter["to"]).
-                  "&plannedbooked=".$filter["plannedbooked"];
+//        $imgurl = moduleDir("project")."mastergantt.php?coordinator=".$coordinator.
+//                  "&from=".dateUtil::arr2str($filter["from"])."&to=".dateUtil::arr2str($filter["to"]).
+//                  "&plannedbooked=".$filter["plannedbooked"];
+        $params = array(
+          "coordinator" => $coordinator,
+          "from" => dateUtil::arr2str($filter["from"]),
+          "to" => dateUtil::arr2str($filter["to"]),
+          "plannedbooked" => $filter["plannedbooked"]
+        );
+        $imgurl = dispatch_url("{$this->m_module}.{$this->m_type}", "planninggraph", $params);
 
         $content.= '<br/><br/><img src="'.$imgurl.'" border="0"/><br/><br/>';
       }
@@ -159,6 +167,163 @@
       $page->addContent($box);
     }
 
+    function dashDate($undasheddate)
+    {
+      return substr($undasheddate, 0, 4)."-".
+             substr($undasheddate, 4, 2)."-".
+             substr($undasheddate, 6, 2);
+    }
+
+    function getGant($from, $to, $coordinator)
+    {
+      $db = &atkGetDb();
+      $projects = $db->getrows("SELECT
+                                  project.id,
+                                  project.name,
+                                  MIN(phase.startdate) as startdate,
+                                  MAX(phase.enddate) as enddate,
+                                  SUM(phase.current_planning) as planned
+                                FROM
+                                  project,
+                                  phase
+                                WHERE
+                                  phase.status='active'
+                                  AND project.status='active'
+                                  AND phase.projectid = project.id
+                                  AND (phase.enddate IS NULL OR phase.enddate>='$from')
+                                  AND (phase.startdate <= '$to')
+                                  ".($coordinator!=""?"AND project.coordinator=$coordinator":"")."
+                                GROUP BY
+                                  project.id,
+                                  project.name");
+
+      //make an gant array, this array contains important information about the phases
+      $gant = array();
+      for($i=0;$i<count($projects);$i++)
+      {
+        $gant[($projects[$i]['id'])] = $projects[$i];
+
+        $gant[($projects[$i]['id'])]['booked'] = $this->getBooked($projects[$i]['id']);
+      }
+      return $gant;
+    }
+
+    function getBooked($projectid)
+    {
+      $db = &atkGetDb();
+      $rows = $db->getrows("SELECT sum(time) as booked FROM hours, phase
+                              WHERE hours.phaseid = phase.id AND phase.projectid=".$projectid);
+      return $rows[0]["booked"];
+    }
+
+    //order the gant array with on the startdate of that phase
+    function cmp($a, $b) {
+        if ($a['startdate'] == $b['startdate']) return 0;
+        return ($a['startdate'] < $b['startdate']) ? -1 : 1;
+    }
+
+    function getParams()
+    {
+      // Load used files
+      include_once(atkconfig("atkroot")."atk/utils/adodb-time.inc.php");
+      atkimport("module.utils.dateutil");
+
+      // Get a reference to the securitymanager
+      global $g_securityManager;
+
+      // Initialize the params array
+      $params = array();
+
+      // Load the params
+      if ($g_securityManager->allowed("project.project", "any_project"))
+      {
+        $params["coordinator"] = $_REQUEST["coordinator"];
+      }
+      else
+      {
+        $user = getUser();
+        $params["coordinator"] = $user["id"];
+      }
+      $params["from"] = $this->dashDate(dateUtil::startOfWeek($_REQUEST["from"]));
+      $params["to"] = $this->dashDate(dateUtil::endOfWeek($_REQUEST["to"]));
+      $params["plannedbooked"] = $_REQUEST["plannedbooked"];
+      // safeguard
+      if (!in_array($params["plannedbooked"], array("planned", "booked")))
+      {
+        $params["plannedbooked"] = "planned";
+      }
+
+      // Return the params
+      return $params;
+    }
+
+    function drawProject(&$graph, $index, $project, $from, $to)
+    {
+      // Projects that extent the selected period should be cut off.
+      if ($project['startdate']<$from) $project['startdate']=$from;
+      if ($project['enddate']>$to || $project['enddate']=='') $project['enddate']=$to;
+
+      $caption = "[".time_format($project[$plannedbooked], true)."]";
+      $activity = new GanttBar($index, $project['name'], $project['startdate'], $project['enddate'], $caption);
+
+      $colorbase = $project[$plannedbooked];
+
+      $colornode = &atkGetNode("project.mastergantt_colorconfig");
+      $color = $colornode->getColor($colorbase/60);
+      $activity->SetPattern(BAND_SOLID, $color);
+      $activity->SetHeight(10);
+
+      $activity->SetFillColor($color);
+      $graph->add($activity);
+    }
+
+    function showGraph($gantt, $from, $to)
+    {
+      // Load jpgraph gantt chart library files
+      include_once(moduleDir("graph")."jpgraph/jpgraph.php");
+      include_once(moduleDir("graph")."jpgraph/jpgraph_gantt.php");
+
+      $graph = new GanttGraph(0,0,"auto");
+      $graph->SetBox();
+      $graph->SetShadow();
+
+      // Show day, week and month scale
+      $graph->ShowHeaders(GANTT_HDAY | GANTT_HWEEK | GANTT_HMONTH);
+
+      // Use the short name of the month together with a 2 digit year
+      // on the month scale
+      $graph->scale->month->SetStyle(MONTHSTYLE_SHORTNAMEYEAR2);
+      $graph->scale->month->SetFontColor("white");
+      $graph->scale->month->SetBackgroundColor("blue");
+
+      // 0 % vertical label margin
+      $graph->SetLabelVMarginFactor(1);
+
+
+      $projectids = array_keys($gantt);
+      for($i=0,$_i=count($gantt); $i<$_i; $i++)
+      {
+        $this->drawProject($graph, $i, $gantt[$projectids[$i]], $from, $to);
+      }
+
+      // Set date range to prevent autoscale errors when no activities were added to the gantt chart
+      $graph->SetDateRange($from, $to);
+
+      $graph->Stroke();
+      flush();
+      die();
+    }
+
+    function action_planninggraph(&$handler)
+    {
+      $params = $this->getParams();
+
+      $gant = $this->getGant($params["from"], $params["to"], $params["coordinator"]);
+
+      usort($gant, "cmp");
+
+      $this->showGraph($gant, $params["from"], $params["to"]);
+    }
 
 
   }
