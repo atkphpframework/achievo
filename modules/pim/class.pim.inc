@@ -77,7 +77,7 @@
         $page->body();
 
 
-        $content.='<br><div align="left">Welcome to Achievo.
+        $content ='<br><div align="left">Welcome to Achievo.
                    <br>You are currently logged in as administrator. <b>This account
                    is for setup-purposes only</b>.
                    <br><br>As this is not a real account, do not use features
