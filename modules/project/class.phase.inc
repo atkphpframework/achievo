@@ -138,8 +138,8 @@
     function phaseplanning_add_edit($record, $mode)
     {
       $org = $this->m_attribList["phaseplanning_add"]->edit($record, $mode);
-
-      $hours = new atkAttribute("phaseplanning_initial");
+      useattrib("atkDurationAttribute");
+      $hours = new atkDurationAttribute("phaseplanning_initial",'','',AF_DURATION_STRING);
 
       $dummy = array();
       return atktext("plan_employee", "phase")." ".$org." ".atktext("for")." ".$hours->edit($dummy)." ".atktext("hours");
@@ -184,7 +184,9 @@
 
     function storePhaseplanning($rec, $people)
     {
-      $initial_planning = $this->m_postvars["phaseplanning_initial"];
+      useattrib("atkDurationAttribute");
+      $tmp_attrib = new atkDurationAttribute("phaseplanning_initial");
+      $initial_planning = $tmp_attrib->_string2minutes($this->m_postvars["phaseplanning_initial"]);
 
       if ($initial_planning>0)
       {
@@ -193,6 +195,7 @@
           $this->_addPlanningRecord($rec["id"], $people[$i]["id"], $initial_planning);
         }
       }
+      return true;
     }
 
     function _addPlanningRecord($phase_id, $person_id, $initial_planning)
