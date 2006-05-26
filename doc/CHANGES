@@ -16,6 +16,8 @@ Changes in Achievo 1.2.1
   registration. [Ivo]
 * Bugfix: Users with 'any user' privilege in timereg could no longer edit
   other peoples timereg. [Ivo]
+* Fixed quick add of planning employees in a phase. Time was saved in
+  minutes instead of converted to minutes first. (bug #522) [Sandy]
 
 Changes in Achievo 1.2
 ---------------------------
