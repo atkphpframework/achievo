@@ -176,7 +176,7 @@ class hours extends atkNode
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
-    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
+    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, (atkconfig("timereg_allowfuture", false)?0:date("Ymd")), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
     $this->add(new to_date());
 
     // force_load flag is set for userid, since several features rely on the
