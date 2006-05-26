@@ -133,6 +133,10 @@
   // that can be entered is unlimited.)
   $config_timereg_remark_lines = 1;
 
+  // Allow registration of time in the future. By default, this is false, so
+  // only time actually spent can be registered.
+  $config_timereg_allowfuture = false;
+
   // Resolution for time registration. By default, time can be registered in
   // steps of 15 minutes. You can increase or decrease this.
   // You can specify a resolution in minutes or in hours.
