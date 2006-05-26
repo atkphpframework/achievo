@@ -24,6 +24,11 @@
       $this->setOrder("personid.lastname");
     }
     
+    function descriptor_def()
+    {
+      return "[personid.firstname] [personid.lastname]";
+    }
+    
     function addDb(&$record, $exectrigger=true, $mode="add")
     {
       // This override makes sure that the current_planning is set equal to the number of initial_planning.
