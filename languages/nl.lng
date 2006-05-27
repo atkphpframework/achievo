@@ -581,6 +581,7 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  "error_enddate_cannot_start_before_startdate"=>"Einddatum kan niet voor de startdatum liggen",
 );
 
 ?>

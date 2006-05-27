@@ -581,6 +581,7 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  "error_enddate_cannot_start_before_startdate"=>"Enddate can't start before the startdate",
 );
 
 ?>
