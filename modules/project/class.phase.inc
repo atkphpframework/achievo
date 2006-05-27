@@ -177,7 +177,17 @@
         }
 
       }
-
+      // Check if the enddate isn't before the startdate
+      if(($record["startdate"]["day"]!=0 && $record["startdate"]["day"]!=0 && $record["startdate"]["year"]!='') &&
+         ($record["enddate"]["day"]!=0 && $record["enddate"]["day"]!=0 && $record["enddate"]["year"]!=''))
+      {
+        $startdate = sprintf("%04d-%02d-%02d",$record["startdate"]["year"],$record["startdate"]["month"],$record["startdate"]["day"]);
+        $enddate = sprintf("%04d-%02d-%02d",$record["enddate"]["year"],$record["enddate"]["month"],$record["enddate"]["day"]);
+        if($enddate<$startdate)
+        {
+          triggerError($record,"enddate","error_enddate_cannot_start_before_startdate");
+        }
+      }
       // Call the parents validate function to perform the default validation on the record
       atkNode::validate($record, $mode, $ignoreList);
     }
