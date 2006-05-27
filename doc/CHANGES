@@ -18,7 +18,10 @@ Changes in Achievo 1.2.1
   other peoples timereg. [Ivo]
 * Fixed quick add of planning employees in a phase. Time was saved in
   minutes instead of converted to minutes first. (bug #522) [Sandy]
+* Fixed SQL injection in employees node. (bug #624) [ChristianN]
 * Fixed the search box in the top frame. (bug #648) [Ivo]
+* When adding a phase it will check if the enddate isn't before
+  the startdate. (bug #439) [Sandy]
 
 Changes in Achievo 1.2
 ---------------------------
