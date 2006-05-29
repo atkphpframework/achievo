@@ -8,6 +8,7 @@
     $rl = &atknew("atk.recordlist.atkrecordlist");
     $todonode = &atkGetNode("todo.todo");
     $todonode->m_flags |= NF_NO_SEARCH;
+    $todonode->m_action="admin";
     $todonode->addFilter("todo.status NOT IN (5,2)");
     $actions = array();
     $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
@@ -16,7 +17,7 @@
     $todo_assignedtome = atktext("pim_assignedtoyou").":<br>";
     if (count($recs)>0)
     {
-      $todo_assignedtome.= $rl->render($todonode,$recs,$actions,false, array('assigned_to','entrydate','projectid'));
+      $todo_assignedtome.= $rl->render($todonode,$recs,$actions,RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('assigned_to','entrydate','projectid'),"todoassignedtoyou",array(),"todoassignedtoyou");
     }
     else
     {
@@ -28,7 +29,7 @@
     $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");
     if (count($recs)>0)
     {
-      $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,false, array('entrydate','projectid'));
+      $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('entrydate','projectid'),"todoassignedbyyou",array(),"todoassignedbyyou");
     }
     else
     {
