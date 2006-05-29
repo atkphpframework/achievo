@@ -144,11 +144,22 @@ class employee extends person
 
   function action_deactivate(&$handler)
   {
-    if ($this->m_postvars["atkselector"]!="")
+    $select = $this->m_postvars["atkselector"];
+    $query = "UPDATE person SET status='nonactive' WHERE $select";
+
+    // Verify that the selector or id were not tampered with before passing on to the db
+    if(preg_match("/person\.id='\d+'/i", $select) === 1) 
     {
       $db = &atkGetDb();
-      $db->query("UPDATE person SET status='nonactive' WHERE ".$this->m_postvars["atkselector"]);
+      $db->query($query);
+    } 
+    else 
+    {
+    	// TODO: give the name of the module, the logged userid and the IP address 
+    	// of the offending user in the debug entry so it gets logged properly
+      atkdebug("SQL injection attack detected in 'action_deactivate', not executed. The selector was '$select' and the resulting query would have been '$query'", true);
     }
+    
     $this->redirect();
   }
 
