@@ -114,7 +114,7 @@
       if (count($prjdata)==0)
       {
         // There is no data.
-        $output.='<br><br>'.sprintf(atktext('nodata', $this->m_type), $descriptor).'<br>';
+        $output.='<br><br>'.sprintf(atktext('nodata',$this->m_node, $this->m_type), $descriptor).'<br>';
       }
       else
       {
