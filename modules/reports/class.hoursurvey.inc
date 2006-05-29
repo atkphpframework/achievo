@@ -554,11 +554,11 @@
       return $activity_code;
     }
 
-    function get_departments($depname)
+    function get_departments($depid)
     {
       $db = &atkGetDb();
 
-      $sql = "SELECT name
+      $sql = "SELECT id,name
               FROM employee_department
               ORDER BY name";
 
@@ -566,8 +566,8 @@
       $depcode = "<OPTION VALUE='all'>".atktext('alldepartments')."</OPTION>";
       foreach ($records as $onedep)
       {
-        $sel = $onedep['name'] == $depname ? " SELECTED" : "";
-        $depcode .= "<OPTION VALUE='".$onedep['name']."'$sel>".$onedep['name']."</OPTION>";
+        $sel = $onedep['id'] == $depid ? " SELECTED" : "";
+        $depcode .= "<OPTION VALUE='".$onedep['id']."'$sel>".$onedep['name']."</OPTION>";
       }
       return $depcode;
     }
