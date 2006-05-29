@@ -301,8 +301,8 @@
   "number" => "È.",
   "of" => "z",
   "onlyactiverecordsareshown" => "Only active records are shown.", // Missing string!!!
-  "on_date_achievo_changed_contract_status_from_to" => "On %1$s Achievo changed the contract status from %2$s to %3$s.'."\n".'Comment: The contract has expired.", // Missing string!!!
-  "on_date_achievo_changed_project_status_from_to" => "On %1$s Achievo changed the project status from %2$s to %3$s.'."\n".'Comment: The contract is not active (anymore).", // Missing string!!!
+  "on_date_achievo_changed_contract_status_from_to" => "On %1$s Achievo changed the contract status from %2$s to %3$s \n Comment: The contract has expired.", // Missing string!!!
+  "on_date_achievo_changed_project_status_from_to" => "On %1$s Achievo changed the project status from %2$s to %3$s \n Comment: The contract is not active (anymore).", // Missing string!!!
   "on_delivery" => "On delivery", // Missing string!!!
   "or" => "alebo",
   "orderby" => "Zoraï pod¾a",
