@@ -22,6 +22,7 @@ Changes in Achievo 1.2.1
 * Fixed the search box in the top frame. (bug #648) [Ivo]
 * When adding a phase it will check if the enddate isn't before
   the startdate. (bug #439) [Sandy]
+* Fixed department criteria in Time Survey Report. (bug #656) [Sandy]
 
 Changes in Achievo 1.2
 ---------------------------
