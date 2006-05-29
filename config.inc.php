@@ -11,6 +11,7 @@
   // -------------------------------------------
 
   // The database to use. Default is MySQL. 
+  // PHP5 users can also use the mysql41 driver.
   // MySQL is currently the only officially supported database.
   // Experimental: If you want to use PostgreSQL, change this value to 
   // "pgsql". For Oracle, use "oci8".
