@@ -26,6 +26,8 @@ class project_todoview extends atkNode
     $this->setTable("project","project");
     $this->setOrder("name");
     $this->setSecurityAlias("todo.todo");
+    $this->addSecurityMap("edit","add");
+
 
     atkdebug("project::project()");
   }
