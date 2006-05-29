@@ -72,7 +72,7 @@
   // validating the PHP configuration.
 
   // Some defines we need
-  define("REQUIRED_PHP", "4.1.0");
+  define("REQUIRED_PHP", "4.3.1");
 
   /**
    * Function for checking php version.
