@@ -5,10 +5,18 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
 
+Changes in Achievo 1.2.2
+------------------------
++ Added translation for Example. [Guido]
+* Fixed PHP notices. [Guido]
+* Replaced deprecated text() calls by atktext(). [Guido]
+* Fixed session problemn with master gantt which in some cases would not
+  display because it thought the session had expired. [Guido]
+
 Changes in Achievo 1.2.1
----------------------------
-+ Added $config_timereg_allowfuture setting for allowing time registration in
-  the future (false by default). [Ivo]
+------------------------
++ Added $config_timereg_allowfuture setting for allowing time registration
+  in the future (false by default). [Ivo]
 * Fixed fatal error in activity stats. [Sandy]
 * Fixed bug in project start/enddates when data was converted from an
   earlier Achievo version. [Ivo]
@@ -25,7 +33,7 @@ Changes in Achievo 1.2.1
 * Fixed department criteria in Time Survey Report. (bug #656) [Sandy]
 
 Changes in Achievo 1.2
----------------------------
+----------------------
 * Fixed bug with archived projects. [Sandy]
 * Updated dutch language file. [Guido]
 * Updated employee departments. [Sandy]
@@ -34,7 +42,7 @@ Changes in Achievo 1.2
   that used the deprecated layout class. [Sandy]
 
 Changes in Achievo 1.2RC1
----------------------------
+-------------------------
 + Added cronjob for checking expiration dates of usercontracts. [Dennis]
 + Added cronjob to check expired contracts and change their status.
   The status of active linked projects is also changed
@@ -277,7 +285,7 @@ Changes in Achievo 1.0.1
 * Added questions about extension modules to the FAQ. [Ivo]
 
 Changes in Achievo 1.0.0
--------------------------
+------------------------
 * Fixed bug #213. [Ivo]
 * Fixed a few untranslated strings. (bug #224) [MartinAc, Ivo]
 * Updated Danish language file. [Junaid]
