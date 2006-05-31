@@ -227,7 +227,6 @@
 
         $content='<form action="dispatch.php" method="get" name="entryform">';
         $content.=session_form();
-        $content.='<input type="hidden" name="go" value="1">';
 
         $this->_addHiddenFields($content);
 
@@ -434,7 +433,7 @@
         $content.='<input type="submit" value="'.atktext("refresh").'"></form><br>';
         $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
       }
-if (atkArrayNvl($this->m_postvars, "go", 0) != 1) return;
+
       // Create Filter
       $filter="activitydate>='".$startdate."' AND activitydate<='".$enddate."'";
       if(!empty($activity_id)&&$activity_id!="") $filter.=" AND hours.activityid=".$activity_id;
