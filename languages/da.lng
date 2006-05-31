@@ -9,7 +9,7 @@
   //   Junaid Mukhtar   <JUM@prosa.dk>
   //   Morten Orsted    <mo@moch.dk>
   //   Kent S. Knudsen  <ke@udd.aardassem.dk>
-  //   
+  //
   //
   // If you want to add a new language to achievo, please translate this
   // file and send it to translations@achievo.org
@@ -304,8 +304,8 @@
   "number" => "Nr",
   "of" => "af",
   "onlyactiverecordsareshown" => "Kun aktive optagelser vises.",
-  "on_date_achievo_changed_contract_status_from_to" => "On %1$s Achievo changed the contract status from %2$s to %3$s \n Comment: The contract has expired.", // Missing string!!!
-  "on_date_achievo_changed_project_status_from_to" => "On %1$s Achievo changed the project status from %2$s to %3$s \n Comment: The contract is not active (anymore).", // Missing string!!!
+  "on_date_achievo_changed_contract_status_from_to" => "On %1\$s Achievo changed the contract status from %2\$s to %3\$s \n Comment: The contract has expired.", // Missing string!!!
+  "on_date_achievo_changed_project_status_from_to" => "On %1\$s Achievo changed the project status from %2\$s to %3\$s \n Comment: The contract is not active (anymore).", // Missing string!!!
   "on_delivery" => "På aflevering",
   "or" => "eller",
   "orderby" => "Sorter efter",
