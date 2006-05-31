@@ -131,15 +131,21 @@ class employee extends person
 
   function recordActions($rec, &$actions, &$mraactions)
   {
+    // Get the userid of the user currently logged in
     $user = getUser();
-    if ($rec["status"] == "active" && $rec["id"]!=$user["id"])
+    $userid = atkArrayNvl($user, "id", -1);
+
+    // Actve users may be deactivated, but not the logged in user.
+    if ($rec["status"] == "active" && $rec["id"]!=$userid)
     {
-      // Actve users may be deactivated, but not the logged in user.
       $actions["deactivate"] = session_url("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=deactivate&atkselector=[pk]", SESSION_NESTED);
     }
 
     // Prevent users from deleting themselves when they are logged in.
-    if($rec["id"]==$user["id"]) unset($actions["delete"]);
+    if($rec["id"] == $userid)
+    {
+      unset($actions["delete"]);
+    }
   }
 
   function action_deactivate(&$handler)
@@ -277,7 +283,7 @@ class employee extends person
       {
         $contract = $contractnode->getMostRecentContract($record["id"]);
 
-        $enddate = dateutil::arr2str($contract["enddate"]);
+        $enddate = isset($contract["enddate"]) ? (dateutil::arr2str($contract["enddate"])) : "";
 
         if (!count($contract)||($enddate!=""&&$enddate<date("Ymd")))
         {

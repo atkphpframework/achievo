@@ -111,11 +111,11 @@ class atkProjectPhaseAttribute extends atkAttribute
 
     if(!$this->hasFlag(AF_JS_UPDATEACTIVITY))
     {
-      $result.= '<select name="phaseid">';
+      $result = '<select name="phaseid">';
     }
     else
     {
-      $result .= $this->javascript($phasearray);
+      $result = $this->javascript($phasearray);
       $result.= '<select name="phaseid" onChange="set_activities(this.options[this.selectedIndex].value,0)">';
     }
     $result.= '<option value="">' . atktext("select", "atk");
@@ -222,12 +222,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     $reportnodetype = $g_sessionManager->stackVar("reportnodetype");
 
     $query = "SELECT DISTINCT phase.id, phase.name, project.name as projectname, hours.entrydate
-              FROM phase,hours,project 
+              FROM phase,hours,project
               LEFT JOIN project_person ON (project_person.projectid = project.id)
-              WHERE phase.id=hours.phaseid 
-                AND userid='".$user["id"]."' 
-                AND phase.status='active' 
-                AND project.status='active' 
+              WHERE phase.id=hours.phaseid
+                AND userid='".$user["id"]."'
+                AND phase.status='active'
+                AND project.status='active'
                 AND phase.projectid=project.id ";
 
     if (!$g_securityManager->allowed("timereg.hours", "any_project"))
@@ -257,7 +257,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     usort($newarr,array("atkProjectPhaseAttribute","cmp_projectname"));
     return $newarr;
   }
-  
+
   function cmp_projectname($a, $b)
   {
     return strcmp($a["projectname"], $b["projectname"]);

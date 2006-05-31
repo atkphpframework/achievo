@@ -41,7 +41,7 @@
 
       $this->m_zoom = $g_sessionManager->stackVar("zoom");
 
-      if ($ATK_VARS["employee_sel"]!="")
+      if (atkArrayNvl($ATK_VARS, "employee_sel", "") != "")
       {
         // A selection was made with the dropdown.
         userelation("atkmanytoonerelation");
@@ -98,7 +98,7 @@
                 '<input type="submit" value="&lt;&lt; '.atktext('back').'"></form>';
       }
 
-      $output.=$backbtn;
+      $output =$backbtn;
 
       $params["employeeid"] = $employeeid;
       $params["viewstart"] = $startdate;
