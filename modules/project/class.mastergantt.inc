@@ -134,7 +134,7 @@
 
       $content = $this->getFilterBar();
 
-      if ($this->m_postvars["go"]==1)
+      if (atkArrayNvl($this->m_postvars,"go",0)==1)
       {
         if (!$this->hasAnyProjectPrivilege())
         {
@@ -145,16 +145,13 @@
         {
           $coordinator = $filter["coordinator"]["id"];
         }
-//        $imgurl = moduleDir("project")."mastergantt.php?coordinator=".$coordinator.
-//                  "&from=".dateUtil::arr2str($filter["from"])."&to=".dateUtil::arr2str($filter["to"]).
-//                  "&plannedbooked=".$filter["plannedbooked"];
         $params = array(
           "coordinator" => $coordinator,
           "from" => dateUtil::arr2str($filter["from"]),
           "to" => dateUtil::arr2str($filter["to"]),
           "plannedbooked" => $filter["plannedbooked"]
         );
-        $imgurl = dispatch_url("{$this->m_module}.{$this->m_type}", "planninggraph", $params);
+        $imgurl = session_url(dispatch_url("{$this->m_module}.{$this->m_type}", "planninggraph", $params));
 
         $content.= '<br/><br/><img src="'.$imgurl.'" border="0"/><br/><br/>';
       }
