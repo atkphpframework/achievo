@@ -20,6 +20,9 @@ Changes in Achievo 1.2.2
 * Replaced deprecated text() calls by atktext(). [Guido]
 * Fixed session problemn with master gantt which in some cases would not
   display because it thought the session had expired. [Guido]
+* $config_auth_usernode and config_auth_emailfield are now set. The
+  password mailing feature can now be enabled by setting
+  $config_auth_enablepasswordmailer = true; in config.inc.php. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
