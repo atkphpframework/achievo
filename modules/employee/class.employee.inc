@@ -66,7 +66,15 @@ class employee extends person
     if (atkconfig("authentication")=="db")
     {
       $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-      $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40));
+      $passwordrestrictions = array(
+        "minsize" => atkconfig("password_minsize", 0),
+        "minupperchars" => atkconfig("password_minupperchars", 0),
+        "minlowerchars" => atkconfig("password_minlowerchars", 0),
+        "minalphabeticchars" => atkconfig("password_minalphabeticchars", 0),
+        "minnumbers" => atkconfig("password_minnumbers", 0),
+        "minspecialchars" => atkconfig("password_minspecialchars", 0)
+      );
+      $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
     }
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.
 
@@ -74,7 +82,6 @@ class employee extends person
 
     $this->setOrder("lastname");
   }
-
 
   function initial_values()
   {
@@ -154,18 +161,18 @@ class employee extends person
     $query = "UPDATE person SET status='nonactive' WHERE $select";
 
     // Verify that the selector or id were not tampered with before passing on to the db
-    if(preg_match("/person\.id='\d+'/i", $select) === 1) 
+    if(preg_match("/person\.id='\d+'/i", $select) === 1)
     {
       $db = &atkGetDb();
       $db->query($query);
-    } 
-    else 
+    }
+    else
     {
-    	// TODO: give the name of the module, the logged userid and the IP address 
+    	// TODO: give the name of the module, the logged userid and the IP address
     	// of the offending user in the debug entry so it gets logged properly
       atkdebug("SQL injection attack detected in 'action_deactivate', not executed. The selector was '$select' and the resulting query would have been '$query'", true);
     }
-    
+
     $this->redirect();
   }
 
