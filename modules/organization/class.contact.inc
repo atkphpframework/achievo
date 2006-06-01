@@ -5,9 +5,9 @@ include_once (moduleDir("person")."/class.person.inc");
 
 class contact extends person
 {
-  function contact()
+  function contact($name="contact")
   {
-    $this->person("contact");
+    $this->person($name);
     $this->remove("userid");
 
     $this->addFilter("person.role='contact'");
