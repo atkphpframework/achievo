@@ -1,13 +1,14 @@
 <?php
 
-include_once (moduleDir("person")."/class.person.inc");
+include_once (moduleDir("organization")."/class.contact.inc");
 userelation("atkmanytoonerelation");
 
-class select_contact extends person
+class select_contact extends contact
 {
   function select_contact()
   {
     $this->person("select_contact");
+    $this->remove("userid");
     $this->addFilter("person.role = 'contact'");
 
     // Hide the role attribute
