@@ -7,8 +7,7 @@ class select_contact extends contact
 {
   function select_contact()
   {
-    $this->person("select_contact");
-    $this->remove("userid");
+    $this->contact("select_contact");
     $this->addFilter("person.role = 'contact'");
 
     // Hide the role attribute
