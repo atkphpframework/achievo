@@ -23,6 +23,8 @@ Changes in Achievo 1.2.2
 * $config_auth_usernode and config_auth_emailfield are now set. The
   password mailing feature can now be enabled by setting
   $config_auth_enablepasswordmailer = true; in config.inc.php. [Guido]
+* Bugfix: When selecting a new contact in a project it shouldn't show
+  the userid field. [Sandy,Ivo]
 
 Changes in Achievo 1.2.1
 ------------------------
