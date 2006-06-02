@@ -33,15 +33,15 @@ class atkProjectPhaseAttribute extends atkAttribute
   {
     global $ATK_VARS;
 
-    $selectedphaseid = $_REQUEST["selectedphaseid"];
-    $atkaction = $_REQUEST["atkaction"];
+    $selectedphaseid = atkArrayNvl($_REQUEST, "selectedphaseid", "");
+    $atkaction = atkArrayNvl($_REQUEST, "atkaction", "");
 
     // The current phase (in case of edit of an existing record)
     $currentphase = $record[$this->fieldName()]["phaseid"];
-    $currentactivity = $record["activityid"];
+    $currentactivity = atkArrayNvl($record, "activityid");
 
     // The current value might be overriden by use of the 'search all phases' button
-    if (isset($selectedphaseid)&&$selectedphaseid!="")
+    if ($selectedphaseid != "")
     {
       $currentphase = $selectedphaseid;
       $currentactivity = 0;
