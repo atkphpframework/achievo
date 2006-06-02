@@ -54,7 +54,7 @@ class employee extends person
     $this->add($preFilter);
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.
     $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST|AF_HIDE_ADD|AF_FORCE_LOAD));
-    if ($ATK_VARS["atknodetype"]=="employee.employee"&& in_array($ATK_VARS["atkaction"],array("admin","add","update","edit")))
+    if ((atkArrayNvl($ATK_VARS, "atknodetype", "") == "employee.employee") && in_array(atkArrayNvl($ATK_VARS, "atkaction", ""), array("admin", "add", "update", "edit")))
     {
       $statusfilter = ($this->getView() == "active") ? "active" : "nonactive";
       $this->addFilter("person.status",$statusfilter);
@@ -168,8 +168,8 @@ class employee extends person
     }
     else
     {
-    	// TODO: give the name of the module, the logged userid and the IP address
-    	// of the offending user in the debug entry so it gets logged properly
+      // TODO: give the name of the module, the logged userid and the IP address
+      // of the offending user in the debug entry so it gets logged properly
       atkdebug("SQL injection attack detected in 'action_deactivate', not executed. The selector was '$select' and the resulting query would have been '$query'", true);
     }
 
