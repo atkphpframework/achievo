@@ -9,103 +9,80 @@
 
     function action_pim(&$handler)
     {
-      global $g_user;
-
-      $me = $g_user["name"];
-      $ui = &$this->getUi();
-      $this->addStyle("style.css");
-      if (is_object($ui))
+      $pimItems = atkHarvestModules("getPimItems","",true);
+      $userpimitems = &atknew("module.pim.userpimitems");
+      $user = getuser();
+      $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
+      $res = array();
+      if(count($userDbItems)==0)
       {
-        $page = &$this->getPage();
-        $page->head(atktext("title_pim"));
-        $page->body();
-
-        $pimItems = atkHarvestModules("getPimItems","",true);
-        $userpimitems = &atknew("module.pim.userpimitems");
-        $user = getuser();
-        $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
-        if(count($userDbItems)==0)
+        $res[atktext("title_pim","pim")] = '<br>'.atkText("pim_nopimitems","pim").'<br><br>';
+      }
+      else
+      {
+        $userItems = array();
+        foreach($userDbItems as $key => $item)
         {
-          $res = $ui->renderBox(array("title"=>atktext("pim","pim"),"content"=>atkText("pim_nopimitems","pim")));
+            $userItems[] = $item["pimitem"];
         }
-        else
+        $res = "";
+        foreach($pimItems as $modname => $item)
         {
-          $userItems = array();
-          foreach($userDbItems as $key => $item)
+          foreach($item as $itemName => $itemContent)
           {
-             $userItems[] = $item["pimitem"];
-          }
-          $res = "";
-          foreach($pimItems as $modname => $item)
-          {
-            foreach($item as $itemName => $itemContent)
+            atkdebug("Check: ".$modname.'_'.$itemName);
+            if(in_array($modname.'_'.$itemName,$userItems))
             {
-              atkdebug("Check: ".$modname.'_'.$itemName);
-              if(in_array($modname.'_'.$itemName,$userItems))
+              $module = &getModule($modname);
+              if (is_object($module))
               {
-                $module = &getModule($modname);
-                if (is_object($module))
+                if (method_exists($module, $itemContent))
                 {
-                  if (method_exists($module, $itemContent))
-                  {
-                    $itemContent = $module->$itemContent();
-                  }
-                  $res.= $ui->renderBox(array("title"=>atktext(array("pim_$itemName", $itemName), $modname),"content"=>$itemContent,"id"=>$modname.'_'.$itemName));
+                  $itemContent = $module->$itemContent();
                 }
+                $res[atktext(array("pim_$itemName", $itemName), $modname)] = $itemContent;
               }
             }
           }
         }
-
-        $page->addContent($res);
       }
-      else
-      {
-        atkerror("ui object failure");
-      }
+      $page = &$this->getPage();
+      $page->addContent($this->genericPage(atktext("title_pim"), $res));
+    }
 
+    function getAdminPimContent()
+    {
+      // Generate the content
+      $employeeadminlink = href(dispatch_url("employee.employee", "admin"), $this->text("clickhere", "pim"), SESSION_NESTED);
+      $content = '<br><div align="left" style="width: 400px;">';
+      $content.= '<b>' . $this->text("welcome") . '</b><br>';
+      $content.= $this->text("loggedinasadmin") . '<br><br>';
+      $content.= '<b>' . $this->text("setuppurposesonly") . '</b><br>';
+      $content.= $this->text("notarealaccount") . '<br><br>';
+      $content.= '<b>' . $this->text("firsttimeusage") . '</b><br>';
+      $content.= sprintf($this->text("createfirstrealuseraccount"), $employeeadminlink) . '<br><br>';
+      $content.= '<b>' . $this->text("upgradesandinstallations") . '</b><br>';
+      $content.= $this->text("usesetuplink") . '<br><br>';
+      $content.= '<b>' . $this->text("donations") . '</b><br>';
+      $content.= $this->text("becomeasponsor") . '<br><br>';
+      $content.= '<a href="http://www.achievo.org/support/donate" target="_new">';
+      $content.= '<img border="0" src="modules/pim/paypal_donate.gif" alt="' . $this->text("donate") . '">';
+      $content.= '</a>';
+      $content.= '</div><br>';
+
+      // Return the generated content
+      return $content;
     }
 
     function action_adminpim(&$handler)
     {
-      $ui = &$this->getUi();
-      $this->addStyle("style.css");
-      if (is_object($ui))
-      {
-        $page = &$this->getPage();
-        $page->head(atktext("title_pim_adminpim"));
-        $page->body();
+      // Initialize the title and content
+      $title = $this->text("title_pim_adminpim");
+      $content = $this->getAdminPimContent();
 
-
-        $content ='<br><div align="left">Welcome to Achievo.
-                   <br>You are currently logged in as administrator. <b>This account
-                   is for setup-purposes only</b>.
-                   <br><br>As this is not a real account, do not use features
-                   like timeregistration etc.
-                   <br>It is best to use this account only when you run Achievo
-                   for the first time, or when you need to upgrade.
-
-                   <br><br><b>First time usage</b>
-                   <br>If this is the first time you login to Achievo, '.
-                   href(dispatch_url("employee.employee", "admin"), "click here", SESSION_NESTED).
-                   ' to create the first real user account.
-                   <br>Then, relogin as the new user.
-                   <br>
-                   <br><b>Upgrades and module installations</b>
-                   <br>If you need to upgrade or if you installed a new module, use the
-                   \'setup\' link in the top frame to update the database.
-                   <br><br><b>Donations</b>
-                 <br>If you like Achievo, consider becoming a sponsor for the
-                 project. Contributions keep the Achievo project alive.
-                 <br>Click the button below for more information.
-                 <br><br><a href="http://www.achievo.org/support/donate" target="_new"><img border="0" src="modules/pim/paypal_donate.gif" alt="donate"></a></div><br><br>';
-        $page->addContent($ui->renderBox(array("title"=>atktext("title_pim_adminpim"),
-                                               "content"=>$content)));
-      }
-      else
-      {
-        atkerror("ui object failure");
-      }
+      // Render the page
+      $page = &$this->getPage();
+      $page->addContent($this->genericPage($title, $content));
     }
   }
 
