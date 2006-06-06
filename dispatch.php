@@ -48,8 +48,8 @@
     $destination = "index.php?atklogout=true";
     if(isset($ATK_VARS["atknodetype"]) && isset($ATK_VARS["atkaction"]))
     {
-      $destination = "&atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
-      if (isset($ATK_VARS["atkselector"])) $destination.="&atkselector=".$ATK_VARS["atkselector"];
+      $destination .= "&atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
+      if (isset($ATK_VARS["atkselector"])) $destination .="&atkselector=".$ATK_VARS["atkselector"];
     }
 
     $title = atktext("title_session_expired");
