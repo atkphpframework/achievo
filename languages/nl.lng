@@ -383,6 +383,7 @@
   "pricepayed" => "Betaald",
   "priceperhour" => "Uurtarief",
   "priority" => "Prioriteit",
+  "private_appointment" => "Prive afspraak",
   "problems_occured_while_registering_hours_on_phase_%s" => "Problemen ontstaan bij het registreren van uren op fase %s",
   "profile" => "Profiel",
   "profiles" => "Profielen",

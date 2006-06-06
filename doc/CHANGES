@@ -15,7 +15,8 @@ Changes in Achievo 1.2.2
   $config_password_minlowerchars, $config_password_minalphabeticchars,
   $config_password_minnumbers, $config_password_minspecialchars variables.
   [Guido]
-+ Added translation for Example. [Guido]
++ Added translations for "alldepartments", "allfunctionlevels",
+  "private_appointment" and "example". [Guido]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
@@ -27,8 +28,6 @@ Changes in Achievo 1.2.2
 * Bugfix: When selecting a new contact in a project it shouldn't show
   the userid field. [Sandy,Ivo]
 * Added dutch and english tranlations of the adminpim text. [Guido]
-* Added translations for "alldepartments" and "allfunctionlevels" in the
-  Hours survey. [Guido]
 * Fixed a rendering bug in the calendar dayview which caused appointments
   to be drawn not as long as they should be. A workaround for this problem
   was already implemented for netscape/mozilla based browsers by not

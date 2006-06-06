@@ -384,6 +384,7 @@
   "pricepayed" => "Paid",
   "priceperhour" => "Price per hour",
   "priority" => "Priority",
+  "private_appointment" => "Private appointment",
   "problems_occured_while_registering_hours_on_phase_%s" => "Problems occured while registering hours on phase %s",
   "profile" => "Security Profiles",
   "profiles" => "Profiles",
