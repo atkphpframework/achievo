@@ -98,7 +98,8 @@
        }
 
        //Reload the menu frame by creating javascript
-       $script = "var newlocation=\"menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId."\";
+       $menu_url = session_url("menu.php?atkmenutop=projectmanagement&selectedproject=".$prjId, SESSION_DEFAULT);
+       $script = "var newlocation=\"$menu_url\";
                   var oldlocation=parent.menu.location.toString();
                   if (oldlocation.indexOf(newlocation) == -1) {parent.menu.location = newlocation;}";
        $page = &atkinstance("atk.ui.atkpage");
@@ -111,16 +112,13 @@
      $g_sessionManager->globalVar("selectedprj", $prj, true);
   }
 
- /**
-  * Get the projects the user recently booked hours on
-  * @return array with recently used projects
-  *
-  */
-
+  /**
+   * Get the projects the user recently booked hours on
+   * @return array with recently used projects
+   */
   function getRecentProjects()
   {
     global $g_user, $g_projectnamesize;
-
     $db = &atkGetDb();
 
     $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
@@ -150,7 +148,7 @@
     return $newarr;
   }
 
-  /*
+  /**
    * given a timestamp, this function calculates the weekstamp, which is a concatenation
    * of the year and the ISO week number. (e.g. 200134)
    */
