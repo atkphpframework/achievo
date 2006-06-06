@@ -16,15 +16,44 @@ Changes in Achievo 1.2.2
   $config_password_minnumbers, $config_password_minspecialchars variables.
   [Guido]
 + Added translation for Example. [Guido]
+- Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
-* Fixed session problemn with master gantt which in some cases would not
+* Fixed session problem with master gantt which in some cases would not
   display because it thought the session had expired. [Guido]
 * $config_auth_usernode and config_auth_emailfield are now set. The
   password mailing feature can now be enabled by setting
   $config_auth_enablepasswordmailer = true; in config.inc.php. [Guido]
 * Bugfix: When selecting a new contact in a project it shouldn't show
   the userid field. [Sandy,Ivo]
+* Added dutch and english tranlations of the adminpim text. [Guido]
+* Added translations for "alldepartments" and "allfunctionlevels" in the
+  Hours survey. [Guido]
+* Fixed a rendering bug in the calendar dayview which caused appointments
+  to be drawn not as long as they should be. A workaround for this problem
+  was already implemented for netscape/mozilla based browsers by not
+  showing the border around an appointment (which was causing this
+  problem). Internet Explorer 6 however, also seemed to affected by this
+  rendering bug, which is the reason for this change. Now the border around
+  the appointment is implemented differently (using CSS) and the exception
+  for netscape/mozilla users is removed. [Guido]
+* Removed deprecated atklayout usage. [Guido]
+* Replaced "-" options by "No value" options in the orderby feature of
+  the Hours survey. [Guido]
+* The list of activities in the time registration should not be translated.
+  (also prevents translation not found warnings). [Guido]
+* Fixed the login problem where you would see a login box in the menu and
+  top frame after logging in. This was caused by the menu and top pages
+  not being requested through a session_url. [Guido]
+* Fixed the session not being recognized by the menu becaus it isn't called
+  through a session_url. [Guido]
+* Fixed the project selector list on top of the project menu not being
+  populated sometimes. [Guido]
+* Updated the session expired screen using a relogin button instead of a
+  relogin link. [Guido]
+* Index.php now uses atkoutput instead of an evil(tm)(r)(c) echo() call
+  to send the frameset document to the browser. [Guido]
+* Removed duplicate </html> tag. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
