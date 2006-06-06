@@ -42,7 +42,7 @@
     if (strlen($this->day) == 1) $day = "0".$this->day; else $day = $this->day;
     $date = $this->year."-".$month."-".$day;
 
-    $buff .= "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
+    $buff = "<table width='".$this->viewerWidth."' cellpadding='1' cellspacing='1'>\n";
     $buff .= "<tr>\n";
     $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".atktext("employee")."</font></td>";
     for ($i=0;$i<count($this->workHours);$i++)

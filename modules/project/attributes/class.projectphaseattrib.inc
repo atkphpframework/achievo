@@ -37,7 +37,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     $atkaction = atkArrayNvl($_REQUEST, "atkaction", "");
 
     // The current phase (in case of edit of an existing record)
-    $currentphase = $record[$this->fieldName()]["phaseid"];
+    $currentphase = isset($record[$this->fieldName()]["phaseid"]) ? $record[$this->fieldName()]["phaseid"] : "";
     $currentactivity = atkArrayNvl($record, "activityid");
 
     // The current value might be overriden by use of the 'search all phases' button
@@ -78,6 +78,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     }
 
     // Load Activities for each project
+    $phaseid_arr = array();
     for ($i=0, $_i=count($phases);$i<$_i;$i++)
     {
       $phaseid_arr[] = $phases[$i]["id"];

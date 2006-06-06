@@ -49,7 +49,7 @@
     {
       $value = $record[$this->fieldname()];
       $org = time_format(($value*60), true);
-      if ($value>0 && $record[$this->m_phaseid_field]!="")
+      if ($value>0 && atkArrayNvl($record, $this->m_phaseid_field, "")!="")
       {
         $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
         $params["phaseid"] = $phaseattrib->value2db($record);

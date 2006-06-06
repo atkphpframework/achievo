@@ -23,7 +23,7 @@ class atkProjectAttribute extends atkAttribute
    */
   function edit($record="")
   {
-    $selectedprojectid = $_REQUEST["selectedprojectid"];
+    $selectedprojectid = atkArrayNvl($_REQUEST, "selectedprojectid", "");
 
     // The current phase (in case of edit of an existing record)
     $currentproject = $record[$this->fieldName()];
@@ -56,7 +56,7 @@ class atkProjectAttribute extends atkAttribute
       $projects[] = $project;
     }
 
-    $result.= '<select name="projectid">';
+    $result = '<select name="projectid">';
     $result.= '<option value="">'.atktext('select');
 
     for ($i=0;$i<count($projects);$i++)
@@ -74,7 +74,7 @@ class atkProjectAttribute extends atkAttribute
     $targeturl = $_SERVER["PHP_SELF"]."?selectedprojectid=[id]&atklevel=".atkLevel();
 
     if ($this->hasFlag(AF_FORMSUBMIT)) $submit = true; else $submit = false;
-    $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), text("searchallprojects"),SESSION_NESTED, $submit);
+    $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), atktext("searchallprojects"),SESSION_NESTED, $submit);
 
     return $result;
   }
