@@ -15,24 +15,24 @@ class achievo extends atkFramesMenu
 
       if (count($projects) == 0)
       {
-        //updateSelectedProjects();
+        updateSelectedProjects();
         $projects = $g_sessionManager->getValue("selectedprj","globals");
       }
 
-      $prj  = atktext("project_select").":";
-      $prj .="<FORM><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
-      $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
-
-      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : null;
-      for ($i=0;$i < count($projects); $i++)
+      $prj  = atktext("project_select") . ':';
+      $prj .= '<FORM name="projectselectorform" action="menu.php" method="get">';
+      $prj .= session_form(SESSION_DEFAULT);
+      $prj .= '<INPUT type="hidden" name="atkmenutop" value="projectmanagement">';
+      $prj .= '<SELECT style="width: 150px" name="selectedproject" onchange="document.projectselectorform.submit();">';
+      $prj .= '<OPTION value="0">' . atktext("project_select_none") . '</OPTION>';
+      $selectedproject = atkArrayNvl($_REQUEST, "selectedproject");
+      for ($i=0,$_i=count($projects); $i<$_i; $i++)
       {
-        $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
-        if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
-        $prj .= ">".$projects[$i]['projectname']."</OPTION>";
+        $selected = ($selectedproject == $projects[$i]['projectid']) ? ' selected' : '';
+        $prj .= sprintf('<OPTION value="%d" %s>%s</OPTION>', $projects[$i]['projectid'], $selected, $projects[$i]['projectname']);
       }
-      $prj .="</SELECT></FORM>";
+      $prj .= '</SELECT></FORM>';
       return $prj;
-
     }
   }
 }
