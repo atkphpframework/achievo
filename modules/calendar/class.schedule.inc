@@ -229,9 +229,6 @@
 
     function adminPage(&$handler)
     {
-      atkimport("atk.layout");
-      $layout = &layout::getInstance();
-
       if (method_exists($this, $this->m_view))
       {
         $funcname = $this->m_view;
@@ -242,7 +239,8 @@
         // Employee view doens't work in postgresql cause this calendar uses 24:00 as time (which is invalid)
         $dbconfig = atkconfig("db");
         if($dbconfig["default"]["driver"]!="pgsql")
-          $result.= href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
+          $result.= href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"))."&nbsp;";
+        $result.= atkArrayNvl($this->getHelp(), "helplink", "");
 
         $result.= $this->$funcname($this->m_viewdate);
       }
@@ -254,8 +252,7 @@
       $ui = &$this->getUi();
       $page = &$this->getPage();
       $this->addStyle("style.css");
-
-      $schedulerView = $ui->renderBox(array("title"=>atktext($this->m_type)." - ".atktext($this->m_view),"content"=>$this->statusbar().$result));
+      $schedulerView = $ui->renderBox(array("title"=>atktext($this->m_type)." - ".atktext($this->m_view),"content"=>$result));
       $page->addContent($schedulerView);
     }
 
@@ -352,8 +349,7 @@
       $dummy = new employeeView($day, $month, $year);
       $dummy->viewerWidth = "600";
 
-      $buff  = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$viewdate",atktext("dayview"))."<br><br>";
-      $buff .= "<font size='-1'>".atktext("seluserdate")."</font><br><br>";
+      $buff  = "<br><br><font size='-1'>".atktext("seluserdate")."</font><br><br>";
 
       // assign our output buffer
       $buff .= "<table width='".$dummy->viewerWidth."'><tr>";
