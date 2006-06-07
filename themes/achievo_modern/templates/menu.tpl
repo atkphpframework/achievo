@@ -3,6 +3,7 @@
 
 <div id="mainMenu">
 {foreach from=$menuitems item=menuitem}
+{if !$firstmenuitem}{assign var='firstmenuitem' value=$menuitem.name}{/if}
   {if $menuitem.name!=='-'}
     <a href="#" onclick="showSubMenu('{$menuitem.name}'); window.open('{$menuitem.url}','main','');" onmouseover="this.style.cursor = 'pointer'" class="menuitem_link">
       <div id="mi_{$menuitem.name}" class="menuItemLevel1">
@@ -33,9 +34,17 @@ var curSelectedMenu='';
 function showSubMenu(menuitemname)
 {
   prevSelectedMenu = curSelectedMenu;
-  curSelectedMenu = menuitemname;
   hideAllSubMenus();
-  if (curSelectedMenu!==prevSelectedMenu) displaySubMenu(menuitemname);
+  
+  if (menuitemname!==prevSelectedMenu) 
+  {
+    curSelectedMenu = menuitemname;
+    displaySubMenu(menuitemname);
+  }
+  else
+  {
+    curSelectedMenu = '';
+  }
 }
 
 function displaySubMenu(menuitemname)
@@ -81,5 +90,5 @@ function hideAllSubMenus()
 	}
 }
 {/literal}
-showSubMenu('{if $atkmenutop!=="main"}{$atkmenutop}{else}time_registration{/if}');
+showSubMenu('{if $atkmenutop!=="main"}{$atkmenutop}{else}{$firstmenuitem}{/if}');
 </script>
