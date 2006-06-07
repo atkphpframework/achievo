@@ -39,12 +39,16 @@
   // themes there are in the directory themes. Users can choose their own
   // theme in the user preferences section.
   //
-  $config_defaulttheme = "outlook";
+  $config_defaulttheme = "achievo_modern";
 
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
   //
   $config_language="en";
+
+  // The menu to use (For older themes this is 'achievo', for newer this
+  //  is 'achievo_modern'
+  $config_menu_layout = "achievo_modern";
 
 
   // -------------------------------------------

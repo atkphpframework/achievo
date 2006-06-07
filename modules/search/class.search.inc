@@ -73,13 +73,12 @@
 
     function simpleSearchForm($searchstring, $targetframe="", $sessionstatus=SESSION_NESTED)
     {
-      $res = '<form action="dispatch.php"'.($targetframe!=""?'target="'.$targetframe.'"':'').'>';
-      $res.= '<input type="hidden" name="atknodetype" value="search.search">';
-      $res.= '<input type="hidden" name="atkaction" value="search">';
-      $res.= session_form($sessionstatus);
-      $res.= '<input name="searchstring" type="text" size="18" value="'.$searchstring.'">&nbsp;<input type="submit" value="'.atktext("search").'">';
-      $res.= '</form>';
-      return $res;
+      $ui = &$this->getUi();
+      $tplvars = array( 'targetframe'=>$targetframe,
+                        'sessionform'=>session_form($sessionstatus),
+                        'searchstring'=>$searchstring,
+                       );
+      return $ui->render($ui->templatePath('simplesearch.tpl'),$tplvars);
     }
   }
 

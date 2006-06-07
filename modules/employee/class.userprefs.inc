@@ -26,6 +26,7 @@ useattrib("atkdummyattribute");
 useattrib("atknumberattribute");
 useattrib("atkpasswordattribute");
 useattrib("atklistattribute");
+useattrib('employee.adminlangselectattribute');
 
 class userprefs extends atkNode
 {
@@ -42,6 +43,7 @@ class userprefs extends atkNode
     }
     $themes = getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD|AF_NO_TRANSLATION));
+    $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
 
     $this->setTable("person", "person");
   }

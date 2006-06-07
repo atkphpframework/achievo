@@ -31,7 +31,7 @@
   $config_durationformat = 0;
   $config_defaultfavico = "images/achievo.ico";
   $config_corporate_module_base = "modules.achievomodule";
-  $config_menu_layout = "achievo";
+  $config_supported_languages_module = 'langoverrides';  
 
 
   // -------------------------------------------

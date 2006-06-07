@@ -4,7 +4,6 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
-
 Changes in Achievo 1.2.2
 ------------------------
 + Added ability to set the following password restrictions: minimum length,
@@ -17,6 +16,8 @@ Changes in Achievo 1.2.2
   [Guido]
 + Added translations for "alldepartments", "allfunctionlevels",
   "private_appointment" and "example". [Guido]
++ Added ability for users to select their own language. [Boy]
++ Added achievo_modern theme. [Norman,Boy]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
@@ -53,6 +54,10 @@ Changes in Achievo 1.2.2
 * Index.php now uses atkoutput instead of an evil(tm)(r)(c) echo() call
   to send the frameset document to the browser. [Guido]
 * Removed duplicate </html> tag. [Guido]
+* Moved html from hours node to templates to make Achievo better 
+  themable. [Boy]
+* Made top pass along centerpiece_links to top.tpl for those 
+  that want to style their own centerpiece links. [Boy]
 
 Changes in Achievo 1.2.1
 ------------------------

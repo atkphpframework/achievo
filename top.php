@@ -47,15 +47,17 @@
   $loggedin = atktext("logged_in_as").": <b>".$g_user["name"]."</b>";
   $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(atktext("logout", "atk")).'</a> &nbsp;';
 
+  $centerpiecelinks=array();
   if ($g_user["name"]!="administrator")
   {
-    $centerpiece = href(dispatch_url("pim.pim", "pim"), atktext("pim", "core"), SESSION_NEW, false, 'target="main"').'&nbsp; &nbsp; &nbsp;';
-    $centerpiece.= href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), atktext("userprefs", "core"), SESSION_NEW, false, 'target="main"');
+    $centerpiece = $centerpiecelinks['pim'] = href(dispatch_url("pim.pim", "pim"), atktext("pim", "core"), SESSION_NEW, false, 'target="main"');
+    $centerpiece.= '&nbsp; &nbsp; &nbsp;';
+    $centerpiece.= $centerpiecelinks['userprefs'] = href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), atktext("userprefs", "core"), SESSION_NEW, false, 'target="main"');
   }
   else
   {
     // Administrator has a link to setup.php
-    $centerpiece = href("setup.php", atktext("setup", "core"), SESSION_NEW, false, 'target="_top"');
+    $centerpiece = $centerpiecelinks['setup'] = href("setup.php", atktext("setup", "core"), SESSION_NEW, false, 'target="_top"');
   }
   $content.=$centerpiece;
 
@@ -72,6 +74,7 @@
                               "logoutlink" => "index.php?atklogout=1",
                               "logouttarget"=>"_top",
                               "centerpiece"=>$centerpiece,
+                              'centerpiece_links'=>$centerpiecelinks,
                               "searchpiece"=>$searchpiece,
                               "title" => $title,
                   "user"   => $g_user["name"]));

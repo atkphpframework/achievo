@@ -598,6 +598,25 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  
+  "lng"=>'Taal',
+  
+  'language_bp'=>'Braziliaans Portugees',
+  'language_ca'=>'Cataloons',
+  'language_cs'=>'Tsjechisch',
+  'language_da'=>'Deens',
+  'language_es'=>'Spaans',
+  'language_fi'=>'Fins',
+  'language_hu'=>'Hongaars',
+  'language_it'=>'Italiaans',
+  'language_ja'=>'Japans',
+  'language_no'=>'Noors',
+  'language_pl'=>'Pools',
+  'language_pt'=>'Portugees',
+  'language_ru'=>'Russisch',
+  'language_sk'=>'Slovaaks',
+  'language_sv'=>'Zweeds',
+  'language_zh'=>'Chinees',
 );
 
 ?>

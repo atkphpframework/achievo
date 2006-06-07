@@ -432,36 +432,34 @@ class hours extends atkNode
 
   function adminHeader()
   {
+    $res='';
     if ($this->m_weekview!=1)
-    {
-      $res='<form name="dayview" method="post" action="dispatch.php">';
-      $res.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
-      $res.='<tr><td align="left" valign="top">';
+    {      
       $viewdatestamp = adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
 
       // we substract 3601 seconds to account for Daylight Savings Time
       $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
-
       // we add 3601 seconds to account for Daylight Savings Time
       $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
-
-      $today = date('Y-m-d');
-
-      $res.= href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$yesterday, atktext("previousday"));
+      $today = date('Y-m-d');      
+      
+      $ui = &$this->getUi();
+      $tplvars = array( 'yesterdayurl'=>session_url('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$yesterday),
+                        'weekviewurl'=>session_url('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$this->m_viewdate.'&weekview=1'),
+                        'sessionform'=>session_form(),
+                        'userselect'=>$this->getUserSelect(),
+                        'datejumper'=>$this->getDateJumper(),
+                        'currentdate'=>atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
+                        'lockicon'=>$this->getLockIcon(),
+                       );
+      
       if ($this->m_viewdate<date('Y-m-d'))
       {
         // If current is not today we can also move forward
-        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$tomorrow, atktext("nextday"));
-        $res.='&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$today, atktext("today", "", "houradmin"));
+        $tplvars['tomorrowurl'] = session_url('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$tomorrow);
+        $tplvars['todayurl'] = session_url('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$today);
       }
-      $res.= '&nbsp;&nbsp;'.href('dispatch.php?viewuser='.$this->m_user.'&viewdate='.$this->m_viewdate.'&weekview=1', atktext("gotoweekview"));
-      $res.='</td><td align="right" valign="top">';
-      $res.=session_form();
-      $res.=$this->getUserSelect().'&nbsp;';
-      $res.=$this->getDateJumper();
-      $res.='&nbsp;<input type="submit" value="'.atktext("goto").'">';
-      $res.='</td></tr></table></form>';
-      $res.='<b>'.atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp).'</b>'.$this->getLockIcon();
+      $res = $ui->render($ui->templatePath('hours_adminheader.tpl'),$tplvars);
     }
     return $res;
   }
@@ -472,11 +470,12 @@ class hours extends atkNode
     {
       $balancenode = &atkGetNode("timereg.overtime_balance");
       $balance = $balancenode->getBalance(date("Y-m-d", adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4))), $this->m_user);
-      $res ='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
-      $res.='<tr><td align="left" valign="top">';
-      $res.= href('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate='.$this->m_viewdate, atktext("viewschedule"), SESSION_NESTED);
-      $res.='</td><td align="right">'.atktext("current_balance").': '.time_format((60*$balance["balance"]),true).'&nbsp;</td></tr></table>';
-      return $res;
+      
+      $ui = &$this->getUi();
+      $tplvars = array( 'scheduleurl'=>session_url('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate=',SESSION_NESTED),
+                        'balance'=>time_format((60*$balance["balance"]),true),
+                       );
+      return $ui->render($ui->templatePath('hours_adminfooter.tpl'),$tplvars);
     }
     else
     {
@@ -625,37 +624,31 @@ class hours extends atkNode
     global $g_user;
     $userid = $this->m_user;
 
-    // First a line with previous and next week links..
-    $output='<form name="weekview" method="post" action="dispatch.php">';
-    $output.=session_form();
-    $output.='<table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">';
-    $output.='<tr><td valign="top" align="left">';
-    $output.= ''.href('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date'], atktext('previousweek'));
+    $ui = &$this->getUi();
+    $tplvars = array( 'session_form'=>session_form(),
+                      'prevweekurl'=>session_url('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date']),
+                      'thisweekurl'=>session_url('dispatch.php?weekview=1&viewdate='.date("Y-m-d")),
+                      'dayviewurl'=>session_url('dispatch.php?weekview=0&viewdate='.date("Y-m-d")),
+                      'datejumper'=>$this->getDateJumper(),
+                      'curuser'=>$g_user,
+                      'curdate'=>adodb_date('W, Y',$viewtime),
+                      'lockicon'=>$this->getLockIcon(),
+                     );
     if ($weekdates[8]['date'] <= date("Y-m-d"))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date'],atktext('nextweek'));
+      $tplvars['nextweekurl']=session_url('dispatch.php?weekview=1&viewdate='.$weekdates[8]['date']);
     }
-    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=1&viewdate='.date("Y-m-d"), atktext('thisweek'));
-    $output.= '&nbsp;&nbsp;'.href('dispatch.php?weekview=0&viewdate='.date("Y-m-d"), atktext('dayview'));
-
     if ($this->m_lock=="individual" && $this->allowed("unlock"))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.atktext("unlock").'</b>');
+      $tplvars['unlockurl']=session_url('dispatch.php?atkaction=unlock&userid='.$userid.'&viewdate='.$this->m_viewdate);
     }
     // users may only lock weeks that are not already locked. they must have the proper permission
     // and, if configured, they may only lock a week once they have booked all their hours.
     else if ($this->m_lock=="" && $this->allowed("lock") && (atkconfig("timereg_incompleteweeklock") || $this->weekComplete($userid, $this->m_viewdate)))
     {
-      $output.='&nbsp;&nbsp;'.href('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate,'<b>'.atktext("lock").'</b>');
+      $tplvars['lockurl']=session_url('dispatch.php?atkaction=lock&userid='.$userid.'&viewdate='.$this->m_viewdate);
     }
-
-    $output.='</td><td valign="top" align="right">';
-    $output.=$this->getDateJumper();
-    $output.='&nbsp;<input type="submit" value="'.atktext("goto").'">';
-    $output.='</td></tr></table></form>';
-
-    $output.='<b>'.$g_user["firstname"].' '.$g_user["lastname"].' - '.atktext("week").' '.adodb_date('W, Y',$viewtime).'</b>'.$this->getLockIcon().'<br><br><br>';
-    return $output;
+    return $ui->render($ui->templatePath('hours_adminheader_weekview.tpl'),$tplvars);
   }
 
   /**

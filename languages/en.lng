@@ -599,6 +599,25 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  
+  'lng'=>'Language',
+  'language_bp'=>'Brazilian Portugese',
+  'language_ca'=>'Catalan',
+  'language_cs'=>'Czech',
+  'language_da'=>'Czech',
+  'language_es'=>'Spanish',
+  'language_fi'=>'Finnish',
+  'language_hu'=>'Hungarian',
+  'language_it'=>'Italian',
+  'language_ja'=>'Japanese',
+  'language_no'=>'Norwegian',
+  'language_pl'=>'Polish',
+  'language_pt'=>'Portugese',
+  'language_ru'=>'Russian',
+  'language_sk'=>'Slovak',
+  'language_sv'=>'Swedish',
+  'language_zh'=>'Chinese',
+
 );
 
 ?>
