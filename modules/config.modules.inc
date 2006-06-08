@@ -14,5 +14,4 @@
   module("pim");
   module("search");  
   module("graph");
-  module("roc",atkconfig('atkroot').'../achievo_modules/roc/');
 ?>
