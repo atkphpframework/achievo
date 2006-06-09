@@ -53,8 +53,8 @@
     }
 
     $title = atktext("title_session_expired");
-    $contenttpl = '<br>%s<br><br><input type="button" onclick="top.location=\'%s\'" value="%s"><br><br>';
-    $content = sprintf($contenttpl, atktext("explain_session_expired"), $destination, atktext("relogin"));
+    $contenttpl = '<br>%s<br><br><input type="button" onclick="top.location=\'%s\';" value="%s"><br><br>';
+    $content = sprintf($contenttpl, atktext("explain_session_expired"), str_replace("'", "\\'", $destination), atktext("relogin"));
     $box = $ui->renderBox(array("title" => $title, "content" => $content));
 
     $page->addContent($box);
