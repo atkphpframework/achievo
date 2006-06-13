@@ -2,7 +2,7 @@
 
 atkimport("atk.menu.atkplainmenu");
 
-class achievo_modern extends atkPlainMenu 
+class achievo_modern extends atkPlainMenu
 {
   function render()
   {
@@ -31,19 +31,19 @@ class achievo_modern extends atkPlainMenu
 
       return $page->render("Menu", true);
     }
-    else 
+    else
     {
       $oldmenu = &atknew('menu.achievo');
       return $oldmenu->render();
     }
   }
-  
+
   function getMenuItems($menu, $menutop)
   {
+    $menuitems = array();
     if (is_array($menu[$menutop]))
     {
       usort($menu[$menutop],array("atkplainmenu","menu_cmp"));
-      $menuitems = array();
       foreach ($menu[$menutop] as $menuitem)
       {
         $this->setEnabled($menuitem);
@@ -53,12 +53,16 @@ class achievo_modern extends atkPlainMenu
         {
           $menuitem['name'] = $this->getMenuTranslation($menuitem['name'],$menuitem['module']);
         }
+        if (!empty($menuitem['url']))
+        {
+          $menuitem['url'] = session_url($menuitem['url'], SESSION_NEW);
+        }
         $menuitems[] = $menuitem;
       }
     }
     return $menuitems;
   }
-  
+
   function addSubMenuForMenuItem($menu,&$menuitem)
   {
     // submenu
@@ -81,11 +85,15 @@ class achievo_modern extends atkPlainMenu
           {
             $menuitem['submenu'][$submenukey]['name'] = $this->getMenuTranslation($submenuitem['name'],$submenuitem['module']);
           }
+          if (!empty($submenuitem['url']))
+          {
+            $menuitem['submenu'][$submenukey]['url'] = session_url($submenuitem['url'], SESSION_NEW);
+          }
         }
       }
     }
   }
-  
+
   function setEnabled(&$menuitem)
   {
     if (is_array($menuitem["enable"]))
@@ -97,9 +105,9 @@ class achievo_modern extends atkPlainMenu
       }
       $menuitem["enable"]=$enabled;
     }
-    else 
+    else
       $enabled = $menuitem["enable"];
-      
+
     return ($menuitem["name"]==='-'?false:$enabled);
   }
 
