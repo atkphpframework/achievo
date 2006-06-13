@@ -1,27 +1,5 @@
 <?php
 
-function getThemes()
-{
-  $s = array();
-
-  // First look in the themes directory
-  $handle=opendir("themes");
-  while ($file = readdir($handle))
-    if ($file != "." && $file != ".." && $file != "CVS")  $s[]= $file;
-  closedir($handle);
-
-  // Then look in the atk backend directory
-  $handle=opendir("atk/themes");
-  while ($file = readdir($handle))
-    if ($file != "." && $file != ".." && $file != "CVS") $s[]= $file;
-  closedir($handle);
-
-  sort($s);
-
-  // return array with themes
-  return $s;
-}
-
 useattrib("atkdummyattribute");
 useattrib("atknumberattribute");
 useattrib("atkpasswordattribute");
@@ -32,7 +10,7 @@ class userprefs extends atkNode
 {
   function userprefs()
   {
-    $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE);
+    $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE|NF_TRACK_CHANGES);
 
     $this->add(new atkNumberAttribute("id", AF_PRIMARY|AF_HIDE));
     $this->add(new atkAttribute("userid", AF_HIDE));
@@ -41,7 +19,7 @@ class userprefs extends atkNode
       $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkPasswordAttribute("password",AF_OBLIGATORY));
     }
-    $themes = getThemes();
+    $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD|AF_NO_TRANSLATION));
     $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
 
@@ -53,9 +31,36 @@ class userprefs extends atkNode
     return "[userid]";
   }
 
+  function getThemes()
+  {
+    // Initialize the themelist
+    $themelist = array();
+
+    // First look in the themes directory, then look in the atk backend directory
+    foreach (array("themes", "atk/themes") as $themedir)
+    {
+      $handle = opendir($themedir);
+      while ($file = readdir($handle))
+      {
+        if (!in_array($file, array(".", "..", "CVS")))
+        {
+          $themelist[]= $file;
+        }
+      }
+      closedir($handle);
+    }
+
+    // Remove duplicae entries and sort the themelist alphabetically
+    $themelist = array_unique($themelist);
+    sort($themelist);
+
+    // Return array with themes
+    return $themelist;
+  }
+
   function postUpdate($record)
   {
-    global $g_user, $g_sessionManager, $g_securityManager;
+    global $g_user, $g_sessionManager, $g_securityManager, $ATK_VARS;
 
     if($record["id"]==$g_user["id"])
     {
@@ -68,11 +73,23 @@ class userprefs extends atkNode
       // will immediately start to use the new settings.
       $g_securityManager->reloadUser();
 
-      // Also, we must refresh the screen.
-      echo '<script language="javascript">';
-      echo 'parent.location = "index.php"';
-      echo '</script>';
-      exit;
+      // Also, we must refresh the screen if the theme or language is changed
+      if (($record["theme"] != $record["atkorgrec"]["theme"]) || ($record["lng"] != $record["atkorgrec"]["lng"]))
+      {
+        $loadscript = sprintf("top.window.location='index.php?atknodetype=%s&atkaction=edit&atkselector=%s.%s=%s';",
+                              $this->atknodetype(),
+                              $this->m_table,
+                              $this->primaryKeyField(),
+                              $ATK_VARS[$this->primaryKeyField()]);
+        echo '<script type="text/javascript">';
+        echo $loadscript;
+        echo '</script>';
+        exit();
+      }
+      else
+      {
+        return true;
+      }
     }
   }
 }
