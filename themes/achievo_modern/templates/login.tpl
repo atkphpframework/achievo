@@ -1,5 +1,5 @@
 {literal}
-<style>
+<style type="text/css">
 body
 {
 {/literal}
@@ -17,14 +17,18 @@ body
   {if $auth_max_loginattempts_exceeded}
     {$auth_max_loginattempts_exceeded}
   {else}
+    {$atksessionformvars}
     <table cellpadding="0" cellspacing="0" border="0"><tr>
     <td class="loginformLabel">{atktext username}:</td><td class="loginformField">{$userfield}</td>
     </tr><tr>
     <td class="loginformLabel">{atktext password}:</td><td class="loginformField"><input class="loginform" type="password" size="15" name="auth_pw" value=""></td>
     </tr><tr>
-    <td class="loginformLabel"></td><td><input class="button" type="submit" value="{atktext login}"></td>
+    <td class="loginformLabel"></td><td>
+    <input name="login" class="button" type="submit" value="{atktext login}">
+    {if $auth_enablepasswordmailer}<input name="login" class="button" type="submit" value="{atktext password_forgotten}">{/if}
+    </td>
     </tr></table>
-  {$atksessionformvars}
   {/if}
   </div>
+</form>
 </div>
