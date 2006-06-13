@@ -5,9 +5,10 @@
   {
     function adminLangSelectAttribute($name,$flags=0)
     {
-      $supportedlanguages = $this->getLanguagesTranslations();
-      sort($supportedlanguages);
-      $this->atkListAttribute($name, $supportedlanguages, $supportedlanguages, $flags);
+      $languagestranslations = $this->getLanguagesTranslations();
+      $supportedlanguages = $this->getSupportedLanguages();
+      array_multisort($languagestranslations, $supportedlanguages);
+      $this->atkListAttribute($name, $languagestranslations, $supportedlanguages, $flags|AF_NO_TRANSLATION);
     }
 
     function getLanguagesTranslations()
@@ -15,14 +16,13 @@
       $langs = $this->getSupportedLanguages();
       foreach ($langs as $lang)
       {
-        $translated[] = atktext('language_'.$lang);
+        $translated[] = atktext(array('language_'.$lang, $lang));
       }
       return $translated;
     }
 
     function edit($record='',$fielprefix='')
     {
-
       if (!$record[$this->fieldName()]) $record[$this->fieldName()] = $this->getDefaultLanguage();
       return parent::edit($record, $fieldprefix);
     }
@@ -47,13 +47,13 @@
       return parent::value2db($record);
     }
 
-    function storageType($mode){ return ADDTOQUERY|POSTSTORE; }
+    function storageType($mode)
+    {
+      return ADDTOQUERY|POSTSTORE;
+    }
 
     function store()
     {
-      global $ATK_VARS;
-      $page = &$this->m_ownerInstance->getPage();
-      $page->addContent("<script>top.window.location='index.php?atknodetype=".$this->m_ownerInstance->atknodetype()."&atkaction=edit&atkselector=".$this->m_ownerInstance->m_table.'.'.$this->m_ownerInstance->primaryKeyField()."={$ATK_VARS[$this->m_ownerInstance->primaryKeyField()]}"."'</script>");
       return true;
     }
   }
