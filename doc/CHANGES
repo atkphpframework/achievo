@@ -45,8 +45,7 @@ Changes in Achievo 1.2.2
 * Fixed the login problem where you would see a login box in the menu and
   top frame after logging in. This was caused by the menu and top pages
   not being requested through a session_url. [Guido]
-* Fixed the session not being recognized by the menu becaus it isn't called
-  through a session_url. [Guido]
+* Menuitem urls should be passed through session_url. [Guido]
 * Fixed the project selector list on top of the project menu not being
   populated sometimes. [Guido]
 * Updated the session expired screen using a relogin button instead of a
@@ -54,10 +53,30 @@ Changes in Achievo 1.2.2
 * Index.php now uses atkoutput instead of an evil(tm)(r)(c) echo() call
   to send the frameset document to the browser. [Guido]
 * Removed duplicate </html> tag. [Guido]
-* Moved html from hours node to templates to make Achievo better 
+* Moved html from hours node to templates to make Achievo better
   themable. [Boy]
-* Made top pass along centerpiece_links to top.tpl for those 
+* Made top pass along centerpiece_links to top.tpl for those
   that want to style their own centerpiece links. [Boy]
+* Fixed some html errors in the achievo_modern theme login template.
+  [Guido]
+* Partially fixed a problem where the loginform would keep posting the same
+  username and password regardless of wat you enter in the username and
+  password fields after having submitted the loginform once and submitting
+  it again when the achievo_modern theme is set to default. [Guido]
+* Sorted the list of languages in the user preferences language selector.
+  [Guido]
+* If "language_nl"-like language identifiers cannot be translated,
+  fallback to "nl" instead in the user preferences language selector.
+  [Guido]
+* Moved page refresh code from the language selector attribute to the
+  userprefs node. [Guido]
+* Optimized the getThemes function a little bit and moved it into the
+  userprefs node class. [Guido]
+* Changed the page refresh code so the userprefs edit page is loaded, not
+  the pim after refreshing (like the adminlangselectattribute's page
+  refresh code did). [Guido]
+* The page refresh code will now only be executed when the theme or
+  language is changed. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
