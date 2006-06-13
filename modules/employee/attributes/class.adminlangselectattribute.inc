@@ -1,13 +1,15 @@
 <?php
 
   useattrib('atklistattribute');
-  class adminLangSelectAttribute extends atkListAttribute 
+  class adminLangSelectAttribute extends atkListAttribute
   {
     function adminLangSelectAttribute($name,$flags=0)
     {
-      $this->atkListAttribute($name,$this->getLanguagesTranslations(),$this->getSupportedLanguages(),$flags);
+      $supportedlanguages = $this->getLanguagesTranslations();
+      sort($supportedlanguages);
+      $this->atkListAttribute($name, $supportedlanguages, $supportedlanguages, $flags);
     }
-    
+
     function getLanguagesTranslations()
     {
       $langs = $this->getSupportedLanguages();
@@ -17,24 +19,24 @@
       }
       return $translated;
     }
-    
+
     function edit($record='',$fielprefix='')
     {
-      
+
       if (!$record[$this->fieldName()]) $record[$this->fieldName()] = $this->getDefaultLanguage();
       return parent::edit($record, $fieldprefix);
     }
-    
+
     function getDefaultLanguage()
     {
       return atkLanguage::getUserLanguage();
     }
-    
+
     function getSupportedLanguages()
     {
       return atkLanguage::getSupportedLanguages();
     }
-    
+
     function value2db($record)
     {
       global $g_sessionManager;
@@ -44,13 +46,13 @@
       sessionStore('reload_page','true');
       return parent::value2db($record);
     }
-    
+
     function storageType($mode){ return ADDTOQUERY|POSTSTORE; }
 
     function store()
     {
       global $ATK_VARS;
-      $page = &$this->m_ownerInstance->getPage(); 
+      $page = &$this->m_ownerInstance->getPage();
       $page->addContent("<script>top.window.location='index.php?atknodetype=".$this->m_ownerInstance->atknodetype()."&atkaction=edit&atkselector=".$this->m_ownerInstance->m_table.'.'.$this->m_ownerInstance->primaryKeyField()."={$ATK_VARS[$this->m_ownerInstance->primaryKeyField()]}"."'</script>");
       return true;
     }
