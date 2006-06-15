@@ -90,5 +90,5 @@ function hideAllSubMenus()
 	}
 }
 {/literal}
-showSubMenu('{if $atkmenutop!=="main"}{$atkmenutop}{else}{$firstmenuitem}{/if}');
+showSubMenu('{if $atkmenutop!=="main"}{$atkmenutopname}{else}{$firstmenuitem}{/if}');
 </script>

@@ -20,12 +20,14 @@ class achievo_modern extends atkPlainMenu
       $page->register_script(atkconfig("atkroot")."atk/javascript/menuload.js");
 
       $ui = &atkinstance("atk.ui.atkui");
+      $atkmenutop=($_REQUEST['atkmenutop']?$_REQUEST['atkmenutop']:$atkmenutop);
 
       $box = $ui->renderBox(array("title"=>$this->getMenuTranslation($atkmenutop),
       "menuitems"=>$menuitems,
       'menutop'=>$atkmenutop,
       'g_menu'=>$g_menu,
-      'atkmenutop'=>($_REQUEST['atkmenutop']?$_REQUEST['atkmenutop']:$atkmenutop)),"menu");
+      'atkmenutop'=>$atkmenutop,
+      'atkmenutopname'=>$this->getMenuTopName($menuitems,$atkmenutop)),"menu");
 
       $page->addContent($box);
 
@@ -35,6 +37,14 @@ class achievo_modern extends atkPlainMenu
     {
       $oldmenu = &atknew('menu.achievo');
       return $oldmenu->render();
+    }
+  }
+
+  function getMenuTopName($menuitems,$menutop)
+  {
+    foreach ($menuitems as $menuitem)
+    {
+      if ($menuitem['id']==$menutop) return $menuitem['name'];
     }
   }
 
@@ -51,6 +61,7 @@ class achievo_modern extends atkPlainMenu
         $this->addSubMenuForMenuitem($menu,$menuitem);
         if ($menuitem['name']!=='-')
         {
+          $menuitem['id'] = $menuitem['name'];
           $menuitem['name'] = $this->getMenuTranslation($menuitem['name'],$menuitem['module']);
         }
         if (!empty($menuitem['url']))
