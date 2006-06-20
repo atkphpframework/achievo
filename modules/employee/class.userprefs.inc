@@ -42,7 +42,7 @@ class userprefs extends atkNode
       $handle = opendir($themedir);
       while ($file = readdir($handle))
       {
-        if (!in_array($file, array(".", "..", "CVS")))
+        if (!in_array($file, array(".", "..", "CVS")) && file_exists($themedir."/".$file."/themedef.inc"))
         {
           $themelist[]= $file;
         }
@@ -76,13 +76,13 @@ class userprefs extends atkNode
       // Also, we must refresh the screen if the theme or language is changed
       if (($record["theme"] != $record["atkorgrec"]["theme"]) || ($record["lng"] != $record["atkorgrec"]["lng"]))
       {
-        $loadscript = sprintf("top.window.location='index.php?atknodetype=%s&atkaction=edit&atkselector=%s.%s=%s';",
+        $reloadurl = session_url(sprintf("index.php?atknodetype=%s&atkaction=edit&atkselector=%s.%s=%s",
                               $this->atknodetype(),
                               $this->m_table,
                               $this->primaryKeyField(),
-                              $ATK_VARS[$this->primaryKeyField()]);
+                              $ATK_VARS[$this->primaryKeyField()]), SESSION_NEW);
         echo '<script type="text/javascript">';
-        echo $loadscript;
+        echo "top.window.location='$reloadurl';";
         echo '</script>';
         exit();
       }
