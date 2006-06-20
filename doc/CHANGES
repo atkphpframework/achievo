@@ -71,12 +71,14 @@ Changes in Achievo 1.2.2
 * Moved page refresh code from the language selector attribute to the
   userprefs node. [Guido]
 * Optimized the getThemes function a little bit and moved it into the
-  userprefs node class. [Guido]
+  userprefs node class. Themes without a themedef.inc file also won't
+  be included in the getThemes result anaymore. [Guido]
 * Changed the page refresh code so the userprefs edit page is loaded, not
   the pim after refreshing (like the adminlangselectattribute's page
   refresh code did). [Guido]
 * The page refresh code will now only be executed when the theme or
-  language is changed. [Guido]
+  language is changed and won't cause you to be logged out under certain
+  circumstances. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
