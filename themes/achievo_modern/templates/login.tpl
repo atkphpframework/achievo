@@ -14,7 +14,7 @@ body
 <form action="{$formurl}" method="post">
   <div id="loginform-title">{atktext login_form}</div>
   <div id="loginform-content">
-  {if $auth_max_loginattempts_exceeded}
+  {if isset($auth_max_loginattempts_exceeded)}
     {$auth_max_loginattempts_exceeded}
   {else}
     {$atksessionformvars}
