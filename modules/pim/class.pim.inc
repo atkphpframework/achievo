@@ -13,6 +13,7 @@
       $userpimitems = &atknew("module.pim.userpimitems");
       $user = getuser();
       $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
+      $disallowedpimitems = atkConfig("disallowedpimitems", array());
       $res = array();
       if(count($userDbItems)==0)
       {
@@ -30,8 +31,9 @@
         {
           foreach($item as $itemName => $itemContent)
           {
-            atkdebug("Check: ".$modname.'_'.$itemName);
-            if(in_array($modname.'_'.$itemName,$userItems))
+            $pimitemid = $modname.'_'.$itemName;
+            atkdebug("Check: ".$pimitemid);
+            if(in_array($pimitemid, $userItems) && !in_array($pimitemid, $disallowedpimitems))
             {
               $module = &getModule($modname);
               if (is_object($module))

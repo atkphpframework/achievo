@@ -71,6 +71,13 @@
           $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
         }
       }
+
+      // Remove disallowed pimitems from the list
+      $disallowedpimitems = atkConfig("disallowedpimitems", array());
+      foreach($disallowedpimitems as $disallowedpimitem)
+        if (array_key_exists($disallowedpimitem, $this->m_lookup))
+          unset($this->m_lookup[$disallowedpimitem]);
+
       $this->m_options = array_values($this->m_lookup);
       $this->m_values = array_keys($this->m_lookup);
 
