@@ -16,7 +16,7 @@ class employee extends person
   {
     global $ATK_VARS,$g_user;
 
-    $this->person("employee", NF_EDITAFTERADD);
+    $this->person("employee", NF_EDITAFTERADD|NF_IMPORT);
 
     // In employee edit screen, we hide most fields in the add screen.
     foreach (array_keys($this->m_attribList) as $attribname)
