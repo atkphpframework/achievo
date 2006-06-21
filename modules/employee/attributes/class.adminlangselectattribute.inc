@@ -21,7 +21,7 @@
       return $translated;
     }
 
-    function edit($record='',$fielprefix='')
+    function edit($record='',$fieldprefix='')
     {
       if (!$record[$this->fieldName()]) $record[$this->fieldName()] = $this->getDefaultLanguage();
       return parent::edit($record, $fieldprefix);
