@@ -37,6 +37,7 @@
 
       $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_FORCE_LOAD|AF_OBLIGATORY));
+      $this->add(new atkAttribute("description",AF_FORCE_LOAD|AF_OBLIGATORY));
 
       $this->setTable("role");
       $this->setOrder("role.name ASC");
