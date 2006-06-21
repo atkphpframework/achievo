@@ -207,8 +207,8 @@ class projectstats extends atkNode
     "month"=>substr($enddate,5,2),
     "day"=>substr($enddate,8,2)));
 
-    $startdateatt = new atkDateAttribute("viewstart","F d Y","d F Y", 0, date("Ymd"));
-    $enddateatt = new atkDateAttribute("viewend","F d Y","d F Y", 0, date("Ymd"));
+    $startdateatt = new atkDateAttribute("viewstart","","", 0, date("Ymd"));
+    $enddateatt = new atkDateAttribute("viewend","","", 0, date("Ymd"));
 
     $output = '<form action="dispatch.php" method="get">';
     $output.= session_form();

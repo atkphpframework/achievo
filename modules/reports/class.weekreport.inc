@@ -289,8 +289,8 @@ class weekreport extends atkNode
         $data[] = array(atktext("supervisor"),'<SELECT name="supervisor">'.$this->get_supervisors($supervisor).'</SELECT>');
       }    */
 
-      $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"));
-      $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"));
+      $startdateatt = new atkDateAttribute("startdate","","", 0, date("Ymd"));
+      $enddateatt = new atkDateAttribute("enddate","","", 0, date("Ymd"));
 
       $data[]= array(atktext("timespan"),$startdateatt->edit($dummyrec).' &nbsp;'.
                       atktext("until").
