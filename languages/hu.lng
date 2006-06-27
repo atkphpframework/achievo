@@ -253,7 +253,7 @@
   "menu_profile_admin" => "Biztonsági Profilok",
   "menu_projectactivityreport" => "Projectactivity", // Missing string!!!
   "menu_projectmanagement" => "Projekt-menedzsment",
-  "menu_projectstatus" => "Projectstatus", // Missing string!!!
+  "projectstatus" => "Projectstatus", // Missing string!!!
   "menu_project_admin" => "Projects", // Missing string!!!
   "menu_project_edit" => "Edit project", // Missing string!!!
   "menu_project_notesview" => "Projekt notesz",

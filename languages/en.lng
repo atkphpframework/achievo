@@ -270,7 +270,7 @@
   "menu_profile_admin" => "Security Profiles",
   "menu_projectactivityreport" => "Projectactivity",
   "menu_projectmanagement" => "Projects",
-  "menu_projectstatus" => "Projectstatus",
+  "projectstatus" => "Projectstatus",
   "menu_project_admin" => "Projects",
   "menu_project_edit" => "Edit project",
   "menu_project_notesview" => "Project notes",
@@ -599,7 +599,7 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
-  
+
   'lng'=>'Language',
   'language_bp'=>'Brazilian Portugese',
   'language_ca'=>'Catalan',

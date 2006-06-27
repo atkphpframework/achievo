@@ -269,7 +269,7 @@
   "menu_profile_admin" => "Beveiligings Profielen",
   "menu_projectactivityreport" => "Projectactiviteit",
   "menu_projectmanagement" => "Projecten",
-  "menu_projectstatus" => "Projectstatus",
+  "projectstatus" => "Projectstatus",
   "menu_project_admin" => "Projecten",
   "menu_project_edit" => "Bewerk project",
   "menu_project_notesview" => "Project notities",
@@ -598,9 +598,9 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
-  
+
   "lng"=>'Taal',
-  
+
   'language_bp'=>'Braziliaans Portugees',
   'language_ca'=>'Cataloons',
   'language_cs'=>'Tsjechisch',

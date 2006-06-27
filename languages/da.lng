@@ -256,7 +256,7 @@
   "menu_profile_admin" => "Sikkerhedsprofiler",
   "menu_projectactivityreport" => "Projektaktivitet",
   "menu_projectmanagement" => "Projekter",
-  "menu_projectstatus" => "Projektstatus",
+  "projectstatus" => "Projektstatus",
   "menu_project_admin" => "Projekter",
   "menu_project_edit" => "Rediger projekt",
   "menu_project_notesview" => "Projekt noter",

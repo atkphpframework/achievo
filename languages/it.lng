@@ -258,7 +258,7 @@
   "menu_profile_admin" => "Profili Sicurezza",
   "menu_projectactivityreport" => "Projectactivity", // Missing string!!!
   "menu_projectmanagement" => "Gestione Progetti",
-  "menu_projectstatus" => "Projectstatus", // Missing string!!!
+  "projectstatus" => "Projectstatus", // Missing string!!!
   "menu_project_admin" => "Progetti",
   "menu_project_edit" => "Modifica progetto",
   "menu_project_notesview" => "Note al progetto",

@@ -254,7 +254,7 @@
   "menu_profile_admin" => "Профили доступа",
   "menu_projectactivityreport" => "Projectactivity", // Missing string!!!
   "menu_projectmanagement" => "Проекты",
-  "menu_projectstatus" => "Projectstatus", // Missing string!!!
+  "projectstatus" => "Projectstatus", // Missing string!!!
   "menu_project_admin" => "Проекты",
   "menu_project_edit" => "Редактировать проект",
   "menu_project_notesview" => "Комментарии к проекту",

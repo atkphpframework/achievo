@@ -254,7 +254,7 @@
   "menu_profile_admin" => "Turvaprofiilit",
   "menu_projectactivityreport" => "Projectactivity", // Missing string!!!
   "menu_projectmanagement" => "Projektien hallinta",
-  "menu_projectstatus" => "Projectstatus", // Missing string!!!
+  "projectstatus" => "Projectstatus", // Missing string!!!
   "menu_project_admin" => "Projects", // Missing string!!!
   "menu_project_edit" => "Edit project", // Missing string!!!
   "menu_project_notesview" => "Projektin muistilappu",

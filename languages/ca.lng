@@ -253,7 +253,7 @@
   "menu_profile_admin" => "Perfils de Seguretat",
   "menu_projectactivityreport" => "Projectactivity", // Missing string!!!
   "menu_projectmanagement" => "Admin. Projectes",
-  "menu_projectstatus" => "Projectstatus", // Missing string!!!
+  "projectstatus" => "Projectstatus", // Missing string!!!
   "menu_project_admin" => "Projectes",
   "menu_project_edit" => "Editar projecte",
   "menu_project_notesview" => "Notes del projecte",
