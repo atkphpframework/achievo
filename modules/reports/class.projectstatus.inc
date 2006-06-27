@@ -245,7 +245,7 @@
       }
 
       // Render a box around the generated output
-      $boxedoutput = $ui->renderBox(array("title"=>$this->actionTitle('ratereport'), "content"=>$output));
+      $boxedoutput = $ui->renderBox(array("title"=>$this->actionTitle('report'), "content"=>$output));
 
       // Return the generated boxed output
       return $boxedoutput;
