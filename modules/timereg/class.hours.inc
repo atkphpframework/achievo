@@ -495,7 +495,7 @@ class hours extends atkNode
     if ($this->allowed("any_user"))
     {
       $db = &atkGetDb();
-      $users = $db->getRows("SELECT id, lastname, firstname FROM person WHERE role = 'employee' AND status = 'active'");
+      $users = $db->getRows("SELECT id, lastname, firstname FROM person WHERE role = 'employee' AND status = 'active' ORDER BY lastname");
       $res = '<select name="viewuser">';
       for ($i=0;$i<count($users);$i++)
       {
