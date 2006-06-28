@@ -8,32 +8,90 @@ useattrib("atkdateattribute");
 useattrib("atklistattribute");
 useattrib("atktextattribute");
 useattrib("atknumberattribute");
+useattrib("atkboolattribute");
 
 class todo extends atkNode
 {
   var $prioId   = array(1,2,3,4,5);
   var $prioName = array("highest","high","normal","low","lowest");
 
-  function todo()
+  function todo($name="todo")
   {
-    $this->atkNode("todo", NF_TRACK_CHANGES);
+    $this->atkNode($name, NF_TRACK_CHANGES|NF_MRA);
 
     $this->add(new atkNumberAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE|AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_OBLIGATORY|AF_SEARCHABLE));
+    $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_SEARCHABLE));
+    $this->add(new atkManyToOneRelation("contactid"    , "organization.contact",AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
-    $this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
+    $tmp_relation = new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE);
+    $tmp_relation->setDestinationFilter("(status='active' OR userid='[assigned_to.id]')");
+    $this->add($tmp_relation);
     $this->add(new atkDateAttribute("entrydate"        , "F d Y", "d F Y", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
     $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("closedate", "F d Y","d F Y", 0, 0));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
+    $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100)));
+    $this->add(new atkBoolAttribute("private"));
     $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+    if($name=="todo")
+      $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
+    $user = getUser();
+    if($name=="todo_history")
+    {
+      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner=".$user["id"]."))");
+    }
+    else 
+    {
+      $this->addFilter("(todo.private=0 OR (todo.private=1 and (todo.owner=".$user["id"]." OR todo.assigned_to=".$user["id"].")))");
+    }
+    $this->addSecurityMap("complete","edit");
     $this->setTable("todo");
     $this->setOrder("duedate, priority");
 
+  }
+  
+  function recordActions($rec,&$actions,&$mraactions)
+  {
+    $actions["complete"]= session_url(dispatch_url($this->atknodetype(),
+                                                        "completed",
+                                                        array("id"=>$record["id"])));
+    $mraactions[] = "mra_complete"; 
+  }
+
+  function preUpdate(&$rec)
+  {
+    if(($rec["completed"]==100 || $rec["status"]==5) && $rec["closedate"]["year"]=="" && $rec["closedate"]["month"]==0 && $rec["closedate"]["day"]==0)
+    {
+      
+      if($rec["status"]==5 && $rec["completed"]!=100) 
+      {
+        $rec["completed"]=100;
+      }
+      elseif($rec["completed"]==100 && $rec["status"]!=5)
+      {
+        $rec["status"]=5;
+      }
+      
+      $rec["closedate"]=array("year"=>date("Y"),
+                              "month"=>date("m"),
+                              "day"=>date("d"));
+    }
+    return true;
+  }
+
+
+  function action_complete()
+  {
+    //TODO COMPLETE ACTION, set status to complete, and update closedate
+  }
+  
+  function action_mra_complete()
+  {
+    
   }
 
   function initial_values()
@@ -78,7 +136,24 @@ class todo extends atkNode
      $result = $org;
      break;
    }
-   return $result;
+   return $result;  
+  }
+  
+  function completed_display($rec)
+  {
+    $percentage = $rec["completed"];
+    if($percentage>=75)
+    {
+      $color="green";
+    }
+    elseif($percentage>25 && $percentage<75)
+    {
+      $color="yellow";
+    }
+    else $color="red";
+    return '<div title="'.$percentage.'%"  style="height: 8px; width: 50px; border: 1px solid black; padding: 1px; text-align: left;">
+              <div style="height: 8px; width: '.$percentage.'%; background: '.$color.';"></div>
+            </div>';
   }
 
   function duedate_display($rec)
@@ -146,17 +221,21 @@ class todo extends atkNode
 
   function postAdd($rec)
   {
+   $db = &atkGetDb();
    // obtain some project info
    $assignTo = $rec["assigned_to"]["id"];
    $assigner = $rec["owner"]["id"];
    $pid      = $rec["projectid"]["id"];
 
    // get project name
-   $q       = "SELECT name FROM project WHERE id=$pid";
-   $db = &atkGetDb();
-   $r       = $db->getRows($q);
-   $project = $r[0]["name"];
-
+   $project="";
+   if($pid!="")
+   {
+     $q       = "SELECT name FROM project WHERE id='$pid'";
+     $r       = $db->getRows($q);
+     $project = $r[0]["name"];
+   }
+   
    // now get her/his email address
    $q  = "SELECT email, lastname, firstname, userid, id FROM person WHERE id IN ('$assignTo','".$assigner."')";
    $emails  = $db->getrows($q);
@@ -225,10 +304,16 @@ class todo extends atkNode
      $emails    = $db->getrows($query);
      $pid  = $rec["projectid"]["id"];
      // get project name
-     $query = "SELECT name FROM project WHERE id=$pid";
-     $res   = $db->getrows($query);
-     $project = $res[0]["name"];
-
+     $project="";
+     atk_var_dump($rec,"RECORD");
+     atk_var_dump($pid,"PROJECTID");
+     if($pid!="")
+     {
+       $query = "SELECT name FROM project WHERE id='$pid'";
+       $res   = $db->getrows($query);
+       $project = $res[0]["name"];
+     }
+     
      $body = text("todo").": ".$rec["title"]."\n";
      $body.= text("description").": \n".$rec["description"]."\n\n";
      $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";

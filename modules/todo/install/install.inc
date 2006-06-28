@@ -3,6 +3,6 @@
   $setup->installNode("todo.todo");
   $setup->installNode("todo.todo_history");
   
-  $setup->setVersion(1);
+  $setup->setVersion(2);
 
 ?>

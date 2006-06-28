@@ -23,9 +23,8 @@
   {
     function todo_history()
     {
-      $this->todo(); // call baseclass constructor, but with new name.
+      $this->todo("todo_history"); // call baseclass constructor, but with new name.
       $this->m_type = "todo_history";
-      
 
       $this->m_flags|= NF_READONLY;
       $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
@@ -48,16 +47,20 @@
 
     }
 
+
+
     function postUpdate($rec)
     {
       // do nothing. we need to define this dummy, otherwise todo::postUpdate
       // might be called, which creates another history item.
+      return true;
     }
 
     function postAdd($rec)
     {
       // do nothing. we need to define this dummy, otherwise todo::postAdd
       // might be called, which spams people about new todo's.
+      return true;
     }
 
   }
