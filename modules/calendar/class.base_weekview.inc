@@ -72,6 +72,8 @@
    */
     function getAppointments($user, $begindate, $enddate)
     {
+      atkimport("module.utils.dateutil");
+      
       // crosscomparison to match all appointments in range.
       $db = &atkGetDb();
 
@@ -112,28 +114,69 @@
       $recs = $db->getrows($querystring);
 
       // now add them to a nice array
-      for ($i=0;$i<count($recs);$i++)
+      for ($i=0,$_i=count($recs); $i<$_i; $i++)
       {
         $query->deAlias($recs[$i]);
         atkDataDecode($recs[$i]);
-
-        $year = substr($recs[$i]["startdate"],0,4);
-        $month = substr($recs[$i]["startdate"],5,2);
-        $day = substr($recs[$i]["startdate"],8,2);
-        $date = $year."-".$month."-".$day;
-
-        if ($recs[$i]["allday"] != 1)
-        {
-          $daypart = $this->daypart($recs[$i]["starttime"]);
-          $appointments[$date][$daypart][] = $recs[$i];
+                
+        $days = array();
+        //If the startdate is before the enddate, we have multiple days. We add the appointment
+        //for each day. If the startdate en enddate are the same, or startdate > enddate, we only
+        //add the appointment on the startdate.
+        $startdate = $this->_formatDate($recs[$i]["startdate"]);
+        $enddate = $this->_formatDate($recs[$i]["enddate"]);
+        
+        //If start is beyond end, the difference is negative.        
+        if(dateutil::date_diff($startdate,$enddate) > 0)        
+        { 
+          //returns dates in the format yyyymmdd, we want them to be in the format yyyy-mm-dd.         
+          $daysbetween = dateutil::daysBetween($startdate,$enddate);
+          
+          foreach($daysbetween as $date)          
+            $days[] = $this->_unformatDate($date['date']);          
         }
         else
         {
-          $appointments[$date]["allday"][] = $recs[$i];
+          $days[] = $recs[$i]["startdate"];
         }
+
+        
+        foreach($days as $date)
+        {        
+          if ($recs[$i]["allday"] != 1)
+          {
+            $daypart = $this->daypart($recs[$i]["starttime"]);
+            $appointments[$date][$daypart][] = $recs[$i];
+          }
+          else
+          {
+            $appointments[$date]["allday"][] = $recs[$i];
+          }
+        }        
       }
 
       return $appointments;
+    }
+    
+    /**
+     * Reformat a date in the format yyyy-mm-dd to the format yyyymmdd.     
+     *
+     * @param date In the format yyyy-mm-dd
+     * @return date in the format yyyymmdd 
+     */
+    function _formatDate($yyyy_mm_dd)
+    {
+      return str_replace("-","",$yyyy_mm_dd);
+    }
+    /**
+     * Reformat a date in the format yyyymmdd to the format yyyy-mm-dd.
+     *
+     * @param date In the format yyyymmdd 
+     * @return date in the format yyyy-mm-dd 
+     */
+    function _unformatDate($yyyymmdd)
+    {
+      return substr($yyyymmdd,0,4)."-".substr($yyyymmdd,4,2)."-".substr($yyyymmdd,6,2);      
     }
 
   /**
