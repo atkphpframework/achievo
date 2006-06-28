@@ -87,6 +87,8 @@ Changes in Achievo 1.3
   using the language file. [Guido]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed translation of the Reports > Projectstatus page title. [Guido]
+* Converted the role's description field into a multi-line text field.
+  [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
