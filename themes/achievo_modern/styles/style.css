@@ -320,9 +320,9 @@ INPUT.btn_saveandclose
 
 hr 
 {
-	border: none 0;
+  border: none 0;
   border-top: 1px dashed #666;
   height: 1px;/*whatever the total width of the border-top and border-bottom equal*/
-  margin-top; 4px;
+  margin-top: 4px;
   margin-bottom: 4px;
 }
