@@ -520,7 +520,7 @@
       }
     }
 
-     /**
+    /**
      * Are we in 'active' emps or 'archive' mode?
      */
     function getView()
@@ -558,6 +558,24 @@
       }
 
       return $handler->action_admin();
+    }
+
+    /**
+     * Edit action handler override
+     *
+     * Sets the Abbreviation attribute to readonly if the user doesn't have the changeabbreviation right
+     *
+     * @param atkEditHandler $handler
+     * @return string HTML
+     */
+    function action_edit(&$handler)
+    {
+      if (!$this->allowed("changeabbreviation"))
+      {
+        $abbrattr = &$this->getAttribute("abbreviation");
+        $abbrattr->addFlag(AF_READONLY);
+      }
+      return $handler->action_edit();
     }
 
     function adminFooter()
