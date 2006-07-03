@@ -22,6 +22,7 @@ Changes in Achievo 1.3
 + Added the ability to globaly disallow specific pim items to be used.
   [Guido]
 + Added description field to roles. [Guido]
+- Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
 * Fixed session problem with master gantt which in some cases would not
@@ -100,11 +101,10 @@ Changes in Achievo 1.3
     somebody else. Only the owner and assigned to will see it.
   * The admin screen has a new action completed, it will set the todo to 100%
     and status 'completed'
-- Removed duplicate Dayview link in the calendar Employeeview. [Guido]
-
-
-
-
+* Fixed 'SQL' error when using the todo or any related functionality when
+  logged in as administrator. [Guido]
+* Added "Change abbreviation" right to (dis)allow editing of a project's
+  abbreviation. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
