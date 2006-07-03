@@ -42,32 +42,32 @@ class todo extends atkNode
     $user = getUser();
     if($name=="todo_history")
     {
-      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner=".$user["id"]."))");
+      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner='".$user["id"]."'))");
     }
-    else 
+    else
     {
-      $this->addFilter("(todo.private=0 OR (todo.private=1 and (todo.owner=".$user["id"]." OR todo.assigned_to=".$user["id"].")))");
+      $this->addFilter("(todo.private=0 OR (todo.private=1 and (todo.owner='".$user["id"]."' OR todo.assigned_to='".$user["id"]."')))");
     }
     $this->addSecurityMap("complete","edit");
     $this->setTable("todo");
     $this->setOrder("duedate, priority");
 
   }
-  
+
   function recordActions($rec,&$actions,&$mraactions)
   {
     $actions["complete"]= session_url(dispatch_url($this->atknodetype(),
                                                         "completed",
                                                         array("id"=>$record["id"])));
-    $mraactions[] = "mra_complete"; 
+    $mraactions[] = "mra_complete";
   }
 
   function preUpdate(&$rec)
   {
     if(($rec["completed"]==100 || $rec["status"]==5) && $rec["closedate"]["year"]=="" && $rec["closedate"]["month"]==0 && $rec["closedate"]["day"]==0)
     {
-      
-      if($rec["status"]==5 && $rec["completed"]!=100) 
+
+      if($rec["status"]==5 && $rec["completed"]!=100)
       {
         $rec["completed"]=100;
       }
@@ -75,7 +75,7 @@ class todo extends atkNode
       {
         $rec["status"]=5;
       }
-      
+
       $rec["closedate"]=array("year"=>date("Y"),
                               "month"=>date("m"),
                               "day"=>date("d"));
@@ -88,10 +88,10 @@ class todo extends atkNode
   {
     //TODO COMPLETE ACTION, set status to complete, and update closedate
   }
-  
+
   function action_mra_complete()
   {
-    
+
   }
 
   function initial_values()
@@ -136,9 +136,9 @@ class todo extends atkNode
      $result = $org;
      break;
    }
-   return $result;  
+   return $result;
   }
-  
+
   function completed_display($rec)
   {
     $percentage = $rec["completed"];
@@ -235,7 +235,7 @@ class todo extends atkNode
      $r       = $db->getRows($q);
      $project = $r[0]["name"];
    }
-   
+
    // now get her/his email address
    $q  = "SELECT email, lastname, firstname, userid, id FROM person WHERE id IN ('$assignTo','".$assigner."')";
    $emails  = $db->getrows($q);
@@ -313,7 +313,7 @@ class todo extends atkNode
        $res   = $db->getrows($query);
        $project = $res[0]["name"];
      }
-     
+
      $body = text("todo").": ".$rec["title"]."\n";
      $body.= text("description").": \n".$rec["description"]."\n\n";
      $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
