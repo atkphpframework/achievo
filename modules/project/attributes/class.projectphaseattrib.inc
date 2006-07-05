@@ -377,5 +377,15 @@ class atkProjectPhaseAttribute extends atkAttribute
   {
     return $recA["phaseid"]["phaseid"]==$recB["phaseid"]["phaseid"];
   }
+
+  /**
+   * Check if a record has an empty value for this attribute.
+   * @param array $record The record that holds this attribute's value.
+   * @return boolean
+   */
+  function isEmpty($record)
+  {
+    return (!isset($record[$this->fieldName()]["phaseid"])||$record[$this->fieldName()]["phaseid"]=="");
+  }
 }
 ?>
