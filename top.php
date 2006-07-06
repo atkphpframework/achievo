@@ -51,8 +51,11 @@
   if ($g_user["name"]!="administrator")
   {
     $centerpiece = $centerpiecelinks['pim'] = href(dispatch_url("pim.pim", "pim"), atktext("pim", "core"), SESSION_NEW, false, 'target="main"');
-    $centerpiece.= '&nbsp; &nbsp; &nbsp;';
-    $centerpiece.= $centerpiecelinks['userprefs'] = href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), atktext("userprefs", "core"), SESSION_NEW, false, 'target="main"');
+    if (is_allowed("employee.userprefs", "edit"))
+    {
+      $centerpiece.= '&nbsp; &nbsp; &nbsp;';
+      $centerpiece.= $centerpiecelinks['userprefs'] = href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), atktext("userprefs", "core"), SESSION_NEW, false, 'target="main"');
+    }
   }
   else
   {
