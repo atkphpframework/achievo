@@ -92,11 +92,15 @@
 
       $res = array();
 
-      for($i=0, $_i=count($recordset); $i<$_i; $i++)
+      $node = &atkGetNode($nodetype);
+      if ($node->allowed("view"))
       {
-        $item["title"] = $node->descriptor($recordset[$i]);
-        $item["url"] = dispatch_url($nodetype, "view", array("atkselector"=>$node->primaryKey($recordset[$i])));
-        $res[] = $item;
+        for($i=0, $_i=count($recordset); $i<$_i; $i++)
+        {
+          $item["title"] = $node->descriptor($recordset[$i]);
+          $item["url"] = dispatch_url($nodetype, "view", array("atkselector"=>$node->primaryKey($recordset[$i])));
+          $res[] = $item;
+        }
       }
 
       return $res;
