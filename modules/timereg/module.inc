@@ -15,7 +15,7 @@
     {
       // Build the timereg menu
       $this->menuitem("time_registration", dispatch_url("timereg.hours", "admin"), "main", array("timereg.hours", "admin"), 100);
-      $this->menuitem("hours_admin", dispatch_url("timereg.hours", "admin"),"time_registration",true);
+      $this->menuitem("hours_admin", dispatch_url("timereg.hours", "admin"), "time_registration", array("timereg.hours", "admin"));
       $this->menuitem("-","","time_registration");
       $this->menuitem("hours_lock", dispatch_url("timereg.hours_lock", "admin"),"time_registration",array("timereg.hours_lock","admin"));
       $this->menuitem("hours_approve", dispatch_url("timereg.hours_approve", "admin"),"time_registration",array("timereg.hours_approve","admin"));
