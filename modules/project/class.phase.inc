@@ -75,15 +75,39 @@
       return "[name]";
     }
 
-    function name_display($record, $mode="list")
+
+    function name_display($record, $mode)
     {
-      $attr = &$this->getAttribute('name');
-      $result = $attr->display($record, $mode);
-      if ($this->allowed('edit', $record))
+      // Do not return a html link in plain or csv mode or select screen
+      if (($mode=="plain") || ($mode=="csv"))
+        return $record["name"];
+
+      // Special select handling
+      if (atkArrayNvl($this->m_postvars,"atkaction")=="select")
       {
-        $result = href(dispatch_url("project.phase", "edit", array("atkselector"=>"phase.id='".$record["id"]."'")), $result, SESSION_NESTED);
+        // Decode the given target url
+        $url = atkArrayNvl($this->m_postvars, "atktarget");
+        $url = atkurldecode($url);
+        $url = str_replace("%5B", "[", $url);
+        $url = str_replace("%5D", "]", $url);
+        $url = str_replace("_15B", "[", $url);
+        $url = str_replace("_15D", "]", $url);
+
+        // Parse it using the record
+        atkimport("atk.utils.atkstringparser");
+        $parser = new atkStringParser($url);
+        $url = $parser->parse($record);
+
+        // Return a link
+        return href($url, $record["name"], SESSION_NESTED);
       }
-      return $result;
+      else
+      {
+        // Make all project links clickable
+        $defaultaction = $this->allowed("edit") ? "edit" : "view";
+        $url = dispatch_url("project.phase", $defaultaction, array("atkselector"=>"phase.id='{$record["id"]}'"));
+        return href($url, $record["name"], SESSION_NESTED);
+      }
     }
 
     function initial_values()

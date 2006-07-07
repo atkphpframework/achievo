@@ -101,12 +101,35 @@
     function name_display($record, $mode)
     {
       // Do not return a html link in plain or csv mode or select screen
-      if (($mode=="plain") || ($mode=="csv") || (isset($this->m_postvars["atkaction"]) && $this->m_postvars["atkaction"]=="select"))
+      if (($mode=="plain") || ($mode=="csv"))
         return $record["name"];
 
-      // Make all project links clickable
-      $defaultaction = $this->allowed("edit") ? "edit" : "view";
-      return href(dispatch_url("project.project", $defaultaction, array("atkselector"=>"project.id='{$record["id"]}'")), $record["name"], SESSION_NESTED);
+      // Special select handling
+      if (atkArrayNvl($this->m_postvars,"atkaction")=="select")
+      {
+        // Decode the given target url
+        $url = atkArrayNvl($this->m_postvars, "atktarget");
+        $url = atkurldecode($url);
+        $url = str_replace("%5B", "[", $url);
+        $url = str_replace("%5D", "]", $url);
+        $url = str_replace("_15B", "[", $url);
+        $url = str_replace("_15D", "]", $url);
+
+        // Parse it using the record
+        atkimport("atk.utils.atkstringparser");
+        $parser = new atkStringParser($url);
+        $url = $parser->parse($record);
+
+        // Return a link
+        return href($url, $record["name"], SESSION_NESTED);
+      }
+      else
+      {
+        // Make all project links clickable
+        $defaultaction = $this->allowed("edit") ? "edit" : "view";
+        $url = dispatch_url("project.project", $defaultaction, array("atkselector"=>"project.id='{$record["id"]}'"));
+        return href($url, $record["name"], SESSION_NESTED);
+      }
     }
 
     function graph_topprojects($params)
