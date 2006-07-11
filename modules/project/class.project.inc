@@ -28,7 +28,7 @@
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
-      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_HIDE_LIST, 10));
+      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE, 10));
 
       $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $attr->setDestinationFilter("status='active'");
@@ -183,12 +183,29 @@
 
     function descriptor_def()
     {
-      return "[name]";
+      return "[abbreviation] [name]";
+    }
+
+    function getInitialProjectcode()
+    {
+      return "";
     }
 
     function initial_values()
     {
-      return array("startdate"=>array("year"=>date("Y"),
+      $projectnumbermodule = atkConfig("projectnumbermodule");
+      if (!empty($projectnumbermodule))
+      {
+        $numberingmodule = &getModule($projectnumbermodule);
+        $initialprojectcode = $numberingmodule->getInitialProjectcode();
+      }
+      else
+      {
+        $initialprojectcode = $this->getInitialProjectcode();
+      }
+
+      return array("abbreviation" => $initialprojectcode,
+                   "startdate"=>array("year"=>date("Y"),
                                       "month"=>date("m"),
                                       "day"=>date("d")),
                    "enddate"=>array("year"=>(date("Y")+1),
