@@ -16,7 +16,7 @@
   // Translation Tool.
   //
   $nl = array(
-  "abbreviation" => "Afkorting",
+  "abbreviation" => "Projectcode",
   "active" => "Actief",
   "activity" => "Activiteit",
   "activitydate" => "Datum",
@@ -106,8 +106,8 @@
   "country" => "Land",
   "current_balance" => "Huidig saldo",
   "current_planning" => "Huidige planning",
-  "customer" => "Klant",
-  "customerid" => "Klant",
+  "customer" => "Opdrachtgever",
+  "customerid" => "Opdrachtgever",
   "day" => "Dag",
   "dayview" => "Dagoverzicht",
   "deactivate" => "Deactiveren",
