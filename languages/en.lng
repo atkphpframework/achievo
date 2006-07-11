@@ -17,7 +17,7 @@
   // Translation Tool.
   //
   $en = array(
-  "abbreviation" => "Abbreviation",
+  "abbreviation" => "Projectcode",
   "active" => "Active",
   "activity" => "Activity",
   "activitydate" => "Date",
