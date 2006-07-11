@@ -153,10 +153,10 @@ class hours extends atkNode
     global $g_sessionManager,$g_user;
 
     // weekview and viewdate are variables that we need to remember..
-    $this->m_weekview = $g_sessionManager->pageVar("weekview");
+    $this->m_weekview = $this->processGlobalVar("weekview");
+    $this->m_viewdate = $this->processGlobalVar("viewdate");
+    $this->m_user = $this->processGlobalVar("viewuser");
 
-    $this->m_viewdate = $g_sessionManager->pageVar("viewdate");
-    $this->m_user = $g_sessionManager->pageVar("viewuser");
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
     {
       $this->m_viewdate = sprintf("%04d-%02d-%02d", $this->m_viewdate["year"], $this->m_viewdate["month"],$this->m_viewdate["day"]);
@@ -202,6 +202,16 @@ class hours extends atkNode
     $this->setOrder("hours.id"); // Sort by order of input..
 
     $this->setTable("hours","hours");
+  }
+
+  function processGlobalVar($name, $value="")
+  {
+    global $g_sessionManager;
+    $session = &$g_sessionManager->getSession();
+    $sessionvarid = "timereg_hours_$name";
+    if (empty($value) && isset($_REQUEST[$name])) $value = $_REQUEST[$name];
+    if (!empty($value)) $session[$sessionvarid] = $value;
+    return $session[$sessionvarid];
   }
 
   function descriptor(&$record)
