@@ -74,8 +74,8 @@
       $this->atkNode("schedule", NF_ADD_LINK|NF_EDITAFTERADD);
 
       $this->add(new atkNumberAttribute("id"              , AF_AUTOKEY));
-      $this->add(new atkDateAttribute("startdate"  , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
-      $this->add(new atkDateAttribute("enddate"    , "F d Y","d F Y", 0, 0 ,AF_OBLIGATORY));
+      $this->add(new atkDateAttribute("startdate"  , "","", 0, 0 ,AF_OBLIGATORY));
+      $this->add(new atkDateAttribute("enddate"    , "","", 0, 0 ,AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("starttime"  , 8, 24, array("00","30"), $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime"    , 8, 24, array("00","30"), $default_end_time, 0));
       $this->add(new atkBoolAttribute("allday"));
@@ -340,7 +340,7 @@
       $recs["viewdate"]["day"] = $day;
       $recs["viewdate"]["month"] = $month;
       $recs["viewdate"]["year"] = $year;
-      $dateattrib = new atkDateAttribute("viewdate"  , "F d Y","d F Y", 0, 0);
+      $dateattrib = new atkDateAttribute("viewdate"  , "","", 0, 0);
       $form .= $dateattrib->edit($recs,"","");
       $form .= "<br>";
       $form .= "&nbsp;<br><input type='submit' value='".atktext("refresh")."'>\n";

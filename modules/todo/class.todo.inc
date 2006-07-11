@@ -27,9 +27,9 @@ class todo extends atkNode
     $tmp_relation = new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE);
     $tmp_relation->setDestinationFilter("(status='active' OR userid='[assigned_to.id]')");
     $this->add($tmp_relation);
-    $this->add(new atkDateAttribute("entrydate"        , "F d Y", "d F Y", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
-    $this->add(new atkDateAttribute("duedate"          , "F d Y","d F Y", 0, 0, AF_OBLIGATORY));
-    $this->add(new atkDateAttribute("closedate", "F d Y","d F Y", 0, 0));
+    $this->add(new atkDateAttribute("entrydate"        , "", "", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("duedate"          , "","", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("closedate", "","", 0, 0));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
     $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100)));

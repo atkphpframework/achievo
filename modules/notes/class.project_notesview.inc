@@ -18,7 +18,7 @@ class project_notesview extends atkNode
     $this->add(new atkAttribute("name"                              , AF_READONLY));
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description" ,TEXT_LARGE, AF_READONLY));
-    $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0 , AF_READONLY|AF_HIDE_LIST));
+    $this->add(new atkDateAttribute("startdate","","",0,0 , AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkOneToManyRelation("notes","notes.project_notes","projectid", AF_HIDE_LIST));
 
     $this->addFilter("project.status","active");

@@ -19,7 +19,7 @@ class project_todoview extends atkNode
     //$this->add(new atkManyToOneRelation("customer","organization.organization"       , AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("coordinator","employee.employee", AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description"                   , TEXT_LARGE, AF_READONLY));
-    $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0 , AF_READONLY|AF_HIDE_LIST));
+    $this->add(new atkDateAttribute("startdate","","",0,0 , AF_READONLY|AF_HIDE_LIST));
     $this->add(new atkOneToManyRelation("todo","todo.todo","projectid"  , AF_HIDE_LIST));
 
     $this->addFilter("project.status","active");

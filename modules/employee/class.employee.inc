@@ -34,7 +34,7 @@ class employee extends person
     }
 
     $this->addFilter("person.role='employee'");
-    $this->add(new atkDateAttribute("birthdate","F d Y","d F Y", 0, date("Ymd"), AF_HIDE_LIST));
+    $this->add(new atkDateAttribute("birthdate","","", 0, date("Ymd"), AF_HIDE_LIST));
 
     $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST), "finance");
     $this->add(new atkAttribute("socialsecuritynumber", AF_HIDE_LIST), "finance");

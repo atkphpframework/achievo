@@ -49,8 +49,8 @@
       // records on store, so template must be stored after phase_activity.
       $this->add(new phasetemplateAttribute("template","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_EDIT));
 
-      $this->add(new atkDateAttribute("startdate", "F d Y", "d F Y"));
-      $this->add(new atkDateAttribute("enddate", "F d Y", "d F Y"));
+      $this->add(new atkDateAttribute("startdate", "", ""));
+      $this->add(new atkDateAttribute("enddate", "", ""));
 
       // deliverable dependency
       $depends = &$this->add(new atkManyToOneRelation("dependsondeliverable", "project.deliverable"));

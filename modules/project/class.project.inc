@@ -72,8 +72,8 @@
 
       $this->add(new atkBoolAttribute("alwaysvisibleintimereg", AF_HIDE_LIST|AF_HIDE_ADD), "planning");
       $this->add(new atkDummyAttribute("separator", "<br><hr><br>", AF_HIDE_LIST|AF_HIDE_ADD), "planning");
-      $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
-      $this->add(new atkDateAttribute("enddate","F d Y","d F Y",0,0,AF_HIDE_ADD), "planning");
+      $this->add(new atkDateAttribute("startdate","","",0,0,AF_HIDE_ADD), "planning");
+      $this->add(new atkDateAttribute("enddate","","",0,0,AF_HIDE_ADD), "planning");
 
       $this->add(new atkOneToManyRelation("deliverables", "project.deliverable", "project_id", AF_HIDE_LIST), "planning");
 

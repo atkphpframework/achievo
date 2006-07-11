@@ -114,7 +114,7 @@ class to_date extends atkDateAttribute
 {
   function to_date()
   {
-    $this->atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_NO_LABEL|AF_HIDE);
+    $this->atkDateAttribute("todate", "","", 0, date("Ymd"), AF_NO_LABEL|AF_HIDE);
   }
 
   function load() { return array();}
@@ -176,7 +176,7 @@ class hours extends atkNode
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
-    $this->add(new atkDateAttribute("activitydate","F d Y","d F Y", 0, (atkconfig("timereg_allowfuture", false)?0:date("Ymd")), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
+    $this->add(new atkDateAttribute("activitydate","","", 0, (atkconfig("timereg_allowfuture", false)?0:date("Ymd")), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)));
     $this->add(new to_date());
 
     // force_load flag is set for userid, since several features rely on the
@@ -486,7 +486,7 @@ class hours extends atkNode
   function getDateJumper()
   {
     $dummy_rec = array("viewdate"=>$this->getInitialDate());
-    $datebox = new atkDateAttribute("viewdate","F d Y","d F Y",0, date("Ymd"),AF_OBLIGATORY);
+    $datebox = new atkDateAttribute("viewdate","","",0, date("Ymd"),AF_OBLIGATORY);
     return $datebox->edit($dummy_rec);
   }
 
@@ -1018,7 +1018,7 @@ class hours extends atkNode
       if ($this->m_insertmode=="multi")
       {
         $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
-        $toDate = new atkDateAttribute("todate", "F d Y","d F Y", 0, date("Ymd"), AF_OBLIGATORY);
+        $toDate = new atkDateAttribute("todate", "","", 0, date("Ymd"), AF_OBLIGATORY);
 
         $res.= " ".atktext("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
         $res.= '<input type="hidden" name="'.$prefix.'activitydate[multi]" value="1">';

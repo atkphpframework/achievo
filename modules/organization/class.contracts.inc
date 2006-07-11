@@ -50,9 +50,9 @@ class contracts extends atkNode
     $this->add($attr);
 
     $this->add(new atkCurrencyAttribute("period_price", AF_HIDE_LIST,13,"",2));
-    $this->add(new atkDateAttribute("startdate","F d Y","d F Y", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->add(new atkDateAttribute("startdate","","", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
-    $this->add(new atkDateAttribute("enddate","F d Y","d F Y", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("enddate","","", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
     $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
 

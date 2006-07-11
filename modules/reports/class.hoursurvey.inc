@@ -308,8 +308,8 @@
         $data[] = array('<hr>');
 
 
-        $startdateatt = new atkDateAttribute("startdate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
-        $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y", 0, date("Ymd"),AF_OBLIGATORY);
+        $startdateatt = new atkDateAttribute("startdate","","", 0, date("Ymd"),AF_OBLIGATORY);
+        $enddateatt = new atkDateAttribute("enddate","","", 0, date("Ymd"),AF_OBLIGATORY);
 
         $timespan='<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
                   atktext("until").'&nbsp; </td><td align="right">'.$enddateatt->edit($dummyrec).'</td></tr></table>';

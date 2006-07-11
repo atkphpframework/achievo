@@ -35,7 +35,7 @@
     {
       $this->atkNode("holidays");
 
-      $this->add(new atkDateAttribute("holiday_date", "F d Y","d F Y", 0, 0, AF_PRIMARY));
+      $this->add(new atkDateAttribute("holiday_date", "","", 0, 0, AF_PRIMARY));
       $this->add(new atkAttribute("description", AF_OBLIGATORY));
 
       $this->setTable("holidays");

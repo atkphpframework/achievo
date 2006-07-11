@@ -18,8 +18,8 @@ class usercontracts extends atkNode
     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY|AF_OBLIGATORY));
     $this->add(new atkNumberAttribute("uc_hours", AF_OBLIGATORY, 3,2));
-    $this->add(new atkDateAttribute("startdate","F d Y","d F Y",0,0, AF_OBLIGATORY));
-    $this->add(new atkDateAttribute("enddate", "F d Y","d F Y"));
+    $this->add(new atkDateAttribute("startdate","","",0,0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("enddate", "",""));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, 0));
     $this->add(new atkMultiSelectAttribute("workingdays",array("mon", "tue","wed","thu","fri","sat","sun"),array(1,2,3,4,5,6,0),AF_HIDE_LIST));
     $this->setTable("usercontract");
