@@ -564,8 +564,7 @@ class hours extends atkNode
       $total += $time;
     }
 
-    $output.= $prevnextlinks;
-    $output.= $this->weekviewHeader($weekdates, $viewtime);
+    $output = $this->weekviewHeader($weekdates, $viewtime);
 
     $weekdata = array();
 
