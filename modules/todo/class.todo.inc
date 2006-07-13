@@ -32,7 +32,7 @@ class todo extends atkNode
     $this->add(new atkDateAttribute("closedate", "","", 0, 0));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
-    $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100)));
+    $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100), AF_NO_TRANSLATION));
     $this->add(new atkBoolAttribute("private"));
     $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE|AF_OBLIGATORY));
@@ -48,7 +48,7 @@ class todo extends atkNode
     {
       $this->addFilter("((todo.private=0) OR (todo.private is null) OR (todo.private=1 and (todo.owner='".$user["id"]."' OR todo.assigned_to='".$user["id"]."')))");
     }
-    $this->addSecurityMap("complete","edit");
+    $this->addSecurityMap(array("complete", "mra_complete"),"edit");
     $this->setTable("todo");
     $this->setOrder("duedate, priority");
 
@@ -56,10 +56,8 @@ class todo extends atkNode
 
   function recordActions($rec,&$actions,&$mraactions)
   {
-    $actions["complete"]= session_url(dispatch_url($this->atknodetype(),
-                                                        "completed",
-                                                        array("id"=>$record["id"])));
-    $mraactions[] = "mra_complete";
+    if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("id"=>$rec["id"])));
+    if ($this->allowed("mra_complete")) $mraactions[] = "mra_complete";
   }
 
   function preUpdate(&$rec)
@@ -86,12 +84,14 @@ class todo extends atkNode
 
   function action_complete()
   {
-    //TODO COMPLETE ACTION, set status to complete, and update closedate
+    /** @todo COMPLETE ACTION, set status to complete, and update closedate */
+    $this->redirect(); // void implementation
   }
 
   function action_mra_complete()
   {
-
+    /** @todo MRA_COMPLETE ACTION, set statusses to complete, and update closedates */
+    $this->redirect(); // void implementation
   }
 
   function initial_values()
