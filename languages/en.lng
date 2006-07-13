@@ -621,6 +621,10 @@
   'language_sk'=>'Slovak',
   'language_sv'=>'Swedish',
   'language_zh'=>'Chinese',
+  "contactid"=>"Contactperson",
+  "closedate"=>"Close date",
+  "private"=>"Private;",
+  "complete"=>"Complete",
 
 );
 
