@@ -46,7 +46,7 @@ class todo extends atkNode
     }
     else
     {
-      $this->addFilter("(todo.private=0 OR (todo.private=1 and (todo.owner='".$user["id"]."' OR todo.assigned_to='".$user["id"]."')))");
+      $this->addFilter("((todo.private=0) OR (todo.private is null) OR (todo.private=1 and (todo.owner='".$user["id"]."' OR todo.assigned_to='".$user["id"]."')))");
     }
     $this->addSecurityMap("complete","edit");
     $this->setTable("todo");

@@ -16,7 +16,7 @@
     $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
     $actions["complete"] = "dispatch.php?atknodetype=todo.todo&atkaction=completed&atkselector=[pk]";
 
-    $recs = $todonode->selectDb("assigned_to='".$userid."' AND assigned_to <> 0  AND (private=0 OR (private=1 and owner=".$userid."))");
+    $recs = $todonode->selectDb("assigned_to='".$userid."' AND assigned_to <> 0  AND ((private=0) OR (private is null) OR (private=1 and owner=".$userid."))");
     $todo_assignedtome = atktext("pim_assignedtoyou").":<br>";
     if (count($recs)>0)
     {
