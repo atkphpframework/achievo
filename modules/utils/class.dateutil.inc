@@ -53,16 +53,26 @@
       return dateutil::str2arr(dateutil::stamp2str($timestamp));
     }
 
+    function monthlist()
+    {
+      return array(1=>"january", 2=>"february", 3=>"march", 4=>"april", 5=>"may", 6=>"june", 7=>"july", 8=>"august", 9=>"september", 10=>"october", 11=>"november", 12=>"december");
+    }
+
     function monthname($monthnumber)
     {
-      $months = array("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
-      return $months[$monthnumber-1];
+      $months = dateutil::monthlist();
+      return $months[$monthnumber];
+    }
+
+    function short_monthlist()
+    {
+      return array(1=>"jan", 2=>"feb", 3=>"mar", 4=>"apr", 5=>"may", 6=>"jun", 7=>"jul", 8=>"aug", 9=>"sep", 10=>"oct", 11=>"nov", 12=>"dec");
     }
 
     function short_monthname($monthnumber)
     {
-      $months = array("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec");
-      return $months[$monthnumber-1];
+      $months = dateutil::short_monthlist();
+      return $months[$monthnumber];
     }
 
     /*
@@ -88,16 +98,16 @@
       if ($weekday==0) $weekday=7;
       return date("Ymd" ,$viewtime-(86400*($weekday-7)));
     }
-    
+
     /**
-     * Calculates the weeknumber, startdate/enddate of the week for each week 
+     * Calculates the weeknumber, startdate/enddate of the week for each week
      * within the passed date range.
      *
      * @return array Array containing arrays like "week"=>weeknumber,"startdate"=>startdate,
      * "enddate"=>enddate
      */
     function weeksBetween($strstart, $strend)
-    {      
+    {
       // Initialize the weekdata array
       $weekdata = array();
 
@@ -126,10 +136,10 @@
         }
       }
 
-      // Return the array containing the weekid, start- and enddate for each week within the given from and to dates     
-      return $weekdata;    
+      // Return the array containing the weekid, start- and enddate for each week within the given from and to dates
+      return $weekdata;
     }
-    
+
     /**
      * Calculates the the date for each of the days between start- and enddate.
      * @param string $strstart Startdate in the format yyyymmdd
@@ -137,27 +147,27 @@
      * @return array Array containing arrays like "date"=>date
      */
     function daysBetween($strstart, $strend)
-    {      
+    {
       // Initialize the weekdata array
-      $daydata = array();    
-  
+      $daydata = array();
+
       // First fill the weeks and start/end dates..
       $startstamp = dateUtil::str2stamp($strstart);
       $endstamp   = dateUtil::str2stamp($strend);
-  
+
       // Calculate the number of days between the selected start and end date
       $nrofdays = dateUtil::date_diff($strstart, $strend);
-  
+
       // Loop through the days, starting at the day selected as "from"
       for ($i = 0; $i <= $nrofdays; $i++)
       {
         // Calculate the current day depending on the startdate and iterator
         $curstamp = $startstamp + (ONEDAY * $i);
-  
+
         $key = date("Ymd",$curstamp);
         $daydata[$key]["date"] = $key;
       }
-  
+
       // Return the array containing the dayid, and date for each day within the given from and to dates
       return $daydata;
     }
