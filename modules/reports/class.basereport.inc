@@ -164,13 +164,14 @@
 
       // Register the stylesheet
       $this->addStyle("style.css");
+      $page->register_style(moduleDir("reports")."style/printablereport.css", "print");
 
       // Render a box around all elements and put them in an array
       $boxedblocks = array();
-      $boxedblocks[] = $ui->renderBox(array("title"=>$this->text('parameters'), "content"=>$parameterbar));
+      $boxedblocks[] = '<div class="parameterbar">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>$parameterbar)).'</div>';
       foreach ($contentelements as $titlekey => $content)
       {
-        $boxedblocks[] = $ui->renderBox(array("title"=>$titlekey, "content"=>$content));
+        $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$titlekey, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
       }
 
       // Merge the boxed blocks into an actionpage template and add the result to the page

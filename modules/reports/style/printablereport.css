@@ -1,0 +1,11 @@
+.parameterbar, .stacktrace_end{
+  display: none;
+}
+
+.contentblock{
+  visibility: hidden;
+}
+
+.content{
+  visibility: visible;
+}
