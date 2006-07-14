@@ -28,7 +28,7 @@ class organization extends atkNode
 
     $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
-    $this->add(new atkDummyAttribute("visitheader", "<B>".atktext("organization_visitaddress", "organization")."<B>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
+    $this->add(new atkDummyAttribute("visitheader", "<b>".atktext("organization_visitaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
 
     // TODO FIXME: in future version 1.1, the fields for address should be renamed to visit_*.
     // But in the 1.0 branch, we want to remain backwardscompatible.
@@ -39,7 +39,7 @@ class organization extends atkNode
     $this->add(new atkAttribute("state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
 
-    $this->add(new atkDummyAttribute("mailheader", "<B>".atktext("organization_mailaddress", "organization")."<B>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
+    $this->add(new atkDummyAttribute("mailheader", "<b>".atktext("organization_mailaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
     $this->add(new atkAttribute("mail_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("mail_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("mail_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
@@ -47,7 +47,7 @@ class organization extends atkNode
     $this->add(new atkAttribute("mail_state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("mail_country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
 
-    $this->add(new atkDummyAttribute("invoiceheader", "<B>".atktext("organization_invoiceaddress", "organization")."<B>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
+    $this->add(new atkDummyAttribute("invoiceheader", "<b>".atktext("organization_invoiceaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
     $this->add(new atkAttribute("invoice_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("invoice_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("invoice_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
@@ -55,7 +55,7 @@ class organization extends atkNode
     $this->add(new atkAttribute("invoice_state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
     $this->add(new atkAttribute("invoice_country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
 
-    $this->add(new atkDummyAttribute("divider", "<Br>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
+    $this->add(new atkDummyAttribute("divider", "<br>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
     $this->add(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD, 20));
     $this->add(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD, 20));
     $this->add(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD, 50));
