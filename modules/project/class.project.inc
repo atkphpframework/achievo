@@ -94,7 +94,7 @@
 
       $this->setTable("project","project");
 
-      $this->setOrder("name");
+      $this->setOrder("project.abbreviation ASC, project.name ASC");
       $this->setIndex("name");
     }
 
