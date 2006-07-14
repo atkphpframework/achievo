@@ -199,7 +199,7 @@ class hours extends atkNode
     $this->add(new atkDateAttribute("entrydate",AF_HIDE|AF_OBLIGATORY));
     $this->add(new atkDummyAttribute("javascript", "seebelow", AF_NO_LABEL|AF_HIDE_LIST));
 
-    $this->setOrder("hours.id"); // Sort by order of input..
+    $this->setOrder("B.abbreviation"); // Sort by project abbreviation
 
     $this->setTable("hours","hours");
   }
