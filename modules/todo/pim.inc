@@ -20,7 +20,7 @@
     $todo_assignedtome = atktext("pim_assignedtoyou").":<br>";
     if (count($recs)>0)
     {
-      $todo_assignedtome.= $rl->render($todonode,$recs,$actions,RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('assigned_to','entrydate'),"todoassignedtoyou",array(),"todoassignedtoyou");
+      $todo_assignedtome.= $rl->render($todonode,$recs,$actions,RL_MRA|RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('assigned_to','entrydate'),"todoassignedtoyou",array(),"todoassignedtoyou");
     }
     else
     {
@@ -32,7 +32,7 @@
     $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");
     if (count($recs)>0)
     {
-      $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('entrydate'),"todoassignedbyyou",array(),"todoassignedbyyou");
+      $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,RL_MRA|RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('entrydate'),"todoassignedbyyou",array(),"todoassignedbyyou");
     }
     else
     {

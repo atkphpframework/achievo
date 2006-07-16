@@ -32,7 +32,7 @@ class todo extends atkNode
     $this->add(new atkDateAttribute("closedate", "","", 0, 0));
     $this->add(new atkUpdateStampAttribute("updated"   , AF_HIDE|AF_FORCE_LOAD)); // force_load is necessary, because we need the value when copying the todo to the history table.
     $this->add(new atkListAttribute("priority"         , $this->prioName, $this->prioId, AF_OBLIGATORY));
-    $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100), AF_NO_TRANSLATION));
+    $this->add(new atkListAttribute("completed",array("0%","10%","20%","30%","40%","50%","60%","70%","80%","90%","100%"),array(0,10,20,30,40,50,60,70,80,90,100), AF_NO_TRANSLATION|AF_LIST_NO_NULL_ITEM));
     $this->add(new atkBoolAttribute("private"));
     $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE|AF_OBLIGATORY));
@@ -56,7 +56,7 @@ class todo extends atkNode
 
   function recordActions($rec,&$actions,&$mraactions)
   {
-    if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("id"=>$rec["id"])));
+    if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("todo_id"=>$rec["id"])));
     if ($this->allowed("mra_complete")) $mraactions[] = "mra_complete";
   }
 
@@ -82,16 +82,45 @@ class todo extends atkNode
   }
 
 
-  function action_complete()
+  function action_complete(&$handler,$record=array(),$mode="",$selector=NULL)
   {
-    /** @todo COMPLETE ACTION, set status to complete, and update closedate */
-    $this->redirect(); // void implementation
+    if($selector!=NULL)
+    {
+      $primkey = $selector;
+    }
+    else
+    {
+      $primkey = 'todo.id=\''.$this->m_postvars["todo_id"].'\'';
+    }
+    $rows = $this->selectDb($primkey,"","","","","edit");
+    if(count($rows)==1)
+    {
+      // It seems updatedb needs the complete record
+      $rec = $rows[0];
+
+      //$rec['atkprimkey'] = $primkey;
+      $rec['completed'] = '100';
+      $rec['status'] = '5';
+      $rec['closedate'] = array ( 'year' => date("Y"),
+                                  'month' => date("m"),
+                                  'day' => date("d"));
+      $ret = $this->updateDb($rec);
+    }
+
+    $this->redirect();
   }
 
   function action_mra_complete()
   {
-    /** @todo MRA_COMPLETE ACTION, set statusses to complete, and update closedates */
-    $this->redirect(); // void implementation
+    if (is_array($this->m_postvars['atkselector']))
+    {
+      foreach ($this->m_postvars['atkselector'] as $selector)
+      {
+        $handler="";
+        $this->action_complete($handler,array(),"",$selector);
+      }
+    }
+    $this->redirect();
   }
 
   function initial_values()
@@ -108,13 +137,19 @@ class todo extends atkNode
     return array("owner"=>array("id"=>$g_user["id"]),
                  "entrydate"=>$entrydate,
                  "duedate"=>$duedate,
-                 "updated"=>$date,
+                 "updated"=>$entrydate,
+                 "completed"=>0,
+                 "status"=>0,
                  "priority"=>3);
   }
 
-  function title_display($record)
+  function title_display($record,$mode)
   {
-    return href(dispatch_url("todo.todo", "edit", array("atkselector"=>"todo.id='".$record["id"]."'")), $record["title"], SESSION_NESTED);
+    if (($mode=="plain") || ($mode=="csv"))
+  	  return $record["title"];
+
+  	$defaultaction = $this->allowed("edit") ? "edit" : "view";
+    return href(dispatch_url("todo.todo",$defaultaction, array("atkselector"=>"todo.id='".$record["id"]."'")), $record["title"], SESSION_NESTED);
   }
 
   // overide display of priority (set high to a red font)
@@ -305,8 +340,7 @@ class todo extends atkNode
      $pid  = $rec["projectid"]["id"];
      // get project name
      $project="";
-     atk_var_dump($rec,"RECORD");
-     atk_var_dump($pid,"PROJECTID");
+
      if($pid!="")
      {
        $query = "SELECT name FROM project WHERE id='$pid'";
