@@ -272,7 +272,7 @@ class atkProjectPhaseAttribute extends atkAttribute
   {
     $db = &atkGetDb();
 
-    $query = "SELECT phase.id, phase.name, project.name as projectname FROM project,phase ";
+    $query = "SELECT phase.id, phase.name, project.name as projectname, project.abbreviation as projectabbreviation FROM project,phase ";
     $query.= "WHERE phase.projectid=project.id AND phase.id = $phaseid";
 
     $arr = $db->getrows($query);
