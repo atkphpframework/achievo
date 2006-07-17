@@ -178,8 +178,7 @@
                                   project.id,
                                   project.name,
                                   MIN(phase.startdate) as startdate,
-                                  MAX(phase.enddate) as enddate,
-                                  SUM(phase.current_planning) as planned
+                                  MAX(phase.enddate) as enddate
                                 FROM
                                   project,
                                   phase
@@ -188,7 +187,7 @@
                                   AND project.status='active'
                                   AND phase.projectid = project.id
                                   AND (phase.enddate IS NULL OR phase.enddate>='$from')
-                                  AND (phase.startdate <= '$to')
+                                  AND (phase.startdate IS NULL OR phase.startdate <= '$to')
                                   ".($coordinator!=""?"AND project.coordinator=$coordinator":"")."
                                 GROUP BY
                                   project.id,
@@ -201,8 +200,17 @@
         $gant[($projects[$i]['id'])] = $projects[$i];
 
         $gant[($projects[$i]['id'])]['booked'] = $this->getBooked($projects[$i]['id']);
+        $gant[($projects[$i]['id'])]['planned'] = $this->getPlanned($projects[$i]['id']);
       }
       return $gant;
+    }
+
+    function getPlanned($projectid)
+    {
+      $db = &atkGetDb();
+      $rows = $db->getrows("SELECT sum(current_planning) as planned FROM phase
+                              WHERE phase.projectid=".$projectid);
+      return $rows[0]["planned"];
     }
 
     function getBooked($projectid)
@@ -254,7 +262,7 @@
       return $params;
     }
 
-    function drawProject(&$graph, $index, $project, $from, $to)
+    function drawProject(&$graph, $index, $project, $from, $to, $plannedbooked)
     {
       // Projects that extent the selected period should be cut off.
       if ($project['startdate']<$from) $project['startdate']=$from;
@@ -274,7 +282,7 @@
       $graph->add($activity);
     }
 
-    function showGraph($gantt, $from, $to)
+    function showGraph($gantt, $from, $to, $plannedbooked)
     {
       // Load jpgraph gantt chart library files
       include_once(moduleDir("graph")."jpgraph/jpgraph.php");
@@ -300,7 +308,7 @@
       $projectids = array_keys($gantt);
       for($i=0,$_i=count($gantt); $i<$_i; $i++)
       {
-        $this->drawProject($graph, $i, $gantt[$projectids[$i]], $from, $to);
+        $this->drawProject($graph, $i, $gantt[$projectids[$i]], $from, $to, $plannedbooked);
       }
 
       // Set date range to prevent autoscale errors when no activities were added to the gantt chart
@@ -317,9 +325,9 @@
 
       $gant = $this->getGant($params["from"], $params["to"], $params["coordinator"]);
 
-      usort($gant, "cmp");
+      usort($gant, array("mastergantt", "cmp"));
 
-      $this->showGraph($gant, $params["from"], $params["to"]);
+      $this->showGraph($gant, $params["from"], $params["to"], $params["plannedbooked"]);
     }
 
 
