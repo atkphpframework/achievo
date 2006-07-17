@@ -27,8 +27,8 @@
 
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
-      $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE, 10));
+      $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
 
       $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $attr->setDestinationFilter("status='active'");
