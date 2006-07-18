@@ -392,6 +392,7 @@
       $buttons[] = '<input name="cancel" type="submit" class="btn_cancel" value="'.atktext('no').'">';
 
       $content.= '<br>'.$this->confirmActionText($atkselector, "delete", false);
+      $action="delete";
 
       $output=$ui->renderAction($action, array("content"=>$content,
                                                 "formstart"=>$formstart,
@@ -405,8 +406,8 @@
     function _doDeleteSingle()
     {
       $db = &$this->m_node->getDb();
-      $res = $this->m_node->selectDb($this->m_postvars['atkselector']);
-      if($res)
+      $rec = $this->m_node->selectDb($this->m_postvars['atkselector']);
+      if($rec)
       {
         $name = "atk".atkconfig("database")."query";
         $query = atknew($name);
@@ -430,7 +431,7 @@
 
     function dayview()
     {
-      $dayview = atknew("modules.scheduler.views.scheduler_dayview");
+      $dayview = &atknew("modules.scheduler.views.scheduler_dayview");
       $day   = substr($this->m_viewdate, 8,2);
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
@@ -445,8 +446,7 @@
 
     function weekview()
     {
-      atkimport("modules.scheduler.views.scheduler_weekview");
-      $weekview = new scheduler_weekview($day, $month,$year);
+      $weekview = &atknew("modules.scheduler.views.scheduler_weekview");
       $day   = substr($this->m_viewdate, 8,2);
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
@@ -463,12 +463,12 @@
     function monthview()
     {
       // viewdate is something like 2001-07-23
-      atkimport("modules.scheduler.views.scheduler_monthview");
+      $monthview = &atknew("modules.scheduler.views.scheduler_monthview");
 
       $day   = substr($this->m_viewdate, 8,2);
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
-      $monthview = new scheduler_monthview($day, $month,$year);
+
       $monthview->setViewDate($day,$month,$year);
       $day   = substr($this->m_small_viewdate, 8,2);
       $month = substr($this->m_small_viewdate, 5,2);
@@ -482,11 +482,10 @@
     function yearview()
     {
       // viewdate is something like 2001-07-23
-      atkimport("modules.scheduler.views.scheduler_yearview");
+      $yearview = &atknew("modules.scheduler.views.scheduler_yearview");
       $day   = substr($this->m_viewdate, 8,2);
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
-      $yearview = new scheduler_yearview($day, $month,$year);
       $yearview->setViewDate($day,$month,$year);
       $yearview->setViewUser($this->m_viewUser);
       return $yearview->renderView();
@@ -494,11 +493,11 @@
 
     function employeeview()
     {
-      atkimport("modules.scheduler.views.scheduler_employeeview");
+      $employeeview = &atknew("modules.scheduler.views.scheduler_employeeview");
       $day   = substr($this->m_viewdate, 8,2);
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
-      $employeeview = new scheduler_employeeview($day, $month,$year);
+
       $employeeview->setViewDate($day,$month,$year);
       $employeeview->setEmployees($this->m_employees);
       return $employeeview->renderView();

@@ -607,37 +607,7 @@ class scheduler_view
         $year = date("Y",$starttime);
         $weekday_number = date("w",mktime(12,0,0,$month,$day,$year));
         atkdebug("WEEK DAY NUMBER: $weekday_number");
-
-        switch ($weekday_number)
-	    	{
-		    	case 0:
-			    	$weekday = 1;
-    			break;
-
-    			case 1:
-    				$weekday = 2;
-    			break;
-
-    			case 2:
-    				$weekday = 4;
-    			break;
-
-    			case 3:
-    				$weekday = 8;
-    			break;
-
-    			case 4:
-    				$weekday = 16;
-    			break;
-
-    			case 5:
-    				$weekday = 32;
-    			break;
-
-    			case 6:
-    				$weekday = 64;
-    			break;
-    	  }
+        $weekday = $this->weekdaynumbertoflag($weekday_number);
 
         // for everydate we need to loop true the recs
         // else we can't see if a rec is valid or not.
@@ -758,6 +728,43 @@ class scheduler_view
         $datecounter++;
       }
     }
+  }
+
+  function weekdaynumbertoflag($weekday_number)
+  {
+     switch ($weekday_number)
+	    	{
+		    	case 0:
+			    	$weekday = 1;
+    			break;
+
+    			case 1:
+    				$weekday = 2;
+    			break;
+
+    			case 2:
+    				$weekday = 4;
+    			break;
+
+    			case 3:
+    				$weekday = 8;
+    			break;
+
+    			case 4:
+    				$weekday = 16;
+    			break;
+
+    			case 5:
+    				$weekday = 32;
+    			break;
+
+    			case 6:
+    				$weekday = 64;
+    			break;
+    			default:
+    			  $weekday = 0;
+    	  }
+     return $weekday;
   }
 
 
