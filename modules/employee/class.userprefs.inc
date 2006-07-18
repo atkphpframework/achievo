@@ -33,29 +33,11 @@ class userprefs extends atkNode
 
   function getThemes()
   {
-    // Initialize the themelist
-    $themelist = array();
-
-    // First look in the themes directory, then look in the atk backend directory
-    foreach (array("themes", "atk/themes") as $themedir)
-    {
-      $handle = opendir($themedir);
-      while ($file = readdir($handle))
-      {
-        if (!in_array($file, array(".", "..", "CVS")) && file_exists($themedir."/".$file."/themedef.inc"))
-        {
-          $themelist[]= $file;
-        }
-      }
-      closedir($handle);
-    }
-
-    // Remove duplicae entries and sort the themelist alphabetically
-    $themelist = array_unique($themelist);
-    sort($themelist);
-
-    // Return array with themes
-    return $themelist;
+    $traverser = &atknew('atk.utils.atkdirectorytraverser');
+    $themefinder = &atknew('module.employee.utils.themefinder');
+    $traverser->addCallbackObject($themefinder);
+    $traverser->traverse(atkconfig('atkroot'));
+    return $themefinder->getThemes();
   }
 
   function postUpdate($record)

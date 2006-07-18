@@ -68,6 +68,7 @@ class achievo_modern extends atkPlainMenu
         {
           $menuitem['url'] = session_url($menuitem['url'], SESSION_NEW);
         }
+        $menuitem['header']=$this->getHeader($menuitem['id']);
         $menuitems[] = $menuitem;
       }
     }
