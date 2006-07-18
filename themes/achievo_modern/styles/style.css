@@ -326,3 +326,30 @@ hr
   margin-top: 4px;
   margin-bottom: 4px;
 }
+
+#tab_default
+{
+}
+
+#remark
+{
+  width: 95%;
+}
+
+
+.field select
+{
+}
+
+input[type="checkbox"]
+{
+  width: auto;
+  border: 1px solid red ! important;
+}
+
+.atkboolattribute
+{
+  border: 0px ! important;
+  width: auto ! important;
+  border: 1px solid red;
+}

@@ -13,13 +13,13 @@ var tabColor = "#FFFFFF";
 var tabSelectedColor = "#000000";
 </script>
 
-<div style="border-bottom: 2px solid #666;">
+<div class="tabOuterDiv">
 <table border="0" cellpadding="0" cellspacing="0" id="tabContainer">
   <tr>
   {section name=i loop=$tabs}
   <td valign="bottom">
 
-  <div style="position: relative;">
+  <div class="tabInnerDiv">
 
   <div id="tab_{$tabs[i].tab}" style="position: absolute;">
 

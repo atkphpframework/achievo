@@ -1,7 +1,32 @@
 .recordListContainer
 {
   width: 100%;
-  /* border: 1px solid #000; */
+  border: 0px solid #f00;
+}
+
+.atkmanytoonerelation, .recordListSearch, .recordList, .atkattribute
+{
+  width: 100%;
+}
+
+.recordListSearch
+{
+  background: #666 ! important;
+}
+
+.recordList input
+{
+  width: 95%;
+}
+
+.recordListThFirst, .recordListTdFirst
+{
+  width: 95% ! important;
+}
+
+.searchform input
+{
+  width: 95%;
 }
 
 .recordListContainer td
@@ -19,7 +44,7 @@
 .recordListSearch
 {
   border-bottom: 3px solid #fff;
-  background-color: #fff !important;
+  background-color: #ddd !important;
   padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
@@ -27,6 +52,12 @@
 .recordList td, .recordList th
 {
   padding: 4px;
+  border-right: 1px solid #fff;
+}
+
+.recordList td
+{
+  border-right: 1px solid #eee;
 }
 
 .recordList th
@@ -63,4 +94,15 @@
 .recordListThFirst a
 {
 	font-weight: bold;
+}
+
+input[type="checkbox"]
+{
+  width: auto;
+  border: 0px;
+}
+
+.checkBox 
+{
+  width: auto ! important;
 }
