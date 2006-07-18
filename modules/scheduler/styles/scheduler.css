@@ -1,0 +1,83 @@
+a.calendarHoliday:link
+
+{
+
+  color: #ff0000;
+
+}
+
+
+a.calendarHoliday:visited
+
+{
+
+  color: #ff0000;
+
+}
+
+
+a.calendarHolidayToday:link 
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  color: #ff0000;
+
+}
+
+
+a.calendarHolidayToday:visited 
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  color: #ff0000;
+
+}
+
+
+
+.calendarToday
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+}
+
+
+.calendarNormal
+
+{
+
+}
+
+
+.calendarAppointment
+
+{
+
+  color: #0000ff;
+
+}
+
+
+.calendarAppointmentToday
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  color: #0000ff;
+
+}

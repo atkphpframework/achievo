@@ -1,0 +1,48 @@
+<?php
+
+$en = array("menu_scheduler"=>"Scheduler",
+            "menu_scheduler_category"=>"Scheduler categories",
+            "menu_scheduler_holidays"=>"Scheduler holidays",
+            // Class Holiday
+            "name"=>"Name",
+            "type"=>"Type",
+            "day"=>"Day",
+            "month"=>"Month",
+            "special"=>"Special",
+            "offset"=>"Offset",
+            "weekday"=>"Weekday",
+            "moveto"=>"Move to",
+            "flag"=>"Flag",
+            "schedulecategory"=>"Scheduler category",
+            "country"=>"Country",
+            "ifsatorsunthen"=>"Saturday or Sunday => (7 - (currentday + 1))",
+            "ifsunthen"=>"Sunday => Monday",
+            "ifsatorsunthen2","Saturday => Friday, Sunday => Monday",
+            // Class Category
+            "description"=>"Description",
+            "bgcolor"=>"Background color",
+            "fgcolor"=>"Text color",
+            "example"=>"Example",
+            // Scheduler view
+            "additem"=>"Add new item",
+            "dayview"=>"Day view",
+            "weekview"=>"Week view",
+            "monthview"=>"Month view",
+            "yearview"=>"Year view",
+            "employeeview"=>"Compare schedules",
+            "refreshview"=>"Refresh",
+            "allusers"=>"All users",
+            "recurring_event"=>"Recurring event",
+            "reminder_event"=>"Reminder event",
+            "private_event"=>"Private event",
+            // Day view
+            "allday_events"=>"Allday events",
+            "previous_day"=>"Previous day",
+            "today"=>"Today",
+            "next_day"=>"Next day",
+            
+            
+            
+            );
+
+?>
