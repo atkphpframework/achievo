@@ -53,8 +53,20 @@
     /**
      * Populates the internal m_options, m_values and m_lookup arrays with pim items
      */
-    function loadpimitems()
+    function loadpimitems($record,$mode)
     {
+      $useritems = array();
+      if($mode=="edit" || $mode=="add")
+      {
+        $user = getUser();
+        $userpimitemsnode = &atkGetNode("pim.userpimitems");
+        $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
+        foreach($pimitems as $key => $item)
+        {
+          if($mode=="add" || ($record["pimitem"]==$item["pimitem"] && $mode="edit"))
+            $useritems[] = $item['pimitem'];
+        }
+      }
       // Do not continue if pim items already loaded
       if ($this->m_pimitemsloaded)
         return;
@@ -68,9 +80,17 @@
         foreach($items as $itemName => $itemFunc)
         {
           $item = $module.'_'.$itemName;
-          $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
+          if(!in_array($item,$useritems))
+            $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
         }
       }
+
+      // Remove items that the user allready has
+      $user = getUser();
+      $userpimitemsnode = &atkGetNode("pim.userpimitems");
+      $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
+      atk_var_dump($pimitems);
+
 
       // Remove disallowed pimitems from the list
       $disallowedpimitems = atkConfig("disallowedpimitems", array());
@@ -91,9 +111,9 @@
      * @param array $record Array with fields
      * @return string text string of $record
      */
-    function display($record)
+    function display($record,$mode="")
     {
-      $this->loadpimitems();
+      $this->loadpimitems($record,$mode);
       return parent::display($record);
     }
 
@@ -105,9 +125,9 @@
      *                            of any html form element for this attribute.
      * @return String Piece of html code containing the select control
      */
-    function edit($record="", $fieldprefix="")
+    function edit($record="", $fieldprefix="",$mode="")
     {
-      $this->loadpimitems();
+      $this->loadpimitems($record,$mode);
       return parent::edit($record, $fieldprefix);
     }
   }
