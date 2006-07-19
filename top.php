@@ -71,7 +71,7 @@
   $title = atktext("app_title")." ".$achievo_version;
   ($achievo_state!=="stable")?$title.=" ($achievo_state)":"";
 
-  $top = $ui->renderTop(array("content"=> $content,
+  $top = $ui->renderBox(array("content"=> $content,
                   "logintext" => atktext("logged_in_as"),
                               "logouttext" => ucfirst(atktext("logout")),
                               "logoutlink" => "index.php?atklogout=1",
