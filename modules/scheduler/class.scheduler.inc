@@ -159,7 +159,7 @@
 
       if (trim($this->m_view) == "")
       {
-         $this->m_view = $userprefs["default_view"];
+         $this->m_view = (isset($userprefs["default_view"])?$userprefs["default_view"]:"day");
       }
       atkdebug("VIEW: ".$this->m_view." - ".$this->m_viewUser);
 
