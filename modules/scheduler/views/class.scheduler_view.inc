@@ -540,9 +540,9 @@ class scheduler_view
     $query->addField('allday', ' ', 'scheduler_scheduler');
     $query->addField('private', ' ', 'scheduler_scheduler');
     $query->addField('owner', ' ', 'scheduler_scheduler');
-    $query->addField('status', ' ', 'scheduler_scheduler');
+    //$query->addField('status', ' ', 'scheduler_scheduler');
     $query->addField('all_users', ' ', 'scheduler_scheduler');
-    $query->addField('scheduletype', ' ', 'scheduler_scheduler');
+    //$query->addField('scheduletype', ' ', 'scheduler_scheduler');
     $query->addField('recur', ' ', 'scheduler_scheduler');
     $query->addField('every', ' ', 'scheduler_scheduler');
     $query->addField('cyclus_startdate', ' ', 'scheduler_scheduler');

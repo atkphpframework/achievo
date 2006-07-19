@@ -1,10 +1,12 @@
 <?php
-  $setup->installNode("calendar.scheduler_userpreferences");
-  $setup->installNode("calendar.scheduler_attendee");
-  $setup->installNode("calendar.scheduler_notes");
-  $setup->installNode("calendar.scheduler_category");
-  $setup->installNode("calendar.scheduler_cyclus_not_in");
-  $setup->installNode("calendar.scheduler");
+  $setup->installNode("scheduler.scheduler_category");
+  $setup->installNode("scheduler.scheduler_userpreferences");
+  $setup->installNode("scheduler.scheduler_attendees");
+  $setup->installNode("scheduler.scheduler_notes");
+  $setup->installNode("scheduler.scheduler_cyclus_not");
+  $setup->installNode("scheduler.scheduler");
+  $setup->installNode("scheduler.scheduler_holidays");
+
   $setup->setVersion(1);
 
 ?>
