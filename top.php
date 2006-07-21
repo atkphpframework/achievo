@@ -80,7 +80,7 @@
                               'centerpiece_links'=>$centerpiecelinks,
                               "searchpiece"=>$searchpiece,
                               "title" => $title,
-                  "user"   => $g_user["name"]));
+                  "user"   => $g_user["name"]), "top");
 
   $page->addContent($top);
 
