@@ -171,7 +171,7 @@
   "fsa_pleasemakeselection" => "More than one match was found. Please make a selection.",
   "function" => "Job title",
   "functionlevel" => "Functionlevel",
-  "ganttexplanation" => "The bars represent actual phase length. The inner black bar inside an orange bar is an indication of number of booked hours vs. planned hours. A vertical dotted line indicates project kick-off.",
+  "ganttexplanation" => "The bars represent actual phase length. The inner black bar inside an orange bar is an indication of number of booked hours vs. planned hours. A vertical dotted line indicates the current date.",
   "goto" => "Go",
   "gotoweekview" => "Weekview",
   "high" => "High",
