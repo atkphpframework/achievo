@@ -16,8 +16,9 @@
     function contract_project()
     {
       $this->project();
-      $this->m_flags |= NF_NO_EDIT;
+      $this->m_flags |= NF_NO_EDIT|NF_NO_FILTER;;
       $this->m_type = "contract_project";
+      $this->add(new atkAttribute("status",AF_FORCE_LOAD));
 
       // Anyone who may edit contracts, may remove a project from the deposit.
       $this->m_securityMap["remove"] = "contracts.edit";
