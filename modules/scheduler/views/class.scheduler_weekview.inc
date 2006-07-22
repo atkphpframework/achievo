@@ -31,7 +31,7 @@ class scheduler_weekview extends scheduler_view
 
     $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->showGlobal;
 
-    $this->m_weeknumber = strftime("%V", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
+    $this->m_weeknumber = date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
     $this->m_viewTitle = "<b>".text("week")."&nbsp;".$this->m_weeknumber."</b>";
 
     return href($prevUrl, text('previousweek'))."&nbsp;".href($currentUrl,text("currentweek"))."&nbsp;".href($nextUrl, text('nextweek'));
