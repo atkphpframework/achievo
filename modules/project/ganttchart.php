@@ -197,7 +197,8 @@ $reverselookup = array();
 
 foreach ($gant as $id=>$gantphase)
 {
-  $activity[$i] = &new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
+  $tmpGant =  new GanttBar($i, $gantphase['name'], $gantphase['startdate'], $gantphase['enddate']);
+  $activity[$i] = $tmpGant;
   $activity[$i]->SetPattern(BAND_RDIAG, "yellow");
   $activity[$i]->SetFillColor("red");
   $activity[$i]->SetHeight(10);
@@ -247,7 +248,7 @@ $deliverables = $milestonenode->selectDb("project_id=".$projectid, "duedate");
 for( $i=0, $_i=count($deliverables); $i<$_i; $i++)
 {
   $due = date("Y-m-d", dateutil::arr2stamp($deliverables[$i]["duedate"]));
-  $ms = &new MileStone((count($gant))+($i), $deliverables[$i]["name"], $due, $due." (".$deliverables[$i]["name"].")");
+  $ms = new MileStone((count($gant))+($i), $deliverables[$i]["name"], $due, $due." (".$deliverables[$i]["name"].")");
   $graph->Add($ms);
 }
 
@@ -274,8 +275,14 @@ if (count($gant) == 0)
 }
 
 //Add only a vertical line with the actual date when this actual date is between the start- and enddate of the project
-$startdateproject=$gant[0]["startdate"];
-$enddateproject=$gant[count($gant)-1]["enddate"];
+$startdateproject = "";
+$enddateproject = "";
+foreach($gant as $phase)
+{
+  if(isset($phase["startdate"]) && ($phase["startdate"]<$startdateproject || $startdateproject=="")) $startdateproject = $phase["startdate"];
+  if(isset($phase["enddate"]) && ($phase["enddate"]>$enddateproject || $enddateproject=="")) $enddateproject = $phase["enddate"];
+}
+
 if($startdateproject <= (date("Y-m-d")) AND $enddateproject >= (date("Y-m-d")))
 {
   $vline = new GanttVLine(date("Y-m-d"), date("d-m-Y"));
