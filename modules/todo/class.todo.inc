@@ -176,7 +176,7 @@ class todo extends atkNode
 
   function completed_display($rec)
   {
-    $percentage = $rec["completed"];
+    $percentage = (isset($rec["completed"]) && is_numeric($rec["completed"])?$rec["completed"]:0);
     if($percentage>=75)
     {
       $color="green";
