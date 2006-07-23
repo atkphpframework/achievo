@@ -6,6 +6,7 @@
   useattrib("atknumberattribute");
   useattrib("atkdurationattribute");
   useattrib("atkdateattribute");
+  useattrib("atkdummyattribute");
   useattrib("atkfuzzysearchattribute");
   useattrib("project.spendhoursattribute");
   userelation("atkmanytoonerelation");
@@ -51,6 +52,7 @@
 
       $this->add(new atkDateAttribute("startdate", "", ""));
       $this->add(new atkDateAttribute("enddate", "", ""));
+      $this->add(new atkDummyAttribute("duration","",AF_HIDE_ADD|AF_HIDE_EDIT));
 
       // deliverable dependency
       $depends = &$this->add(new atkManyToOneRelation("dependsondeliverable", "project.deliverable"));
@@ -108,6 +110,32 @@
         $url = dispatch_url("project.phase", $defaultaction, array("atkselector"=>"phase.id='{$record["id"]}'"));
         return href($url, $record["name"], SESSION_NESTED);
       }
+    }
+
+    function duration_display($record,$mode)
+    {
+      if(is_array($record["startdate"]) && is_array($record["enddate"]))
+      {
+        $startdate = mktime(12,0,0,$record["startdate"]["month"],$record["startdate"]["day"],$record["startdate"]["year"]);
+        $enddate = mktime(12,0,0,$record["enddate"]["month"],$record["enddate"]["day"],$record["enddate"]["year"]);
+
+        $seconds_in_a_day = 86400;
+        $sunday_val = "0";
+        $saturday_val = "6";
+        $workday_counter = 0;
+
+        $ptr_year = intval(date("Y", $start_date));
+
+        for($day_val = $startdate; $day_val <= $enddate; $day_val+=$seconds_in_a_day)
+        {
+          $pointer_day = date("w", $day_val);
+          if(($pointer_day != $sunday_val) && ($pointer_day != $saturday_val))
+            $workday_counter++;
+
+        }
+        return $workday_counter." ".($workday_counter==1?atktext("day","project"):atktext("days","project"));
+      }
+      return "";
     }
 
     function initial_values()
