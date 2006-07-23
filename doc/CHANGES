@@ -26,6 +26,10 @@ Changes in Achievo 1.3
   when it's not set. [Sandy]
 + Added patch for updating the user theme with the default theme when
   it's not set or contains a depricated theme. (bug 665) [Sandy]
++ Added contractname to the contracts. This field will be used in
+  the project admin instead of the description field. (bug 475) [Sandy]
++ Added duration field for project phase to see how many workdays there
+  are in a phase. [Sandy]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
