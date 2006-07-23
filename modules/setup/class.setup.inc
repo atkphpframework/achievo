@@ -863,14 +863,21 @@
       $this->renameSequence($old, $new);
     }
 
+
     function addColumn($table, $col, $type, $nullable=true, $default="")
     {
       $db = &atkGetDb();
-
-      $sql = "ALTER TABLE $table ADD $col $type";
-      if (!$nullable) $sql.=" NOT NULL";
-      if ($default!="") $sql.= " DEFAULT '$default'";
-      $db->query($sql);
+      if($this->columnExists($table,$col))
+      {
+        $this->alterColumn($table,$col,$col,$type,$nullable,$default);
+      }
+      else
+      {
+        $sql = "ALTER TABLE $table ADD $col $type";
+        if (!$nullable) $sql.=" NOT NULL";
+        if ($default!="") $sql.= " DEFAULT '$default'";
+        $db->query($sql);
+      }
     }
 
     function alterColumn($table, $col, $newname, $type, $nullable=true, $default="")
