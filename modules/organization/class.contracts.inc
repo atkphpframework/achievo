@@ -34,7 +34,8 @@ class contracts extends atkNode
     $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD);
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE, 20));
+    $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE|AF_FORCE_LOAD, 20));
+    $this->add(new atkAttribute("contractname",AF_SEARCHABLE|AF_OBLIGATORY|AF_FORCE_LOAD));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
 
@@ -272,10 +273,24 @@ class contracts extends atkNode
     return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
   }
 
-  function descriptor_def()
+  function descriptor_dev()
   {
     return "[description]";
   }
+  function descriptor($rec)
+  {
+    atk_var_dump($rec);
+    $ret = "";
+    if(isset($rec["contractnumber"]) && $rec["contractnumber"]!="") $ret.=$rec["contractnumber"];
+    if(isset($rec["contractname"]) && $rec["contractname"]!="")
+    {
+      if($ret!="") $ret.=" - ";
+      $ret.=$rec["contractname"];
+    }
+    return $ret;
+  }
+
+
 
   function initial_values()
   {
