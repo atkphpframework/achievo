@@ -85,6 +85,7 @@ class employee extends person
 
   function initial_values()
   {
+    $initial = array();
     $initial["role"] = "employee";
     $initial["status"] = "active";
     return $initial;
