@@ -118,7 +118,7 @@ class scheduler_userpreferences extends atkNode
       $this->add(new atkBoolAttribute("email_rejectedevents"));
 
       $this->add(New atkDummyAttribute("group4","<br><b>".atktext("assistant")."</b>:<br>",AF_BLANKLABEL));
-      $this->add(new atkOneToManyRelation("assistant", "scheduler.scheduler_userassistents", "userid"));
+      $this->add(new atkOneToManyRelation("assistant", "scheduler.scheduler_userassistants", "userid"));
 
       $this->setTable("scheduler_userpreferences");
       $this->setSecurityAlias("employee.userprefs");

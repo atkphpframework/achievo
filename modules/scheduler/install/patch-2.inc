@@ -1,5 +1,5 @@
 <?php
 
-$setup->installNode("scheduler.scheduler_userassistents");
+$setup->installNode("scheduler.scheduler_userassistants");
 
 ?>
