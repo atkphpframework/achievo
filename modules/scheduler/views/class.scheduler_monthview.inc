@@ -43,24 +43,24 @@ class scheduler_monthview extends scheduler_view
        $year = $this->m_year;
     }
     $days = array();
-    $days[0] = text("Su");
-    $days[1] = text("Mo");
-    $days[2] = text("Tu");
-    $days[3] = text("We");
-    $days[4] = text("Th");
-    $days[5] = text("Fr");
-    $days[6] = text("Sa");
+    $days[0] = text("sun");
+    $days[1] = text("mon");
+    $days[2] = text("tue");
+    $days[3] = text("wed");
+    $days[4] = text("thu");
+    $days[5] = text("fri");
+    $days[6] = text("sat");
     // On what day does our calendar start (0 or 1)
     $daystart=1;
 
     $months = array();
-    $months[0] = text("januari");
-    $months[1] = text("februari");
+    $months[0] = text("january");
+    $months[1] = text("february");
     $months[2] = text("march");
     $months[3] = text("april");
     $months[4] = text("may");
     $months[5] = text("june");
-    $months[6] = text("Juli");
+    $months[6] = text("july");
     $months[7] = text("august");
     $months[8] = text("september");
     $months[9] = text("october");
