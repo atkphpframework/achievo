@@ -70,29 +70,24 @@ class scheduler_view
   */
   var $m_allDayItems = array();
 
-
  /**
   * @var array $m_appointmentItems All appointment calendar items
   */
   var $m_appointmentItems = array();
-
 
  /**
   * @var array $m_itemColors The colors of an calendar item
   */
   var $m_itemColors = array();
 
-
  /**
   * @var string $m_legend Legend of a calendar
   */
   var $m_legend = "";
 
-
   var $m_weekday_arr = array(1,2,4,8,16,32,64);
   var $m_workdays = 0;
   var $m_showWeekNumbers = 0;
-
 
  /**
   * @var string $m_emptyWorkHoursColor Default color for empty workhours calendar items
@@ -218,29 +213,22 @@ class scheduler_view
     }
 
     $days = array();
-    $days[0] = atkText("Su","atk");
-    $days[1] = atkText("Mo","atk");
-    $days[2] = atkText("Tu","atk");
-    $days[3] = atkText("We","atk");
-    $days[4] = atkText("Th","atk");
-    $days[5] = atkText("Fr","atk");
-    $days[6] = atkText("Sa","atk");
+    $days[0] = atkText("sun","atk");
+    $days[1] = atkText("mon","atk");
+    $days[2] = atkText("tue","atk");
+    $days[3] = atkText("wed","atk");
+    $days[4] = atkText("thu","atk");
+    $days[5] = atkText("fri","atk");
+    $days[6] = atkText("sat","atk");
     // On what day does our calendar start (0 or 1)
 
 
-    $months = array();
-    $months[0] = atkText("januari","atk");
-    $months[1] = atkText("februari","atk");
-    $months[2] = atkText("march","atk");
-    $months[3] = atkText("april","atk");
-    $months[4] = atkText("may","atk");
-    $months[5] = atkText("june","atk");
-    $months[6] = atkText("juli","atk");
-    $months[7] = atkText("august","atk");
-    $months[8] = atkText("september","atk");
-    $months[9] = atkText("october","atk");
-    $months[10] = atkText("november","atk");
-    $months[11] = atkText("december","atk");
+
+    atkimport("modules.utils.dateutil");
+    $months = dateutil::monthlist();
+    for($i=1; $i<=12; $i++)
+      $months[$i] = atkText($months[$i], "atk");
+
 
     $days_in_month = mktime (0,0,0,$month+1,0,$year);
     $days_in_month = (strftime ("%d",$days_in_month));
@@ -261,16 +249,16 @@ class scheduler_view
     /*
     $tmp = '<h3 align="center">';
     if($monthNav) $tmp.= href($prevUrl,"&lt&lt");
-    $tmp.= " ".$months[$month-1]." $year ";
+    $tmp.= " ".$months[$month]." $year ";
     if($monthNav) $tmp.= href($nextUrl,"&gt;&gt;");
     */
-    $tmp.='<table border="0" cellpadding="1" cellspacing="0">';
+    $tmp ='<table border="0" cellpadding="1" cellspacing="0">';
     $tmp.='<tr style="background-color: #dddddd">';
     $tmp.='<td align="left">';
     if($monthNav) $tmp.= href($prevUrl,"&lt&lt");
     $tmp.='</td>';
     $tmp.='<td align="center" colspan="'.($this->m_showWeekNumbers?6:5).'">';
-    $tmp.= $months[$month-1].' '.$year;
+    $tmp.= $months[$month].' '.$year;
     $tmp.='</td>';
     $tmp.='<td align="right">';
     if($monthNav) $tmp.= href($nextUrl,"&gt;&gt;");
@@ -364,13 +352,13 @@ class scheduler_view
   {
     if ($this->m_viewdate!="")
     {
-       $initial_date = Array("year"=>$this->m_year,
-                             "month"=>$this->m_month,
-                             "day"=>$this->m_day);
+      $initial_date = array("year"=>$this->m_year,
+                            "month"=>$this->m_month,
+                            "day"=>$this->m_day);
     }
     else
     {
-      $initial_date = Array("year"=>date("Y"),
+      $initial_date = array("year"=>date("Y"),
                             "month"=>date("m"),
                             "day"=>date("d"));
     }
@@ -505,9 +493,9 @@ class scheduler_view
   {
     global $g_user;
     $g_db = &atkgetdb();
-    atkdebug("START getItmes (".$this->m_viewUser."): ".date("H:i:s"));
+    atkdebug("START getItems (".$this->m_viewUser."): ".date("H:i:s"));
     // Set default user
-    if(count($user)==0 && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
+    if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
 
     $this->m_alldayItems = array();
     $this->m_appointmentItems = array();
@@ -519,12 +507,12 @@ class scheduler_view
        $enddate=$this->m_viewdate;
     }
     $name = "atk".atkconfig("database")."query";
-    //atkimport("atk.db.atkmysqlquery");
+//atkimport("atk.db.atkmysqlquery");
     $query = atknew($name);
     $query->addTable('scheduler_scheduler');
     $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.schedule_id=scheduler_scheduler.id', TRUE);
-    //$query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
-    //$query->addJoin('person', 'owner', 'owner.id=schedule.owner', TRUE);
+//$query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
+//$query->addJoin('person', 'owner', 'owner.id=schedule.owner', TRUE);
 
     $query->addField('id', ' ', 'scheduler_scheduler');
     $query->addField('startdate', ' ', 'scheduler_scheduler');
@@ -540,9 +528,9 @@ class scheduler_view
     $query->addField('allday', ' ', 'scheduler_scheduler');
     $query->addField('private', ' ', 'scheduler_scheduler');
     $query->addField('owner', ' ', 'scheduler_scheduler');
-    //$query->addField('status', ' ', 'scheduler_scheduler');
+//$query->addField('status', ' ', 'scheduler_scheduler');
     $query->addField('all_users', ' ', 'scheduler_scheduler');
-    //$query->addField('scheduletype', ' ', 'scheduler_scheduler');
+//$query->addField('scheduletype', ' ', 'scheduler_scheduler');
     $query->addField('recur', ' ', 'scheduler_scheduler');
     $query->addField('every', ' ', 'scheduler_scheduler');
     $query->addField('cyclus_startdate', ' ', 'scheduler_scheduler');
@@ -557,15 +545,15 @@ class scheduler_view
 
     //$query->addField('userid', '', 'owner', 'owneruser_AE_');
     $query->addCondition("(
-                             (
-                                scheduler_scheduler.startdate ".($this->m_view=="day"?"<=":">=")." '$startdate'
-                               AND  scheduler_scheduler.enddate ".($this->m_view=="day"?">=":"<=")." '$enddate'
-                               AND scheduler_scheduler.recur='once'
-                             )
-                             OR
-                             (
-                               scheduler_scheduler.recur<>'once'
-                             )
+                            (
+                              scheduler_scheduler.startdate ".($this->m_view=="day"?"<=":">=")." '$startdate'
+                              AND scheduler_scheduler.enddate ".($this->m_view=="day"?">=":"<=")." '$enddate'
+                              AND scheduler_scheduler.recur='once'
+                            )
+                            OR
+                            (
+                              scheduler_scheduler.recur<>'once'
+                            )
                           )
                           AND
                           (
@@ -579,11 +567,11 @@ class scheduler_view
                             OR scheduler_scheduler.cyclus_startdate <= '$startdate'
                             OR scheduler_scheduler.cyclus_startdate BETWEEN '$startdate' AND '$enddate'
                           )
-
-                       ");
+                        ");
     if(count($user)>0)
     {
-       $query->addCondition("(scheduler_scheduler.owner IN (".implode(",", $user).") OR scheduler_attendees.person_id IN (".implode(",", $user).") OR scheduler_scheduler.all_users = 1)");
+      $useridcondition = (count($user)>0) ? " OR (scheduler_scheduler.owner IN ('".implode("','", $user)."') OR scheduler_attendees.person_id IN ('".implode("','", $user)."')" : "";
+      $query->addCondition("scheduler_scheduler.all_users = '1' $useridcondition)");
     }
     $query->addOrderBy('starttime');
     $querystring = $query->buildSelect(TRUE);
@@ -732,39 +720,12 @@ class scheduler_view
 
   function weekdaynumbertoflag($weekday_number)
   {
-     switch ($weekday_number)
-	    	{
-		    	case 0:
-			    	$weekday = 1;
-    			break;
+    if (($weekday_number >=0) && ($weekday_number <= 6))
+      $weekday = 2^$weekday_number;
+    else
+      $weekday = 0;
 
-    			case 1:
-    				$weekday = 2;
-    			break;
-
-    			case 2:
-    				$weekday = 4;
-    			break;
-
-    			case 3:
-    				$weekday = 8;
-    			break;
-
-    			case 4:
-    				$weekday = 16;
-    			break;
-
-    			case 5:
-    				$weekday = 32;
-    			break;
-
-    			case 6:
-    				$weekday = 64;
-    			break;
-    			default:
-    			  $weekday = 0;
-    	  }
-     return $weekday;
+    return $weekday;
   }
 
 
@@ -774,32 +735,32 @@ class scheduler_view
    * @param int $scheduleid Schedule id
    * @return array Array with attendees of the schedule item
    */
-   function getAttendees($scheduleid)
-   {
-      $g_db = &atkgetdb();
+  function getAttendees($scheduleid)
+  {
+    $g_db = &atkgetdb();
 
-     $name = "atk".atkconfig("database")."query";
-     $query = new $name();
-     $query->addTable('scheduler_attendees');
-     $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
+    $name = "atk".atkconfig("database")."query";
+    $query = new $name();
+    $query->addTable('scheduler_attendees');
+    $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
 
-     $query->addField('id', ' ', 'person');
+    $query->addField('id', ' ', 'person');
 
-     $query->addField('lastname', ' ', 'person');
-     $query->addField('firstname', ' ', 'person');
-     $query->addField('role', ' ', 'person');
+    $query->addField('lastname', ' ', 'person');
+    $query->addField('firstname', ' ', 'person');
+    $query->addField('role', ' ', 'person');
 
-     $query->addCondition("scheduler_attendees.schedule_id = $scheduleid");
+    $query->addCondition("scheduler_attendees.schedule_id = $scheduleid");
 
-     $querystring = $query->buildSelect(TRUE);
-     return $g_db->getRows($querystring);
-    }
+    $querystring = $query->buildSelect(TRUE);
+    return $g_db->getRows($querystring);
+  }
 
- /**
-  * Is a calendar item recurring
-  * @param array $item Calendar item
-  * @return bool Is recurring
-  */
+  /**
+   * Is a calendar item recurring
+   * @param array $item Calendar item
+   * @return bool Is recurring
+   */
   function isRecurring($item)
   {
     if($item["recur"]!="once") return true;
@@ -971,37 +932,37 @@ class scheduler_view
   /**
    * Get the usersettings, and sets them
    */
-   function _setUserSettings()
-   {
-     $user = getUser();
-     $schedulerNode = &getNode("scheduler.scheduler");
-     $userprefs = $schedulerNode->getUserSchedulerPrefs($user["id"]);
+  function _setUserSettings()
+  {
+    $user = getUser();
+    $schedulerNode = &getNode("scheduler.scheduler");
+    $userprefs = $schedulerNode->getUserSchedulerPrefs($user["id"]);
 
-     if($userprefs["timeschedule"]!="") $this->m_scheduletime = $userprefs["timeschedule"];
-     if($userprefs["workstarttime"]!="00:00:00") $this->m_work_starttime = $userprefs["workstarttime"]["hours"].":".$userprefs["workstarttime"]["minutes"];
-     if($userprefs["workendtime"]!="00:00:00")$this->m_work_endtime = $userprefs["workendtime"]["hours"].":".$userprefs["workendtime"]["minutes"];
-     if($userprefs["scheduler_emptycolor"]!="") $this->m_emptyColor = $userprefs["scheduler_emptycolor"];
-     if($userprefs["scheduler_emptyworkhourscolor"]!="") $this->m_emptyWorkHoursColor = $userprefs["scheduler_emptyworkhourscolor"];
-     if($userprefs["startday"]!="") $this->setCalendarStartDay($userprefs["startday"]);
-     if($userprefs["workdays"]!="")
-     {
-       $this->m_workdays=0;
-       foreach($userprefs["workdays"] as $day)
-       {
-         $this->m_workdays |= $day;
-       }
-     }
-     if($userprefs["showweeknumbers"]!="") $this->m_showWeekNumbers = $userprefs["showweeknumbers"];
-     if($userprefs["showtodo"]!="") $this->m_showTodo = $userprefs["showtodo"];
-     $this->m_owner = $user["id"];
+    if($userprefs["timeschedule"]!="") $this->m_scheduletime = $userprefs["timeschedule"];
+    if($userprefs["workstarttime"]!="00:00:00") $this->m_work_starttime = $userprefs["workstarttime"]["hours"].":".$userprefs["workstarttime"]["minutes"];
+    if($userprefs["workendtime"]!="00:00:00")$this->m_work_endtime = $userprefs["workendtime"]["hours"].":".$userprefs["workendtime"]["minutes"];
+    if($userprefs["scheduler_emptycolor"]!="") $this->m_emptyColor = $userprefs["scheduler_emptycolor"];
+    if($userprefs["scheduler_emptyworkhourscolor"]!="") $this->m_emptyWorkHoursColor = $userprefs["scheduler_emptyworkhourscolor"];
+    if($userprefs["startday"]!="") $this->setCalendarStartDay($userprefs["startday"]);
+    if($userprefs["workdays"]!="")
+    {
+      $this->m_workdays=0;
+      foreach($userprefs["workdays"] as $day)
+      {
+        $this->m_workdays |= $day;
+      }
+    }
+    if($userprefs["showweeknumbers"]!="") $this->m_showWeekNumbers = $userprefs["showweeknumbers"];
+    if($userprefs["showtodo"]!="") $this->m_showTodo = $userprefs["showtodo"];
+    $this->m_owner = $user["id"];
+  }
 
-   }
- /**
-  * Corrects times to the timeschedule
-  * @param string $time Time to be corrected
-  * @param string $round Round the time up or down
-  * @return string Corrected time
-  */
+  /**
+   * Corrects times to the timeschedule
+   * @param string $time Time to be corrected
+   * @param string $round Round the time up or down
+   * @return string Corrected time
+   */
   function _correct_time($time,$round="down")
   {
     $tmp_min = substr($time,3,2);
@@ -1028,9 +989,10 @@ class scheduler_view
    * Render the view
    * @return string A renderd view
    */
-   function renderView()
-   {
-   }
-
+  function renderView()
+  {
+  }
 
 }
+
+?>
