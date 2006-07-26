@@ -183,7 +183,7 @@
 
     function descriptor_def()
     {
-      return "[abbreviation] [name]";
+      return "[abbreviation]: [name]";
     }
 
     function getInitialProjectcode()
