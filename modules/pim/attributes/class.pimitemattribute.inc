@@ -89,8 +89,6 @@
       $user = getUser();
       $userpimitemsnode = &atkGetNode("pim.userpimitems");
       $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
-      atk_var_dump($pimitems);
-
 
       // Remove disallowed pimitems from the list
       $disallowedpimitems = atkConfig("disallowedpimitems", array());
