@@ -20,21 +20,26 @@
       $this->menuitem("scheduler_holidays", dispatch_url("scheduler.scheduler_holidays","admin"),"setup");
     }
 
-    function getPimItems2()
+    function getPimItems()
+    {
+      return array("schedule"=>"getPimListView");
+    }
+
+    function getPimListView()
     {
       include_once(moduleDir("scheduler")."pim.inc");
-      return array("scheduler"=>pimScheduler());
+      return pimScheduler();
     }
 
     function getDependencies($mode)
     {
       return array("person");
     }
-    
+
     function userprefs_modifier(&$node)
     {
       userelation("atkOneToOneRelation");
-      $node->add(new atkOneToOneRelation("scheduler","scheduler.scheduler_userpreferences","userid",AF_ONETOONE_INTEGRATE),"scheduler"); 
+      $node->add(new atkOneToOneRelation("scheduler","scheduler.scheduler_userpreferences","userid",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR),"scheduler");
     }
   }
 
