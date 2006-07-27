@@ -7,14 +7,14 @@ body, a
 .menu-submenuitem
 {
   padding: 5px 0px 5px 25px;
-  color: #000000; 
+  color: #000000;
   text-decoration: none;
 }
 
 .menu-menuitem
 {
   padding-left: 5px;
-  color: #ffffff; 
+  color: #ffffff;
   font-weight: bold;
 }
 
@@ -27,7 +27,7 @@ body, a
 
 #mainMenu
 {
-  
+
 }
 
 #mainMenu
@@ -79,8 +79,8 @@ body, a
 .menuItemLevel2Head .menu-menuitem
 {
   background: none;
-	font-size: 12px !important;
-	padding-left: -8px;
+  font-size: 12px !important;
+  padding-left: 0px;
   color: #fff !important;
   text-decoration: none;
 }
