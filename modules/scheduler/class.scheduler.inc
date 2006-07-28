@@ -134,7 +134,7 @@
       $this->add(new atkListAttribute("reminder",array("1 day","2 day", "3 days"),array(1,2,3)));
 
 
-      //$this->add(new atkManyToOneRelation("schedulecategory", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
+      $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("private"));
       $this->add(new atkBoolAttribute("all_users"));
       //$this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), ""));
