@@ -25,9 +25,10 @@ class project_personemployee extends atkNode
     $this->add(new atkManyToOneRelation("role", "project.role", AF_PRIMARY|AF_RELATION_AUTOLINK));
     $this->addFilter("personid.role = 'employee'");
 
-    // if you may edit the project, you may also add contactpersons to it.
+    // If you may edit the project, you may also add contactpersons to it.
     $this->setSecurityAlias("project.project");
-    $this->m_securityMap["add"] = "edit";
+    foreach(array("add", "save", "update", "delete") as $action)
+      $this->m_securityMap[$action] = "edit";
 
     $this->setTable("project_person", "project_person");
   }
