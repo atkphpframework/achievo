@@ -62,6 +62,10 @@
         $flags = 0;
       }
 
+      // Add the organization relation
+      $obligatoryflag = (in_array(atkArrayNvl($ATK_VARS, "atkaction"), array("admin", "add", "save"))) ? 0 : AF_OBLIGATORY;
+      $this->add(new atkManyToOneRelation("customer", "organization.organization", $obligatoryflag|AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_HIDE_ADD|AF_SEARCHABLE), "", 500);
+
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
