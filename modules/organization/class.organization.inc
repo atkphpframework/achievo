@@ -18,16 +18,18 @@ useattrib("atkdummyattribute");
 useattrib("atknumberattribute");
 useattrib("atkparserattribute");
 useattrib("atkdocumentattribute");
+useattrib("atklistattribute");
 userelation("atkonetomanyrelation");
 
 class organization extends atkNode
 {
   function organization()
   {
-    $this->atkNode("organization", NF_EDITAFTERADD);
+    $this->atkNode("organization", NF_EDITAFTERADD|NF_EXPORT);
 
     $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
+    $this->add(new atkListAttribute("type", array("customer", "supplier"), "", AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("visitheader", "<b>".atktext("organization_visitaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
 
     // TODO FIXME: in future version 1.1, the fields for address should be renamed to visit_*.
@@ -74,6 +76,7 @@ class organization extends atkNode
     $this->add(new atkDocumentAttribute("document"));
 
     $this->m_securityMap["vcard"] = "view";
+    $this->m_securityMap["export"] = "view";
 
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
@@ -82,11 +85,89 @@ class organization extends atkNode
     atkdebug("organization::organization()");
   }
 
-  function email_display($record)
+  /**
+   * Determines the current view to be used (active or archive)
+   *
+   * @return string Current view mode ("all", "customer" or "supplier")
+   */
+  function getView()
+  {
+    // We use the session manager to retrieve the view.
+    // this way, when paging, or when returning from an
+    // edit screen etc., the system will have remembered
+    // if we were viewing active records or the archive.
+    $sessionManager = &atkGetSessionManager();
+    $view = $sessionManager->pageVar("view");
+    if (!in_array($view, array("all", "customer", "supplier")))
+      $view = "all";
+    return $view;
+  }
+
+  /**
+   * Admin action handler override to implement archive and active view modes
+   *
+   * This function overrides the default adminHandlers action_admin, in
+   * order to add our filtering logic to the admin action. This is done to
+   * implement the archive and active view modes
+   *
+   * @param atkActionHandler &$handler Default admin actionhandler
+   * @return atkAdminHandler Default admin action handler
+   */
+  function action_admin(&$handler)
+  {
+    // Add the filtering logic to the admin screen
+    $view = $this->getView();
+    if ($view != "all")
+      $this->addFilter("organization.type='$view'");
+
+    // Call the default adminHandler action_admin so the default action will be undertaken.
+    return $handler->action_admin();
+  }
+
+  /**
+   * Add html interface for switching to archive and active in user interface footer
+   *
+   * In this function we provide the user with a way to switch the view by
+   * adding a link to the view the user is not in.
+   *
+   * @return string HTML Code fore the link to the other view
+   */
+  function adminHeader()
+  {
+    $view = $this->getView();
+    $result = "<br>" . $this->text("view"). ":";
+    foreach (array("all", "customer", "supplier") as $filter)
+      $result .= " " . href(dispatch_url("organization.organization", "admin", array("view"=>$filter)), $this->text($filter));
+    $result .= "<br><br>";
+    return $result;
+  }
+
+  function getExportAttributeGroup($attributename)
+  {
+    if (in_array($attributename, array("address", "address2", "zipcode", "city", "state", "country"))) return "organization_visitaddress";
+    if (strpos($attributename, "mail_") === 0) return "organization_mailaddress";
+    if (strpos($attributename, "invoice_") === 0) return "organization_invoiceaddress";
+  }
+
+  function action_export(&$handler)
+  {
+    // Some attributes are not usefull in exports
+    foreach(array("contactperson", "contracts", "projects", "archivedprojects", "vcard", "document") as $attrname)
+    {
+      $attr = &$this->getAttribute($attrname);
+      $attr->addFlag(AF_HIDE);
+    }
+
+    // Let the export handler do it's work
+    return $handler->action_export();
+  }
+
+  function email_display($record, $mode)
   {
     $email = $record["email"];
-    if (strlen($email)>0) return '<a href="mailto:'.$email.'">'.$email.'</a>';
-    return "";
+    if (!in_array($mode, array("csv", "plain")) && (strlen($email)>0))
+      $email = sprintf('<a href="mailto:%1$s">%1$s</a>', $email);
+    return $email;
   }
 
   function descriptor_def()

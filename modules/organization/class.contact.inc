@@ -1,7 +1,8 @@
 <?php
 
 userelation("atkmanytoonerelation");
-include_once (moduleDir("person")."/class.person.inc");
+atkimport("modules.person.person");
+useattrib("organization.contactprojectslist");
 
 class contact extends person
 {
@@ -13,6 +14,8 @@ class contact extends person
     $this->addFilter("person.role='contact'");
     $this->add(new atkManyToOneRelation("company","organization.organization",AF_HIDE_ADD|AF_RELATION_AUTOLINK));
     $this->add(new atkAttribute("role"           , AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15));
+    $this->add(new contactprojectslist("projects", "active"));
+    $this->add(new contactprojectslist("archivedprojects", "archived"));
   }
 
   function initial_values()
