@@ -1,37 +1,42 @@
 <?php
 
+// Install the scheduler node in case the category column is missing.
+$setup->installNode("scheduler.scheduler");
+
+// Allow a rather long execution time
+ini_set("max_execution_time", 1800);
+
+// !! GUIDO HACK !! Clone the default db config
+global $config_db;
+$config_db["default_clone"] = $config_db["default"];
+$db_clone = &atkGetDb("default_clone");
 
 // Convert scheduler types
 $sql = "SELECT * FROM schedule_type";
-$types = $db->getrows($sql);
-
+$db->query($sql);
 $type_lookup = array();
-
-for($i=0,$_i=count($types);$i<$_i;$i++)
+while ($db->next_record())
 {
   $next_id = $db->nextid("scheduler_category");
-  $sql = "INSERT INTO scheduler_category (id,description,bgcolor,fgcolor)
+  $insertsql = "INSERT INTO scheduler_category (id,description,bgcolor,fgcolor)
           VALUES ($next_id,
-                  '".$db->escapeSQL($types[$i]["description"])."',
-                  '".$db->escapeSQL($types[$i]["bgcolor"])."',
-                  '".$db->escapeSQL($types[$i]["fgcolor"])."')";
-  $db->query($sql);
-  $type_lookup[$types[$i]["id"]]=$next_id;
+                  '".$db->escapeSQL($db->m_record["description"])."',
+                  '".$db->escapeSQL($db->m_record["bgcolor"])."',
+                  '".$db->escapeSQL($db->m_record["fgcolor"])."')";
+  $db_clone->query($insertsql);
+  $type_lookup[$db->m_record["id"]]=$next_id;
 }
-unset($types);
 
 // Convert scheduler events
 $sql = "SELECT * FROM schedule";
-$nrows = $db->getrows($sql);
-
+$db->query($sql);
 $scheduler_lookup = array();
-
-for($i=0,$_i=count($nrows);$i<$_i;$i++)
+while ($db->next_record())
 {
-  $rec = $nrows[$i];
+  $rec = $db->m_record;
   $next_id = $db->nextid("scheduler_scheduler");
 
-  $sql = "INSERT INTO scheduler_scheduler (id,title,location,description,recur,startdate,enddate,starttime,endtime,allday,private,owner,all_users,category)
+  $insertsql = "INSERT INTO scheduler_scheduler (id,title,location,description,recur,startdate,enddate,starttime,endtime,allday,private,owner,all_users,category)
           VALUES ($next_id,
                   '".$db->escapeSQL($rec["title"])."',
                   '".$db->escapeSQL($rec["location"])."',
@@ -47,40 +52,36 @@ for($i=0,$_i=count($nrows);$i<$_i;$i++)
                   '".$db->escapeSQL($rec["all_users"])."',
                   '".$db->escapeSQL($type_lookup[$rec["scheduletype"]])."')";
 
-  $db->query($sql);
+  $db_clone->query($insertsql);
   $scheduler_lookup[$rec["id"]]=$next_id;
 }
 
 // Convert scheduler notes
 $sql = "SELECT * FROM schedule_note";
-$notes = $db->getrows($sql);
-
-for($i=0,$_i=count($notes);$i<$_i;$i++)
+$db->query($sql);
+while ($db->next_record())
 {
   $next_id = $db->nextid("scheduler_notes");
-  $sql = "INSERT INTO scheduler_notes (id,owner,schedule_id,entrydate,title,description)
+  $insertsql = "INSERT INTO scheduler_notes (id,owner,schedule_id,entrydate,title,description)
           VALUES ($next_id,
-                  '".$db->escapeSQL($notes[$i]["owner"])."',
-                  '".$db->escapeSQL($scheduler_lookup[$notes[$i]["schedule_id"]])."',
-                  '".$db->escapeSQL($notes[$i]["entrydate"])."',
-                  '".$db->escapeSQL($notes[$i]["title"])."',
-                  '".$db->escapeSQL($notes[$i]["description"])."')";
-  $db->query($sql);
+                  '".$db->escapeSQL($db->m_record["owner"])."',
+                  '".$db->escapeSQL($scheduler_lookup[$db->m_record["schedule_id"]])."',
+                  '".$db->escapeSQL($db->m_record["entrydate"])."',
+                  '".$db->escapeSQL($db->m_record["title"])."',
+                  '".$db->escapeSQL($db->m_record["description"])."')";
+  $db_clone->query($insertsql);
 }
-unset($notes);
 
 // Convert scheduler attendees
 $sql = "SELECT * FROM schedule_attendee";
-$attendees= $db->getrows($sql);
-
-for($i=0,$_i=count($attendees);$i<$_i;$i++)
+$db->query($sql);
+while ($db->next_record())
 {
-  $sql = "INSERT INTO scheduler_attendees (schedule_id,person_id)
-          VALUES ('".$db->escapeSQL($scheduler_lookup[$attendees[$i]["schedule_id"]])."',
-                  '".$db->escapeSQL($attendees[$i]["person_id"])."')";
-  $db->query($sql);
+  $insertsql = "INSERT INTO scheduler_attendees (schedule_id,person_id)
+          VALUES ('".$db->escapeSQL($scheduler_lookup[$db->m_record["schedule_id"]])."',
+                  '".$db->escapeSQL($db->m_record["person_id"])."')";
+  $db_clone->query($insertsql);
 }
-unset($attendees);
 
 unset($type_lookup);
 unset($scheduler_lookup);
