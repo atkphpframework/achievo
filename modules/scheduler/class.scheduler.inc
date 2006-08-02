@@ -14,8 +14,6 @@
  *
  */
 
-
-
   useattrib("atkdateattribute");
   useattrib("atktextattribute");
   useattrib("atkboolattribute");
@@ -27,9 +25,7 @@
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
   useattrib("atkfuzzysearchattribute");
-  //useattrib("scheduler.schedulerradioattribute");
-  //useattrib("scheduler.schedulerlistattribute");
-  //useattrib("scheduler.schedulerboolattribute");
+  useattrib("atkradioattribute");
 
   class scheduler extends atkNode
   {
@@ -45,23 +41,22 @@
 
     function scheduler()
     {
-      global $g_sessionManager,$ATK_VARS;
-      $this->m_view = $g_sessionManager->pageVar("view");
-      $this->m_viewUser = $g_sessionManager->pageVar("user");
-      $this->m_employees = $g_sessionManager->pageVar("employee");
-      $this->m_itemDate = $g_sessionManager->stackVar("itemdate");
+      $sessionmanager = &atkGetSessionManager();
+      $this->m_view = $sessionmanager->pageVar("view");
+      $this->m_viewUser = $sessionmanager->pageVar("user");
+      $this->m_employees = $sessionmanager->pageVar("employee");
+      $this->m_itemDate = $sessionmanager->stackVar("itemdate");
 
 
 
 
       $user = getUser();
-      $userprefs = $this->getUserSchedulerPrefs($user["id"]);
-      atk_var_dump($userprefs);
+      $userprefs = (isset($user["id"]) && !empty($user["id"])) ? $this->getUserSchedulerPrefs($user["id"]) : array();
 
       $eventtime = $userprefs["default_eventtime"];
       $user_eventtime = ($eventtime["hours"]*60)+$eventtime["minutes"];
 
-      $time = $g_sessionManager->stackVar("time");
+      $time = $sessionmanager->stackVar("time");
       for($i=0;$i<60;$i+=$this->m_minute_step) $m_arr_minute_step[] = sprintf("%02d",$i);
       if ($time!="")
       {
@@ -73,36 +68,23 @@
       else
       {
         $default_start_time = strftime("%H:%M");
-        $default_end_time = strftime("%H:%M", mktime(substr($default_start_time,0,2),substr($default_end_time,3,2)+$user_eventtime));
+        $default_end_time = strftime("%H:%M", mktime(substr($default_start_time,0,2),substr($default_start_time,3,2)+$user_eventtime));
       }
       $day_arr = array();
       for($i=1;$i<32;$i++) $day_arr[]=$i;
 
-      $month_arr_value=array();
-      for($i=1;$i<13;$i++) $month_arr_value[]=$i;
-      $month_arr_disp = array();
-      $month_arr_disp[] = text("januari");
-      $month_arr_disp[] = text("februari");
-      $month_arr_disp[] = text("march");
-      $month_arr_disp[] = text("april");
-      $month_arr_disp[] = text("may");
-      $month_arr_disp[] = text("june");
-      $month_arr_disp[] = text("july");
-      $month_arr_disp[] = text("august");
-      $month_arr_disp[] = text("september");
-      $month_arr_disp[] = text("october");
-      $month_arr_disp[] = text("november");
-      $month_arr_disp[] = text("december");
-
-
+      atkimport("modules.utils.dateutil");
+      $month_array = dateutil::monthlist();
+      $month_arr_value = array_keys($month_array);
+      $month_arr_disp = array_values($month_array);
 
       $this->atkNode("scheduler", NF_ADD_LINK);
 
       $this->add(new atkAttribute("id"              , AF_AUTOKEY));
       $this->add(new atkOneToManyRelation("attendees", "scheduler.scheduler_attendees", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
-      $this->add(new atkDummyAttribute("hint", text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
-      $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", FSA_MULTISELECT));
-      $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", FSA_MULTISELECT));
+      $this->add(new atkDummyAttribute("hint", $this->text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
+      $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", "multiselect"));
+      $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", "multiselect"));
 
       $this->add(new atkAttribute("title"          , AF_SEARCHABLE|AF_OBLIGATORY, 50));
       $this->add(new atkAttribute("location"        , AF_SEARCHABLE, 50));
@@ -118,8 +100,6 @@
       $this->add(new atkTimeAttribute("starttime"  , 0, 23, $m_arr_minute_step, $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime"    ,0, 23, $m_arr_minute_step, $default_end_time, 0));
 
-
-
       $this->add(new atkDateAttribute("cyclus_startdate"  , "F d Y","d F Y", 0, 0),"cyclus");
       $this->add(new atkDateAttribute("cyclus_enddate"    , "F d Y","d F Y", 0, 0),"cyclus");
       $this->add(new atkListAttribute("startday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
@@ -130,8 +110,8 @@
       $this->add(new atkListAttribute("every",array(1,2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
 
       $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY),"cyclus");
-      $this->add(new atkFlagAttribute("weekday",array("sunday","monday","thuesday","wednedsday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus");
-      $this->add(new atkListAttribute("reminder",array("1 day","2 day", "3 days"),array(1,2,3)));
+      $this->add(new atkFlagAttribute("weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus");
+      $this->add(new atkListAttribute("reminder",array("1 ".$this->text("day"),"2 ".$this->text("days"), "3 ".$this->text("days")),array(1,2,3), AF_NO_TRANSLATION));
 
 
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
@@ -165,8 +145,8 @@
 
 
 
-      $this->m_viewdate = $g_sessionManager->stackVar("viewdate");
-      $this->m_small_viewdate = $g_sessionManager->stackVar("small_viewdate");
+      $this->m_viewdate = $sessionmanager->stackVar("viewdate");
+      $this->m_small_viewdate = $sessionmanager->stackVar("small_viewdate");
 
       if(is_array($this->m_viewdate))
       {
@@ -324,7 +304,7 @@
           $result = "Niet bestaande view (".$this->m_view." view)";
         }
 
-        $page->addContent($ui->renderBox(array("title"=>text($this->m_type)." - ".text($this->m_view),
+        $page->addContent($ui->renderBox(array("title"=>$this->text($this->m_type)." - ".$this->text($this->m_view),
                                                "content"=>$result)));
       }
       else
@@ -610,7 +590,7 @@
     {
        $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
        $userprefs = $userprefsnode->selectdb("userid='".$userid."'");
-       return $userprefs[0];
+       return atkArrayNvl($userprefs, 0);
     }
   }
 
