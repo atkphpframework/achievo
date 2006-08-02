@@ -18,7 +18,7 @@ class scheduler_pimview extends scheduler_view
   function _dumpMatrix()
   {
     $tmp="";
-    $holiday = &getNode("scheduler.scheduler_holidays");
+    $holiday = &atkGetNode("scheduler.scheduler_holidays");
     if($holiday->isHoliday($this->m_viewdate))
     {
       $holidayInfo = $holiday->getHolidayInfo($this->m_viewdate);
@@ -40,7 +40,7 @@ class scheduler_pimview extends scheduler_view
 
       }
     }
-    if($tmp=="") return text('pim_scheduler_empty');
+    if($tmp=="") return atkText("pim_scheduler_empty", "scheduler");
     return $tmp;
   }
 
