@@ -19,62 +19,73 @@
   {
     function scheduler_userpreferences()
     {
+      // Call the parent constructor
+      $this->atkNode("scheduler_userpreferences");
+
+      // Get the user description and userid
       $usernode = &getNode("employee.employee");
       $user = getUser();
+      $userid = atkArrayNvl($user, "id");
+      $userdescriptor = $usernode->descriptor($user);
 
+      // Get the possible minute steps
       $m_arr_minute_step = array();
       for($i=0;$i<60;$i+=5) $m_arr_minute_step[] = sprintf("%02d",$i);
 
       //$datestyles = $this->getDateStyles();
       //$timezones = $this->getTimeZones();
 
-      $this->atkNode("scheduler_userpreferences");
       $this->add(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
       $this->add(new atkDummyAttribute("group1","<b>".atktext("settings")."</b>:<br>"));
-
       //$this->add(new atkListAttribute("timezone",array_values($timezones),array_keys($timezones),AF_OBLIGATORY|AF_NO_TRANSLATION));
       //$this->add(new atkListAttribute("dateformat",array_keys($datestyles), array_values($datestyles),AF_OBLIGATORY|AF_NO_TRANSLATION));
       //$this->add(new atkRadioAttribute("timeformat",array(12,24),array("12","24")));
       $this->add(new atkListAttribute("timeschedule",array(5,6,10,15,30,60),array(),AF_OBLIGATORY|AF_NO_TRANSLATION));
-
       //$this->add(new atkBoolAttribute("showweekendsinweekview"));
       $this->add(new atkBoolAttribute("showweeknumbers"));
       $this->add(new atkBoolAttribute("showtodo"));
       $this->add(new atkBoolAttribute("showemployeebirthdays"));
       $this->add(new atkBoolAttribute("showcustomerbirthdays"));
-
       $this->add(new atkBoolAttribute("autorefresh"));
       $this->add(new atkNumberAttribute("refresh_interval"));
-
-
       $this->add(new atkListAttribute("default_view",array("day","week","month","year","employee"),array(),AF_OBLIGATORY));
-      $this->add(new atkListAttribute("default_userview",array($usernode->descriptor($user),"allusers"),array($user["id"],"*"),AF_OBLIGATORY));
-
+      $this->add(new atkListAttribute("default_userview",array($userdescriptor,"allusers"),array($userid,"*"),AF_OBLIGATORY));
       //$this->add(new atkListAttribute("startday",array("sunday","monday","saturday"),array(0,1,6),AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("default_eventtime", 0, 23, $m_arr_minute_step,"01:00", 0));
       $this->add(new atkManyToOneRelation("default_category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-
       $this->add(new atkDummyAttribute("group2","<br><b>".$this->text("colors")."</b>:<br>"));
       $this->add(new atkColorPickerAttribute("scheduler_emptycolor"));
       $this->add(new atkColorPickerAttribute("scheduler_emptyworkhourscolor"));
-
       $this->add(new atkDummyAttribute("group3","<br><b>".$this->text("email")."</b>:<br>"));
       $this->add(new atkBoolAttribute("email_reminders"));
       $this->add(new atkBoolAttribute("email_addedevents"));
       $this->add(new atkBoolAttribute("email_updatedevents"));
       $this->add(new atkBoolAttribute("email_removedevents"));
       $this->add(new atkBoolAttribute("email_rejectedevents"));
-
       $this->add(new atkDummyAttribute("group4","<br><b>".$this->text("assistant")."</b>:<br>"));
-      $this->add(new atkOneToManyRelation("assistant", "scheduler.scheduler_userassistants", "userid"));
 
       $this->setTable("scheduler_userpreferences");
       $this->setSecurityAlias("employee.userprefs");
     }
 
+    function refresh_interval_display($record="", $mode="")
+    {
+      $refrintattr = &$this->getAttribute("refresh_interval");
+      $result = $refrintattr->display($record, $mode) . ' ' . $this->text("seconds");
+      return $result;
+    }
+
+    function refresh_interval_edit($record="", $fieldprefix="")
+    {
+      $refrintattr = &$this->getAttribute("refresh_interval");
+      $result = $refrintattr->edit($record, $fieldprefix) . ' ' . $this->text("seconds");
+      return $result;
+    }
+
+
     function initial_values()
     {
-      $user = getUser();
+      $userid = atkArrayNvl(getUser(), "id");
       return array("timeschedule"=>30,
                    "showweeknumbers"=>false,
                    "showtodo"=>false,
@@ -83,7 +94,7 @@
                    "autorefresh"=>false,
                    "refresh_interval"=>0,
                    "default_view"=>"day",
-                   "default_userview"=>$user["id"],
+                   "default_userview"=>$userid,
                    "default_eventtime"=>array('hours'=>'01','minutes'=>'00','seconds'=>'00'),
                    "scheduler_emptycolor"=>"#DDDDDD",
                    "scheduler_emptyworkhourscolor"=>"#FFFFFF",
@@ -158,9 +169,7 @@
       static $userPreferences = array();
       static $users = array();
 
-
-      $user = getUser();
-      $userid = atkArrayNvl($user, "id");
+      $userid = atkArrayNvl(getUser(), "id");
 
       if(!in_array($userid,$users))
       {

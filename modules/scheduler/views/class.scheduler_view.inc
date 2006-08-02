@@ -343,7 +343,6 @@ class scheduler_view
     return $tmp;
   }
 
-
  /**
   * Return the initalDate for a view
   * @return array Initial Date
@@ -482,44 +481,19 @@ class scheduler_view
     $this->m_legend.= $legend."</tbody></table></td></tr></tbody></table>";
   }
 
- /**
-  * Get all calendar items for a date range
-  * @global object $g_db Database connection
-  * @param string $startdate Startdate of the daterange
-  * @param string $enddate Enddate of the daterange
-  * @param array $user Array with the users
-  */
-  function getItems($startdate="",$enddate="",$user=array())
+  function &getItemsQuery($startdate="",$enddate="",$user=array())
   {
-    global $g_user;
-    $g_db = &atkgetdb();
-    atkdebug("START getItems (".$this->m_viewUser."): ".date("H:i:s"));
-    // Set default user
-    if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
-
-    $this->m_alldayItems = array();
-    $this->m_appointmentItems = array();
-    if($startdate=="")
-    {
-       // Set startdate and enddate with viewdate since it's not
-       // possible to call this function with only an enddate.
-       $startdate=$this->m_viewdate;
-       $enddate=$this->m_viewdate;
-    }
-    $name = "atk".atkconfig("database")."query";
-//atkimport("atk.db.atkmysqlquery");
-    $query = atknew($name);
+    $name = "atk.db.atk".atkconfig("database")."query";
+    $query = &atkNew($name);
     $query->addTable('scheduler_scheduler');
     $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.schedule_id=scheduler_scheduler.id', TRUE);
 //$query->addJoin('person', '', 'person.id=schedule_attendee.person_id', TRUE);
 //$query->addJoin('person', 'owner', 'owner.id=schedule.owner', TRUE);
-
     $query->addField('id', ' ', 'scheduler_scheduler');
     $query->addField('startdate', ' ', 'scheduler_scheduler');
     $query->addField('enddate', ' ', 'scheduler_scheduler');
     $query->addField('starttime', ' ', 'scheduler_scheduler');
     $query->addField('endtime', ' ', 'scheduler_scheduler');
-
     $query->addField('startmonth', ' ', 'scheduler_scheduler');
     $query->addField('endmonth', ' ', 'scheduler_scheduler');
     $query->addField('title', ' ', 'scheduler_scheduler');
@@ -530,7 +504,7 @@ class scheduler_view
     $query->addField('owner', ' ', 'scheduler_scheduler');
 //$query->addField('status', ' ', 'scheduler_scheduler');
     $query->addField('all_users', ' ', 'scheduler_scheduler');
-//$query->addField('scheduletype', ' ', 'scheduler_scheduler');
+    $query->addField('category', ' ', 'scheduler_scheduler');
     $query->addField('recur', ' ', 'scheduler_scheduler');
     $query->addField('every', ' ', 'scheduler_scheduler');
     $query->addField('cyclus_startdate', ' ', 'scheduler_scheduler');
@@ -539,11 +513,7 @@ class scheduler_view
     $query->addField('startday', ' ', 'scheduler_scheduler');
     $query->addField('endday', ' ', 'scheduler_scheduler');
     $query->addField('month_time', ' ', 'scheduler_scheduler');
-
-
-
-
-    //$query->addField('userid', '', 'owner', 'owneruser_AE_');
+//$query->addField('userid', '', 'owner', 'owneruser_AE_');
     $query->addCondition("(
                             (
                               scheduler_scheduler.startdate ".($this->m_view=="day"?"<=":">=")." '$startdate'
@@ -574,146 +544,200 @@ class scheduler_view
       $query->addCondition("scheduler_scheduler.all_users = '1' $useridcondition)");
     }
     $query->addOrderBy('starttime');
-    $querystring = $query->buildSelect(TRUE);
-    atkdebug("<pre>$querystring</pre>");
-    $recs = $g_db->getrows($querystring);
+    return $query;
+  }
 
-    // Loop true all records and check them if they are valid:
-    if(count($recs))
+  function isItemVisibleOnDate($scheduleritem, $date)
+  {
+    // Initialize some variables
+    if (is_string($date))
+      $starttime = mktime(12,0,0,substr($startdate,5,2),substr($startdate,8,2)+$datecounter,substr($startdate,0,4));
+    else
+      $starttime = $date;
+    $unix_date = $starttime;
+    $month_time = ceil(date("d",$starttime)/7);
+    $day = date("j",$starttime);
+    $month = date("n",$starttime);
+    $year = date("Y",$starttime);
+    $weekday_number = date("w",mktime(12,0,0,$month,$day,$year));
+    $weekday = $this->weekdaynumbertoflag($weekday_number);
+
+    // Initially we assume the item to be visible
+    $show_item = true;
+
+    // Check weekday / monthtime / day / day+month
+    switch($scheduleritem["recur"])
     {
-      $endtime = mktime(12,0,0,substr($enddate,5,2),substr($enddate,8,2),substr($enddate,0,4));
-      $datecounter = 0;
-      while(true)
+      case 'once':
+        if(date("Y-m-d",$starttime)>=$scheduleritem["startdate"] && date("Y-m-d",$starttime)<=$scheduleritem["enddate"]) { $show_item = true; } else { $show_item = false; }
+        break;
+      case 'weekly':
+        if(hasFlag($scheduleritem["weekday"],$weekday)) { $show_item = true; } else { $show_item = false; }
+      break;
+      case 'monthly_date':
+        if($scheduleritem["startday"]<=$day && $scheduleritem["endday"]>=$day)  { $show_item = true; } else { $show_item = false; }
+      break;
+      case 'monthly_day':
+        if(hasFlag($scheduleritem["weekday"],$weekday) && $scheduleritem["month_time"]==$month_time) { $show_item = true; } else { $show_item = false; }
+      break;
+      case 'yearly_date':
+        if(($scheduleritem["startday"]<=$day && $scheduleritem["endday"]>=$day) && ($scheduleritem["startmonth"]<=$month && $scheduleritem["endmonth"]>=$month))  { $show_item = true; } else { $show_item = false; }
+      break;
+      case 'yearly_day':
+        if($scheduleritem["startmonth"]==$month && hasFlag($scheduleritem["weekday"],$weekday) && $scheduleritem["month_time"]==$month_time) { $show_item = true; } else { $show_item = false; }
+      break;
+    }
+
+    // Check the every ... (days,weeks,months,years)
+    if($scheduleritem["every"]>=1 && $show_item==true)
+    {
+ 			if (!empty($scheduleritem["cyclus_startdate"]))
+ 			{
+ 			  $cyclus_startdate_array = explode('-',$scheduleritem["cyclus_startdate"]);
+			  $cyclus_startdate_time = mktime(12,0,0,intval($cyclus_startdate_array[1]),intval($cyclus_startdate_array[2]),intval($cyclus_startdate_array[0]));
+ 			}
+      switch($scheduleritem["recur"])
       {
-        $starttime = mktime(12,0,0,substr($startdate,5,2),substr($startdate,8,2)+$datecounter,substr($startdate,0,4));
-        $unix_date = $starttime;
-        atkdebug("Check: ".date("Ymd",$starttime)." > ".date("Ymd",$endtime));
-        if(date("Ymd",$starttime)>date("Ymd",$endtime)) break;
-        $month_time = ceil(date("d",$starttime)/7);
-        $day = date("j",$starttime);
-        $month = date("n",$starttime);
-        $year = date("Y",$starttime);
-        $weekday_number = date("w",mktime(12,0,0,$month,$day,$year));
-        atkdebug("WEEK DAY NUMBER: $weekday_number");
-        $weekday = $this->weekdaynumbertoflag($weekday_number);
+        case 'daily':
+          $interval = $unix_date - $cyclus_startdate_time;
+		    	$interval_days = floor($interval/(60*60*24));
+		    	$devided = $interval_days/$scheduleritem["every"];
+			    $match = (int) $devided;
+		    	if ($devided != $match)
+		    	{
+			    	$show_item = false;
+			    }
+		      break;
+		    case 'weekly':
+          $interval = $unix_date - $cyclus_startdate_time;
+		    	$interval_weeks = floor($interval/(60*60*24*7));
+		    	$devided = $interval_weeks/$scheduleritem["every"];
+
+			    $match = (int) $devided;
+		    	if ($devided != $match)
+		    	{
+			    	$show_item = false;
+			    }
+		      break;
+		    case 'monthly_date':
+					$start_month = $cyclus_startdate_array[1];
+					$this_month = strftime('%m', $unix_date);
+					$interval = $this_month - $start_month;
+					$devided = $interval/$scheduleritem["every"];
+					$match = (int) $devided;
+					if ($devided != $match)
+					{
+						$show_item= false;
+					}
+				  break;
+
+				case 'monthly_day':
+					$start_month = $cyclus_startdate_array[1];
+					$this_month = strftime('%m', $unix_date);
+					$interval = $this_month - $start_month;
+					$devided = $interval/$scheduleritem["every"];
+					$match = (int) $devided;
+					if ($devided != $match)
+					{
+						$show_item = false;
+					}
+				  break;
+				case 'yearly_date':
+				  break;
+				case 'yearly_day':
+				  atkdebug("YEARLY DAY");
+					$start_year = $cyclus_startdate_array[0];
+					$this_year = strftime('%Y', $unix_date);
+					$interval = $this_year - $start_year;
+					$devided = $interval/$scheduleritem["every"];
+
+					$match = (int) $devided;
+					if ($devided != $match)
+					{
+						$show_item = false;
+					}
+				  break;
+      }
+    }
+    return $show_item;
+  }
+
+  /**
+   * Get all calendar items for a date range
+   *
+   * @param string $startdate Startdate of the daterange
+   * @param string $enddate Enddate of the daterange
+   * @param array $user Array with the users
+   */
+  function getItems($startdate="",$enddate="",$user=array())
+  {
+    // If no user given, but a viewuser is set, then filter using the viewuser
+    if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all')
+      $user[] = $this->m_viewUser;
+
+    // If no startdate is set, use the viewdate as both the start and end date
+    // since it's not possible to call this function with only an enddate.
+    if($startdate=="")
+    {
+      $startdate=$this->m_viewdate;
+      $enddate=$this->m_viewdate;
+    }
+
+    // Get the raw items from the database
+    $query = $this->getItemsQuery($startdate, $enddate, $user);
+    $recs = $query->executeSelect(true);
+
+    // Clear the alldayItems and appointementItems before populating them
+    $this->m_alldayItems = array();
+    $this->m_appointmentItems = array();
+
+    // Only perform the loop if there are any records
+    if(count($recs) > 0)
+    {
+
+      // Loop through all dates between the initial starttime and endtime and increment startdate for day
+      $starttime = mktime(12,0,0,substr($startdate,5,2),substr($startdate,8,2),substr($startdate,0,4));
+      $endtime = mktime(12,0,0,substr($enddate,5,2),substr($enddate,8,2),substr($enddate,0,4));
+      while(date("Ymd",$starttime)<=date("Ymd",$endtime))
+      {
+
+        // Datekey
+        $datekey = date("Y-m-d", $starttime);
+        $this->m_allDayItems[$datekey] = array();
+        $this->m_appointmentItems[$datekey] = array();
 
         // for everydate we need to loop true the recs
         // else we can't see if a rec is valid or not.
         for($i=0,$_i=count($recs);$i<$_i;$i++)
         {
-          $show_item = true;
-          // Check weekday / monthtime / day / day+month
-          switch($recs[$i]["recur"])
+
+          // Only add the item if it should be visible for this day
+          if($this->isItemVisibleOnDate($recs[$i], $starttime))
           {
-            case 'once':
-              if(date("Y-m-d",$starttime)>=$recs[$i]["startdate"] && date("Y-m-d",$starttime)<=$recs[$i]["enddate"]) { $show_item = true; } else { $show_item = false; }
-              break;
-            case 'weekly':
-              if(hasFlag($recs[$i]["weekday"],$weekday)) { $show_item = true; } else { $show_item = false; }
-            break;
-            case 'monthly_date':
-              if($recs[$i]["startday"]<=$day && $recs[$i]["endday"]>=$day)  { $show_item = true; } else { $show_item = false; }
-            break;
-            case 'monthly_day':
-              if(hasFlag($recs[$i]["weekday"],$weekday) && $recs[$i]["month_time"]==$month_time) { $show_item = true; } else { $show_item = false; }
-            break;
-            case 'yearly_date':
-              if(($recs[$i]["startday"]<=$day && $recs[$i]["endday"]>=$day) && ($recs[$i]["startmonth"]<=$month && $recs[$i]["endmonth"]>=$month))  { $show_item = true; } else { $show_item = false; }
-            break;
-            case 'yearly_day':
-              if($recs[$i]["startmonth"]==$month && hasFlag($recs[$i]["weekday"],$weekday) && $recs[$i]["month_time"]==$month_time) { $show_item = true; } else { $show_item = false; }
-            break;
-          }
 
-          // Check the every ... (days,weeks,months,years)
-          if($recs[$i]["every"]>=1 && $show_item==true)
-          {
-       			$cyclus_startdate_array = explode('-',$recs[$i]["cyclus_startdate"]);
-      			$cyclus_startdate_time = mktime(12,0,0,intval($cyclus_startdate_array[1]),intval($cyclus_startdate_array[2]),intval($cyclus_startdate_array[0]));
-            switch($recs[$i]["recur"])
-            {
-              case 'daily':
-                $interval = $unix_date - $cyclus_startdate_time;
-  				    	$interval_days = floor($interval/(60*60*24));
-  				    	$devided = $interval_days/$recs[$i]["every"];
-  					    $match = (int) $devided;
-  				    	if ($devided != $match)
-  				    	{
-  					    	$show_item = false;
-  					    }
-  				      break;
-  				    case 'weekly':
-                $interval = $unix_date - $cyclus_startdate_time;
-  				    	$interval_weeks = floor($interval/(60*60*24*7));
-  				    	$devided = $interval_weeks/$recs[$i]["every"];
-
-  					    $match = (int) $devided;
-  				    	if ($devided != $match)
-  				    	{
-  					    	$show_item = false;
-  					    }
-  				      break;
-  				    case 'monthly_date':
-      					$start_month = $cyclus_startdate_array[1];
-      					$this_month = strftime('%m', $unix_date);
-      					$interval = $this_month - $start_month;
-      					$devided = $interval/$recs[$i]["every"];
-      					$match = (int) $devided;
-      					if ($devided != $match)
-      					{
-      						$show_item= false;
-      					}
-      				  break;
-
-      				case 'monthly_day':
-      					$start_month = $cyclus_startdate_array[1];
-      					$this_month = strftime('%m', $unix_date);
-      					$interval = $this_month - $start_month;
-      					$devided = $interval/$recs[$i]["every"];
-      					$match = (int) $devided;
-      					if ($devided != $match)
-      					{
-      						$show_item = false;
-      					}
-      				  break;
-      				case 'yearly_date':
-      				  break;
-      				case 'yearly_day':
-      				  atkdebug("YEARLY DAY");
-      					$start_year = $cyclus_startdate_array[0];
-      					$this_year = strftime('%Y', $unix_date);
-      					$interval = $this_year - $start_year;
-      					$devided = $interval/$recs[$i]["every"];
-
-      					$match = (int) $devided;
-      					if ($devided != $match)
-      					{
-      						$show_item = false;
-      					}
-      				  break;
-
-            }
-          }
-          atkdebug("Startdate item (".$recs[$i]["startdate"].") == ".$this->m_viewdate);
-          if($show_item)
-          {
-            if ($recs[$i]["allday"] == 1 ||
+            // Add the item to $this->m_allDayItems if it spans this day completely
+            if ($this->isAllDay($recs[$i]) ||
                  ($recs[$i]["startdate"]<($this->m_viewdate)
                   &&$recs[$i]["enddate"]>($this->m_viewdate)
                  )
                )
             {
-              $this->m_allDayItems[date("Y-m-d",$starttime)][] = $recs[$i];
+              $this->m_allDayItems[$datekey][] = $recs[$i];
             }
+
+            // Else add the item to $this->m_appointmentItems
             else
             {
-              $this->m_appointmentItems[date("Y-m-d",$starttime)][] = $recs[$i];
+              $this->m_appointmentItems[$datekey][] = $recs[$i];
               if($this->m_view=="day" || $this->m_view=="employee") $this->_setMatrix($recs[$i]);
             }
+
           }
 
         }
-        $datecounter++;
+
+        // Increment the starttime to the next day
+        $starttime += 86400;
       }
     }
   }
@@ -721,94 +745,87 @@ class scheduler_view
   function weekdaynumbertoflag($weekday_number)
   {
     if (($weekday_number >=0) && ($weekday_number <= 6))
-      $weekday = 2^$weekday_number;
+      $weekday = pow(2,$weekday_number);
     else
       $weekday = 0;
 
     return $weekday;
   }
 
-
   /**
    * Get attendees of a schedule item
-   * @global object $_db Database connection
+   *
    * @param int $scheduleid Schedule id
    * @return array Array with attendees of the schedule item
    */
   function getAttendees($scheduleid)
   {
-    $g_db = &atkgetdb();
-
-    $name = "atk".atkconfig("database")."query";
-    $query = new $name();
+    $db = &atkGetDb();
+    $query = &$db->createQuery();
     $query->addTable('scheduler_attendees');
-    $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
-
+    $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', true);
     $query->addField('id', ' ', 'person');
-
     $query->addField('lastname', ' ', 'person');
     $query->addField('firstname', ' ', 'person');
     $query->addField('role', ' ', 'person');
-
     $query->addCondition("scheduler_attendees.schedule_id = $scheduleid");
-
-    $querystring = $query->buildSelect(TRUE);
-    return $g_db->getRows($querystring);
+    $result = $query->executeSelect(true);
+    return $result;
   }
 
   /**
    * Is a calendar item recurring
+   *
    * @param array $item Calendar item
    * @return bool Is recurring
    */
   function isRecurring($item)
   {
-    if($item["recur"]!="once") return true;
-    return false;
+    return ($item["recur"]!="once");
   }
 
- /**
-  * Is a calendar item all day
-  * @param array $item Calendar item
-  * @return bool Is all day
-  */
+  /**
+   * Is a calendar item all day
+   *
+   * @param array $item Calendar item
+   * @return bool Is all day
+   */
   function isAllDay($item)
   {
-    if($item["allday"]==1) return true;
-    return false;
+    return ($item["allday"]==1);
   }
 
- /**
-  * Is a calendar item private
-  * @param array $item Calendar item
-  * @return bool Is private
-  */
+  /**
+   * Is a calendar item private
+   *
+   * @param array $item Calendar item
+   * @return bool Is private
+   */
   function isPrivate($item)
   {
-    if($item["private"]==1) return true;
-    return false;
+    return ($item["private"]==1);
   }
 
- /**
-  * Has a calendar item an alarm
-  * @param array $item Calendar item
-  * @return bool Has an alarm
-  */
+  /**
+   * Has a calendar item an alarm
+   *
+   * @param array $item Calendar item
+   * @return bool Has an alarm
+   */
   function hasAlarm($item)
   {
-    if($item["reminder"]==1) return true;
-    return false;
+    return ($item["reminder"]==1);
   }
 
- /**
-  * Has a calendar item an description
-  * @param array $item Calendar item
-  * @return bool Has an description
-  */
+  /**
+   * Has a calendar item an description
+   *
+   * @param array $item Calendar item
+   * @return bool Has an description
+   */
   function hasDescription($item)
   {
-    if($item["description"]!="") return true;
-    return false;
+    return ($item["description"]!="");
   }
 
 
@@ -828,7 +845,7 @@ class scheduler_view
     $tmp="";
     if($admin)
     {
-      $tmp.= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>'."\n";
+      $tmp .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>'."\n";
       $tmp .= '<td valign="top" align="left">';
     }
     $isAttendee = false;
@@ -879,8 +896,8 @@ class scheduler_view
 
     $tmp.="&nbsp;";
 
-    atk_var_dump($item,"ITEM");
-    atkdebug("SANDY:  owner:".$item["owner"]." - userid".$user["id"]. " - attendee".($isAttendee?"true":"false"));
+    //atk_var_dump($item,"ITEM");
+    //atkdebug("SANDY:  owner:".$item["owner"]." - userid".$user["id"]. " - attendee".($isAttendee?"true":"false"));
     if($this->isPrivate($item) && !($item["owner"]==$user["id"] || $isAttendee))
     {
       $tmp.=atkText("private_event","scheduler");
@@ -939,19 +956,19 @@ class scheduler_view
     $userprefs = $schedulerNode->getUserSchedulerPrefs($user["id"]);
 
     if($userprefs["timeschedule"]!="") $this->m_scheduletime = $userprefs["timeschedule"];
-    if($userprefs["workstarttime"]!="00:00:00") $this->m_work_starttime = $userprefs["workstarttime"]["hours"].":".$userprefs["workstarttime"]["minutes"];
-    if($userprefs["workendtime"]!="00:00:00")$this->m_work_endtime = $userprefs["workendtime"]["hours"].":".$userprefs["workendtime"]["minutes"];
+    //if($userprefs["workstarttime"]!="00:00:00") $this->m_work_starttime = $userprefs["workstarttime"]["hours"].":".$userprefs["workstarttime"]["minutes"];
+    //if($userprefs["workendtime"]!="00:00:00")$this->m_work_endtime = $userprefs["workendtime"]["hours"].":".$userprefs["workendtime"]["minutes"];
     if($userprefs["scheduler_emptycolor"]!="") $this->m_emptyColor = $userprefs["scheduler_emptycolor"];
     if($userprefs["scheduler_emptyworkhourscolor"]!="") $this->m_emptyWorkHoursColor = $userprefs["scheduler_emptyworkhourscolor"];
-    if($userprefs["startday"]!="") $this->setCalendarStartDay($userprefs["startday"]);
-    if($userprefs["workdays"]!="")
-    {
-      $this->m_workdays=0;
-      foreach($userprefs["workdays"] as $day)
-      {
-        $this->m_workdays |= $day;
-      }
-    }
+    //if($userprefs["startday"]!="") $this->setCalendarStartDay($userprefs["startday"]);
+    //if($userprefs["workdays"]!="")
+    //{
+    //  $this->m_workdays=0;
+    //  foreach($userprefs["workdays"] as $day)
+    //  {
+    //    $this->m_workdays |= $day;
+    //  }
+    //}
     if($userprefs["showweeknumbers"]!="") $this->m_showWeekNumbers = $userprefs["showweeknumbers"];
     if($userprefs["showtodo"]!="") $this->m_showTodo = $userprefs["showtodo"];
     $this->m_owner = $user["id"];
@@ -987,7 +1004,7 @@ class scheduler_view
 
   /**
    * Render the view
-   * @return string A renderd view
+   * @return string A rendered view
    */
   function renderView()
   {

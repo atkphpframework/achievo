@@ -36,36 +36,36 @@ class scheduler_monthview extends scheduler_view
   */
   function _dumpMatrix()
   {
-     if($day=="")
+    if($day=="")
     {
        $day = $this->m_day;
        $month = $this->m_month;
        $year = $this->m_year;
     }
     $days = array();
-    $days[0] = text("sun");
-    $days[1] = text("mon");
-    $days[2] = text("tue");
-    $days[3] = text("wed");
-    $days[4] = text("thu");
-    $days[5] = text("fri");
-    $days[6] = text("sat");
+    $days[0] = atkText("sun");
+    $days[1] = atkText("mon");
+    $days[2] = atkText("tue");
+    $days[3] = atkText("wed");
+    $days[4] = atkText("thu");
+    $days[5] = atkText("fri");
+    $days[6] = atkText("sat");
     // On what day does our calendar start (0 or 1)
     $daystart=1;
 
     $months = array();
-    $months[0] = text("january");
-    $months[1] = text("february");
-    $months[2] = text("march");
-    $months[3] = text("april");
-    $months[4] = text("may");
-    $months[5] = text("june");
-    $months[6] = text("july");
-    $months[7] = text("august");
-    $months[8] = text("september");
-    $months[9] = text("october");
-    $months[10] = text("november");
-    $months[11] = text("december");
+    $months[0] = atkText("january");
+    $months[1] = atkText("february");
+    $months[2] = atkText("march");
+    $months[3] = atkText("april");
+    $months[4] = atkText("may");
+    $months[5] = atkText("june");
+    $months[6] = atkText("july");
+    $months[7] = atkText("august");
+    $months[8] = atkText("september");
+    $months[9] = atkText("october");
+    $months[10] = atkText("november");
+    $months[11] = atkText("december");
 
     $days_in_month = mktime (0,0,0,$month+1,0,$year);
     $days_in_month = (strftime ("%d",$days_in_month));
@@ -108,7 +108,7 @@ class scheduler_monthview extends scheduler_view
     {
     	$tmp.='<td>&nbsp;</td>';
     }
-    atk_var_dump($this->m_appointmentItems);
+    //atk_var_dump($this->m_appointmentItems);
    	$holiday = &getNode("scheduler.scheduler_holidays");
 
     for ($i=1;$i<=$days_in_month;$i++)
@@ -206,12 +206,6 @@ class scheduler_monthview extends scheduler_view
     return $this->_dumpMatrix();
   }
 
-
 }
-
-
-
-
-
 
 ?>

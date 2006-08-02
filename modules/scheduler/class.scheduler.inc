@@ -304,6 +304,13 @@
           $result = "Niet bestaande view (".$this->m_view." view)";
         }
 
+        // Add the refresh code if autorefresh is set and the refresh_interval is at least 1.
+        $userprefs = $this->getUserSchedulerPrefs(atkArrayNvl(getUser(), "id"));
+        if (($userprefs["autorefresh"] == 1) && ($userprefs["refresh_interval"] > 0))
+        {
+          $page->register_loadscript("setTimeout(\"document.location.reload()\",".($userprefs["refresh_interval"]*1000).")");
+        }
+
         $page->addContent($ui->renderBox(array("title"=>$this->text($this->m_type)." - ".$this->text($this->m_view),
                                                "content"=>$result)));
       }
