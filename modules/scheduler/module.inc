@@ -6,7 +6,7 @@
   {
     function getNodes()
     {
-      registerNode("scheduler.scheduler", array("admin", "add", "edit", "delete", "edit_all"));
+      registerNode("scheduler.scheduler", array("admin", "add", "edit", "delete"));
       registerNode("scheduler.scheduler_category", array("admin", "add", "edit", "delete"));
       registerNode("scheduler.scheduler_holidays", array("admin", "add", "edit", "delete","import","export","view_holidays"));
     }
@@ -41,6 +41,36 @@
       userelation("atkOneToOneRelation");
       $node->add(new atkOneToOneRelation("scheduler","scheduler.scheduler_userpreferences","userid",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR),"scheduler");
       $node->add(new atkOneToManyRelation("assistant", "scheduler.scheduler_userassistants", "userid"), "scheduler");
+    }
+
+    function search($expression)
+    {
+      $db = &atkGetDb();
+      $res = array();
+      $sql = "SELECT scheduler_scheduler.*,scheduler_dates.startdate as realstartdate,scheduler_dates.enddate as realenddate FROM scheduler_scheduler,scheduler_dates WHERE scheduler_scheduler.id=scheduler_dates.scheduler_id AND title LIKE '%$expression%' OR description LIKE '%$expression%' ORDER BY realstartdate";
+      $nrows = $db->getrows($sql);
+      $res["scheduler"] = $this->recLinks($nrows, "scheduler.scheduler");
+      return $res;
+    }
+
+    function recLinks($recordset, $nodetype)
+    {
+      $node = &atkGetNode($nodetype);
+
+      $res = array();
+
+      $node = &atkGetNode($nodetype);
+      if ($node->allowed("view"))
+      {
+        for($i=0, $_i=count($recordset); $i<$_i; $i++)
+        {
+          $item["title"] = date("d-m-Y H:i",$recordset[$i]["realstartdate"])." ".date("H:i",$recordset[$i]["realenddate"])." ".$recordset[$i]["title"];
+          $item["url"] = dispatch_url($nodetype, "view", array("atkselector"=>$node->primaryKey($recordset[$i])));
+          $res[] = $item;
+        }
+      }
+
+      return $res;
     }
   }
 
