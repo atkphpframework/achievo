@@ -24,6 +24,7 @@
   useattrib("atkdurationattribute");
   userelation("atkmanytoonerelation");
   userelation("atkonetomanyrelation");
+  userelation("atkonetoonerelation");
   useattrib("atkfuzzysearchattribute");
   useattrib("atkradioattribute");
 
@@ -46,6 +47,7 @@
       $this->m_viewUser = $sessionmanager->pageVar("user");
       $this->m_employees = $sessionmanager->pageVar("employee");
       $this->m_itemDate = $sessionmanager->stackVar("itemdate");
+      $this->m_scheduler_id = $sessionmanager->stackVar("scheduler_id");
 
 
 
@@ -53,8 +55,15 @@
       $user = getUser();
       $userprefs = (isset($user["id"]) && !empty($user["id"])) ? $this->getUserSchedulerPrefs($user["id"]) : array();
 
-      $eventtime = $userprefs["default_eventtime"];
-      $user_eventtime = ($eventtime["hours"]*60)+$eventtime["minutes"];
+      if(isset($userprefs["default_eventtime"]))
+      {
+        $eventtime = $userprefs["default_eventtime"];
+        $user_eventtime = ($eventtime["hours"]*60)+$eventtime["minutes"];
+      }
+      else
+      {
+        $user_eventtime = 60; // 1 hour
+      }
 
       $time = $sessionmanager->stackVar("time");
       for($i=0;$i<60;$i+=$this->m_minute_step) $m_arr_minute_step[] = sprintf("%02d",$i);
@@ -100,26 +109,16 @@
       $this->add(new atkTimeAttribute("starttime"  , 0, 23, $m_arr_minute_step, $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime"    ,0, 23, $m_arr_minute_step, $default_end_time, 0));
 
-      $this->add(new atkDateAttribute("cyclus_startdate"  , "F d Y","d F Y", 0, 0),"cyclus");
-      $this->add(new atkDateAttribute("cyclus_enddate"    , "F d Y","d F Y", 0, 0),"cyclus");
-      $this->add(new atkListAttribute("startday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
-      $this->add(new atkListAttribute("endday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
-      $this->add(new atkListAttribute("startmonth",$month_arr_disp,$month_arr_value,AF_OBLIGATORY),"cyclus");
-      $this->add(new atkListAttribute("endmonth",$month_arr_disp,$month_arr_value,AF_OBLIGATORY),"cyclus");
-
-      $this->add(new atkListAttribute("every",array(1,2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
-
-      $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY),"cyclus");
-      $this->add(new atkFlagAttribute("weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus");
-      $this->add(new atkListAttribute("reminder",array("1 ".$this->text("day"),"2 ".$this->text("days"), "3 ".$this->text("days")),array(1,2,3), AF_NO_TRANSLATION));
-
+      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE),"cyclus");
 
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("private"));
       $this->add(new atkBoolAttribute("all_users"));
-      //$this->add(new atkListAttribute("status", array("confirmed", "unconfirmed", "cancelled"), ""));
+      $this->add(new atkListAttribute("priority",array("","low","normal","high"),array(0,1,2,3)));
+      $this->add(new atkBoolAttribute("nonblocking"));
+      $this->add(new atkOneToManyRelation("alarms","scheduler.scheduler_alarms","scheduler_id",AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE),"alarms");
 
-      $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "schedule_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE));
+      $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "schedule_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE),"notes");
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_OBLIGATORY));
       $this->add(new atkBoolAttribute("owner_attendee"));
 
@@ -189,14 +188,6 @@
       $initial["private"] = 0;
       $initial["status"] = "unconfirmed";
       $initial["recur"]="once";
-      $initial["startday"]=1;
-      $initial["endday"]=1;
-      $initial["startmonth"]=1;
-      $initial["endmonth"]=1;
-      $initial["every"]=1;
-      $initial["month_time"]=1;
-      $initial["weekday"]=0;
-
       if ($this->m_viewdate!="")
       {
         $arr_date = array("year"=>substr($this->m_viewdate, 0, 4),
@@ -359,6 +350,7 @@
       $formstart.='<input type="hidden" name="atknodetype" value="'.$this->atknodetype().'">';
       $formstart.='<input type="hidden" name="atkselector" value="'.$atkselector_str.'">';
       $formstart.='<input type="hidden" name="itemdate" value="'.$this->m_postvars["itemdate"].'">';
+      $formstart.='<input type="hidden" name="scheduler_id" value="'.$this->m_postvars["scheduler_id"].'">';
 
       $buttons = array();
 
@@ -392,28 +384,19 @@
 
     function _doDeleteSingle()
     {
-      $db = &$this->m_node->getDb();
-      $rec = $this->m_node->selectDb($this->m_postvars['atkselector']);
-      if($rec)
-      {
+      atk_var_dump($this->m_postvars,"POSTVARS DELETE SINGLE");
+      $db = &$this->getDb();
         $name = "atk".atkconfig("database")."query";
         $query = atknew($name);
         $query->addTable('scheduler_cyclus_not');
-        $query->addField('scheduler_id',$rec["scheduler_id"],'scheduler_cyclus_not');
-        $query->addField('date',$this->m_postvars["atkitemdate"],'scheduler_cyclus_not');
+        $query->addField('scheduler_id',$this->m_postvars["scheduler_id"],'scheduler_cyclus_not');
+        $query->addField('date',$this->m_postvars["itemdate"],'scheduler_cyclus_not');
         $sql = $query->buildInsert();
         $db->query($sql);
-        $this->clearCache();
-        $location = $this->m_node->feedbackUrl("delete", ACTION_SUCCESS);
-        $this->m_node->redirect($location);
-      }
-      // Something is wrong here, the selectDb failed
-      else
-      {
-        $db->rollback();
-        $location = $this->m_node->feedbackUrl("delete",ACTION_FAILED,$db->getErrorMsg());
-        $this->m_node->redirect($location);
-      }
+        $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='".$this->m_postvars["scheduler_id"]."' AND startdate='".$this->m_postvars["itemdate"]."'";
+        $db->query($sql);
+        $location = $this->feedbackUrl("delete", ACTION_SUCCESS);
+        $this->redirect($location);
     }
 
     function dayview()
@@ -498,15 +481,41 @@
       $db = &atkGetDb();
       if($rec["owner_attendee"]==1)
         $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
+      $this->updateSchedulerDates($rec);
       return true;
     }
 
-    function storeCC($rec, $attendees)
+    function postUpdate($rec,$mode)
     {
-      $db = &atkGetDb();
+      $this->updateSchedulerDates($rec);
+      return true;
+    }
+
+
+    // ToDo !!!
+    function postDelete($rec)
+    {
+      //$this->removeSchedulerDates($rec);
+    }
+
+    function storeAttendees($rec, $attendees)
+    {
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
       {
-        $db->query("INSERT INTO achilles_bug_cc(bug_id, user) VALUES ('".$rec["id"]."', '".$attendees[$i]["id"]."')");
+        $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"]);
+      }
+      return true;
+    }
+
+    function _addAttendeeRecord($schedule_id, $person_id)
+    {
+      $db = &atkGetDb();
+
+      // attendee may already exist.
+      $recs = $db->getrows("SELECT count(*) AS cnt FROM scheduler_attendees WHERE schedule_id = $schedule_id AND person_id = $person_id");
+      if (!count($recs)||$recs[0]["cnt"]==0)
+      {
+        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id) VALUES ($schedule_id, $person_id)");
       }
     }
 
@@ -526,70 +535,70 @@
       atk_var_dump($rec);
       if($rec["recur"]=="once")
       {
-        $rec["cyclus_startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus_enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startday"]=1;
-        $rec["endday"]=1;
-        $rec["startmonth"]=1;
-        $rec["endmonth"]=1;
-        $rec["every"]=1;
-        $rec["month_time"]=1;
-        $rec["weekday"]=0;
+        $rec["cyclus"]["cyclus_startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["cyclus_enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["every"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
       }
       elseif($rec["recur"]=="daily")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startday"]=1;
-        $rec["endday"]=1;
-        $rec["startmonth"]=1;
-        $rec["endmonth"]=1;
-        $rec["month_time"]=1;
-        $rec["weekday"]=0;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
       }
       elseif($rec["recur"]=="weekly")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startday"]=1;
-        $rec["endday"]=1;
-        $rec["startmonth"]=1;
-        $rec["endmonth"]=1;
-        $rec["month_time"]=1;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
       }
       elseif($rec["recur"]=="monthly_date")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startmonth"]=1;
-        $rec["endmonth"]=1;
-        $rec["month_time"]=1;
-        $rec["weekday"]=0;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
       }
       elseif($rec["recur"]=="monthly_day")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startday"]=1;
-        $rec["endday"]=1;
-        $rec["startmonth"]=1;
-        $rec["endmonth"]=1;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
       }
       elseif($rec["recur"]=="yearly_date")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["month_time"]=1;
-        $rec["weekday"]=0;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
       }
       elseif($rec["recur"]=="yearly_day")
       {
-        $rec["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["startday"]=1;
-        $rec["endday"]=1;
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
         //$rec["startmonth"]=1;
-        $rec["endmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
       }
     }
 
@@ -598,6 +607,57 @@
        $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
        $userprefs = $userprefsnode->selectdb("userid='".$userid."'");
        return atkArrayNvl($userprefs, 0);
+    }
+
+    function updateSchedulerDates($rec)
+    {
+       $db = &atkGetDb();
+       atk_var_dump($rec);
+       $id = $rec["id"];
+       $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='$id'";
+       $db->query($sql);
+       atkimport("module.scheduler.utils.schedulertools");
+       $startdate = $this->m_viewdate;
+       if($rec["recur"]=="once")
+       {
+         $startdate = date("Y-m-d",mktime(12,0,0,$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]));
+       }
+       else
+       {
+         $startdate = date("Y-m-d",mktime(12,0,0,$rec["cyclus"]["cyclus_startdate"]["month"],$rec["cyclus"]["cyclus_startdate"]["day"],$rec["cyclus"]["cyclus_startdate"]["year"]));
+       }
+       // Enddate is startdate + 2 months (because of the small calendars)
+       $enddate = date("Y-m-d",mktime(12,0,0,(substr($this->m_viewdate,5,2)+2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4)));
+
+       atkdebug("start/end date: $startdate - $enddate");
+       $dates = schedulertools::getDates($rec,$startdate,$enddate);
+       atk_var_dump($dates,"DATES");
+
+       foreach($dates as $date)
+       {
+         $tmp_start = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]);
+         $tmp_end = mktime($rec["endtime"]["hours"],$rec["endtime"]["minutes"],$rec["endtime"]["seconds"],$rec["enddate"]["month"],$rec["enddate"]["day"],$rec["enddate"]["year"]);
+         $duration = $tmp_end-$tmp_start;
+
+         $startdate = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],substr($date,5,2),substr($date,8,2),substr($date,0,4));
+         $enddate = $startdate+$duration;
+         atkdebug("STARTDATE: ".date("Ymd H:i:s",$startdate));
+         atkdebug("ENDDATE: ".date("Ymd H:i:s",$enddate));
+
+         $sql = "INSERT INTO scheduler_dates (scheduler_id,startdate,enddate) VALUES ('$id','$startdate','$enddate')";
+         $db->query($sql);
+       }
+       $sql = "UPDATE scheduler_scheduler SET lastdate = '$enddate' WHERE id = '$id'";
+       $db->query($sql);
+
+    }
+
+    function removeSchedulerDates($rec)
+    {
+       $id = $rec["id"];
+       $db = &atkGetDb();
+       $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='$id'";
+       $db->query($sql);
     }
   }
 
