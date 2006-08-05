@@ -24,12 +24,12 @@ class scheduler_weekview extends scheduler_view
     global $PHP_SELF;
 
     $prevTime = $this->m_weekdates[0]['date'];
-    $prevUrl  = $PHP_SELF."?view=week&viewdate=$prevTime&user=".$this->showGlobal;
+    $prevUrl  = $PHP_SELF."?view=week&viewdate=$prevTime&user=".$this->m_viewUser;
 
     $nextTime = $this->m_weekdates[8]['date'];
-    $nextUrl  = $PHP_SELF."?view=week&viewdate=$nextTime&user=".$this->showGlobal;
+    $nextUrl  = $PHP_SELF."?view=week&viewdate=$nextTime&user=".$this->m_viewUser;
 
-    $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->showGlobal;
+    $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->m_viewUser;
 
     $this->m_weeknumber = date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
     $this->m_viewTitle = "<b>".text("week")."&nbsp;".$this->m_weeknumber."</b>";
@@ -51,14 +51,15 @@ class scheduler_weekview extends scheduler_view
       $holidayInfo = $holiday->getHolidayInfo($weekday["date"]);
       $tmp.=$holidayInfo["name"]."<br>";
     }
+
     for($i=0;$i<count($weekday["alldayitems"]);$i++)
     {
-      $tmp.=$this->renderItem($weekday["alldayitems"][$i],true,$weekday["date"]);
+      $tmp.=$this->renderItem($weekday["alldayitems"][$i],true,$weekday["date"],true);
     }
 
     for($i=0;$i<count($weekday["appointmentitems"]);$i++)
     {
-      $tmp.=$this->renderItem($weekday["appointmentitems"][$i],true,$weekday["date"]);
+      $tmp.=$this->renderItem($weekday["appointmentitems"][$i],true,$weekday["date"],true);
     }
 
     if($tmp=="") $tmp="&nbsp;";
@@ -101,10 +102,10 @@ class scheduler_weekview extends scheduler_view
                 </td>
               </tr>
               <tr bgcolor="white">
-                <td>
+                <td valign="top">
                   '.$this->renderItems($weekday[1]).'
                 </td>
-                <td>
+                <td valign="top">
                  '.$this->renderItems($weekday[4]).'
                 </td>
               </tr>
@@ -118,10 +119,10 @@ class scheduler_weekview extends scheduler_view
                 </td>
               </tr>
               <tr bgcolor="#ffffff">
-                <td>
+                <td valign="top">
                   '.$this->renderItems($weekday[2]).'
                 </td>
-                <td>
+                <td valign="top">
                   '.$this->renderItems($weekday[5]).'
                 </td>
               </tr>
@@ -137,7 +138,7 @@ class scheduler_weekview extends scheduler_view
                 <td rowspan=3 valign="top">
                   '.$this->renderItems($weekday[3]).'
                 </td>
-                <td>
+                <td valign="top">
                   '.$this->renderItems($weekday[6]).'
                 </td>
               </tr>
@@ -147,7 +148,7 @@ class scheduler_weekview extends scheduler_view
                 </td>
               </tr>
               <tr bgcolor="#ffffff">
-                <td>
+                <td valign="top">
                   '.$this->renderItems($weekday[7]).'
                 </td>
               </tr>

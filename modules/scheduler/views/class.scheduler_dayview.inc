@@ -1,6 +1,7 @@
 <?php
 atkimport("modules.scheduler.views.scheduler_view");
 
+
 class scheduler_dayview extends scheduler_view
 {
 
@@ -98,6 +99,7 @@ class scheduler_dayview extends scheduler_view
    function _setMatrix($item)
    {
      atkdebug("SET MATRIX: ".$item["starttime"]." - ".$item["endtime"]." - ".$item["title"]);
+     /*
      $begin    = $this->_correct_time(substr($item["starttime"],0,5),"down");
      if($item["startdate"]==$item["enddate"])
      {
@@ -118,6 +120,10 @@ class scheduler_dayview extends scheduler_view
          $einde = $this->_correct_time("23:59","up");
        }
      }
+     */
+     $begin = $this->_correct_time(date("H:i",$item["startdate"]));
+     $einde = $this->_correct_time(date("H:i",$item["enddate"]),"up");
+
      $duration = $this->_duration($begin, $einde);
      atkdebug("setMatrix (".$this->m_maxcols.") - $begin - $einde - ".print_r($duration,true));
      $appoints = count($this->m_itemMatrix[$begin]);
@@ -151,10 +157,8 @@ class scheduler_dayview extends scheduler_view
    */
    function _dumpMatrix()
    {
-     global $g_user;
-
      $buff   = "";
-     $buff   = $this->_view_header();
+     $buff  .= $this->_view_header();
      $cols   = $this->_getCols();
      atkdebug("COLS: $cols");
      $colors = $this->m_itemColors;
@@ -217,6 +221,8 @@ class scheduler_dayview extends scheduler_view
      $buff .= "<table border='0' cellpadding='1' cellspacing='0' width='90%'>\n";
      $lastHour="";
      $newHour=true;
+     $theme = &atkTheme::getInstance();
+     $defaulthighlight = $theme->getAttribute("highlight");
      for ($i=0;$i<count($this->m_allDayHours);$i++)
      {
       $time    = $this->m_allDayHours[$i];
@@ -263,10 +269,9 @@ class scheduler_dayview extends scheduler_view
         $newHour=false;
       }
 
-
       if ($cols == 0)
       {
-       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0' width='$cWidth' bgcolor='".$empty_bgcolor."'>&nbsp;</td>\n";
+       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0' width='$cWidth' bgcolor='".$empty_bgcolor."'  onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
       }
       else
       {
@@ -276,6 +281,7 @@ class scheduler_dayview extends scheduler_view
         //$timeLap   = ceil($this->matrixInfo[$time][$j]["duration"]/ceil(60/$this->m_scheduletime));
         $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
         $info      = $this->m_matrixInfo[$time][$j]["info"];
+        atk_var_dump($info,"INFO RECORD");
         if(trim($item) != "")
         {
          if ($timeLap != 0)
@@ -300,8 +306,8 @@ class scheduler_dayview extends scheduler_view
           else
           {
            $title   = $item;
-           $bgcolor = $colors[$info["scheduletype"]]["back"];
-           $fgcolor = $colors[$info["scheduletype"]]["fore"];
+           $bgcolor = $colors[$info["category"]]["back"];
+           $fgcolor = $colors[$info["category"]]["fore"];
            $descr   = $info["description"];
            $status  = " [".$info["status"]."]";
           }
@@ -314,7 +320,7 @@ class scheduler_dayview extends scheduler_view
         }
         else
         {
-         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D;' width='$cWidth'>&nbsp;</td>\n";
+         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D;' width='$cWidth' onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
         }
        }
       }
@@ -342,14 +348,13 @@ class scheduler_dayview extends scheduler_view
    {
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day-1, $this->m_year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime&user=".$this->m_user;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime&user=".$this->m_viewUser;
 
     $currentTime = date("Y-m-d");
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime&user=".$this->m_user;
+    $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime&user=".$this->m_viewUser;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day+1, $this->m_year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime&user=".$this->m_user;
-
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime&user=".$this->m_viewUser;
 
     return href($prevUrl, atkText("previous_day","scheduler"))."&nbsp;".href($currentUrl, atkText("today","scheduler"))."&nbsp;".href($nextUrl, atkText("next_day","scheduler"));
    }
@@ -377,6 +382,8 @@ class scheduler_dayview extends scheduler_view
   */
   function renderView()
   {
+     $page = &atkPage::getInstance();
+     $page->register_script(atkconfig("atkroot")."atk/javascript/recordlist.js");
      $this->_setUserSettings();
      // Fill $allDayHours and $workHours
      for($i=0;$i<=23;$i++)
