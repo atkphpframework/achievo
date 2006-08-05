@@ -17,13 +17,13 @@ class scheduler_monthview extends scheduler_view
   function _getNav()
   {
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month-1, 1, $this->m_year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$prevTime&dayview=".$this->showGlobal;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$prevTime&user=".$this->m_viewUser;
 
     $thisTime = date("Y-m")."-1";
-    $thisUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$thisTime&dayview=".$this->showGlobal;
+    $thisUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$thisTime&user=".$this->m_viewUser;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month+1, 1, $this->m_year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$nextTime&dayview=".$this->showGlobal;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$nextTime&user=".$this->m_viewUser;
 
     $this->title = "<b>".text(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 
@@ -103,7 +103,9 @@ class scheduler_monthview extends scheduler_view
     //$week_number = intval(strftime("%V",mktime(0,0,0,$month,1,$year)));
     $week_number = date("W", mktime(0,0,0,$month,1,$year));
 
-    $tmp.='<td><i><a class="small" href="javascript:post_date_week(1,'.$month.', '.$year.')">'.$week_number.'</a></i>&nbsp;</td>';
+    $date = $year."-".sprintf("%02d",$month)."-".sprintf("%02d",1);
+    $tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
+    //$tmp.='<td><i><a class="small" href="javascript:post_date_week(1,'.$month.', '.$year.')">'.$week_number.'</a></i>&nbsp;</td>';
     for ($i=1;$i<=$cellcount;$i++)
     {
     	$tmp.='<td>&nbsp;</td>';
@@ -120,7 +122,7 @@ class scheduler_monthview extends scheduler_view
     	  if($bg_color=="#FFFFFF") { $bg_color="#EEEEEE"; } else { $bg_color="#FFFFFF"; }
     		$tmp.="</tr><tr style=\"background-color: $bg_color; height: 100px;\">\n";
     		$week_number++;
-    		$tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number).'</i>&nbsp;</td>';
+    		$tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
     		$cellcount=0;
     	}
     	$cellcount++;
@@ -155,7 +157,7 @@ class scheduler_monthview extends scheduler_view
     	{
     	  for($j=0;$j<count($this->m_allDayItems[$date]);$j++)
     	  {
-    	    $tmp.=$this->RenderItem($this->m_allDayItems[$date][$j],true,$date);
+    	    $tmp.=$this->RenderItem($this->m_allDayItems[$date][$j],true,$date,true);
     	  }
     	}
     	// Other appointments
@@ -163,7 +165,7 @@ class scheduler_monthview extends scheduler_view
     	{
     	  for($j=0;$j<count($this->m_appointmentItems[$date]);$j++)
     	  {
-    	    $tmp.=$this->RenderItem($this->m_appointmentItems[$date][$j],true,$date);
+    	    $tmp.=$this->RenderItem($this->m_appointmentItems[$date][$j],true,$date,true);
     	  }
     	}
     	$tmp.='</td>';
@@ -186,7 +188,8 @@ class scheduler_monthview extends scheduler_view
 
     $tmp.='  </td>
              </tr>
-             </table>';
+             </table><br><br>
+             '.$this->m_legend;
     return $tmp;
   }
 
