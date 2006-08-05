@@ -1,35 +1,24 @@
-a.calendarHoliday:link
+a.calendarItem:link
 
 {
 
-  color: #ff0000;
+  font-weight: bold;
 
 }
 
 
-a.calendarHoliday:visited
+
+a.calendarItem:visited
 
 {
 
-  color: #ff0000;
+  font-weight: bold;
 
 }
 
 
-a.calendarHolidayToday:link 
 
-{
-
-  border:1px solid;
-
-  border-color: #ff0000;
-
-  color: #ff0000;
-
-}
-
-
-a.calendarHolidayToday:visited 
+a.calendarItemToday:link
 
 {
 
@@ -37,9 +26,25 @@ a.calendarHolidayToday:visited
 
   border-color: #ff0000;
 
-  color: #ff0000;
+  font-weight: bold;
 
 }
+
+
+
+a.calendarItemToday:visited
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  font-weight: bold;
+
+}
+
+
 
 
 
@@ -54,30 +59,10 @@ a.calendarHolidayToday:visited
 }
 
 
+
 .calendarNormal
 
 {
 
 }
 
-
-.calendarAppointment
-
-{
-
-  color: #0000ff;
-
-}
-
-
-.calendarAppointmentToday
-
-{
-
-  border:1px solid;
-
-  border-color: #ff0000;
-
-  color: #0000ff;
-
-}
