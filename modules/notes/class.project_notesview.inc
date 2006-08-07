@@ -33,7 +33,17 @@ class project_notesview extends atkNode
   {
     return "[name]";
   }
-
+  
+  function action_admin(&$handler)
+  {
+    // Access control
+    if (!$this->allowed("any_project"))
+    {
+      $user = getUser();
+      $this->addFilter("project.coordinator=".$user["id"]);
+    }
+    return $handler->action_admin();
+  }
 }
 
 ?>
