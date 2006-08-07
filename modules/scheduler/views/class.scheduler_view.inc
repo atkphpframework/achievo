@@ -974,7 +974,7 @@ class scheduler_view
     if($user["startday"]!="") $this->setCalendarStartDay($user["startday"]);
     // These can be found in the current user contract so get the current valid contract
     $sql = "SELECT workstarttime,workendtime,WorkingDays FROM usercontract
-            WHERE userid = ".$user["id"]."
+            WHERE userid = ".($user["id"]!=""?$user["id"]:"-1")."
               AND startdate <= '".$this->m_viewdate."'
               AND (enddate >= '".$this->m_viewdate."'
                    OR enddate IS NULL)";

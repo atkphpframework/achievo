@@ -14,6 +14,7 @@
  *
  */
 
+  useattrib("atknumberattribute");
   useattrib("atkdateattribute");
   useattrib("atktextattribute");
   useattrib("atkboolattribute");
@@ -121,6 +122,7 @@
       $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "schedule_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE),"notes");
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_OBLIGATORY));
       $this->add(new atkBoolAttribute("owner_attendee"));
+      $this->add(new atkNumberAttribute("lastdate",AF_HIDE));
 
       atkdebug("VIEW: ".$this->m_view." - ".$this->m_viewUser);
       if($this->m_viewUser=="" && $this->m_view!="employeeview")
