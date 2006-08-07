@@ -52,6 +52,55 @@
     }
   }
 
+  class billingTypeViewAttribute extends atkAttribute {
+
+    /**
+     * Constructor
+     * @param $name Name of the attribute
+     * @param $flags Flags for this attribute
+     */
+    function billingTypeViewAttribute($name, $flags=0)
+    {
+      $this->atkAttribute($name,$flags|AF_READONLY|AF_HIDE_SEARCH|AF_NO_SORT); // base class constructor
+    }
+
+    /**
+     * Make sure the value is not stored. (always calculated on the fly)
+     * @access private
+     * @return int
+     */
+    function storageType() { return NOSTORE; }
+
+    /**
+     * Make sure the value is loaded *after* the main record is loaded.
+     * @access private
+     * @return int
+     */
+    function loadType() { return POSTLOAD; }
+
+    function label()
+    {
+      return atkText("billing_type", "billing");
+    }
+
+    /**
+     * The load method performs the calculation.
+     *
+     * @access private
+     * @param atkDb $db
+     * @param array $record
+     * @return String result of the calculation
+     */
+    function load(&$db, $record)
+    {
+      $phaseid = $record["phaseid"]["phaseid"];
+      $db = &atkGetDb();
+      $query = "SELECT C.description FROM phase A LEFT JOIN project B ON A.projectid=B.id LEFT JOIN billing_projecttype C ON B.billing_type = C.id WHERE A.id='$phaseid'";
+      $recs = $db->getRows($query);
+      return $recs[0]["description"];
+    }
+  }
+
   class hoursurvey extends atkNode
   {
     function hoursurvey()
@@ -75,6 +124,11 @@
       $activity_id =        $g_sessionManager->pageVar("activity_id");
       $projectid =          $g_sessionManager->pageVar("projectid");
       $selectedprojectid =  $g_sessionManager->pageVar("selectedprojectid");
+      if (moduleExists("billing"))
+      {
+        $billing_projecttypepair = $g_sessionManager->pageVar("billing_projecttypeid");
+        $billing_projecttypeid = (!empty($billing_projecttypepair)) ? atkArrayNvl(decodeKeyValuePair($billing_projecttypepair), "billing_projecttype.id", "") : "";
+      }
       $phaseid =            $g_sessionManager->pageVar("phaseid");
       $userid =             $g_sessionManager->pageVar("userid");
       $nameswitch =         $g_sessionManager->pageVar("nameswitch");
@@ -97,9 +151,15 @@
       //Atk uses the postvar atkorderby when a user clicks on a column to sort on it. Powers combined
       if(!isset($orderby) && isset($this->m_postvars["atkorderby"])) $orderby[] = $this->m_postvars["atkorderby"];
 
-      foreach($externalHourSurveyColumns as $module => $attr)
+      foreach(array_keys($externalHourSurveyColumns) as $module)
       {
-        eval("\$external$attr = '".$g_sessionManager->pageVar($attr)."';");
+        $attrlist = $externalHourSurveyColumns[$module];
+        if (is_string($attrlist))
+          $attrlist = array($attrlist);
+        foreach($attrlist as $attr)
+        {
+          eval("\$external$attr = '".$g_sessionManager->pageVar($attr)."';");
+        }
       }
 
       if (empty($outputType))
@@ -112,6 +172,8 @@
 
       // Hack: make sure the activities, which are populated by the project/phase column, are properly loaded.
       $hoursnode->add(new sortableActivity());
+
+      $hoursnode->add(new billingTypeViewAttribute("billing_projecttypeid"));
 
 
       $columnConfig = &$hoursnode->getColumnConfig();
@@ -246,11 +308,16 @@
         "day"=>substr($enddate,8,2)),
         "aggregate"=>$aggregate,
         "remark"=>$remark);
+        if (moduleExists("billing"))
+          $dummyrec["billing_projecttypeid"] = array("id"=>$billing_projecttypeid);
 
-        foreach ($externalHourSurveyColumns as $module => $attr)
+        foreach ($externalHourSurveyColumns as $module => $attrlist)
         {
-          $var = "external$attr";
-          $dummyrec[$attr] = $$var;
+          foreach($attrlist as $attr)
+          {
+            $var = "external$attr";
+            $dummyrec[$attr] = $$var;
+          }
         }
 
         $projectatt = new atkProjectAttribute('projectid');
@@ -267,6 +334,13 @@
 
 
         $this->_addOr($data);
+
+        if (moduleExists("billing"))
+        {
+          $projecttypeatt = new atkManyToOneRelation('billing_projecttypeid', "billing.projecttype");
+          $data[] = array(atktext('billing_type','billing').':',$projecttypeatt->edit($dummyrec));
+          $this->_addOr($data);
+        }
 
         $phaseatt = $hoursnode->m_attribList["phaseid"];
         $phaseatt->m_flags = $phaseatt->m_flags&~AF_JS_UPDATEACTIVITY;
@@ -348,20 +422,29 @@
         $remarkattr = new atkAttribute("remark", 0, 80);
         $data[] = array(atktext("remark","project"),$remarkattr->edit($dummyrec));
 
-        foreach ($externalHourSurveyColumns as $module => $attr)
+        foreach ($externalHourSurveyColumns as $module => $attrlist)
         {
-          $currentattr = &$hoursnode->getAttribute($attr);
           $data[] = array("<hr>");
-
-          if (get_class($currentattr) == "atkboolattribute")
+          foreach($attrlist as $attr)
           {
-            $output = '<select name="'.$attr.'"><option value="" selected>---</option><option value="0">'.atktext("no","atk").'</option><option value="1">'.atktext("yes","atk").'</option></select>';
+            $currentattr = &$hoursnode->getAttribute($attr);
+            if (is_object($currentattr) && !$currentattr->hasFlag(AF_HIDE_SEARCH))
+            {
+              if (get_class($currentattr) == "atkboolattribute")
+              {
+                $output = '<select name="'.$attr.'">';
+                $output.= '<option value=""'.($dummyrec[$attr]===""?' selected':'').'>---</option>';
+                $output.= '<option value="0"'.($dummyrec[$attr]==="0"?' selected':'').'>'.atktext("no","atk").'</option>';
+                $output.= '<option value="1"'.($dummyrec[$attr]==="1"?' selected':'').'>'.atktext("yes","atk").'</option>';
+                $output.= '</select>';
+              }
+              else
+              {
+                $output = $currentattr->edit($dummyrec);
+              }
+              $data[]=array($currentattr->label().": ",$output);
+            }
           }
-          else
-          {
-            $output = $currentattr->edit($dummyrec);
-          }
-          $data[]=array(atktext($attr,$module).": ",$output);
         }
 
         $data[] = array('<hr>');
@@ -388,10 +471,17 @@
         for($i=0,$_i=count($arr_col);$i<$_i;$i++)
         {
           $checked = (in_array($arr_col[$i],$col) ? "checked" : "");
-          $translatewithmodule = !in_array($arr_col[$i], array_values($externalHourSurveyColumns)) ? "" : array_search($arr_col[$i], $externalHourSurveyColumns);
-          $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.atktext($arr_col[$i], $translatewithmodule).'&nbsp;';
+          $translatewithmodule = "";
+          foreach($externalHourSurveyColumns as $module => $attrlist)
+          {
+            if (in_array($arr_col[$i], array_values($attrlist)))
+              $translatewithmodule = $module;
+          }
+          $label = atkText($arr_col[$i], $translatewithmodule);
+          if ($arr_col[$i]=="billing_projecttypeid") $label = atkText("billing_type", "billing");
+          $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.$label.'&nbsp;';
         }
-        $data[] = array(atktext('report_output_showcollumns','project').':',$cell);
+        $data[] = array(atktext('report_output_showcollumns','project'),$cell);
 
 
 
@@ -410,22 +500,14 @@
 
         $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY);
         $data[] = array(atktext('aggregate','project').':',$boolattrib->edit($dummyrec));
+        $data[] = array('', '<input type="submit" value="'.atktext("refresh").'">');
 
-
-        $tbl->setColSpan(0,0,2);
-        $tbl->setColSpan(1,0,2);
-        $tbl->setColSpan(3,0,2);
-        $tbl->setColSpan(5,0,2);
-        $tbl->setColSpan(7,0,2);
-        $tbl->setColSpan(9,0,2);
-        $tbl->setColSpan(11,0,2);
-        $tbl->setColSpan(13,0,2);
-        $tbl->setColSpan(15,0,2);
-        $tbl->setColSpan(18,0,2);
-        $tbl->setColSpan(20,0,2);
+        for($i=0,$_i=count($data); $i<$_i; $i++)
+          if (count($data[$i])==1)
+            $tbl->setColSpan($i,0,2);
 
         $content.=$tbl->render($data);
-        $content.='<input type="submit" value="'.atktext("refresh").'"></form><br>';
+        $content.='</form><br>';
         $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
       }
 
@@ -434,16 +516,20 @@
       if(!empty($activity_id)&&$activity_id!="") $filter.=" AND hours.activityid=".$activity_id;
       if(!empty($phaseid)&&$phaseid!="") $filter.=" AND hours.phaseid=".$phaseid;
       if(!empty($projectid)&&$projectid!="") $filter.=" AND A.projectid=".$projectid;
+      if(moduleExists("billing") && !empty($billing_projecttypeid) && ($billing_projecttypeid!="")) $filter.=" AND B.billing_type=$billing_projecttypeid";
       if(!empty($remark)&&$remark!="") $filter.=" AND hours.remark LIKE '%$remark%'";
       //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
       if($department_name && $department_name != "all") $filter.=" AND userid.department='".escapeSQL($department_name)."'";
       if($functionlevelswitch && $functionlevelswitch != "all") $filter.=" AND userid.functionlevel='$functionlevelswitch'";
 
-      foreach ($externalHourSurveyColumns as $module => $attr)
+      foreach ($externalHourSurveyColumns as $module => $attrlist)
       {
-        $var = "external$attr";
-        $value = $$var;
-        if (!empty($value)) $filter.=" AND hours.$attr = $value";
+        foreach ($attrlist as $attr)
+        {
+          $var = "external$attr";
+          $value = $$var;
+          if (!empty($value)) $filter.=" AND hours.$attr = '$value'";
+        }
       }
 
       // employee table is not yet added to the query. Force that by adding a manytoonerel,
@@ -493,12 +579,6 @@
         $col[] = "id";
 
       $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
-
-      if (moduleExists("billing"))
-      {
-         // todo, add columns with rate and costs (are stored flat in the table, no reason to perform calculations)
-      }
-
       if ($outputType=="0")
       {
         $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;
@@ -523,8 +603,7 @@
       }
       if ($outputType=="2")
       {
-        // specail RecordList can export to file
-        //$hoursnode->specialRecordList($data, "", '"', '";', "\r\n", "1", "", $suppress);
+        // Custom recordList can export to file
         $rl = &atknew("atk.recordlist.atkcustomrecordlist");
         $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress);
       }
