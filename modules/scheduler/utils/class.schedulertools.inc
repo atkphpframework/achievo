@@ -28,6 +28,7 @@ class schedulertools
    */
   function getDates($item,$rangeStartDate=NULL,$rangeEndDate=NULL)
   {
+    atk_var_dump($item,"ITEM TO GETDATES");
     $dates = array();
     $datecounter=0;
     if($item["recur"]=="once")
@@ -38,8 +39,18 @@ class schedulertools
     }
     else
     {
-      $startdate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_startdate"]["month"],$item["cyclus"]["cyclus_startdate"]["day"],$item["cyclus"]["cyclus_startdate"]["year"]));
-      $enddate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_enddate"]["month"],$item["cyclus"]["cyclus_enddate"]["day"],$item["cyclus"]["cyclus_enddate"]["year"]));
+      $startdate = date("Y-m-d",mktime(12,0,0,$item["startdate"]["month"],$item["startdate"]["day"],$item["startdate"]["year"]));
+      //$startdate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_startdate"]["month"],$item["cyclus"]["cyclus_startdate"]["day"],$item["cyclus"]["cyclus_startdate"]["year"]));
+      // Check if we have an enddate
+      if($item["cyclus"]["cyclus_enddate"]["year"]!="" && $item["cyclus"]["cyclus_enddate"]["month"]!=0 && $item["cyclus"]["cyclus_enddate"]["day"]!=0)
+      {
+        $enddate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_enddate"]["month"],$item["cyclus"]["cyclus_enddate"]["day"],$item["cyclus"]["cyclus_enddate"]["year"]));
+      }
+      else 
+      {
+        $enddate = mktime(12,0,0,12,31,2037);
+      }
+      
     }
     // Check if getDates has a range start/end date
     if($rangeStartDate!=NULL && $rangeEndDate!=NULL)
@@ -111,7 +122,8 @@ class schedulertools
           if($item["recur"]!="once" && isset($item["cyclus"]["every"]) && $item["cyclus"]["every"]>=1 && $show_item==true)
           {
        			//$cyclus_startdate_array = explode('-',$item["cyclus"]["cyclus_startdate"]);
-      			$cyclus_startdate_time = mktime(12,0,0,intval($item["cyclus"]["cyclus_startdate"]["month"]),intval($item["cyclus"]["cyclus_startdate"]["day"]),intval($item["cyclus"]["cyclus_startdate"]["year"]));
+      			//$cyclus_startdate_time = mktime(12,0,0,intval($item["cyclus"]["cyclus_startdate"]["month"]),intval($item["cyclus"]["cyclus_startdate"]["day"]),intval($item["cyclus"]["cyclus_startdate"]["year"]));
+            $cyclus_startdate = mktime(12,0,0,$item["startdate"]["month"],$item["startdate"]["day"],$item["startdate"]["year"]);
             switch($item["recur"])
             {
               case 'daily':
@@ -137,7 +149,8 @@ class schedulertools
   				      break;
   				    case 'monthly_date':
   				    case 'monthly_day':
-      					$start_month = $item["cyclus"]["cyclus_startdate"]["month"];
+      					//$start_month = $item["cyclus"]["cyclus_startdate"]["month"];
+      					$start_month = $item["startdate"]["month"];
       					$this_month = strftime('%m', $unix_date);
       					$interval = $this_month - $start_month;
       					$devided = $interval/$item["cyclus"]["every"];
@@ -150,7 +163,8 @@ class schedulertools
 
       				case 'yearly_date':
       				case 'yearly_day':
-      				  $start_year = $item["cyclus"]["cyclus_startdate"]["year"];
+      				  //$start_year = $item["cyclus"]["cyclus_startdate"]["year"];
+      					$start_year = $item["startdate"]["year"];
       					$this_year = strftime('%Y', $unix_date);
       					$interval = $this_year - $start_year;
       					$devided = $interval/$item["cyclus"]["every"];

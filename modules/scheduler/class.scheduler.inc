@@ -524,11 +524,13 @@
     function preAdd(&$rec)
     {
       $this->UpdateScheduleRec($rec);
+      return true;
     }
 
     function preUpdate(&$rec)
     {
       $this->UpdateScheduleRec($rec);
+      return true;
     }
 
     function UpdateScheduleRec(&$rec)

@@ -271,7 +271,7 @@ class scheduler_dayview extends scheduler_view
 
       if ($cols == 0)
       {
-       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0' width='$cWidth' bgcolor='".$empty_bgcolor."'  onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
+       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0;  cursor: pointer; cursor: hand;' width='$cWidth' bgcolor='".$empty_bgcolor."'  onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
       }
       else
       {
@@ -320,7 +320,7 @@ class scheduler_dayview extends scheduler_view
         }
         else
         {
-         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D;' width='$cWidth' onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
+         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D; cursor: pointer; cursor: hand;' width='$cWidth' onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
         }
        }
       }

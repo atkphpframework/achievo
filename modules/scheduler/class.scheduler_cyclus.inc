@@ -12,7 +12,7 @@
        //$this->add($tmp_recur,"cyclus");
 
 
-       $this->add(new atkDateAttribute("cyclus_startdate"  , "F d Y","d F Y", 0, 0),"cyclus");
+       //$this->add(new atkDateAttribute("cyclus_startdate"  , "F d Y","d F Y", 0, 0),"cyclus");
        $this->add(new atkDateAttribute("cyclus_enddate"    , "F d Y","d F Y", 0, 0),"cyclus");
        $this->add(new atkListAttribute("startday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
        $this->add(new atkListAttribute("endday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");

@@ -65,7 +65,7 @@ function change_recur(recur)
 		  // For once, we need:
 		  // - startdate, enddate
 		  // - starttime, endtime, allday
-      disable_cyclus_startdate(true);
+      //disable_cyclus_startdate(true);
       disable_cyclus_enddate(true);
       disable_every(true);
       disable_month_time(true);
@@ -84,7 +84,7 @@ function change_recur(recur)
       // - starttime, endtime, allday
       // - cyclus_startdate, cyclus_enddate
       // - every
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(false);
       disable_month_time(true);
@@ -105,7 +105,7 @@ function change_recur(recur)
       // - cyclus_startdate, cyclus_enddate
       // - every
       // - weekday
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(false);
       disable_month_time(true);
@@ -125,7 +125,7 @@ function change_recur(recur)
       // - starttime, endtime, allday
       // - cyclus_startdate, cyclus_enddate
       // - every
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(false);
       disable_month_time(true);
@@ -145,7 +145,7 @@ function change_recur(recur)
       // - cyclus_startdate, cyclus_enddate
       // - every
       // - month_time,weekday
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(false);
       disable_month_time(false);
@@ -166,7 +166,7 @@ function change_recur(recur)
       // - starttime, endtime, allday
       // - cyclus_startdate, cyclus_enddate
       // - every
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(true);
       disable_month_time(true);
@@ -186,7 +186,7 @@ function change_recur(recur)
       // - cyclus_startdate, cyclus_enddate
       // - every
       // - weekday, month
-      disable_cyclus_startdate(false);
+      //disable_cyclus_startdate(false);
       disable_cyclus_enddate(false);
       disable_every(false);
       disable_month_time(false);

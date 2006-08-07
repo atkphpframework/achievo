@@ -9,6 +9,8 @@
   $setup->installNode("scheduler.scheduler_holidays");
   $setup->installNode("scheduler.scheduler_userassistants");
   $setup->installNode("scheduler.scheduler_dates");
+  $setup->installNode("scheduler.scheduler_alarms");
+  
 
 
   $setup->setVersion(1);
