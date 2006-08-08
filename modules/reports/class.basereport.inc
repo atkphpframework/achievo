@@ -136,11 +136,15 @@
       $output.= session_form();
       $output.= '<input type="hidden" name="go" value="1">'; //trigger to prevent loading the first time
 
+      $buttons = array();
+      $buttons[] = '<input type="submit" value="'.atktext("refresh").'">';
+      $buttons[] = '<input type="button" name="printbutton" value="'.atkText("print").'" onClick=\'if (window.print) {var frame = parent.frames.main;if (frame) {frame.focus();frame.print();}}return false;\'>';
+
       $tbl = &atknew("atk.utils.atktablerenderer");
       $filterstable = $this->getFiltersTable($filterrecord);
-      $filterstable[] = array('', '<input type="submit" value="'.atktext("refresh").'">');
-      $output.= $tbl->render($filterstable);
+      $filterstable[] = array('', implode(' ', $buttons));
 
+      $output.= $tbl->render($filterstable);
       $output.= '</form>';
 
       return $output;
@@ -168,7 +172,7 @@
 
       // Render a box around all elements and put them in an array
       $boxedblocks = array();
-      $boxedblocks[] = '<div class="parameterbar">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>$parameterbar)).'</div>';
+      $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>'<div class="content">'.$parameterbar.'</div>')).'</div>';
       foreach ($contentelements as $titlekey => $content)
       {
         $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$titlekey, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
