@@ -115,6 +115,7 @@
       $ui = &$this->getUi();
       $page = &$this->getPage();
       $this->addStyle("style.css");
+      $page->register_style(moduleDir("reports")."style/printablereport.css", "print");
 
       // Manual sort config
       $orderby =            atkArrayNvl($this->m_postvars, "orderby", "");
@@ -463,7 +464,6 @@
        $data[] = array('<b>'.atktext("report_output_options","project").'</b>');
        $data[] = array(atktext("report_output_type","project").":",'<select name="outputType">
                          <option VALUE="0" selected>'.atktext("report_output_standard","project").'
-                        <option value="1">'.atktext("report_output_printable","project").'
                         <option value="2">'.atktext("report_output_export","project").'
                          </select>');
 
@@ -500,7 +500,11 @@
 
         $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY);
         $data[] = array(atktext('aggregate','project').':',$boolattrib->edit($dummyrec));
-        $data[] = array('', '<input type="submit" value="'.atktext("refresh").'">');
+
+        $buttons = array();
+        $buttons[] = '<input type="submit" value="'.atktext("refresh").'">';
+        $buttons[] = '<input type="button" name="printbutton" value="'.atkText("print").'" onClick=\'if (window.print) {var frame = parent.frames.main;if (frame) {frame.focus();frame.print();}}return false;\'>';
+        $data[] = array('', implode(' ', $buttons));
 
         for($i=0,$_i=count($data); $i<$_i; $i++)
           if (count($data[$i])==1)
@@ -508,7 +512,7 @@
 
         $content.=$tbl->render($data);
         $content.='</form><br>';
-        $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
+        $page->addContent('<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>');
       }
 
       // Create Filter
@@ -582,7 +586,8 @@
       if ($outputType=="0")
       {
         $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;
-        $content = '<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
+        $content = '<br><b>'.$title.'</b><br>';
+        $content.= '<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
 
         $actions = array();
         if (!$aggregate)
@@ -593,14 +598,9 @@
         $rl = &atknew("atk.recordlist.atkrecordlist");
         $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT, $suppress);
         $content.='<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
-        $page->addContent($ui->renderBox(array("title"=>$title,"content"=>$content)));
+        $page->addContent('<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>');
       }
 
-      if ($outputType=="1")
-      {
-        $rl = &atknew("atk.recordlist.atkcustomrecordlist");
-        $page->addContent($rl->render($hoursnode, $data,"<tr>","<td>","</td>","</tr>", "0", "", $suppress));
-      }
       if ($outputType=="2")
       {
         // Custom recordList can export to file
