@@ -258,7 +258,7 @@ class hours extends atkNode
     // Determine wheter the activity attribute should be displayed or not.
     $displayactivityattribute = $this->getActivityCount() != 1;
 
-    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|($displayactivityattribute ? AF_JS_UPDATEACTIVITY : 0)));
+    $this->add(new atkProjectPhaseAttribute("phaseid",AF_OBLIGATORY|AF_FORCE_LOAD|($displayactivityattribute ? AF_JS_UPDATEACTIVITY : 0)));
     $this->add(new atkListAttribute("activityid",array("dummy","dummy","dummy","dummy","dummy"),array(0,0,0,0,0),AF_OBLIGATORY|AF_NO_TRANSLATION|($displayactivityattribute ? 0 : AF_HIDE), 10));
   }
 
