@@ -192,7 +192,17 @@
         }
         foreach($decodedparams as $key=>$value)
         {
-          $res.="&".$key."=".urlencode(stringparse($value, $record));
+          if(is_array($value))
+          {
+            foreach($value as $value_key=>$value_value)
+            {
+              $res.="&".$key."%5B".$value_key."%5D=".urlencode($value_value);
+            }
+          }
+          else
+          {
+            $res.="&".$key."=".urlencode(stringparse($value, $record));
+          }
         }
       }
       return $res;
