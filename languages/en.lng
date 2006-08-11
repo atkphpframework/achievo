@@ -462,6 +462,7 @@
   "specrequired" => "Specification required",
   "spend_hours" => "Registered time",
   "startdate" => "Startdate",
+  "startday" => "Week starts on",
   "starttime" => "Starttime",
   "state" => "State/Province",
   "stats" => "Statistics",

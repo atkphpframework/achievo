@@ -461,6 +461,7 @@
   "specrequired" => "Specificatie vereist",
   "spend_hours" => "Reeds geboekt",
   "startdate" => "Startdatum",
+  "startday" => "Week begint op",
   "starttime" => "Starttijd",
   "state" => "Staat/Provincie",
   "stats" => "Statistieken",
