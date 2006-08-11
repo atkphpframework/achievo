@@ -30,6 +30,34 @@ Changes in Achievo 1.3
   the project admin instead of the description field. (bug 475) [Sandy]
 + Added duration field for project phase to see how many workdays there
   are in a phase. [Sandy]
++ Added the abbreviation to project descriptors. [Guido]
++ Added ability to set a $config_projectnumbermodule to asssign a module
+  the task of generating project numbers (implemented in the
+  getInitialProjectcode() function). [Guido]
++ Added a basereport class which is a generic implementation of a report
+  having a filter interface with some attributes, a refresh button and
+  one or more output boxes which are shown after clicking the refresh
+  button. To use this class, just inherit, add filter attributes in the
+  constructor as you would with any other node, eventually write an
+  initial_values function and implement the
+  getContentElements($filterrecord) function. [Guido]
++ Added customer link to the organization node. [Guido]
++ Added filter attribute to allow filtering projects by their contactpersons.
+  [Guido]
++ Added organization type (customer / supplier) to organizations. The
+  admin view can also filter using this type attribute. [Guido]
++ Added export function to organization node. [Guido]
++ Fixed display function for the email field when in csv or plain mode.
+  [Guido]
++ Added a list of active and archived projects on seperate tabs to the
+  organization view / edit pages. [Guido]
++ Added project.billing_type column (still dirty and hardcoded, but only
+  active when the billing module is installed). [Guido]
++ Added a print button. [Guido]
++ Added the filter parameters to printer output. [Guido]
++ Added a printerfriendly stylesheet to allow printing reports without
+  the filters and theme decorations taking up space and ink/toner. [Guido]
++ Added missing project abbreviation (=projectcode) field to query. [Guido]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
@@ -120,6 +148,81 @@ Changes in Achievo 1.3
   planning gantt chart. (bug 526) [Sandy]
 * Contract shows now shows the non active projects too.
   (bug 424) [ChristianL]
+* Quoted userid in SQL in order to prevent SQL errors when logged in as
+  administrator. [Guido]
+* Added "Change abbreviation" right to (dis)allow editing of a project's
+  abbreviation. [Guido]
+* Removed duplicate useattrib call. [Guido]
+* Added isEmpty function to projectPhaseAttribute to enable proper
+  obligatory field validation. [Guido]
+* Replaced addColumn with installNode call in timereg patch 8 to prevent an
+  error when upgrading from timereg patchversion 1. [Guido]
+* Only show the master gantt menuitem if you have rights to use it. [Guido]
+* Cleaned up getMenuItems function and made hoursadmin link unavailable
+  when you don't have rights to use it. [Guido]
+* hours_admin link was still shown when a user didn't have rights to use
+  it. [Guido]
+* Changed centerpiece form hard referenced links in top.tpl into a foreach
+  loop to make the contents of the centerpiece more controllable through
+  code. [Guido]
+* Only show the userprefs link when a user has rights to use it. [Guido]
+* Only return a search results containing view links if a user has rights
+  to use them. [Guido]
+* Made phase and project names clickable in select screens. [Guido]
+* Changed abbreviation into projectcode. [Guido]
+* Changed afkorting into projectcode. [Guido]
+* Changed klant into opdrachtgever. [Guido]
+* Made abbreviation visible (and thus searchable) in the project admin
+  screen. [Guido]
+* Fixed miscoded translation identifier for 'Previous day' in hoursadmin.
+  [Guido]
+* Fixed datejumper not working due to typo in sessionform reference in
+  hoursadmin. [Guido]
+* Currently selected date in time registration will be globally stored so
+  when you return to the time registration after using some other funcitons
+  of achievo, you will still be at the same date. [Guido]
+* Fixed todo admin / pim screens to treat 'private is null' records the
+  same as records where private=0. [Guido]
+* Moved arrays of month names (both short and long) into seperate
+  functions. [Guido]
+* Quoted values and added tablenames to columnnames in where clause to
+  prevent SQL errors in todo's. [Guido]
+* Percentages should not translate. [Guido]
+* Fixed security for complete and mra_complete actions. [Guido]
+* Fixed coding error causing no id to be passed to the complete action
+  when clicking recordlist action icon. [Guido]
+* Added void ($this->redirect) implementation to complete and mra_complete
+  actions (TODO: Implement these actions). [Guido]
+* Sort registrations by project abbreviation. [Guido]
+* Fixed html errors in organization view and edit screens. [Guido]
+* Show and sort project/phase lists by projectcode. [Guido]
+* Put the projectcode in front of the name. [Guido]
+* Fixed out-of-scope planned/booked filter value. [Guido]
+* Functionally decomposed the querying of planned hours on a project. [Guido]
+* Added missing classname to compare callback function reference in usort()
+  call. [Guido]
+* Fixed renderbox call (added missing $name="top" parameter). [Guido]
+* Added colon as seperator between projectcode and projectname in
+  descriptor. [Guido]
+* Fixed style problem where the first column would be stretched to almost
+  the full pagewidht, while other columns need that space much more than
+  the first column. [Guido]
+* Removed unneeded and deprecated text() calls. [Guido]
+* Removed atk_var_dump. [Guido]
+* Fixed translation issues. [Guido]
+* Removed isholiday debugging (with emphasis on bugging). [Guido]
+* Fixed css syntax error and invalid negative padding-left value in achievo_modern theme. [Guido]
+* Fixed security problem when adding/editing/deleting team members and
+  contact persons from projects. [Guido]
+* Improved layout and ability to add extra columns from withing external
+  modules. [Guido]
+* Removed unused class. [Guido]
+* Replaced printerfriendly outputtype by css print media support. [Guido]
+* Fixed a timereg delete problem where deleting a time registration causes
+  an SQL error. [Guido]
+* Fixed FCK editor not being entirely visible in the achievo_modern theme.
+  [Guido]
+* Fixed oversized column problem. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
