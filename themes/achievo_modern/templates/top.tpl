@@ -6,6 +6,6 @@
     <span id="top-search">{$searchpiece}</span>
   </div>
   <div id="loginBox">
-    {atktext logged_in_as}: {$user}
+    {atktext logged_in_as}: [{$user}] {$username}
   </div>
 </div>
