@@ -64,6 +64,7 @@ class scheduler_pimview extends scheduler_view
   */
   function renderView()
   {
+    $this->getLegend();
     $showdays = $this->getShowDays();
     $startdate = $this->m_viewdate;
     $enddate = date("Y-m-d",mktime(12,0,0,$this->m_month,($this->m_day+$showdays),$this->m_year));
