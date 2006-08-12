@@ -91,6 +91,7 @@ class scheduler_view
   var $m_weekday_arr = array(1,2,4,8,16,32,64);
   var $m_workdays = 0;
   var $m_showWeekNumbers = 0;
+  var $m_assistantFor = array();
 
  /**
   * @var string $m_emptyWorkHoursColor Default color for empty workhours calendar items
@@ -835,10 +836,10 @@ class scheduler_view
   function renderItem($item,$admin=false,$itemDate="",$showcategory=false)
   {
     $theme = &atktheme::getInstance();
-    atk_var_dump($item,"RENDERITEM ITEM");
-    //$admin=false;
     $user = getUser();
+
     if(!is_array($item)) return "";
+    
     if($itemDate=="") $itemDate=$this->m_viewdate;
     $tmp="";
     if($admin)
@@ -846,6 +847,7 @@ class scheduler_view
       $tmp .= '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>'."\n";
       $tmp .= '<td valign="top" align="left">';
     }
+    // If showcategory we will show a box with the category color
     if($showcategory)
     {
       $tmp.='<img style="background-color: '.$this->m_itemColors[$item["category"]]["back"].';" src="images/trans.gif" border="1" width="10" height="10" title="'.$this->m_itemColors[$item["category"]]["desc"].'">&nbsp;';
@@ -865,24 +867,21 @@ class scheduler_view
       $numberofattendees = count($this->m_attendees[$item["id"]]);
       atkdebug("Attendees: $numberofattendees");
 
+      $names = "";
+      for($i=0;$i<$numberofattendees;$i++)
+      {
+
+        $userid = $this->m_attendees[$item["id"]][$i];
+        if($userid==$user["id"]) $isAttendee=true;
+        if($i>0) $names.=", ";
+        $names.= $this->m_users[$userid]["firstname"]." ".$this->m_users[$userid]["lastname"].($this->m_users[$userid]["role"]!="employee"?" (".$this->m_users[$userid]["role"].")":"");
+      }
       if($numberofattendees==1)
       {
-        $userid = $this->m_attendees[$item["id"]][0];
-        if($userid==$user["id"]) $isAttendee=true;
-        $name = $this->m_users[$userid]["firstname"]." ".$this->m_users[$userid]["lastname"].($this->m_users[$userid]["role"]!="employee"?" (".$this->m_users[$userid]["role"].")":"");
-        $attendees='<img src="'.$theme->imgPath("single.png","scheduler").'" width=15 height=15 title="'.$name.'" alt="'.$name.'">';
+        $attendees='<img src="'.$theme->imgPath("single.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
       }
-      elseif($numberofattendees>1)
+      else 
       {
-        $names = "";
-        for($i=0;$i<$numberofattendees;$i++)
-        {
-
-          $userid = $this->m_attendees[$item["id"]][$i];
-          if($userid==$user["id"]) $isAttendee=true;
-          if($i>0) $names.=", ";
-          $names.= $this->m_users[$userid]["firstname"]." ".$this->m_users[$userid]["lastname"].($this->m_users[$userid]["role"]!="employee"?" (".$this->m_users[$userid]["role"].")":"");
-        }
         $attendees='<img src="'.$theme->imgPath("multi.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
       }
     }
@@ -904,15 +903,14 @@ class scheduler_view
 
     $tmp.="&nbsp;";
 
-    //atk_var_dump($item,"ITEM");
-    //atkdebug("SANDY:  owner:".$item["owner"]." - userid".$user["id"]. " - attendee".($isAttendee?"true":"false"));
+    // If item is private and current is not an attendee or owner, show private event.
     if($this->isPrivate($item) && !($item["owner"]==$user["id"] || $isAttendee))
     {
       $tmp.=atkText("private_event","scheduler");
     }
     else
     {
-      if($item["owner"]==$user["id"] || $isAttendee || is_allowed("scheduler.scheduler", "edit_all"))
+      if($item["owner"]==$user["id"] || $isAttendee || in_array($item["owner"],$this->m_assistantFor))
       {
         $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"]),$item["title"],SESSION_NESTED);
       }
@@ -932,20 +930,11 @@ class scheduler_view
     if($admin)
     {
       $tmp.='</td><td valign="top" align="right">';
-      /*
-      if ((!$this->isPrivate($item) || $isAttendee) && $item["owner"]!=$user["id"])
-      {
-        $view = '<img src="'.$theme->iconPath("view", "recordlist").'" border="0">';
-        $tmp.= href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"]), $view, SESSION_NESTED);
-      }
-      */
-      // you may only edit and delete a calendar item if you are the owner,
+      // you may only delete a calendar item if you are the owner,
       // or an assistant of the owner
-      if ($item["owner"] == $user["id"])
+      if ($item["owner"] == $user["id"] || in_array($item["owner"],$this->m_assistantFor))
       {
-        //$edit = '<img src="'.$theme->iconPath("edit", "recordlist").'" border="0">';
         $delete = '<img src="'.$theme->iconPath("delete", "recordlist").'" border="0">';
-        //$tmp.= "&nbsp;&nbsp;".href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"]), $edit, SESSION_NESTED);
         $tmp.= href("dispatch.php?atkaction=delete&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"], $delete, SESSION_NESTED);
       }
       $tmp.='</td></tr></table>';
@@ -999,7 +988,13 @@ class scheduler_view
       $this->m_work_endtime = "17:00";
       $this->m_workdays=0;
     }
-
+    // Check if current user is assistant for other users
+    $sql = "SELECT userid FROM scheduler_userassistants WHERE employeeid='{$user["id"]}'";
+    $nrows = $db->getrows($sql);
+    for($i=0;$i<count($nrows);$i++)
+    {
+      $this->m_assistantFor[] = $nrows[$i]["userid"];
+    }
     $this->m_owner = $user["id"];
   }
 
