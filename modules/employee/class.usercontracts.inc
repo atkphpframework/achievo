@@ -30,7 +30,8 @@ class usercontracts extends atkNode
     $this->add(new atkTimeAttribute("workendtime"    ,0, 23, $m_arr_minute_step, "17:00",AF_OBLIGATORY));
 
     $this->setTable("usercontract");
-    $this->setOrder("id");
+    $this->setOrder("usercontract.id");
+    $this->setDescriptorTemplate("[uc_hours] " . $this->text("hours"));
   }
 
   function initial_values()
