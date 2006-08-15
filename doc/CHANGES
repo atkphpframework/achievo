@@ -59,6 +59,7 @@ Changes in Achievo 1.3
   the filters and theme decorations taking up space and ink/toner. [Guido]
 + Added missing project abbreviation (=projectcode) field to query. [Guido]
 + Added translation for "startday" field in user preferences. [Guido]
++ Added descriptor for user contracts. [Guido]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
