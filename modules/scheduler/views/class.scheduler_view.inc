@@ -912,11 +912,11 @@ class scheduler_view
     {
       if($item["owner"]==$user["id"] || $isAttendee || in_array($item["owner"],$this->m_assistantFor))
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"]),$item["title"],SESSION_NESTED);
+        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
       }
       elseif(!$this->isPrivate($item))
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"]),$item["title"],SESSION_NESTED);
+        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
       }
       else
       {
