@@ -16,7 +16,7 @@ Changes in Achievo 1.3
   $config_password_minnumbers, $config_password_minspecialchars variables.
   [Guido]
 + Added translations for "alldepartments", "allfunctionlevels",
-  "private_appointment" and "example". [Guido]
+  "private_appointment", "example" and  "startday". [Guido]
 + Added ability for users to select their own language. [Boy]
 + Added achievo_modern theme. [Norman,Boy]
 + Added the ability to globaly disallow specific pim items to be used.
@@ -30,7 +30,7 @@ Changes in Achievo 1.3
   the project admin instead of the description field. (bug 475) [Sandy]
 + Added duration field for project phase to see how many workdays there
   are in a phase. [Sandy]
-+ Added the abbreviation to project descriptors. [Guido]
++ Added the projectcode to project descriptors. [Guido]
 + Added ability to set a $config_projectnumbermodule to asssign a module
   the task of generating project numbers (implemented in the
   getInitialProjectcode() function). [Guido]
@@ -41,7 +41,7 @@ Changes in Achievo 1.3
   constructor as you would with any other node, eventually write an
   initial_values function and implement the
   getContentElements($filterrecord) function. [Guido]
-+ Added customer link to the organization node. [Guido]
++ Added a customer (organization) relation to projects. [Guido]
 + Added filter attribute to allow filtering projects by their contactpersons.
   [Guido]
 + Added organization type (customer / supplier) to organizations. The
@@ -50,15 +50,12 @@ Changes in Achievo 1.3
 + Fixed display function for the email field when in csv or plain mode.
   [Guido]
 + Added a list of active and archived projects on seperate tabs to the
-  organization view / edit pages. [Guido]
+  contactperson view / edit pages. [Guido]
 + Added project.billing_type column (still dirty and hardcoded, but only
   active when the billing module is installed). [Guido]
-+ Added a print button. [Guido]
-+ Added the filter parameters to printer output. [Guido]
++ Added a print button to the hour survey. [Guido]
 + Added a printerfriendly stylesheet to allow printing reports without
   the filters and theme decorations taking up space and ink/toner. [Guido]
-+ Added missing project abbreviation (=projectcode) field to query. [Guido]
-+ Added translation for "startday" field in user preferences. [Guido]
 + Added descriptor for user contracts. [Guido]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
@@ -150,11 +147,8 @@ Changes in Achievo 1.3
   planning gantt chart. (bug 526) [Sandy]
 * Contract shows now shows the non active projects too.
   (bug 424) [ChristianL]
-* Quoted userid in SQL in order to prevent SQL errors when logged in as
-  administrator. [Guido]
 * Added "Change abbreviation" right to (dis)allow editing of a project's
   abbreviation. [Guido]
-* Removed duplicate useattrib call. [Guido]
 * Added isEmpty function to projectPhaseAttribute to enable proper
   obligatory field validation. [Guido]
 * Replaced addColumn with installNode call in timereg patch 8 to prevent an
@@ -171,11 +165,9 @@ Changes in Achievo 1.3
 * Only return a search results containing view links if a user has rights
   to use them. [Guido]
 * Made phase and project names clickable in select screens. [Guido]
-* Changed abbreviation into projectcode. [Guido]
-* Changed afkorting into projectcode. [Guido]
-* Changed klant into opdrachtgever. [Guido]
-* Made abbreviation visible (and thus searchable) in the project admin
-  screen. [Guido]
+* Changed abbreviation field in projects into a projectcode field. [Guido]
+* Made projectcode visible and searchable in the project admin screen.
+  [Guido]
 * Fixed miscoded translation identifier for 'Previous day' in hoursadmin.
   [Guido]
 * Fixed datejumper not working due to typo in sessionform reference in
@@ -210,21 +202,20 @@ Changes in Achievo 1.3
   the full pagewidht, while other columns need that space much more than
   the first column. [Guido]
 * Removed unneeded and deprecated text() calls. [Guido]
-* Removed atk_var_dump. [Guido]
 * Fixed translation issues. [Guido]
 * Removed isholiday debugging (with emphasis on bugging). [Guido]
 * Fixed css syntax error and invalid negative padding-left value in achievo_modern theme. [Guido]
 * Fixed security problem when adding/editing/deleting team members and
   contact persons from projects. [Guido]
+* Replaced printerfriendly outputtype by css print media support. [Guido]
+* When printing a report which uses css print media support, the chosen
+  filters are now included in the printed output. [Guido]
 * Improved layout and ability to add extra columns from withing external
   modules. [Guido]
-* Removed unused class. [Guido]
-* Replaced printerfriendly outputtype by css print media support. [Guido]
 * Fixed a timereg delete problem where deleting a time registration causes
   an SQL error. [Guido]
 * Fixed FCK editor not being entirely visible in the achievo_modern theme.
   [Guido]
-* Fixed oversized column problem. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------
