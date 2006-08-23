@@ -52,6 +52,25 @@
     }
   }
 
+  class functionLevelAttribute extends atkAttribute
+  {
+    function storageType()
+    {
+      return NOSTORE;
+    }
+
+    function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level, $mode)
+    {
+      $query->addJoin("functionlevel", "functionlevelid", "userid.functionlevel = functionlevelid.id", true);
+      $query->addField("name","","functionlevelid","functionlevel_",!$this->hasFlag(AF_NO_QUOTES),true);
+    }
+    function db2value($record)
+    {
+      return atkArrayNvl($record, "functionlevel_name");
+    }
+
+  }
+
   class billingTypeViewAttribute extends atkAttribute {
 
     /**
@@ -173,7 +192,7 @@
 
       // Hack: make sure the activities, which are populated by the project/phase column, are properly loaded.
       $hoursnode->add(new sortableActivity());
-
+      $hoursnode->add(new functionLevelAttribute("functionlevel"));
       $hoursnode->add(new billingTypeViewAttribute("billing_projecttypeid"));
 
 
@@ -356,7 +375,6 @@
         $data[] = array(atktext("organization","project").':','<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.$organizationatt->edit($dummyrec));
         $this->_addOr($data);
 
-        $departmentatt = new atkManyToOneRelation("departmentid","employee.department");
         $data[] = array(atkText("department","project").':','<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
 
         $data[] = array("<hr>");
@@ -461,16 +479,16 @@
           }
         }
 
-       $data[] = array('<b>'.atktext("report_output_options","project").'</b>');
-       $data[] = array(atktext("report_output_type","project").":",'<select name="outputType">
-                         <option VALUE="0" selected>'.atktext("report_output_standard","project").'
+        $data[] = array('<b>'.atktext("report_output_options","project").'</b>');
+        $data[] = array(atktext("report_output_type","project").":",'<select name="outputType">
+                        <option VALUE="0" selected>'.atktext("report_output_standard","project").'
                         <option value="2">'.atktext("report_output_export","project").'
-                         </select>');
+                        </select>');
 
-        $cell="";
+
+        $arr_collabel = array();
         for($i=0,$_i=count($arr_col);$i<$_i;$i++)
         {
-          $checked = (in_array($arr_col[$i],$col) ? "checked" : "");
           $translatewithmodule = "";
           foreach($externalHourSurveyColumns as $module => $attrlist)
           {
@@ -479,19 +497,34 @@
           }
           $label = atkText($arr_col[$i], $translatewithmodule);
           if ($arr_col[$i]=="billing_projecttypeid") $label = atkText("billing_type", "billing");
-          $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.$label.'&nbsp;';
+          $arr_collabel[] = $label;
+        }
+
+        $cell="";
+        for($i=0,$_i=count($arr_col);$i<$_i;$i++)
+        {
+          $checked = (in_array($arr_col[$i],$col) ? "checked" : "");
+          $cell.='<input type="checkbox" name="col[]" value="'.$arr_col[$i].'" '.$checked.'>'.$arr_collabel[$i].'&nbsp;';
         }
         $data[] = array(atktext('report_output_showcollumns','project'),$cell);
 
-
-
         $orderattrs = array();
+        $orderattrlabels = array();
         $orderstr = "";
+        for ($i=0,$_i=count($arr_col); $i<$_i; $i++)
+        {
+          $orderattr = &$hoursnode->getAttribute($arr_col[$i]);
+          if (($arr_col[$i] == "functionlevel") || (is_object($orderattr) && !$orderattr->hasFlag(AF_NO_SORT)))
+          {
+            $orderattrs[] = $arr_col[$i];
+            $orderattrlabels[] = $arr_collabel[$i];
+          }
+        }
 
         for ($i=0; $i<$sortfieldcount; $i++)
         {
           $orderbylistflags = ($i == 0) ? AF_LIST_NO_NULL_ITEM : 0;
-          $field = new atkListAttribute("orderby[$i]", $arr_col, $arr_col, $orderbylistflags);
+          $field = new atkListAttribute("orderby[$i]", $orderattrlabels, $orderattrs, $orderbylistflags);
           $direction =new atkListAttribute("orderdirection[$i]",array('column_asc', 'column_desc'), array('asc', 'desc'));
           $total = new atkBoolAttribute("subtotal[$i]",0);
           $orderstr.=($i+1).". ".$field->edit($dummyrec)." ".$direction->edit($dummyrec)." ".$total->edit($dummyrec)." ".atktext('subtotal')."<br>";
@@ -571,7 +604,7 @@
           if ($itsOrderby && $itsOrderby != "-")
           {
             //hack we need to add the tablename before the attribute. all attributes except for functionlevel has the table name hours
-            $itsOrderby = ($itsOrderby == "functionlevel") ? "person.".$itsOrderby : "hours.".$itsOrderby;
+            $itsOrderby = ($itsOrderby == "functionlevel") ? "functionlevelid.name" : "hours.".$itsOrderby;
 
             $orderbystatement[] = $itsOrderby . " " . $orderdirection[$key];
           }
