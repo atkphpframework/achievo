@@ -216,6 +216,8 @@ Changes in Achievo 1.3
   an SQL error. [Guido]
 * Fixed FCK editor not being entirely visible in the achievo_modern theme.
   [Guido]
+* Displaying of projects for organization now uses the customer field of the 
+  project to select the active projects and archived projects. [Lineke]
 
 Changes in Achievo 1.2.1
 ------------------------

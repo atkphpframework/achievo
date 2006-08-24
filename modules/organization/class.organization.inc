@@ -198,10 +198,8 @@ class organization extends atkNode
   function showProjects($record, $mode,$status="active")
   {
     $projectnode = &atkGetNode("project.project");
-    useattrib("project.filterprojectbyorganizationattrib");
-    $projectnode->add(new filterProjectByOrganizationAttrib($record["id"]));
     $projectnode->m_fuzzyFilters=array("project.status='$status'");
-    $recs = $projectnode->selectDb("", "", "", $projectnode->m_listExcludes);
+    $recs = $projectnode->selectDb("customer = ".$record["id"], "", "", $projectnode->m_listExcludes);
     if (count($recs)>0)
     {
       $rl = &atknew("atk.recordlist.atkrecordlist");
