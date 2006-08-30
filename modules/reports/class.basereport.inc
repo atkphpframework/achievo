@@ -132,7 +132,7 @@
 
     function getParameterBar($filterrecord)
     {
-      $output = '<form action="'.dispatch_url($this->m_module.".".$this->m_type, "report").'" method="post" style="margin: 0px">';
+      $output = '<form name="entryform" action="'.dispatch_url($this->m_module.".".$this->m_type, "report").'" method="post" style="margin: 0px">';
       $output.= session_form();
       $output.= '<input type="hidden" name="go" value="1">'; //trigger to prevent loading the first time
 
@@ -169,6 +169,9 @@
       // Register the stylesheet
       $this->addStyle("style.css");
       $page->register_style(moduleDir("reports")."style/printablereport.css", "print");
+      $page->register_script(atkconfig("atkroot")."atk/javascript/tools.js");
+      $page->register_script(atkconfig("atkroot")."atk/javascript/formsubmit.js");
+      $page->register_script(atkconfig("atkroot")."atk/javascript/dhtml_formtools.js");
 
       // Render a box around all elements and put them in an array
       $boxedblocks = array();
