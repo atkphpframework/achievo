@@ -252,8 +252,14 @@
       return false;
     }
 
+    //Convert bare LF to CRLF (see: http://cr.yp.to/docs/smtplf.html)        
+    //First replace CRLF to LF, then replace all LF to CRLF. This must be done to
+    //prevent replacing a CRLF with CRCRLF 
+    $body = preg_replace("/(\r\n)/", "\n", $body);
+    $body = preg_replace("/(\n)/", "\r\n", $body);
+    
     // Attempt to send the mail, and store the result in $result
-    $result = mail($to, "[achievo notice] " . $subject, $body, "From: " . $sender . "\r\n" . $add_header);
+    $result = mail($to, "[achievo notice] " . $subject, $body, "From: $sender\r\n" . $add_header);
 
     // Show debug info
     atkdebug($result ? "Sent mail to $to" : "Sending of mail to $to failed");
