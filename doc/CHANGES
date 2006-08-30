@@ -218,7 +218,8 @@ Changes in Achievo 1.3
   [Guido]
 * Displaying of projects for organization now uses the customer field of the 
   project to select the active projects and archived projects. [Lineke]
-
+* Usermail() in Achievotools now replaces bare LF with CRLF. [Dennis]
+  
 Changes in Achievo 1.2.1
 ------------------------
 + Added $config_timereg_allowfuture setting for allowing time registration
