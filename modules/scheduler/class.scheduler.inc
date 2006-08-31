@@ -36,6 +36,9 @@
     var $m_viewUser;
     var $m_view;
     var $m_employees;
+    var $m_itemDate;
+    var $m_scheduler_id;
+    var $m_confirmsingle;
 
     // Default minute step
     var $m_minute_step = 5;
@@ -43,15 +46,14 @@
 
     function scheduler()
     {
+      atk_var_dump($this->m_postvars,"scheduler::scheduler -> Postvars");
       $sessionmanager = &atkGetSessionManager();
       $this->m_view = $sessionmanager->pageVar("view");
       $this->m_viewUser = $sessionmanager->pageVar("user");
       $this->m_employees = $sessionmanager->pageVar("employee");
       $this->m_itemDate = $sessionmanager->stackVar("itemdate");
       $this->m_scheduler_id = $sessionmanager->stackVar("scheduler_id");
-
-
-
+      $this->m_confirmsingle = $sessionmanager->stackVar("confirmsingle");
 
       $user = getUser();
       $userprefs = (isset($user["id"]) && !empty($user["id"])) ? $this->getUserSchedulerPrefs($user["id"]) : array();
@@ -159,6 +161,8 @@
       }
 
       $this->addAllowedAction("view");
+      $this->addAllowedAction("editserieorsingle");
+      $this->addAllowedAction("editcopy");
 
       $this->setTable("scheduler_scheduler", "scheduler_scheduler");
       if ($this->m_view == "day")
@@ -400,6 +404,177 @@
         $location = $this->feedbackUrl("delete", ACTION_SUCCESS);
         $this->redirect($location);
     }
+    
+     function confirmEdit($atkselector)
+    {
+      $sessionmanager = &atkGetSessionManager();
+      $ui = &$this->getUi();
+
+      $this->addStyle("style.css");
+
+      $formstart ='<form action="'.$_SERVER["PHP_SELF"].'?"'.SID.' method="post">';
+      $formstart.=session_form();
+      $formstart.='<input type="hidden" name="atkaction" value="editserieorsingle">';
+      $formstart.='<input type="hidden" name="confirmedit" value="true">';
+      $formstart.='<input type="hidden" name="atknodetype" value="'.$this->atknodetype().'">';
+      $formstart.='<input type="hidden" name="atkselector" value="'.$atkselector.'">';
+      $formstart.='<input type="hidden" name="itemdate" value="'.$this->m_postvars["itemdate"].'">';
+      $formstart.='<input type="hidden" name="scheduler_id" value="'.$this->m_postvars["scheduler_id"].'">';
+
+      $buttons = array();
+      $buttons[] = '<input name="confirmsingle" class="btn" type="submit" value="'.atktext('edit_single').'">';
+      $buttons[] = '<input name="confirm" class="btn" type="submit" value="'.atktext("edit_cyclus").'">';
+      $buttons[] = '<input name="cancel" type="submit" class="btn_cancel" value="'.atktext('no').'">';
+
+      $content.= '<br>'.$this->confirmActionText($atkselector, "edit", false);
+      $action="edit";
+
+      $output=$ui->renderAction($action, array("content"=>$content,
+                                                "formstart"=>$formstart,
+                                                "formend"=>'</form>',
+                                                "buttons"=>$buttons));
+      $content = $ui->renderBox(array("title"=>$this->actionTitle($action, $record),
+                                  "content"=>$output));
+      $theme = &atkTheme::getInstance();
+      $page = &$this->getPage();
+      $page->register_style($theme->stylePath("style.css"));
+      $page->register_style(moduledir("scheduler")."styles/scheduler.css");
+      $page->head("Schedule");
+      $page->body();
+      $page->addContent($content);
+    
+
+    }
+    /**
+     * Custom edit action for recurring events
+     * It will first ask if the use want's to edit a single
+     * item or the complete serie, after that it will execute
+     * the correct action.
+     *
+     * @return unknown
+     */
+    function action_editserieorsingle()
+    {
+      global $ATK_VARS;
+      atk_var_dump($_REQUEST);
+      $sessionmanager = &atkGetSessionManager();
+      $confirmsingle = $sessionmanager->stackVar("confirmsingle");
+      if ($this->m_postvars["confirmedit"]=="")
+      {
+          $atkselector="";
+          $this->confirmEdit($this->m_postvars["atkselector"]);
+      }
+      elseif($this->m_postvars["confirmedit"]!="" && $this->m_postvars["confirmsingle"]!="")
+      {
+         //$handler = &$this->getHandler("editcopy");
+         $this->action_editcopy();
+      }
+      elseif($this->m_postvars["confirmedit"]!="" && $this->m_postvars["confirm"]!="")
+      {
+        atk_var_dump($this->m_postvars,"CALL EDIT  HANDLER");
+        $handler = &$this->getHandler("edit");
+        return $handler->action_edit();
+      }
+      else 
+      {
+        $this->redirect();
+      }
+    }
+    /**
+     * Precopy when An user edits a single item of a recurring item.
+     * It will replace the start/end date with the selected date. Also
+     * the recur will be set to once. (we don't copy the cyclus record)
+     *
+     * @param array $rec The current record.
+     */
+    function preCopy(&$rec)
+    {
+      $starthour = ($rec["allday"]==0?$rec["starttime"]["hours"]:0);
+      $startminute = ($rec["allday"]==0?$rec["starttime"]["minutes"]:0);
+      $endhour = ($rec["allday"]==0?$rec["endtime"]["hours"]:0);
+      $endminute = ($rec["allday"]==0?$rec["endtime"]["minutes"]:59);
+
+      $starttime = mktime($starthour,$startminute,0,$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]);
+      $endtime = mktime($endhour,$endminute,0,$rec["enddate"]["month"],$rec["enddate"]["day"],$rec["enddate"]["year"]);
+      $duration = $endtime-$starttime;
+      atkdebug("<h1>Item DATE: ".date("Y-m-d H:i",$this->m_itemDate)."</h1>");
+      $rec["startdate"]["day"]=date("d",$this->m_itemDate);
+      $rec["startdate"]["month"]=date("m",$this->m_itemDate);
+      $rec["startdate"]["year"]=date("Y",$this->m_itemDate);
+      $rec["enddate"]["day"]=date("d",($this->m_itemDate+$duration));
+      $rec["enddate"]["month"]=date("m",($this->m_itemDate+$duration));
+      $rec["enddate"]["year"]=date("Y",($this->m_itemDate+$duration));
+      $rec["recur"]="once";
+    }
+    
+    function action_editcopy()
+    {
+
+      atkdebug("scheduler::action_editcopy()");
+      $sessionmanager = &atkGetSessionManager();
+      $confirmsingle = $sessionmanager->stackVar("confirmsingle");
+      $itemDate = $sessionmanager->stackVar("itemdate");
+      $scheduler_id = $sessionmanager->stackVar("scheduler_id");
+      
+      $recordset = $this->selectDb($this->m_postvars['atkselector'],"","",array("alarms","cyclus","notes"),"","copy");
+
+      if(count($recordset) > 0)
+      {
+        $db = &$this->getDb();
+        if(!$this->copyDb($recordset[0]))
+        {
+          $db->rollback();
+          $location = $this->feedbackUrl("editcopy", ACTION_FAILED, $recordset[0], $db->getErrorMsg());
+          $this->redirect($location);
+        }
+        else
+        {
+          $db->commit();
+          // Delete the recurring date and add an exception
+          $name = "atk".atkconfig("database")."query";
+          $query = atknew($name);
+          $query->addTable('scheduler_cyclus_not');
+          $query->addField('scheduler_id',$scheduler_id,'scheduler_cyclus_not');
+          $query->addField('date',$itemDate,'scheduler_cyclus_not');
+          $sql = $query->buildInsert();
+          $db->query($sql);
+          $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='".$scheduler_id."' AND startdate='".$itemDate."'";
+          $db->query($sql);
+          
+          //$this->clearCache();
+          $location = session_url(dispatch_url($this->atknodetype(), "edit", array("atkselector" => $this->primaryKey($recordset[0]),"itemdate"=>$itemDate,"scheduler_id"=>$scheduler_id,"confirmsingle"=>$confirmsingle)), SESSION_REPLACE);
+          $this->redirect($location);
+        }
+      }
+
+      else
+      {
+        atkdebug("No records found with selector: $selector");
+        $this->redirect();
+      }
+    }
+    
+    function action_update(&$handler)
+    {
+      atk_var_dump($this->m_postvars,"POSTVARS");
+      $sessionmanager = &atkGetSessionManager();
+      $confirmsingle = $sessionmanager->stackVar("confirmsingle");
+      $itemDate = $sessionmanager->stackVar("itemdate");
+      $scheduler_id = $sessionmanager->stackVar("scheduler_id");
+      atkdebug("<h1>UPDATE ".$confirmsingle."</h1>");
+      if ($handler->m_postvars['atkcancel'] &&  $confirmsingle!="")
+      {
+         $record = $this->updateRecord();
+         $this->deleteDb($this->primaryKey($record));
+         $sql = "DELETE FROM scheduler_cuclus_not WHERE scheduler_id='$scheduler_id' AND date='$itemDate'";
+         $db = &atkGetDb();
+         $db->query($sql);
+      }
+      return $handler->action_update();
+    } 
+
+    
+    
 
     function dayview()
     {
@@ -498,6 +673,7 @@
     function postDelete($rec)
     {
       //$this->removeSchedulerDates($rec);
+      return true;
     }
 
     function storeAttendees($rec, $attendees)
