@@ -30,7 +30,7 @@ class scheduler_pimview extends scheduler_view
       $totalItems = $totalAllDayItems+$totalAppointmentItems;
       if($totalItems==0) continue;
       
-      $items.="<br><b>".($j==1?atktext("today","scheduler"):($j==2?atktext("tommorow","scheduler"):"+".$j." ".atktext("days","scheduler"))).", ".date("l d M",$showtime)." ($totalItems)</b><br>";
+      $items.="<br><b>".($j==1?atktext("today","scheduler").",":($j==2?atktext("tommorow","scheduler").",":"[+$j]"))." ".date("l d M",$showtime)." ($totalItems)</b><br>";
       $holiday = &atkGetNode("scheduler.scheduler_holidays");
       if($holiday->isHoliday($showdate))
       {

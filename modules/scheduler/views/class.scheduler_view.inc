@@ -912,11 +912,11 @@ class scheduler_view
     {
       if($item["owner"]==$user["id"] || $isAttendee || in_array($item["owner"],$this->m_assistantFor))
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
+        $tmp.=href($_SERVER["PHP_SELF"]."?atknodetype=scheduler.scheduler&atkaction=".($this->isRecurring($item)?"editserieorsingle":"edit")."&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
       }
       elseif(!$this->isPrivate($item))
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
+        $tmp.=href($_SERVER["PHP_SELF"]."?atknodetype=scheduler.scheduler&atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
       }
       else
       {
@@ -935,7 +935,7 @@ class scheduler_view
       if ($item["owner"] == $user["id"] || in_array($item["owner"],$this->m_assistantFor))
       {
         $delete = '<img src="'.$theme->iconPath("delete", "recordlist").'" border="0">';
-        $tmp.= href("dispatch.php?atkaction=delete&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"], $delete, SESSION_NESTED);
+        $tmp.= href("dispatch.php?atknodetype=scheduler.scheduler&atkaction=delete&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"], $delete, SESSION_NESTED);
       }
       $tmp.='</td></tr></table>';
     }
