@@ -4,6 +4,7 @@
    * @internal modifiers
    */
   $modifiers[] = "timereg.hours";
+  $modifiers[] = "project.phase";
 
   class mod_project extends achievoModule
   {
@@ -70,6 +71,13 @@
     {
       atkimport("module.project.hourslistener");
       $node->addListener(new hoursListener(array("save", "update")));
+    }
+    
+    function project_phase_modifier(&$node)
+    {
+      $cascadingdeletehours = atkConfig::get("project", "project_cascading_delete_hours", false);
+      if($cascadingdeletehours)
+        $node->add(new atkOneToManyRelation("hours","timereg.hours","phaseid",AF_HIDE|AF_CASCADE_DELETE));
     }
   }
 
