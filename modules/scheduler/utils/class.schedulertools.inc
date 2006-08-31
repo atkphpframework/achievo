@@ -28,7 +28,6 @@ class schedulertools
    */
   function getDates($item,$rangeStartDate=NULL,$rangeEndDate=NULL)
   {
-    atk_var_dump($item,"ITEM TO GETDATES");
     $dates = array();
     $datecounter=0;
     if($item["recur"]=="once")
@@ -41,7 +40,7 @@ class schedulertools
     {
       $startdate = date("Y-m-d",mktime(12,0,0,$item["startdate"]["month"],$item["startdate"]["day"],$item["startdate"]["year"]));
       //$startdate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_startdate"]["month"],$item["cyclus"]["cyclus_startdate"]["day"],$item["cyclus"]["cyclus_startdate"]["year"]));
-      // Check if we have an enddate
+      // Check if we have an enddate, else use max date possible
       if($item["cyclus"]["cyclus_enddate"]["year"]!="" && $item["cyclus"]["cyclus_enddate"]["month"]!=0 && $item["cyclus"]["cyclus_enddate"]["day"]!=0)
       {
         $enddate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_enddate"]["month"],$item["cyclus"]["cyclus_enddate"]["day"],$item["cyclus"]["cyclus_enddate"]["year"]));
