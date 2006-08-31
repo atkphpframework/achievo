@@ -37,7 +37,7 @@ class schedulerDurationAttribute extends atkAttribute
 
      $result .= '&nbsp;<select id="'.$id.'_minutes" name="'.$fieldprefix.$this->formName().'[minutes]">';
      $this->registerKeyListener($id.'_minutes', KB_CTRLCURSOR|KB_LEFTRIGHT);
-     for($i=0;$i<60;$i++)
+     for($i=0;$i<60;$i+=5)
      {
        $result .= '<option value="'.$i.'" ';
        if ($fieldvalue["minutes"]==$i) $result.= "selected";
