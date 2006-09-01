@@ -67,6 +67,10 @@
 
       $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL, 20));
 
+      $cascadingdeletehours = atkConfig::get("project", "project_cascading_delete_hours", false);
+      if($cascadingdeletehours)      
+        $this->add(new atkOneToManyRelation("hours","timereg.hours","phaseid",AF_HIDE|AF_CASCADE_DELETE));      
+      
       $this->addSecurityMap("view","project.admin");
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
