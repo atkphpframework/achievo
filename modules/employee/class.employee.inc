@@ -134,7 +134,7 @@ class employee extends person
 
   function descriptor_def()
   {
-    return "[lastname], [firstname]";
+    return "[lastname], [firstname] ([userid])";
   }
 
   function recordActions($rec, &$actions, &$mraactions)
