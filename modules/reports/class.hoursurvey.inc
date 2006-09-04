@@ -333,10 +333,13 @@
 
         foreach ($externalHourSurveyColumns as $module => $attrlist)
         {
-          foreach($attrlist as $attr)
+          if (is_array($attrlist))
           {
-            $var = "external$attr";
-            $dummyrec[$attr] = $$var;
+            foreach($attrlist as $attr)
+            {
+              $var = "external$attr";
+              $dummyrec[$attr] = $$var;
+            }
           }
         }
 
@@ -444,24 +447,27 @@
         foreach ($externalHourSurveyColumns as $module => $attrlist)
         {
           $data[] = array("<hr>");
-          foreach($attrlist as $attr)
+          if (is_array($attrlist))
           {
-            $currentattr = &$hoursnode->getAttribute($attr);
-            if (is_object($currentattr) && !$currentattr->hasFlag(AF_HIDE_SEARCH))
+            foreach($attrlist as $attr)
             {
-              if (get_class($currentattr) == "atkboolattribute")
+              $currentattr = &$hoursnode->getAttribute($attr);
+              if (is_object($currentattr) && !$currentattr->hasFlag(AF_HIDE_SEARCH))
               {
-                $output = '<select name="'.$attr.'">';
-                $output.= '<option value=""'.($dummyrec[$attr]===""?' selected':'').'>---</option>';
-                $output.= '<option value="0"'.($dummyrec[$attr]==="0"?' selected':'').'>'.atktext("no","atk").'</option>';
-                $output.= '<option value="1"'.($dummyrec[$attr]==="1"?' selected':'').'>'.atktext("yes","atk").'</option>';
-                $output.= '</select>';
+                if (get_class($currentattr) == "atkboolattribute")
+                {
+                  $output = '<select name="'.$attr.'">';
+                  $output.= '<option value=""'.($dummyrec[$attr]===""?' selected':'').'>---</option>';
+                  $output.= '<option value="0"'.($dummyrec[$attr]==="0"?' selected':'').'>'.atktext("no","atk").'</option>';
+                  $output.= '<option value="1"'.($dummyrec[$attr]==="1"?' selected':'').'>'.atktext("yes","atk").'</option>';
+                  $output.= '</select>';
+                }
+                else
+                {
+                  $output = $currentattr->edit($dummyrec);
+                }
+                $data[]=array($currentattr->label().": ",$output);
               }
-              else
-              {
-                $output = $currentattr->edit($dummyrec);
-              }
-              $data[]=array($currentattr->label().": ",$output);
             }
           }
         }
@@ -492,7 +498,7 @@
           $translatewithmodule = "";
           foreach($externalHourSurveyColumns as $module => $attrlist)
           {
-            if (in_array($arr_col[$i], array_values($attrlist)))
+            if (is_array($attrlist) && in_array($arr_col[$i], array_values($attrlist)))
               $translatewithmodule = $module;
           }
           $label = atkText($arr_col[$i], $translatewithmodule);
@@ -561,11 +567,14 @@
 
       foreach ($externalHourSurveyColumns as $module => $attrlist)
       {
-        foreach ($attrlist as $attr)
-        {
-          $var = "external$attr";
-          $value = $$var;
-          if (!empty($value)) $filter.=" AND hours.$attr = '$value'";
+        if (is_array($attrlist)) 
+        { 
+          foreach ($attrlist as $attr)
+          {
+            $var = "external$attr";
+            $value = $$var;
+            if (!empty($value)) $filter.=" AND hours.$attr = '$value'";
+          }
         }
       }
 
