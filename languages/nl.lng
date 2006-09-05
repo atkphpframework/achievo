@@ -129,6 +129,7 @@
   "documents" => "Documenten",
   "do_not_aggregate" => "Geen aggregatie",
   "duedate" => "Deadline",
+  "duration" => "Duur",
   "editedby" => "Gewijzigd door",
   "edit_all" => "Alle agenda's bewerken",
   "edit_attendee" => "Elke genodigde mag bewerken",

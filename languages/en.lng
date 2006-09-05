@@ -130,6 +130,7 @@
   "documents" => "Documents",
   "do_not_aggregate" => "No aggregation",
   "duedate" => "Due date",
+  "duration" => "Duration",
   "editedby" => "Edited by",
   "edit_all" => "Edit all schedules",
   "edit_attendee" => "Edit while attendee",
