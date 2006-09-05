@@ -31,10 +31,7 @@ class projecttemplateAttribute extends atkManyToOneRelation
       if ($record['template']['id']!="")
       {
         // phase templates
-        $query = "SELECT tpl_phase.id, tpl_phase.name, tpl_phase.description FROM tpl_phase,tpl_project_phase
-                  WHERE tpl_phase.id = tpl_project_phase.phaseid AND tpl_project_phase.projectid = ".$record['template']['id'];
-
-        $phases = $db->getRows($query);
+        $phases = $this->selectTemplates($db, $record);
 
         // loop to insert phases , create reference table
         for ($i=0;$i<count($phases);$i++)
@@ -78,6 +75,21 @@ class projecttemplateAttribute extends atkManyToOneRelation
     }
     return true;
   }
+  
+  function selectTemplates(&$db, $record)
+  {
+    $query = "
+      SELECT 
+        tpl_phase.id, tpl_phase.name, tpl_phase.description 
+      FROM 
+        tpl_phase,tpl_project_phase
+      WHERE 
+        tpl_phase.id = tpl_project_phase.phaseid 
+        AND tpl_project_phase.projectid = ".$record['template']['id'];
+
+    return $db->getRows($query);
+  }    
+  
 
   /*function dbFieldType()
   {
