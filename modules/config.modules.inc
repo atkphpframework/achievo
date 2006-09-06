@@ -1,6 +1,7 @@
 <?php
 //  module("core","./");
   module("utils");
+  module("email_template");
   module("setup");
   module("employee");
   module("person");
