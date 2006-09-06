@@ -72,8 +72,9 @@
     /**
      * No function, but is neccesary
      */
-    function store($a, $b)
+    function store($db, $record, $type)
     {
+      return true;
     }
 
     /**
