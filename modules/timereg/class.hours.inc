@@ -1230,6 +1230,7 @@ class hours extends atkNode
   function preAdd(&$record)
   {
     $this->modifyfortime($record);
+    return true;
   }
 
   function preUpdate(&$record)

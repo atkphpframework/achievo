@@ -225,6 +225,7 @@ Changes in Achievo 1.3
 * Added dutch and english translation for duration field in phases. [Dennis]
 * Fixed: Store() function of spendHoursAttribute in project node, did not
   return a boolean. [Dennis]
+* Fixed: preAdd() function in timereg.hours did not return a boolean. [Dennis]
   
 Changes in Achievo 1.2.1
 ------------------------
