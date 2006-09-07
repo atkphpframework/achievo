@@ -226,6 +226,8 @@ Changes in Achievo 1.3
 * Fixed: Store() function of spendHoursAttribute in project node, did not
   return a boolean. [Dennis]
 * Fixed: preAdd() function in timereg.hours did not return a boolean. [Dennis]
+* Added support for AJAX in editform of achievo_modern theme. Added id field to
+  the TD. [Ivo,Dennis]
   
 Changes in Achievo 1.2.1
 ------------------------
