@@ -11,7 +11,7 @@ class useridAttribute extends atkAttribute
 
   function value2db($rec)
   {
-    return escapeSQL(str_replace(" ", "_", strtolower($rec["userid"])));
+    return escapeSQL(str_replace(" ", "_", $rec["userid"]));
   }
 }
 
