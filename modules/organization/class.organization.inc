@@ -28,6 +28,7 @@ class organization extends atkNode
     $this->atkNode("organization", NF_EDITAFTERADD|NF_EXPORT);
 
     $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
+    $this->add(new atkAttribute("organizationcode", AF_SEARCHABLE|AF_OBLIGATORY));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
     $this->add(new atkListAttribute("type", array("customer", "supplier"), "", AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("visitheader", "<b>".atktext("organization_visitaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
