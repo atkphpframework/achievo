@@ -222,7 +222,6 @@ Changes in Achievo 1.3
   project to select the active projects and archived projects. [Lineke]
 * Usermail() in Achievotools now replaces bare LF with CRLF. [Dennis]
 * Dropdowns and lists displaying employee name now also display userid. [Ivo]
-<<<<<<< CHANGES
 * Userid's are no longer forced to lowercase. [Ivo]
 * Added dutch and english translation for duration field in phases. [Dennis]
 * Fixed: Store() function of spendHoursAttribute in project node, did not
