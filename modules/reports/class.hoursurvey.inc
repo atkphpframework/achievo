@@ -567,8 +567,8 @@
 
       foreach ($externalHourSurveyColumns as $module => $attrlist)
       {
-        if (is_array($attrlist)) 
-        { 
+        if (is_array($attrlist))
+        {
           foreach ($attrlist as $attr)
           {
             $var = "external$attr";
@@ -638,7 +638,10 @@
         }
 
         $rl = &atknew("atk.recordlist.atkrecordlist");
-        $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT, $suppress);
+
+        // make the recordlist think its operating on reports node.
+        $rl->setMasterNode($this);
+        $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT|RL_MRA, $suppress);
         $content.='<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
         $page->addContent('<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>');
       }
