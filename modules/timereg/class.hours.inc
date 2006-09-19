@@ -202,6 +202,13 @@ class hours extends atkNode
     $this->setOrder("B.abbreviation"); // Sort by project abbreviation
 
     $this->setTable("hours","hours");
+    $this->addSecurityMap("mra_move", "edit");
+  }
+
+  function action_mra_move(&$handler)
+  {
+    $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
+    $this->redirect(session_url(dispatch_url("timereg.movehours", "add", array("atkselector"=>$selector)), SESSION_REPLACE));
   }
 
   function processGlobalVar($name, $value="")
@@ -1144,13 +1151,17 @@ class hours extends atkNode
    */
   function recordActions($rec, &$actions, &$mraactions)
   {
-    $user = getUser();
-    if ($user["id"]=="" || $rec["userid"]["id"]!=$user["id"]
-        || $this->getLockType($rec["userid"]["id"],
-                              sprintf("%02d-%02d-%02d", $rec["activitydate"]["year"],
-                                                        $rec["activitydate"]["month"],
-                                                        $rec["activitydate"]["day"]))!="")
+    // Determine logged in user
+    $userid = atkArrayNvl(getUser(), "id");
+
+    // Determine locktype for given record
+    $locktype = $this->getLockType($rec["userid"]["id"], sprintf("%02d-%02d-%02d", $rec["activitydate"]["year"], $rec["activitydate"]["month"], $rec["activitydate"]["day"]));
+
+    // If the record doesn't belong to me or is locked
+    if (empty($userid) || ($rec["userid"]["id"] != $userid) || ($locktype != ""))
     {
+
+      // If not allowed to edit someone elses records, unset the actions
       if (!$this->allowed("any_user"))
       {
         unset($actions["edit"]);
@@ -1163,11 +1174,16 @@ class hours extends atkNode
       }
       else
       {
-        $actionbase = $_SERVER["PHP_SELF"].'?atknodetype='.$this->atknodetype().'&atkselector=[pk]&viewuser='.$this->m_user;
+        $actionbase = dispatch_url($this->atknodetype(), "[atkaction]", array("atkselector" => "[pk]", "viewuser" => $this->m_user));
         $actions = array();
-        $actions["edit"] = $actionbase."&atkaction=edit";
-        $actions["delete"] = $actionbase."&atkaction=delete";
+        $actions["edit"] = str_replace("[atkaction]", "edit", $actionbase);
+        $actions["delete"] = str_replace("[atkaction]", "delete", $actionbase);
+        $mraactions["mra_move"] = "mra_move";
       }
+    }
+    else
+    {
+      $mraactions["mra_move"] = "mra_move";
     }
   }
 
