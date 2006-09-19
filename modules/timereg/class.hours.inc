@@ -217,7 +217,7 @@ class hours extends atkNode
     $session = &$g_sessionManager->getSession();
     $sessionvarid = "timereg_hours_$name";
     if (empty($value) && isset($_REQUEST[$name])) $value = $_REQUEST[$name];
-    if (!empty($value)) $session[$sessionvarid] = $value;
+    if ($value!=="") $session[$sessionvarid] = $value;
     return $session[$sessionvarid];
   }
 
