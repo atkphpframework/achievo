@@ -2,7 +2,7 @@
 
   define("ONEDAY", 24*60*60);
   define("ONEWEEK", ONEDAY*7);
-
+  require_once(atkConfig("atkroot")."atk/utils/adodb-time.inc.php");
 
   class dateutil
   {
@@ -68,7 +68,7 @@
     {
       return array(1=>"jan", 2=>"feb", 3=>"mar", 4=>"apr", 5=>"may", 6=>"jun", 7=>"jul", 8=>"aug", 9=>"sep", 10=>"oct", 11=>"nov", 12=>"dec");
     }
-    
+
     function short_daylist()
     {
       return array(0=>"su",1=>"mo",2=>"tu",3=>"we",4=>"th",5=>"fr",6=>"sa");
