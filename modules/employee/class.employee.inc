@@ -63,7 +63,7 @@ class employee extends person
 
     //$this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
 
-    if (atkconfig("authentication")=="db")
+    if (in_array("db",explode(",",strtolower(atkconfig('authentication')))))
     {
       $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
       $passwordrestrictions = array(
