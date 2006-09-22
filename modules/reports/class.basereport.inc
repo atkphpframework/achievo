@@ -132,7 +132,7 @@
 
     function getParameterBar($filterrecord)
     {
-      $output = '<form name="entryform" action="'.dispatch_url($this->m_module.".".$this->m_type, "report").'" method="post" style="margin: 0px">';
+      $output = '<form name="entryform" id="entryform" action="'.dispatch_url($this->m_module.".".$this->m_type, "report").'" method="post" style="margin: 0px">';
       $output.= session_form();
       $output.= '<input type="hidden" name="go" value="1">'; //trigger to prevent loading the first time
 

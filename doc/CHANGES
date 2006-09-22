@@ -230,6 +230,7 @@ Changes in Achievo 1.3
 * Added support for AJAX in editform of achievo_modern theme. Added id field to
   the TD. [Ivo,Dennis]
 * Userid's are no longer forced to lowercase. [Ivo]
+* Fixed: The basereport form now has an id field. [Dennis]
   
 Changes in Achievo 1.2.1
 ------------------------
