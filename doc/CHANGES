@@ -127,17 +127,17 @@ Changes in Achievo 1.3
 * Converted the role's description field into a multi-line text field.
   [Guido]
 * Updated the Todo module with:
-  + Added Private field (for private todo's)
-  + Added completed field (dropdown with 0%,10%,20%..100%)
+  + Added Private field (for private todo's) [Sandy]
+  + Added completed field (dropdown with 0%,10%,20%..100%) [Sandy]
     Also when you set completed to 100% it will automaticly set the status to
-    'completed'.
+    'completed'. [Sandy]
   + Added closedate field (will be filled when the todo is completed for 100%
-    or the status is completed).
-  * 'assigned to' only shows active users in the dropdown (bug 667)
+    or the status is completed). [Sandy]
+  * 'assigned to' only shows active users in the dropdown (bug 667) [Sandy]
   * When you create a private todo it's still possible to assign it to
-    somebody else. Only the owner and assigned to will see it.
+    somebody else. Only the owner and assigned to will see it. [Sandy]
   * The admin screen has a new action completed, it will set the todo to 100%
-    and status 'completed'
+    and status 'completed' [Sandy]
 * Fixed 'SQL' error when using the todo or any related functionality when
   logged in as administrator. [Guido]
 * Added "Change abbreviation" right to (dis)allow editing of a project's
@@ -149,6 +149,11 @@ Changes in Achievo 1.3
   planning gantt chart. (bug 526) [Sandy]
 * Contract shows now shows the non active projects too.
   (bug 424) [ChristianL]
+* Todo's and Notes in the projectmenu now also checks the any_project
+  right. If the user doesn't have the right it will only show the projects
+  of which he is the coordinator. [Sandy]
+* Quoted userid in SQL in order to prevent SQL errors when logged in as
+  administrator. [Guido]
 * Added "Change abbreviation" right to (dis)allow editing of a project's
   abbreviation. [Guido]
 * Added isEmpty function to projectPhaseAttribute to enable proper
@@ -206,7 +211,8 @@ Changes in Achievo 1.3
 * Removed unneeded and deprecated text() calls. [Guido]
 * Fixed translation issues. [Guido]
 * Removed isholiday debugging (with emphasis on bugging). [Guido]
-* Fixed css syntax error and invalid negative padding-left value in achievo_modern theme. [Guido]
+* Fixed css syntax error and invalid negative padding-left value 
+  in achievo_modern theme. [Guido]
 * Fixed security problem when adding/editing/deleting team members and
   contact persons from projects. [Guido]
 * Replaced printerfriendly outputtype by css print media support. [Guido]
@@ -231,6 +237,8 @@ Changes in Achievo 1.3
   the TD. [Ivo,Dennis]
 * Userid's are no longer forced to lowercase. [Ivo]
 * Fixed: The basereport form now has an id field. [Dennis]
+* lng, theme and startday field in the person table are 
+  nullable now. (bug #699) [Sandy]
   
 Changes in Achievo 1.2.1
 ------------------------
