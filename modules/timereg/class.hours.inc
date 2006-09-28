@@ -967,12 +967,11 @@ class hours extends atkNode
     atkNode::validate($record, $mode);
   }
 
- /**
+  /**
    * This method is called by the hoursurvey to get custom search fields.
    * Derived classes (for example in overloaders) can override this method and
    * Add their own custom search fields.
    */
-
   function getSelectionItems()
   {
     return array();
@@ -980,7 +979,7 @@ class hours extends atkNode
 
   function getHourSurveyColumns()
   {
-    $defaultcolumns = array("activitydate","userid","phaseid","activityid","remark","time","functionlevel");
+    $defaultcolumns = array("activitydate","userid","phaseid","activityid","remark","time","functionlevel", "creditor_id");
     if (moduleExists("billing")) $defaultcolumns[] = "billing_projecttypeid";
     $additionalcolumns = atkHarvestModules("getHourSurveyColumns");
     return array_merge($defaultcolumns, $additionalcolumns);
