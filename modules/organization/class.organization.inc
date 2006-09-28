@@ -173,7 +173,7 @@ class organization extends atkNode
 
   function descriptor_def()
   {
-    return "[name], [city]";
+    return "[name], [city] ([organizationcode])";
   }
 
   function archivedprojects_edit($record)
