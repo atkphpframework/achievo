@@ -1,6 +1,7 @@
 <?php
 
   useattrib('atklistattribute');
+  atkimport("atk.atklanguage");
   class adminLangSelectAttribute extends atkListAttribute
   {
     function adminLangSelectAttribute($name,$flags=0)
