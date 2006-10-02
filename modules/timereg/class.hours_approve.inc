@@ -162,6 +162,8 @@
 	   */
 	  function convertheck()
 	  {
+	    return ""; // method causes fatal error. Could not find a way to make this working.
+	    
 	    // Get a reference to the databeest
 	  	$db = &atkGetDb();
 
@@ -215,8 +217,9 @@
 	    }
 
 	    // Add the approvedweekview to the page
-	    $page->addContent($this->approvedweekview());
-
+	    $content = $this->approvedweekview();
+	    $page->addContent($content);
+	    
 	    // Return an empty string (output is handled through the page
 	    return "";
 	  }
@@ -345,16 +348,15 @@
 	    $employeenode = &atkGetNode("employee.employee");
 
 	    // Do we select only the employees the current user is maanger of, or all employees
-	    $where = $this->allowed("any_user") ? "" : "person.supervisor = '$userid'";
+	    $where = $this->allowed("any_user") || $userid == -1 || is_null($user_id) ? "" : "person.supervisor = '$userid'";
 
 	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
-	    if ($add_projectmembers_filter == true)
+	    
+	    $user = &getUser();
+	    $current_user_id = $user['id'];
+	    
+	    if ($add_projectmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
 	    {
-	      $user = &getUser();
-	      $current_user_id = $user['id'];
-	      if ($current_user_id == -1)
-	        break; // no filter for administrator
-	        
         // get employees who are in the projectteams that have current user
         // as project leader.
         $query = "SELECT DISTINCT
@@ -381,7 +383,7 @@
           $where .= " person.id IN ('" . implode("','",$in) . "')";
         }
 	    }
-	    
+
 	    // Get the employees from the database
 	    $data = $employeenode->selectDb($where, null, null, null, array('id', 'lastname', 'firstname', 'supervisor'));
 
@@ -399,7 +401,7 @@
 	      {
 	        $loggedinuser = &getUser();
 	        $current_user_id = $loggedinuser['id'];
-	        if ($current_user_id != -1)
+	        if ($current_user_id != -1 && !is_null($current_user_id))
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
 	      }
 	      
@@ -486,7 +488,7 @@
 	      {
 	        $loggedinuser = &getUser();
 	        $current_user_id = $loggedinuser['id'];
-	        if ($current_user_id != -1)
+	        if ($current_user_id != -1 && !is_null($current_user_id))
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
 	      }
 	      
