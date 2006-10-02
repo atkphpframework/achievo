@@ -1,0 +1,101 @@
+<?php
+ /*
+  * @version $Revision$
+  * @Author Ivo Jansch <ivo@achievo.org>
+  *
+  * Sends an email reminder if someone did not block his week
+  * in the previous week.
+  * 
+  * $Id$
+  *
+  */
+ 	
+  $today = date("Y-m-d");
+  $year = substr($today,0,4);
+  $month = substr($today,5,2);
+  $day = substr($today,8,2);
+
+  
+
+  // what is last week id?
+  $weeknumber = date("YW",strtotime($today) - (3600 * 24 * 7));
+  
+  // get registered hours in weekid
+  $sql = "  SELECT DISTINCT userid
+            FROM hours
+            WHERE DATE_FORMAT(activitydate,'%Y%u') = '$weeknumber'";
+  
+  $db = &atkGetDb();
+  $results = $db->getRows($sql);
+
+  $employees = array();
+  foreach($results as $row)
+    $employees[] = $row['userid'];
+    
+  // check for employees if weeks are locked, if not send e-mail
+  foreach($employees as $userid)
+  {
+    $sql = "  SELECT    COUNT(*) AS locks
+              FROM      hours_lock
+              WHERE     hours_lock.week='$weeknumber'
+              AND       hours_lock.userid='{$userid}'";
+    
+    $result = $db->getRows($sql);
+    
+    if (!is_array($result) || sizeof($result) == 0 || $result[0]['locks'] < 1)
+    {
+      // get user email and his supervisors email as well
+      $result = array_pop($db->getRows("SELECT * FROM person WHERE person.id = '$userid'"));
+      
+      // getting the supervisor is a tricky one; we have to find the supervisors
+      // of the projects that the user has registered time on in week $weeknumber
+      $supervisors = getSuperVisors($userid,$weeknumber);
+      
+      // send mail
+      $mailtemplate = atktext('timereg_reminder_hoursnotblocked_mailtemplate');
+      $mailsubjecttemplate = atktext('timereg_reminder_hoursnotblocked_mailsubject');
+      
+      $subject = sprintf($mailsubjecttemplate,$weeknumber);
+      $mailbody = sprintf($mailtemplate,$result['userid'],$result['firstname'],$result['lastname'],$weeknumber);
+      
+      $cc_addresses = array();
+      
+      foreach($supervisors as $s)
+      {
+        $mailbody .= $s['projectname'] . " / " . $s['supervisor_firstname'] . " " . $s['supervisor_lastname'] . "\n";
+        $cc_addresses[] = $s['supervisor_firstname'] . " " . $s['supervisor_lastname'] . " <{$s['supervisor_email']}>";
+      }
+      
+      $receiver_email = trim("{$result['firstname']} {$result['lastname']} <{$result['email']}>");
+      mail($receiver_email,$subject,$mailbody,"From: Achievo <automailer@achievo.org>\nCc: " . implode(",",$cc_addresses));
+    }
+  }
+  
+  function getSuperVisors($userid,$weeknumber)
+  {
+    $query = "  SELECT DISTINCT
+                  person.userid AS supervisor_id,
+                  person.firstname AS supervisor_firstname,
+                  person.lastname AS supervisor_lastname,
+                  person.email AS supervisor_email,
+                  project.name AS projectname
+                FROM
+                  hours
+                LEFT JOIN
+                  phase ON (hours.phaseid = phase.id)
+                LEFT JOIN 
+                  project ON (project.id = phase.projectid)
+                LEFT JOIN
+                  person ON (project.coordinator = person.id)
+                WHERE 
+                  hours.userid = '$userid'
+                AND 
+                  DATE_FORMAT(activitydate,'%Y%u') = '$weeknumber'
+                ";
+    
+    $db = &atkGetDb();
+    $result = $db->getRows($query);
+    
+    return $result;
+  }
+?>

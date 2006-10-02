@@ -18,6 +18,7 @@ class hours_lock extends atkNode
     $this->add(new atkManyToOneRelation("userid","employee.employee", AF_SEARCHABLE));
 		$hideapproved = (atkconfig("lock_week_approval_required") && is_allowed("hours_lock", "approve")) ? AF_HIDE : 0;
 		$this->add(new atkBoolAttribute("approved", AF_HIDE_ADD|$hideapproved));
+		$this->add(new atkAttribute("coordinator",AF_HIDE));
 
     $this->setOrder("week DESC");
     $this->setTable("hours_lock");

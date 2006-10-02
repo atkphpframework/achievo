@@ -265,6 +265,13 @@
 	    $footer = atktext("remark") . ": ";
       $footer.= (!$this->allowed("any_user")) ? atktext("hours_approve_remarkmanager") . '<br />' : '';
 	    $footer.= atktext("hours_approve_remarkweekblock");
+	    
+      if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true)
+        $footer .= "<br />" . atktext('hours_approve_only_show_not_approved');
+        
+       if (atkconfig::get('timereg','hours_approve_projectteam_members_only') == true)
+        $footer .= "<br />" . atktext('hours_approve_explain_teammembers_only');
+	    
 	    $footer.= $this->convertheck();
 
 	    // Start the output using a session form
@@ -340,6 +347,41 @@
 	    // Do we select only the employees the current user is maanger of, or all employees
 	    $where = $this->allowed("any_user") ? "" : "person.supervisor = '$userid'";
 
+	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
+	    if ($add_projectmembers_filter == true)
+	    {
+	      $user = &getUser();
+	      $current_user_id = $user['id'];
+	      if ($current_user_id == -1)
+	        break; // no filter for administrator
+	        
+        // get employees who are in the projectteams that have current user
+        // as project leader.
+        $query = "SELECT DISTINCT
+                    project_person.personid
+                  FROM
+                    project_person
+                  LEFT JOIN project ON (project.id = project_person.projectid)
+                  WHERE
+                    project.coordinator = '$current_user_id'
+        ";
+        
+        $g_db = &atkGetDb();
+        $results = $g_db->getRows($query);
+        atk_var_dump($results,"<h1>RESULTS</h1>");
+        
+        if (is_array($results) && sizeof($results) > 0)
+        {
+          $in = array();
+          foreach($results as $row)
+            $in[] = $row['personid'];
+            
+          if ($where != "")
+            $where .= " AND";
+          $where .= " person.id IN ('" . implode("','",$in) . "')";
+        }
+	    }
+	    
 	    // Get the employees from the database
 	    $data = $employeenode->selectDb($where, null, null, null, array('id', 'lastname', 'firstname', 'supervisor'));
 
@@ -351,10 +393,23 @@
 	      $users[$key]["weeks"]=array();
 
 	      $houslocknode = &atkGetNode("timereg.hours_lock");
-	      $lockedweeks = $houslocknode->selectDb("hours_lock.userid='".$user["id"]."'");
+	      
+	      $extra_selector = "";
+	      if (moduleExists('weektimereg') && atkconfig::get('weektimereg','approve_week_per_coordinator') == true)
+	      {
+	        $loggedinuser = &getUser();
+	        $current_user_id = $loggedinuser['id'];
+	        if ($current_user_id != -1)
+	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
+	      }
+	      
+	      $lockedweeks = $houslocknode->selectDb("hours_lock.userid='".$user["id"]."'" . $extra_selector);
 
 	      foreach ($lockedweeks as $lockedweek)
 	      {
+	        if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true && $lockedweek["approved"] == 1)
+	          continue; // only display not-approved weeks
+	        
 	        if (substr($lockedweek["week"],0,4)==$year)
 	        {
 	          $users[$key]["weeks"][substr($lockedweek["week"],4)]["id"]= $lockedweek['id'];
@@ -426,7 +481,16 @@
 
 	    if (is_numeric($weekid))
 	    {
-	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'");
+	      $extra_selector = "";
+	      if (moduleExists('weektimereg') && atkconfig::get('weektimereg','approve_week_per_coordinator') == true)
+	      {
+	        $loggedinuser = &getUser();
+	        $current_user_id = $loggedinuser['id'];
+	        if ($current_user_id != -1)
+	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
+	      }
+	      
+	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'" . $extra_selector);
 	      $hourlock = $hourlocks[0];
 
 	      $hourlock["approved"] = 1;
@@ -536,6 +600,7 @@
 
         $page->register_style($theme->stylePath("style.css"));
         $page->addContent($boxedcontent);
+        
         return $handler;
       }
 
@@ -558,7 +623,12 @@
       usermail($to, $subject, $body);
 
       // Delete the hours_lock
-	    $hourslocknode->deleteDb("hours_lock.id='".$weekid."'");
+      if (atkconfig::get('weektimereg','approve_week_per_coordinator'))
+      {
+        $hourslocknode->deleteDb("hours_lock.week = '{$hourlock["week"]}' AND hours_lock.userid = '{$hourlock["userid"]["id"]}'");
+      }
+      else
+	      $hourslocknode->deleteDb("hours_lock.id='".$weekid."'");
 
 	    // Redirect to the hours_approve view
 	    $this->redirect();
