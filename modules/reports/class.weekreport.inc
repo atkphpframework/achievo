@@ -191,8 +191,8 @@ class weekreport extends atkNode
     $query->addField("lastname", "", "person");
     $query->addField("firstname", "", "person");
     $query->addField("workperiod", "", "hours");
-    $query->addTable("hours");
     $query->addTable("person");
+    $query->addTable("hours");
     
     if ($nameswitch=="supervisor")
     {
@@ -210,12 +210,14 @@ class weekreport extends atkNode
 
     //@todo: addToWeekReportQuery() for each harvestedModule.
     $this->getHarvestedModuleObjects();
-    foreach($this->m_harvestedModules as $modulename=>$obj)
-    {        
-      if (method_exists($obj, "weekreport_addToQuery"))
-        $obj->weekreport_addToQuery($query);
-    }
-        
+    if(is_array($this->m_harvestedModules))
+    {
+      foreach($this->m_harvestedModules as $modulename=>$obj)
+      {        
+        if (method_exists($obj, "weekreport_addToQuery"))
+          $obj->weekreport_addToQuery($query);
+      }
+    }  
     return $db->getrows($query->buildSelect());
   }
   
@@ -657,6 +659,8 @@ class weekreport extends atkNode
         $tbl = &atknew("atk.utils.atktablerenderer");
         $output = $tbl->render($data);
         $rl = &atknew("atk.recordlist.atkrecordlist");
+        atk_var_dump($suppress,"SUPRESS");
+        atk_var_dump($rldata,"RLDATA");
 
         $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress);
 
