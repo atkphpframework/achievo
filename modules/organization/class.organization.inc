@@ -74,7 +74,7 @@ class organization extends atkNode
 
     $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
 
-    $this->add(new atkDocumentAttribute("document"));
+    $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST));
 
     $this->m_securityMap["vcard"] = "view";
     $this->m_securityMap["export"] = "view";
