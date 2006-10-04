@@ -214,7 +214,7 @@
       // Hack: make sure the activities, which are populated by the project/phase column, are properly loaded.
       $hoursnode->add(new sortableActivity());
       $hoursnode->add(new functionLevelAttribute("functionlevel"));
-      $hoursnode->add(new billingTypeViewAttribute("billing_projecttypeid"));
+      if(moduleExists("billing")) $hoursnode->add(new billingTypeViewAttribute("billing_projecttypeid"));
       $hoursnode->add(new creditorViewAttribute("creditor_id", AF_FORCE_LOAD));
 
 
