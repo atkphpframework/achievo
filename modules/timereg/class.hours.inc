@@ -523,7 +523,7 @@ class hours extends atkNode
     return $res;
   }
 
-  function weekview()
+  function weekview($filterbycoordinator=false)
   {
     if ($this->m_viewdate!="")
     {
@@ -536,11 +536,11 @@ class hours extends atkNode
     }
     $this->addStyle("style.css");
 
-    return $this->getWeekviewData($viewtime);
+    return $this->getWeekviewData($viewtime, $filterbycoordinator);
 
   }
 
-  function getWeekviewData($viewtime)
+  function getWeekviewData($viewtime, $filterbycoordinator=false)
   {
     $userid = $this->m_user;
     $weekday = strftime("%w",$viewtime);
@@ -557,7 +557,13 @@ class hours extends atkNode
     $projtotals = Array();
     $daytotals = Array();
 
-    $data = $this->selectDb("activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."' AND hours.userid = '$userid'","","",$this->m_listExcludes);
+    $where = "activitydate >= '".$weekdates[1]['date']."' AND activitydate <= '".$weekdates[7]['date']."' AND hours.userid = '$userid'";
+    if ($filterbycoordinator)
+    {
+      $coordinator = getUser();
+      $where.= " AND B.coordinator = '".$coordinator["id"]."'";
+    }
+    $data = $this->selectDb($where,"","",$this->m_listExcludes);
 
     for ($i=0;$i<count($data);$i++)
     {

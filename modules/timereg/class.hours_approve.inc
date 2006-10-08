@@ -163,7 +163,7 @@
 	  function convertheck()
 	  {
 	    return ""; // method causes fatal error. Could not find a way to make this working.
-	    
+
 	    // Get a reference to the databeest
 	  	$db = &atkGetDb();
 
@@ -211,7 +211,7 @@
   	    	$this->m_viewdate = $this->m_postvars["viewdate"];
 
   	    	// Add the approve screen to the page
-  	    	$page->addContent($this->weekview());
+  	    	$page->addContent($this->weekview(atkConfig::get('timereg','hours_approve_projectteam_members_only')));
 	    	}
 
 	    }
@@ -219,7 +219,7 @@
 	    // Add the approvedweekview to the page
 	    $content = $this->approvedweekview();
 	    $page->addContent($content);
-	    
+
 	    // Return an empty string (output is handled through the page
 	    return "";
 	  }
@@ -268,13 +268,13 @@
 	    $footer = atktext("remark") . ": ";
       $footer.= (!$this->allowed("any_user")) ? atktext("hours_approve_remarkmanager") . '<br />' : '';
 	    $footer.= atktext("hours_approve_remarkweekblock");
-	    
+
       if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true)
         $footer .= "<br />" . atktext('hours_approve_only_show_not_approved');
-        
+
        if (atkconfig::get('timereg','hours_approve_projectteam_members_only') == true)
         $footer .= "<br />" . atktext('hours_approve_explain_teammembers_only');
-	    
+
 	    $footer.= $this->convertheck();
 
 	    // Start the output using a session form
@@ -351,10 +351,10 @@
 	    $where = $this->allowed("any_user") || $userid == -1 || is_null($user_id) ? "" : "person.supervisor = '$userid'";
 
 	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
-	    
+
 	    $user = &getUser();
 	    $current_user_id = $user['id'];
-	    
+
 	    if ($add_projectmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
 	    {
         // get employees who are in the projectteams that have current user
@@ -367,17 +367,17 @@
                   WHERE
                     project.coordinator = '$current_user_id'
         ";
-        
+
         $g_db = &atkGetDb();
         $results = $g_db->getRows($query);
         atk_var_dump($results,"<h1>RESULTS</h1>");
-        
+
         if (is_array($results) && sizeof($results) > 0)
         {
           $in = array();
           foreach($results as $row)
             $in[] = $row['personid'];
-            
+
           if ($where != "")
             $where .= " AND";
           $where .= " person.id IN ('" . implode("','",$in) . "')";
@@ -395,7 +395,7 @@
 	      $users[$key]["weeks"]=array();
 
 	      $houslocknode = &atkGetNode("timereg.hours_lock");
-	      
+
 	      $extra_selector = "";
 	      if (moduleExists('weektimereg') && atkconfig::get('weektimereg','approve_week_per_coordinator') == true)
 	      {
@@ -404,14 +404,14 @@
 	        if ($current_user_id != -1 && !is_null($current_user_id))
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
 	      }
-	      
+
 	      $lockedweeks = $houslocknode->selectDb("hours_lock.userid='".$user["id"]."'" . $extra_selector);
 
 	      foreach ($lockedweeks as $lockedweek)
 	      {
 	        if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true && $lockedweek["approved"] == 1)
 	          continue; // only display not-approved weeks
-	        
+
 	        if (substr($lockedweek["week"],0,4)==$year)
 	        {
 	          $users[$key]["weeks"][substr($lockedweek["week"],4)]["id"]= $lockedweek['id'];
@@ -491,7 +491,7 @@
 	        if ($current_user_id != -1 && !is_null($current_user_id))
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
 	      }
-	      
+
 	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'" . $extra_selector);
 	      $hourlock = $hourlocks[0];
 
@@ -602,7 +602,7 @@
 
         $page->register_style($theme->stylePath("style.css"));
         $page->addContent($boxedcontent);
-        
+
         return $handler;
       }
 
