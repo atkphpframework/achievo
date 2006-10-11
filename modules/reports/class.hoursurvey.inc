@@ -323,6 +323,7 @@
       // TODO FIXME: AF_HIDE_LIST, AF_HIDE_EDIT etc are not implemented cleanly.
       // workarounds like these should not be necessary.
       $hoursnode->m_attribList["activitydate"]->m_flags = ($hoursnode->m_attribList["activitydate"]->m_flags&(~AF_HIDE_LIST));
+      $hoursnode->m_attribList["userid"]->m_flags = ($hoursnode->m_attribList["userid"]->m_flags&(~AF_HIDE_LIST));
 
 
       if ($outputType==0)
@@ -603,10 +604,6 @@
           }
         }
       }
-
-      // employee table is not yet added to the query. Force that by adding a manytoonerel,
-      // so we display a users name.
-      $hoursnode->add(new atkManyToOneRelation("userid", "employee.employee"));
 
       // organization and person_organization tables are not yet added to the query.
       // Since this is a many:many thing between projects and organizations, with the
