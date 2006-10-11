@@ -93,12 +93,13 @@
       $res = array();
 
       $node = &atkGetNode($nodetype);
-      if ($node->allowed("view"))
+      $allowedaction = $node->allowed("edit") ? "edit" : ($node->allowed("view") ? "view" : "");
+      if (!empty($allowedaction))
       {
         for($i=0, $_i=count($recordset); $i<$_i; $i++)
         {
           $item["title"] = $node->descriptor($recordset[$i]);
-          $item["url"] = dispatch_url($nodetype, "view", array("atkselector"=>$node->primaryKey($recordset[$i])));
+          $item["url"] = dispatch_url($nodetype, $allowedaction, array("atkselector"=>$node->primaryKey($recordset[$i])));
           $res[] = $item;
         }
       }
