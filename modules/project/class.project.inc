@@ -196,14 +196,16 @@
 
     function initial_values()
     {
-      $projectnumbermodule = atkConfig("projectnumbermodule");
+      $projectnumbermodule = atkConfig('projectnumbermodule');
       if (!empty($projectnumbermodule))
       {
+        atkdebug("Getting alternative project code.");
         $numberingmodule = &getModule($projectnumbermodule);
         $initialprojectcode = $numberingmodule->getInitialProjectcode();
       }
       else
       {
+        atkdebug("Getting projectcode.");
         $initialprojectcode = $this->getInitialProjectcode();
       }
 
