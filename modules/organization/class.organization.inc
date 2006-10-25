@@ -68,7 +68,9 @@ class organization extends atkNode
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
     $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST),"contracts");
-    $this->add(new atkParserAttribute("projects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD),"active_projects");
+    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer");
+    $projectRelatie->addDestinationFilter("project.status='active'");
+    $this->add($projectRelatie,"active_projects");
     $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD),"archived_projects");
 
 
@@ -184,16 +186,6 @@ class organization extends atkNode
   function archivedprojects_display($record)
   {
     return $this->showProjects($record,"view","archived");
-  }
-
-  function projects_edit($record)
-  {
-    return $this->showProjects($record, "relation");
-  }
-
-  function projects_display($record)
-  {
-    return $this->showProjects($record, "view");
   }
 
   function showProjects($record, $mode,$status="active")
