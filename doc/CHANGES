@@ -239,6 +239,7 @@ Changes in Achievo 1.3
 * Fixed: The basereport form now has an id field. [Dennis]
 * lng, theme and startday field in the person table are 
   nullable now. (bug #699) [Sandy]
+* Active projects is now a relation in stead of selectdb [dennisjan]
   
 Changes in Achievo 1.2.1
 ------------------------
