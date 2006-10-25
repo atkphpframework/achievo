@@ -19,6 +19,7 @@
    */
   useattrib("atkattribute");
   useattrib("atkdateattribute");
+  useattrib("atklistattribute");
 
   atkimport("module.utils.dateutil");
 
@@ -52,6 +53,7 @@
         $s_record["coordinator"] = $g_sessionManager->pageVar("coordinator");
         $s_record["from"] = $g_sessionManager->pageVar("from");
         $s_record["to"] = $g_sessionManager->pageVar("to");
+        $s_record["diff"] = $g_sessionManager->pageVar("diff");
 
         // convert attribute html values to internal values
         $attrs = &$this->getFilterAttrs();
@@ -85,6 +87,8 @@
 
       $attrs["from"] = &new atkDateAttribute("from");
       $attrs["to"] = &new atkDateAttribute("to");
+      
+      $attrs["diff"]= &new atkListAttribute("diff", array(atktext('all'), atktext('positive'), atktext('negative')), array('all', 'pos', 'neg'),AF_OBLIGATORY);
 
       return $attrs;
     }
@@ -108,6 +112,10 @@
 
       $output.= atktext("showonlyphasesfrom", "reports")." ".$attrs["from"]->edit($record)." ";
       $output.= atktext("to")." ".$attrs["to"]->edit($record);
+      
+      $output.= "<br/>";
+      
+      $output.= atktext('diff_planning')." ".$attrs['diff']->edit($record)." ";
 
       $output.= ' <input type="submit" value="'.atktext("refresh").'">';
       $output.= '</form>';
@@ -189,7 +197,7 @@
                               ORDER BY
                                 p.name, ph.name");
 
-         $data[] = array(atktext("project"), atktext("phase"), atktext("initial_planning"), atktext("current_planning"), atktext("booked"));
+         $data[] = array(atktext("project"), atktext("phase"), atktext("initial_planning"), atktext("current_planning"), atktext("booked"), atktext("diff_planning"));
 
          $total_time = 0;
          $total_current = 0;
@@ -229,7 +237,19 @@
            }
 
            $line[] = "<b>".$booked."</b>";
-
+           
+           $diff = time_format($rows[$i]["current_planning"] - $rows[$i]["minutes"]);
+           
+           if ($diff < 0)
+           {
+             $diff = '<span style="color: '.COLOR_ERROR.'">'.$diff.'</span>';
+           }
+           
+           $line[] = $diff;
+           
+           if (($filterrecord['diff'] == 'neg' && $diff >= 0) || ($filterrecord['diff'] == 'pos' && $diff < 0))
+             continue;
+           
            $total_time += $rows[$i]["minutes"];
            $total_current += $rows[$i]["current_planning"];
            $total_initial += $rows[$i]["initial_planning"];

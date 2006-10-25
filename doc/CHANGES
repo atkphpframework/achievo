@@ -59,6 +59,8 @@ Changes in Achievo 1.3
 + Added descriptor for user contracts. [Guido]
 + Added support for cascading deleting hour registrations when deleting
   a phase. [Dennis]
++ Added filter and a column diff_planning to the projectstatus report. 
+  [dennisjan]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
