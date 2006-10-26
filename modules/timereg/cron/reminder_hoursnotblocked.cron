@@ -19,12 +19,19 @@
 
   // what is last week id?
   $weeknumber = date("YW",strtotime($today) - (3600 * 24 * 7));
+  $lastweek_fulldate = date("Y-m-d",strtotime($today) - (3600 * 24 * 7));
 
   // get registered hours in weekid
-  $sql = "  SELECT DISTINCT userid
-            FROM hours
-            WHERE DATE_FORMAT(activitydate,'%Y%u') = '$weeknumber'";
+//  $sql = "  SELECT DISTINCT userid
+//            FROM hours
+//            WHERE DATE_FORMAT(activitydate,'%Y%u') = '$weeknumber'";
 
+  $sql = "SELECT DISTINCT project_person.personid AS userid 
+          FROM `project_person`
+          LEFT JOIN project ON (project_person.projectid = project.id)
+          WHERE project.startdate <= '$lastweek_fulldate'
+          AND project.enddate >= '$lastweek_fulldate'";
+  
   $db = &atkGetDb();
   $results = $db->getRows($sql);
 
@@ -67,6 +74,7 @@
       }
 
       $receiver_email = trim("{$result['firstname']} {$result['lastname']} <{$result['email']}>");
+//      echo("Mail receiver: $receiver_email\n");
       mail($receiver_email,$subject,$mailbody,"From: Achievo <automailer@achievo.org>\nCc: " . implode(",",$cc_addresses));
     }
   }
