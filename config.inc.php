@@ -173,7 +173,14 @@
   // This variable indicated whether contacts in the project module are
   // obligatory
   $config_project_contact_obligatory = true;
-  
+
+  // -------------------------------------------
+  //             PIM MODULE
+  // -------------------------------------------
+  // If you don't want a pim, set an URL in the config below to let PIM
+  // redirect to the specified url. If not set or empty this feature is
+  // disabled.
+  $config_pim_redirect_to = "";  
   
   // -------------------------------------------
   //            EXTERNAL MODULES
