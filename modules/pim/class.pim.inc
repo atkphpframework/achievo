@@ -9,6 +9,12 @@
 
     function action_pim(&$handler)
     {
+      if (atkconfig('pim_redirect_to') != "")
+      {
+        header("Location: " . atkconfig('pim_redirect_to'));
+        return;
+      }
+      
       $pimItems = atkHarvestModules("getPimItems","",true);
       $userpimitems = &atknew("module.pim.userpimitems");
       $user = getuser();
