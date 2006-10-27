@@ -173,6 +173,17 @@
   // This variable indicated whether contacts in the project module are
   // obligatory
   $config_project_contact_obligatory = true;
+  // Fill this config with a path relative to the achievo directory.
+  // When you add a project the skell will be copied to the destionation directory
+  // also a path relative to the achievo directory. And sends a mail when the skell
+  // is copied.
+  // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
+  $config_project_dir_skell = '';  
+  $config_project_dir_destination = '';
+  $config_project_formatmail = 'html';
+  $config_project_from = 'adres@domein.nl';
+  $config_project_from_name = 'Naam';
+  $config_project_sendto = 'sendto@domein.nl';
 
   // -------------------------------------------
   //             PIM MODULE

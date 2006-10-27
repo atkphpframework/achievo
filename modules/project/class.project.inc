@@ -27,7 +27,7 @@
 
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
 
-      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE, 10));
+      $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_UNIQUE, 10));
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 50));
 
       $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
@@ -276,6 +276,76 @@
     function action_billing(&$handler)
     {
       include_once moduleDir("finance").'projectbilling.inc';
+    }
+    
+    /**
+     * One line description of the function
+     *
+     * Full description of the function
+     *
+     * @param type name description
+     * @return type description
+     */
+    function postAdd($rec)
+    {
+      $skell = atkconfig('project_dir_skell');
+      $dest = atkconfig('project_dir_destination');
+      
+    	if ($skell != '' && $dest != '' && is_dir($skell))
+    	{
+    	  atkdebug("Copying skell: $skell to destination: $dest started.");
+    	  atkimport("atk.utils.atkfileutils");    	  
+    	  
+    	  
+    	  if (!is_dir($dest))
+    	  {
+    	    atkdebug("Destination isn't a existing directory. First create the destination.");    	    
+    	    $succes = atkFileUtils::atkCreateDest("$dest");
+    	  }
+    	  else 
+    	  {
+    	    atkdebug("Destination is a existing directory.");
+    	    $succes = true;
+    	  }
+    	  
+    	  if (atkFileUtils::atkCopyDirRec($skell, $dest, $rec['abbreviation']) && $succes)
+    	  {
+    	    atkdebug("The skell is copied to the destination.");
+    	    
+    	    $mailer = &atknew('atk.utils.atkmailer');
+    	    
+    	    $body = sprintf(atktext("project_body"), $rec['abbreviation'], getcwd()."/".$dest."/".$rec['abbreviation']);
+
+    	    switch (atkconfig("project_formatmail"))
+    	    {
+    	      default:
+
+    	        break;
+
+    	      case 'html':
+    	        $mailer->isHTML(true);
+    	        break;
+
+    	      case 'htmlplain':
+    	        $mailer->isHTML(true);
+    	        $mailer->AltBody = strip_tags($body, '<a>');
+    	        break;
+    	    }
+
+    	    $mailer->From = atkconfig("project_from");
+    	    $mailer->FromName = atkconfig("project_from_name");
+    	    $mailer->AddAddress(atkconfig("project_sendto"));
+    	    $mailer->Subject = atktext("project_subject").$rec['abbreviation'];
+    	    $mailer->Body = $body;
+    	    atk_var_dump($mailer->Send(), "Mail send to ".atkconfig("project_sendto")."?");    	    
+    	  }
+    	  else 
+    	    atkerror("No write permisson on destination: ".$dest);
+    	}
+    	else 
+    	  atkdebug("Configs are empty or skell isn't a directory.");
+    	  
+    	return true;
     }
 
     function postDel($rec)
