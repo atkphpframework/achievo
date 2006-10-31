@@ -139,7 +139,7 @@ class achievo_modern extends atkPlainMenu
       }
 
       $prj  = atktext("project_select").":";
-      $prj .="<FORM><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
+      $prj .="<FORM style=\"margin: 0px;\"><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
       $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
 
       $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : null;

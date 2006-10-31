@@ -4,11 +4,6 @@
   border: 0px solid #f00;
 }
 
-.atkmanytoonerelation, .recordList, .atkattribute
-{
-  width: 100%;
-}
-
 .recordListSearch
 {
   background: #666 ! important;
