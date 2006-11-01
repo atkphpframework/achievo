@@ -61,11 +61,15 @@
       {
         $flags = 0;
       }
-
+      
       // Add the organization relation
       $this->add(new atkManyToOneRelation("customer", "organization.organization", AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_HIDE_ADD|AF_SEARCHABLE), "", 500);
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
+      
+      $this->add(new atkAttribute("quotation_number",AF_HIDE_LIST));
+
+      
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
       $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
