@@ -238,17 +238,20 @@
 
            $line[] = "<b>".$booked."</b>";
            
-           $diff = time_format($rows[$i]["current_planning"] - $rows[$i]["minutes"]);
+           $diff = $rows[$i]["current_planning"] - $rows[$i]["minutes"];
+           
+           if (($filterrecord['diff'] == 'neg' && $diff >= 0) || ($filterrecord['diff'] == 'pos' && $diff < 0))
+             continue;           
+           
+           $diffStr = time_format($rows[$i]["current_planning"] - $rows[$i]["minutes"], true);
            
            if ($diff < 0)
            {
-             $diff = '<span style="color: '.COLOR_ERROR.'">'.$diff.'</span>';
+             $diffStr = '<span style="color: '.COLOR_ERROR.'">'.$diffStr.'</span>';
            }
            
-           $line[] = $diff;
-           
-           if (($filterrecord['diff'] == 'neg' && $diff >= 0) || ($filterrecord['diff'] == 'pos' && $diff < 0))
-             continue;
+           $line[] = $diffStr;
+           atk_var_dump($diffStr, 'Verschil');
            
            $total_time += $rows[$i]["minutes"];
            $total_current += $rows[$i]["current_planning"];
