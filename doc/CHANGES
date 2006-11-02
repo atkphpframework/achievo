@@ -246,6 +246,7 @@ Changes in Achievo 1.3
 * Active projects is now a relation in stead of selectdb [dennisjan]
 * Added translation for add project. [dennisjan]
 * Added extra sort param for the todo node. [dennisjan]
+* Fixed filter bug for the diff column and displayzero set to true [dennisjan]
   
 Changes in Achievo 1.2.1
 ------------------------
