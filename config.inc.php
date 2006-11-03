@@ -181,6 +181,9 @@
   // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
   $config_project_dir_skel = '';  
   $config_project_dir_destination = '';
+  // You can specify which field of the project node you want to use for the 
+  // directoryname.
+  $config_project_dir_name_template = '[abbreviation]';
   $config_project_formatmail = 'html';
   $config_project_sendto = 'sendto@domein.nl';
 
