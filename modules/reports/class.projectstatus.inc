@@ -251,7 +251,6 @@
            }
            
            $line[] = $diffStr;
-           atk_var_dump($diffStr, 'Verschil');
            
            $total_time += $rows[$i]["minutes"];
            $total_current += $rows[$i]["current_planning"];
