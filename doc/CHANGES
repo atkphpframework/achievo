@@ -247,6 +247,9 @@ Changes in Achievo 1.3
 * Added translation for add project. [dennisjan]
 * Added extra sort param for the todo node. [dennisjan]
 * Fixed filter bug for the diff column and displayzero set to true [dennisjan]
+* In project node changed from address to the default from address. [dennisjan]
+* Project node now uses the parseDirectoryName function of atkfileutils
+  [dennisjan]
   
 Changes in Achievo 1.2.1
 ------------------------

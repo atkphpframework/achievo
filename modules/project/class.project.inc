@@ -292,19 +292,19 @@
      */
     function postAdd($rec)
     {
-      $skell = atkconfig('project_dir_skell');
+      $skel = atkconfig('project_dir_skel');
       $dest = atkconfig('project_dir_destination');
       
-    	if ($skell != '' && $dest != '' && is_dir($skell))
+    	if ($skel != '' && $dest != '' && is_dir($skel))
     	{
-    	  atkdebug("Copying skell: $skell to destination: $dest started.");
+    	  atkdebug("Copying skell: $skel to destination: $dest started.");
     	  atkimport("atk.utils.atkfileutils");    	  
     	  
     	  
     	  if (!is_dir($dest))
     	  {
     	    atkdebug("Destination isn't a existing directory. First create the destination.");    	    
-    	    $succes = atkFileUtils::atkCreateDest("$dest");
+    	    $succes = atkFileUtils::mkdirRecursive($dest);
     	  }
     	  else 
     	  {
@@ -312,18 +312,19 @@
     	    $succes = true;
     	  }
     	  
-    	  if (atkFileUtils::atkCopyDirRec($skell, $dest, $rec['abbreviation']) && $succes)
+    	  $dirname = atkFileUtils::parseDirectoryName(atkconfig('project_dir_name_template'), $rec);
+    	  
+    	  if (atkFileUtils::copyDirRecursive($skel, $dest, $dirname) && $succes)
     	  {
     	    atkdebug("The skell is copied to the destination.");
     	    
     	    $mailer = &atknew('atk.utils.atkmailer');
     	    
-    	    $body = sprintf(atktext("project_body"), $rec['abbreviation'], getcwd()."/".$dest."/".$rec['abbreviation']);
+    	    $body = sprintf(atktext("project_body"), $rec['abbreviation'], getcwd()."/".$dest."/".$dirname);
 
     	    switch (atkconfig("project_formatmail"))
     	    {
     	      default:
-
     	        break;
 
     	      case 'html':
@@ -336,8 +337,7 @@
     	        break;
     	    }
 
-    	    $mailer->From = atkconfig("project_from");
-    	    $mailer->FromName = atkconfig("project_from_name");
+    	    $mailer->From = atkconfig("mail_sender", "achievo");
     	    $mailer->AddAddress(atkconfig("project_sendto"));
     	    $mailer->Subject = atktext("project_subject").$rec['abbreviation'];
     	    $mailer->Body = $body;
