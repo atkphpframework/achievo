@@ -61,15 +61,12 @@
       {
         $flags = 0;
       }
-      
+
       // Add the organization relation
       $this->add(new atkManyToOneRelation("customer", "organization.organization", AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_HIDE_ADD|AF_SEARCHABLE), "", 500);
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_HIDE_ADD|$flags));
-      
-      $this->add(new atkAttribute("quotation_number",AF_HIDE_LIST));
 
-      
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
       $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
@@ -281,7 +278,7 @@
     {
       include_once moduleDir("finance").'projectbilling.inc';
     }
-    
+
     /**
      * One line description of the function
      *
@@ -294,32 +291,32 @@
     {
       $skel = atkconfig('project_dir_skel');
       $dest = atkconfig('project_dir_destination');
-      
+
     	if ($skel != '' && $dest != '' && is_dir($skel))
     	{
     	  atkdebug("Copying skell: $skel to destination: $dest started.");
-    	  atkimport("atk.utils.atkfileutils");    	  
-    	  
-    	  
+    	  atkimport("atk.utils.atkfileutils");
+
+
     	  if (!is_dir($dest))
     	  {
-    	    atkdebug("Destination isn't a existing directory. First create the destination.");    	    
+    	    atkdebug("Destination isn't a existing directory. First create the destination.");
     	    $succes = atkFileUtils::mkdirRecursive($dest);
     	  }
-    	  else 
+    	  else
     	  {
     	    atkdebug("Destination is a existing directory.");
     	    $succes = true;
     	  }
-    	  
+
     	  $dirname = atkFileUtils::parseDirectoryName(atkconfig('project_dir_name_template'), $rec);
-    	  
+
     	  if (atkFileUtils::copyDirRecursive($skel, $dest, $dirname) && $succes)
     	  {
     	    atkdebug("The skell is copied to the destination.");
-    	    
+
     	    $mailer = &atknew('atk.utils.atkmailer');
-    	    
+
     	    $body = sprintf(atktext("project_body"), $rec['abbreviation'], getcwd()."/".$dest."/".$dirname);
 
     	    switch (atkconfig("project_formatmail"))
@@ -341,14 +338,14 @@
     	    $mailer->AddAddress(atkconfig("project_sendto"));
     	    $mailer->Subject = atktext("project_subject").$rec['abbreviation'];
     	    $mailer->Body = $body;
-    	    atk_var_dump($mailer->Send(), "Mail send to ".atkconfig("project_sendto")."?");    	    
+    	    atk_var_dump($mailer->Send(), "Mail send to ".atkconfig("project_sendto")."?");
     	  }
-    	  else 
+    	  else
     	    atkerror("No write permisson on destination: ".$dest);
     	}
-    	else 
+    	else
     	  atkdebug("Configs are empty or skell isn't a directory.");
-    	  
+
     	return true;
     }
 
