@@ -87,7 +87,7 @@
 
       $attrs["from"] = &new atkDateAttribute("from");
       $attrs["to"] = &new atkDateAttribute("to");
-      
+
       $attrs["diff"]= &new atkListAttribute("diff", array(atktext('all'), atktext('positive'), atktext('negative')), array('all', 'pos', 'neg'),AF_OBLIGATORY);
 
       return $attrs;
@@ -112,9 +112,9 @@
 
       $output.= atktext("showonlyphasesfrom", "reports")." ".$attrs["from"]->edit($record)." ";
       $output.= atktext("to")." ".$attrs["to"]->edit($record);
-      
+
       $output.= "<br/>";
-      
+
       $output.= atktext('diff_planning')." ".$attrs['diff']->edit($record)." ";
 
       $output.= ' <input type="submit" value="'.atktext("refresh").'">';
@@ -131,6 +131,17 @@
       // Add the given content to the page
       $page = &$this->getPage();
       $page->addContent($this->renderActionPage("admin", $content));
+    }
+
+    function diffToHtml($diff)
+    {
+       $diffStr = time_format($diff, true);
+
+       if ($diff < 0)
+       {
+         $diffStr = '<span style="color: '.COLOR_ERROR.'">'.$diffStr.'</span>';
+       }
+       return $diffStr;
     }
 
     function getProjectStatus()
@@ -202,6 +213,7 @@
          $total_time = 0;
          $total_current = 0;
          $total_initial = 0;
+         $total_diff = 0;
 
          $previousname="";
 
@@ -227,43 +239,37 @@
 
            $booked = time_format($rows[$i]["minutes"]);
 
-           if ($rows[$i]["minutes"]>$rows[$i]["current_planning"])
+           $planning = empty($rows[$i]["current_planning"]) ? $rows[$i]["initial_planning"] : $rows[$i]["current_planning"];
+           if ($rows[$i]["minutes"]>$planning)
            {
              $booked = '<span style="color: '.COLOR_ERROR.'">'.$booked.'</span>';
            }
-           else if ($rows[$i]["minutes"]>($rows[$i]["current_planning"]*0.9))
+           else if ($rows[$i]["minutes"]>($planning*0.9))
            {
              $booked = '<span style="color: '.COLOR_WARNING.'">'.$booked.'</span>';
            }
 
            $line[] = "<b>".$booked."</b>";
-           
-           $diff = $rows[$i]["current_planning"] - $rows[$i]["minutes"];
-           
+
+           $diff = $planning - $rows[$i]["minutes"];
+
            if (($filterrecord['diff'] == 'neg' && $diff >= 0) || ($filterrecord['diff'] == 'pos' && $diff < 0))
-             continue;           
-           
-           $diffStr = time_format($rows[$i]["current_planning"] - $rows[$i]["minutes"], true);
-           
-           if ($diff < 0)
-           {
-             $diffStr = '<span style="color: '.COLOR_ERROR.'">'.$diffStr.'</span>';
-           }
-           
-           $line[] = $diffStr;
-           
+             continue;
+
+           $line[] = $this->diffToHtml($diff);
+
            $total_time += $rows[$i]["minutes"];
            $total_current += $rows[$i]["current_planning"];
            $total_initial += $rows[$i]["initial_planning"];
+           $total_diff += $diff;
 
            $data[] = $line;
          }
 
-         $data[] = array(atktext("total"), "", time_format($total_initial), time_format($total_current), time_format($total_time));
+         $data[] = array(atktext("total"), "", time_format($total_initial), time_format($total_current), time_format($total_time), $this->diffToHtml($total_diff));
 
          $tr = &atknew("atk.utils.atktablerenderer");
          $output.= $tr->render($data, TBL_DATA|TBL_FOOTER, "recordlist")."<br/>";
-
       }
 
       // Render a box around the generated output
