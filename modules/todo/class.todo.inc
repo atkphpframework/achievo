@@ -39,18 +39,18 @@ class todo extends atkNode
     if($name=="todo")
       $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
 
-    $user = getUser();
+    $userid = atkArrayNvl(getUser(), "id");
     if($name=="todo_history")
     {
-      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner='".$user["id"]."'))");
+      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner='".$userid."'))");
     }
     else
     {
-      $this->addFilter("((todo.private=0) OR (todo.private is null) OR (todo.private=1 and (todo.owner='".$user["id"]."' OR todo.assigned_to='".$user["id"]."')))");
+      $this->addFilter("((todo.private=0) OR (todo.private is null) OR (todo.private=1 and (todo.owner='".$userid."' OR todo.assigned_to='".$userid."')))");
     }
     $this->addSecurityMap(array("complete", "mra_complete"),"edit");
     $this->setTable("todo");
-    $this->setOrder("duedate, priority, status");
+    $this->setOrder("status, duedate, priority");
 
   }
 
