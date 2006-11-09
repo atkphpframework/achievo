@@ -91,7 +91,7 @@
       $cnt_result = count($result);
       if (!$cnt_result) 
       {        
-        $startingpoint = atkconfig("timereg_overtime_balance_use_startingpoint","");
+        $startingpoint = atkconfig("timereg_overtime_balance_use_startingpoint",false);
         if($startingpoint==="")
           return $this->getDummyBalance($day, $userid);
         else 
