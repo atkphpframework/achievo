@@ -190,11 +190,10 @@
                                 sum(h.time) as minutes
                               FROM
                                 project p,
-                                phase ph,
-                                hours h
+                                phase ph
+                              LEFT JOIN hours h ON (h.phaseid = ph.id)
                               WHERE
                                 p.id = ph.projectid
-                                AND h.phaseid = ph.id
                                 AND ph.startdate < '$strto'
                                 AND ph.enddate > '$strfrom'
                                 AND ph.status = 'active'
