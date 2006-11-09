@@ -19,6 +19,7 @@
   $en = array(
   "abbreviation" => "Projectcode",
   "active" => "Active",
+  "active_projects" => "Active projects",
   "activity" => "Activity",
   "activitydate" => "Date",
   "activityid" => "Activity",
@@ -29,6 +30,7 @@
   "address" => "Address",
   "address2" => "Address 2",
   "all" => "All",
+  "archived_projects" => "Archived projects",
   "pim_welcome" => "Welcome to Achievo",
   "pim_loggedinasadmin" => "You are currently logged in as administrator.",
   "pim_setuppurposesonly" => "This account is for setup-purposes only",

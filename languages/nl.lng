@@ -18,6 +18,7 @@
   $nl = array(
   "abbreviation" => "Projectcode",
   "active" => "Actief",
+  "active_projects" => "Actieve projecten",
   "activity" => "Activiteit",
   "activitydate" => "Datum",
   "activityid" => "Activiteit",
@@ -28,6 +29,7 @@
   "address" => "Adres",
   "address2" => "Adres 2",
   "all" => "Alles",
+  "archived_projects" => "Gearchiveerde projecten",
   "pim_welcome" => "Welkom in Achievo",
   "pim_loggedinasadmin" => "U bent nu ingelogd als administrator.",
   "pim_setuppurposesonly" => "Deze login is enkel bedoeld voor installatie/upgrade doeleinden",
