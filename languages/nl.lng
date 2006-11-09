@@ -74,6 +74,7 @@
   "bgcolor" => "Achtergrondkleur",
   "bill" => "Factuur",
   "billing_period" => "Facturatie per",
+  "billing_reminder_document_in_projects_docmanager" => "Herinnering staat bij de documenten van het project",
   "birthdate" => "Geboortedatum",
   "booked" => "Geboekt",
   "both" => "Beide",

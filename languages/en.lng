@@ -75,6 +75,7 @@
   "bgcolor" => "Backgroundcolor",
   "bill" => "Bill",
   "billing_period" => "Billing per",
+  "billing_reminder_document_in_projects_docmanager" => "Reminder was stored in the docmanager of the project",
   "birthdate" => "Date of birth",
   "booked" => "Booked",
   "both" => "Both",
