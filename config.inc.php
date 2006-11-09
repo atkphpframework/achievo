@@ -166,6 +166,16 @@
   // script searches for incomplete time registrations.
   //
   $config_timereg_checkweeks = 5; 
+  
+  // The next value indicates if a fake startingpoint should be used by 
+  // the overtime_balance node if no balance-records can be found to 
+  // determine a new balance record. Possible values:
+  // String date: a date in the format YYYY-MM-DD.  
+  // boolean true: the date is set to the 31st of dec of the former year.
+  // boolean false: no startingpoint is used.  
+  //
+  $config_timereg_overtime_balance_use_startingpoint = false;
+  
 
   // -------------------------------------------
   //             PROJECT MODULE

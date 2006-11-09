@@ -8,7 +8,7 @@
   useattrib("atknumberattribute");
 
   class overtime_balance extends atkNode
-  {
+  {    
     function overtime_balance()
     {
       $this->atkNode("overtime_balance");
@@ -88,18 +88,36 @@
     {
       $node = &atkGetNode("timereg.overtime_balance");
       $result = $node->selectDb("day <= '$day' AND userid.id = '$userid'", "day DESC", 1);
-      if (!count($result)) return $this->getDummyBalance($day, $userid);
-      else
-      {
-        $endtime = adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"],$result[0]["day"]["year"]);
-        $starttime = adodb_mktime(0,0,0,substr($day,5,2),substr($day,8,2),substr($day,0,4));
-        if ($endtime < $starttime)
+      $cnt_result = count($result);
+      if (!$cnt_result) 
+      {        
+        $startingpoint = atkconfig("timereg_overtime_balance_use_startingpoint","");
+        if($startingpoint==="")
+          return $this->getDummyBalance($day, $userid);
+        else 
         {
-          //recalculate
-          return $this->recalculateBalance(date("Y-m-d", adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"]+1,$result[0]["day"]["year"])), $day, $userid, $result[0]["balance"]);
+          if($startingpoint===true)
+          {
+            $date = date("Y-m-d",adodb_mktime(0,0,0,12,31,date("Y")-1));
+          }
+          else 
+          {
+            //assume the date is correct.
+            $date = $startingpoint;
+          }
+            
+          $result[0] = $this->getDummyBalance($date, $userid, 0);        
         }
-        else if (count($result)) return $result[0];
       }
+      $endtime = adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"],$result[0]["day"]["year"]);
+      $starttime = adodb_mktime(0,0,0,substr($day,5,2),substr($day,8,2),substr($day,0,4));
+      if ($endtime < $starttime)
+      {
+        //recalculate
+        return $this->recalculateBalance(date("Y-m-d", adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"]+1,$result[0]["day"]["year"])), $day, $userid, $result[0]["balance"]);
+      }
+      else if (count($result)) return $result[0];
+    
     }
 
     function getDummyBalance($day, $userid, $balance="", $id=0)
@@ -133,7 +151,7 @@
     function deleteBalance($userid, $day)
     {
       $db = &atkGetDb();
-      $db->query("DELETE FROM overtime_balance WHERE manual <> 1 AND day > '$day'");
+      $db->query("DELETE FROM overtime_balance WHERE (manual <> 1 OR manual IS NULL) AND day > '$day'");
     }
 
     function addOvertimeBalance($userid, $day, $balance)
