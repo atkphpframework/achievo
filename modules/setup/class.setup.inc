@@ -340,14 +340,7 @@
 
     function action_installdb(&$handler)
     {
-      global $g_modules, $g_modifiers;
-
-      // We must clear the modifiers. Modifiers will cause extra fields to be
-      // installed, but this should be done by the extension modules
-      // themselves. Not clearing the modifiers will lead to 'column already
-      // exists' errors.
-      $old_modifiers = $g_modifiers;
-      $g_modifiers = array();
+      global $g_modules;
 
       // We loop through the modules to install them.
       // The setup module contains essential table needed for the installation process,
@@ -383,9 +376,6 @@
       {
         $ok = false;
       }
-
-      // Restore modifiers.
-      $g_modifiers = $old_modifiers;
 
       if ($ok)
       {
