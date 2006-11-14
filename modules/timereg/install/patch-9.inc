@@ -1,5 +1,5 @@
-<?
+<?php
 
-    $setup->installNode("timereg.hours_lock");
+  $setup->installNode("timereg.hours_lock");
 
 ?>
