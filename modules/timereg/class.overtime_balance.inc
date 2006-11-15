@@ -96,13 +96,14 @@
           return $this->getDummyBalance($day, $userid);
         else 
         {
+          $date = "";
           if($startingpoint===true)
           {
             $date = date("Y-m-d",adodb_mktime(0,0,0,12,31,date("Y")-1));
           }
           else 
           {
-            //assume the date is correct.
+            //assume the date is correctly formatted.
             $date = $startingpoint;
           }
             
@@ -203,11 +204,13 @@
       $overtimeids = $this->getOvertimeCompensationActivities();
       $contracthours = $this->getContractHours($begin, $end, $userid);
 
-      $hours = $this->getUserHours($begin, $end, $userid);
+      $hours = $this->getUserHours($begin, $end, $userid);      
+
       $total = 0;
       for ($i=0;$i<count($hours);$i++)
       {
         $time = $hours[$i]["time"]/60;
+
         if (count($percentages) && $hours[$i]["workperiod"] != 0) $percentage = $percentages[$hours[$i]["workperiod"]];
         else $percentage = 1;
         if(!$this->isOvertimeCompensationActivity($hours[$i]["activityid"], $overtimeids))

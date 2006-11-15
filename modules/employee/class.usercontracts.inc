@@ -25,7 +25,7 @@ class usercontracts extends atkNode
     $this->add(new atkDateAttribute("startdate","","",0,0, AF_OBLIGATORY));
     $this->add(new atkDateAttribute("enddate", "",""));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, 0));
-    $this->add(new atkMultiSelectAttribute("workingdays",array("mon", "tue","wed","thu","fri","sat","sun"),array(1,2,3,4,5,6,0),AF_HIDE_LIST));
+    $this->add(new atkMultiSelectAttribute("workingdays",array("mon", "tue","wed","thu","fri","sat","sun"),array(1,2,3,4,5,6,0),7,AF_HIDE_LIST));
     $this->add(new atkTimeAttribute("workstarttime"  , 0, 23, $m_arr_minute_step, "08:30", AF_OBLIGATORY));
     $this->add(new atkTimeAttribute("workendtime"    ,0, 23, $m_arr_minute_step, "17:00",AF_OBLIGATORY));
 

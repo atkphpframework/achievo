@@ -254,7 +254,9 @@ Changes in Achievo 1.3
   [dennisjan]
 * Fixed: deleting of none-manual overtime_balance hours did not remove records
   with the manual field set to NULL. [Dennis]
-    
+* Removed notice in overtime_balance node. [Dennis]
+* Fixed bug in usercontracts node: the flags are the fifth argument instead of
+  the 4th. [Dennis]    
   
 Changes in Achievo 1.2.1
 ------------------------
