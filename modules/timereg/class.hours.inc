@@ -755,13 +755,17 @@ class hours extends atkNode
 
       $balancenode->saveOvertimeBalance($rec["userid"]["id"], $day, $newbalance);
     }
-    $manual = $balancenode->getLatestManualCorrection($rec["userid"]["id"], $yesterday);
+    $manual = $balancenode->getLatestManualCorrection($rec["userid"]["id"], $yesterday, $day);
     if ($manual != $yesterday)
     {
       $manualdate = date("Y-m-d", adodb_mktime(0,0,0,$manual["day"]["month"],$manual["day"]["day"],$manual["day"]["year"]));
     }
     else $manualdate = $yesterday;
-    if ($manualdate < $day) $balancenode->deleteBalance($rec["userid"]["id"], $day);
+
+    if ($manualdate < $day) 
+    {      
+      $balancenode->deleteBalance($rec["userid"]["id"], $day);
+    }    
   }
 
   // Check if this week may be booked..

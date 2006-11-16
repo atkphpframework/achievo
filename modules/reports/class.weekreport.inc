@@ -659,8 +659,6 @@ class weekreport extends atkNode
         $tbl = &atknew("atk.utils.atktablerenderer");
         $output = $tbl->render($data);
         $rl = &atknew("atk.recordlist.atkrecordlist");
-        atk_var_dump($suppress,"SUPRESS");
-        atk_var_dump($rldata,"RLDATA");
 
         $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress);
 
