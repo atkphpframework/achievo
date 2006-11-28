@@ -275,7 +275,6 @@ class scheduler_view
     if ($cellcount < 0) $cellcount = 7 + $cellcount;
 
     $tmp.='<tr>';
-    atkdebug("Weeknumber: $month - 1 - $year = ".date("W", mktime(12,0,0,$month,1,$year)));
     $week_number = date("W", mktime(12,0,0,$month,1,$year));
     $weekTime = date("Y-m-d",mktime(12,0,0,$month,1,$year));
     $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
@@ -295,7 +294,13 @@ class scheduler_view
     		$tmp.="</tr><tr>\n";
     		$week_number++;
         $weekTime = date("Y-m-d",mktime(12,0,0,$month,$i,$year));
-        $week_number = date("W", mktime(12,0,0,$month,$i,$year));
+        switch ($this->m_calendarStartDay)
+        {
+          case 0: $tmp_i = $i+1;
+          case 1: $tmp_i = $i;
+          case 6: $tmp_i = $i+2;
+        }
+        $week_number = date("W", mktime(12,0,0,$month,$tmp_i,$year));
         $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
         if($this->m_showWeekNumbers==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     		$cellcount=0;
