@@ -185,9 +185,17 @@
       return parent::dispatch($postvars, $fullpage);
     }
 
-    function descriptor_def()
+    function descriptor_fields()
     {
-      return "[abbreviation]: [name]";
+      return array("abbreviation", "name");
+    }
+
+    function descriptor($record)
+    {
+      if (empty($record["abbreviation"]))
+        return $record["name"];
+      else
+        return sprintf("%s: %s", $record["abbreviation"], $record["name"]);
     }
 
     function getInitialProjectcode()
