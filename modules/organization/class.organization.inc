@@ -84,8 +84,6 @@ class organization extends atkNode
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setIndex("name");
-
-    atkdebug("organization::organization()");
   }
 
   /**
