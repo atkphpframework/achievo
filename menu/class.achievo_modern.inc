@@ -128,14 +128,14 @@ class achievo_modern extends atkPlainMenu
     $prj='';
     if ($atkmenutop == "projectmanagement")
     {
-      global $g_sessionManager;
+      $sessionManager = &atkGetSessionManager();
       include_once "achievotools.inc";
-      $projects = $g_sessionManager->getValue("selectedprj","globals");
+      $projects = $sessionManager->getValue("selectedprj","globals");
 
       if (count($projects) == 0)
       {
         //updateSelectedProjects();
-        $projects = $g_sessionManager->getValue("selectedprj","globals");
+        $projects = $sessionManager->getValue("selectedprj","globals");
       }
 
       $prj  = atktext("project_select").":";
