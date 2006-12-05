@@ -72,12 +72,12 @@
 
          //Get project name
          $db = &atkGetDb();
-         $query = "SELECT name FROM project WHERE id='".$selectedPrj['projectid']."'";
+         $query = "SELECT CONCAT(project.abbreviation, ': ', project.name) AS name FROM project WHERE id='".$selectedPrj['projectid']."'";
          $arr = $db->getrows($query);
-         $selectedPrj['projectname'] = $arr[0]['name'];
+         if (strlen($arr[0]['name']) > $g_projectnamesize);
          if (strlen($arr[0]['name']) > $g_projectnamesize)
          {
-           $selectedPrj['projectname'] = substr($arr[0]['name'],0,$g_projectnamesize-2).".."; //update because of phases
+           $selectedPrj['projectname'] = substr($arr[0]['name'], 0, $g_projectnamesize-2).".."; //update because of phases
          }
          else
          {
@@ -121,7 +121,7 @@
     global $g_user, $g_projectnamesize;
     $db = &atkGetDb();
 
-    $query = "SELECT DISTINCT project.name as projectname, project.id as projectid FROM project,phase,hours ";
+    $query = "SELECT DISTINCT CONCAT(project.abbreviation, ': ', project.name) as projectname, project.id as projectid FROM project,phase,hours ";
     $query.= "WHERE phase.id=hours.phaseid AND ".(isset($g_user["id"])?"userid='".$g_user["id"]."' AND ":"")."phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
     $query.= "ORDER BY projectname";
 
@@ -140,7 +140,7 @@
         $alreadyhad[] = $arr[$i]['projectid'];
         if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
         {
-          $arr[$i]['projectname'] = substr($arr[$i]['projectname'],0,$g_projectnamesize-2).".."; //update because of phases
+          $arr[$i]['projectname'] = substr($arr[$i]['projectname'], 0, $g_projectnamesize-2).".."; //update because of phases
         }
         $newarr[] = $arr[$i];
       }
@@ -252,12 +252,12 @@
       return false;
     }
 
-    //Convert bare LF to CRLF (see: http://cr.yp.to/docs/smtplf.html)        
+    //Convert bare LF to CRLF (see: http://cr.yp.to/docs/smtplf.html)
     //First replace CRLF to LF, then replace all LF to CRLF. This must be done to
-    //prevent replacing a CRLF with CRCRLF 
+    //prevent replacing a CRLF with CRCRLF
     $body = preg_replace("/(\r\n)/", "\n", $body);
     $body = preg_replace("/(\n)/", "\r\n", $body);
-    
+
     // Attempt to send the mail, and store the result in $result
     $result = mail($to, "[achievo notice] " . $subject, $body, "From: $sender\r\n" . $add_header);
 
