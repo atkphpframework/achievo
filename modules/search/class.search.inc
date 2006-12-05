@@ -25,23 +25,26 @@
 
       if ($searchstring!="")
       {
-        $results = atkHarvestModules("search", $searchstring);
+        $results = atkHarvestModules("search", $searchstring, true);
         $firsturl="";
         $res = "";
 
-        foreach ($results as $category=>$items)
+        foreach ($results as $module=>$moduleresults)
         {
-          $cnt = count($items);
-          if ($cnt>0)
+          foreach ($moduleresults as $category=>$items)
           {
-            $hasresults += $cnt;
-            $res .= '<br><b>'.atktext($category).'</b><br>';
-            for ($i=0;$i<$cnt;$i++)
+            $cnt = count($items);
+            if ($cnt>0)
             {
-              $res.= '<br>&nbsp; &nbsp;'.href($items[$i]["url"], $items[$i]["title"], SESSION_NESTED);
-              if ($firsturl=="") $firsturl = $items[$i]["url"];
+              $hasresults += $cnt;
+              $res .= '<br><b>'.atktext($category, $module).'</b><br>';
+              for ($i=0;$i<$cnt;$i++)
+              {
+                $res.= '<br>&nbsp; &nbsp;'.href($items[$i]["url"], $items[$i]["title"], SESSION_NESTED);
+                if ($firsturl=="") $firsturl = $items[$i]["url"];
+              }
+              $res.='<br>';
             }
-            $res.='<br>';
           }
         }
 
