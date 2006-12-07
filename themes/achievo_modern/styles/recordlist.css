@@ -4,6 +4,11 @@
   border: 0px solid #f00;
 }
 
+.recordList
+{
+  width: 100%;
+}
+
 .recordListSearch
 {
   background: #666 ! important;
