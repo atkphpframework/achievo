@@ -185,7 +185,7 @@
       return parent::dispatch($postvars, $fullpage);
     }
 
-    function descriptor_fields()
+    function descriptorFields()
     {
       return array("abbreviation", "name");
     }
