@@ -658,7 +658,7 @@
       return $view;
     }
 
-    function action_admin(&$handler)
+    function action_admin(&$handler, $record=null)
     {
       $view = $this->getView();
       if ($view=="active")
@@ -681,7 +681,7 @@
         $attr->addFlag(AF_HIDE_LIST);
       }
 
-      return $handler->action_admin();
+      return $handler->action_admin($record);
     }
 
     /**
