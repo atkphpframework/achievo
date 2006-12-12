@@ -72,16 +72,16 @@
 
          //Get project name
          $db = &atkGetDb();
-         $query = "SELECT CONCAT(project.abbreviation, ': ', project.name) AS name FROM project WHERE id='".$selectedPrj['projectid']."'";
+         $query = "SELECT project.abbreviation as projectcode, project.name as projectname FROM project WHERE id='".$selectedPrj['projectid']."'";
          $arr = $db->getrows($query);
-         if (strlen($arr[0]['name']) > $g_projectnamesize);
-         if (strlen($arr[0]['name']) > $g_projectnamesize)
+         $projectdescriptor = empty($arr[0]['projectcode']) ? $arr[0]['projectname'] : ($arr[0]['projectcode'] . ": " . $arr[0]['projectname']);
+         if (strlen($projectdescriptor) > $g_projectnamesize)
          {
-           $selectedPrj['projectname'] = substr($arr[0]['name'], 0, $g_projectnamesize-2).".."; //update because of phases
+           $selectedPrj['projectname'] = substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
          }
          else
          {
-           $selectedPrj['projectname'] = $arr[0]['name']; //update because of phases
+           $selectedPrj['projectname'] = $projectdescriptor; //update because of phases
          }
 
          //Check maximum number of projects in session var
@@ -118,12 +118,19 @@
    */
   function getRecentProjects()
   {
-    global $g_user, $g_projectnamesize;
+    global $g_projectnamesize;
     $db = &atkGetDb();
 
-    $query = "SELECT DISTINCT CONCAT(project.abbreviation, ': ', project.name) as projectname, project.id as projectid FROM project,phase,hours ";
-    $query.= "WHERE phase.id=hours.phaseid AND ".(isset($g_user["id"])?"userid='".$g_user["id"]."' AND ":"")."phase.status='active' AND project.status='active' AND phase.projectid=project.id ";
-    $query.= "ORDER BY projectname";
+    $userid = atkArrayNvl(getUser(), "id");
+
+    $query = "SELECT DISTINCT project.abbreviation as projectcode, project.name as projectname, project.id as projectid ";
+    $query.= "FROM project,phase,hours ";
+    $query.= "WHERE phase.id=hours.phaseid ";
+    if (!empty($userid)) $query .= "AND userid='$userid' ";
+    $query.= "AND phase.status='active' ";
+    $query.= "AND project.status='active' ";
+    $query.= "AND phase.projectid=project.id ";
+    $query.= "ORDER BY projectcode, projectname";
 
     $arr = $db->getrows($query,'0','100');
 
@@ -137,12 +144,12 @@
     {
       if (!in_array($arr[$i]['projectid'], $alreadyhad))
       {
-        $alreadyhad[] = $arr[$i]['projectid'];
-        if (strlen($arr[$i]['projectname']) > $g_projectnamesize)
-        {
-          $arr[$i]['projectname'] = substr($arr[$i]['projectname'], 0, $g_projectnamesize-2).".."; //update because of phases
-        }
-        $newarr[] = $arr[$i];
+        $projectid = $arr[$i]['projectid'];
+        $projectdescriptor = empty($arr[$i]['projectcode']) ? $arr[$i]['projectname'] : ($arr[$i]['projectcode'] . ": " . $arr[$i]['projectname']);
+        if (strlen($projectdescriptor) > $g_projectnamesize)
+          $projectdescriptor = substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
+        $newarr[] = array("projectid"=>$projectid, "projectname"=>$projectdescriptor);
+        $alreadyhad[] = $projectid;
       }
     }
     return $newarr;
