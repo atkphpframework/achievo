@@ -15,6 +15,7 @@
   {
     function test_onceDates()
     {
+      if (!moduleExists("scheduler")) return;
       // Once item on the same day
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
                     "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
@@ -40,6 +41,7 @@
 
     function test_dailyDates()
     {
+      if (!moduleExists("scheduler")) return;
       // Daily item on the same day
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
@@ -72,6 +74,7 @@
 
     function test_weeklyDates()
     {
+      if (!moduleExists("scheduler")) return;
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
@@ -106,6 +109,7 @@
 
     function test_monthlyDateDates()
     {
+      if (!moduleExists("scheduler")) return;
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
@@ -124,6 +128,7 @@
 
     function test_monthlyDayDates()
     {
+      if (!moduleExists("scheduler")) return;
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
@@ -141,6 +146,7 @@
 
     function test_yearlyDateDates()
     {
+      if (!moduleExists("scheduler")) return;
      $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
@@ -164,6 +170,7 @@
 
     function test_yearlyDayDates()
     {
+      if (!moduleExists("scheduler")) return;
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
