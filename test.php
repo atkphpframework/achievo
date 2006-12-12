@@ -22,7 +22,7 @@
   include_once("atk.inc");
 
   // Require ATK authentication if not running in text mode
-  if(!$_SERVER['PWD'])
+  if(!isset($_SERVER['PWD']))
   {
     atksession();
     atksecure();
@@ -36,5 +36,5 @@
 
   // Let the atktestsuite run all test files having a name starting with "class.test_"
   $suite = &atknew("atk.test.atktestsuite");
-  $suite->run((!$_SERVER['PWD']) ? "html" : "text");
+  $suite->run((!isset($_SERVER['PWD'])) ? "html" : "text");
 ?>
