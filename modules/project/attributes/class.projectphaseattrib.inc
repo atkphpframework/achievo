@@ -128,7 +128,10 @@ class atkProjectPhaseAttribute extends atkAttribute
       // de juiste default selecteren
       if ($phases[$i]["id"]==$currentphase) $result.="selected";
 
-      $result .= '>'.$phases[$i]["projectabbreviation"].": ".$phases[$i]["projectname"]." - ".$phases[$i]["name"];
+      $result .= '>';
+      if (!empty($phases[$i]["projectabbreviation"]))
+        $result .= $phases[$i]["projectabbreviation"] . ": ";
+      $result .= $phases[$i]["projectname"] . " - " . $phases[$i]["name"];
     }
 
     $result .= '</select>&nbsp';
@@ -163,7 +166,12 @@ class atkProjectPhaseAttribute extends atkAttribute
 
   function display($rec)
   {
-    return $rec[$this->fieldName()]["projabbreviation"].": ".$rec[$this->fieldName()]["projname"]." - ".$rec[$this->fieldName()]["phasename"];
+    $value = $rec[$this->fieldName()];
+    $result = "";
+    if (!empty($value["projabbreviation"]))
+      $result .= $value["projabbreviation"] . ": ";
+    $result .= $value["projname"] . " - " . $value["phasename"];;
+    return $result;
   }
 
   /**
@@ -264,7 +272,10 @@ class atkProjectPhaseAttribute extends atkAttribute
 
   function cmp_projectabbreviation($a, $b)
   {
-    return strcasecmp($a["projectabbreviation"], $b["projectabbreviation"]);
+    if ($a["projectabbreviation"] != $b["projectabbreviation"])
+      return strcasecmp($a["projectabbreviation"], $b["projectabbreviation"]);
+    else
+      return strcasecmp($a["projectname"], $b["projectname"]);
   }
 
 
