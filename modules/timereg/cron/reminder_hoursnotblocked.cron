@@ -38,7 +38,15 @@
     {
       // get weeknumbers that should be locked
       $startdate = "{$p['startdate']['year']}-{$p['startdate']['month']}-{$p['startdate']['day']}";
+      
+      $bottomlimit_date = atkconfig::get("timereg","hoursnotblocked_from_date");
+      if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($startdate) < strtotime($bottomlimit_date))
+        $startdate = $bottomlimit_date;
+        
       $enddate = "{$p['enddate']['year']}-{$p['enddate']['month']}-{$p['enddate']['day']}";
+      if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($enddate) < strtotime($bottomlimit_date))
+        continue;
+        
       $weeknumbers = project_dates_to_weeknumbers($startdate,$enddate);
       
       // get all the employees for this project
@@ -103,7 +111,7 @@
   
   function get_lastweek_date()
   {
-    return date("Y-m-d",time()-3600*24*7);
+    return date("Y-m-d",strtotime("last monday"));
   }
   
   /**
@@ -178,7 +186,7 @@
       $mailbody .= atktext('week') . ": " . $w . "\n";
       
     $mailsubject = atktext('timereg_reminder_hoursnotblocked_employeemail_mailsubject');
-    
+//    echo("Sending mail to $to_email with mailbody:\n$mailbody\n---------\n\n");
     usermail($to_email,$mailsubject,$mailbody,"");
   }
   
@@ -205,7 +213,7 @@
       $mailbody .= "$employee_firstname $employee_lastname ($employee_userid):\n";
       $mailbody .= (sizeof($weekdata) > 1 ? atktext('weeks') : atktext('week')) . ": " . implode(",",$weekdata) . "\n\n";
     }
-    
+//    echo("Sending mail to $coor_email with mailbody:\n$mailbody\n---------\n\n");
     usermail($coor_email,$mailsubject,$mailbody,"");
   }
   

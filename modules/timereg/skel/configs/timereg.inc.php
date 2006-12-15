@@ -18,5 +18,17 @@
    * is disaproved will automatically get unlocked.
    */
   $config["hours_approve_unlock_on_disaprove"] = false;
-
+  
+  /**
+   * Set a date from when the hoursnotblocked cron should
+   * monitor the blocked weeks (usefull if you use this
+   * functionality on a existing project and you don't want
+   * to block all weeks before a certain date).
+   * 
+   * Enter as string in the format YYYY-MM-DD
+   * Leave empty to monitor all project weeks
+   */
+  
+  $config["hoursnotblocked_from_date"] = "";
+  
 ?>
