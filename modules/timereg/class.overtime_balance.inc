@@ -8,7 +8,7 @@
   useattrib("atknumberattribute");
 
   class overtime_balance extends atkNode
-  {    
+  {
     function overtime_balance()
     {
       $this->atkNode("overtime_balance");
@@ -90,19 +90,19 @@
       $result = $node->selectDb("day <= '$day' AND userid.id = '$userid'", "day DESC", 1);
 
       $cnt_result = count($result);
-      if (!$cnt_result) 
-      {        
+      if (!$cnt_result)
+      {
         $startingpoint = atkconfig("timereg_overtime_balance_use_startingpoint",false);
         if($startingpoint==="")
           return $this->getDummyBalance($day, $userid);
-        else 
+        else
         {
           $date = "";
           if($startingpoint===true)
           {
             $date = date("Y-m-d",adodb_mktime(0,0,0,12,31,date("Y")-1));
           }
-          else 
+          else
           {
             //assume the date is correctly formatted.
             $date = $startingpoint;
@@ -119,7 +119,7 @@
         return $this->recalculateBalance(date("Y-m-d", adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"]+1,$result[0]["day"]["year"])), $day, $userid, $result[0]["balance"]);
       }
       else if (count($result)) return $result[0];
-    
+
     }
 
     function getDummyBalance($day, $userid, $balance="", $id=0)
@@ -205,7 +205,7 @@
       $overtimeids = $this->getOvertimeCompensationActivities();
       $contracthours = $this->getContractHours($begin, $end, $userid);
 
-      $hours = $this->getUserHours($begin, $end, $userid);      
+      $hours = $this->getUserHours($begin, $end, $userid);
 
       $total = 0;
       for ($i=0;$i<count($hours);$i++)
@@ -252,9 +252,9 @@
     {
       foreach($overtimeactivities as $item)
       {
-        if($item["id"]==$id)         
-          return true;        
-      }      
+        if($item["id"]==$id)
+          return true;
+      }
       return false;
     }
 
@@ -274,29 +274,12 @@
         $total = 0;
         for ($i=0;$i<count($contracts);$i++)
         {
-          $workdays = $this->getWorkDays($contracts[$i]["WorkingDays"]);
-          $startdate = date("Ymd", adodb_mktime(0,0,0,substr($contracts[$i]["startdate"],5,2),substr($contracts[$i]["startdate"],8,2),substr($contracts[$i]["startdate"],0,4)));
-          $newenddate = date("Ymd", adodb_mktime(0,0,0,substr($contracts[$i]["enddate"],5,2),substr($contracts[$i]["enddate"],8,2),substr($contracts[$i]["enddate"],0,4)));
-          //if no workingdays are specified, assume 8 hours a day.
-          $numworkdays = count($workdays)>0 ? count($workdays) : $contracts[$i]["uc_hours"]/8;
-
-          if ($startdate <= $begindate && $newenddate >= $enddate)
-          {
-            $numdays = $this->getNumDays($begindate, $enddate, $workdays);
-            $total += ($numdays/$numworkdays) * $contracts[$i]["uc_hours"];
-          }
-          elseif ($startdate <= $begindate)
-          {
-            // contract ends this week
-            $numdays = $this->getNumDays($begindate, $newenddate, $workdays);
-            $total += ($numdays/$numworkdays) * $contracts[$i]["uc_hours"];
-          }
-          else
-          {
-            // contract starts this week
-            $numdays = $this->getNumDays($startdate, $enddate, $workdays);
-            $total += ($numdays/$numworkdays) * $contracts[$i]["uc_hours"];
-          }          
+/**
+ * @todo: Move this to usercontracts node and try to use the workdays
+ * when calculating the amount of contracthours when a contract ends
+ * or starts within the given period
+ */
+          $total += $contracts[$i]["uc_hours"];
         }
         return $total;
       }
@@ -308,7 +291,7 @@
 
         if($has_workdays)
           return (count($contracts)>0) ? (($numdays/count($workdays)) * $contracts[0]["uc_hours"]) : 0;
-        else 
+        else
           return ($contracts[0]["uc_hours"]/7) * $numdays;
       }
     }
@@ -322,7 +305,7 @@
       $endtime = adodb_mktime(0,0,0,substr($end,4,2),substr($end,6,2),substr($end,0,4));
 
       $steps = (($endtime-$starttime)/(60*60*24));
-      
+
       for($i=0;$i<=$steps;$i++)
       {
         $dayofweek = date("w", adodb_mktime(0,0,0,substr($begin,4,2),substr($begin,6,2)+$i,substr($begin,0,4)));
@@ -331,18 +314,18 @@
         {
           if (in_array($dayofweek, $workdays)) $total++;
         }
-        else 
-        {          
+        else
+        {
           $total++;
         }
       }
       return $total;
     }
-    
+
     /**
      * Function retrieves the workingdays from the string strWorkingdays in an array.
-     * 
-     * The format of strWorkindays is "1|2|3" (for mo, tue, we).     * 
+     *
+     * The format of strWorkindays is "1|2|3" (for mo, tue, we).     *
      *
      * @param string $strWorkingdays
      * @return array
@@ -352,8 +335,8 @@
       $strWorkingdays = trim($strWorkingdays);
       if(empty($strWorkingdays))
         return array();
-      
-      return explode("|",$strWorkingdays);            
+
+      return explode("|",$strWorkingdays);
     }
   }
 
