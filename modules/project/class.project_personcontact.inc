@@ -52,16 +52,16 @@ class project_personcontact extends atkNode
     // Assign the referenced project
     $projectnode = &atkGetNode("project.project");
     $projectrecord = $projectnode->selectDb("project.id='".$project_personcontactrecord[0]["projectid"]["id"]."'");
-    $documentWriter->assignDocumentSingleRecord($projectnode, $projectrecord[0], "project_");
+    $documentWriter->assignDocumentSingleRecord($projectnode, $projectrecord[0], "project_", "", "", "", "", "view");
 
     // Assign the referenced personcontact
     $personcontactnode = &atkGetNode("project.select_contact");
     $personcontactrecord = $personcontactnode->selectDb("person.id='".$project_personcontactrecord[0]["personid"]["id"]."'");
-    $documentWriter->assignDocumentSingleRecord($personcontactnode, $personcontactrecord[0], "person_");
+    $documentWriter->assignDocumentSingleRecord($personcontactnode, $personcontactrecord[0], "person_", "", "", "", "", "view");
 
     // Assign the referenced personcontact's organization (if available)
     $organizationnode = &atkGetNode("organization.organization");
-    $organizationrecord = $organizationnode->selectDb("organization.id='".$personcontactrecord[0]["company"]["id"]."'");
+    $organizationrecord = $organizationnode->selectDb("organization.id='".$personcontactrecord[0]["company"]["id"]."'", "", "", "", "", "view");
     if (count($organizationrecord) > 0)
     {
       $documentWriter->assignDocumentSingleRecord($organizationnode, $organizationrecord[0], "organization_");
@@ -73,7 +73,7 @@ class project_personcontact extends atkNode
 
     // Assign the referenced coordinator
     $employeenode = &atkGetNode("employee.employee");
-    $coordinatorrecord = $employeenode->selectDb("person.id='".$projectrecord[0]["coordinator"]["id"]."'");
+    $coordinatorrecord = $employeenode->selectDb("person.id='".$projectrecord[0]["coordinator"]["id"]."'", "", "", "", "", "view");
     $documentWriter->assignDocumentSingleRecord($employeenode, $coordinatorrecord[0], "coordinator_");
 
     // Also assign the generic (date) vars tot the documentWriter
