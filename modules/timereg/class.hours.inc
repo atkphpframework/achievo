@@ -141,8 +141,7 @@ class hours extends atkNode
 
   function hours($type="hours", $flags=0)
   {
-    global $g_sessionManager,$g_user;
-
+    $user = getUser();
     // weekview and viewdate are variables that we need to remember..
     $this->m_weekview = $this->processGlobalVar("weekview");
     $this->m_viewdate = $this->processGlobalVar("viewdate");
@@ -153,7 +152,7 @@ class hours extends atkNode
       $this->m_viewdate = sprintf("%04d-%02d-%02d", $this->m_viewdate["year"], $this->m_viewdate["month"],$this->m_viewdate["day"]);
     }
     if ($this->m_viewdate=="") $this->m_viewdate = strftime("%Y-%m-%d");
-    if ($this->m_user == "") $this->m_user = $g_user["id"];
+    if ($this->m_user == "") $this->m_user = $user["id"];
 
     $flags|=NF_NO_VIEW|NF_TRACK_CHANGES|NF_NO_IMPORT;
 
@@ -204,15 +203,15 @@ class hours extends atkNode
 
   function processGlobalVar($name, $value="")
   {
-    global $g_sessionManager;
-    $session = &$g_sessionManager->getSession();
+    $sessionManager = &atkGetSessionManager();
+    $session = &$sessionManager->getSession();
     $sessionvarid = "timereg_hours_$name";
     if (empty($value) && isset($_REQUEST[$name])) $value = $_REQUEST[$name];
     if ($value!=="") $session[$sessionvarid] = $value;
     return $session[$sessionvarid];
   }
 
-  function descriptor(&$record)
+  function descriptor($record)
   {
     $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
     $employeenode = &atkGetNode("employee.employee");
@@ -319,7 +318,7 @@ class hours extends atkNode
 
   function action_edit(&$handler)
   {
-    global $g_user;
+    $user = getUser();
     $recs = $this->selectDb($this->m_postvars["atkselector"], "hours.id", "", "", array("userid", "activitydate"));
 
     $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],
@@ -330,7 +329,7 @@ class hours extends atkNode
     {
       if (!$this->allowed("any_user"))
       {
-        $this->addFilter("hours.userid",strtolower($g_user["id"]));
+        $this->addFilter("hours.userid",strtolower($user["id"]));
       }
       return $handler->action_edit();
     }
@@ -348,16 +347,16 @@ class hours extends atkNode
   {
     if (atkconfig("hours_confirm_save") && ($this->_isThisTheFirstTimeRegForThisProject() || !empty($this->m_postvars['confirm'])))
     {
-      global $g_sessionManager;
+      $sessionManager = &atkGetSessionManager();
       if (!empty($this->m_postvars['confirm'])) // was 'yes' clicked?
       {
-        $this->m_postvars = $g_sessionManager->getValue("postvars");
+        $this->m_postvars = $sessionManager->getValue("postvars");
         $this->m_postvars = $this->m_postvars["postvars"];
         return $handler->action_save();
       }
       elseif (empty($this->m_postvars['cancel'])) // nothing clicked yet?
       {
-        $g_sessionManager->globalVar("postvars", $this->m_postvars);
+        $sessionManager->globalVar("postvars", $this->m_postvars);
 
         // the 1=0 is a trick. without it, the confirmation page would try
         // to retrieve a record.
@@ -413,8 +412,6 @@ class hours extends atkNode
   function action_admin(&$handler)
   {
     $page = &$this->getPage();
-
-    global $g_user;
 
     $this->setLock();
 
@@ -634,7 +631,6 @@ class hours extends atkNode
 
   function weekviewHeader($weekdates, $viewtime)
   {
-    global $g_user;
     $userid = $this->m_user;
 
     $ui = &$this->getUi();
@@ -643,7 +639,7 @@ class hours extends atkNode
                       'thisweekurl'=>session_url('dispatch.php?weekview=1&viewdate='.date("Y-m-d")),
                       'dayviewurl'=>session_url('dispatch.php?weekview=0&viewdate='.date("Y-m-d")),
                       'datejumper'=>$this->getDateJumper(),
-                      'curuser'=>$g_user,
+                      'curuser'=>getUser(),
                       'curdate'=>adodb_date('W, Y',$viewtime),
                       'lockicon'=>$this->getLockIcon(),
                      );
@@ -1014,9 +1010,9 @@ class hours extends atkNode
 
   function addPage(&$handler, $record="")
   {
-    global $g_sessionManager;
+    $sessionManager = &atkGetSessionManager();
    // Insert mode can be "" (normal) or "multi" (multiple days at once).
-    $this->m_insertmode = $g_sessionManager->stackVar("insertmode");
+    $this->m_insertmode = $sessionManager->stackVar("insertmode");
     if ($this->m_insertmode=="multi")
     {
       // When in multidate mode, add an extra attribute for filtering
@@ -1085,8 +1081,6 @@ class hours extends atkNode
 
   function addDb(&$record, $exectrigger=true)
   {
-    global $g_user;
-
     $res = true;
 
     if ($record["activitydate"]["multi"]==1)

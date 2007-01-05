@@ -277,14 +277,22 @@
 
   function time_format($time, $displayzero=false)
   {
-    if ($time==0)
+    if ($time==0 && !$displayzero)
     {
-      if ($displayzero) return "00:00";
-      return "&nbsp;";
+      $result = "&nbsp;";
     }
-    return ($time<0?"-":"").floor(abs($time)/60).":".sprintf("%02d",(abs($time)%60));
+    
+    if(atkconfig("durationformat",0)==DURATIONFORMAT_DECIMAL)
+    {
+      $decimalvalue = floor(abs($time)/60) + (abs($time)%60)/60;
+      $result = ($time<0?"-":"").sprintf("%02.02f", $decimalvalue);
+    }
+    elseif(atkconfig("durationformat",0)==DURATIONFORMAT_TIME)
+    {
+      $result = ($time<0?"-":"").floor(abs($time)/60).":".sprintf("%02d",(abs($time)%60));
+    }
+    
+    return $result;
   }
-
-
 
 ?>
