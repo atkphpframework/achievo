@@ -243,12 +243,7 @@ class scheduler_view
     $currentTime = date("Y-m-d", mktime(0,0,0,$month, 1, $year));
     $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$this->m_viewdate."&small_viewdate=$currentTime&user=".$this->m_viewUser;
 
-    /*
-    $tmp = '<h3 align="center">';
-    if($monthNav) $tmp.= href($prevUrl,"&lt&lt");
-    $tmp.= " ".$months[$month]." $year ";
-    if($monthNav) $tmp.= href($nextUrl,"&gt;&gt;");
-    */
+
     $tmp ='<table border="0" cellpadding="1" cellspacing="0">';
     $tmp.='<tr style="background-color: #dddddd">';
     $tmp.='<td align="left">';
