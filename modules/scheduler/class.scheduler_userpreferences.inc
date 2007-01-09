@@ -43,9 +43,9 @@
       $this->add(new atkListAttribute("timeschedule",array(5,6,10,15,30,60),array(),AF_OBLIGATORY|AF_NO_TRANSLATION));
       //$this->add(new atkBoolAttribute("showweekendsinweekview"));
       $this->add(new atkBoolAttribute("showweeknumbers"));
-      $this->add(new atkBoolAttribute("showtodo"));
-      $this->add(new atkBoolAttribute("showemployeebirthdays"));
-      $this->add(new atkBoolAttribute("showcustomerbirthdays"));
+      //$this->add(new atkBoolAttribute("showtodo"));
+      //$this->add(new atkBoolAttribute("showemployeebirthdays"));
+      //$this->add(new atkBoolAttribute("showcustomerbirthdays"));
       $this->add(new atkBoolAttribute("autorefresh"));
       $this->add(new atkNumberAttribute("refresh_interval"));
       $this->add(new atkListAttribute("default_view",array("day","week","month","year","employee"),array(),AF_OBLIGATORY));
@@ -56,12 +56,14 @@
       $this->add(new atkDummyAttribute("group2","<br><b>".$this->text("colors")."</b>:<br>"));
       $this->add(new atkColorPickerAttribute("scheduler_emptycolor"));
       $this->add(new atkColorPickerAttribute("scheduler_emptyworkhourscolor"));
+      /*
       $this->add(new atkDummyAttribute("group3","<br><b>".$this->text("email")."</b>:<br>"));
       $this->add(new atkBoolAttribute("email_reminders"));
       $this->add(new atkBoolAttribute("email_addedevents"));
       $this->add(new atkBoolAttribute("email_updatedevents"));
       $this->add(new atkBoolAttribute("email_removedevents"));
       $this->add(new atkBoolAttribute("email_rejectedevents"));
+      */
       $this->add(new atkDummyAttribute("group4","<br><b>".$this->text("assistant")."</b>:<br>"));
 
       $this->setTable("scheduler_userpreferences");
