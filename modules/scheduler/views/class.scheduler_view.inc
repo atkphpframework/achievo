@@ -240,6 +240,8 @@ class scheduler_view
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$month+1, 1, $year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime&user=".$this->m_viewUser;
+    $currentTime = date("Y-m-d", mktime(0,0,0,$month, 1, $year));
+    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$this->m_viewdate."&small_viewdate=$currentTime&user=".$this->m_viewUser;
 
     /*
     $tmp = '<h3 align="center">';
@@ -253,7 +255,7 @@ class scheduler_view
     if($monthNav) $tmp.= href($prevUrl,"&lt&lt");
     $tmp.='</td>';
     $tmp.='<td align="center" colspan="'.($this->m_showWeekNumbers?6:5).'">';
-    $tmp.= $months[intval($month)].' '.$year;
+  	$tmp.= href($currentUrl,$months[intval($month)].' '.$year);
     $tmp.='</td>';
     $tmp.='<td align="right">';
     if($monthNav) $tmp.= href($nextUrl,"&gt;&gt;");
@@ -844,7 +846,7 @@ class scheduler_view
     $user = getUser();
 
     if(!is_array($item)) return "";
-    
+
     if($itemDate=="") $itemDate=$this->m_viewdate;
     $tmp="";
     if($admin)
@@ -885,7 +887,7 @@ class scheduler_view
       {
         $attendees='<img src="'.$theme->imgPath("single.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
       }
-      else 
+      else
       {
         $attendees='<img src="'.$theme->imgPath("multi.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
       }
