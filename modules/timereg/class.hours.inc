@@ -476,16 +476,13 @@ class hours extends atkNode
       $balancenode = &atkGetNode("timereg.overtime_balance");
       $balance = $balancenode->getBalance(date("Y-m-d", adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4))), $this->m_user);
 
-      $ui = &$this->getUi();
-      $tplvars = array( 'scheduleurl'=>session_url('dispatch.php?atknodetype=calendar.schedule&atkaction=admin&viewdate=',SESSION_NESTED),
+      $tplvars = array( 'scheduleurl'=>session_url('dispatch.php?atknodetype=scheduler.scheduler&viewdate='.$this->m_viewdate.'&view=day&atkaction=admin',SESSION_NESTED),
                         'balance'=>time_format((60*$balance["balance"]),true),
                        );
+      $ui = &$this->getUi();
       return $ui->render($ui->templatePath('hours_adminfooter.tpl'),$tplvars);
-    }
-    else
-    {
-      return "";
-    }
+   }
+   return '';
   }
 
   function getDateJumper()
@@ -617,11 +614,10 @@ class hours extends atkNode
     $weekdata[$row][] = time_format($total);
 
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
-    $output.= $this->weekviewFooter($weekdates, $viewtime);
+    $output.= "<br>".$this->weekviewFooter($weekdates, $viewtime);
     $ui = &atknew("atk.ui.atkui");
     return $ui->renderBox(array("title"=>$this->weekviewTitle($userid, $viewtime),
                                     "content"=>$output));
-
   }
 
   function weekviewTitle($userid, $viewtime)
@@ -667,6 +663,11 @@ class hours extends atkNode
    */
   function weekviewFooter($weekdates, $viewtime)
   {
+    $tplvars = array( 'scheduleurl'=>session_url('dispatch.php?atknodetype=scheduler.scheduler&viewdate='.$this->m_viewdate.'&view=week&atkaction=admin',SESSION_NESTED),
+                      'balance'=>false,
+                     );
+    $ui = &$this->getUi();
+    return $ui->render($ui->templatePath('hours_adminfooter.tpl'),$tplvars);
   }
 
   function postAdd($rec)
@@ -749,10 +750,10 @@ class hours extends atkNode
     }
     else $manualdate = $yesterday;
 
-    if ($manualdate < $day) 
-    {      
+    if ($manualdate < $day)
+    {
       $balancenode->deleteBalance($rec["userid"]["id"], $day);
-    }    
+    }
   }
 
   // Check if this week may be booked..
