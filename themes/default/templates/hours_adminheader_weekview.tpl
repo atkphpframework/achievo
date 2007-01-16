@@ -11,7 +11,7 @@
     {if $lockurl}         &nbsp;&nbsp;<a href="{$lockurl}"><b>{atktext lock}</b>
     {else if $unlockurl}  &nbsp;&nbsp;<b>{atktext unlock}</b>
     {/if}
-    
+
     </td><td valign="top" align="right">
     {$datejumper}
     &nbsp;<input type="submit" value="{atktext goto}">
