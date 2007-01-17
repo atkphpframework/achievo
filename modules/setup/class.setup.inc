@@ -912,10 +912,10 @@
     {
       $node = &atkGetNode($node);
       $table = $node->m_table;
-      $seg = $node->m_seg;
+      $seq = $node->m_seq;
 
       $this->dropTable($table);
-      if($seg>"") $this->dropSequence($seg);
+      if($seq>"") $this->dropSequence($seq);
     }
 
     function action_legacyupgrade(&$handler)
