@@ -24,9 +24,8 @@ class todo extends atkNode
     $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_SEARCHABLE));
     $this->add(new atkManyToOneRelation("contactid"    , "organization.contact",AF_SEARCHABLE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
-    $tmp_relation = new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE);
-    $tmp_relation->setDestinationFilter("(status='active' OR userid='[assigned_to.id]')");
-    $this->add($tmp_relation);
+    $p_attr = &$this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
+    $p_attr->setDestinationFilter("(status='active' OR userid='[assigned_to.id]')");
     $this->add(new atkDateAttribute("entrydate"        , "", "", 0, 0, AF_READONLY_EDIT|AF_HIDE_ADD|AF_OBLIGATORY));
     $this->add(new atkDateAttribute("duedate"          , "","", 0, 0, AF_OBLIGATORY));
     $this->add(new atkDateAttribute("closedate", "","", 0, 0));
@@ -56,8 +55,11 @@ class todo extends atkNode
 
   function recordActions($rec,&$actions,&$mraactions)
   {
-    if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("todo_id"=>$rec["id"])));
-    if ($this->allowed("mra_complete")) $mraactions[] = "mra_complete";
+    if($rec['status']<>'5')
+    {
+      if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("todo_id"=>$rec["id"])));
+      if ($this->allowed("mra_complete")) $mraactions[] = "mra_complete";
+    }
   }
 
   function preUpdate(&$rec)
