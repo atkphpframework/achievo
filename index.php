@@ -40,6 +40,7 @@
     {
       $params = array();
       if (isset($ATK_VARS["atkselector"])) $params["atkselector"] = $ATK_VARS["atkselector"];
+      if (isset($ATK_VARS["atktab"])) $params["atktab"] = $ATK_VARS["atktab"];
       $default_url = session_url(dispatch_url($ATK_VARS["atknodetype"], $ATK_VARS["atkaction"], $params), SESSION_NEW);
     }
     else if (strtolower($user["name"]) == "administrator")
