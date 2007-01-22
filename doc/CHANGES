@@ -68,6 +68,8 @@ Changes in Achievo 1.3
 + Achievo now supports $config_durationformat, which can be 0 (1:30 time 
   format) or 1 (1.5 decimal format). [Yury]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
+* Fixed install bug in the scheduler. The version wasn't updated to the 
+  current patch level version. [dennisjan]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
 * Fixed session problem with master gantt which in some cases would not

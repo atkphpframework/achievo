@@ -13,7 +13,7 @@
   
 
 
-  $setup->setVersion(1);
+  $setup->setVersion(3);
 
   // Check if there exists a module calendar in the versioninfo
   // table. Ifso we need to convert the data
