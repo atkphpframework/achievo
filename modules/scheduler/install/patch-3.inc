@@ -4,7 +4,7 @@
 $setup->installNode("scheduler.scheduler");
 
 // Allow a rather long execution time
-ini_set("max_execution_time", 1800);
+set_time_limit(0);
 
 // !! GUIDO HACK !! Clone the default db config
 global $config_db;

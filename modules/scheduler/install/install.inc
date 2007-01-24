@@ -14,6 +14,7 @@
 
 
   $setup->setVersion(3);
+  set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo
   // table. Ifso we need to convert the data
