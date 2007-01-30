@@ -183,8 +183,11 @@
       $organizationid =     (!empty($organizationpair)) ? atkArrayNvl(decodeKeyValuePair($organizationpair), "organization.id", "") : "";
       $department_name =    $g_sessionManager->pageVar("departmentid");
       $functionlevelswitch =$g_sessionManager->pageVar("functionlevelswitch");
-      $creditor_id =        $g_sessionManager->pageVar("creditor_id");
+      $creditor_id =        $g_sessionManager->pageVar("creditor_id");      
       $outputType =         atkArrayNvl($this->m_postvars, "outputType", "");
+      
+      if (moduleExists('advancedsecurity'))
+        $lowerlevels = atkArrayNvl($this->m_postvars, "lowerlevels", 'off');
 
       $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
 
@@ -424,7 +427,7 @@
 
 
         // selecting functionlevel:
-        $data[] = array(atktext('functionlevel','project').':','<SELECT name="functionlevelswitch">' . $this->get_functionlevels($functionlevelswitch).'</SELECT>');
+        $data[] = array(atktext('functionlevel','project').':',$this->get_functionlevels($functionlevelswitch));
         $data[] = array('<hr>');
         $data[] = array(atktext('activity').': ','<SELECT name="activity_id">'.$this->get_activities($activity_id).'</SELECT>');
         $data[] = array('<hr>');
@@ -589,7 +592,33 @@
       if(!empty($remark)&&$remark!="") $filter.=" AND hours.remark LIKE '%$remark%'";
       //if(!empty($customerid)&&$customerid!="") $filter.= " AND B.customer=".$customerid;
       if($department_name && $department_name != "all") $filter.=" AND userid.department='".escapeSQL($department_name)."'";
-      if($functionlevelswitch && $functionlevelswitch != "all") $filter.=" AND userid.functionlevel='$functionlevelswitch'";
+      
+      if($functionlevelswitch && $functionlevelswitch != "all") 
+      {
+        if (moduleExists('advancedsecurity') && $lowerlevels == 'on')
+        {
+          require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
+
+          $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
+
+          $functionlevels = $flutils->getFunctionlevels();
+          
+          if(is_array($functionlevels) && count($functionlevels) == 1)
+            $filter.=" AND userid.functionlevel = '".$level['id']."'";
+          elseif (is_array($functionlevels) && count($functionlevels) > 1)
+          {
+            foreach ($functionlevels as $level)
+              $levelStr .= $level['id'].',';
+            
+            $levelStr = substr($levelStr,0,-1);
+            
+            $filter.=" AND userid.functionlevel IN ($levelStr)";
+          }
+        }
+        else
+          $filter.=" AND userid.functionlevel='$functionlevelswitch'";
+      }
+      
       if(!empty($creditor_id) && ($creditor_id != "all")) $filter.=" AND creditor_id.id='$creditor_id'";
 
       foreach ($externalHourSurveyColumns as $module => $attrlist)
@@ -614,20 +643,7 @@
         useattrib("project.filterprojectbyorganizationattrib");
         $hoursnode->add(new filterProjectByOrganizationAttrib($organizationid, $roleid, "B")); // the projectphaseattribute uses 'B' as alias for the project table.
       }
-
-
-      if ($nameswitch=="supervisor")
-      {
-        if ($userid!="all")
-        {
-          $filter.= " AND userid.supervisor = '$userid' ";
-        }
-      }
-      else
-      {
-        if ($userid!="all") $filter.= " AND hours.userid ='$userid' ";
-      }
-
+      
       $orderbystatement = array();
       if ($orderby)
       {
@@ -647,7 +663,8 @@
       if(!in_array("id",$col))
         $col[] = "id";
 
-      $data = $hoursnode->selectDb($filter,implode(",",$orderbystatement), "", "", $col);
+      $data = $this->getHourRecords($nameswitch, $userid, $filter, $orderbystatement, $col);
+      
       if ($outputType=="0")
       {
         $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;
@@ -675,6 +692,56 @@
         $rl = &atknew("atk.recordlist.atkcustomrecordlist");
         $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress);
       }
+    }
+    
+    function getHourRecords($nameswitch, $user, $filter, $orderby, $col)
+    {
+      if ($nameswitch == 'supervisor')
+      {
+        $employees = $this->getEmployeesArray($user);
+        $employees[]['id'] = $user;
+
+        $hourrecords = array();
+
+        foreach ($employees as $employee)
+        {
+          $filterExtended = $filter;
+
+          if ($user != 'all')
+            $and = " AND userid.supervisor = '".$employee['id']."'";
+
+          $filterExtended .= $and;
+
+          $records = $this->getHourRecordsFromDB($filterExtended, $orderby, $col);
+          
+          if (is_array($records) && count($records) > 0)
+            $hourrecords = array_merge($hourrecords, $records);
+        }
+
+        return $hourrecords;
+                
+        return null;
+        
+      }
+      else 
+      {
+        if ($user != "all") 
+          $filter.= " AND hours.userid ='$user' ";
+        
+        return $this->getHourRecordsFromDB($filter, $orderby, $col);
+      }
+    }
+    
+    function getHourRecordsFromDB($filter, $orderby, $col)
+    {
+      $hoursnode = &atkGetNode("timereg.hours");
+      
+      $records = $hoursnode->selectDb($filter,implode(",",$orderby), "", "", $col);
+      
+      if (is_array($records) && count($records) > 0)
+        return $records;
+        
+      return null;
     }
 
     function get_activities($act_id)
@@ -735,24 +802,61 @@
     }
 
     function get_employees($user_id)
+    {      
+      $user = getUser();
+      
+      if (is_array($user))
+      {
+        $records = $this->getEmployeesArray($user['id']);
+              
+        if ($user_id == "new" || !$user_id || $user_id=="") { $sel = " SELECTED"; } else { $sel = ""; }
+        $employee_code='<OPTION VALUE="all"'.$sel.'>'.atktext("allusers");
+        $employee_code .= '<OPTION VALUE="'.addslashes($user["id"]).'" '.$sel.'>'.$user["lastname"].', '.$user["firstname"].'</OPTION>';
+        for($i=0,$_i=count($records);$i<$_i;$i++)
+        {
+          if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
+          $employee_code.='<OPTION VALUE="'.addslashes($records[$i]["id"]).'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+        }
+        return $employee_code;
+      }
+    }
+    
+    function getEmployeesArray($managerid)
+    {
+      $records = $this->getEmployeesFromDb($managerid);
+      
+      if (is_array($records))
+      {
+        foreach ($records as $employee)
+        {
+          if (!is_null($employee['id']))
+            $subset = $this->getEmployeesArray($employee['id']);
+        }
+
+        if (!empty($subset))
+          return array_merge($records, $subset);
+        else
+          return $records;
+      }
+    }
+    
+    
+    function getEmployeesFromDb($managerid)
     {
       $db = &atkGetDb();
 
       $sql = "SELECT person.id,person.lastname,person.userid, person.firstname
               FROM person
-              WHERE person.status='active' AND person.role='employee'
+              WHERE person.status='active' AND person.role='employee' AND person.supervisor='$managerid' 
               ORDER BY person.lastname
              ";
-
+      
       $records = $db->getrows($sql);
-      if ($user_id == "new" || !$user_id || $user_id=="") { $sel = " SELECTED"; } else { $sel = ""; }
-      $employee_code='<OPTION VALUE="all"'.$sel.'>'.atktext("allusers");
-      for($i=0,$_i=count($records);$i<$_i;$i++)
-      {
-        if($user_id==$records[$i]["id"]) { $sel="SELECTED"; } else { $sel=""; }
-        $employee_code.='<OPTION VALUE="'.addslashes($records[$i]["id"]).'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
-      }
-      return $employee_code;
+      
+      if (is_array($records) && count($records) > 0)
+        return $records;
+        
+      return null;
     }
 
     function get_roles($role)
@@ -775,18 +879,29 @@
 
     function get_functionlevels($selected)
     {
-      $db = &atkGetDb();
-      $sql = "  SELECT DISTINCT functionlevel.id as id, functionlevel.name as name
+      $harvest = atkHarvestModules("getFuncLevelDropDown", '', true);
+      
+      if (is_array($harvest) && count($harvest) > 0)
+      {
+        if (moduleExists('advancedsecurity'))
+          $func_code = $harvest['advancedsecurity'];
+      }
+      else 
+      {
+        $db = &atkGetDb();
+        $sql = "  SELECT DISTINCT functionlevel.id as id, functionlevel.name as name
                 FROM functionlevel
                 LEFT JOIN person ON (person.functionlevel = functionlevel.id)";
-      $records = $db->getrows($sql);
+        $records = $db->getrows($sql);
 
-      $sel = !$selected || $selected == "all" ? " selected" : "";
-      $func_code = '<OPTION VALUE="all"'.$sel.'>'.atktext("allfunctionlevels").'</OPTION>';
-      foreach($records as $record)
-      {
-        $sel = $selected == $record['id'] ? " selected" : "";
-        $func_code .= '<OPTION VALUE="'.$record['id'].'"'.$sel.'>'.$record['name'].'</OPTION>';
+        $sel = !$selected || $selected == "all" ? " selected" : "";
+        $func_code = '<SELECT name="functionlevelswitch"><OPTION VALUE="all"'.$sel.'>'.atktext("allfunctionlevels").'</OPTION>';
+        foreach($records as $record)
+        {
+          $sel = $selected == $record['id'] ? " selected" : "";
+          $func_code .= '<OPTION VALUE="'.$record['id'].'"'.$sel.'>'.$record['name'].'</OPTION>';
+        }
+        $func_code .= '</SELECT>';
       }
       return $func_code;
     }
@@ -812,5 +927,4 @@
       $content.='<input type="hidden" name="atkaction" value="report">';
     }
   }
-
 ?>

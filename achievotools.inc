@@ -279,7 +279,7 @@
   {
     if ($time==0 && !$displayzero)
     {
-      $result = "&nbsp;";
+      return "&nbsp;";
     }
     
     if(atkconfig("durationformat",0)==DURATIONFORMAT_DECIMAL)
