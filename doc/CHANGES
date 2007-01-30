@@ -68,6 +68,7 @@ Changes in Achievo 1.3
 + Achievo now supports $config_durationformat, which can be 0 (1:30 time 
   format) or 1 (1.5 decimal format). [Yury]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
+* Bug fixed week report nameswitch wasn't working correctly [dennisjan]
 * When you have the right to see the hours of everyone, you will see now 
   all the hours from the persons wich you are allowed to see. [dennisjan]
 * Fixed bug in achievotools when time is 0 the function should return a

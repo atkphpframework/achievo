@@ -138,23 +138,35 @@ class weekreport extends atkNode
 
   function get_employees($userid)
   {
-    $db = &atkGetDb();
+    $harvest = atkHarvestModules("getEmpDropDown", '', true);
+      
+    if (is_array($harvest) && count($harvest) > 0)
+    {
+      if (moduleExists('advancedsecurity'))
+//      $employee_code.='<OPTION VALUE="all">'.atktext("all_users").'</OPTION>';
+      $employee_code .= $harvest['advancedsecurity'];
+    }
+    else
+    {
 
-    $sql = "SELECT id, lastname,firstname,userid
+      $db = &atkGetDb();
+
+      $sql = "SELECT id, lastname,firstname,userid
             FROM person
             WHERE status='active' AND role = 'employee'
             ORDER BY lastname
            ";
 
-    $records = $db->getrows($sql);
+      $records = $db->getrows($sql);
 
-    $employee_code.='<OPTION VALUE="all">'.atktext("all_users").'</OPTION>';
-    for($i=0;$i<count($records);$i++)
-    {
-      if ($userid==$records[$i]["id"]) $selected="selected";
-      else $selected="";
-      $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$selected.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
-    }
+      $employee_code.='<OPTION VALUE="all">'.atktext("all_users").'</OPTION>';
+      for($i=0;$i<count($records);$i++)
+      {
+        if ($userid==$records[$i]["id"]) $selected="selected";
+        else $selected="";
+        $employee_code.='<OPTION VALUE="'.$records[$i]["id"].'" '.$selected.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</OPTION>';
+      }
+      }
     return $employee_code;
   }
 
@@ -282,7 +294,8 @@ class weekreport extends atkNode
 
     $atkorderby = $g_sessionManager->pageVar("atkorderby");
     $userid = $g_sessionManager->pageVar("userid");
-    $nameswitch = $g_sessionManager->pageVar("nameswitch");
+    $employeeswitch = $g_sessionManager->pageVar("nameswitch");
+    
     $showdetails = $g_sessionManager->pageVar("showdetails");
     $showstatus = $g_sessionManager->pageVar("showstatus");
 
@@ -320,10 +333,8 @@ class weekreport extends atkNode
     }
 
     if (!isset($userid)||$userid=="")   			$userid=$g_user["id"];
-    if (!isset($nameswitch)||$nameswitch=="")	$nameswitch="name";
+    if (!isset($employeeswitch)||$employeeswitch=="")	$employeeswitch="name";
     if (!isset($showstatus)||$showstatus=="") $showstatus = "both";
-
-
 
     if ($outputType==0)
     {
@@ -344,7 +355,7 @@ class weekreport extends atkNode
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));
 
-      $nameswitch = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($nameswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>';
+      $nameswitch = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($employeeswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>';
 
       if($view_all)
       {
@@ -453,7 +464,7 @@ class weekreport extends atkNode
                 FROM
                    usercontract, person
                 WHERE ";
-      if ($nameswitch=="supervisor")
+      if ($employeeswitch=="supervisor")
       {
         if ($userid!="all") $query.= " person.supervisor = ".$userid." AND ";
       }
@@ -492,7 +503,7 @@ class weekreport extends atkNode
       $strdow       = array("sun","mon","tue","wed","thu","fri","sat");
 
       // collect data..
-      $raw = $this->collectData($nameswitch, $userid, $startdate, $enddate);
+      $raw = $this->collectData($employeeswitch, $userid, $startdate, $enddate);
       $this->getHarvestedModuleObjects();
 
       for ($i=0,$_i=count($raw);$i<$_i;$i++)
@@ -540,7 +551,7 @@ class weekreport extends atkNode
         // beginning of a week here.
       }
 
-      $locks = $this->getLocks($nameswitch, $userid, $report_start_week, $report_end_week);
+      $locks = $this->getLocks($employeeswitch, $userid, $report_start_week, $report_end_week);
 
       for($i=0,$_i=count($locks);$i<$_i;$i++)
       {
@@ -635,7 +646,7 @@ class weekreport extends atkNode
         $suppress[] = "startdate";
         $suppress[] = "enddate";
       }
-      if ($nameswitch=="name" && $userid!="all") $suppress[] = "userid";
+      if ($employeeswitch=="name" && $userid!="all") $suppress[] = "userid";
 
 
       if ($outputType=="0")
@@ -644,7 +655,7 @@ class weekreport extends atkNode
         {
           $emprec = $this->get_employee($userid);
 
-          if ($nameswitch=="supervisor")
+          if ($employeeswitch=="supervisor")
           {
             $label = atktext("supervisor");
           }
