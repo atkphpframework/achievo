@@ -33,8 +33,7 @@
   atksession();
   atksecure();
 
-  atkimport("atk.utils.atkdebugger");
-  $debugger = &atkDebugger::getInstance();    
+  $debugger = &atkinstance("atk.utils.atkdebugger");
 
   $output = &atkOutput::getInstance();
 
