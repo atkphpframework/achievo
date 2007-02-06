@@ -16,16 +16,17 @@
   // Experimental: If you want to use PostgreSQL, change this value to 
   // "pgsql". For Oracle, use "oci8".
   $config_db["default"]["driver"] = "mysql";
+  
+  
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
-  $config_db["default"]["host"] = "localhost";
-  $config_db["default"]["db"] = "achievo_1_2";
+  $config_db["default"]["host"] = "localhost";  
+  $config_db["default"]["db"]   = "achievo_1_3";
   $config_db["default"]["user"] = "demo";
   $config_db["default"]["password"] = "demo";
-
-
+ 
   // -------------------------------------------
   //           LAYOUT CONFIGURATION
   // -------------------------------------------
@@ -49,6 +50,12 @@
   // The menu to use (For older themes this is 'achievo', for newer this
   //  is 'achievo_modern'
   $config_menu_layout = "achievo_modern";
+
+  // This variable determines wether all manytoone dropdowns should have
+  // the autocompletion feature (instead of dropdowns)
+  //
+  $config_manytoone_autocomplete_default = false;
+
 
 
   // -------------------------------------------
@@ -182,7 +189,8 @@
   // -------------------------------------------
   // This variable indicated whether contacts in the project module are
   // obligatory
-  $config_project_contact_obligatory = true;
+  $config_project_contact_obligatory = false;
+
   // Fill this config with a path relative to the achievo directory.
   // When you add a project the skel will be copied to the destionation directory
   // also a path relative to the achievo directory. And sends a mail when the skel
@@ -224,5 +232,7 @@
   // Also, you should not change the atkconf.inc file, since that would
   // break Achievo.
   //
+  
   include "atkconf.inc";  
+  
 ?>
