@@ -367,7 +367,10 @@ class hours extends atkNode
         $this->redirect(); // go back to where we came from
       }
     }
-    else return $handler->action_save(); // normal behaviour
+    else
+    {
+      return $handler->action_save(); // normal behaviour
+    }
   }
 
   function confirmSaveText()
@@ -422,13 +425,13 @@ class hours extends atkNode
 
     if ($this->m_weekview!=1)
     {
-      if ($this->m_lock=="") $res[] = $handler->invoke("addPage");
+      if ($this->m_lock=="") $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
       $this->addFilter("activitydate",$this->m_viewdate);
       $res[] = $handler->invoke("adminPage");
     }
     else
     {
-      if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $res[] = $handler->invoke("addPage");
+      if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
       $res[] = $this->weekview();
     }
 
