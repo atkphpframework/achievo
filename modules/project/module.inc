@@ -69,7 +69,7 @@
     function timereg_hours_modifier(&$node)
     {
       atkimport("module.project.hourslistener");
-      $node->addListener(new hoursListener(array("save", "update")));
+      $node->addListener(new hoursListener());
     }   
   
   }

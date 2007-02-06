@@ -148,9 +148,7 @@ class email_template extends atkNode
     foreach($tmp_patterns as $pattern)
     {
       $patterns[] = '/{\$'.$pattern.'}/';
-    }
-    atk_var_dump($patterns,"<h1>PATTERNS</h1>");
-    atk_var_dump(array_values($data),"<h1>DATA</h1>");
+    }    
 
     return preg_replace($patterns, array_values($data), $template);
   }

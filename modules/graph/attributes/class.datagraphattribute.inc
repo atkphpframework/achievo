@@ -149,9 +149,7 @@
         }
       }
 
-      $funcname = $graphtype."Plot";
-      atkdebug("CALL $funcname");
-      atk_var_dump($data,"FUNC DATA");
+      $funcname = $graphtype."Plot";      
       return $this->$funcname($data);
 
     }
@@ -162,7 +160,6 @@
        // We only support one dataset, so we only use the first piece of data.
       $dataset = reset($data);
       $title = key($data);
-      atk_var_dump("BAR PLOT DATA");
 
       // Setup the basic parameters for the graph
       $graphwidth   = atkconfig("graph_width",550);

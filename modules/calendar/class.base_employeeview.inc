@@ -84,7 +84,7 @@
 
       // get all items for this workhour
       //if there are items then change the background color to yellow
-      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]["userid"]);
+      $allItems = $this->getItems($this->workHours[$j], $date, $employees[$i]["userid"], false);
       if (count($allItems) > 0) { $bgcolor = "#FFFF00"; }
 
       $buff .= "<td bgcolor='$bgcolor' valign='top' align='left'></td>";
@@ -100,7 +100,7 @@
   * get the items for the specified date
   * fills an array with the items
   */
-   function getItems($time, $date, $employee)
+   function getItems($time, $date, $employee, $showself=true)
    {
      $db = &atkGetDb();
 
@@ -127,7 +127,9 @@
      $query->addCondition("schedule.startdate <='$date' AND schedule.enddate >= '$date'");
      $query->addCondition("schedule.starttime <='$time' AND schedule.endtime > '$time'");
      $user = getUser();
-     $query->addCondition("(schedule.owner='".$user["id"]."' OR (person.userid='".$employee."' AND person.role='employee') OR schedule.all_users = 1)");
+     
+     ($showself==true) ? $query->addCondition("(schedule.owner='".$user["id"]."' OR (person.userid='".$employee."' AND person.role='employee') OR schedule.all_users = 1)")
+                       : $query->addCondition("((person.userid='".$employee."' AND person.role='employee') OR schedule.all_users = 1)");
 
      $query->addOrderBy('starttime');
      $querystring = $query->buildSelect(TRUE);

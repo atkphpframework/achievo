@@ -5,7 +5,6 @@
   
   $titles = $db->getrows("SELECT DISTINCT title FROM person WHERE title IS NOT NULL AND title<>''");
   
-  atk_var_dump($titles);
   foreach ($titles as $title)
   {
     atkdebug("Inserting $title");

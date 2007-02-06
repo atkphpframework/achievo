@@ -124,7 +124,7 @@
         if ($attr->hasFlag(AF_READONLY))
           $field = $attr->display($filterrecord).$attr->hide($filterrecord);
         else
-          $field = $attr->edit($filterrecord);
+          $field = $attr->edit($filterrecord,"","report");
         $filters[] = array($label, $field);
       }
       return $filters;
@@ -175,7 +175,11 @@
 
       // Render a box around all elements and put them in an array
       $boxedblocks = array();
-      $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>'<div class="content">'.$parameterbar.'</div>')).'</div>';
+      if (atkConfig("report_hide_parameters", false))
+        $boxedblocks[] = '<div class="displaynone">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>$parameterbar)).'</div>';
+      else
+        $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$this->text('parameters'), "content"=>'<div class="content">'.$parameterbar.'</div>')).'</div>';
+
       foreach ($contentelements as $titlekey => $content)
       {
         $boxedblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$titlekey, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
@@ -185,13 +189,31 @@
       $actionpagecontent = $ui->render("actionpage.tpl", array("blocks"=>$boxedblocks, "title"=>$ui->title($this->m_module, $this->m_type, "report")));
       $page->addContent($actionpagecontent);
     }
-
+    
+   
     /**
      * Enter description here...
      *
      */
     function action_report()
     {
+      $page = &$this->getPage();
+
+      list($type, $attribute, $partial) = explode('.', $this->m_partial);
+      if ($type == 'attribute')
+      {
+        $attr = &$this->getAttribute($attribute);
+        if ($attr == NULL)
+        {
+          atkerror("Unknown / invalid attribute '$attribute' for node '".$this->m_node->atkNodeType()."'");
+          return;
+        }
+
+        $result = $attr->partial($partial, 'edit');
+        $page->addContent($result);
+        return;
+      }   
+      
       // Get the filterrecod
       $filterrecord = $this->getFilterRecord();
 

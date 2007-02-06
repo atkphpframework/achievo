@@ -125,6 +125,8 @@
       {
         $this->setOrder("startdate DESC, starttime");
       }
+      
+      $this->setDescriptorTemplate("[title]");
     }
 
 

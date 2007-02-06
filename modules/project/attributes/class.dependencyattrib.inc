@@ -106,7 +106,7 @@ class dependencyAttribute extends atkAttribute
               FROM
                 phase
               WHERE
-                projectid = ".$projectid." ORDER BY name";
+                projectid = '".$projectid."' ORDER BY name";
 
     $recs = $db->getrows($query);
     return $recs;

@@ -79,6 +79,11 @@ development of new features.
   sponsored development of the Legal module, the Open Office document
   engine and several enhancements to the billing and docmanager modules.
 
+* Scheepswerf Reimerswaal, The Netherlands (http://www.swreimerswaal.com)
+  and Linpro, Norway (http://www.linpro.no) sponsored the addition of 
+  several Ajax enhancements, such as an improved way of selecting projects/
+  phases/activities for time registration.
+
 To become a sponsor, please read http://www.achievo.org/support/sponsor.
 
 
@@ -218,6 +223,8 @@ Rene Bakx                             <rene@ibuildings.nl>
 Dennis Luitwieler                     <dennis@ibuildings.nl>
 Christian Nancy          [ChristianN] <christian@gonetworkconsulting.com>  
 Dennis-Jan Broerse       [dennisjan]  <dennisjan@ibuildings.nl>
+Roger Kristiansen                     <rogerk@linpro.no>
+June Henriksen                        <juneih@linpro.no>
 
 Names between [] are the names they are refered by in the CHANGES file. (If
 different from their first name).

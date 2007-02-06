@@ -51,10 +51,11 @@
       $org = time_format(($value*60), true);
       if ($value>0 && atkArrayNvl($record, $this->m_phaseid_field, "")!="")
       {
+        /* @var $phaseattrib atkAttribute */
         $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
-        $params["phaseid"] = $phaseattrib->value2db($record);
+        $params["phaseid"] = "phase.id='".$phaseattrib->value2db($record)."'";
         $params["startdate"] = "2000-01-01";
-        $params["enddate"] = date("Y-m-d");
+        $params["enddate"] = date("Y-m-d");        
         if(isset($record["personid"]["id"]))
         {
           $params["userid"] = $record["personid"]["id"];

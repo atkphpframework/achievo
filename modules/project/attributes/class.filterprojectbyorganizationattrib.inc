@@ -72,7 +72,7 @@
                         "projectmembers", 
                         (!empty($this->m_projectalias)?$this->m_projectalias:"project").".id = projectmembers.projectid".
                         (!empty($this->m_roleid)?" AND projectmembers.role=".$this->m_roleid:""), 
-                        false);
+                        true);
         $query->addJoin("person", "person", "person.id = projectmembers.personid AND person.company='".$this->m_organizationid."'", false);      
         $query->setDistinct(true); // the join we perform could lead to duplicate records.
       }

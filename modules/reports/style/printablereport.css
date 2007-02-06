@@ -9,3 +9,7 @@
 .content{
   visibility: visible;
 }
+
+.displaynone{
+  display: none;
+}

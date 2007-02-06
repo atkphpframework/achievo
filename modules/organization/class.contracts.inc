@@ -87,9 +87,9 @@ class contracts extends atkNode
   	$result = $attr->edit($record, $prefix, $mode )	;
   	$result = substr($result, 0, -6);										//Remove the '<br />' from the end
 
-  	$return_url = dispatch_url("organization.contracts", "linkproject", array("projectid"=>"[id]"));
- 		$target_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter"=>"projectid=[id]","atktarget"=>atkurlencode($return_url)));
- 		$select = session_url($target_url,SESSION_NESTED);
+  	$target_url = dispatch_url("organization.contracts", "linkproject", array("projectid"=>"[id]", "contractid"=>$record["id"]));
+ 		$select_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter"=>"projectid=[id]","atktarget"=>atkurlencode($target_url)));
+ 		$select = session_url($select_url,SESSION_NESTED);
 
  		//Add link to result
     return $result."&nbsp;&nbsp;&nbsp;".href($select,atktext("selectandaddnewproject","organization","contracts"))."<br />";
@@ -181,15 +181,12 @@ class contracts extends atkNode
 
   function action_linkproject(&$handler)
  	{
- 		global $g_sessionManager;			//post values will be stored in this variable until overwritten with another value.
-
-    if ($g_sessionManager->pageVar("projectid")!="" && $this->m_postvars["atkselector"] != "")
+ 	  $db = &atkGetDb();
+ 	  $contractid = $db->escapeSQL($this->m_postvars["contractid"]);
+ 	  $projectid = $db->escapeSQL($this->m_postvars["projectid"]);
+    if ($projectid!="" && $contractid != "")
     {
-      $record = $this->selectDb($this->m_postvars["atkselector"], "", "", "", array("id"));
-      $contractid = $record[0]["id"];
-
-    	$db = &atkGetDb();
-      $db->query("UPDATE project SET contract_id = $contractid WHERE project.id = ".$this->m_postvars["projectid"]);
+      $db->query("UPDATE project SET contract_id = $contractid WHERE project.id = ".$projectid);
     }
     $this->redirect(session_url("", SESSION_BACK, 2));
  	}
@@ -273,13 +270,13 @@ class contracts extends atkNode
     return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
   }
 
-  function descriptor_dev()
+  function descriptor_commit()
   {
     return "[description]";
   }
+
   function descriptor($rec)
   {
-    atk_var_dump($rec);
     $ret = "";
     if(isset($rec["contractnumber"]) && $rec["contractnumber"]!="") $ret.=$rec["contractnumber"];
     if(isset($rec["contractname"]) && $rec["contractname"]!="")

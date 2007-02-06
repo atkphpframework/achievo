@@ -195,7 +195,7 @@ class atkProjectPhaseAttribute extends atkAttribute
 
   function value2db($rec)
   {
-    return $rec[$this->fieldName()]["phaseid"];
+    return empty($rec[$this->fieldName()]["phaseid"]) ? 0 : $rec[$this->fieldName()]["phaseid"];
   }
 
   function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")

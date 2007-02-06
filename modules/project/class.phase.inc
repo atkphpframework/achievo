@@ -48,7 +48,7 @@
 
       // template *must* come after phase_activity, because phase_activity does a delete of all
       // records on store, so template must be stored after phase_activity.
-      $this->add(new phasetemplateAttribute("template","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_EDIT));
+      $this->add(new atkManyToOneRelation("template","project.tpl_phase", AF_HIDE_LIST|AF_FORCE_LOAD));
 
       $this->add(new atkDateAttribute("startdate", "", ""));
       $this->add(new atkDateAttribute("enddate", "", ""));
@@ -101,8 +101,8 @@
 
         // Parse it using the record
         atkimport("atk.utils.atkstringparser");
-        $parser = new atkStringParser($url);
-        $url = $parser->parse($record);
+        $parser = &new atkStringParser($url);
+        $url = $parser->parse($record,true);
 
         // Return a link
         return href($url, $record["name"], SESSION_NESTED);
@@ -321,6 +321,33 @@
           return COLOR_WARNING;
         }
       }
+    }
+    
+    function recordActions($record, &$actions, &$mraactions)
+    {
+      //when we have a phase that belongs to a template, the records cannot be deleted in an admin screen.
+      if(isset($record["template"]["id"]) && ($record["template"]["id"]!="") && $record["template"]["id"]!=0)
+      {
+        unset($actions["delete"]);
+      }
+    }
+    
+    function preAdd(&$rec)
+    {      
+      //if the phase is added, check if the name is filled in and the template is
+      if(empty($rec["name"]))
+      {
+        if(!empty($rec["template"]["id"]))
+        {
+          $node = &atkGetNode("project.tpl_phase");
+          /* @var $node atkNode */
+          $select = sprintf($node->m_table.".".$node->primaryKeyField()."='%s'",$rec["template"]["id"]);
+          list($record) = $node->selectDb($select,"","","",array("name"));
+          if($record!=NULL)
+            $rec["name"] = $record["name"];
+        }
+      }
+      return true;
     }
   }
 ?>

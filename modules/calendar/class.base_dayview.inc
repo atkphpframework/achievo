@@ -151,9 +151,14 @@
     $r = $db->getRows($q);
 
     $colors  = array();
-    $legend  = "<TABLE border='0' cellPadding='1'><TBODY><TR><TD bgColor='#000000'><TABLE width='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY>";
+    
+    $r_cnt = count($r);
+    $legend = "";
+    
+    if($r_cnt>0)
+      $legend  = "<TABLE border='0' cellPadding='1'><TBODY><TR><TD bgColor='#000000'><TABLE width='100%' border='0' cellPadding='2' cellSpacing='0'><TBODY>";
 
-    for ($i=0;$i<=count($r)-1;$i++)
+    for ($i=0;$i<=$r_cnt-1;$i++)
     {
      $colors[$r[$i]["id"]]["desc"] = $r[$i]["description"];
      $colors[$r[$i]["id"]]["fore"] = $r[$i]["fgcolor"];
@@ -166,7 +171,9 @@
      $legend                      .= $tmpLegend;
     }
 
-    $this->legend .= $legend."</TBODY></TABLE></TD></TR></TBODY></TABLE>";
+    if($r_cnt>0)
+      $this->legend .= $legend."</TBODY></TABLE></TD></TR></TBODY></TABLE>";
+      
     return $colors;
    }
 

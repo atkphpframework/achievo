@@ -21,7 +21,7 @@
   /**
    * @internal Load used classes
    */
-  atkimport("atk.utils.atkactionlistener");
+  atkimport("atk.utils.atktriggerlistener");
 
   /**
    * The hoursListener class
@@ -30,7 +30,7 @@
    * @package achievo
    * @subpackage modules
    */
-  class hoursListener extends atkActionListener
+  class hoursListener extends atkTriggerListener
   {
 
     /**
@@ -81,28 +81,37 @@
       return sprintf("%02d-%02d-%04d", $arrdate["day"], $arrdate["month"], $arrdate["year"]);
     }
 
+    function postAdd(&$record)
+    {
+      return $this->handleTrigger($record);
+    }
+    
+    function postUpdate(&$record)
+    {
+      return $this->handleTrigger($record);
+    }
+    
     /**
      * Notification handler function to be triggered when the action we're listening to is executed
      *
-     * @param String $action Name of the action that was executed
      * @param Array $record The record being updated
      */
-    function actionPerformed($action, $record)
+    function handleTrigger(&$record)
     {
       // This handler should only be called when saving or updating hours
-      if ((!atk_in_array($action, array("save", "update"))) || ($this->m_node->m_type != "hours"))
+      if ($this->m_node->m_type != "hours")
       {
-        atkerror("Cannot call the hoursListener when performing a '$action' action on the '" . $this->m_node->m_type . "' node");
-        return;
+        atkerror("Cannot call the hoursListener when performing an action on the '" . $this->m_node->m_type . "' node");
+        return false;
       }
 
       // Get the phase record from the database and throw an error if not found
       $phasenode = &atkGetNode("project.phase");
-      $phaserecords = $phasenode->selectDb("phase.id='".$record["phaseid"]["phaseid"]."'");
+      $phaserecords = $phasenode->selectDb("phase.id='".$record["phaseid"]["id"]."'");      
       if (count($phaserecords) == 0)
       {
         atkerror("Cannot find phase to which the hours were registered.");
-        return;
+        return false;
       }
 
       // Get the incomplete deliverable from the database
@@ -124,7 +133,7 @@
         if (count($projectrecords) == 0)
         {
           atkerror("Cannot find project to which the phase belongs on which the hours were registered.");
-          return;
+          return false;
         }
 
         // Try to find the person who registered the hours and throw an error if not found
@@ -133,7 +142,7 @@
         if (count($employeerecords) == 0)
         {
           atkerror("Cannot find employee who registered the hours.");
-          return;
+          return false;
         }
 
         // Try to find the projectcoordinator and exit (with debug messag) if not found
@@ -141,7 +150,7 @@
         if (count($coordinatorrecords) == 0)
         {
           atkdebug("Cannot find the coordinator of the project to which the hours were registered.");
-          return;
+          return false;
         }
 
         // Initialize the subject and recipient for the mail
@@ -171,6 +180,8 @@
         // Send the mail
         usermail($to, $subject, $body);
       }
+      
+      return true;
     }
   }
 ?>

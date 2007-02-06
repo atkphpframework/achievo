@@ -15,8 +15,6 @@ Changes in Achievo 1.3
   $config_password_minlowerchars, $config_password_minalphabeticchars,
   $config_password_minnumbers, $config_password_minspecialchars variables.
   [Guido]
-+ Added translations for "alldepartments", "allfunctionlevels",
-  "private_appointment", "example" and  "startday". [Guido]
 + Added ability for users to select their own language. [Boy]
 + Added achievo_modern theme. [Norman,Boy]
 + Added the ability to globaly disallow specific pim items to be used.
@@ -65,6 +63,14 @@ Changes in Achievo 1.3
   documentstructure. [dennisjan]
 + Added config to use a startingpoint for overtime_balance hours, if no
   records can be found to determine a new balance. [Dennis, Ivo]  
++ Added Ajax functionality in hours node. [Dennis]
++ atkManyToOneRelations that have the AF_LARGE flag set are autocompletion 
+  fields. [Dennis]
++ Added initial value for workperiod in hours node for autocompletion
+  fields. [Dennis]
++ Added a phase-template grid to the project node. From this grid phase
+  templates can be selected. [Dennis]
++ Time registration can now be locked per month. [Roger, June]
 + Achievo now supports $config_durationformat, which can be 0 (1:30 time 
   format) or 1 (1.5 decimal format). [Yury]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
@@ -138,7 +144,6 @@ Changes in Achievo 1.3
 * Updated version information. [Guido]
 * Consolidated all date fields to adhere to the format specified in the
   language files. [Guido, Ivo]
-* Fixed translation of the Reports > Projectstatus page title. [Guido]
 * Converted the role's description field into a multi-line text field.
   [Guido]
 * Updated the Todo module with:
@@ -189,8 +194,6 @@ Changes in Achievo 1.3
 * Made phase and project names clickable in select screens. [Guido]
 * Changed abbreviation field in projects into a projectcode field. [Guido]
 * Made projectcode visible and searchable in the project admin screen.
-  [Guido]
-* Fixed miscoded translation identifier for 'Previous day' in hoursadmin.
   [Guido]
 * Fixed datejumper not working due to typo in sessionform reference in
   hoursadmin. [Guido]
@@ -271,6 +274,39 @@ Changes in Achievo 1.3
 * Fixed: If hourregistrations are made or edited in the past, the latest 
   manual correction was not searched for in the past, resulting sometimes 
   in an incorrect calculation of overtime_balance. [Dennis]
+* Fixed descriptor of organization.contracts node [Dennis]
+* Fixed: projectstatus now also shows phases without a startdate 
+  and/or enddate. [Dennis]
+* Fixed: fatal error in class.project.inc. [Dennis]
+* Fixed: Removed border from atkboolattribute in Internet Explorer. 
+  [Dennis]
+* Fixed: javascript error when clicking on a column in the 
+  weekreport. [dennis]
+* Fixed: startdate and enddate were not correctly determined in
+  the weekreport node. [Dennis]
+* Fixed: When using a graphAttribute on a page, the submit buttons did
+  not work in IE due to a subform added by the graphAttribute. 
+  [Peter,Dennis]
+* Fixed: The stats tab in project node wasn't visible in the view action.
+  [Peter, Dennis]  
+* Fixed: When using the graph module, PHP errors and deprecated messages 
+  were visible to the user. Configured jpg-config.inc to hide these
+  messages. [Peter, Dennis]  
+* Fixed: Link-Name of phase on select-page of the phasenode was broken and
+  caused a 'session expired' notice. [Dennis]
+* In the hours node, the viewuser dropdown can be configered by overriding
+  the functions viewuserFilter and viewuserOrderBy and uses the descriptor 
+  template of the employee node. [Dennis]  
+* The hoursnode that is used by the hoursurvey can be set to a different node
+  by overriding the function getHoursNodeName(). [Dennis]  
+* Basereport now also supports autocompletion. [Dennis, Guido, Peter]  
+* Fixed: initial user was always reset in the hoursnode. [Dennis]  
+* Social security and bankaccount number fields are now hidden when adding a
+  new employee. [Ivo]
+* When adding a new project, the currently logged in user is now set as
+  the project coordinator by default. [Ivo]
+* Moved achievo_modern theme to new location. This should go unnoticed but
+  you may need to clear the achievotmp/themes dir when upgrading. [Ivo]
   
 Changes in Achievo 1.2.1
 ------------------------

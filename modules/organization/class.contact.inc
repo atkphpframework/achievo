@@ -28,7 +28,6 @@ class contact extends person
   {
     return "[lastname], [firstname]";
   }
-
 }
 
 ?>

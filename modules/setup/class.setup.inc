@@ -759,7 +759,6 @@
     {
       $db = &atkGetDb();
       $meta = $db->metadata($table, true);
-      atk_var_dump($meta,"META VAN $table");
       for ($i=0, $_i=count($meta); $i<$_i; $i++)
       {
         if (strtolower($meta[$i]["name"]) == strtolower($column))

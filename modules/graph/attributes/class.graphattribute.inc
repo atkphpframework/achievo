@@ -114,15 +114,15 @@
 
     function edit($record, $prefix, $mode)
     {
-      return $this->showGraph($record);
+      return $this->showGraph($record, false);
     }
 
     function display($record, $mode)
     {
-      return $this->showGraph($record);
+      return $this->showGraph($record, false);
     }
 
-    function showGraph($record=array())
+    function showGraph($record=array(), $addForm=true)
     {
       $imgname = $this->fieldName();
       $res = '<img name="'.$imgname.'" src="'.$this->_graphUrl($record).'">';
@@ -145,10 +145,10 @@
                 }\n";
 
         $res.='</script>';
-        $res.='<form name="dummyform">';
+        if ($addForm) $res.='<form name="dummyform">';
         foreach ($this->m_dynparams as $paramname=>$possiblevalues)
         {
-          $res.=atktext($paramname).": ";
+          $res.= '<br />'.atktext($paramname).": ";
 
           for ($i=0, $_i=count($possiblevalues); $i<$_i; $i++)
           {
@@ -159,7 +159,7 @@
                         atktext($possiblevalues[$i]);
           }
         }
-        $res.='</form>';
+        if ($addForm) $res.='</form>';
       }
 
       return $res;

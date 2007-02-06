@@ -35,6 +35,8 @@
   class hours_approve extends hours
 	{
 
+    var $m_lockmode;
+
     /**
      * Constructor
      */
@@ -49,27 +51,11 @@
 	  	// Make sure the year session variable is available at all times
   	  $g_sessionManager->pageVar("year");
   	  $g_sessionManager->pageVar("viewdate");
-  	  $g_sessionManager->pageVar("weekid");
+  	  $g_sessionManager->pageVar("periodid");
   	  $g_sessionManager->pageVar("viewuser");
 
-//$hourslocknode = &atkGetNode("timereg.hours_lock");
-//$users=array(367,794);
-//atk_var_dump($users);
-//foreach($users as $userid)
-//{
-//  atkdebug("<h1>CHECK</h1>");
-//  atk_var_dump($userid);
-//  $min=rand(1, 30);
-//  $max=rand($min, 40);
-//  for($i=$min; $i<=$max; $i++)
-//  {
-//    $record = $hourslocknode->initial_values();
-//    $record["week"] = "2005" . $i;
-//    $record["userid"] = array("id"=>$userid);
-//    $record["approved"] = (rand(0,1)==1)?1:null;
-//    $hourslocknode->addDb($record);
-//  }
-//}
+  	  $this->m_lockmode = atkConfig::get("timereg", "lockmode", "week");
+
 	  }
 
     /**
@@ -107,20 +93,23 @@
 	  function weekviewFooter()
 	  {
 	    // Read the hours_lock id
-	    $weekid = $this->m_postvars["weekid"];
+	    $periodid = $this->m_postvars["periodid"];
 
-	    // If the weekid isnt numeric, then throw an error, no action can be taken so no buttons are added to the footer.
-	    if (!is_numeric($weekid))
+	    // If the periodid isnt numeric, then throw an error, no action can be
+      // taken so no buttons are added to the footer.
+	    if (!is_numeric($periodid))
 	    {
-	      atkerror("Posted weekid isn't numeric");
+	      atkerror("Posted periodid isn't numeric");
 	      return "";
 	    }
 
-	    // Retrieve the hours_lock record for the specified weekid
+	    // Retrieve the hours_lock record for the specified periodid
 	    $hourslocknode = &atkGetNode("timereg.hours_lock");
-      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."' AND hours_lock.userid='".$this->m_user."'");
+      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$periodid."'
+                                   AND (hours_lock.userid='".$this->m_user."'
+                                        OR hours_lock.userid IS NULL)");
 
-      // Don't display any buttons if there are no hourlocks found
+     // Don't display any buttons if there are no hourlocks found
       if (count($hourlocks)==0)
       {
         return "";
@@ -129,8 +118,7 @@
       // Determine the approval status
       $hourlockapproved = ($hourlocks[0]["approved"]==1);
 
-
-      $output = '<br />' . atktext("hours_approve_thestatusofthisweekis") . ": ";
+      $output = '<br />' . sprintf(atktext("hours_approve_thestatusofthisperiodis"), $this->m_lockmode) . ": ";
       if ($hourlockapproved)
       {
         $output.= '<font color="#009900">' . atktext("approved") . '</font><br /><br />';
@@ -142,11 +130,22 @@
 
       // Add an approve or disapprove button to the weekview
 	    if ($hourlockapproved)
-  	    $output.= atkButton(atktext("disapprove"), dispatch_url("timereg.hours_approve","disapprove", array("weekid"=>$weekid)), SESSION_NESTED);
+  	    $output.= atkButton(atktext("disapprove"),
+                            dispatch_url("timereg.hours_approve",
+                                         "disapprove",
+                                         array("periodid"=>$periodid)),
+                            SESSION_NESTED);
 	    else
 	    {
-	      $output.= atkButton(atktext("approve"), dispatch_url("timereg.hours_approve","approve"));
-  	    $output.= "&nbsp;&nbsp;".atkButton(atktext("disapprove"), dispatch_url("timereg.hours_approve","disapprove", array("weekid"=>$weekid)), SESSION_NESTED);
+	      $output.= atkButton(atktext("approve"),
+                            dispatch_url("timereg.hours_approve","approve"));
+
+  	    $output.= "&nbsp;&nbsp;".
+                  atkButton(atktext("disapprove"),
+                            dispatch_url("timereg.hours_approve",
+                                         "disapprove",
+                                         array("periodid"=>$periodid)),
+                            SESSION_NESTED);
 	    }
 
 	    // Return the weekview including button
@@ -195,12 +194,12 @@
 	    // Add the stylesheet to the page
 	    $this->addStyle("style.css");
 
-	    // If a week is selected for a specific employee, then show the approval screen
+	    // If a period is selected for a specific employee, then show the approval screen
 	    if ((!is_null($this->m_postvars["viewuser"])) && (!is_null($this->m_postvars["viewdate"])) && (($this->m_postvars["year"] == null) || ($this->m_postvars["year"] == substr($this->m_postvars["viewdate"], 0, 4))))
 	    {
 	    	// Try to find the hour_lock in de database
 	    	$hourslocknode = &atkGetNode("timereg.hours_lock");
-	    	$hourlocks = $hourslocknode->selectDb("hours_lock.id='" . $this->m_postvars["weekid"] . "'");
+	    	$hourlocks = $hourslocknode->selectDb("hours_lock.id='" . $this->m_postvars["periodid"] . "'");
 
 	    	// Only show the weekview if the lock still exists:
 	    	if (count($hourlocks) > 0)
@@ -216,8 +215,8 @@
 
 	    }
 
-	    // Add the approvedweekview to the page
-	    $content = $this->approvedweekview();
+	    // Add the approvedperiodview to the page
+	    $content = $this->approvedperiodview();
 	    $page->addContent($content);
 
 	    // Return an empty string (output is handled through the page
@@ -232,12 +231,13 @@
 	   * @param type name description
 	   * @return type description
 	   */
-	  function approvedweekview()
+	  function approvedperiodview()
 	  {
 	    // Get the current user
 	    $user = getUser();
 
-	    // If the year is given in postvars, then view the approvedweekview for the specified year
+	    // If the year is given in postvars, then view the approvedperiodview
+      // for the specified year
 	    if (is_numeric($this->m_postvars["year"]) && strlen($this->m_postvars["year"])==4)
 	      $year = trim($this->m_postvars["year"]);
 
@@ -264,10 +264,10 @@
       $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'"><br>';
       //$header.= atkbutton(atktext("view"), dispatch_url("timereg.hours_approve", "admin"), SESSION_REPLACE);
 
-      // Add an explanation to the approvedweekview
+      // Add an explanation to the approvedperiodview
 	    $footer = atktext("remark") . ": ";
       $footer.= (!$this->allowed("any_user")) ? atktext("hours_approve_remarkmanager") . '<br />' : '';
-	    $footer.= atktext("hours_approve_remarkweekblock");
+      $footer.= sprintf(atktext("hours_approve_remarkperiodblock"), ucfirst($this->m_lockmode));
 
       if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true)
         $footer .= "<br />" . atktext('hours_approve_only_show_not_approved');
@@ -297,7 +297,7 @@
 
       $boxcontents = $ui->render("vertical.tpl", $tplvars_vertical);
 
-	    // Add a conversion link to the approvedweekview if datastructurs outdated
+	    // Add a conversion link to the approvedperiodview if datastructurs outdated
 
 	    // Put the result into a box
 	    $boxedresult = $ui->renderBox(array("title"=>atktext("title_houradmin_approve"),"content"=>$boxcontents));
@@ -320,18 +320,29 @@
       );
 	  }
 
-	  function getdatefromweek($yearweek)
+	  function getdatefromperiod($yearperiod)
 	  {
 	    $weekEndDay = 0;
 	      // 0 = Sunday, 1 = Monday etc.
-	    $year = (int) substr($yearweek, 0, 4);
-	    $week = (int) substr($yearweek, -2, 2);
-	    $dayOfYear = 4 + (($week - 1) * 7);
-	    $date = mktime(0, 0, 0, 1, $dayOfYear, $year);
-	    $dayOfWeek = date("w", $date);
-	    $daysToAdd = ($weekEndDay - $dayOfWeek + 7) % 7;
-	    $date += $daysToAdd * 24*60*60;
-	    return $date;
+	    $year = (int) substr($yearperiod, 0, 4);
+	    $period = (int) substr($yearperiod, -2, 2);
+
+      if ($this->m_lockmode == "month")
+      {
+        // Last day of month
+        $date = mktime(0, 0, 0, $period+1, 0, $year);
+      }
+      else
+      {
+        // Weekly locking
+        $dayOfYear = 4 + (($period - 1) * 7);
+        $date = mktime(0, 0, 0, 1, $dayOfYear, $year);
+        $dayOfWeek = date("w", $date);
+        $daysToAdd = ($weekEndDay - $dayOfWeek + 7) % 7;
+        $date += $daysToAdd * 24*60*60;
+      }
+
+      return $date;
 	  }
 
     /**
@@ -348,7 +359,7 @@
 	    $employeenode = &atkGetNode("employee.employee");
 
 	    // Do we select only the employees the current user is maanger of, or all employees
-	    $where = $this->allowed("any_user") || $userid == -1 || is_null($user_id) ? "" : "person.supervisor = '$userid'";
+	    $where = $this->allowed("any_user") || $userid == -1 || is_null($userid) ? "" : "person.supervisor = '$userid'";
 
 	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
 
@@ -370,7 +381,6 @@
 
         $g_db = &atkGetDb();
         $results = $g_db->getRows($query);
-        atk_var_dump($results,"<h1>RESULTS</h1>");
 
         if (is_array($results) && sizeof($results) > 0)
         {
@@ -392,12 +402,12 @@
 	    {
 	      $users[$key]["id"]   = $user["id"];
 	      $users[$key]["name"] = $user["firstname"].' '.$user["lastname"];
-	      $users[$key]["weeks"]=array();
+	      $users[$key]["period"]=array();
 
-	      $houslocknode = &atkGetNode("timereg.hours_lock");
+	      $hourslocknode = &atkGetNode("timereg.hours_lock");
 
 	      $extra_selector = "";
-	      if (moduleExists('weektimereg') && atkconfig::get('weektimereg','approve_week_per_coordinator') == true)
+	      if (moduleExists('timereg') && atkconfig::get('timereg','approve_period_per_coordinator') == true)
 	      {
 	        $loggedinuser = &getUser();
 	        $current_user_id = $loggedinuser['id'];
@@ -405,64 +415,72 @@
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
 	      }
 
-	      $lockedweeks = $houslocknode->selectDb("hours_lock.userid='".$user["id"]."'" . $extra_selector);
+        // We sort and limit the query so we get approved entries for this user if there are any.
+        // Approved entries will override non-approved ones.
+        $lockedperiods = $hourslocknode->selectDb("(hours_lock.userid='".$user["id"]."' OR hours_lock.userid IS NULL)" . $extra_selector, "approved ASC");
 
-	      foreach ($lockedweeks as $lockedweek)
+	      foreach ($lockedperiods as $lockedperiod)
 	      {
-	        if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true && $lockedweek["approved"] == 1)
-	          continue; // only display not-approved weeks
+	        if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true && $lockedperiod["approved"] == 1)
+	          continue; // only display not-approved periods
 
-	        if (substr($lockedweek["week"],0,4)==$year)
+	        if (substr($lockedperiod["period"],0,4)==$year)
 	        {
-	          $users[$key]["weeks"][substr($lockedweek["week"],4)]["id"]= $lockedweek['id'];
-	          $users[$key]["weeks"][substr($lockedweek["week"],4)]["approved"] = $lockedweek["approved"];
+	          $users[$key]["period"][substr($lockedperiod["period"],4)]["id"]= $lockedperiod['id'];
+	          $users[$key]["period"][substr($lockedperiod["period"],4)]["approved"] = $lockedperiod["approved"];
 	        }
 	      }
-	      ksort($users[$key]["weeks"]);
+	      ksort($users[$key]["period"]);
 	    }
+
 	    return $users;
 	  }
 
 	  function getEmployeesTable($userid, $year)
 	  {
-	    // Get the employees/weeks data from the database
+	    // Get the employees/periods data from the database
 	    $users = $this->getEmployeesData($userid, $year);
 
 	    // Initialize the tabledata array
 	    $tabledata = array();
 
 	    // Add the header columns to the tabledata
-	    $tabledata[] = array(atktext("employee"), atktext('weeks'));
+	    $tabledata[] = array(atktext('employee'), atktext('periods'));
 
 	    // Loop through the users array in order to add a row for every user
 	    foreach ($users as $user)
 	    {
-	      // Add all weeks as links into the weeks string
-	      $weeks = "";
-	      foreach ($user['weeks'] as $weeknumber => $weekdata)
+	      // Add all periods as links into the periods string
+	      $periods = '';
+	      foreach ($user['period'] as $periodnumber => $perioddata)
 	      {
 
-	        // Prefix weeknumbers below 10 with a padding zero
-	        if ($weeknumber<10) $prefix = 0;
+	        // Prefix periodnumbers below 10 with a padding zero
+	        if ($periodnumber<10 && strlen($periodnumber) == 1 ) $prefix = 0;
 	        else $prefix = null;
 
-	        // Determine the color to be used when displaying the weeknumber
-	        if ($weekdata["approved"]=="1")
+	        // Determine the color to be used when displaying the periodnumber
+	        if ($perioddata["approved"]=="1")
 	          $color = "#009900";
 	        else
 	          $color = "#FF0000";
 
-	        // Add a weeknumberlink to the weeks string
-	        $weeks.=href('dispatch.php?viewuser='.$user["id"].'&viewdate='.date("Y-m-d",$this->getdatefromweek($year.$prefix.$weeknumber))."&weekid=".$weekdata["id"],$weeknumber, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
+          // Translate month number to month name, if we are using monthly locking
+          $monthlist = dateutil::monthlist();
+          $periodname = ($this->m_lockmode == "month") ? atktext($monthlist[ltrim($periodnumber, "0")]) : $periodnumber;
+
+	        // Add a periodnumberlink to the periods string
+	        $periods.=href('dispatch.php?viewuser='.$user["id"].'&viewdate='.date("Y-m-d",$this->getdatefromperiod($year.$prefix.$periodnumber))."&periodid=".$perioddata["id"],$periodname, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
+
 	      }
 
-	      if ($weeks == "")
+	      if ($periods == "")
 	      {
-	        $weeks = atktext("hours_approve_noblockedweeksyet");
+          $periods = sprintf(atktext('hours_approve_noblockedperiod'), $this->m_lockmode);
 	      }
 
-	      // Add a row to the table containing the employeename and the week links
-	      $tabledata[] = array($user["name"], $weeks);
+	      // Add a row to the table containing the employeename and the period links
+	      $tabledata[] = array($user["name"], $periods);
 	    }
 
 	    // Let the tablerenderer do the rendering job
@@ -475,29 +493,43 @@
 
 	  function action_approve(&$handler)
 	  {
-	    global $g_sessionManager;
-	    $viewdate = $this->m_postvars['viewdate'];
-	    $weekid = $this->m_postvars["weekid"];
+      global $g_sessionManager;
+      $viewdate = $this->m_postvars['viewdate'];
+      $viewuser = $this->m_postvars['viewuser'];
+      $periodid = $this->m_postvars['periodid'];
 
-	    $hourslocknode = &atkGetNode("timereg.hours_lock");
+	    $hourslocknode = &atkGetNode('timereg.hours_lock');
 
-	    if (is_numeric($weekid))
+	    if (is_numeric($periodid))
 	    {
 	      $extra_selector = "";
-	      if (moduleExists('weektimereg') && atkconfig::get('weektimereg','approve_week_per_coordinator') == true)
+	      if (moduleExists('timereg') && atkconfig::get('timereg','approve_period_per_coordinator') == true)
 	      {
 	        $loggedinuser = &getUser();
 	        $current_user_id = $loggedinuser['id'];
 	        if ($current_user_id != -1 && !is_null($current_user_id))
 	         $extra_selector = " AND hours_lock.coordinator='$current_user_id' ";
-	      }
+	    }
 
-	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'" . $extra_selector);
+	      $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$periodid."'" . $extra_selector);
 	      $hourlock = $hourlocks[0];
 
-	      $hourlock["approved"] = 1;
-	      $hourslocknode->updateDb($hourlock);
-	    }
+        $hourlock["approved"] = 1;
+
+        // If the userid of the lock is empty, this is a lock that is valid
+        // for all users.
+        if (empty($hourlock['userid']['id']))
+        {
+          // Create copy of lock, valid for only this user.
+          // This lock will override the more general one.
+          $hourlock['userid']['id'] = $viewuser;
+          $hourslocknode->addDb($hourlock);
+        }
+        else
+        {
+        $hourslocknode->updateDb($hourlock);
+        }
+      }
 
 	    $g_sessionManager->pageVar("viewdate","");
 	    $this->redirect();
@@ -511,13 +543,13 @@
         return $handler;
       }
 
-      // Get the weekid
-	    $weekid = $this->m_postvars["weekid"];
+      // Get the periodid
+	    $periodid = $this->m_postvars["periodid"];
 
-	    // Throw an error if the weekid is not numeric
-	    if (!is_numeric($weekid))
+	    // Throw an error if the periodid is not numeric
+	    if (!is_numeric($periodid))
 	    {
-	      atkerror("Given weekid is not numeric");
+	      atkerror("Given periodid is not numeric");
   	    return "";
 	    }
 
@@ -525,14 +557,14 @@
 	    $hourslocknode = &atkGetNode("timereg.hours_lock");
 
 	    // Get the lock
-	    $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$weekid."'");
+	    $hourlocks = $hourslocknode->selectDb("hours_lock.id='".$periodid."'");
 	    $hourlock = $hourlocks[0];
       $hoursapproved = $hourlock["approved"];
 
 	    // Check if the lock exists
 	    if (count($hourlocks)==0)
 	    {
-	      atkerror("The given week lock can not be found");
+	      atkerror("The given period lock can not be found");
 	      return "";
 	    }
 
@@ -541,8 +573,10 @@
 
 	  	// Make sure the reason session variable is available at all times
 	  	$g_sessionManager->pageVar("reason");
+      $g_sessionManager->pageVar("atkdodisapprove");
 
       $page = &$this->getPage();
+      atkimport("atk.ui.atktheme");
       $theme = &atkTheme::getInstance();
 
       if (!isset($this->m_postvars["reason"]))
@@ -584,10 +618,10 @@
       {
 
         // Show confirmation dialog
-        $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove", array("weekid"=>$this->m_postvars["weekid"],"reason"=>$this->m_postvars["reason"])) . '" method="post">';
+        $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove", array("periodid"=>$this->m_postvars["periodid"],"reason"=>$this->m_postvars["reason"])) . '" method="post">';
         $content.= session_form(SESSION_BACK);
         $content.= '<table name="entryform" id="entryform" cellspacing="0">';
-        $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . atktext("hours_approve_disapproveofapprovedweekconfirmation", "timereg") . '</b></td></tr>';
+        $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . sprintf(atktext("hours_approve_disapproveofapprovedperiodconfirmation", "timereg"), $this->m_lockmode) . '</b></td></tr>';
         $content.= '</table>';
         $content.= '<br>';
         $content.= '<input type="submit" class="btn_save" name="atkdodisapprove" value="'.atktext('disapprove').'">&nbsp;&nbsp;';
@@ -606,10 +640,12 @@
         return $handler;
       }
 
+
       // Get the employee
       $employeenode = &atkGetNode("employee.employee");
       $employees = $employeenode->selectDb("person.id = '".$hourlock["userid"]["id"]."'");
-      if (count($employees)==0)
+
+      if (!empty($hourlock["userid"]["id"]) && count($employees)==0)
       {
         atkerror("Could not find the owner of the hours lock");
         return "";
@@ -619,18 +655,21 @@
       // Send an e-mail
       $to = $employee["email"];
       $subject = atktext("hours_approve_registrationdisapprovedsubject");
-      $weekno = substr($hourlock["week"], 4);
-      $yearno = substr($hourlock["week"], 0, 4);
-      $body = sprintf(atktext("hours_approve_registrationdisapprovedbody"), $weekno, $yearno, $this->m_postvars["reason"]);
+      $monthlist = dateutil::monthlist();
+      $periodno = substr($hourlock["period"], 4);
+      $period = ($this->m_lockmode == "month") ? $monthlist[$periodno] : $periodno; //:substr($hourlock["period"], 4);
+      $yearno = substr($hourlock["period"], 0, 4);
+      $body = sprintf(atktext("hours_approve_registrationdisapprovedbody"), $this->m_lockmode, $period, $yearno, $this->m_postvars["reason"]);
       usermail($to, $subject, $body);
 
       // Delete the hours_lock
-      if (atkconfig::get('weektimereg','approve_week_per_coordinator'))
+      if (atkconfig::get('timereg','approve_period_per_coordinator'))
       {
-        $hourslocknode->deleteDb("hours_lock.week = '{$hourlock["week"]}' AND hours_lock.userid = '{$hourlock["userid"]["id"]}'");
+        $hourslocknode->deleteDb("hours_lock.period = '{$hourlock["period"]}' AND hours_lock.userid = '{$hourlock["userid"]["id"]}'");
       }
       else
-	      $hourslocknode->deleteDb("hours_lock.id='".$weekid."'");
+        // Doesn't delete the period if it is a lock that is made for "everyone"
+	      $hourslocknode->deleteDb("hours_lock.id='".$periodid."' AND hours_lock.userid IS NOT NULL");
 
 	    // Redirect to the hours_approve view
 	    $this->redirect();
@@ -648,7 +687,7 @@
 	    $approvedhours = $db->getrows("SELECT * FROM hours_approved");
 	    $lockedhours = $db->getrows("SELECT * FROM hours_lock");
 
-        // Get the locked hours by week
+        // Get the locked hours by weeks
 	    $lockedhoursbyweek = array();
 	    foreach ($lockedhours as $lockedhour)
 	    {
@@ -664,7 +703,7 @@
 	      }
 	      else
 	      {
-	        $db->query("INSERT INTO `hours_lock` (`week`,`userid` ,`approved`) VALUES ('".$approvedhour['week']."', '".$approvedhour['userid']."', '1');");
+	        $db->query("INSERT INTO `hours_lock` (`period`,`userid` ,`approved`) VALUES ('".$approvedhour['week']."', '".$approvedhour['userid']."', '1');");
 	      }
 	    }
 
