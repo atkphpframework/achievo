@@ -104,4 +104,29 @@
   //
   $config_test_connectiontimeout = 60;
 
+  // ---------------------------------------
+  //          AJAX CONFIG 
+  // ---------------------------------------
+  // This variable configures the visibility of the parameters in printed
+  // reports such as the hoursurvey.
+  $config_report_hide_parameters = false;
+
+  // This variable determines how many characters a user must enter
+  // before an autocompletion search is performed.
+  //
+  $config_manytoone_autocomplete_minchars = 2;
+
+  //The search mode of the autocomplete fields.
+  //Can be 'startswith', 'exact' or 'contains'.
+  $config_manytoone_autocomplete_searchmode = "contains";
+
+  // Value determines wether the search of the autocompletion is case-sensitive.
+  $config_manytoone_autocomplete_search_case_sensitive = false;
+
+
+  // Should all many-to-one relations that have the AF_LARGE flag set also
+  // have the AF_RELATION_AUTOCOMPLETE flag set?
+  //
+  $config_manytoone_autocomplete_large = true;
+
 ?>
