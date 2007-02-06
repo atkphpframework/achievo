@@ -38,24 +38,22 @@
     // no nodetype passed, or session expired
 
     $page = &atknew("atk.ui.atkpage");
-    atkimport("atk.ui.atkui");
-    $ui = &atkUI::getInstance();
+    $ui = &atkinstance("atk.ui.atkui");
     $theme = &atkTheme::getInstance();
     $output = &atkOutput::getInstance();
 
     $page->register_style($theme->stylePath("style.css"));
 
-    $destination = "index.php?atklogout=true";
+    $destination = "";    
     if(isset($ATK_VARS["atknodetype"]) && isset($ATK_VARS["atkaction"]))
     {
-      $destination .= "&atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
-      if (isset($ATK_VARS["atkselector"])) $destination .="&atkselector=".$ATK_VARS["atkselector"];
+      $destination = "&atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
+      if (isset($ATK_VARS["atkselector"])) $destination.="&atkselector=".$ATK_VARS["atkselector"];
     }
 
-    $title = atktext("title_session_expired");
-    $contenttpl = '<br>%s<br><br><input type="button" onclick="top.location=\'%s\';" value="%s"><br><br>';
-    $content = sprintf($contenttpl, atktext("explain_session_expired"), str_replace("'", "\\'", $destination), atktext("relogin"));
-    $box = $ui->renderBox(array("title" => $title, "content" => $content));
+     $box = $ui->renderBox(array("title"=>atktext("title_session_expired"),
+                                 "content"=>'<br><br>'.atktext("explain_session_expired").'<br><br><br><br>
+                                            <a href="index.php?atklogout=true'.$destination.'" target="_top">'.atktext("relogin").'</a><br><br>'));    
 
     $page->addContent($box);
 
@@ -64,8 +62,6 @@
   else
   {
     atksecure();
-    require "theme.inc";
-
 
     $lockType = atkconfig("lock_type");
     if (!empty($lockType)) atklock();
@@ -75,7 +71,9 @@
 
     if (is_object($obj))
     {
-      $obj->dispatch($ATK_VARS);
+      atkimport("atk.ui.atkpage");
+      $flags = array_key_exists("atkpartial", $ATK_VARS) ? HTML_PARTIAL : HTML_STRICT;
+      $obj->dispatch($ATK_VARS, $flags);
     }
     else
     {
