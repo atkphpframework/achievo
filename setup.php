@@ -228,6 +228,7 @@
 
   $dbs = array("mysql"=>"mysql_pconnect",
                "mysql41"=>"mysqli_connect",
+               "mysqli"=>"mysqli_connect",
                "oci8"=>"OCILogon",
                "oci9"=>"OCILogin",
                "pgsql"=>"pg_connect");
