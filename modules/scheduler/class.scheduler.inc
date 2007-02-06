@@ -46,7 +46,6 @@
 
     function scheduler()
     {
-      atk_var_dump($this->m_postvars,"scheduler::scheduler -> Postvars");
       $sessionmanager = &atkGetSessionManager();
       $this->m_view = $sessionmanager->pageVar("view");
       $this->m_viewUser = $sessionmanager->pageVar("user");
@@ -391,7 +390,6 @@
 
     function _doDeleteSingle()
     {
-      atk_var_dump($this->m_postvars,"POSTVARS DELETE SINGLE");
       $db = &$this->getDb();
         $name = "atk".atkconfig("database")."query";
         $query = atknew($name);
@@ -457,7 +455,6 @@
     function action_editserieorsingle()
     {
       global $ATK_VARS;
-      atk_var_dump($_REQUEST);
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
       if ($this->m_postvars["confirmedit"]=="")
@@ -472,7 +469,6 @@
       }
       elseif($this->m_postvars["confirmedit"]!="" && $this->m_postvars["confirm"]!="")
       {
-        atk_var_dump($this->m_postvars,"CALL EDIT  HANDLER");
         $handler = &$this->getHandler("edit");
         return $handler->action_edit();
       }
@@ -557,7 +553,6 @@
     
     function action_update(&$handler)
     {
-      atk_var_dump($this->m_postvars,"POSTVARS");
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
       $itemDate = $sessionmanager->stackVar("itemdate");
@@ -713,7 +708,6 @@
     function UpdateScheduleRec(&$rec)
     {
       atkdebug("schedule::UpdateScheduleRec");
-      atk_var_dump($rec);
       if($rec["recur"]=="once")
       {
         $rec["cyclus"]["cyclus_startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
@@ -793,7 +787,6 @@
     function updateSchedulerDates($rec)
     {
        $db = &atkGetDb();
-       atk_var_dump($rec);
        $id = $rec["id"];
        $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='$id'";
        $db->query($sql);
@@ -812,7 +805,6 @@
 
        atkdebug("start/end date: $startdate - $enddate");
        $dates = schedulertools::getDates($rec,$startdate,$enddate);
-       atk_var_dump($dates,"DATES");
 
        foreach($dates as $date)
        {

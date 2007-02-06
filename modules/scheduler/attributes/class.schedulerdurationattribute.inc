@@ -11,8 +11,7 @@ class schedulerDurationAttribute extends atkAttribute
    function edit($rec="",$fieldprefix="")
    {
      $id = $fieldprefix.$this->formName();
-     $fieldvalue = $this->_minutes2array(atkArrayNvl($rec, $this->fieldName(), 0));
-     atk_var_dump($fieldvalue,"SCHEDULERDURATIONATTRIBUTE FIELDVALUE");
+     $fieldvalue = $this->_minutes2array(atkArrayNvl($rec, $this->fieldName(), 0));     
      
      $result = "";
      $result .= '<select id="'.$id.'_days" name="'.$fieldprefix.$this->formName().'[days]">';

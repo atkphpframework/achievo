@@ -281,7 +281,6 @@ class scheduler_dayview extends scheduler_view
         //$timeLap   = ceil($this->matrixInfo[$time][$j]["duration"]/ceil(60/$this->m_scheduletime));
         $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
         $info      = $this->m_matrixInfo[$time][$j]["info"];
-        atk_var_dump($info,"INFO RECORD");
         if(trim($item) != "")
         {
          if ($timeLap != 0)
@@ -364,8 +363,7 @@ class scheduler_dayview extends scheduler_view
    * @return integer containing number of <TD>'s needed within the display mode
    */
     function _getCols()
-    {
-      atk_var_dump($this->m_itemMatrix,"ITEM MATRIX");
+    {      
      $cols = 0;
      while (list($key, $val) = each($this->m_itemMatrix))
      {

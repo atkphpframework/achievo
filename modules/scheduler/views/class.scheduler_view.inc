@@ -530,7 +530,6 @@ class scheduler_view
               AND scheduler_scheduler.lastdate > $tmp_startdate AND scheduler_scheduler.lastdate < $tmp_enddate
               AND scheduler_cyclus.cyclus_enddate >='$startdate' AND scheduler_cyclus.cyclus_enddate <= '$enddate' ";
     $nrows = $db->getrows($sql);
-    atk_var_dump($nrows,"UPDATE RECURRING EVENTS");
     for($i=0,$_i=count($nrows);$i<$_i;$i++)
     {
       $id = $nrows[$i]["id"];
@@ -725,8 +724,7 @@ class scheduler_view
           }
         }
       }
-    }
-    atk_var_dump($this->m_appointmentItems,"Appointments");
+    }    
     $this->getAttendees($items);
 
   }
@@ -753,8 +751,7 @@ class scheduler_view
 
     $query->addField('lastname', ' ', 'person');
     $query->addField('firstname', ' ', 'person');
-    $query->addField('role', ' ', 'person');
-    atk_var_dump($items,"SANDY ITEMS");
+    $query->addField('role', ' ', 'person');    
     $query->addCondition("scheduler_attendees.schedule_id IN (".implode(",",$items).")");
 
     $querystring = $query->buildSelect(TRUE);
@@ -950,8 +947,7 @@ class scheduler_view
    */
   function _setUserSettings()
   {
-   $user = getUser();
-    atk_var_dump($user,"CURRENT USER");
+   $user = getUser();    
     $schedulerNode = &getNode("scheduler.scheduler");
     $userprefs = $schedulerNode->getUserSchedulerPrefs($user["id"]);
 

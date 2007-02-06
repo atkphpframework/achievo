@@ -110,7 +110,6 @@ class scheduler_monthview extends scheduler_view
     {
     	$tmp.='<td>&nbsp;</td>';
     }
-    //atk_var_dump($this->m_appointmentItems);
    	$holiday = &getNode("scheduler.scheduler_holidays");
 
     for ($i=1;$i<=$days_in_month;$i++)

@@ -13,7 +13,6 @@ class scheduler_employeeview extends scheduler_viewday
   function setEmployees($employees)
   {
     $this->m_employees = $employees;
-    atk_var_dump($this->m_employees,"EMPLOYEES");
   }
 
   function _getNav()
@@ -73,8 +72,6 @@ class scheduler_employeeview extends scheduler_viewday
         $employee_appointments[$this->m_employees[$i]]["allday"] = $this->m_allDayItems;
         $employee_appointments[$this->m_employees[$i]]["appointments"] = $this->m_itemMatrix;
       }
-      atk_var_dump($this->m_allDayItems);
-      atk_var_dump($this->m_itemMatrix,"MATRIX");
       for($i=0;$i<count($this->m_allDayHours);$i++)
       {
         if($this->m_allDayHours[$i]=="12:00") $tmp.=$header;
