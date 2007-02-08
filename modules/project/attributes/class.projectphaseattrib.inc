@@ -170,7 +170,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     $result = "";
     if (!empty($value["projabbreviation"]))
       $result .= $value["projabbreviation"] . ": ";
-    $result .= $value["projname"] . " - " . $value["phasename"];;
+    $result .= $value["projname"] . " - " . $value["phasename"];
     return $result;
   }
 

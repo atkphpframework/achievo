@@ -28,6 +28,11 @@
       parent::atkManyToOneRelation($name, $destination,$flags);      
     }
     
+    function setStore($store=false)
+    {
+      $this->m_store = $store;
+    }
+    
     function storageType($mode)
     {      
       if($this->m_store == false)
