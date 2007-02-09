@@ -245,9 +245,8 @@ class weekreport extends atkNode
           $obj->weekreport_addToQuery($query);
       }
     }
+    
     $rows = $db->getrows($query->buildSelect());
-//    atk_var_dump($query->buildSelect(), "<h1>QUERY</h1>");    
-//    atk_var_dump($rows, "<h1>COLLECT DATA</h1>");
     
     return $rows;
   }
@@ -268,7 +267,7 @@ class weekreport extends atkNode
     require_once(moduleDir('report').'utils/class.reportutils.inc');
     $repUtils = &atknew('report.utils.reportutils');
 
-    $functionlevel_condition = $this->getFunctionLevelCondition($functionlevelswitch, $lowerlevels, $repUtils);
+    $functionlevel_condition = $repUtils->getFunctionLevelCondition($functionlevelswitch, $lowerlevels);
     
     if ($nameswitch == 'supervisor')
     {
@@ -295,48 +294,7 @@ class weekreport extends atkNode
     
     return $hourrecords;
   }
-  
-  function getFunctionLevelCondition($functionlevelswitch, $lowerlevels, $repUtils)
-  {
-    $condition = "";
-    
-    if ($functionlevelswitch && $functionlevelswitch != "all")
-    {
-      if (moduleExists('advancedsecurity') && $lowerlevels == 'on')
-      {
-        require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
-        $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
-        
-        $levels = $flutils->getFunctionLevelEqualAndBelow($functionlevelswitch);
-        
-        if (!empty($levels))
-        {        
-          // foreach: uit $level de $level_ids halen
-          if (count($levels) == 0)
-            $ids = 'null';
-          else 
-          {
-            foreach ($levels as $level) $ids .= "'".$level['id']."',";
-            
-            $ids = substr($ids, 0, -1); // strip the last comma
-          }
-          
-          $condition = " person.functionlevel IN (".$ids.")";
-        }
-        else
-        {
-          $condition = " person.functionlevel='$functionlevelswitch'";
-        }
-      }
-      else
-      {
-        $condition = " person.functionlevel='$functionlevelswitch'";
-      }
-    }    
-    
-    atkdebug("<h2>Condition = $condition </h2>");
-    return $condition;
-  }
+
 
   function getLocks($nameswitch, $userid, $report_start_week, $report_end_week)
   {
@@ -583,33 +541,7 @@ class weekreport extends atkNode
       $report_end_week = weekstamp($endstamp);
 
       // determine contracthours per week..
-      $query = "SELECT
-                  uc_hours, startdate, enddate, person.id, lastname, firstname
-                FROM
-                   usercontract, person
-                WHERE ";            
-
-      if ($employeeswitch=="supervisor")
-      {
-        if ($userid!="all")
-        {
-          $query.= " person.supervisor = ".$userid." AND ";
-        }
-      }
-      else
-      {
-        if ($userid!="all") 
-        {
-          $query.= " usercontract.userid =".$userid." AND ";
-        }
-      }
-      $query.= "  startdate <= '$enddate'
-                  AND (enddate >= '$startdate' OR enddate IS NULL)
-                  AND usercontract.userid = person.id
-                ORDER BY
-                  startdate";
-      $db = &atkGetDb();
-      $contracts = $db->getrows($query);
+      $contracts = $repUtils->getContractHours($employeeswitch, $userid, $enddate, $startdate, $functionlevelswitch, $lowerlevels);
 
       $end = endOfWeek(date("Y-m-d", $endstamp));
       $newendstamp = adodb_mktime(0,0,0,substr($end,5,2),substr($end,8,2)+1,substr($end,0,4));
@@ -634,13 +566,14 @@ class weekreport extends atkNode
         }
       }
 
+      $db = &atkGetDb();
       $periods      = $db->getRows("SELECT * FROM workperiod");
       $strdow       = array("sun","mon","tue","wed","thu","fri","sat");
 
       // collect data..
       $raw = $this->getHourRecords($employeeswitch, $userid, $startdate, $enddate, $functionlevelswitch, $lowerlevels);
-      $this->getHarvestedModuleObjects();
-
+      $this->getHarvestedModuleObjects();      
+      
       for ($i=0,$_i=count($raw);$i<$_i;$i++)
       {
         //is this timeregistration a overtimecompensation?
@@ -685,7 +618,7 @@ class weekreport extends atkNode
         // Since we are looping days now, it is easiest if we calculate the
         // beginning of a week here.
       }
-
+      
       $locks = $this->getLocks($employeeswitch, $userid, $report_start_week, $report_end_week);
 
       for($i=0,$_i=count($locks);$i<$_i;$i++)

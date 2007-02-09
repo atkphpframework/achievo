@@ -172,5 +172,106 @@ class reportutils
     }
     return $func_code;
   } 
+
+  /**
+   * Get where-clause for functionlevel
+   * This depends on the state of the functionlevelswitch and lowerlevels-checkbox
+   *
+   * @param string $functionlevelswitch
+   * @param string $lowerlevels
+   * @return string $condition where-clause
+   */
+  function getFunctionLevelCondition($functionlevelswitch, $lowerlevels)
+  {
+    $condition = "";
+    
+    if ($functionlevelswitch && $functionlevelswitch != "all")
+    {
+      if (moduleExists('advancedsecurity') && $lowerlevels == 'on')
+      {
+        require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
+        $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
+        
+        $levels = $flutils->getFunctionLevelEqualAndBelow($functionlevelswitch);
+        
+        if (!empty($levels))
+        {        
+          // foreach: uit $level de $level_ids halen
+          if (count($levels) == 0)
+            $ids = 'null';
+          else 
+          {
+            foreach ($levels as $level) $ids .= "'".$level['id']."',";
+            
+            $ids = substr($ids, 0, -1); // strip the last comma
+          }
+          
+          $condition = " person.functionlevel IN (".$ids.")";
+        }
+        else
+        {
+          $condition = " person.functionlevel='$functionlevelswitch'";
+        }
+      }
+      else
+      {
+        $condition = " person.functionlevel='$functionlevelswitch'";
+      }
+    }    
+    
+    atkdebug("reportutils::getFunctionLevelCondition | Condition = $condition");
+    return $condition;
+  }  
+  
+  /**
+   * Get contracthours for seleted users
+   * This depends on the state of the functionlevelswitch and lowerlevels-checkbox
+   *
+   * @param string $employeeswitch
+   * @param string $userid
+   * @param string $enddate
+   * @param string $startdate
+   * @param string $functionlevelswitch
+   * @param string $lowerlevels
+   * @return array $contracts
+   */
+  function getContractHours($employeeswitch, $userid, $enddate, $startdate, $functionlevelswitch, $lowerlevels)
+  {
+    // determine contracthours per week..
+    $query = "SELECT
+                uc_hours, startdate, enddate, person.id, lastname, firstname
+              FROM
+                 usercontract, person
+              WHERE ";            
+
+    if ($employeeswitch=="supervisor")
+    {
+      if ($userid!="all")
+      {
+        $query.= " person.supervisor = ".$userid." AND ";
+      }
+    }
+    else
+    {
+      if ($userid!="all") 
+      {
+        $query.= " usercontract.userid =".$userid." AND ";
+      }
+    }
+    
+    $functionlevel_condition = $this->getFunctionLevelCondition($functionlevelswitch, $functionlevel_condition);
+    if (!empty($functionlevel_condition)) $functionlevel_condition = "AND ".$functionlevel_condition;
+    
+    $query.= "  startdate <= '$enddate'
+                AND (enddate >= '$startdate' OR enddate IS NULL)
+                AND usercontract.userid = person.id 
+                $functionlevel_condition
+                ORDER BY startdate";
+    
+    $db = &atkGetDb();
+    $contracts = $db->getrows($query);    
+    
+    return $contracts;
+  }
 }
 ?>
