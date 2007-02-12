@@ -715,7 +715,7 @@ class hoursurvey extends atkNode
 
         $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
 
-        $functionlevels = $flutils->getFunctionLevelEqualAndBelow($functionlevelswitch);
+        $functionlevels = $flutils->getFunctionLevelBelow($functionlevelswitch, true);
 
         if(is_array($functionlevels) && count($functionlevels) == 1)
           $filterarray[] = $this->_addFilterArrayItem("functionlevel"," = '".$level['id']."'","userid");

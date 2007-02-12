@@ -192,7 +192,7 @@ class reportutils
         require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
         $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
         
-        $levels = $flutils->getFunctionLevelEqualAndBelow($functionlevelswitch);
+        $levels = $flutils->getFunctionLevelEqualAndBelow($functionlevelswitch, true);
         
         if (!empty($levels))
         {        
