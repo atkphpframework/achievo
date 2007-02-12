@@ -13,6 +13,7 @@ useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 atkimport("module.timereg.locking");
 atkimport("module.timereg.timeregutils");
+atkimport("module.project.utils.projectutils");
 
 /**
  * Converts the starttime - endtime notation to a duration notation
@@ -30,6 +31,9 @@ function convertHoursToDuration(&$record)
   $record["time"] = $endtime - $starttime;
 }
 
+/**
+ * @todo Probably no longer used
+ */
 function is_leapyear($date)
 {
   if ($date["year"]%4 == 0)
@@ -231,7 +235,7 @@ class hours extends atkNode
     //we need the projectid to sort on
     $phase = &new atkManyToOneRelation("phaseid","project.phase",AF_OBLIGATORY|AF_FORCE_LOAD);
     $phase->setDestinationFilter("phase.projectid='[projectid.id]'");
-    $oneActivity = ($this->getActivityCount() == 1);
+    $oneActivity = (projectutils::getActivityCount() == 1);
     if(!$oneActivity)
       $phase->addDependee("activityid");
     $this->add($phase,null, 30);
@@ -285,7 +289,7 @@ class hours extends atkNode
 
     if ($mode == 'add' || $mode == 'edit' || $mode == 'select')
     {
-      $activityids = $this->getAvailableActivityIds($record["phaseid"]["id"]);
+      $activityids = projectutils::getAvailableActivityIds($record["phaseid"]["id"]);
       if(count($activityids)>0)
         $filter = "activity.id IN (".implode(",",$activityids).")";
       else
@@ -294,24 +298,6 @@ class hours extends atkNode
       $attr->addDestinationFilter($filter);
     }
     return $attr->getSelectableRecords($record, $mode);
-  }
-
-  function getAvailableActivityIds($phaseid)
-  {
-    if(!isset($phaseid))
-      return array();
-
-    $phaseactivityNode = &atkGetNode("project.phase_activity");
-    $selector = sprintf("phaseid='%s'",$phaseid);
-    $recs = $phaseactivityNode->selectDb($selector);
-    //get the ids
-    $ids = array();
-    foreach ($recs as $rec)
-    {
-      if(isset($rec["activityid"]["id"]) && $rec["activityid"]["id"]!='' && $rec["activityid"]["id"]!=0)
-        $ids[]= $rec["activityid"]["id"];
-    }
-    return $ids;
   }
 
   function processGlobalVar($name, $value="")
@@ -348,16 +334,6 @@ class hours extends atkNode
     }
 
     $this->add(new atkDurationAttribute("time",atkconfig("timereg_resolution", "15m"), atkconfig("max_bookable",10).'h',$durationflags));
-  }
-
-  /**
-   * Determine the number of available activities
-   */
-  function getActivityCount()
-  {
-    $db = &atkGetDb();
-    $result = $db->getrows("SELECT count(*) as activitycount FROM activity");
-    return $result[0]['activitycount'];
   }
 
   function setLock()
@@ -427,7 +403,7 @@ class hours extends atkNode
                    );
 
     // Set an initial activityid if there's exactly one activity
-    if ($this->getActivityCount() == 1) {
+    if (projectutils::getActivityCount() == 1) {
       $db = &atkGetDb();
       $result = $db->getrows("SELECT id FROM activity");
       $values["activityid"]["id"] = $result[0]["id"];
@@ -1079,7 +1055,7 @@ class hours extends atkNode
   function validateActivityId(&$record)
   {
     // If no activities available, trigger an error:
-    if ($this->getActivityCount() == 0) {
+    if (projectutils::getActivityCount() == 0) {
       triggerError($record, "activityid", "Please add one or more activities first");
     }
     else {

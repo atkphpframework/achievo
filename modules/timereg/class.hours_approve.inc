@@ -234,7 +234,7 @@
 	  function approvedperiodview()
 	  {
 	    // Get the current user
-	    $user = getUser();
+	    $user = &getUser();
 
 	    // If the year is given in postvars, then view the approvedperiodview
       // for the specified year
@@ -245,12 +245,19 @@
 	    else
 	      $year = date('Y');
 
+      $selected_functionlevel_id = $this->m_postvars["functionlevelswitch"];
+      
+      if (moduleExists('advancedsecurity')) 
+        $lowerlevels = atkArrayNvl($this->m_postvars, "lowerlevels", 'off');
+      else
+        $lowerlevels = "off";
+
 	    // Get the singleton instance of the ui renderer
 	    $ui = &atkui::getInstance();
 
       // Compose the tplvars containing content and legend
       $tplvars_contentwithlegend = array(
-        "content" => $this->getEmployeesTable($user["id"], $year),
+        "content" => $this->getEmployeesTable($user["id"], $year, $selected_functionlevel_id, $lowerlevels),
         "legenditems" => $this->getLegendData()
       );
 
@@ -259,14 +266,19 @@
 	    // Use a numberattrib to get a display for the year inputbox
 	    $yearattrib = new atkNumberAttribute("year",0,6);
 
+	    $func_code = $this->get_functionlevels($selected_functionlevel_id, $lowerlevels);
+	    
       // Display the year input form
-      $header = atktext("year")." : ".$yearattrib->edit(array("year"=>$year));
-      $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'"><br>';
+      $header = "";      
+      if ($func_code != null) $header.= atktext('functionlevel','project').': '.$func_code.'<br />';
+      $header.= atktext("year")." : ".$yearattrib->edit(array("year"=>$year)).'&nbsp;&nbsp;';
+      $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'">';
       //$header.= atkbutton(atktext("view"), dispatch_url("timereg.hours_approve", "admin"), SESSION_REPLACE);
 
       // Add an explanation to the approvedperiodview
-	    $footer = atktext("remark") . ": ";
+	    $footer = atktext("remark") . ": <br />";
       $footer.= (!$this->allowed("any_user")) ? atktext("hours_approve_remarkmanager") . '<br />' : '';
+      $footer.= (moduleExists('advancedsecurity')) ? atktext("hours_approve_advancedsecurity") . '<br />' : '';
       $footer.= sprintf(atktext("hours_approve_remarkperiodblock"), ucfirst($this->m_lockmode));
 
       if (atkconfig::get('timereg','hours_approve_only_show_not_approved') == true)
@@ -292,7 +304,7 @@
                       $contentwithlegend,
                       $footer
                     ),
-        "align" => "center"
+        "align" => "left"
       );
 
       $boxcontents = $ui->render("vertical.tpl", $tplvars_vertical);
@@ -306,6 +318,23 @@
 	    return $boxedresult;
 	  }
 
+    function get_functionlevels($selected_level_id, $lowerlevels)
+    {
+      atkdebug("get_functionlevels | selected=$selected_level_id | lowerlevels=$lowerlevels");
+      $params = array("selected_level_id" => $selected_level_id,
+                      "lower_levels"      => $lowerlevels);
+      $harvest = atkHarvestModules("getFuncLevelDropDown", $params, true);
+  
+      $func_code = null;
+      if (is_array($harvest) && count($harvest) > 0)
+      {
+        if (moduleExists('advancedsecurity'))
+          $func_code = $harvest['advancedsecurity'];
+      }
+            
+      return $func_code;
+    }	  
+    
 	  /**
 	   * Returns the legend HTML code
 	   *
@@ -346,56 +375,22 @@
 	  }
 
     /**
-     * Showemployees for
+     * Get employee-data
      *
-     * Full description of the function
-     *
-     * @param type name description
-     * @return type description
+     * @param int $current_user_id
+     * @param int $year
+     * @param string lowerlevels checkbox can be 'on' or 'off'
+     * @return array $users
      */
-	  function getEmployeesData($userid, $year)
+	  function getEmployeesData($current_user_id, $year, $selected_functionlevel_id, $lowerlevels)
 	  {
 	    // Load the employee node
 	    $employeenode = &atkGetNode("employee.employee");
-
-	    // Do we select only the employees the current user is maanger of, or all employees
-	    $where = $this->allowed("any_user") || $userid == -1 || is_null($userid) ? "" : "person.supervisor = '$userid'";
-
-	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
-
-	    $user = &getUser();
-	    $current_user_id = $user['id'];
-
-	    if ($add_projectmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
-	    {
-        // get employees who are in the projectteams that have current user
-        // as project leader.
-        $query = "SELECT DISTINCT
-                    project_person.personid
-                  FROM
-                    project_person
-                  LEFT JOIN project ON (project.id = project_person.projectid)
-                  WHERE
-                    project.coordinator = '$current_user_id'
-        ";
-
-        $g_db = &atkGetDb();
-        $results = $g_db->getRows($query);
-
-        if (is_array($results) && sizeof($results) > 0)
-        {
-          $in = array();
-          foreach($results as $row)
-            $in[] = $row['personid'];
-
-          if ($where != "")
-            $where .= " AND";
-          $where .= " person.id IN ('" . implode("','",$in) . "')";
-        }
-	    }
+	    
+      $employee_where_clause = $this->getEmployeesWhereClause($current_user_id, $selected_functionlevel_id, $lowerlevels);
 
 	    // Get the employees from the database
-	    $data = $employeenode->selectDb($where, null, null, null, array('id', 'lastname', 'firstname', 'supervisor'));
+	    $data = $employeenode->selectDb($employee_where_clause, null, null, null, array('id', 'lastname', 'firstname', 'supervisor'));
 
 	    $users = array();
 	    foreach ($data as $key => $user)
@@ -435,11 +430,146 @@
 
 	    return $users;
 	  }
+	  
+	  /**
+     * If functionlevel-dropdown is not present, or 'all' functionlevels selected, the default selection will be returned
+	   *
+	   * @param int $current_user_id
+	   * @param int $selected_functionlevel_id
+	   * @param string lowerlevels checkbox can be 'on' or 'off'
+	   * @return string 
+	   */
+	  function getEmployeesWhereClause($current_user_id, $selected_functionlevel_id, $lowerlevels)
+	  {
+	    if (empty($selected_functionlevel_id) || $selected_functionlevel_id == 'all' || !moduleExists('advancedsecurity'))
+	    {
+	      $where_clause = $this->getDefaultEmployeeWhereClaue($current_user_id);
+	    }
+	    else
+	    {        	      
+	      $where_clause = $this->getFunctionLevelEmployeeWhereClaue($current_user_id, $selected_functionlevel_id, $lowerlevels);
+	    }
+	    
+	    return $where_clause;
+	  }
+	  
+	  /**
+	   * Get where-clause, so all employees with a lower functionlevel than logged-in user will retrieved
+	   * Do not check on 'hours_approve_projectteam_members_only' and 'any_user'-right (else filtering won't work)
+	   *
+	   * @param int $current_user_id
+	   * @param int $selected_functionlevel_id
+	   * @param string lowerlevels checkbox can be 'on' or 'off'
+	   */
+	  function getFunctionLevelEmployeeWhereClaue($current_user_id, $selected_functionlevel_id, $lowerlevels)
+	  {
+      require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
+      $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
+  
+      if ($lowerlevels == 'on')
+      {
+        $levels = $flutils->getFunctionLevelBelow($selected_functionlevel_id, true);
+        
+        if (!empty($levels))
+        {        
+          if (count($levels) == 0)
+          {
+            $ids = "NULL";
+          }
+          else 
+          {
+            foreach ($levels as $level) $ids .= "'".$level['id']."',";
+            
+            $ids = substr($ids, 0, -1); // strip the last comma
+          }
+          
+          $where = "person.functionlevel IN (".$ids.")";
+        }
+        else
+        {
+          $where = "person.functionlevel='$selected_functionlevel_id'";
+        }      
+      }
+      else if ($lowerlevels == 'off')
+      {
+        $where = "person.functionlevel='$selected_functionlevel_id'";
+      }
+      else 
+      {
+        atkdebug("Unknown value '$lowerlevels' for checkbox", DEBUG_WARNING);
+      }
+      
+      return $where;
+	  }
+	  
+	  /**
+	   * Select the employees that are managed by the current user
+	   * Or all employees, if user has this right
+	   *
+	   * @param int $current_user_id
+	   * @return string $where
+	   */
+	  function getDefaultEmployeeWhereClaue($current_user_id)
+	  {
+	    $where = ($this->userHasAnyUserRight($current_user_id)) ? "" : "person.supervisor = '$current_user_id'";
 
-	  function getEmployeesTable($userid, $year)
+	    $add_projectmembers_filter = atkConfig::get('timereg','hours_approve_projectteam_members_only');
+
+	    if ($add_projectmembers_filter == true && $current_user_id != -1 && !is_null($current_user_id))
+	    {
+        // get employees who are in the projectteams that have current user
+        // as project leader.
+        $query = "SELECT DISTINCT
+                    project_person.personid
+                  FROM
+                    project_person
+                  LEFT JOIN project ON (project.id = project_person.projectid)
+                  WHERE
+                    project.coordinator = '$current_user_id'
+        ";
+
+        $g_db = &atkGetDb();
+        $results = $g_db->getRows($query);
+
+        if (is_array($results) && sizeof($results) > 0)
+        {
+          $in = array();
+          foreach($results as $row)
+            $in[] = $row['personid'];
+
+          if ($where != "")
+            $where .= " AND";
+          $where .= " person.id IN ('" . implode("','",$in) . "')";
+        }
+	    }	  
+	    
+	    return $where;  
+	  }
+	  
+	  /**
+	   * Check if logged-in user has 'any_user' right
+	   * @todo since this module does not work when logged-in as administrator, do we need to check on user_id == -1 or empty?
+	   * @param int $current_user_id
+	   * @return boolean true if user has 'any_user' right
+	   */
+	  function userHasAnyUserRight($current_user_id)
+	  {
+	    return $this->allowed("any_user") || $current_user_id == -1 || is_null($current_user_id);
+	  }
+
+	  /**
+	   * Get employeedata and construct table
+	   *
+	   * @param int $current_user_id
+	   * @param int $year
+	   * @param int $selected_functionlevel_id
+	   * @param string lowerlevels checkbox can be 'on' or 'off'
+	   * @return array $result
+	   */
+	  function getEmployeesTable($current_user_id, $year, $selected_functionlevel_id, $lowerlevels)
 	  {
 	    // Get the employees/periods data from the database
-	    $users = $this->getEmployeesData($userid, $year);
+	    $users = $this->getEmployeesData($current_user_id, $year, $selected_functionlevel_id, $lowerlevels);
 
 	    // Initialize the tabledata array
 	    $tabledata = array();
