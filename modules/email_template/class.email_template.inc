@@ -16,11 +16,55 @@ useattrib("atkfckattribute");
 useattrib("atkdummyattribute");
 class email_template extends atkNode
 {
-  var $m_subject_template = "";
-  var $m_plain_template = "";
-  var $m_html_template = "";
+  
+  /**
+   * Module name
+   *
+   * @var string
+   */
+  var $m_module = "";
+
+  /**
+   * Template code
+   *
+   * @var string
+   */
+  var $m_template_code="";
+
+  /**
+   * User id for getting name and email addres
+   *
+   * @var string
+   */
+  var $m_user_id="";
+
+  /**
+   * From email address
+   *
+   * @var string
+   */
+  var $m_from_email = "";
+
+  /**
+   * From name
+   *
+   * @var string
+   */
+  var $m_from_name = "";
+
+  /**
+   * Array with all the data we need for the template
+   *
+   * @var array
+   */
   var $m_data = array();
 
+  /**
+   * Constructor
+   *
+   * @param string $name Node name
+   * @param int $flags Flags
+   */
   function email_template($name="email_template", $flags=0)
   {
     $this->atkNode($name, $flags|NF_NO_ADD|NF_NO_DELETE);
@@ -30,9 +74,23 @@ class email_template extends atkNode
     $this->add(new atkDummyAttribute("help",$this->_getHelpText(),AF_HIDE_LIST));
     $this->add(new atkAttribute("subject",AF_HIDE_LIST));
     $this->add(new atkTextAttribute("plain_body",'',AF_HIDE_LIST));
-    $this->add(new atkFckAttribute("html_body",'',AF_HIDE_LIST));
+    $this->add(new atkFckAttribute("html_body",'',AF_HIDE_LIST,array('ToolbarSet'=>'Basic')));
     $this->setTable("email_template");
     $this->setOrder("email_template.title");
+  }
+  
+  /**
+   * Save module name in a var for using it with the translations
+   *
+   * @param object $handler Handler object
+   * @param array $record Current record
+   * @param bool $locked Locked or not
+   * @return string Edit page
+   */
+  function editPage(&$handler,$record,$locked)
+  {
+    $this->m_module = $record["module"];
+    return $handler->editPage($record,$locked);
   }
 
   function descriptor_def()
@@ -41,7 +99,7 @@ class email_template extends atkNode
   }
 
   /**
-   * Get the help text for the tempalte
+   * Get the help text for the template
    *
    * @access private
    * @return string Help text
@@ -71,7 +129,7 @@ class email_template extends atkNode
    */
   function _getHelpLine($code)
   {
-    return '<b>{$'.$code.'}</b>: '.atktext("help_".$code,"scheduler").'<br/ >';
+    return '<b>{$'.$code.'}</b>: '.atktext("help_".$code,$this->m_module).' - '.$this->m_module.'<br/ >';
   }
 
   /**
@@ -85,22 +143,11 @@ class email_template extends atkNode
   }
 
   /**
-   * Load the the templates for subject, plain_body, html_body
+   * Load data
    *
-   * @param string $module Module name
-   * @param string $code Code of the template
-   * @param array $data The data that is needed for the template
    */
-  function loadTemplate($module,$code,$data)
+  function loadData()
   {
-    $this->m_data = $data;
-    $record = $this->selectDb("email_template.module='".escapeSQL($module)."' AND email_template.code='".escapeSQL($code)."'");
-    if(count($record)>0)
-    {
-      $this->m_subject_template = $record[0]["subject"];
-      $this->m_plain_template = $record[0]["plain_body"];
-      $this->m_html_template = $record[0]["html_body"];
-    }
   }
 
   /**
@@ -108,9 +155,12 @@ class email_template extends atkNode
    *
    * @return string Subject line
    */
-  function getSubject()
+  function _getSubject()
   {
-    return $this->_parseTemplate($this->m_subject_template,$this->m_data);
+    $smarty = &atkSmarty::getInstance();
+    $smarty->assign($this->m_data);
+    $compile_id = $this->m_template_code."_".$this->m_module;
+    return $smarty->fetch("templatedb:".$this->m_template_code."/".$this->m_module."/subject",'',$compile_id);
   }
 
   /**
@@ -118,9 +168,12 @@ class email_template extends atkNode
    *
    * @return string Plain text body
    */
-  function getPlainBody()
+  function _getPlainBody()
   {
-    return $this->_parseTemplate($this->m_plain_template,$this->m_data);
+    $smarty = &atkSmarty::getInstance();
+    $smarty->assign($this->m_data);
+    $compile_id = $this->m_template_code."_".$this->m_module;
+    return $smarty->fetch("templatedb:".$this->m_template_code."/".$this->m_module."/plain_body",'',$compile_id);
   }
 
   /**
@@ -128,29 +181,75 @@ class email_template extends atkNode
    *
    * @return string HTML Body
    */
-  function getHtmlBody()
+  function _getHtmlBody()
   {
-    return $this->_parseTemplate($this->m_html_template,$this->m_data);
+    $smarty = &atkSmarty::getInstance();
+    $smarty->assign($this->m_data);
+    $compile_id = $this->m_template_code."_".$this->m_module;
+    return $smarty->fetch("templatedb:".$this->m_template_code."/".$this->m_module."/html_body",'',$compile_id);
+  }
+
+  
+
+  /**
+   * Set some initial values
+   *
+   * @param string $template_code The code of the template
+   * @param int $userid The user id for getting the email address
+   * @param string $module The module name to override the default one
+   */
+  function initialize($template_code,$userid,$module="")
+  {
+    $this->m_template_code=$template_code;
+    $this->m_user_id = $userid;
+    if($module!="") $this->m_module=$module;
   }
 
   /**
-   * Parse the template with the data
+   * Get user name and email
    *
-   * @access private
-   * @param string $template The template
-   * @param array $data The data needed for parsing the template
-   * @return string Parsed template
+   * @return mixed An array with the username and email or else false
+   * @todo implement correct return of user array
    */
-  function _parseTemplate($template,$data)
+  function _getUser()
   {
-    $tmp_patterns = array_keys($data);
-    $patterns = array();
-    foreach($tmp_patterns as $pattern)
+    if($this->m_user_id!="")
     {
-      $patterns[] = '/{\$'.$pattern.'}/';
-    }    
+      return array("email"=>"sandy@generation-msx.nl",
+                    "name"=>"Sandy Pleyte");
+    }
+    return false;
+  }
 
-    return preg_replace($patterns, array_values($data), $template);
+  /**
+   * Send the mail
+   *
+   * @return boolean The result of the send mail
+   */
+  function send()
+  {
+    
+    $user = $this->_getUser();
+    if(is_array($user))
+    {
+      $mail = atknew("atk.utils.atkMailer");
+
+      $mail->From     = $this->m_from_email;
+      $mail->FromName = $this->m_from_name;
+      $mail->AddAddress($user["email"], $user["name"]);
+      $mail->Subject  = $this->_getSubject();
+      $mail->isHTML(true);
+      $mail->Body     = $this->_getHtmlBody();
+      $mail->AltBody  = $this->_getPlainBody();
+      $ret = $mail->Send();
+      return $ret;
+    }
+    else
+    {
+      atkdebug(atktext("no_user_found"));
+    }
+    return false;
+
   }
 }
 

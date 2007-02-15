@@ -10,4 +10,7 @@
     {
     }
   }
+  // Add plugins dir
+  atkimport("atk.ui.atksmarty");
+  atkSmarty::addPluginDir(moduleDir("email_template")."plugins/");
 ?>
