@@ -62,6 +62,7 @@
   else
   {
     atksecure();
+    include "theme.inc";
 
     $lockType = atkconfig("lock_type");
     if (!empty($lockType)) atklock();
