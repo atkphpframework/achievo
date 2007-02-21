@@ -198,7 +198,7 @@ function change_recur(recur)
 			get_object('every_day').style.display='none';
       get_object('every_week').style.display='none';
 			get_object('every_month').style.display='none';
-			get_object('every_year')..style.display='inline';
+			get_object('every_year').style.display='inline';
       break;
   }
   showTab(getCurrentTab());
