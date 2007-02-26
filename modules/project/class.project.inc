@@ -87,7 +87,7 @@
       $tmp->m_remoteKey = "template";
       $tmp->setStoreDeletionFilter("phase.template IS NOT NULL AND phase.template!='' AND phase.template!=0");
       //The phasetemplatematrix is in add mode visible on tab 'default' and in other modes on the 'planning' tab
-      $tab = ($ATK_VARS["atkaction"]=="edit"||$ATK_VARS["atkaction"]=="update"?"planning":"default");
+      $tab = ($ATK_VARS["atkaction"]=="view"||$ATK_VARS["atkaction"]=="edit"||$ATK_VARS["atkaction"]=="update"?"planning":"default");
       $this->add($tmp, $tab);
 
       //all phases (including manyally added ones) are shown in this relation.
