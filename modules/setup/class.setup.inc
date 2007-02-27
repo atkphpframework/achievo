@@ -81,7 +81,7 @@
 
       $dbconfig = atkconfig("db");
 
-      if ($res==DB_SUCCESS && in_array($dbconfig["default"]["driver"], array("mysql", "mysql41")))
+      if ($res==DB_SUCCESS && (strpos($dbconfig["default"]["driver"], "mysql") === 0))
       {
         // This can't be trusted. Mysql returns DB_SUCCESS even
         // if the user doesn't have access to the database. We only get an
@@ -654,8 +654,7 @@
       }
 
       // Get an atkDDL instance
-      atkimport("atk.db.atkddl");
-      $ddl = atkDDL::create();
+      $ddl = &$db->createDDL();
 
       // If the instance isn't created, show the user his database is probably not supported by this script
       if (!is_object($ddl))
@@ -831,7 +830,6 @@
       {
         $this->m_cancontinue=false;
       }
-
     }
 
     // TODO FIXME: functions that follow are *NOT* yet database
@@ -884,22 +882,25 @@
     function dropColumn($table, $col)
     {
       $db = &atkGetDb();
-
-      $sql = "ALTER TABLE $table DROP $col";
-      $res = $db->query($sql);
+      $ddl = &$db->createDDL();
+      $ddl->setTable($table);
+      $ddl->dropField($col);
+      return $ddl->executeAlter();
     }
 
     function dropTable($table)
     {
       $db = &atkGetDb();
-      $db->query("DROP TABLE $table");
+      $ddl = &$db->createDDL();
+      $ddl->setTable($table);
+      return $ddl->executeDrop();
     }
 
     function dropSequence($sequence)
     {
       $db = &atkGetDb();
-      // Only delete sequence with mysql, since postgress and oracle use they own sequences
-      if($db->m_type=="mysql" || $db->m_type=="mysql41")
+      // Only delete sequence with mysql, since postgress and oracle use their own sequences
+      if (strpos($db->m_type, "mysql") === 0)
         $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
     }
 
