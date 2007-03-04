@@ -57,5 +57,4 @@
   
   $config["hoursnotblocked_from_date"] = "";
   
-?> 
-
+?>
