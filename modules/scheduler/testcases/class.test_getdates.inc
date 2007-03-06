@@ -87,7 +87,7 @@
       $valid_dates = array('2006-10-02','2006-10-03','2006-10-09','2006-10-10');
       $dates = schedulertools::getDates($item,"2006-09-15","2006-10-20");
       $ret = atkArrayCompare($dates,$valid_dates);
-      $this->assertEqual(false, $ret, "Weekly item on one day - ".print_r($dates,true));
+      $this->assertEqual(false, $ret, "Weekly item on one day - every 1 - ".print_r($dates,true));
 
 
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
@@ -99,10 +99,10 @@
                               "every"=>2,
                               "weekday"=>array(16)),
               "recur"=>"weekly");
-      $valid_dates = array('2006-08-03','2006-08-17','2006-08-31','2006-09-14','2006-09-28','2006-10-12','2006-10-26');
+      $valid_dates = array('2006-10-05','2006-10-19');
       $dates = schedulertools::getDates($item,"2006-07-15","2006-11-20");
       $ret = atkArrayCompare($dates,$valid_dates);
-      $this->assertEqual(false, $ret, "Weekly item on one day - ".print_r($dates,true));
+      $this->assertEqual(false, $ret, "Weekly item on one day - every 2 - ".print_r($dates,true));
 
 
     }
@@ -120,7 +120,7 @@
                               "startday"=>1,
                               "endday"=>4),
               "recur"=>"monthly_date");
-      $valid_dates = array('2006-05-01','2006-05-02','2006-05-03','2006-05-04','2006-07-01','2006-07-02','2006-07-03','2006-07-04','2006-09-01','2006-09-02','2006-09-03','2006-09-04');
+      $valid_dates = array('2006-10-01','2006-10-02','2006-10-03','2006-10-04');
       $dates = schedulertools::getDates($item,"2006-04-15","2006-10-20");
       $ret = atkArrayCompare($dates,$valid_dates);
       $this->assertEqual(false, $ret, "Monthly date dates item on one day - ".print_r($dates,true));
@@ -159,10 +159,8 @@
                               "endmonth"=>2,
                               "every"=>1),
               "recur"=>"yearly_date");
-      $valid_dates = array('2005-01-02','2005-01-03','2005-01-04','2005-02-02','2005-02-03','2005-02-04','2006-01-02',
-                           '2006-01-03','2006-01-04','2006-02-02','2006-02-03','2006-02-04','2007-01-02','2007-01-03',
-                           '2007-01-04','2007-02-02','2007-02-03','2007-02-04','2008-01-02','2008-01-03','2008-01-04',
-                           '2008-02-02','2008-02-03','2008-02-04');
+      $valid_dates = array('2007-01-02','2007-01-03','2007-01-04','2007-02-02','2007-02-03','2007-02-04',
+                           '2008-01-02','2008-01-03','2008-01-04','2008-02-02','2008-02-03','2008-02-04');                     
       $dates = schedulertools::getDates($item,"2004-01-15","2016-10-20");
       $ret = atkArrayCompare($dates,$valid_dates);
       $this->assertEqual(false, $ret, "Yearly date item on one day - ".print_r($dates,true));
@@ -182,7 +180,7 @@
                               "startmonth"=>1),
               "recur"=>"yearly_day");
 
-      $valid_dates = array('2002-01-02','2003-01-01','2004-01-07','2005-01-05','2006-01-04','2007-01-03','2008-01-02');
+      $valid_dates = array("2007-01-03","2008-01-02");
       $dates = schedulertools::getDates($item,"2001-01-15","2016-10-20");
       $ret = atkArrayCompare($dates,$valid_dates);
       $this->assertEqual(false, $ret, "Yearly day item on one day - ".print_r($dates,true));
