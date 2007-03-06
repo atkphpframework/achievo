@@ -68,7 +68,6 @@ class schedulertools
 
         $starttime = mktime(12,0,0,substr($startdate,5,2),substr($startdate,8,2)+$datecounter,substr($startdate,0,4));
         $unix_date = $starttime;
-        atkdebug("Check: ".date("Ymd",$starttime)." > ".date("Ymd",$endtime));
         if(date("Ymd",$starttime)>date("Ymd",$endtime)) break;
         // Skip all months that we don't need for the yearly day/date events
         if(($item["recur"]=="yearly_day" && date("m",$starttime)!=$item["cyclus"]["startmonth"]) ||
@@ -185,8 +184,6 @@ class schedulertools
         }
         return $dates;
       }
-
-
 
 
 
