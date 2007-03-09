@@ -65,23 +65,27 @@ class employee extends person
     //$this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
 
     if (in_array("db",explode(",",strtolower(atkconfig('authentication')))))
-    {
-      $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
-      $passwordrestrictions = array(
-        "minsize" => atkconfig("password_minsize", 0),
-        "minupperchars" => atkconfig("password_minupperchars", 0),
-        "minlowerchars" => atkconfig("password_minlowerchars", 0),
-        "minalphabeticchars" => atkconfig("password_minalphabeticchars", 0),
-        "minnumbers" => atkconfig("password_minnumbers", 0),
-        "minspecialchars" => atkconfig("password_minspecialchars", 0)
-      );
-      $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
-    }
+      $this->addPasswordAttribute();
+
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.
 
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
 
     $this->setOrder("lastname");
+  }
+
+  function addPasswordAttribute()
+  {
+    $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
+    $passwordrestrictions = array(
+      "minsize" => atkconfig("password_minsize", 0),
+      "minupperchars" => atkconfig("password_minupperchars", 0),
+      "minlowerchars" => atkconfig("password_minlowerchars", 0),
+      "minalphabeticchars" => atkconfig("password_minalphabeticchars", 0),
+      "minnumbers" => atkconfig("password_minnumbers", 0),
+      "minspecialchars" => atkconfig("password_minspecialchars", 0)
+    );
+    $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
   }
 
   function initial_values()
