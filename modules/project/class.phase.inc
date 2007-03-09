@@ -30,7 +30,8 @@
   {
     function phase()
     {
-      global $g_securityManager;
+      $securitymanager = &atkGetSecurityManager();
+      $initialplanningallowed = isset($securitymanager) && $securitymanager->allowed("project.project","initialplanning");
 
       $this->atkNode("phase",NF_AUTOSELECT|NF_EDITAFTERADD); // node() constructor is *not* called automatically!
 
@@ -59,7 +60,7 @@
       $depends->setDestinationFilter("project_id=[projectid.id]");
 
       //$this->add(new atkNumberAttribute("max_phasetime"));
-      $this->add(new atkDurationAttribute("initial_planning",'','', ($g_securityManager->allowed("project.project","initialplanning")?0:AF_READONLY_EDIT)|AF_TOTAL|AF_DURATION_STRING));
+      $this->add(new atkDurationAttribute("initial_planning",'','', ($initialplanningallowed?0:AF_READONLY_EDIT)|AF_TOTAL|AF_DURATION_STRING));
       $this->add(new atkDurationAttribute("current_planning",'','', AF_HIDE_ADD|AF_TOTAL|AF_DURATION_STRING));
       $this->add(new spendHoursAttribute("spend_hours","id",AF_TOTAL));
 
@@ -68,9 +69,9 @@
       $this->add(new atkFuzzySearchAttribute("phaseplanning_add", "employee.employee", "storePhaseplanning", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL, 20));
 
       $cascadingdeletehours = atkConfig::get("project", "project_cascading_delete_hours", false);
-      if($cascadingdeletehours)      
-        $this->add(new atkOneToManyRelation("hours","timereg.hours","phaseid",AF_HIDE|AF_CASCADE_DELETE));      
-      
+      if($cascadingdeletehours)
+        $this->add(new atkOneToManyRelation("hours","timereg.hours","phaseid",AF_HIDE|AF_CASCADE_DELETE));
+
       $this->addSecurityMap("view","project.admin");
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
@@ -322,7 +323,7 @@
         }
       }
     }
-    
+
     function recordActions($record, &$actions, &$mraactions)
     {
       //when we have a phase that belongs to a template, the records cannot be deleted in an admin screen.
@@ -331,9 +332,9 @@
         unset($actions["delete"]);
       }
     }
-    
+
     function preAdd(&$rec)
-    {      
+    {
       //if the phase is added, check if the name is filled in and the template is
       if(empty($rec["name"]))
       {
