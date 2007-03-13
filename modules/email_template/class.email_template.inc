@@ -14,6 +14,9 @@
 useattrib("atktextattribute");
 useattrib("atkfckattribute");
 useattrib("atkdummyattribute");
+useattrib("atkupdatestampattribute");
+useattrib("atkupdatedbyattribute");
+
 class email_template extends atkNode
 {
   
@@ -75,6 +78,8 @@ class email_template extends atkNode
     $this->add(new atkAttribute("subject",AF_HIDE_LIST));
     $this->add(new atkTextAttribute("plain_body",'',AF_HIDE_LIST));
     $this->add(new atkFckAttribute("html_body",'',AF_HIDE_LIST,array('ToolbarSet'=>'Basic')));
+    $this->add(new atkUpdateStampAttribute("lastupdatedon",AF_HIDE_LIST),"history");
+    $this->add(new atkUpdatedByAttribute("lastupdatedby",AF_HIDE_LIST),"history");
     $this->setTable("email_template");
     $this->setOrder("email_template.title");
   }
