@@ -45,16 +45,17 @@ class moonphases
 	 * Converted from javascript by Are Pedersen 2002
 	 * Javascript found at http://www.stellafane.com/moon_phase/moon_phase.htm
 	 * 
-	 * @param int $Y Year
+	 * @param int $year Year
+	 * @param int $month Month (january=1)
 	 * @return array Array with the moonphases of the given year
 	 */
-	function calculateMoonPhases( $Y, $month=1) 
+	function calculateMoonPhases( $year, $month=1) 
 	{
 	  $R1 = 3.14159265 / 180;
 	  $U = false;
 	  $s = ""; // Formatted Output String
-	  $K0 = intval(($Y-1900)*12.3685)+($month-1);
-	  $T = ($Y-1899.5) / 100;
+	  $K0 = intval(($year-1900)*12.3685)+($month-1);
+	  $T = ($year-1899.5) / 100;
 	  $T2 = $T*$T; $T3 = $T*$T*$T;
 	  $J0 = 2415020 + 29*$K0;
 	  $F0 = 0.0001178*$T2 - 0.000000155*$T3;
