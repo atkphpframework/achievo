@@ -1,4 +1,17 @@
 <?php
+/**
+ * Moonphases class file
+ *
+ * @package achievo
+ * @subpackage modules
+ *
+ * @author Sandy <sandy@ibuildings.nl>
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
 class moonphases
 {
@@ -17,13 +30,17 @@ class moonphases
 	function getMoonPhase($timestamp)
 	{
 	  static $moon_phases;
-	  if (count($moon_phases)==0) $moon_phases=moonphases::calculateMoonPhases(date("Y",$timestamp));
-	  $day=date("n/j/Y",$timestamp);
+	  if (count($moon_phases)==0) $moon_phases=moonphases::calculateMoonPhases(date("Y",$timestamp),date("d",$timestamp));
+	  $day=date("Ymd",$timestamp);
 	  return $moon_phases[$day];
 	}
 	
 	/**
 	 * Returns an array with all the phases of the moon for a whole year
+	 * 
+	 * Code taken from http://www.zend.com/codex.php?id=830&single=1
+   * Added new param to return the moon phases for only 1 month
+   * and changed the return array in Ymd format.
 	 * Converted from Basic by Roger W. Sinnot, Sky & Telescope, March 1985.
 	 * Converted from javascript by Are Pedersen 2002
 	 * Javascript found at http://www.stellafane.com/moon_phase/moon_phase.htm
@@ -31,12 +48,12 @@ class moonphases
 	 * @param int $Y Year
 	 * @return array Array with the moonphases of the given year
 	 */
-	function calculateMoonPhases( $Y ) 
+	function calculateMoonPhases( $Y, $month=1) 
 	{
 	  $R1 = 3.14159265 / 180;
 	  $U = false;
 	  $s = ""; // Formatted Output String
-	  $K0 = intval(($Y-1900)*12.3685);
+	  $K0 = intval(($Y-1900)*12.3685)+($month-1);
 	  $T = ($Y-1899.5) / 100;
 	  $T2 = $T*$T; $T3 = $T*$T*$T;
 	  $J0 = 2415020 + 29*$K0;
@@ -77,7 +94,14 @@ class moonphases
 	    $J += intval($F); $F -= intval($F);
 	    //Convert from JD to Calendar Date
 	    $julian=$J+round($F);
-	    $s = jdtogregorian ($julian); 
+	    if (function_exists('jdtogregorian'))
+	    {
+        $s = date ('Ymd',strtotime(jdtogregorian($julian)));
+      }
+      else 
+      {
+        $s = jd_to_greg($julian);
+      } 
 	    //half K
 	    if (($K9-floor($K9))>0)
 	    {
@@ -97,17 +121,54 @@ class moonphases
 	      //full K
 	      if ( !$U )
 	      {
+	        // New
 	        $phases[$s]="ny";
 	      }
 	      else
 	      {
+	        // Full
 	        $phases[$s]="ne";
         }
         $U = !$U;
 	    }
 	  } // Next
 	  return $phases;
-	} //End MoonPhase
+	} 
+	
+	/**
+	 * Convert julian date to gregorian
+	 * function taken from http://us3.php.net/manual/en/function.jdtogregorian.php
+	 * used if calendar functions are not compiled in php
+	 * 
+	 * @param int $julian
+	 * @return string Date string (YYYYMMDD)
+	 */
+  function jd_to_greg($julian) 
+  {
+    $julian = $julian - 1721119;
+    $calc1 = 4 * $julian - 1;
+    $year = floor($calc1 / 146097);
+    $julian = floor($calc1 - 146097 * $year);
+    $day = floor($julian / 4);
+    $calc2 = 4 * $day + 3;
+    $julian = floor($calc2 / 1461);
+    $day = $calc2 - 1461 * $julian;
+    $day = floor(($day + 4) / 4);
+    $calc3 = 5 * $day - 3;
+    $month = floor($calc3 / 153);
+    $day = $calc3 - 153 * $month;
+    $day = floor(($day + 5) / 5);
+    $year = 100 * $year + $julian; 
+
+    if ($month < 10) {
+        $month = $month + 3;
+    }
+    else {
+        $month = $month - 9;
+        $year = $year + 1;
+    }
+    return sprintf ( "%04d%02d%02d", $year, $month, $day);
+  }
 
 } 
 ?>
