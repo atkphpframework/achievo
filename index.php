@@ -3,6 +3,7 @@
   $config_atkroot = "./";
   include_once("atk.inc");
   include_once("atk/atkbrowsertools.inc");
+  include_once("achievotools.inc");
   atksession();
   atksecure();
 
@@ -11,21 +12,27 @@
   $theme = &atkTheme::getInstance();
   $atkoutput = &atkOutput::getInstance();
 
-  $pda = browserInfo::detectPDA();  
-                    
+  $pda = browserInfo::detectPDA();
+
   if ($pda)
   {
     $config_defaulttheme="default";
     $bodytemplate='body_pda.tpl';
   }
-  
+
   $body = $ui->render($ui->templatePath(($bodytemplate?$bodytemplate:'body.tpl')),getBodyTplVars());
-  $output = $ui->render($ui->templatePath('index.tpl'),array('body'=>$body));
+  $version = achievoVersion();
+  $state = achievoState();
+  $title = atktext("app_title")." v".achievoVersion().($state!='stable'?" ($state)":"");
+  $extra_header='  <meta name="achievoversion" content="'.$version.'" />'."\n";
+  $head = $page->head($title,$extra_header);
+  $output = $ui->render($ui->templatePath('index.tpl'),array('head'=>$head,
+                                                             'body'=>$body));
 
   // Send the output to the browser
   $atkoutput->output($output);
   $atkoutput->outputFlush();
-  
+
   /**
    * Get the template variables for the body template.
    * Contains the urls for every part of the application.
