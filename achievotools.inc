@@ -10,6 +10,28 @@
                              // be executed somewhere in a local function scope.
   $g_projectnamesize = 20;
 
+  /**
+   * Return the Achievo version number.
+   * @return string the version number of Achievo
+   */
+  function achievoVersion()
+  {
+    include(atkconfig("atkroot")."version.inc");
+    return $achievo_version;
+  }
+
+  /**
+   * Return the Achievo state. (stable or development)
+   * @return string the state of Achievo
+   */
+  function achievoState()
+  {
+    include(atkconfig("atkroot")."version.inc");
+    return $achievo_state;
+  }
+
+
+
   function updateSelectedProjects()
   {
     global $g_sessionManager, $g_projectnamesize;
@@ -281,7 +303,7 @@
     {
       return "&nbsp;";
     }
-    
+
     if(atkconfig("durationformat",0)==DURATIONFORMAT_DECIMAL)
     {
       $decimalvalue = floor(abs($time)/60) + (abs($time)%60)/60;
@@ -291,7 +313,7 @@
     {
       $result = ($time<0?"-":"").floor(abs($time)/60).":".sprintf("%02d",(abs($time)%60));
     }
-    
+
     return $result;
   }
 
