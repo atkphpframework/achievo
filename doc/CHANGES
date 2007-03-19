@@ -57,29 +57,33 @@ Changes in Achievo 1.3
 + Added descriptor for user contracts. [Guido]
 + Added support for cascading deleting hour registrations when deleting
   a phase. [Dennis]
-+ Added filter and a column diff_planning to the projectstatus report. 
++ Added filter and a column diff_planning to the projectstatus report.
   [dennisjan]
-+ Added new feature when you add a project and you want to copy a specific 
++ Added new feature when you add a project and you want to copy a specific
   documentstructure. [dennisjan]
 + Added config to use a startingpoint for overtime_balance hours, if no
-  records can be found to determine a new balance. [Dennis, Ivo]  
+  records can be found to determine a new balance. [Dennis, Ivo]
 + Added Ajax functionality in hours node. [Dennis]
-+ atkManyToOneRelations that have the AF_LARGE flag set are autocompletion 
++ atkManyToOneRelations that have the AF_LARGE flag set are autocompletion
   fields. [Dennis]
 + Added initial value for workperiod in hours node for autocompletion
   fields. [Dennis]
 + Added a phase-template grid to the project node. From this grid phase
   templates can be selected. [Dennis]
 + Time registration can now be locked per month. [Roger, June]
-+ Achievo now supports $config_durationformat, which can be 0 (1:30 time 
++ Achievo now supports $config_durationformat, which can be 0 (1:30 time
   format) or 1 (1.5 decimal format). [Yury]
++ Added support for atkTab in the url (bug #741) [Yuri]
++ Added quotation module [Sandy]
++ Added docmanager module [Sandy]
++ Added CRM features [Sandy]
 - Removed duplicate Dayview link in the calendar Employeeview. [Guido]
 * Bug fixed week report nameswitch wasn't working correctly [dennisjan]
-* When you have the right to see the hours of everyone, you will see now 
+* When you have the right to see the hours of everyone, you will see now
   all the hours from the persons wich you are allowed to see. [dennisjan]
 * Fixed bug in achievotools when time is 0 the function should return a
   & nbsp; [dennisjan]
-* Fixed install bug in the scheduler. The version wasn't updated to the 
+* Fixed install bug in the scheduler. The version wasn't updated to the
   current patch level version. [dennisjan]
 * Fixed PHP notices. [Guido]
 * Replaced deprecated text() calls by atktext(). [Guido]
@@ -229,7 +233,7 @@ Changes in Achievo 1.3
 * Removed unneeded and deprecated text() calls. [Guido]
 * Fixed translation issues. [Guido]
 * Removed isholiday debugging (with emphasis on bugging). [Guido]
-* Fixed css syntax error and invalid negative padding-left value 
+* Fixed css syntax error and invalid negative padding-left value
   in achievo_modern theme. [Guido]
 * Fixed security problem when adding/editing/deleting team members and
   contact persons from projects. [Guido]
@@ -242,7 +246,7 @@ Changes in Achievo 1.3
   an SQL error. [Guido]
 * Fixed FCK editor not being entirely visible in the achievo_modern theme.
   [Guido]
-* Displaying of projects for organization now uses the customer field of the 
+* Displaying of projects for organization now uses the customer field of the
   project to select the active projects and archived projects. [Lineke]
 * Usermail() in Achievotools now replaces bare LF with CRLF. [Dennis]
 * Dropdowns and lists displaying employee name now also display userid. [Ivo]
@@ -255,7 +259,7 @@ Changes in Achievo 1.3
   the TD. [Ivo,Dennis]
 * Userid's are no longer forced to lowercase. [Ivo]
 * Fixed: The basereport form now has an id field. [Dennis]
-* lng, theme and startday field in the person table are 
+* lng, theme and startday field in the person table are
   nullable now. (bug #699) [Sandy]
 * Active projects is now a relation in stead of selectdb [dennisjan]
 * Added translation for add project. [dennisjan]
@@ -268,46 +272,52 @@ Changes in Achievo 1.3
   with the manual field set to NULL. [Dennis]
 * Fixed: Removed notice in overtime_balance node. [Dennis]
 * Fixed bug in usercontracts node: the flags are the fifth argument instead of
-  the 4th. [Dennis]    
-* The overtime_balance calculation now also works if a user does not have a 
-  contract with specified working days. [Dennis]  
-* Fixed: If hourregistrations are made or edited in the past, the latest 
-  manual correction was not searched for in the past, resulting sometimes 
+  the 4th. [Dennis]
+* The overtime_balance calculation now also works if a user does not have a
+  contract with specified working days. [Dennis]
+* Fixed: If hourregistrations are made or edited in the past, the latest
+  manual correction was not searched for in the past, resulting sometimes
   in an incorrect calculation of overtime_balance. [Dennis]
+* Remove contacts and members from the project_person table when
+  deleting a project. (bug #742) [Sandy]
+* Don't show complete option for todo's that are allready completed.
+  (bug #746) [Yuri]
+* Fixed sequence in the dropnode function of the
+  setup module. (bug #725) [Yuri]
 * Fixed descriptor of organization.contracts node [Dennis]
-* Fixed: projectstatus now also shows phases without a startdate 
+* Fixed: projectstatus now also shows phases without a startdate
   and/or enddate. [Dennis]
 * Fixed: fatal error in class.project.inc. [Dennis]
-* Fixed: Removed border from atkboolattribute in Internet Explorer. 
+* Fixed: Removed border from atkboolattribute in Internet Explorer.
   [Dennis]
-* Fixed: javascript error when clicking on a column in the 
+* Fixed: javascript error when clicking on a column in the
   weekreport. [dennis]
 * Fixed: startdate and enddate were not correctly determined in
   the weekreport node. [Dennis]
 * Fixed: When using a graphAttribute on a page, the submit buttons did
-  not work in IE due to a subform added by the graphAttribute. 
+  not work in IE due to a subform added by the graphAttribute.
   [Peter,Dennis]
 * Fixed: The stats tab in project node wasn't visible in the view action.
-  [Peter, Dennis]  
-* Fixed: When using the graph module, PHP errors and deprecated messages 
+  [Peter, Dennis]
+* Fixed: When using the graph module, PHP errors and deprecated messages
   were visible to the user. Configured jpg-config.inc to hide these
-  messages. [Peter, Dennis]  
+  messages. [Peter, Dennis]
 * Fixed: Link-Name of phase on select-page of the phasenode was broken and
   caused a 'session expired' notice. [Dennis]
 * In the hours node, the viewuser dropdown can be configered by overriding
-  the functions viewuserFilter and viewuserOrderBy and uses the descriptor 
-  template of the employee node. [Dennis]  
+  the functions viewuserFilter and viewuserOrderBy and uses the descriptor
+  template of the employee node. [Dennis]
 * The hoursnode that is used by the hoursurvey can be set to a different node
-  by overriding the function getHoursNodeName(). [Dennis]  
-* Basereport now also supports autocompletion. [Dennis, Guido, Peter]  
-* Fixed: initial user was always reset in the hoursnode. [Dennis]  
+  by overriding the function getHoursNodeName(). [Dennis]
+* Basereport now also supports autocompletion. [Dennis, Guido, Peter]
+* Fixed: initial user was always reset in the hoursnode. [Dennis]
 * Social security and bankaccount number fields are now hidden when adding a
   new employee. [Ivo]
 * When adding a new project, the currently logged in user is now set as
   the project coordinator by default. [Ivo]
 * Moved achievo_modern theme to new location. This should go unnoticed but
   you may need to clear the achievotmp/themes dir when upgrading. [Ivo]
-  
+
 Changes in Achievo 1.2.1
 ------------------------
 + Added $config_timereg_allowfuture setting for allowing time registration
