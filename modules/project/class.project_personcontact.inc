@@ -13,6 +13,7 @@
  */
 
 userelation("atkmanytoonerelation");
+useattrib("docmanager.relateddocument");
 
 class project_personcontact extends atkNode
 {
@@ -23,6 +24,9 @@ class project_personcontact extends atkNode
     $this->add(new atkManyToOneRelation("projectid", "project.project", AF_OBLIGATORY|AF_PRIMARY|AF_HIDE));
     $this->add(new atkManyToOneRelation("personid", "project.select_contact", AF_OBLIGATORY|AF_PRIMARY|AF_RELATION_AUTOLINK|AF_LARGE));
     $this->add(new atkManyToOneRelation("role", "project.role", AF_OBLIGATORY|AF_PRIMARY|AF_RELATION_AUTOLINK));
+    $this->add(new relatedDocument("document", "projectid"));
+
+
     $this->addFilter("personid.role = 'contact'");
 
     // If you may edit the project, you may also add contactpersons to it.

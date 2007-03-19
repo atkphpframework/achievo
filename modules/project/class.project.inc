@@ -14,6 +14,8 @@
   useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
   useattrib("atknumberattribute");
+  useattrib("docmanager.projectdocumentmanager");
+
 
   define("PRJ_TIMEREG_ALL_USERS", 0);
   define("PRJ_TIMEREG_MEMBERS_ONLY", 1);
@@ -36,6 +38,7 @@
 
       $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
+      $this->add(new atkAttribute("quotation_number", AF_HIDE_LIST));
       $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 2), "finance");
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
@@ -98,6 +101,7 @@
 
       $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
       $this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
+      $this->add(new projectDocumentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
 
       $timeline = &new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]", "resolution"=>"auto"), "line", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT);
       $timeline->addDynamicParam("resolution", array("day", "week", "month", "auto"));
