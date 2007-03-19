@@ -1,8 +1,6 @@
 <?php
-//  module("core","./");
   module("utils");
-  // Disable the email_template, it's not finished yet
-  //module("email_template"); 
+  module("email_template"); 
   module("setup");
   module("employee");
   module("person");
@@ -16,4 +14,6 @@
   module("pim");
   module("search");  
   module("graph");
+  module("quotation");
+  module("docmanager");
 ?>
