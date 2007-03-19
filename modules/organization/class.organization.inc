@@ -20,6 +20,12 @@ useattrib("atkparserattribute");
 useattrib("atkdocumentattribute");
 useattrib("atklistattribute");
 userelation("atkonetomanyrelation");
+userelation("atkmanytoonerelation");
+useattrib("atkcreatedbyattribute");
+useattrib("atkCreateStampAttribute");
+useattrib("atkupdatedbyattribute");
+useattrib("atkupdatestampattribute");
+useattrib("atktabbedpane");
 
 class organization extends atkNode
 {
@@ -64,19 +70,40 @@ class organization extends atkNode
     $this->add(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD, 50));
     $this->add(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST, 100));
     $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD, 30));
+    $this->add(new atkAttribute("bankaccount2", AF_HIDE_LIST|AF_HIDE_ADD, 30));
+    $this->add(new atkAttribute("bankaccount3", AF_HIDE_LIST|AF_HIDE_ADD, 30));
+    $this->add(new atkAttribute("bankaccount4", AF_HIDE_LIST|AF_HIDE_ADD, 30));
     $this->add(new atkAttribute("vatnumber", AF_HIDE_LIST|AF_HIDE_ADD, 25));
+    $this->add(new atkManyToOneRelation("member_of","organization.organization",AF_HIDE_LIST|AF_LARGE|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("status","organization.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("source","organization.source",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("industry","organization.industry",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkNumberAttribute("employees",AF_HIDE_LIST|AF_HIDE_ADD,5));
+    $this->add(new atkAttribute("revenue",AF_HIDE_LIST|AF_HIDE_ADD,5));
+    $this->add(new atkManyToOneRelation("rate","organization.rate",AF_HIDE_LIST|AF_READONLY|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
-    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST),"contracts");
-    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer");
+    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects"),"contracts"=>array("contracts")),AF_HIDE_ADD|AF_NO_LABEL),"project");
+
+    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST);
     $projectRelatie->addDestinationFilter("project.status='active'");
-    $this->add($projectRelatie,"active_projects");
-    $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD),"archived_projects");
-
-
+    $this->add($projectRelatie);
+    $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
+    //$this->add(new atkTabbedPane("extra_subtabs",array("quotations"=>array("quotations")),AF_HIDE_ADD|AF_NO_LABEL),"extra");
+    $this->add(new atkOneToManyRelation("former_names","organization.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+    $this->add(new atkOneToManyRelation("relation","organization.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+    $this->add(new atkOneToManyRelation("quotations","quotation.quotation","organization_id",AF_HIDE_LIST),"extra");
     $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
 
     $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST));
+
+    $this->add(new atkCreatedByAttribute("created_by",AF_HIDE_LIST),"history");
+    $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");
+    $this->add(new atkUpdatedByAttribute("last_modified_by",AF_HIDE_LIST),"history");
+    $this->add(new atkUpdateStampAttribute("last_modified_on",AF_HIDE_LIST),"history");
+
 
     $this->m_securityMap["vcard"] = "view";
     $this->m_securityMap["export"] = "view";
@@ -170,6 +197,22 @@ class organization extends atkNode
       $email = sprintf('<a href="mailto:%1$s">%1$s</a>', $email);
     return $email;
   }
+
+   function website_display($record, $mode)
+  {
+    $website = $record["website"];
+    if (!in_array($mode, array("csv", "plain")) && strlen($website)>0)
+      $website = '<a href="http://'.$website.'" target="_blank">'.$website.'</a>';
+    return $website;
+  }
+
+  function website_edit($record, $mode)
+  {
+     $attr = &$this->getAttribute("website");
+     $org = $attr->edit($record, $mode);
+     return "http://".$org;
+  }
+
 
   function descriptor_def()
   {

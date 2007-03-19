@@ -1,9 +1,5 @@
 <?php
 
-  $setup->installNode("organization.contact");
-  $setup->installNode("organization.contracttype");
-  $setup->installNode("organization.contracts");
-  $setup->installNode("organization.organization");
   $setup->installNode("organization.organization_relation");
   $setup->installNode("organization.organization_status");
   $setup->installNode("organization.industry");
@@ -14,7 +10,6 @@
   $setup->installNode("organization.campaign");
   $setup->installNode("organization.campaign_status");
   $setup->installNode("organization.campaign_type");
-  
-  $setup->setVersion(16);
+  $setup->installNode("organization.organization");
 
 ?>

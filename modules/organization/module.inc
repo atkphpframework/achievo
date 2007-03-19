@@ -20,6 +20,16 @@
       $this->menuitem("-","","main",true,720);
       $this->menuitem("-","","organizationmanagement",true);
       $this->menuitem("contact_admin", dispatch_url("organization.contact", "admin"),"organizationmanagement", array("organization.contact","admin"));
+      
+      $this->menuitem("campaign",dispatch_url("organization.campaign", "admin"), "organizationmanagement",true,100);
+      
+      $this->menuitem("campaign_status",dispatch_url("organization.campaign_status", "admin"), "setup",true,200);
+      $this->menuitem("campaign_type",dispatch_url("organization.campaign_type", "admin"), "setup",true,200);
+      $this->menuitem("organization_status",dispatch_url("organization.organization_status", "admin"), "setup",true,200);
+      $this->menuitem("industry",dispatch_url("organization.industry", "admin"), "setup",true,200);
+      $this->menuitem("source",dispatch_url("organization.source", "admin"), "setup",true,200);
+      $this->menuitem("rate",dispatch_url("organization.rate", "admin"), "setup",true,200);
+      $this->menuitem("relation_type",dispatch_url("organization.relation_type", "admin"), "setup",true,200);
     }
 
     function getDependencies($mode)
