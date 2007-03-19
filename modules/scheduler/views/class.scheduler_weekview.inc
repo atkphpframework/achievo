@@ -31,7 +31,7 @@ class scheduler_weekview extends scheduler_view
 
     $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->m_viewUser;
 
-    $this->m_weeknumber = date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
+    $this->m_weeknumber = $this->getWeekNumber($this->m_day,$this->m_month,$this->m_year);//date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
     $this->m_viewTitle = "<b>".text("week")."&nbsp;".$this->m_weeknumber."</b>";
 
     return href($prevUrl, text('previousweek'))."&nbsp;".href($currentUrl,text("currentweek"))."&nbsp;".href($nextUrl, text('nextweek'));
@@ -45,12 +45,6 @@ class scheduler_weekview extends scheduler_view
   function renderItems($weekday)
   {
     $tmp.= "";
-    $holiday = &getNode("scheduler.scheduler_holidays");
-    if($holiday->isHoliday($weekday["date"]))
-    {
-      $holidayInfo = $holiday->getHolidayInfo($weekday["date"]);
-      $tmp.=$holidayInfo["name"]."<br>";
-    }
 
     for($i=0;$i<count($weekday["alldayitems"]);$i++)
     {
@@ -191,7 +185,7 @@ class scheduler_weekview extends scheduler_view
     }
     $weekday  = strftime("%w",$viewtime);
 
-    if ($weekday==0) $weekday=7;
+    //if ($weekday==0) $weekday=7;
 
     for ($i=0; $i<=8;$i++)
     {
@@ -200,10 +194,6 @@ class scheduler_weekview extends scheduler_view
       $this->m_weekdates[$i]['stamp'] = $viewtime-(86400*($weekday-$i));
     }
     $this->getItems($this->m_weekdates[1]['date'],$this->m_weekdates[7]['date']);
-    //$this->m_allItems = $this->getItems();
-
-    // filter on allday events / other appointment events
-    //$this->filterItems();
 
     // get scheduler Legend and Item colors
     $this->getLegend();

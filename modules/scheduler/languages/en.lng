@@ -40,7 +40,30 @@ $en = array("menu_scheduler"=>"Scheduler",
             "previous_day"=>"Previous day",
             "today"=>"Today",
             "next_day"=>"Next day",
-            
+             // Email Templates
+            "help_title"=>"Title",
+            "help_location"=>"Location",
+            "help_description"=>"Description",
+            "help_fullname"=>"Fullname of the user",
+            "help_firstname"=>"Firstname of the user",
+            "help_lastname"=>"Lastname of the user",
+            "help_e-mail"=>"Email-address of the user",
+            "help_date"=>"todays date",
+            "help_to-fullname"=>"Fullname of the person to notify",
+            "help_to-firstname"=>"First of the person to notify",
+            "help_to-lastname"=>"Lastname of the person to notify",
+            "help_startdate"=>"Start Date/Time",
+            "help_enddate"=>"End Date/Time",
+            "help_priority"=>"Priority",
+            "help_participants"=>"Participants",
+            "help_category"=>"Category",
+            "help_olddate"=>"Old startdate",
+            "help_owner"=>"Owner",
+            "help_repetition"=>"Repetitiondetails (or empty)",
+            "help_action"=>"Action that caused the notify: Added, Accepted, Canceled,....",
+            "help_link"=>"Link to view the event",
+            "showlunarphases","Display Lunar Phases in month view"
+
             
             
             );

@@ -16,10 +16,12 @@
 useattrib("atkboolattribute");
 useattrib("atklistattribute");
 useattrib("atknumberattribute");
+useattrib("atkcountryattribute");
 userelation("atkmanytoonerelation");
 
 include moduleDir("scheduler")."utils/class.calculateHoliday.inc";
 include moduleDir("scheduler")."utils/class.xmlfunctions.inc";
+atkimport("modules.utils.dateutil");
 
 class scheduler_holidays extends atkNode
 {
@@ -30,22 +32,28 @@ class scheduler_holidays extends atkNode
     global $g_sessionManager;
 
     $this->m_country_filter = $g_sessionManager->pageVar("country_filter");
+    $month_options=array();
+    $month_values=array();
+    for($i=1;$i<=12;$i++)
+    {
+      $month_values[] = $i;
+      $month_options[] = dateutil::monthname($i);
+    }
 
     $this->atkNode("scheduler_holidays",NF_MRA|NF_ADD_LINK);
 
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE));
-    $this->add(new atkListAttribute("type",array("weekend","info"),array("weekend","info"),AF_SEARCHABLE|AF_OBLIGATORY));
-    $this->add(new atkListAttribute("day",array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31),array(),AF_HIDE_LIST));
-    $this->add(new atkListAttribute("month",array(1,2,3,4,5,6,7,8,9,10,11,12),array(),AF_HIDE_LIST));
+    $this->add(new atkListAttribute("type",array("weekend"),array("weekend"),AF_SEARCHABLE));
+    $this->add(new atkListAttribute("day",array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31),array(),AF_HIDE_LIST|AF_NO_TRANSLATION));
+    $this->add(new atkListAttribute("month",$month_options,$month_values,AF_HIDE_LIST));
     $this->add(new atkListAttribute("special",array("easter"),array("easter"),AF_HIDE_LIST));
     $this->add(new atkNumberAttribute("offset",AF_HIDE_LIST,3,0));
+    $this->add(new atkNumberAttribute("length",AF_HIDE_LIST,2,0));
     $this->add(new atkListAttribute("weekday",array("monday","tuesday","wednesday","thursday","friday","saturday","sunday"),array(0,1,2,3,4,5,6),AF_HIDE_LIST));
-    $this->add(new atkListAttribute("moveto",array("ifsatorsunthen","ifsunthen","ifsatorsunthen"),array("1","2","3"),AF_HIDE_LIST));
-    $this->add(new atkBoolAttribute("flag",AF_HIDE_LIST));
+    $this->add(new atkListAttribute("moveto",array("ifsatorsunthen","ifsunthen","ifsatorsunthen2"),array("1","2","3"),AF_HIDE_LIST));
     $this->add(new atkManyToOneRelation("schedulecategory", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-    $this->add(new atkAttribute("country"));
-
+    $this->add(new atkCountryAttribute("country","world",array(),array(),AF_OBLIGATORY|AF_SEARCHABLE));
     if($this->m_country_filter!="" && $this->m_country_filter!="all")
     {
       $this->addFilter("country='".$this->m_country_filter."'");
@@ -86,9 +94,15 @@ class scheduler_holidays extends atkNode
      $exporter = &atknew("atk.utils.atkfileexport");
      $exporter->export($xmlfile, "holidays","xml","xml");
   }
-
+  /**
+   * Create custom admin header
+   *
+   * @todo Create import/export feature, is the country dropdown still nessecary ?
+   * @return unknown
+   */
   function adminHeader()
   {
+    /*
     $g_db = &atkGetDb();
     $ret = '<form name="country_select" method="get" action="'.$_SERVER["PHP_SELF"].'" onChange="document.forms[country_select].submit();">'."\n";
     $ret.= session_form();
@@ -107,6 +121,7 @@ class scheduler_holidays extends atkNode
     $ret.= "&nbsp;&nbsp";
     $ret.= href(dispatch_url("scheduler.scheduler_holidays", "export", array()),atkText("export"));
     $ret.= '</form>'."\n";
+    */
     return $ret;
   }
 
@@ -114,29 +129,23 @@ class scheduler_holidays extends atkNode
   * Check if a date is a holiday
   *
   * @param string $date Date in yyyymmdd or yyyy-mm-dd format
-  * @param string $type Check for weekend/info
   * @return bool Is holiday ?
   */
-  function isHoliday($date,$type="")
+  function isHoliday($date)
   {
     $date = str_replace("-","",$date);
     $year = substr($date, 0,4);
     $holidays = $this->_getHolidays($year);
-    if($type=="")
-    {
-      return ($holidays[$date]["name"]!=""?true:false);
-    }
-    else
-    {
-      return ($holidays[$date]["name"]!=""&&$holidays[$date]["type"]==$type?true:false);
-    }
+    if(is_array($holidays[$date]) && count($holidays[$date])>0) atkdebug("IS HOLIDAY");
+    return (is_array($holidays[$date]) && count($holidays[$date])>0?true:false);
   }
 
  /**
   * Get the holiday info for a date
   *
   * @param string $date Date in yyyymmdd or yyyy-mm-dd format
-  * @return array Array with name, type, schedulertype
+  * @return array Array with the holidays, for every holiday we return
+  *               name, type, schedulertype
   */
   function getHolidayInfo($date)
   {
@@ -172,10 +181,14 @@ class scheduler_holidays extends atkNode
       $calculator = new calculateHoliday();
       foreach($db_holidays as $id => $holiday)
       {
-        $date = date("Ymd",$calculator->getHolidayDate($holiday,$year));
-        $holidays[$date] = array("name"=>$holiday["name"],
-                                 "type"=>$holiday["type"],
-                                 "scheduletype"=>$holiday["scheduletype"]["id"]);
+        $dates = $calculator->getHolidayDate($holiday,$year);
+        foreach($dates as $date)
+        {
+          $hdate = date("Ymd",$date);
+          $holidays[$hdate][] = array("name"=>$holiday["name"],
+                                    "type"=>$holiday["type"],
+                                    "schedulercategory"=>$holiday["schedulecategory"]["id"]);
+        }
       }
       $this->_saveHolidays($holidays,$year);
     }
@@ -189,7 +202,9 @@ class scheduler_holidays extends atkNode
   */
   function _getFilename($year)
   {
-    return atkconfig("atktempdir")."holidays/".$year.".inc";
+    $tmpDir = atkconfig("atktempdir");
+    if(!is_dir($tmpDir."holidays")) mkdir($tmpDir."holidays");
+    return "holidays/".$year.".inc";
   }
 
  /**
@@ -200,25 +215,10 @@ class scheduler_holidays extends atkNode
   */
   function _saveHolidays($holidays,$year)
   {
-    return true;
     $filename = $this->_getFilename($year);
-    $fp = fopen($filename,"w");
-    $content="<?php\n
-              \t\$holidays = array(\n";
-    foreach($holidays as $date => $holiday)
-    {
-      $content.="'$date'=>array('name'=>'".$holiday["name"]."',
-                               'type'=>'".$holiday["type"]."',
-                               'scheduletype'=>'".$holiday["scheduletype"]."'),\n";
-    }
-    $content.=");\n
-               ?>";
-    if (fwrite($fp, $content) === FALSE) {
-       echo "Cannot write to file ($filename)";
-       exit;
-   }
-
-    fclose($fp);
+    atkimport("atk.utils.atktmpfile");
+    $file =  new atkTmpFile($filename);
+    $file->writeAsPhp("holidays",$holidays);
   }
 
  /**

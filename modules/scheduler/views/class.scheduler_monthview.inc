@@ -25,9 +25,9 @@ class scheduler_monthview extends scheduler_view
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month+1, 1, $this->m_year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$nextTime&user=".$this->m_viewUser;
 
-    $this->title = "<b>".text(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
+    $this->title = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 
-    return href($prevUrl, text("previous_month"))."&nbsp;".href($thisUrl, text("this_month"))."&nbsp;".href($nextUrl, text("next_month"));
+    return href($prevUrl, atktext("previous_month"))."&nbsp;".href($thisUrl, atktext("this_month"))."&nbsp;".href($nextUrl, atktext("next_month"));
 
   }
  /**
@@ -51,7 +51,7 @@ class scheduler_monthview extends scheduler_view
     $days[5] = atkText("fri");
     $days[6] = atkText("sat");
     // On what day does our calendar start (0 or 1)
-    $daystart=1;
+    $daystart=$this->m_calendarStartDay;
 
     $months = array();
     $months[0] = atkText("january");
@@ -66,6 +66,9 @@ class scheduler_monthview extends scheduler_view
     $months[9] = atkText("october");
     $months[10] = atkText("november");
     $months[11] = atkText("december");
+
+    atkimport("modules.scheduler.utils.moonphases");
+
 
     $days_in_month = mktime (0,0,0,$month+1,0,$year);
     $days_in_month = (strftime ("%d",$days_in_month));
@@ -101,7 +104,7 @@ class scheduler_monthview extends scheduler_view
     $bg_color="#FFFFFF";
     $tmp.='<tr style="background-color: '.$bg_color.'; height: 100px;">';
     //$week_number = intval(strftime("%V",mktime(0,0,0,$month,1,$year)));
-    $week_number = date("W", mktime(0,0,0,$month,1,$year));
+    $week_number =$this->getWeekNumber(2,$month,$year);// date("W", mktime(0,0,0,$month,2,$year));
 
     $date = $year."-".sprintf("%02d",$month)."-".sprintf("%02d",1);
     $tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
@@ -110,8 +113,7 @@ class scheduler_monthview extends scheduler_view
     {
     	$tmp.='<td>&nbsp;</td>';
     }
-   	$holiday = &getNode("scheduler.scheduler_holidays");
-
+    $theme = &atktheme::getInstance();
     for ($i=1;$i<=$days_in_month;$i++)
     {
      	$date = $year."-".sprintf("%02d",$month)."-".sprintf("%02d",$i);
@@ -121,7 +123,7 @@ class scheduler_monthview extends scheduler_view
     	  if($bg_color=="#FFFFFF") { $bg_color="#EEEEEE"; } else { $bg_color="#FFFFFF"; }
     		$tmp.="</tr><tr style=\"background-color: $bg_color; height: 100px;\">\n";
     		$week_number++;
-    		$tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
+    		$tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,sprintf("%02d",$week_number),SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
     		$cellcount=0;
     	}
     	$cellcount++;
@@ -136,21 +138,17 @@ class scheduler_monthview extends scheduler_view
     	else
     		$class="calendarNormal";
 
-    	$holiday_title = '';
-    	if($holiday->isHoliday($date))
-    	{
-    	    $holidayInfo = $holiday->getHolidayInfo($date);
-    			$holiday_title = ' title="'.$holidayInfo["name"].'"';
-    			if($class=="calendarToday") { $class="calendarHolidayToday"; } else { $class="calendarHoliday"; }
-    	}
 
     	$tmp.='<td align="left" valign="top" style="border: 1px solid #000000;">[&nbsp;'.href($_SERVER["PHP_SELF"]."?view=day&viewdate=".$date,$i,'','','class="'.$class.'"'.$holiday_title).'&nbsp;]&nbsp;';
-    	$tmp.=href($_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&viewdate=".$date,text("additem")).'<br>';
-      if($holiday->isHoliday($date))
+      if($this->m_showLunarPhases)
       {
-        $holidayInfo = $holiday->getHolidayInfo($date);
-        $tmp.=$holidayInfo["name"]."<br>";
+        $timestamp = mktime(12,0,0,$month,$i,$year);
+    	  $moonphase = $this->getMoonPhaseIcon($timestamp);
+        $tmp.=($moonphase!=""?"$moonphase":"");
       }
+    	$addicon = '<img src="'.$theme->imgPath("add.gif","scheduler").'" border="0" width="15" height="15" style="float: right;" title="'.atktext("additem").'" alt="'.atktext("additem").'">';
+    	$tmp.=href($_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&viewdate=".$date,$addicon,SESSION_NESTED).'<br>';
+
     	// Allday appointments
     	if(is_array($this->m_allDayItems[$date]))
     	{
@@ -190,6 +188,33 @@ class scheduler_monthview extends scheduler_view
              </table><br><br>
              '.$this->m_legend;
     return $tmp;
+  }
+
+  /**
+   * Return moonPhase icon for a given date
+   *
+   * @param int $timestamp
+   * @return string An html image string or an empty string
+   */
+  function getMoonPhaseIcon($timestamp)
+  {
+
+    $moonphase = moonphases::getMoonPhase($timestamp);
+    if($moonphase=="") return "";
+    atkdebug("Moonphase for ".date("Y-m-d",$timestamp)." is $moonphase");
+    switch($moonphase)
+    {
+      case "ne": $text = atktext("full_moon","scheduler");
+                 break;
+      case "ny": $text = atktext("no_moon","scheduler");
+                 break;
+      case "ne2": $text = atktext("half_moon","scheduler");
+                 break;
+      case "ny2": $text = atktext("half_moon","scheduler");
+                 break;
+    }
+    $theme = &atktheme::getInstance();
+    return '<img src="'.$theme->imgPath($moonphase.".gif","scheduler").'" width=15 height=15 title="'.$text.'" alt="'.$text.'">';
   }
 
  /**

@@ -12,6 +12,8 @@
  * - Public function to check if somebody is free
  *   isFree($date,$time,$person,$marge)
  */
+atkimport("modules.scheduler.utils.schedulertools");
+
 class scheduler_view
 {
 
@@ -104,6 +106,7 @@ class scheduler_view
   var $m_emptyColor   = "#DDDDDD";
 
   var $m_showTodo = 0;
+  var $m_showLunarPhases = 0;
   var $m_employeeLookup = array();
 
  /**
@@ -180,12 +183,11 @@ class scheduler_view
   */
   function _view_header($selector=true)
   {
-    $view_header = href($_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler",atkText("additem","scheduler"))."&nbsp;";
+    $view_header = href($_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler",atkText("additem","scheduler"),SESSION_NESTED)."&nbsp;";
     $view_header.= href($_SERVER["PHP_SELF"]."?view=day&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser,atkText("dayview","scheduler"))."&nbsp;";
     $view_header.= href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser,atkText("weekview","scheduler"))."&nbsp;";
     $view_header.= href($_SERVER["PHP_SELF"]."?view=month&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser, atkText("monthview","scheduler"))."&nbsp;";
-    //$view_header.= href($_SERVER["PHP_SELF"]."?view=year&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser, atkText("yearview","scheduler"))."&nbsp;";
-    //$view_header.= href($_SERVER["PHP_SELF"]."?view=employee&viewdate=".$this->m_viewdate, atkText("employeeview","scheduler"))."&nbsp;";
+    $view_header.= href($_SERVER["PHP_SELF"]."?view=birthday&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser, atkText("birthdayview","scheduler"))."&nbsp;";
     $view_header.= href($_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&user=".$this->m_viewUser, atkText("refreshview","scheduler"));
     $view_header.= "<br><br><table width='90%'>";
     if($selector)
@@ -198,6 +200,20 @@ class scheduler_view
     $view_header.= "<tr><td valign='top' align='left'><b>".$this->m_viewTitle."</b></td>";
     $view_header.= "</tr></table>";
     return $view_header;
+  }
+
+  /**
+   * Get weekNumber
+   *
+   * @param int $day Day
+   * @param int $month Month
+   * @param int $year Year
+   * @return int Weeknumber
+   */
+  function getWeekNumber($day,$month,$year)
+  {
+    $timestamp = mktime(12,0,0,$month,$day,$year);
+    return date('W',$timestamp);
   }
 
  /**
@@ -230,18 +246,18 @@ class scheduler_view
 
     $first_day_of_month = date("w", mktime(0,0,0,$month,1,$year));
 
-    $previous_year = date("Y", mktime(0,0,0,$month-1,1,$year));
-    $previous_month= date("m", mktime(0,0,0,$month-1,1,$year));
+    //$previous_year = date("Y", mktime(0,0,0,$month-1,1,$year));
+    //$previous_month= date("m", mktime(0,0,0,$month-1,1,$year));
     $prevTime = date("Y-m-d", mktime(0,0,0,$month-1, 1, $year));
     $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$prevTime&user=".$this->m_viewUser;
-    $next_day = 1;
-    $next_year = date("Y", mktime(0,0,0,$month+1,1,$year));
-    $next_month= date("m", mktime(0,0,0,$month+1,1,$year));
+    //$next_day = 1;
+    //$next_year = date("Y", mktime(0,0,0,$month+1,1,$year));
+    //$next_month= date("m", mktime(0,0,0,$month+1,1,$year));
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$month+1, 1, $year));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime&user=".$this->m_viewUser;
     $currentTime = date("Y-m-d", mktime(0,0,0,$month, 1, $year));
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$this->m_viewdate."&small_viewdate=$currentTime&user=".$this->m_viewUser;
+    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$currentTime."&small_viewdate=$currentTime&user=".$this->m_viewUser;
 
 
     $tmp ='<table border="0" cellpadding="1" cellspacing="0">';
@@ -272,7 +288,8 @@ class scheduler_view
     if ($cellcount < 0) $cellcount = 7 + $cellcount;
 
     $tmp.='<tr>';
-    $week_number = date("W", mktime(12,0,0,$month,1,$year));
+    $week_number = $this->getWeekNumber(1,$month,$year);
+    atkdebug("WEEKNUMBER FOR 1 - $month - $year = ".$week_number);
     $weekTime = date("Y-m-d",mktime(12,0,0,$month,1,$year));
     $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
     if($this->m_showWeekNumbers==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
@@ -284,6 +301,7 @@ class scheduler_view
     $startdate = date("Y-m-d",mktime(0,0,0,$month,1,$year));
     $enddate = date("Y-m-d",mktime(23,59,59,$month,$days_in_month,$year));
     $itemdates = $this->getItemsCompact($startdate,$enddate);
+    atk_var_dump($itemdates,"ITEM DATES COMPACT");
     for ($i=1;$i<=$days_in_month;$i++)
     {
     	if ($cellcount == 7)
@@ -297,7 +315,7 @@ class scheduler_view
           case 1: $tmp_i = $i;
           case 6: $tmp_i = $i+2;
         }
-        $week_number = date("W", mktime(12,0,0,$month,$tmp_i,$year));
+        $week_number = $this->getWeekNumber($tmp_i,$month,$year);
         $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
         if($this->m_showWeekNumbers==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     		$cellcount=0;
@@ -305,8 +323,7 @@ class scheduler_view
     	$cellcount++;
 
       $dayTime = date("Y-m-d",mktime(12,0,0,$month,$i,$year));
-
-    	if (($i == date("d")) && ($year == date("Y")) && ($month==date("m")) && ($holiday->isHoliday($dayTime) || (isset($itemdates[$dayTime]) && $itemdates[$dayTime]===true)))
+    	if (($i == date("d")) && ($year == date("Y")) && ($month==date("m")) && (isset($itemdates[$dayTime]) && $itemdates[$dayTime]===true))
     	{
     		$class="calendarItemToday";
     	}
@@ -314,7 +331,7 @@ class scheduler_view
     	{
     		$class="calendarToday";
     	}
-    	elseif($holiday->isHoliday($dayTime) || (isset($itemdates[$dayTime]) && $itemdates[$dayTime]===true))
+    	elseif(isset($itemdates[$dayTime]) && $itemdates[$dayTime]===true)
     	{
     	  $class="calendarItem";
     	}
@@ -322,17 +339,7 @@ class scheduler_view
     	{
     		$class="calendarNormal";
     	}
-    	/*
-      $dayTime = date("Y-m-d",mktime(12,0,0,$month,$i,$year));
 
-    	$holiday_title = '';
-    	if($holiday->isHoliday($dayTime))
-    	{
-    	    $holidayInfo = $holiday->getHolidayInfo($dayTime);
-    			$holiday_title = ' title="'.$holidayInfo["name"].'"';
-    			if($class=="calendarToday") { $class="calendarHolidayToday"; } else { $class="calendarHoliday"; }
-    	}
-    	*/
     	$dayUrl = $_SERVER["PHP_SELF"]."?view=day&viewdate=$dayTime&user=".$this->m_viewUser;
     	$daynumber = ($i>9?$i:"&nbsp;".$i);
     	if(($this->m_view=="day" && $i == $this->m_day && $month == $this->m_month && $year == $this->m_year) ||
@@ -466,14 +473,19 @@ class scheduler_view
     // get the defined colors for each scheduler-type
     $query = "SELECT * FROM scheduler_category ORDER BY id";
     $nrows = $g_db->getRows($query);
-
+    if(count($nrows)==0)
+    {
+      $this->m_legend="";
+      return "";
+    }
 
     $legend  = '<table border="0" cellPadding="1">
                 <tbody>
                 <tr>
                   <td bgColor="#000000">
                     <TABLE width="100%" border="0" cellPadding="2" cellSpacing="0">
-                    <tbody>';
+                    <tbody>
+                    <tr bgcolor="#FFFFFF"><td colspan="2"><b>'.atktext("legend","scheduler").':</b></td></tr>';
 
     for ($i=0,$_i=count($nrows);$i<$_i;$i++)
     {
@@ -498,6 +510,14 @@ class scheduler_view
   }
 
 
+
+
+  /**
+   * Convert an item to a record
+   *
+   * @param array $item Array with a scheduler item
+   * @return array Item record
+   */
   function item2record($item)
   {
     return array("startdate"=>array("day"=>substr($item["startdate"],8,2),"month"=>substr($item["startdate"],5,2),"year"=>substr($item["startdate"],0,4)),
@@ -517,6 +537,12 @@ class scheduler_view
                               "weekday"=>array($item["weekday"])));
   }
 
+  /**
+   * Update recurring events for a given period
+   *
+   * @param string $startdate Start date
+   * @param string $enddate End date
+   */
   function updateRecurringEvents($startdate,$enddate)
   {
     $db = &atkGetDb();
@@ -561,9 +587,15 @@ class scheduler_view
     }
   }
 
+  /**
+   * Get Items for the small scheduler
+   *
+   * @param string $startdate Startdate
+   * @param string $enddate Enddate
+   * @return array Array with dates that have an Event
+   */
   function getItemsCompact($startdate,$enddate)
   {
-    $current_user = getUser();
     $user = array();
     if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
 
@@ -598,20 +630,32 @@ class scheduler_view
     $dates = array();
     for($i=0,$_i=count($nrows);$i<$_i;$i++)
     {
-      $enddate = date("Ymd",$nrows[$i]["enddate"]);
-      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*86400)))<=$enddate;$j++)
+      $loop_enddate = date("Ymd",$nrows[$i]["enddate"]);
+      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*86400)))<=$loop_enddate;$j++)
       {
         $dates[date("Y-m-d",($nrows[$i]["startdate"]+($j*86400)))]=true;
       }
-      //$dates[date("Y-m-d",$nrows[$i]["startdate"])]=true;
     }
+    //todo: Should we add holidays to the small scheduler ?
+    //$this->addHolidays(true,$dates,$startdate,$enddate);
+    $up_node = atknew("scheduler.scheduler_userpreferences");
+    $userprefs = $up_node->getUserPreferences();
+    if($userprefs["showemployeebirthdays"])
+      $this->addEmployeeBirthdays(true,$dates,date("n",$tmp_startdate),date("n",$tmp_enddate));
+    if($userprefs["showtodo"])
+      $this->addTodos(true,$dates,$startdate,$enddate);
     return $dates;
   }
 
-
+ /**
+  * Get scheduler items
+  *
+  * @param string $startdate Startdate
+  * @param string $enddate Enddate
+  * @param array $user Array with user id's
+  */
  function getItems($startdate="",$enddate="",$user=array())
   {
-    $current_user = getUser();
     $db = &atkGetDb();
 
     if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
@@ -626,6 +670,8 @@ class scheduler_view
        $enddate=$this->m_viewdate;
     }
     $this->updateRecurringEvents($startdate,$enddate);
+    $tmp_array=array();
+    $this->addHolidays(false,$tmp_array,$startdate,$enddate);
 
     $name = "atk".atkconfig("database")."query";
     $query = atknew($name);
@@ -672,6 +718,7 @@ class scheduler_view
 
 
     $querystring = $query->buildSelect(TRUE);
+    atkdebug("Getitems $startdate - $enddate");
     atkdebug("Getitems for ".date("Y-m-d",$tmp_startdate)." ($tmp_startdate) - ".date("Y-m-d",$tmp_enddate)." ($tmp_enddate)");
 
     atkdebug("QUERY STRING: $querystring");
@@ -680,10 +727,10 @@ class scheduler_view
     for($i=0,$_i=count($nrows);$i<$_i;$i++)
     {
       $items[] = $nrows[$i]["id"];
-      $startdate = date("Ymd",$nrows[$i]["startdate"]);
-      $enddate = date("Ymd",$nrows[$i]["enddate"]);
+      $check_startdate = date("Ymd",$nrows[$i]["startdate"]);
+      $check_enddate = date("Ymd",$nrows[$i]["enddate"]);
 
-      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*86400)))<=$enddate;$j++)
+      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*86400)))<=$check_enddate;$j++)
       {
         $currenttime = $nrows[$i]["startdate"]+($j*86400);
         //TODO: Optimize for week and month !!
@@ -692,7 +739,7 @@ class scheduler_view
         $tmp_nrow = $nrows[$i];
         atkdebug("SANDY: ".date("Ymd",$currenttime." - ".$tmp_nrow["title"]));
 
-        if($nrows[$i]["allday"]==1 || ($startdate!=$currentdate && $enddate!=$currentdate))
+        if($nrows[$i]["allday"]==1 || ($check_startdate!=$currentdate && $check_enddate!=$currentdate))
         {
           if($tmp_nrow["allday"]==0) $tmp_nrow["allday"]=1;
           $this->m_allDayItems[date("Y-m-d",$currenttime)][] = $tmp_nrow;
@@ -700,12 +747,12 @@ class scheduler_view
         }
         else
         {
-          if($startdate==$currentdate && $startdate!=$enddate)
+          if($check_startdate==$currentdate && $check_startdate!=$check_enddate)
           {
             $tmp_nrow["enddate"] = mktime(23,59,00,date("m",$currenttime),date("d",$currenttime),date("Y",$currenttime));
             $tmp_nrow["endtime"] = "23:59:00";
           }
-          elseif($enddate==$currentdate && $startdate!=$enddate)
+          elseif($check_enddate==$currentdate && $check_startdate!=$check_enddate)
           {
             $tmp_nrow["startdate"] = mktime(0,0,0,date("m",$currenttime),date("d",$currenttime),date("Y",$currenttime));
             $tmp_nrow["starttime"] = "00:00:00";
@@ -724,15 +771,163 @@ class scheduler_view
           }
         }
       }
-    }    
+    }
+    atk_var_dump($this->m_allDayItems,"ALL DAY ITEMS");
     $this->getAttendees($items);
+    $up_node = atknew("modules.scheduler.scheduler_userpreferences");
+    $userprefs = $up_node->getUserPreferences();
+    if($userprefs["showemployeebirthdays"])
+      $this->addEmployeeBirthdays();
+    if($userprefs["showtodo"])
+    {
+      $tmp_array=array();
+      $this->addTodos(false,$tmp_array,$startdate,$enddate);
+    }
+
+  }
+
+  /**
+   * Add holidays to scheduler items
+   * @param boolean $compact Compact mode or not (for the small calendar)
+   * @param array $dates Array with the small calendar dates
+   * @param integer $startmonth Start month of the small calendar
+   * @param integer $endmonth End month of the small calendar
+   */
+   function addHolidays($compact=false,&$dates=array(),$startdate="",$enddate="")
+   {
+     $holiday = &getNode("scheduler.scheduler_holidays");
+     if($startdate=="") { $startdate=time(); } else { $startdate = str_replace("-","",$startdate); }
+     if($enddate=="") { $enddate=date("Ymd"); }  else { $enddate = str_replace("-","",$enddate); }
+
+     $startdate = mktime(12,0,0,intval(substr($startdate,4,2)),intval(substr($startdate,6,2)),intval(substr($startdate,0,4)));
+     for($i=0;date("Ymd",($startdate+($i*86400)))<=$enddate;$i++)
+     {
+       $date = date("Y-m-d",($startdate+($i*86400)));
+       if($holiday->isHoliday($date))
+       {
+         if($compact)
+         {
+           $dates[$date]=true;
+         }
+         else
+         {
+           $holidaysInfo = $holiday->getHolidayInfo($date);
+           foreach($holidaysInfo as $info)
+           {
+             $this->m_allDayItems[$date][] = array("id"=>NULL,
+                                                "itemstartdate"=>$date,
+                                                "itemenddate"=>$date,
+                                                "starttime"=>"00:00:00",
+                                                "endtime"=>"23:59:59",
+                                                "allday"=>1,
+                                                "all_users"=>1,
+                                                "recur"=>"once",
+                                                "startdate"=>mktime(0,0,0,$i,$day,$this->m_year),
+                                                "enddate"=>mktime(23,59,59,$i,$day,$this->m_year),
+                                                "title"=>$info["name"],
+                                                "category"=>$info["schedulercategory"]);
+           }
+         }
+       }
+
+     }
+   }
+
+  /**
+   * Add employee birthdates to scheduler items
+   *
+   * @param boolean $compact Compact mode or not (for the small calendar)
+   * @param array $dates Array with the small calendar dates
+   * @param integer $startmonth Start month of the small calendar
+   * @param integer $endmonth End month of the small calendar
+   */
+  function addEmployeeBirthdays($compact=false,&$dates=array(),$startmonth=1,$endmonth=12)
+  {
+    $employees = &atkGetNode("employee.employee");
+    $birthdays = $employees->getBirthdates();
+    if(!$compact)
+    {
+      $startmonth=intval($this->m_month);
+      $endmonth=intval($this->m_month);
+    }
+    for($i=$startmonth;$i<=$endmonth;$i++)
+    {
+      if(isset($birthdays[$i]) && is_array($birthdays[$i]))
+      {
+        foreach($birthdays[$i] as $day => $names)
+        {
+          foreach($names as $name)
+          {
+            $date = date("Y-m-d",mktime(0,0,0,$i,$day,$this->m_year));
+            if($compact)
+            {
+              $dates[$date]=true;
+            }
+            else
+            {
+              $this->m_allDayItems[$date][] = array("id"=>NULL,
+                                                  "itemstartdate"=>$date,
+                                                  "itemenddate"=>$date,
+                                                  "starttime"=>"00:00:00",
+                                                  "endtime"=>"23:59:59",
+                                                  "allday"=>1,
+                                                  "recur"=>"once",
+                                                  "startdate"=>mktime(0,0,0,$i,$day,$this->m_year),
+                                                  "enddate"=>mktime(23,59,59,$i,$day,$this->m_year),
+                                                  "title"=>$name." ".atktext("birthday"));
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  /**
+   * Add todo's to the events list
+   *
+   * @param bool $compact Small calendor or not
+   * @param array $dates Array with dates for the compact mode
+   * @param string $startdate Start date
+   * @param string $enddate End date
+   */
+  function addTodos($compact=false,&$dates=array(),$startdate,$enddate)
+  {
+    atkdebug("GET TODOS FOR $startdate - $enddate | $compact");
+    $todo_node = &atkGetNode("todo.todo");
+    $filter="duedate >= '".$startdate."' AND duedate<='".$enddate."' ";
+    $filter.='AND todo.status NOT IN (5,2)';
+    $todos = $todo_node->selectDb($filter,"","","",array("id","title","duedate"));
+    foreach($todos as $todo)
+    {
+
+      $date = date("Y-m-d",mktime(0,0,0,$todo["duedate"]["month"],$todo["duedate"]["day"],$todo["duedate"]["year"]));
+      if($compact)
+      {
+        $dates[$date]=true;
+      }
+      else
+      {
+        $this->m_allDayItems[$date][] = array("id"=>NULL,
+                                            "itemstartdate"=>$date,
+                                            "itemenddate"=>$date,
+                                            "starttime"=>"00:00:00",
+                                            "endtime"=>"23:59:59",
+                                            "allday"=>1,
+                                            "recur"=>"once",
+                                            "startdate"=>mktime(0,0,0,$i,$day,$this->m_year),
+                                            "enddate"=>mktime(23,59,59,$i,$day,$this->m_year),
+                                            "title"=>atktext("todo_duedate")." ".$todo["title"]);
+      }
+
+    }
+
 
   }
 
 
 /**
    * Get attendees of a schedule item
-   * @global object $_db Database connection
    * @param int $scheduleid Schedule id
    * @return array Array with attendees of the schedule item
    */
@@ -751,7 +946,7 @@ class scheduler_view
 
     $query->addField('lastname', ' ', 'person');
     $query->addField('firstname', ' ', 'person');
-    $query->addField('role', ' ', 'person');    
+    $query->addField('role', ' ', 'person');
     $query->addCondition("scheduler_attendees.schedule_id IN (".implode(",",$items).")");
 
     $querystring = $query->buildSelect(TRUE);
@@ -768,6 +963,7 @@ class scheduler_view
       }
     }
     unset($nrows);
+    return true;
   }
 
   /**
@@ -849,7 +1045,8 @@ class scheduler_view
     // If showcategory we will show a box with the category color
     if($showcategory)
     {
-      $tmp.='<img style="background-color: '.$this->m_itemColors[$item["category"]]["back"].';" src="images/trans.gif" border="1" width="10" height="10" title="'.$this->m_itemColors[$item["category"]]["desc"].'">&nbsp;';
+      if(isset($item["category"]))
+        $tmp.='<img style="background-color: '.$this->m_itemColors[$item["category"]]["back"].';" src="images/trans.gif" border="1" width="10" height="10" title="'.$this->m_itemColors[$item["category"]]["desc"].'">&nbsp;';
     }
 
     $isAttendee = false;
@@ -857,7 +1054,7 @@ class scheduler_view
     if ($item["all_users"])
     {
       $names=atkText("allusers","scheduler");
-      $attendees='<img src="modules/scheduler/images/multi.png" title="'.$names.'" alt="'.$names.'">';
+      $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
     }
     else
     {
@@ -875,6 +1072,7 @@ class scheduler_view
         if($i>0) $names.=", ";
         $names.= $this->m_users[$userid]["firstname"]." ".$this->m_users[$userid]["lastname"].($this->m_users[$userid]["role"]!="employee"?" (".$this->m_users[$userid]["role"].")":"");
       }
+      /*
       if($numberofattendees==1)
       {
         $attendees='<img src="'.$theme->imgPath("single.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
@@ -883,6 +1081,8 @@ class scheduler_view
       {
         $attendees='<img src="'.$theme->imgPath("multi.png","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
       }
+      */
+      $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=15 height=15 title="'.$names.'" alt="'.$names.'">';
     }
 
     if(!$this->isAllDay($item))
@@ -902,6 +1102,12 @@ class scheduler_view
 
     $tmp.="&nbsp;";
 
+    /*
+    owner = view private, edit, delete, view
+    attendee = view private, view
+    assistant = edit, delete, view
+    */
+
     // If item is private and current is not an attendee or owner, show private event.
     if($this->isPrivate($item) && !($item["owner"]==$user["id"] || $isAttendee))
     {
@@ -909,11 +1115,18 @@ class scheduler_view
     }
     else
     {
-      if($item["owner"]==$user["id"] || $isAttendee || in_array($item["owner"],$this->m_assistantFor))
+      $action = "";
+      if(($item["owner"]==$user["id"]) ||
+         (!$this->isPrivate($item) && in_array($item["owner"],$this->m_assistantFor)))
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atknodetype=scheduler.scheduler&atkaction=".($this->isRecurring($item)?"editserieorsingle":"edit")."&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
+        $action = ($this->isRecurring($item)?"editserieorsingle":"edit");
       }
-      elseif(!$this->isPrivate($item))
+      elseif($isAttendee)
+      {
+        $action = "view";
+      }
+
+      if($action!="")
       {
         $tmp.=href($_SERVER["PHP_SELF"]."?atknodetype=scheduler.scheduler&atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
       }
@@ -930,8 +1143,8 @@ class scheduler_view
     {
       $tmp.='</td><td valign="top" align="right">';
       // you may only delete a calendar item if you are the owner,
-      // or an assistant of the owner
-      if ($item["owner"] == $user["id"] || in_array($item["owner"],$this->m_assistantFor))
+      // or an assistant of the owner and the item is not private
+      if ($item["owner"] == $user["id"] || (!$this->isPrivate($item) && in_array($item["owner"],$this->m_assistantFor)))
       {
         $delete = '<img src="'.$theme->iconPath("delete", "recordlist").'" border="0">';
         $tmp.= href("dispatch.php?atknodetype=scheduler.scheduler&atkaction=delete&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"], $delete, SESSION_NESTED);
@@ -947,7 +1160,7 @@ class scheduler_view
    */
   function _setUserSettings()
   {
-   $user = getUser();    
+   $user = getUser();
     $schedulerNode = &getNode("scheduler.scheduler");
     $userprefs = $schedulerNode->getUserSchedulerPrefs($user["id"]);
 
@@ -955,6 +1168,7 @@ class scheduler_view
     if($userprefs["scheduler_emptycolor"]!="") $this->m_emptyColor = $userprefs["scheduler_emptycolor"];
     if($userprefs["scheduler_emptyworkhourscolor"]!="") $this->m_emptyWorkHoursColor = $userprefs["scheduler_emptyworkhourscolor"];
     if($userprefs["showweeknumbers"]!="") $this->m_showWeekNumbers = $userprefs["showweeknumbers"];
+    if($userprefs["showlunarphases"]!="") $this->m_showLunarPhases = $userprefs["showlunarphases"];
     if($userprefs["showtodo"]!="") $this->m_showTodo = $userprefs["showtodo"];
     // This is a general user setting
     if($user["startday"]!="") $this->setCalendarStartDay($user["startday"]);
@@ -993,6 +1207,8 @@ class scheduler_view
     {
       $this->m_assistantFor[] = $nrows[$i]["userid"];
     }
+    $this->m_assistantFor = schedulertools::assistantFor($user["id"]);
+
     $this->m_owner = $user["id"];
   }
 

@@ -8,9 +8,8 @@
     {
       registerNode("scheduler.scheduler", array("admin", "add", "edit", "delete"));
       registerNode("scheduler.scheduler_category", array("admin", "add", "edit", "delete"));
-      // Disabled, doesn't work yet
-      //registerNode("scheduler.scheduler_holidays", array("admin", "add", "edit", "delete","import","export","view_holidays"));
-      //registerNode("scheduler.scheduler_email_template", array("admin", "edit"));
+      registerNode("scheduler.scheduler_holidays", array("admin", "add", "edit", "delete","import","export","view_holidays"));
+      registerNode("scheduler.scheduler_email_template", array("admin", "edit"));
     }
 
     function getMenuItems()
@@ -19,9 +18,8 @@
       $this->menuitem("-","","main",true,320);
       $this->menuitem("scheduler_category", dispatch_url("scheduler.scheduler_category","admin"),"setup");
       $target_holidays = "dispatch.php?atknodetype=project.project&atkaction=admin&selectedcountry=[country]";
-      // Disabled, doesn't work yet
-      //$this->menuitem("scheduler_holidays", dispatch_url("scheduler.scheduler_holidays","admin"),"setup");
-      //$this->menuitem("scheduler_email_templates", dispatch_url("scheduler.scheduler_email_template","admin"),"setup");
+      $this->menuitem("scheduler_holidays", dispatch_url("scheduler.scheduler_holidays","admin"),"setup");
+      $this->menuitem("scheduler_email_templates", dispatch_url("scheduler.scheduler_email_template","admin"),"setup");
 
     }
 

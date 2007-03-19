@@ -6,10 +6,14 @@ $setup->installNode("scheduler.scheduler");
 // Allow a rather long execution time
 set_time_limit(0);
 
-// !! GUIDO HACK !! Clone the default db config
-global $config_db;
-$config_db["default_clone"] = $config_db["default"];
-$db_clone = &atkGetDb("default_clone");
+if(version_compare(phpversion(), "5.0.0")>=0)
+{
+  $db_clone = clone($db);
+}
+else
+{
+  $db_clone = $db;
+}
 
 // Convert scheduler types
 $sql = "SELECT * FROM schedule_type";

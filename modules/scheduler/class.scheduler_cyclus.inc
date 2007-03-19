@@ -1,18 +1,22 @@
 <?php
   userelation("atkonetomanyrelation");
+  useattrib("atkweekdayattribute");
 
   class scheduler_cyclus extends atkNode
   {
      function scheduler_cyclus()
      {
+       atkimport("modules.utils.dateutil");
+       $month_array = dateutil::monthlist();
+       $month_arr_value = array_keys($month_array);
+       $month_arr_disp = array_values($month_array);
+
+       $day_arr = array();
+       for($i=1;$i<32;$i++) $day_arr[]=$i;
+
        $this->atkNode("scheduler_cyclus");
        $this->add(new atkAttribute("scheduler_id",AF_PRIMARY|AF_HIDE));
-       //$tmp_recur = &new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array());
-       //$tmp_recur->addOnChangeHandler("change_recur(newvalue);");
-       //$this->add($tmp_recur,"cyclus");
 
-
-       //$this->add(new atkDateAttribute("cyclus_startdate"  , "F d Y","d F Y", 0, 0),"cyclus");
        $this->add(new atkDateAttribute("cyclus_enddate"    , "F d Y","d F Y", 0, 0),"cyclus");
        $this->add(new atkListAttribute("startday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
        $this->add(new atkListAttribute("endday",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
@@ -22,8 +26,8 @@
        $this->add(new atkListAttribute("every",array("none",2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
 
        $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY),"cyclus");
-       $this->add(new atkFlagAttribute("weekday",array("sunday","monday","thuesday","wednedsday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus");
-       $this->add(new atkOneToManyRelation("exceptions","scheduler.scheduler_cyclus_not","scheduler_id"));
+       $this->add(new atkWeekdayAttribute("weekday"),"cyclus");
+       $this->add(new atkOneToManyRelation("exceptions","scheduler.scheduler_cyclus_not","scheduler_id"),"cyclus");
 
        $this->setTable("scheduler_cyclus");
      }

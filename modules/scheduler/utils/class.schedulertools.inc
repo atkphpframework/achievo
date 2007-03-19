@@ -45,11 +45,11 @@ class schedulertools
       {
         $enddate = date("Y-m-d",mktime(12,0,0,$item["cyclus"]["cyclus_enddate"]["month"],$item["cyclus"]["cyclus_enddate"]["day"],$item["cyclus"]["cyclus_enddate"]["year"]));
       }
-      else 
+      else
       {
         $enddate = mktime(12,0,0,12,31,2037);
       }
-      
+
     }
     // Check if getDates has a range start/end date
     if($rangeStartDate!=NULL && $rangeEndDate!=NULL)
@@ -183,6 +183,42 @@ class schedulertools
           if($item["recur"]=="once") break;
         }
         return $dates;
+      }
+
+      /**
+       * Check for which users the user is an assistant
+       *
+       * @param int $userid
+       * @return array Array with user id's
+       */
+      function assistantFor($userid)
+      {
+        $db = &atkGetDb();
+        $sql = "SELECT userid FROM scheduler_userassistants WHERE employeeid='{$userid}'";
+        $nrows = $db->getrows($sql);
+        $assistantFor = array();
+        for($i=0;$i<count($nrows);$i++)
+        {
+          $assistantFor[] = $nrows[$i]["userid"];
+        }
+        return $assistantFor;
+      }
+
+      /**
+       * Check if a user is an attendee for the given item
+       *
+       * @param int $item_id Id of the scheduler item
+       * @param int $userid Id of the user
+       * @return boolean True if it's an attendee
+       */
+      function isAttendee($item_id,$userid)
+      {
+        $db = &atkGetDb();
+        $sql = "SELECT person_id FROM scheduler_attendees WHERE schedule_id='{$item_id}' AND person_id='{$userid}'";
+        $nrows = $db->getrows($sql);
+        if(count($nrows)==1) return true;
+        return false;
+
       }
 
 

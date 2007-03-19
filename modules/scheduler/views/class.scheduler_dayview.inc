@@ -176,41 +176,19 @@ class scheduler_dayview extends scheduler_view
      }
      $buff.='<table border=0 width="90%" cellspacing="2"><tr><td>';
      // if we have allday items show 'em in a seperate table
-     //if($holiday->isHoliday($this->m_viewdate)) atkdebug("SANDY !!!!");
-     if (count($this->m_allDayItems[$this->m_viewdate]) > 0 ||$holiday->isHoliday($this->m_viewdate))
+     if (count($this->m_allDayItems[$this->m_viewdate]) > 0)
      {
 
       $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='90%'>\n";
       $buff .= "<tr>\n";
       $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'>".atkText("allday_events","scheduler")."</td>\n";
       $buff .= "</tr>\n";
-      /*
-      if($holiday->isHoliday($this->m_viewdate))
-      {
-        $holidayInfo = $holiday->getHolidayInfo($this->m_viewdate);
-        $type    = $holidayInfo["scheduletype"];
 
-        $bgcolor = $colors[$type]["back"];
-        $fgcolor = $colors[$type]["fore"];
-
-        $buff .= "<tr>\n";
-        $buff .= "<td colspan='$aCols' style='background-color: $bgcolor; color: $fgcolor' valign='top' align='left'>";
-
-        $buff.= $holidayInfo["name"];
-        $buff .= "</td>";
-        $buff .= "</tr>";
-      }
-      */
       for ($i=0;$i<=count($this->m_allDayItems)-1;$i++)
       {
-       $type    = $this->m_allDayItems[$this->m_viewdate][$i]["scheduletype"];
-       $bgcolor = $colors[$type]["back"];
-       $fgcolor = $colors[$type]["fore"];
-
        $buff .= "<tr>\n";
-       $buff .= "<td colspan='$aCols' bgcolor='$bgcolor' valign='top' align='left'>";
-
-       $buff.= $this->renderItem($this->m_allDayItems[$this->m_viewdate][$i],true);
+       $buff .= '<td colspan="'.$aCols.'" valign="top" align="left">';
+       $buff.= $this->renderItem($this->m_allDayItems[$this->m_viewdate][$i],true,"",true);
        $buff .= "</td>";
        $buff .= "</tr>";
       }
@@ -227,7 +205,7 @@ class scheduler_dayview extends scheduler_view
      {
       $time    = $this->m_allDayHours[$i];
       $items   = $this->m_itemMatrix[$time];
-      $now     = $this->year."-".$this->month."-".$this->day;
+      $now     = $this->m_year."-".$this->m_month."-".$this->m_day;
       $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
       if(in_array($time,$this->m_workHours))
       {
@@ -271,7 +249,7 @@ class scheduler_dayview extends scheduler_view
 
       if ($cols == 0)
       {
-       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0;  cursor: pointer; cursor: hand;' width='$cWidth' bgcolor='".$empty_bgcolor."'  onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
+       $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: ".($newHour?2:1)."px solid #FFFFFF;border-bottom: 1px solid #D0D0D0;  cursor: pointer; cursor: hand;' width='$cWidth' bgcolor='".$empty_bgcolor."'  onclick=\"document.location.href='".session_url($addurl,SESSION_NESTED)."'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
       }
       else
       {
@@ -319,7 +297,7 @@ class scheduler_dayview extends scheduler_view
         }
         else
         {
-         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D; cursor: pointer; cursor: hand;' width='$cWidth' onclick=\"document.location.href='$addurl'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
+         $buff .= "<td style='background-color: ".$empty_bgcolor."; border-top: 1px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;border-right: 0px solid #D0D0D; cursor: pointer; cursor: hand;' width='$cWidth' onclick=\"document.location.href='".session_url($addurl,SESSION_NESTED)."'\" onmouseover=\"highlightrow(this, '".$defaulthighlight."')\" onmouseout=\"resetrow(this)\">&nbsp;</td>\n";
         }
        }
       }
@@ -363,7 +341,7 @@ class scheduler_dayview extends scheduler_view
    * @return integer containing number of <TD>'s needed within the display mode
    */
     function _getCols()
-    {      
+    {
      $cols = 0;
      while (list($key, $val) = each($this->m_itemMatrix))
      {
@@ -402,8 +380,8 @@ class scheduler_dayview extends scheduler_view
      // get scheduler Legend and Item colors
      $this->getLegend();
 
-     $holidays = &getNode("scheduler.scheduler_holidays");
-     $check = $holidays->isHoliday("20040601");
+     //$holidays = &getNode("scheduler.scheduler_holidays");
+     //$check = $holidays->isHoliday("20040601");
      // Return the matrix :)
      return $this->_dumpMatrix();
   }
