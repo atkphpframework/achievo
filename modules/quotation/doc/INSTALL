@@ -1,0 +1,65 @@
+Installing the 'Quotation' Achievo module
+========================================
+
+Read this first
+---------------
+Depite our efforts to keep this INSTALL file as accurate as possible, there
+might be situations in which the described procedure does not work.
+In this case send an email to ivo@achievo.org or to the mailinglist
+(achievo@achievo.org) and we will try to help you out.
+
+Requirements
+------------
+
+A working Achievo installation, version 1.0.RC2 or higher.
+The module has been tested with 1.0.RC2 and 1.0.RC3.
+
+Installation Procedure
+----------------------
+
+1) Place the files from the module in your Achievo external modules directory. 
+   Preferably, this is a directory just outside the Achievo root. For example, 
+   if your Achievo installation is located in /var/www/html/achievo-1.0, put
+   this module in /var/www/html/achievo_modules/quotation.
+   
+2) Open up Achievo's config.inc.php file and locate the modules setting near
+   the bottom of the file. Add the following line to add the Quotation module
+   to Achievo:
+   
+   module("quotation", "../achievo_modules/quotation/");
+   
+   The first parameter is the name of the module, and should always be 
+   'quotation'. The second parameter points to the directory where the module
+   is located, relative to the directory of Achievo itself.
+   
+3) Log out of Achievo, and point your browser to the setup.php script in the
+   Achievo directory, for example:
+   
+   http://yourserver/achievo-1.0/setup.php
+   
+   (As an alternative to step 3 and 4, you can use the Moduleinfo module to 
+   install the database.)
+   
+4) Log in as the 'administrator' user, and follow the directions. If steps 1 
+   and 2 went ok, the setup script will indicate that it will have to install
+   the quotation module in the database. 
+   
+   If the installation went well, you should have a new menu item in Achievo
+   called 'Quotations'. (You must grant access to users to the new features,
+   using the profile editor in the Employee menu.)
+
+5) An important feature of the module is a script that needs to be run from
+   cron on a daily basis. The script will inform the owner of quotations about
+   quotations that are about to expire.
+   
+   The cron script can be run using Achievo's runcron script. To run the
+   reminder every day at 9:00h, add the following line to your crontab file:
+   
+   0 9 * * *  /usr/bin/php /var/www/achievo/runcron quotation.reminder 
+                                                                 > /dev/null
+                                                                 
+   /usr/bin/php should be the directory where your php command line binary is
+   located, and you should replace /var/www/achievo with the directory where
+   Achievo is installed.
+
+6) See the README file for usage instructions.

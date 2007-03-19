@@ -1,0 +1,65 @@
+'Quotation' Achievo module usage instructions
+=============================================
+
+1. What is it?
+--------------
+The 'quotation' module is a module for keeping track of quotations. It is a 
+helpful tool for the sales department to track progress on outstanding 
+quotations. The module can remind people of quotations that are about to
+expire or have already expired.
+
+The module also generates unique quotation numbers based on the date and a
+sequence number.
+
+The lifecycle of a quotation contains the following states:
+
+Undelivered - this is the initial status after the quotation has been created.
+Delivered   - the quotation has been delivered to the customer.
+Called      - if after a while no response was received, the owner is supposed
+              to call the customer. If the customer indicates that he has not
+              yet decided, the status can be set to 'called' so everybody
+              knows that the call has been made but no decision has been made.
+Accepted    - The customer has accepted the quotation.
+Rejected    - The customer has rejected the quotation.
+Completed   - The order was completed, the work has been done, and a bill can
+              be sent.
+Billed      - The bill has been sent.
+
+Depending on the status of a quotation, the screen provides links for moving
+to a different status. 
+
+There are 2 possible end-states: Billed or Rejected. A quotation with one of
+these statusses is removed from the list.
+              
+
+2. Assumptions
+--------------
+1) You should have activated the quotation module in Achievo. See the 
+   doc/INSTALL file for instructions on how to install and activate the 
+   module.
+   
+2) Users who need to work with quotations should have the proper access rights
+   to quotations. Use the profile editor in the Employee menu to accomplish
+   this.  
+  
+   
+3. Instructions
+---------------
+3.1 Managing quotations.
+
+  The quotation management screens are quite self explanatory. Keep in mind
+  the quotation lifecycle as described above, and the rest will explain
+  itself. Questions may be posted on the Achievo mailinglist, to which you
+  can subscribe by sending an empty message to achievo-subscribe@achievo.org.
+      
+3.2 Sending reminders.
+
+  The module includes a script which can sent reminders for quotations that
+  are about to expire. See the doc/INSTALL file for instructions on how to 
+  install this script using cron.
+  
+3.3 Deactivate the "automatically add project" function
+
+  Default when accepting a quotation the project add screen apears with the 
+  title of the quotation as projectname. This can be deactivated by inserting 
+  the following line in config.inc.php: $config_quotation_addproject = false; 

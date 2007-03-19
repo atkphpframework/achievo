@@ -1,0 +1,30 @@
++ : new feature
+- : deprecated feature
+* : bugfix or changed code
+Bug numbers are references to bugs in http://www.achievo.org/bugzilla
+[names] are references to people in the AUTHORS file.
+
+Changes in Quotation 1.0.2
+--------------------------
++ Added warning messages for non-obligatory fields status and method, when they
+	are left empty [Dennis]
++ Added some custom action icons [Dennis]
+* Several codechanges to make quotation work with new atk version. [Dennis]
++ Added support for automatically adding a project after accepting
+  a quotation. [Lineke]
++ Quotation price is now displayed in admin screen. [Ivo]
+* Updated German translation. [Udo]
+* Updated language files to .lng [Dennis]
+* Customized document handling to assign owner and organization data to
+  the document. [Guido]
++ Contact can now be a relation to the organization.contact node (see config
+  file). [Harrie]
+
+Changes in Quotation 1.0.1
+--------------------------
++ Added support for quotations that are paid before they are completed. [Ivo]
++ Added German translation. [Georg]
+
+Changes in Quotation 1.0.0
+--------------------------
++ Initial version. [Ivo]
