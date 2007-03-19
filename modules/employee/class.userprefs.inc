@@ -8,6 +8,12 @@ useattrib('employee.adminlangselectattribute');
 
 class userprefs extends atkNode
 {
+  /**
+   * Constructor
+   *
+   * @todo support more startdays (http://www.pjh2.de/datetime/weeknumber/wnd.php?l=en)
+   * @return userprefs
+   */
   function userprefs()
   {
     $this->atkNode("userprefs",NF_NO_ADD|NF_NO_DELETE|NF_TRACK_CHANGES);
@@ -22,7 +28,7 @@ class userprefs extends atkNode
     $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD|AF_NO_TRANSLATION));
     $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
-    $this->add(new atkListAttribute("startday",array("sunday", "monday", "saturday"),array(0,1,6),AF_OBLIGATORY));
+    $this->add(new atkListAttribute("startday",array("sunday", "monday"),array(0,1),AF_OBLIGATORY));
 
 
     $this->setTable("person", "person");
