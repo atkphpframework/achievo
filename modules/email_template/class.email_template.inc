@@ -19,7 +19,7 @@ useattrib("atkupdatedbyattribute");
 
 class email_template extends atkNode
 {
-  
+
   /**
    * Module name
    *
@@ -83,7 +83,7 @@ class email_template extends atkNode
     $this->setTable("email_template");
     $this->setOrder("email_template.title");
   }
-  
+
   /**
    * Save module name in a var for using it with the translations
    *
@@ -101,6 +101,21 @@ class email_template extends atkNode
   function descriptor_def()
   {
     return "[title]";
+  }
+
+  function setModule($module)
+  {
+    $this->m_module = $module;
+  }
+
+  function setFromEmail($email)
+  {
+    $this->m_from_email = $email;
+  }
+
+  function setFromName($name)
+  {
+    $this->m_from_name = $name;
   }
 
   /**
@@ -194,7 +209,7 @@ class email_template extends atkNode
     return $smarty->fetch("templatedb:".$this->m_template_code."/".$this->m_module."/html_body",'',$compile_id);
   }
 
-  
+
 
   /**
    * Set some initial values
@@ -233,9 +248,9 @@ class email_template extends atkNode
    */
   function send()
   {
-    
+
     $user = $this->_getUser();
-    if(is_array($user))
+    if(is_array($user) && $user["email"])
     {
       $mail = atknew("atk.utils.atkMailer");
 
