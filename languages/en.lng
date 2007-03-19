@@ -657,7 +657,7 @@
   'language_zh'=>'Chinese',
   "contactid"=>"Contactperson",
   "closedate"=>"Close date",
-  "private"=>"Private;",
+  "private"=>"Private",
   "complete"=>"Complete",
   "mra_complete"=>"Complete"
 
