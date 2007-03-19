@@ -11,7 +11,7 @@ http://www.achievo.org/forum and we will try to help you out.
 Upgrading from an earlier version
 ---------------------------------
 This INSTALL file assumes that you install Achievo for the first time.
-If you are upgrading from an earlier version, check the UPGRADE file for 
+If you are upgrading from an earlier version, check the UPGRADE file for
 upgrade instructions.
 
 Requirements
@@ -20,16 +20,16 @@ Requirements
 - A webserver capable of running php4 scripts
   (Apache is a good choice, http://www.apache.org)
 - PHP4 (http://www.php.net, version 4.3.1 or newer)
-- MySQL (http://www.mysql.org) 
+- MySQL (http://www.mysql.org)
 
 The following are requirements for optional features of Achievo:
 
-- There are several graphical charts in Achievo. For these to work, PHP should 
+- There are several graphical charts in Achievo. For these to work, PHP should
   be installed/compiled with GD support (http://www.php.net/gd).
 
 - To make use of the OpenOffice document generator, both the 'zip' and 'unzip'
-  binaries should be in the path. 
- 
+  binaries should be in the path.
+
 - To make use of the cronned reminder scripts, you must be able to setup cron
   on the machine where you install Achievo.
 
@@ -37,51 +37,51 @@ Installation Procedure
 ----------------------
 
 Note that this guide does not describe how to install a webserver or PHP
-or a database server. See the documentation for these programs on how to 
+or a database server. See the documentation for these programs on how to
 install those. This installation guide assumes that you already
 have a working webserver with PHP support and a MySQL database installed.
 
-1) Untar the entire achievo archive to a place where you can access it with 
+1) Untar the entire achievo archive to a place where you can access it with
    your webserver.
 
    example:
 
-   $ cd /usr/local/apache/htdocs              # change to a web accessible 
+   $ cd /usr/local/apache/htdocs              # change to a web accessible
                                               # directory
    $ tar xzvf ~user/achievo_x.x.tar.gz        # unpack the tar.gz file
 
    optional:
 
-   $ ln -s achievo_x.x achievo                # make a symbolic link 
+   $ ln -s achievo_x.x achievo                # make a symbolic link
 
-2) Make the 'achievotmp' directory (and its subdirectories) writable for the 
+2) Make the 'achievotmp' directory (and its subdirectories) writable for the
    webserver. On Linux/Unix you can run the following command:
-  
-   $ chown -R username achievotmp 
-                                  
+
+   $ chown -R username achievotmp documents doctemplates modules/docmanager/doctypetemplates
+
    Replace 'username' with the username that you use to run the webserver,
    for example 'nobody', 'apache' or 'www'.
 
-3) Create an empty database in mysql and a user that has create, alter, 
+3) Create an empty database in mysql and a user that has create, alter,
    select, insert, update and delete-access on the database.
 
    example (assuming your mysql root password is 'secret'):
-   
+
    $ mysql -u root --password=secret mysql
 
    mysql> create database achievo_1_2;
-   mysql> grant create,alter,select,insert,update,delete on achievo_1_2.*  
+   mysql> grant create,alter,select,insert,update,delete on achievo_1_2.*
                                   to achievo@localhost identified by 'secret';
    mysql> quit;
 
-   This creates a database named 'achievo_1_2', and a user with username 
+   This creates a database named 'achievo_1_2', and a user with username
    'achievo' and password 'secret'.
-    
+
    Note: the create and alter privileges are only needed during installation
-   and upgrades. You can revoke these privileges once the installation is 
+   and upgrades. You can revoke these privileges once the installation is
    complete.
- 
-   Note 2: if you are using MySQL 4, you must also grant the 'lock tables' 
+
+   Note 2: if you are using MySQL 4, you must also grant the 'lock tables'
    privilege to the user.
 
 4) Edit the file config.inc.php in the achievo directory, and set the
@@ -97,36 +97,36 @@ have a working webserver with PHP support and a MySQL database installed.
    $config_db["default"]["password"] = "demo";
 
 
-5) In the same configuration file there is a variable 
-   $config_administratorpassword. This is the password you need on your 
+5) In the same configuration file there is a variable
+   $config_administratorpassword. This is the password you need on your
    first login. You might want to change this password.
-   
-   There are some other things in the config-file that you can change, but 
-   for your first configuration, you can leave those settings to the default.      
+
+   There are some other things in the config-file that you can change, but
+   for your first configuration, you can leave those settings to the default.
 
 6) After editing the configuration file, point your browser to the setup.php
    script in the Achievo directory. For example:
-   
+
    http://yourserver/achievo/setup.php
-   
-   You'll be prompted to login. Enter 'administrator' as username and the 
-   password you've set in step 4. 
-   
+
+   You'll be prompted to login. Enter 'administrator' as username and the
+   password you've set in step 4.
+
 7) Follow the instructions. Achievo will first perform some system checks, to
    see if your PHP configuration is up to date. If it discovers any problems,
-   it will tell you how to solve them. If everything is ok, it will install 
+   it will tell you how to solve them. If everything is ok, it will install
    the database for you.
 
 8) Once the setup.php script is completed, you'll be ready to run Achievo.
    You can point your browser to the Achievo directory, like this:
-   
+
    http://yourserver/achievo/
 
-   If this is the first time you're using Achievo, you might want to take the 
+   If this is the first time you're using Achievo, you might want to take the
    Guided Tour on http://www.achievo.org/support/manual/tour, which will show
    you everything you should do to make Achievo useable for your users.
 
 9) Achievo contains some useful cron scripts that can be run periodically from
-   a cron job. See the cron/README file for available cron features and 
+   a cron job. See the cron/README file for available cron features and
    instructions.
 
