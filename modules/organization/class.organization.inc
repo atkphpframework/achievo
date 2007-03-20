@@ -162,7 +162,6 @@ class organization extends atkNode
    */
   function adminHeader()
   {
-    $view = $this->getView();
     $result = "<br>" . $this->text("view"). ":";
     foreach (array("all", "customer", "supplier") as $filter)
       $result .= " " . href(dispatch_url("organization.organization", "admin", array("view"=>$filter)), $this->text($filter));
