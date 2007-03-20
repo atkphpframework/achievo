@@ -75,12 +75,12 @@ class organization extends atkNode
     $this->add(new atkAttribute("bankaccount4", AF_HIDE_LIST|AF_HIDE_ADD, 30));
     $this->add(new atkAttribute("vatnumber", AF_HIDE_LIST|AF_HIDE_ADD, 25));
     $this->add(new atkManyToOneRelation("member_of","organization.organization",AF_HIDE_LIST|AF_LARGE|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("status","organization.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("source","organization.source",AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("industry","organization.industry",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("status","crm.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("industry","crm.industry",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkNumberAttribute("employees",AF_HIDE_LIST|AF_HIDE_ADD,5));
     $this->add(new atkAttribute("revenue",AF_HIDE_LIST|AF_HIDE_ADD,5));
-    $this->add(new atkManyToOneRelation("rate","organization.rate",AF_HIDE_LIST|AF_READONLY|AF_HIDE_ADD));
+    $this->add(new atkManyToOneRelation("rate","crm.rate",AF_HIDE_LIST|AF_READONLY|AF_HIDE_ADD));
     $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
@@ -92,8 +92,8 @@ class organization extends atkNode
     $this->add($projectRelatie);
     $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
     //$this->add(new atkTabbedPane("extra_subtabs",array("quotations"=>array("quotations")),AF_HIDE_ADD|AF_NO_LABEL),"extra");
-    $this->add(new atkOneToManyRelation("former_names","organization.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
-    $this->add(new atkOneToManyRelation("relation","organization.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+    $this->add(new atkOneToManyRelation("former_names","crm.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+    $this->add(new atkOneToManyRelation("relation","crm.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
     $this->add(new atkOneToManyRelation("quotations","quotation.quotation","organization_id",AF_HIDE_LIST),"extra");
     $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
 

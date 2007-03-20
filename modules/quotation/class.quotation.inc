@@ -94,8 +94,8 @@
       $this->add($percattrib);
 
       $this->add(new atkNumberAttribute("profit_expectance",AF_HIDE_ADD|AF_HIDE_EDIT|AF_TOTAL,10,2));
-      $this->add(new atkManyToOneRelation("campaign","organization.campaign",AF_HIDE_LIST));
-      $this->add(new atkManyToOneRelation("source","organization.source",AF_HIDE_LIST));
+      $this->add(new atkManyToOneRelation("campaign","crm.campaign",AF_HIDE_LIST));
+      $this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST));
 
       $this->add(new atkCreatedByAttribute("created_by",AF_HIDE_LIST),"history");
       $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");
