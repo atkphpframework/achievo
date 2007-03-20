@@ -6,6 +6,6 @@
   // Add project after quotation is accepted
   $config['quotation_addproject'] = true;
 
-  $config['quotation_dir'] = "./documents/quotations/";
+  $config['quotation_dir'] = "./documents/quotation/";
 
 ?>
