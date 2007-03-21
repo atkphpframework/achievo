@@ -36,7 +36,7 @@
 
     function getDependencies($mode)
     {
-      return array("person");
+      return array("person", "email_template");
     }
 
     function userprefs_modifier(&$node)
