@@ -1,8 +1,8 @@
 <?php
   // add user preference show lunar phases
   $setup->addColumn("scheduler_userpreferences", "showlunarphases", "int(1)");
+  $setup->addColumn("scheduler_userpreferences", "showtodo", "int(1)");
   $setup->addColumn("scheduler_holidays","length","int(11)");
-
 
   // Insert the email templates we use for the scheduler
   $et = &atkGetNode('email_template.email_template');
@@ -49,8 +49,8 @@
                        'plain_body'=>'Here is your requested alarm.',
                        'html_body'=>'Here is your requested alarm.',
                        'lastupdatedon'=>date("Y-m-d H:i:s"));
-  
+
   foreach($templates as $record)
     $et->addDb($record);
-  
+
 ?>
