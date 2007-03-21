@@ -1,5 +1,5 @@
 <?php
 
-  $setup->installNode("timereg.hours_lock");
+  $setup->addColumn("hours_lock","coordinator","varchar(100)",true);
 
 ?>
