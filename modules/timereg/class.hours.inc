@@ -148,7 +148,6 @@ class hours extends atkNode
 
   function hours($type="hours", $flags=0)
   {
-    $user = getUser();
     // weekview and viewdate are variables that we need to remember..
     $this->m_weekview = $this->processGlobalVar("weekview");
     $this->m_viewdate = $this->processGlobalVar("viewdate");
@@ -200,7 +199,7 @@ class hours extends atkNode
 
       $weekdates = array_slice(TimeregUtils::getWeekDates($this->m_viewdate), 1, 7);
 
-      $weekdatesViewdateIndex = "";
+      $weekdatesViewDateIndex = "";
 
       // Check if the current viewdate is locked, and keep array index if it is.
       foreach ($weekdates as $key => $date)
@@ -667,7 +666,7 @@ class hours extends atkNode
      return "lastname";
    }
 
-  function weekview()
+  function weekview($filterbycoordinator=false)
   {
 
     $viewtime = TimeregUtils::getViewTime($this->m_viewdate);
@@ -786,10 +785,10 @@ class hours extends atkNode
   function weekviewHeader($weekdates, $viewtime)
   {
     $userid           = $this->m_user;
-    $record["userid"] = $userid;    
+    $record["userid"] = $userid;
     $att = &$this->getAttribute("userid");
     $att->populate($record);
-    
+
     $locks = 0;
 
     // Check if any day of week is locked. $locks will represent the numbers of locked days.
@@ -1157,7 +1156,7 @@ class hours extends atkNode
         $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
         $newmode = "multi";
       }
-      
+
       $res.= " ".href("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=".$this->m_action."&insertmode=".$newmode,
                       atktext("insert_".$newmode, $this->m_module, $this->m_type),
                       SESSION_DEFAULT,
