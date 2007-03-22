@@ -31,11 +31,11 @@
 
   atksession();
   atksecure();
-  require "theme.inc";
 
+  require("theme.inc");
 
   $page = &atknew("atk.ui.atkpage");
-  $ui = &atknew("atk.ui.atkui");
+  $ui = &atkinstance("atk.ui.atkui");
   $theme = &atkTheme::getInstance();
   $output = &atkOutput::getInstance();
 
@@ -44,7 +44,7 @@
   $page->register_style($theme->stylePath("top.css"));
 
   //Backwards compatible $content, that is what will render when the box.tpl is used instead of a top.tpl
-  $loggedin = atktext("logged_in_as").": <b>".$g_user["name"]."</b>";
+  $loggedin = atktext("logged_in_as", "atk").": <b>".$g_user["name"]."</b>";
   $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(atktext("logout", "atk")).'</a> &nbsp;';
 
   $centerpiecelinks=array();
@@ -70,22 +70,24 @@
 
   $title = atktext("app_title")." ".$achievo_version;
   ($achievo_state!=="stable")?$title.=" ($achievo_state)":"";
-  atk_var_dump($g_user);
   $top = $ui->renderBox(array("content"=> $content,
-                  "logintext" => atktext("logged_in_as"),
-                              "logouttext" => ucfirst(atktext("logout")),
+                              "logintext" => atktext("logged_in_as"),
+                              "logouttext" => ucfirst(atktext("logout", "atk")),
                               "logoutlink" => "index.php?atklogout=1",
-                              "logouttarget"=>"_top",
-                              "centerpiece"=>$centerpiece,
-                              'centerpiece_links'=>$centerpiecelinks,
-                              "searchpiece"=>$searchpiece,
+                              "logouttarget" => "_top",
+                              "centerpiece" => $centerpiece,
+                              "centerpiece_links" => $centerpiecelinks,
+                              "searchpiece" => $searchpiece,
                               "title" => $title,
-                  "user"   => $g_user["name"],
-                  "username"=>$g_user["firstname"]." ".$g_user["lastname"]), "top");
+                              "user" => $g_user["name"],
+                              "username"=>$g_user["firstname"]." ".$g_user["lastname"],
+                        ),
+                        "top");
 
   $page->addContent($top);
 
   $output->output($page->render(atktext("app_title"), true));
 
   $output->outputFlush();
+
 ?>

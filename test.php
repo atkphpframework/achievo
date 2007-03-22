@@ -17,12 +17,14 @@
    * $Id$
    */
 
-  // Include ATK library
+  /**
+   * @internal includes 
+   */
   $config_atkroot = "./";
   include_once("atk.inc");
 
   // Require ATK authentication if not running in text mode
-  if(!isset($_SERVER['PWD']))
+  if(php_sapi_name() != "cli")
   {
     atksession();
     atksecure();
@@ -36,5 +38,6 @@
 
   // Let the atktestsuite run all test files having a name starting with "class.test_"
   $suite = &atknew("atk.test.atktestsuite");
-  $suite->run((!isset($_SERVER['PWD'])) ? "html" : "text");
+  $suite->run((php_sapi_name() != "cli") ? "html" : "text", atkArrayNvl($_REQUEST, "atkmodule"));
+
 ?>
