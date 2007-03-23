@@ -1189,7 +1189,7 @@ class hours extends atkNode
       {
         $checked = ($i<5?"checked":"");
       }
-      $res.= atktext($days[$i]).': <input type="checkbox" name="'.$prefix.'dayfilter['.$i.']" value="1" '.$checked.'> &nbsp; ';
+      $res.= atktext($days[$i]).': <input type="checkbox" name="'.$prefix.'dayfilter['.$i.']" class="atkcheckbox" value="1" '.$checked.'> &nbsp; ';
     }
     return $res;
   }

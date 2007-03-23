@@ -67,7 +67,7 @@ class dependencyAttribute extends atkAttribute
       for ($i=0;$i<count($deps);$i++)
       {
         $label = atktext("phase")." '".$deps[$i]["firstname"]."' ".atktext("mustbecompletedbeforephase")." '".$deps[$i]["lastname"]."'";
-        $delete = '&nbsp;&nbsp;<input type="checkbox" name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">';
+        $delete = '&nbsp;&nbsp;<input type="checkbox" '.$this->getCSSClassAttribute("atkcheckbox").' name="'.$this->formName()."[del_".$deps[$i]["first"]."_".$deps[$i]["last"].']" value="1">';
         $data[] = array($label,$delete);
       }
       $tbl = &atknew("atk.utils.atktablerenderer");
