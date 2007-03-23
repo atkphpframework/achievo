@@ -25,7 +25,6 @@
   /**
    * @internal includes..
    */
-
   $config_atkroot = "./";
   include_once("atk.inc");
   atksession();
@@ -61,7 +60,7 @@
       $destination = session_url(dispatch_url("pim.pim", "pim"),SESSION_NEW);
     }
   }
-//var_dump($theme);die();
+
   $frame_top_height = $theme->getAttribute('frame_top_height');
   $frame_menu_width = $theme->getAttribute('frame_menu_width');
   $topframe = &new atkFrame($frame_top_height?$frame_top_height:"75", "top", "top.php", FRAME_SCROLL_NO, true);
