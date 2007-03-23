@@ -138,7 +138,7 @@ class achievo_modern extends atkPlainMenu
         $projects = $sessionManager->getValue("selectedprj","globals");
       }
 
-      $prj  = atktext("project_select").":";
+      $prj  = sprintf('<span class="achievoprojectselector">%s</span>:', atktext("project_select"));
       $prj .="<FORM style=\"margin: 0px;\"><SELECT style=\"width: 150px\" name=\"selectedproject\" onchange=\"reloadProjects(this);\">";
       $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
 
