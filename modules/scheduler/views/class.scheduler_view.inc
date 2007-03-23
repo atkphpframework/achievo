@@ -433,7 +433,7 @@ class scheduler_view
       else
       {
         if (in_array("all",$default)) { $sel="checked"; } else { $sel=""; }
-        $employee_code='<input type="checkbox" value="all" name="employee[]" '.$sel.'>'.atkText("allusers","scheduler").'<br>';
+        $employee_code='<input type="checkbox" value="all" class="atkcheckbox" name="employee[]" '.$sel.'>'.atkText("allusers","scheduler").'<br>';
       }
     }
     for($i=0;$i<count($records);$i++)
@@ -447,7 +447,7 @@ class scheduler_view
       else
       {
 
-        $employee_code.='<input type="checkbox" value="'.$records[$i]["id"].'"  name="employee[]" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"]."(".$records[$i]["userid"].")<br>";
+        $employee_code.='<input type="checkbox" value="'.$records[$i]["id"].'" class="atkcheckbox" name="employee[]" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"]."(".$records[$i]["userid"].")<br>";
       }
     }
     if($form_type=="select") $employee_code.="</select>";
