@@ -30,12 +30,14 @@
 
     function getDefaultLanguage()
     {
-      return atkLanguage::getUserLanguage();
+      $language = atkInstance("atk.atklanguage");
+      return $language->getUserLanguage();
     }
 
     function getSupportedLanguages()
     {
-      return atkLanguage::getSupportedLanguages();
+      $language = atkInstance("atk.atklanguage");
+      return $language->getSupportedLanguages();
     }
 
     function value2db($record)
