@@ -288,9 +288,10 @@
 
       // Put the result into a box
       $boxedcontent = $ui->renderBox(array("title"=>atktext("title_projectplanning"),"content"=>$content));
+      $actionpage = $this->renderActionPage("admin", array($boxedcontent));
 
       // Add the boxed content to the page
-      $page->addContent($boxedcontent);
+      $page->addContent($actionpage);
     }
 
     function action_billsetup(&$handler)

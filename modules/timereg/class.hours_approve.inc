@@ -194,6 +194,8 @@
 	    // Add the stylesheet to the page
 	    $this->addStyle("style.css");
 
+	    $boxes = array();
+
 	    // If a period is selected for a specific employee, then show the approval screen
 	    if ((!is_null($this->m_postvars["viewuser"])) && (!is_null($this->m_postvars["viewdate"])) && (($this->m_postvars["year"] == null) || ($this->m_postvars["year"] == substr($this->m_postvars["viewdate"], 0, 4))))
 	    {
@@ -210,14 +212,15 @@
   	    	$this->m_viewdate = $this->m_postvars["viewdate"];
 
   	    	// Add the approve screen to the page
-  	    	$page->addContent($this->weekview(atkConfig::get('timereg','hours_approve_projectteam_members_only')));
+  	    	$boxes[] = $this->weekview(atkConfig::get('timereg','hours_approve_projectteam_members_only'));
 	    	}
 
 	    }
 
 	    // Add the approvedperiodview to the page
-	    $content = $this->approvedperiodview();
-	    $page->addContent($content);
+	    $boxes[] = $this->approvedperiodview();
+      $actionpage = $this->renderActionPage("stats", $boxes);
+      $page->addContent($actionpage);
 
 	    // Return an empty string (output is handled through the page
 	    return "";
@@ -246,8 +249,8 @@
 	      $year = date('Y');
 
       $selected_functionlevel_id = $this->m_postvars["functionlevelswitch"];
-      
-      if (moduleExists('advancedsecurity')) 
+
+      if (moduleExists('advancedsecurity'))
         $lowerlevels = atkArrayNvl($this->m_postvars, "lowerlevels", 'off');
       else
         $lowerlevels = "off";
@@ -267,9 +270,9 @@
 	    $yearattrib = new atkNumberAttribute("year",0,6);
 
 	    $func_code = $this->get_functionlevels($selected_functionlevel_id, $lowerlevels);
-	    
+
       // Display the year input form
-      $header = "";      
+      $header = "";
       if ($func_code != null) $header.= atktext('functionlevel','project').': '.$func_code.'<br />';
       $header.= atktext("year")." : ".$yearattrib->edit(array("year"=>$year)).'&nbsp;&nbsp;';
       $header.= '<input type="submit" name="atkbtn1" value="'.atktext("view").'">';
@@ -324,17 +327,17 @@
       $params = array("selected_level_id" => $selected_level_id,
                       "lower_levels"      => $lowerlevels);
       $harvest = atkHarvestModules("getFuncLevelDropDown", $params, true);
-  
+
       $func_code = null;
       if (is_array($harvest) && count($harvest) > 0)
       {
         if (moduleExists('advancedsecurity'))
           $func_code = $harvest['advancedsecurity'];
       }
-            
+
       return $func_code;
-    }	  
-    
+    }
+
 	  /**
 	   * Returns the legend HTML code
 	   *
@@ -386,7 +389,7 @@
 	  {
 	    // Load the employee node
 	    $employeenode = &atkGetNode("employee.employee");
-	    
+
       $employee_where_clause = $this->getEmployeesWhereClause($current_user_id, $selected_functionlevel_id, $lowerlevels);
 
 	    // Get the employees from the database
@@ -430,14 +433,14 @@
 
 	    return $users;
 	  }
-	  
+
 	  /**
      * If functionlevel-dropdown is not present, or 'all' functionlevels selected, the default selection will be returned
 	   *
 	   * @param int $current_user_id
 	   * @param int $selected_functionlevel_id
 	   * @param string lowerlevels checkbox can be 'on' or 'off'
-	   * @return string 
+	   * @return string
 	   */
 	  function getEmployeesWhereClause($current_user_id, $selected_functionlevel_id, $lowerlevels)
 	  {
@@ -446,13 +449,13 @@
 	      $where_clause = $this->getDefaultEmployeeWhereClaue($current_user_id);
 	    }
 	    else
-	    {        	      
+	    {
 	      $where_clause = $this->getFunctionLevelEmployeeWhereClaue($current_user_id, $selected_functionlevel_id, $lowerlevels);
 	    }
-	    
+
 	    return $where_clause;
 	  }
-	  
+
 	  /**
 	   * Get where-clause, so all employees with a lower functionlevel than logged-in user will retrieved
 	   * Do not check on 'hours_approve_projectteam_members_only' and 'any_user'-right (else filtering won't work)
@@ -465,43 +468,43 @@
 	  {
       require_once(moduleDir('advancedsecurity').'utils/class.functionlevelsutils.inc');
       $flutils = &atknew('advancedsecurity.utils.functionlevelutils');
-  
+
       if ($lowerlevels == 'on')
       {
         $levels = $flutils->getFunctionLevelBelow($selected_functionlevel_id, true);
-        
+
         if (!empty($levels))
-        {        
+        {
           if (count($levels) == 0)
           {
             $ids = "NULL";
           }
-          else 
+          else
           {
             foreach ($levels as $level) $ids .= "'".$level['id']."',";
-            
+
             $ids = substr($ids, 0, -1); // strip the last comma
           }
-          
+
           $where = "person.functionlevel IN (".$ids.")";
         }
         else
         {
           $where = "person.functionlevel='$selected_functionlevel_id'";
-        }      
+        }
       }
       else if ($lowerlevels == 'off')
       {
         $where = "person.functionlevel='$selected_functionlevel_id'";
       }
-      else 
+      else
       {
         atkdebug("Unknown value '$lowerlevels' for checkbox", DEBUG_WARNING);
       }
-      
+
       return $where;
 	  }
-	  
+
 	  /**
 	   * Select the employees that are managed by the current user
 	   * Or all employees, if user has this right
@@ -541,11 +544,11 @@
             $where .= " AND";
           $where .= " person.id IN ('" . implode("','",$in) . "')";
         }
-	    }	  
-	    
-	    return $where;  
+	    }
+
+	    return $where;
 	  }
-	  
+
 	  /**
 	   * Check if logged-in user has 'any_user' right
 	   * @todo since this module does not work when logged-in as administrator, do we need to check on user_id == -1 or empty?
@@ -706,6 +709,7 @@
       $g_sessionManager->pageVar("atkdodisapprove");
 
       $page = &$this->getPage();
+      $page->register_style($theme->stylePath("style.css"));
       atkimport("atk.ui.atktheme");
       $theme = &atkTheme::getInstance();
 
@@ -736,10 +740,10 @@
         $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
 
         $ui = $this->getUi();
-        $boxedcontent = $ui->renderbox(array("title"=>$title,"content"=>$content));
+        $box = $ui->renderbox(array("title"=>$title,"content"=>$content));
+        $actionpage = $this->renderActionPage("stats", $box);
+        $page->addContent($actionpage);
 
-        $page->register_style($theme->stylePath("style.css"));
-        $page->addContent($boxedcontent);
         return $handler;
       }
 
@@ -762,10 +766,9 @@
         $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
 
         $ui = $this->getUi();
-        $boxedcontent = $ui->renderbox(array("title"=>$title,"content"=>$content));
-
-        $page->register_style($theme->stylePath("style.css"));
-        $page->addContent($boxedcontent);
+        $box = $ui->renderbox(array("title"=>$title,"content"=>$content));
+        $actionpage = $this->renderActionPage("stats", $box);
+        $page->addContent($actionpage);
 
         return $handler;
       }

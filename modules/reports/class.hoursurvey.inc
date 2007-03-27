@@ -192,6 +192,8 @@ class hoursurvey extends atkNode
     $page->register_script(atkconfig("atkroot")."atk/javascript/formsubmit.js");
     $page->register_style(moduleDir("reports")."style/printablereport.css", "print");
 
+    $contentblocks = array();
+
     // Manual sort config
     $orderby =            atkArrayNvl($this->m_postvars, "orderby", "");
     $orderdirection =     atkArrayNvl($this->m_postvars, "orderdirection", "");
@@ -678,9 +680,9 @@ class hoursurvey extends atkNode
       $content.=$tbl->render($data);
       $content.='</form><br>';
       if (atkConfig("report_hide_parameters", false))
-      $page->addContent('<div class="displaynone">'.$ui->renderBox(array("title"=>$title, "content"=>$content)).'</div>');
+        $contentblocks[] = '<div class="displaynone">'.$ui->renderBox(array("title"=>$title, "content"=>$content)).'</div>';
       else
-      $page->addContent('<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>');
+        $contentblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
     }
 
     /** Create filter array **/
@@ -846,7 +848,9 @@ class hoursurvey extends atkNode
       $rl->setMasterNode($this);
       $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT|RL_MRA|RL_NO_SORT, $suppress);
       $content.='<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
-      $page->addContent('<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>');
+      $contentblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
+      $actionpage = $this->renderActionPage("admin", $contentblocks);
+      $page->addContent($actionpage);;
     }
 
     if ($outputType=="2")

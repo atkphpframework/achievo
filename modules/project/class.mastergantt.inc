@@ -107,17 +107,15 @@
 
       if ($this->hasAnyProjectPrivilege())
       {
-        $output.= atktext("coordinator").": ".$attrs["coordinator"]->edit($record)." ";
+        $output.= atktext("coordinator").": ".$attrs["coordinator"]->edit($record)."<br/>";
       }
 
-      $output.= atktext("display").": ".$attrs["plannedbooked"]->edit($record)." ";
-
-      $output.= "<br/>";
+      $output.= atktext("display").": ".$attrs["plannedbooked"]->edit($record)."<br/>";
 
       $output.= atktext("showonlyphasesfrom", "reports")." ".$attrs["from"]->edit($record)." ";
-      $output.= atktext("to")." ".$attrs["to"]->edit($record);
+      $output.= atktext("to")." ".$attrs["to"]->edit($record)."<br/>";
 
-      $output.= ' <input type="submit" value="'.atktext("refresh").'">';
+      $output.= '<input type="submit" value="'.atktext("refresh").'">';
       $output.= '</form>';
 
       return $output;
@@ -158,10 +156,11 @@
 
       $ui = &$this->getUi();
       $box = $ui->renderBox(array("title"=>"Master Gantt", "content"=>$content));
+      $actionpage = $this->renderActionPage("stats", array($box));
 
       $this->addStyle("style.css");
       $page = &$this->getPage();
-      $page->addContent($box);
+      $page->addContent($actionpage);
     }
 
     function dashDate($undasheddate)

@@ -365,6 +365,8 @@ class weekreport extends atkNode
 
     if (!isset($atkorderby)||$atkorderby=="") $atkorderby = "period";
 
+    $contentblocks = array();
+
 //    $view_all = $g_securityManager->allowed('reports.weekreport','view_all');
     $view_all = $this->allowed('view_all');
     $view_managed = $this->allowed('view_managed');
@@ -498,9 +500,7 @@ class weekreport extends atkNode
 
       $tbl = &atknew("atk.utils.atktablerenderer");
 
-      $parameters = $ui->renderBox(array("title"=>atktext("parameters"),"content"=>$output));
-      $page->addContent($parameters);
-
+      $contentblocks[] = $ui->renderBox(array("title"=>atktext("parameters"),"content"=>$output));
     }
 
     // If we haven't got a userid by now, don't display the report
@@ -745,8 +745,9 @@ class weekreport extends atkNode
         $output = $tbl->render($data);
         $rl = &atknew("atk.recordlist.atkrecordlist");
         $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress,"rlform",array(),"","rlform");
-        $weekreport = $ui->renderBox(array("title"=>atktext("weekreport")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate,"content"=>$output));
-        $page->addContent($weekreport);
+        $contentblocks[] = $ui->renderBox(array("title"=>atktext("weekreport")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate,"content"=>$output));
+        $actionpage = $this->renderActionPage("admin", $contentblocks);
+        $page->addContent($actionpage);
       }
       else if ($outputType=="1")
       {

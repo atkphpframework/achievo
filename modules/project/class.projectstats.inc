@@ -62,9 +62,6 @@ class projectstats extends atkNode
     $enddate = $this->m_viewend;
     $projectid = $this->m_projectid;
 
-    $navigatorBox = $ui->renderBox(array("title"=>atkText("parameters","project"),"content"=>$this->navigator()));
-    $page->addContent($navigatorBox);
-
     $prjnode = &atkGetNode("project.project");
 
     $descriptor="";
@@ -184,8 +181,13 @@ class projectstats extends atkNode
     }
 
     $output.="<br>".$backbtn."<br>";
-    $contentBox = $ui->renderBox(array("title"=>atkText("stats","project").$descriptor,"content"=>$output));
-    $page->addContent($contentBox);
+
+    $boxes = array(
+      $ui->renderBox(array("title"=>atkText("parameters","project"),"content"=>$this->navigator())),
+      $ui->renderBox(array("title"=>atkText("stats","project").$descriptor,"content"=>$output)),
+    );
+    $actionpage = $this->renderActionPage("stats", $boxes);
+    $page->addContent($actionpage);
 
   }
 
@@ -340,11 +342,9 @@ class projectstats extends atkNode
     $tbl->setColAlignment(1,TBL_RIGHT);
     $tbl->setColAlignment(2,TBL_RIGHT);
 
-    $res.=$tbl->render($data, TBL_DATA|TBL_FOOTER, "recordlist");
+    $res = $tbl->render($data, TBL_DATA|TBL_FOOTER, "recordlist");
     return $res;
   }
-
-
 }
 
 ?>
