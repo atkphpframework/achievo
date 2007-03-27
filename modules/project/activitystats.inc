@@ -117,8 +117,7 @@
     //$tbl->setColSpan(0,0,2);
     $output.=$tbl->render($data);
     $output.='<input type="submit" value="'.atktext("refresh","project").'"></form><br>';
-    $searchbar = $ui->renderBox(array("title"=>atktext("title_activitystats","project"),"content"=>$output));
-    $page->addContent($searchbar);
+    return $ui->renderBox(array("title"=>atktext("title_activitystats","project"),"content"=>$output));
   }
 
 
@@ -200,11 +199,16 @@
     $output.=$tbl->render($data,TBL_HEADER|TBL_FOOTER,"recordlist");
 
     $output.="<br><br>";
-    $stats = $ui->renderBox(array("title"=>atktext("title_activitystats","project")." - ".$activityname,"content"=>$output));
-    $page->addContent($stats);
+    return $ui->renderBox(array("title"=>atktext("title_activitystats","project")." - ".$activityname,"content"=>$output));
   }
 
   // Main program
-  getSearchBar($activityid,$activityname,$startdate,$enddate,$this->m_action);
-  if($activityid) getStats($activityid,$activityname,$startdate,$enddate);
+  $boxes = array(getSearchBar($activityid,$activityname,$startdate,$enddate,$this->m_action));
+  if($activityid)
+    $boxes[] = getStats($activityid,$activityname,$startdate,$enddate);
+  $actionpage = $this->renderActionPage("stats", $boxes);
+
+  // Add the boxed content to the page
+  $page->addContent($actionpage);
+
 ?>
