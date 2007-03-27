@@ -77,10 +77,6 @@
 
       include_once("achievotools.inc");
 
-      $navigatorBox = $ui->renderBox(array("title"=>atkText("parameters","employeestats","employee"),"content"=>$this->navigator()));
-      $page->addContent($navigatorBox);
-
-
       $empnode = &atkGetNode("employee.employee");
 
       $descriptor="";
@@ -151,9 +147,12 @@
 
       $output.="<br>".$backbtn."<br>";
 
-      $contentBox = $ui->renderBox(array("title"=>atkText("stats","employee").($descriptor!=""?" - ".$descriptor:""),"content"=>$output));
-      $page->addContent($contentBox);
-
+      $boxes = array(
+        $ui->renderBox(array("title"=>atkText("parameters","employeestats","employee"),"content"=>$this->navigator())),
+        $ui->renderBox(array("title"=>atkText("stats","employee").($descriptor!=""?" - ".$descriptor:""),"content"=>$output)),
+      );
+      $actionpage = $this->renderActionPage("stats", $boxes);
+      $page->addContent($actionpage);
     }
 
     function _paramForm($contents)
