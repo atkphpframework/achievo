@@ -17,15 +17,14 @@
   $tmp_output="";
   for ($i=0;$i<count($license);$i++)
   {
-    $tmp_output.='<br>'.$license[$i];
+    $tmp_output.='<br>'.str_replace("", "", $license[$i]);
   }
 
-
-  $box = $ui->renderBox(array("title"=>atkText("title_licence"),
-                                            "content"=>$tmp_output));
-
-  $page->addContent($box);
-  $output->output($page->render(atkText('title_licence'), true));
+  $title = atkText('title_license');
+  $box = $ui->renderBox(array("title"=>atkText("title_license"), "content"=>$tmp_output));
+  $actionpage = $ui->render("actionpage.tpl", array("blocks"=>array($box), "title"=>$title));
+  $page->addContent($actionpage);
+  $output->output($page->render($title, true));
 
   $output->outputFlush();
 ?>
