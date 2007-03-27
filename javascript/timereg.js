@@ -2,7 +2,7 @@ function setPeriod()
 {
   input = document.getElementById("defaultperiod").value;
   alert(input);
-  
+
   if (substr(input,0,3) == "tri")
   {
     // we deal with a trimester selection
@@ -13,7 +13,7 @@ function setPeriod()
       case "1": alert("test"); break;
     }
   }
-  
+
   //date_setValue("startdate", start["y"], start["m"], start["d"]);
   //date_setValue("enddate", start["y"], start["m"], start["d"]);
 }
@@ -25,7 +25,7 @@ function setStartEndDates(id, name, currentdate)
   input["d"] = document.getElementById(id+"[day]").value;
   input["m"] = document.getElementById(id+"[month]").value;
   input["y"] = document.getElementById(id+"[year]").value;
-  
+
   switch (eval('document.entryform.'+name+'.value'))
   {
     case "0":
@@ -40,7 +40,7 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 7, 0, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
+      }
       break;
     case "2":
       if (id == "enddate")
@@ -52,7 +52,7 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 14, 0, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
+      }
       break;
     case "3":
       if (id == "enddate")
@@ -64,8 +64,8 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 21, 0, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
-      break;      
+      }
+      break;
     case "4":
       if (id == "enddate")
       {
@@ -76,7 +76,7 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 28, 0, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
+      }
       break;
     case "5":
       if (id == "enddate")
@@ -88,7 +88,7 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 0, 1, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
+      }
       break;
     case "6":
       if (id == "enddate")
@@ -100,7 +100,7 @@ function setStartEndDates(id, name, currentdate)
       {
         start = calculateDate(input["y"], input["m"], input["d"], 0, 2, 1);
         date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }  
+      }
       break;
     case "7":
     if (id == "enddate")
@@ -139,13 +139,13 @@ function calculateDate(year, month, day, ndays, nmonths, after)
   {
     if (after == 1) newdate.setDate(newdate.getDate()+ndays);
     else newdate.setDate(newdate.getDate()-ndays);
-  }  
+  }
   else
   {
     if (after == 1) newdate.setMonth(newdate.getMonth()+nmonths);
     else newdate.setMonth(newdate.getMonth()-nmonths);
-  }  
- 
+  }
+
   output = Array();
   output["d"] = newdate.getDate();
   output["m"] = newdate.getMonth()+1;
@@ -154,24 +154,24 @@ function calculateDate(year, month, day, ndays, nmonths, after)
 }
 
 function date_setValue(id, year, month, day, currentdate)
-{     
+{
   month = parseInt(month, 10); // remove leading '0'
-  day = parseInt(day, 10); 
-  
-  format = eval(id+'_fmt');
-  
+  day = parseInt(day, 10);
+
+  format = eval('atkdateattribute_'+id+'.format');
+
   var dayel = document.getElementById(id+"[day]");
   var monthel = document.getElementById(id+"[month]");
   var yearel = document.getElementById(id+"[year]");
-    
+
   // set year
-  yearel.value = year;    
-  
-  // I need to call this to calculate the correct months and days 
-  // after setting the year. 
+  yearel.value = year;
+
+  // I need to call this to calculate the correct months and days
+  // after setting the year.
   // TODO FIXME: I don't have the arr ('enddate') and format parameters here!!
   AdjustDate(yearel, id, format, 0, 0, false);
-  
+
   // set month
   for (i=0; i<monthel.options.length;  i++)
   {
@@ -180,12 +180,12 @@ function date_setValue(id, year, month, day, currentdate)
       monthel.selectedIndex = i;
     }
   }
-  
-  // I need to call this to calculate the correct days 
-  // after setting the month. 
+
+  // I need to call this to calculate the correct days
+  // after setting the month.
   // TODO FIXME: !!
   AdjustDate(monthel, id, format, 0, currentdate, false);
-  
+
   // set day
   for (i=0; i<dayel.options.length;  i++)
   {
