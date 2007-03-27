@@ -17,40 +17,15 @@ function get_object(name)
 
 function getRecur()
 {
-  if(get_object('recur_once').checked==true)
-  {
-    return 'once';
-  }
-  else if(get_object('recur_daily').checked==true)
-  {
-    return 'daily';
-  }
-  else if(get_object('recur_weekly').checked==true)
-  {
-    return 'weekly';
-  }
-  else if(get_object('recur_monthly_date').checked==true)
-  {
-    return 'monthly_date';
-  }
-  else if(get_object('recur_monthly_day').checked==true)
-  {
-    return 'monthly_day';
-  }
-  else if(get_object('recur_yearly_date').checked==true)
-  {
-    return 'yearly_date';
-  }
-  else if(get_object('recur_yearly_day').checked==true)
-  {
-    return 'yearly_day';
-  }
-  else
-  {
-    return 'once';
-  }
+  if(get_object('recur_once').checked==true)         return 'once';
+  if(get_object('recur_daily').checked==true)        return 'daily';
+  if(get_object('recur_weekly').checked==true)       return 'weekly';
+  if(get_object('recur_monthly_date').checked==true) return 'monthly_date';
+  if(get_object('recur_monthly_day').checked==true)  return 'monthly_day';
+  if(get_object('recur_yearly_date').checked==true)  return 'yearly_date';
+  if(get_object('recur_yearly_day').checked==true)   return 'yearly_day';
+  return 'once';
 }
-
 
 function change_recur(recur)
 {
@@ -312,7 +287,7 @@ function disable_weekday(disable)
   }
 }
 
-function change_time()
+function change_allday()
 {
   if(get_object('allday').checked==true)
   {
@@ -321,8 +296,8 @@ function change_time()
   }
   else
   {
-    get_object('ar_starttime').className='default';
-    get_object('ar_endtime').className='default';
+    get_object('ar_starttime').className='section_default';
+    get_object('ar_endtime').className='section_default';
   }
   showTab(getCurrentTab());
 }
