@@ -3,7 +3,7 @@
 /**
  *
  * Calculate the week number for a know date
- * 
+ *
  * Monday is the first day of week.
  * Week containing Jan 7th is the first week of that year.
  *
@@ -36,7 +36,6 @@ class weeknumber
    */
   function getWeeknumber($timestamp,$startday,$firstweekcontains,$full=false)
   {
-    //atkdebug("Search: ".date("Y-m-d",$timestamp)." - $startday - $firstweekcontains");
     $enddate = weeknumber::getLastDayFromFirstWeek($timestamp,$startday,$firstweekcontains);
     $enddate_nextyear = weeknumber::getLastDayFromFirstWeek(strtotime("+1 year",$timestamp),$startday,$firstweekcontains);
     $weeknumber = weeknumber::searchWeekNumber($timestamp,$enddate,$enddate_nextyear);
@@ -45,7 +44,6 @@ class weeknumber
     {
       return $weeknumber;
     }
-    //atkdebug("Weeknumber: ".$weeknumber["weeknumber"]);
     return $weeknumber["weeknumber"];
 
   }
@@ -63,8 +61,6 @@ class weeknumber
     $year = date("Y",$timestamp);
     $tmp_time = mktime(12,0,0,1,$firstweekcontains,$year);
     $weekday = date("w",$tmp_time);
-    //atkdebug("startDate: ".date("d-m-Y",$tmp_time));
-    //atkdebug("Weekday: $weekday - Startday: $startday");
     if($weekday==$startday)
     {
       return $tmp_time+(7*$day);
@@ -79,10 +75,6 @@ class weeknumber
         $wk_array[$daynumber]=$i;
         $daynumber++;
       }
-      //atk_var_dump($wk_array,"WEEK ARRAY, $weekday - $startday");
-      //atkdebug("Add ".(6-$wk_array[$weekday])." days");
-      //atkdebug("$tmp_time + ".((6-$wk_array[$weekday])*$day)." = ".($tmp_time+((6-$wk_array[$weekday])*$day)));
-      //atkdebug("EndDate: ".date("d-m-Y",($tmp_time+((6-$wk_array[$weekday])*$day))));
       return $tmp_time+((6-$wk_array[$weekday])*$day);
     }
   }
@@ -96,17 +88,13 @@ class weeknumber
    */
   function searchWeekNumber($timestamp,$enddate,$enddate_nextyear)
   {
-    //atkdebug("Firstweek enddate:".date("Y-m-d",$enddate));
-    //atkdebug("Firstweek enddate nextyear:".date("Y-m-d",$enddate_nextyear));
-    $startdate_nextyear = 
+    $startdate_nextyear =
     $weeknumber=0;
     $day = 86400;
     $week = 7*$day;
     $startdate_nextyear = ($enddate_nextyear-(6*$day));
     if($timestamp>=$startdate_nextyear && $timestamp<=$enddate_nextyear)
     {
-      //atkdebug("Search in (1) ".date("Y-m-d",$startdate_nextyear)." - ".date("Y-m-d",$enddate_nextyear));
-     
       return array("weeknumber"=>1,
                   "firstweekstart"=>$startdate_nextyear,
                   "firstweekend"=>$enddate_nextyear);
@@ -119,10 +107,8 @@ class weeknumber
       $weeknumber++;
       $weekstart = ($i-(6*$day));
       $weekend = $i;
-      //atkdebug("Search in ($weeknumber) ".date("Y-m-d",$weekstart)." - ".date("Y-m-d",$weekend));
       if($timestamp>=$weekstart && $timestamp<=$weekend)
       {
-        //atkdebug("Search in ($weeknumber) ".date("Y-m-d",$weekstart)." - ".date("Y-m-d",$weekend));
         $found=true;
       }
     }

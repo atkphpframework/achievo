@@ -3,17 +3,19 @@ atkimport("modules.scheduler.views.scheduler_view");
 
 class scheduler_monthview extends scheduler_view
 {
- /**
-  * scheduler monthview constructor
-  */
+  /**
+   * scheduler monthview constructor
+   */
   function scheduler_monthview()
   {
     $this->setView("month");
   }
- /**
-  * navigate through months using prev/next month link
-  * @returns html code containing links for previous month, current month and next month
-  */
+
+  /**
+   * Navigate through months using prev/next month link
+   *
+   * @return html code containing links for previous month, current month and next month
+   */
   function _getNav()
   {
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month-1, 1, $this->m_year));
@@ -30,18 +32,17 @@ class scheduler_monthview extends scheduler_view
     return href($prevUrl, atktext("previous_month"))."&nbsp;".href($thisUrl, atktext("this_month"))."&nbsp;".href($nextUrl, atktext("next_month"));
 
   }
- /**
-  * the actual displaying function
-  * @return string Returns a renderd day matrix
-  */
+
+  /**
+   * The actual displaying function
+   *
+   * @return string Returns a renderd day matrix
+   */
   function _dumpMatrix()
   {
-    if($day=="")
-    {
-       $day = $this->m_day;
-       $month = $this->m_month;
-       $year = $this->m_year;
-    }
+    $month = $this->m_month;
+    $year = $this->m_year;
+
     $days = array();
     $days[0] = atkText("sun");
     $days[1] = atkText("mon");
@@ -69,18 +70,8 @@ class scheduler_monthview extends scheduler_view
 
     atkimport("modules.scheduler.utils.moonphases");
 
-
-    $days_in_month = mktime (0,0,0,$month+1,0,$year);
-    $days_in_month = (strftime ("%d",$days_in_month));
-
+    $days_in_month = strftime("%d", mktime(0,0,0,$month+1,0,$year));
     $first_day_of_month = date("w", mktime(0,0,0,$month,1,$year));
-
-    $previous_year = date("Y", mktime(0,0,0,$month-1,1,$year));
-    $previous_month= date("m", mktime(0,0,0,$month-1,1,$year));
-
-    $next_day = 1;
-    $next_year = date("Y", mktime(0,0,0,$month+1,1,$year));
-    $next_month= date("m", mktime(0,0,0,$month+1,1,$year));
 
     $tmp = $this->_view_header();
     $tmp.= "<b>".$months[$month-1].' '.$year."</b>";
@@ -103,12 +94,10 @@ class scheduler_monthview extends scheduler_view
     if ($cellcount < 0) $cellcount = 7 + $cellcount;
     $bg_color="#FFFFFF";
     $tmp.='<tr style="background-color: '.$bg_color.'; height: 100px;">';
-    //$week_number = intval(strftime("%V",mktime(0,0,0,$month,1,$year)));
-    $week_number =$this->getWeekNumber(2,$month,$year);// date("W", mktime(0,0,0,$month,2,$year));
+    $week_number =$this->getWeekNumber(2,$month,$year);
 
     $date = $year."-".sprintf("%02d",$month)."-".sprintf("%02d",1);
     $tmp.='<td style="border: 1px solid #000000;"><i>'.href($_SERVER["PHP_SELF"]."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
-    //$tmp.='<td><i><a class="small" href="javascript:post_date_week(1,'.$month.', '.$year.')">'.$week_number.'</a></i>&nbsp;</td>';
     for ($i=1;$i<=$cellcount;$i++)
     {
     	$tmp.='<td>&nbsp;</td>';
@@ -201,7 +190,6 @@ class scheduler_monthview extends scheduler_view
 
     $moonphase = moonphases::getMoonPhase($timestamp);
     if($moonphase=="") return "";
-    atkdebug("Moonphase for ".date("Y-m-d",$timestamp)." is $moonphase");
     switch($moonphase)
     {
       case "ne": $text = atktext("full_moon","scheduler");
@@ -217,22 +205,21 @@ class scheduler_monthview extends scheduler_view
     return '<img src="'.$theme->imgPath($moonphase.".gif","scheduler").'" width=15 height=15 title="'.$text.'" alt="'.$text.'">';
   }
 
- /**
-  * Render the view
-  * @return string A renderd view
-  */
+  /**
+   * Render the view
+   *
+   * @return string A renderd view
+   */
   function renderView()
   {
     $this->_setUserSettings();
     $startdate = date("Y-m-d",mktime(12,0,0,$this->m_month,1,$this->m_year));
     $enddate = date("Y-m-d",mktime(12,0,0,$this->m_month+1,0,$this->m_year));
-    atkdebug("Monthview: $startdate - $enddate");
     $this->getItems($startdate,$enddate);
     $this->getLegend();
 
     return $this->_dumpMatrix();
   }
-
 }
 
 ?>

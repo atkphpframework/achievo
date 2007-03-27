@@ -34,7 +34,6 @@ class scheduler_email_template extends email_template
   {
     $scheduler_node = &atkGetNode("scheduler.scheduler");
     $rec = $scheduler_node->selectDb("scheduler_scheduler.id = ".$scheduler_id);
-    atk_var_dump($rec," SCHEDULER ROW");
 
     return array("title"=>$rec[0]["title"],
                  "location"=>$rec[0]["location"],
