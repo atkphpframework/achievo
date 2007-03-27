@@ -29,10 +29,6 @@
       $this->m_flags|= NF_READONLY;
       $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
 
-      // We disable the history attribute, for it will cause a recursive loop if history would have
-      // a history.
-      $this->remove("history");
-
       // We also need to change the updated attribute, because now we no longer want it hide_list,
       // and we don't want to store the current date, but the original date that the todo was
       // last changed before it ended up in the history.
