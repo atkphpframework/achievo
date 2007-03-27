@@ -37,7 +37,7 @@ class contracts extends atkNode
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE|AF_FORCE_LOAD, 20));
     $this->add(new atkAttribute("contractname",AF_SEARCHABLE|AF_OBLIGATORY|AF_FORCE_LOAD));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-    $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
+    $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_LARGE));
 
     $this->add(new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST));
 
