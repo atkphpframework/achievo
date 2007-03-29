@@ -69,8 +69,9 @@
       $ui = &$this->getUi();
       $page = &$this->getPage();
       $this->addStyle("style.css");
-      $searchResultBox = $ui->renderBox(array("title"=>atkText("search","search"),"content"=>$res));
-      $page->addContent($searchResultBox);
+      $box = $ui->renderBox(array("title"=>atkText("search","search"),"content"=>$res));
+      $actionpage = $this->renderActionPage("search", $box);
+      $page->addContent($actionpage);
       return true;
     }
 
