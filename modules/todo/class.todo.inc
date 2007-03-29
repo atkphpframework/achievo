@@ -278,23 +278,23 @@ class todo extends atkNode
    $emails  = $db->getrows($q);
 
    // now assemble the mail body
-   $subj  = text("todoadded").": ".$rec["title"];
+   $subj  = $this->text("todoadded").": ".$rec["title"];
 
-   $body = text("todo").": ".$rec["title"]."\n";
-   $body.= text("description").": \n".$rec["description"]."\n\n";
-   $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
-   $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
-   if ($project!="") $body.= text("project").": ".$project."\n";
-   $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
+   $body = $this->text("todo").": ".$rec["title"]."\n";
+   $body.= $this->text("description").": \n".$rec["description"]."\n\n";
+   $body.= $this->text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+   $body.= $this->text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
+   if ($project!="") $body.= $this->text("project").": ".$project."\n";
+   $body.= $this->text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
 
    $body.= "\n";
 
    for ($i=0;$i<count($emails);$i++)
    {
      if ($emails[$i]["id"]==$assigner)
-       $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+       $body.= $this->text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
      if ($emails[$i]["id"]==$assignTo)
-       $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+       $body.= $this->text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
      $to[] = $emails[$i]["email"];
    }
 
@@ -350,30 +350,30 @@ class todo extends atkNode
        $project = $res[0]["name"];
      }
 
-     $body = text("todo").": ".$rec["title"]."\n";
-     $body.= text("description").": \n".$rec["description"]."\n\n";
-     $body.= text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
-     $body.= text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
-     if ($project!="") $body.= text("project").": ".$project."\n";
-     $body.= text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
+     $body = $this->text("todo").": ".$rec["title"]."\n";
+     $body.= $this->text("description").": \n".$rec["description"]."\n\n";
+     $body.= $this->text("priority").": ".$this->prioName[$rec["priority"]-1]."\n";
+     $body.= $this->text("status").": ".$this->m_attribList["status"]->display($rec)."\n";
+     if ($project!="") $body.= $this->text("project").": ".$project."\n";
+     $body.= $this->text("duedate").": ".$this->m_attribList["duedate"]->display($rec)."\n";
 
      $body.= "\n";
      for ($i=0;$i<count($emails);$i++)
      {
        if ($emails[$i]["id"]==$owner)
-         $body.= text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+         $body.= $this->text("todo_ownedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["id"]==$oldassign)
-         $body.= text("todo_previouslyassignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+         $body.= $this->text("todo_previouslyassignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["id"]==$newassign)
-         $body.= text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+         $body.= $this->text("todo_assignedto").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        if ($emails[$i]["id"]==$g_user["id"])
-         $body.= text("todo_changedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
+         $body.= $this->text("todo_changedby").": ".$emails[$i]["lastname"].", ".$emails[$i]["firstname"]."\n";
        $to[] = $emails[$i]["email"];
      }
 
      // send mail
      $header = $this->prioHeader($rec["priority"]);
-     usermail($to,text("todochanged"), $body, $header);
+     usermail($to,$this->text("todochanged"), $body, $header);
 
      // also store the old todo in the history table.
      $historynode = &atkGetNode("todo.todo_history");
