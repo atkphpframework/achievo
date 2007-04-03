@@ -715,6 +715,7 @@ class hours extends atkNode
 
     $table = &atknew("atk.utils.atktablerenderer");
 
+
     $weekdata[0][] = atktext("project")." - ".atktext("phase");
     for ($i=1;$i<=7;$i++)
     {
@@ -785,6 +786,7 @@ class hours extends atkNode
   function weekviewHeader($weekdates, $viewtime)
   {
     $userid           = $this->m_user;
+    $user             = &atkGetUser();
     $record["userid"] = $userid;
     $att = &$this->getAttribute("userid");
     $att->populate($record);
@@ -797,13 +799,14 @@ class hours extends atkNode
     }
 
     $ui = &$this->getUi();
+    atkimport("modules.scheduler.utils.weeknumber");
     $tplvars = array( 'session_form'=>session_form(),
                       'prevweekurl'=>session_url('dispatch.php?weekview=1&viewdate='.$weekdates[0]['date']),
                       'thisweekurl'=>session_url('dispatch.php?weekview=1&viewdate='.date("Y-m-d")),
                       'dayviewurl'=>session_url('dispatch.php?weekview=0&viewdate='.date("Y-m-d")),
                       'datejumper'=>$this->getDateJumper(),
                       'curuser'=>$record["userid"],
-                      'curdate'=>adodb_date('W, Y',$viewtime),
+                      'curdate'=>weeknumber::getWeeknumber($viewtime,$user["startday"],$user["firstweekcontains"]).", ".date("Y",$viewtime),
                       'lockicon'=>Locking::getLockIcon($locks),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
                      );
