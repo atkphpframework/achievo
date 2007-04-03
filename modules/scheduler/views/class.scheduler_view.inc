@@ -231,8 +231,11 @@ class scheduler_view
    */
   function getWeekNumber($day,$month,$year)
   {
+    atkimport("modules.scheduler.utils.weeknumber");
     $timestamp = mktime(12,0,0,$month,$day,$year);
-    return date('W',$timestamp);
+    $user = &atkGetUser();
+    $weeknumber = weeknumber::getWeeknumber($timestamp,$user["startday"],$user["firstweekcontains"]);
+    return $weeknumber;
   }
 
   /**
@@ -325,6 +328,7 @@ class scheduler_view
         {
           case 0: $tmp_i = $i+1;
           case 1: $tmp_i = $i;
+          case 3: $tmp_i = $i-2;
           case 6: $tmp_i = $i+2;
         }
         $week_number = $this->getWeekNumber($tmp_i,$month,$year);
@@ -767,7 +771,10 @@ class scheduler_view
     $up_node = atknew("modules.scheduler.scheduler_userpreferences");
     $userprefs = $up_node->getUserPreferences();
     if($userprefs["showemployeebirthdays"])
-      $this->addEmployeeBirthdays();
+    {
+      $tmp_array = array();
+      $this->addEmployeeBirthdays(false,$tmp_array);
+    }
     if($userprefs["showtodo"])
     {
       $tmp_array=array();
@@ -783,7 +790,7 @@ class scheduler_view
    * @param integer $startmonth Start month of the small calendar
    * @param integer $endmonth End month of the small calendar
    */
-   function addHolidays($compact=false,&$dates=array(),$startdate="",$enddate="")
+   function addHolidays($compact=false,&$dates,$startdate="",$enddate="")
    {
      $holiday = &getNode("scheduler.scheduler_holidays");
      if($startdate=="") { $startdate=time(); } else { $startdate = str_replace("-","",$startdate); }
@@ -831,7 +838,7 @@ class scheduler_view
    * @param integer $startmonth Start month of the small calendar
    * @param integer $endmonth End month of the small calendar
    */
-  function addEmployeeBirthdays($compact=false,&$dates=array(),$startmonth=1,$endmonth=12)
+  function addEmployeeBirthdays($compact=false,&$dates,$startmonth=1,$endmonth=12)
   {
     $employees = &atkGetNode("employee.employee");
     $birthdays = $employees->getBirthdates();
@@ -881,7 +888,7 @@ class scheduler_view
    * @param string $startdate Start date
    * @param string $enddate End date
    */
-  function addTodos($compact=false,&$dates=array(),$startdate,$enddate)
+  function addTodos($compact=false,&$dates,$startdate,$enddate)
   {
     $todo_node = &atkGetNode("todo.todo");
     $filter="duedate >= '".$startdate."' AND duedate<='".$enddate."' ";
