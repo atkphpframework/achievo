@@ -60,7 +60,7 @@
   foreach($templates as $record)
     $et->addDb($record);
 
-  $setup->setVersion(4);
+  $setup->setVersion(5);
   set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo
