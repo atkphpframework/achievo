@@ -78,7 +78,7 @@ Changes in Achievo 1.3
 + Added docmanager module [Sandy]
 + Added CRM features [Sandy]
 + Added a new Scheduler module with:
-  + recurring events [Sandy]
+  + recurring events (bug #139) [Sandy]
   + updated day, week and monthview [Sandy]
   + new pim view [Sandy]
   + a new birthday view [Sandy]
