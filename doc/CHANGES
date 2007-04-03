@@ -321,7 +321,7 @@ Changes in Achievo 1.3
 Changes in Achievo 1.2.1
 ------------------------
 + Added $config_timereg_allowfuture setting for allowing time registration
-  in the future (false by default). [Ivo]
+  in the future (false by default). (bug #75) [Ivo]
 * Fixed fatal error in activity stats. [Sandy]
 * Fixed bug in project start/enddates when data was converted from an
   earlier Achievo version. [Ivo]
