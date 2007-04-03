@@ -659,7 +659,11 @@
   "closedate"=>"Close date",
   "private"=>"Private",
   "complete"=>"Complete",
-  "mra_complete"=>"Complete"
+  "mra_complete"=>"Complete",
+  "firstweekcontains"=>"First week of the year",
+  "1jan"=>"Starts on 1 january",
+  "4jan"=>"First week with 4 days",
+  "7jan"=>"First full week",
 
 );
 
