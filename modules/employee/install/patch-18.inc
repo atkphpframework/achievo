@@ -6,7 +6,7 @@
   $sql = "UPDATE usercontract SET workstarttime='08:30:00', workendtime='17:00:00'";
   $db->query($sql);
 
-  $setup->addColumn("person", "startday", "int(1)",false);
+  $setup->addColumn("person", "startday", "int(1)",false,1);
 
   $sql = "UPDATE person SET startday='1'";
   $db->query($sql);

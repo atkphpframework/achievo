@@ -28,10 +28,16 @@ class userprefs extends atkNode
     $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
     $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
-    $this->add(new atkListAttribute("startday",array("sunday", "monday"),array(0,1),AF_OBLIGATORY));
+    $this->add(new atkListAttribute("startday",array("saturday","sunday", "monday","wednesday"),array(6,0,1,3),AF_OBLIGATORY));
+    $this->add(new atkListAttribute("firstweekcontains",array("1jan","4jan","7jan"),array(1,3,7),AF_OBLIGATORY));
 
 
     $this->setTable("person", "person");
+  }
+
+  function initial_values()
+  {
+    return array("startday"=>1);
   }
 
   function descriptor_def()
