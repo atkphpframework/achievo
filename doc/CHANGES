@@ -360,7 +360,7 @@ Changes in Achievo 1.2RC1
 + Now possible to make the 'contact' field obligatory by changing a var in
   config.inc.php. [Harrie]
 + Made chart height/width configurable. [Harrie]
-+ Added ability to assign department to employee. [Harrie]
++ Added ability to assign department to employee. (bug #266) [Harrie]
 + Hoursurvey is now able to search on department and functionlevel. [Harrie]
 + Made max bookable hours configurable. [Boy]
 + Added ability to approve locked weeks. [Boy]
