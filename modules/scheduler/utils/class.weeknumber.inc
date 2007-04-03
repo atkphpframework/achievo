@@ -34,7 +34,7 @@ class weeknumber
    * @param bool $full Returns an array if full with the start and end date of the week
    * @return int|array Weeknumber or array with weeknumber,startdate,enddate
    */
-  function getWeeknumber($timestamp,$startday,$firstweekcontains,$full=false)
+  function getWeeknumber($timestamp,$startday=1,$firstweekcontains=4,$full=false)
   {
     $enddate = weeknumber::getLastDayFromFirstWeek($timestamp,$startday,$firstweekcontains);
     $enddate_nextyear = weeknumber::getLastDayFromFirstWeek(strtotime("+1 year",$timestamp),$startday,$firstweekcontains);
@@ -88,12 +88,11 @@ class weeknumber
    */
   function searchWeekNumber($timestamp,$enddate,$enddate_nextyear)
   {
-    $startdate_nextyear =
     $weeknumber=0;
     $day = 86400;
     $week = 7*$day;
     $startdate_nextyear = ($enddate_nextyear-(6*$day));
-    if($timestamp>=$startdate_nextyear && $timestamp<=$enddate_nextyear)
+    if(date("Y-m-d",$timestamp)>=date("Y-m-d",$startdate_nextyear) && date("Y-m-d",$timestamp)<=date("Y-m-d",$enddate_nextyear))
     {
       return array("weeknumber"=>1,
                   "firstweekstart"=>$startdate_nextyear,
@@ -107,7 +106,7 @@ class weeknumber
       $weeknumber++;
       $weekstart = ($i-(6*$day));
       $weekend = $i;
-      if($timestamp>=$weekstart && $timestamp<=$weekend)
+      if(date("Y-m-d",$timestamp)>=date("Y-m-d",$weekstart) && date("Y-m-d",$timestamp)<=date("Y-m-d",$weekend))
       {
         $found=true;
       }
