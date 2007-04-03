@@ -380,7 +380,7 @@ Changes in Achievo 1.2RC1
   security). [Ivo]
 + Added vcard export for employees/contacts/organizations. [Ivo]
 + Added invoice address to organization. [Ivo]
-+ Added Japanese language file. [James]
++ Added Japanese language file. (bug #506) [James]
 + Added robots.txt file so Achievo installations do not get spidered. [Ivo]
 + Added deliverables feature to project management. [Ivo]
 + Added deliverables and phase dependencies to Gantt chart. [Ivo]
