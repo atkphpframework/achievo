@@ -26,7 +26,7 @@
       if ($selectedproject == 0)
       {
         $this->menuitem("projectmanagement",dispatch_url("project.project", "admin"),"main",array("project.project", "admin"),400); // projects submenu
-        $target_planning = "dispatch.php?atknodetype=project.project&atkaction=planning&selectedprojectid=[id]";
+        $target_planning = dispatch_url("project.project","planning",array("selectedprojectid"=>"[id]"));
         $this->menuitem("project_admin", dispatch_url("project.project", "admin"), "projectmanagement", array("project.project", "admin"));
         $this->menuitem("project_planning",  dispatch_url("project.project", "select", array("atktarget" => atkurlencode($target_planning))), "projectmanagement", array("project.project", "planning"));
         $this->menuitem("-","","projectmanagement");

@@ -32,6 +32,8 @@ class organization extends atkNode
   function organization()
   {
     $this->atkNode("organization", NF_EDITAFTERADD|NF_EXPORT);
+    $listener = &atknew("modules.crm.listeners.eventlistener");
+    $this->addListener($listener);
 
     $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("organizationcode", AF_SEARCHABLE));
@@ -246,6 +248,13 @@ class organization extends atkNode
     return $this->createVCard($this->m_postvars["id"]);
   }
 
+  function postDelete($record)
+  {
+    $eventlog = &atkGetNode("crm.eventlog");
+    $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    return true;
+  }
+  
   function createVCard($id)
   {
     include_once(moduleDir("utils")."vcard.php");

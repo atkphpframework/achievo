@@ -127,13 +127,13 @@ class employee extends person
 
     if ($view=="active")
     {
-      return atktext("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                  '&view=nonactive', atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
+      return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"nonactive")), 
+                                                           atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
     }
     else
     {
-      return atktext("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-                  '&view=active', atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
+      return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")), 
+                                                    atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
     }
   }
 
@@ -151,7 +151,7 @@ class employee extends person
     // Actve users may be deactivated, but not the logged in user.
     if ($rec["status"] == "active" && $rec["id"]!=$userid)
     {
-      $actions["deactivate"] = session_url("dispatch.php?atknodetype=".$this->atkNodeType()."&atkaction=deactivate&atkselector=[pk]", SESSION_NESTED);
+      $actions["deactivate"] = session_url(dispatch_url($this->atkNodeType(),"deactivate",array("atkselector"=>"[pk]")), SESSION_NESTED);
     }
 
     // Prevent users from deleting themselves when they are logged in.
@@ -359,7 +359,7 @@ class employee extends person
         $month = intval($birthday["birthdate"]["month"]);
         $name = $birthday["firstname"]." ".$birthday["lastname"];
         atkdebug("$day - $month - $name");
-        $items[$month][$day][] = $name;
+        $items[$month][$day][] = array("name"=>$name,"birthday"=>$birthday["birthdate"]);
       }
 
       $file->writeAsPhp("birthdays",$items);

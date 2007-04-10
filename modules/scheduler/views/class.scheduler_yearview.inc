@@ -26,9 +26,9 @@ class scheduler_yearview extends scheduler_view
     $nextTime = date("Y-m-d", mktime(0,0,0,1, 1, $this->m_year+1));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=year&viewdate=$nextTime&dayview=".$this->showGlobal;
 
-    $this->title = "<b>".text(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
+    $this->title = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 
-    return href($prevUrl, text("previous_year"))."&nbsp;".href($thisUrl, text("this_year"))."&nbsp;".href($nextUrl, text("next_year"));
+    return href($prevUrl, atktext("previous_year"))."&nbsp;".href($thisUrl, atktext("this_year"))."&nbsp;".href($nextUrl, atktext("next_year"));
 
   }
 

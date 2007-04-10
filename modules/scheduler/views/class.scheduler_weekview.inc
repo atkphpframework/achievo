@@ -32,9 +32,9 @@ class scheduler_weekview extends scheduler_view
     $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->m_viewUser;
 
     $this->m_weeknumber = $this->getWeekNumber($this->m_day,$this->m_month,$this->m_year);//date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
-    $this->m_viewTitle = "<b>".text("week")."&nbsp;".$this->m_weeknumber."</b>";
+    $this->m_viewTitle = "<b>".atktext("week")."&nbsp;".$this->m_weeknumber."</b>";
 
-    return href($prevUrl, text('previousweek'))."&nbsp;".href($currentUrl,text("currentweek"))."&nbsp;".href($nextUrl, text('nextweek'));
+    return href($prevUrl, atktext('previousweek'))."&nbsp;".href($currentUrl,atktext("currentweek"))."&nbsp;".href($nextUrl, atktext('nextweek'));
 
   }
   /**
@@ -71,7 +71,7 @@ class scheduler_weekview extends scheduler_view
 
     for ($i=1;$i<=7;$i++)
     {
-      $text  = text($this->m_weekdates[$i]["day"])." (".substr($this->m_weekdates[$i]["date"],8,2)."-".substr($this->m_weekdates[$i]["date"],5,2).")";
+      $text  = atktext($this->m_weekdates[$i]["day"])." (".substr($this->m_weekdates[$i]["date"],8,2)."-".substr($this->m_weekdates[$i]["date"],5,2).")";
       $href  = $_SERVER["PHP_SELF"]."?view=day&viewdate=".$this->m_weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
       $weekday[$i]["title"] = href($href,$text);
 

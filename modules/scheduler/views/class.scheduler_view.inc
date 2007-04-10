@@ -233,8 +233,9 @@ class scheduler_view
   {
     atkimport("modules.scheduler.utils.weeknumber");
     $timestamp = mktime(12,0,0,$month,$day,$year);
-    $user = &atkGetUser();
-    $weeknumber = weeknumber::getWeeknumber($timestamp,$user["startday"],$user["firstweekcontains"]);
+    $startday = atkconfig("startday",1);
+    $firstweekcontains = atkconfig("firstweekcontains",4);
+    $weeknumber = weeknumber::getWeeknumber($timestamp,$startday,$firstweekcontains);
     return $weeknumber;
   }
 
@@ -1123,7 +1124,8 @@ class scheduler_view
 
       if($action!="")
       {
-        $tmp.=href($_SERVER["PHP_SELF"]."?atknodetype=scheduler.scheduler&atkaction=view&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"],$item["title"],SESSION_NESTED);
+        $tmp.=href(dispatch_url("scheduler.scheduler","view",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"])),
+                   $item["title"],SESSION_NESTED);
       }
       else
       {
@@ -1142,7 +1144,8 @@ class scheduler_view
       if ($item["owner"] == $user["id"] || (!$this->isPrivate($item) && in_array($item["owner"],$this->m_assistantFor)))
       {
         $delete = '<img src="'.$theme->iconPath("delete", "recordlist").'" border="0">';
-        $tmp.= href("dispatch.php?atknodetype=scheduler.scheduler&atkaction=delete&atkselector=".rawurlencode("scheduler_scheduler.id=".$item["id"])."&scheduler_id=".$item["id"]."&itemdate=".$item["startdate"], $delete, SESSION_NESTED);
+        $tmp.= href(dispatch_url("scheduler.scheduler","delete",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"])),
+                    $delete, SESSION_NESTED);
       }
       $tmp.='</td></tr></table>';
     }

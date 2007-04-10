@@ -191,7 +191,7 @@
 			
 			$to = $supervisor;
 	  	$cc = "";
-	  	usermail($to, text("usercontract_expiration_warning"), $body, $cc);
+	  	usermail($to, atktext("usercontract_expiration_warning"), $body, $cc);
 	  	echo "mail sent.\n";
 		}
 		
@@ -208,7 +208,7 @@
 			$to = $user['email'];
 	  	$cc = "";
 	  	
-	  	usermail($to, text("usercontract_expiration_warning"), $body, $cc);
+	  	usermail($to, atktext("usercontract_expiration_warning"), $body, $cc);
 	  	echo "mail sent.\n";
 		}			
 	}

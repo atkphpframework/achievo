@@ -10,23 +10,23 @@
   //           DATABASE CONFIGURATION
   // -------------------------------------------
 
-  // The database to use. Default is MySQL. 
+  // The database to use. Default is MySQL.
   // PHP5 users can also use the mysql41 driver.
   // MySQL is currently the only officially supported database.
-  // Experimental: If you want to use PostgreSQL, change this value to 
+  // Experimental: If you want to use PostgreSQL, change this value to
   // "pgsql". For Oracle, use "oci8".
   $config_db["default"]["driver"] = "mysql";
-  
-  
+
+
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
   //
-  $config_db["default"]["host"] = "localhost";  
+  $config_db["default"]["host"] = "localhost";
   $config_db["default"]["db"]   = "achievo_1_3";
   $config_db["default"]["user"] = "demo";
   $config_db["default"]["password"] = "demo";
- 
+
   // -------------------------------------------
   //           LAYOUT CONFIGURATION
   // -------------------------------------------
@@ -49,7 +49,7 @@
 
   // The menu to use (For older themes this is 'achievo', for newer this
   //  is 'achievo_modern'
-  $config_menu_layout = "achievo_modern";
+  $config_menu_layout = "cook";
 
   // This variable determines wether all manytoone dropdowns should have
   // the autocompletion feature (instead of dropdowns)
@@ -99,25 +99,25 @@
   $config_auth_dropdown = false;
 
   // As an extra security measure, to prevent session highjacking, Achievo
-  // will regenerate it's session id on each hit. This does not work 
+  // will regenerate it's session id on each hit. This does not work
   // properly on some (usually older) PHP installations. If you experience
   // login trouble, set the next value to false.
   $config_session_regenerate = false;
 
-  
+
   // -------------------------------------------
   //            MAIL CONFIGURATION
   // -------------------------------------------
 
   // Achievo can send out notifications and reminders to users. The
-  // default sender for these mails is 'achievo@domain_of_your_server'. 
+  // default sender for these mails is 'achievo@domain_of_your_server'.
   // Sometimes users will reply to these mails, so it's better to change
   // this to the mail address of the administrator or human resource manager.
   // Example: $config_mail_sender = "ivo@achievo.org".
   // If you leave out the @domain part, the domainname of the server is
   // appended automatically.
   //
-  $config_mail_sender = "achievo"; 
+  $config_mail_sender = "achievo";
 
 
   // -------------------------------------------
@@ -141,7 +141,7 @@
   $config_timereg_defaultview = "day";
 
   // Number of lines of the 'remark' field for time entry. Defaults to a
-  // single line. (Regardless of this setting, the actual amount of text 
+  // single line. (Regardless of this setting, the actual amount of text
   // that can be entered is unlimited.)
   $config_timereg_remark_lines = 1;
 
@@ -154,8 +154,8 @@
   // You can specify a resolution in minutes or in hours.
   // Examples: 1m, 5m, 10m, 20m, 30m, 1h, 2h etc.
   //
-  $config_timereg_resolution = "15m";    
-  
+  $config_timereg_resolution = "15m";
+
   // This variable indicates whether the user may directly register
   // time on each day in a week when he is in weekview.
   // If set to false, the user must first go to the dayview of a day,
@@ -172,17 +172,17 @@
   // The next value indicates how many weeks back the timereg_check cron
   // script searches for incomplete time registrations.
   //
-  $config_timereg_checkweeks = 5; 
-  
-  // The next value indicates if a fake startingpoint should be used by 
-  // the overtime_balance node if no balance-records can be found to 
+  $config_timereg_checkweeks = 5;
+
+  // The next value indicates if a fake startingpoint should be used by
+  // the overtime_balance node if no balance-records can be found to
   // determine a new balance record. Possible values:
-  // String date: a date in the format YYYY-MM-DD.  
+  // String date: a date in the format YYYY-MM-DD.
   // boolean true: the date is set to the 31st of dec of the former year.
-  // boolean false: no startingpoint is used.  
+  // boolean false: no startingpoint is used.
   //
   $config_timereg_overtime_balance_use_startingpoint = false;
-  
+
 
   // -------------------------------------------
   //             PROJECT MODULE
@@ -197,9 +197,9 @@
   // is copied.
   // To disable this feature leave the dir_skel and dir_destination configs empty.
   // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
-  $config_project_dir_skel = '';  
+  $config_project_dir_skel = '';
   $config_project_dir_destination = '';
-  // You can specify which field of the project node you want to use for the 
+  // You can specify which field of the project node you want to use for the
   // directoryname.
   $config_project_dir_name_template = '[abbreviation]';
   $config_project_formatmail = 'html';
@@ -211,8 +211,37 @@
   // If you don't want a pim, set an URL in the config below to let PIM
   // redirect to the specified url. If not set or empty this feature is
   // disabled.
-  $config_pim_redirect_to = "";  
-  
+  $config_pim_redirect_to = "";
+
+
+
+  // -------------------------------------------
+  //             DOCMANAGER MODULE
+  // -------------------------------------------
+  // If you a docmanager to other nodes add the node and file location here
+  $config_docmanageroptions = array(
+        "project.project"=>array("dir"=>"./documents/project/", "url"=>"documents/project/"),
+        "quotation.quotation"=>array("dir"=>"./documents/quotations/", "url"=>"documents/quotations/"),
+        );
+
+
+  // -------------------------------------------
+  //            GENERAL SETTINGS
+  // -------------------------------------------
+  // Startday is
+  // 6 = saturday
+  // 0 = sunday
+  // 1 = monday (ISO)
+  // 3 = wednesday
+  $config_startday = 1;
+
+  // First week contains has 3 valid options
+  // 1 = Starts on 1 january
+  // 4 = First week with 4 days (ISO)
+  // 7 = First full week
+  $config_firstweekcontains = 4;
+
+
   // -------------------------------------------
   //            EXTERNAL MODULES
   // -------------------------------------------
@@ -232,7 +261,7 @@
   // Also, you should not change the atkconf.inc file, since that would
   // break Achievo.
   //
-  
-  include "atkconf.inc";  
-  
+
+  include "atkconf.inc";
+
 ?>

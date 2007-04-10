@@ -182,7 +182,7 @@
       $startdateatt = new atkDateAttribute("viewstart","","", 0, date("Ymd"));
       $enddateatt = new atkDateAttribute("viewend","","", 0, date("Ymd"));
 
-      $output = '<form action="dispatch.php" method="get">';
+      $output = '<form action="'.getDispatchFile().'" method="get">';
       $output.= session_form();
       $output.= '<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">';
       $output.= '<input type="hidden" name="atkaction" value="'.$this->m_action.'">';
@@ -223,7 +223,7 @@
 
       $cells = array();
 
-      $cells[0] = array($itemheader, atktext("time"), text("percentage"));
+      $cells[0] = array($itemheader, atktext("time"), atktext("percentage"));
       if ($mayviewdetail) $cells[0][] = atktext("details");
 
       for($i=0, $_i=count($dataset); $i<$_i; $i++)

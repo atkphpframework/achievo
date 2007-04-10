@@ -55,7 +55,9 @@
         }
       }
       $page = &$this->getPage();
-      $page->addContent($this->genericPage(atktext("title_pim"), $res));
+      $content = $this->renderContent(atktext("title_pim"),$res);
+
+      $page->addContent($content);
     }
 
     function getAdminPimContent()
@@ -90,7 +92,28 @@
 
       // Render the page
       $page = &$this->getPage();
-      $page->addContent($this->genericPage($title, $content));
+      
+      $content = $this->renderContent($title,$content);
+      $page->addContent($content);
+    }
+    
+    function renderContent($title,$content)
+    {
+      $theme = &atkinstance('atk.ui.atktheme');
+      if ($theme->getAttribute('useframes',true))
+      {
+         $renderd_content = $this->genericPage($title, $content);        
+      }
+      else 
+      {
+         $ui = &$this->getUi();
+         
+          if (!is_array($content)) $content = array($title=>$content);
+          $renderd_content="";
+          foreach($content as $itemtitle => $itemcontent)
+           $renderd_content.= $ui->renderBox(array("title"=>$itemtitle, "content"=>$itemcontent));
+      }
+      return $renderd_content;
     }
   }
 

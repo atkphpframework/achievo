@@ -27,7 +27,7 @@
    */
   $config_atkroot = "./";
   include_once("atk.inc");
-  include("version.inc");
+  include_once("achievotools.inc");
 
   atksession();
   atksecure();
@@ -44,32 +44,19 @@
   $page->register_style($theme->stylePath("top.css"));
 
   //Backwards compatible $content, that is what will render when the box.tpl is used instead of a top.tpl
-  $loggedin = atktext("logged_in_as", "atk").": <b>".$g_user["name"]."</b>";
+  $username = getFullUsername();
+  $loggedin = atktext("logged_in_as", "atk").": <b>".$username."</b>";
   $content = '<br>'.$loggedin.' &nbsp; <a href="index.php?atklogout=1" target="_top">'.ucfirst(atktext("logout", "atk")).'</a> &nbsp;';
 
+  $centerpiece = "";
   $centerpiecelinks=array();
-  if ($g_user["name"]!="administrator")
-  {
-    $centerpiece = $centerpiecelinks['pim'] = href(dispatch_url("pim.pim", "pim"), atktext("pim"), SESSION_NEW, false, 'target="main"');
-    if (is_allowed("employee.userprefs", "edit"))
-    {
-      $centerpiece.= '&nbsp; &nbsp; &nbsp;';
-      $centerpiece.= $centerpiecelinks['userprefs'] = href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$g_user["id"]."'")), atktext("userprefs"), SESSION_NEW, false, 'target="main"');
-    }
-  }
-  else
-  {
-    // Administrator has a link to setup.php
-    $centerpiece = $centerpiecelinks['setup'] = href("setup.php", atktext("setup"), SESSION_NEW, false, 'target="_top"');
-  }
+  getCenterPiece($centerpiece,$centerpiecelinks);
   $content.=$centerpiece;
 
-  $searchnode = &atkGetNode("search.search");
-  $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
+  $searchpiece = getSearchPiece();
   $content.="&nbsp;&nbsp;&nbsp; ".$searchpiece;
 
-  $title = atktext("app_title")." ".$achievo_version;
-  ($achievo_state!=="stable")?$title.=" ($achievo_state)":"";
+  $title = getAchievoTitle();
   $top = $ui->renderBox(array("content"=> $content,
                               "logintext" => atktext("logged_in_as"),
                               "logouttext" => ucfirst(atktext("logout", "atk")),
@@ -80,7 +67,7 @@
                               "searchpiece" => $searchpiece,
                               "title" => $title,
                               "user" => $g_user["name"],
-                              "username"=>$g_user["firstname"]." ".$g_user["lastname"],
+                              "username"=>$username,
                         ),
                         "top");
 

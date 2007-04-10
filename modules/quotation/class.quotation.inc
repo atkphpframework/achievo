@@ -19,6 +19,8 @@
       global $g_sessionManager;
 
       $this->atkNode("quotation",NF_ADD_LINK);
+      $listener = &atknew("modules.crm.listeners.eventlistener");
+      $this->addListener($listener);
       $this->m_view = $g_sessionManager->pageVar("view"); // Can be 'all' or 'filtered'.
 
       if ($this->m_view=="") $this->m_view = "filtered";
@@ -414,6 +416,13 @@
       }
 
       return array(atktext("my_pipeline","quotation")=>$dataset);
+    }
+    
+    function postDelete($record)
+    {
+      $eventlog = &atkGetNode("crm.eventlog");
+      $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+      return true;
     }
   }
 

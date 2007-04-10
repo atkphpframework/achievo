@@ -11,7 +11,7 @@
 
     $actions = array();
     if(!$pda)
-      $actions["edit"] = "dispatch.php?atknodetype=$nodetype&atkaction=edit&atkselector=[pk]";
+      $actions["edit"] = dispatch_url($nodetype,"edit",array("atkselector"=>"[pk]"));
 
     // Show only todays bookings, and only your own.
     $hoursnode->addFilter("activitydate",strftime("%Y-%m-%d"));
@@ -30,8 +30,8 @@
     }
     if ($pda) $nodetype = "timereg.hourspda";
     else $nodetype = "timereg.hours";
-    $todayhours.= '<br>'.href("dispatch.php?atknodetype=$nodetype&atkaction=add",atktext('add'),SESSION_NESTED);
-    if (!$pda) $todayhours.= ' &nbsp; '.href("dispatch.php?atknodetype=$nodetype&atkaction=admin",atktext('pim_gototimeregistration'),SESSION_NESTED);
+    $todayhours.= '<br>'.href(dispatch_url($nodetype,"add"),atktext('add'),SESSION_NESTED);
+    if (!$pda) $todayhours.= ' &nbsp; '.href(dispatch_url($nodetype,"admin"),atktext('pim_gototimeregistration'),SESSION_NESTED);
 
     $res = '<table border="0">';
     $res.= '<tr>';

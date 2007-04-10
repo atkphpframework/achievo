@@ -212,7 +212,7 @@ class projectstats extends atkNode
     $startdateatt = new atkDateAttribute("viewstart","","", 0, date("Ymd"));
     $enddateatt = new atkDateAttribute("viewend","","", 0, date("Ymd"));
 
-    $output = '<form action="dispatch.php" method="get">';
+    $output = '<form action="'.getDispatchFile().'" method="get">';
     $output.= session_form();
     $output.= '<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">';
     $output.= '<input type="hidden" name="atkaction" value="'.$this->m_action.'">';
@@ -267,9 +267,7 @@ class projectstats extends atkNode
     {
        $row = array();
        $row[]=($i+1);
-       $row[]=href("dispatch.php?atknodetype=".$this->atkNodeType().
-                   "&atkaction=".$this->m_action.
-                   "&projectid=".$projects[$i]["id"],
+       $row[]=href(dispatch_url($this->atknodetype(),$this->m_action,array("projectid"=>$projects[$i]["id"])),
                    $projects[$i]["name"],
                    SESSION_NESTED);
        $row[] = time_format($projects[$i]["totaltime"], true);

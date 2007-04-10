@@ -37,9 +37,8 @@ class TimeregUtils {
     $viewtime = TimeregUtils::getViewTime($viewdate);
     atkdebug("Viewdate(2): ".date("Y-m-d",$viewtime));
     atkimport("modules.scheduler.utils.weeknumber");
-    atkdebug("Startday: ".$user["startday"]." - First: ".$user["firstweekcontains"]);
-    $weeknumber = weeknumber::getWeeknumber($viewtime,$user["startday"],$user["firstweekcontains"],true);
-    
+    $weeknumber = weeknumber::getWeeknumber($viewtime,atkconfig("startday",1),atkconfig("firstweekcontains",4),true);
+
     $weekdates = array();
     $day = 86400;
     $weekstartday = $weeknumber["firstweekstart"];

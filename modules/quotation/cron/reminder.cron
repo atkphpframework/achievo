@@ -32,18 +32,18 @@
     
     if ($days_left<=5 && $open)
     {
-    	$subject = text("quotation", "quotation")." ".$record["quotation_nr"]." (".$record["title"].")";
-    	$body = text("reminder_header", "quotation")."\n";
+    	$subject = atktext("quotation", "quotation")." ".$record["quotation_nr"]." (".$record["title"].")";
+    	$body = atktext("reminder_header", "quotation")."\n";
       if ($days_left>=0)
       {
-	      $body.= text("reminder_daysleft", "quotation").": ".$days_left."\n\n";
+	      $body.= atktext("reminder_daysleft", "quotation").": ".$days_left."\n\n";
       }
       else
       {
-        $body.= text("reminder_daysexpired", "quotation").": ".abs($days_left)."\n\n";
+        $body.= atktext("reminder_daysexpired", "quotation").": ".abs($days_left)."\n\n";
       }
       
-      $title = text("reminder_summary", "quotation");
+      $title = atktext("reminder_summary", "quotation");
       $body.= $title."\n".str_repeat("-", strlen($title))."\n";
       
       $summary = new quotation_summary();
@@ -78,7 +78,7 @@
     
     function addLine($field, $value)
     {
-      $label = text($field, "quotation");
+      $label = atktext($field, "quotation");
       $this->m_maxfieldlength = max($this->m_maxfieldlength, strlen($label));
       $this->m_items[] = array("label"=>$label, "value"=>$value);
     }
@@ -90,7 +90,7 @@
       {
         $label = $this->m_items[$i]["label"];
         $value = $this->m_items[$i]["value"];
-        $res.=text($label).str_repeat(" ", $this->m_maxfieldlength-strlen($label)).": ".$value."\n";
+        $res.=atktext($label).str_repeat(" ", $this->m_maxfieldlength-strlen($label)).": ".$value."\n";
       }
       return $res;
     }

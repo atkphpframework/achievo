@@ -99,7 +99,7 @@
 
       $attrs = &$this->getFilterAttrs();
 
-      $output = '<form action="dispatch.php" method="get">';
+      $output = '<form action="'.getDispatchFile().'" method="get">';
       $output.= session_form();
       $output.= '<input type="hidden" name="go" value="1">'; //trigger to prevent loading the first time
 

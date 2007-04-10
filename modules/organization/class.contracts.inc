@@ -254,13 +254,13 @@ class contracts extends atkNode
 	  $res = "" ;
 	  if ($this->m_archive!=1)
 	  {
-	    return atktext("onlyactiverecordsareshown")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=1', atktext('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+	    return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>1)),
+	                                                    atktext('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
 	  }
 	  else
 	  {
-	    return atktext("youareinthearchive")." ".href('dispatch.php?atknodetype='.$this->atkNodeType().'&atkaction='.$this->m_action.
-	                '&archive=0', atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+	    return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>0)), 
+	                                             atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
 	  }
 	  return $res."<br>";
 	}

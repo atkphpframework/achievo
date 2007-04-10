@@ -10,7 +10,9 @@
   $setup->installNode("crm.source");
   $setup->installNode("crm.relation_type");
   $setup->installNode("crm.rate");
-
-  $setup->setVersion(1);
+  $setup->installNode("crm.lead");
+  $setup->installNode("crm.eventlog");
+  
+  $setup->setVersion(2);
 
 ?>

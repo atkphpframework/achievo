@@ -18,8 +18,8 @@
 
     $page = &atknew("atk.ui.atkpage");
     $ui = &atkinstance("atk.ui.atkui");
-    $theme = &atkTheme::getInstance();
-    $output = &atkOutput::getInstance();
+    $theme = &atkinstance("atk.ui.atktheme");
+    $output = &atkinstance("atk.ui.atkoutput");
 
     $page->register_style($theme->stylePath("style.css"));
     $page->register_script(atkconfig("atkroot")."atk/javascript/launcher.js");
@@ -28,11 +28,11 @@
     $content.= '<br><br><a href="#" onClick="atkLaunchApp()">'.atktext('app_reopen', "atk").'</a> &nbsp; '.
     '<a href="#" onClick="window.close()">'.atktext('app_close', "atk").'</a><br><br>';
 
-    $box = $ui->renderBox(array("title"=>text("app_launcher"),
+    $box = $ui->renderBox(array("title"=>atktext("app_launcher"),
     "content"=>$content));
 
     $page->addContent($box);
-    $output->output($page->render(text('app_launcher'), true));
+    $output->output($page->render(atktext('app_launcher'), true));
 
     $output->outputFlush();
   }
@@ -45,7 +45,24 @@
     }
     else
     {
+      $user = &atkGetUser();
       $indexpage = &atknew('atk.ui.atkindexpage');
+      $indexpage->setUsername(getFullUsername());
+      $indexpage->setTitle(getAchievoTitle());
+      $indexpage->setTopSearchPiece(getSearchPiece());
+      $centerpiece="";
+      $centerpiecelinks=array();
+      getCenterPiece($centerpiece,$centerpiecelinks);
+      $indexpage->setTopCenterPieceLinks($centerpiecelinks);
+      if($user["name"]=="administrator")
+      {
+        $destination = array("atknodetype"=>"pim.pim","atkaction"=>"adminpim");
+      }
+      else 
+      {
+        $destination = array("atknodetype"=>"pim.pim","atkaction"=>"pim");
+      }
+      $indexpage->setDefaultDestination($destination);
       $indexpage->generate();
     }
   }

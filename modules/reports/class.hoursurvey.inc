@@ -398,7 +398,7 @@ class hoursurvey extends atkNode
     {
       $title = atktext("parameters", $this->m_module, $this->m_type);
 
-      $content='<form action="dispatch.php" method="get" name="entryform" id="entryform">';
+      $content='<form action="'.getDispatchFile().'" method="get" name="entryform" id="entryform">';
       $content.=session_form();
 
       $this->_addHiddenFields($content);

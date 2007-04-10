@@ -13,8 +13,9 @@
     $todonode->addFilter("todo.status NOT IN (5,2)");
 
     $actions = array();
-    $actions["edit"] = "dispatch.php?atknodetype=todo.todo&atkaction=edit&atkselector=[pk]";
-    $actions["complete"] = "dispatch.php?atknodetype=todo.todo&atkaction=completed&atkselector=[pk]";
+    $actions["edit"] = dispatch_url("todo.todo","edit",array("atkselector"=>"[pk]"));
+
+    $actions["complete"] = dispatch_url("todo.todo","completed",array("atkselector"=>"[pk]"));
 
     $recs = $todonode->selectDb("todo.assigned_to='$userid' AND todo.assigned_to <> 0  AND ((todo.private=0) OR (todo.private is null) OR (todo.private=1 and todo.owner='$userid'))");
     $todo_assignedtome = atktext("pim_assignedtoyou").":<br>";
@@ -26,7 +27,7 @@
     {
       $todo_assignedtome.= atktext("pim_todo_empty")."<br>";
     }
-    $todo_assignedtome.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add&atkfilter=".rawurlencode("assigned_to.id='$userid'"),atktext('add'),SESSION_NESTED);
+    $todo_assignedtome.= '<br>'.href(dispatch_url("todo.todo","add",array("atkfilter"=>"assigned_to.id='$userid'")),atktext('add'),SESSION_NESTED);
 
     $todo_assignedbyme = atktext("pim_assignedbyyou").":<br>";
     $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");
@@ -38,7 +39,7 @@
     {
       $todo_assignedbyme.= atktext("pim_todo_empty")."<br>";
     }
-    $todo_assignedbyme.= '<br>'.href("dispatch.php?atknodetype=todo.todo&atkaction=add",atktext('add'),SESSION_NESTED);
+    $todo_assignedbyme.= '<br>'.href(dispatch_url("todo.todo","add"),atktext('add'),SESSION_NESTED);
 
     $res = '<table border="0">';
     $res.= '<tr>';

@@ -36,7 +36,7 @@ class scheduler_category extends atkNode
 
   function example_edit($record)
   {
-    return text("example").":".$this->example_display($record);
+    return atktext("example").":".$this->example_display($record);
   }
 
 }

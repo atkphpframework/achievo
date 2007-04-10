@@ -29,9 +29,53 @@
     include(atkconfig("atkroot")."version.inc");
     return $achievo_state;
   }
-
-
-
+  
+  function getAchievoTitle()
+  {
+    $achievo_version = achievoVersion();
+    $achievo_state = achievoState();
+    $title = atktext("app_title")." ".$achievo_version;
+    if($achievo_state!=="stable") $title.=" ($achievo_state)";
+    return $title;
+  }
+  
+  function getSearchPiece()
+  {
+    $searchnode = &atkGetNode("search.search");
+    $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
+    return $searchpiece;
+  }
+  
+  function getCenterPiece(&$centerpiece,&$centerpiecelinks)
+  {
+    $user = &atkGetUser();
+    if ($user["name"]!="administrator")
+    {
+      $theme = &atkinstance("atk.ui.atktheme");
+      if($theme->getAttribute('useframes',true)) { $target='target="main"'; } else { $target=""; }
+      $centerpiece = $centerpiecelinks['pim'] = href(dispatch_url("pim.pim", "pim"), atktext("pim"), SESSION_NEW, false,$target);
+      if (is_allowed("employee.userprefs", "edit"))
+      {
+        $centerpiece.= '&nbsp; &nbsp; &nbsp;';
+        $centerpiece.= $centerpiecelinks['userprefs'] = href(dispatch_url("employee.userprefs", "edit", array("atkselector" => "person.id='".$user["id"]."'")), atktext("userprefs"), SESSION_NEW, false,$target);
+      }
+    }
+    else
+    {
+      // Administrator has a link to setup.php
+      $centerpiece = $centerpiecelinks['setup'] = href("setup.php", atktext("setup"), SESSION_NEW, false, 'target="_top"');
+    }
+  }
+  
+  function getFullUsername()
+  {
+    $user = &atkGetUser();
+    $username = "<b>".$user["name"]."</b>";
+    if($user["name"]!="administrator") $username.=" [".$user["firstname"]." ".$user["lastname"]."]";
+    return $username;
+  }
+  
+ 
   function updateSelectedProjects()
   {
     global $g_sessionManager, $g_projectnamesize;

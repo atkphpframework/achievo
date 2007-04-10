@@ -403,7 +403,7 @@ class weekreport extends atkNode
 
     if ($outputType==0)
     {
-      $output='<form action="dispatch.php" method="get" id="entryform" name="entryform">';
+      $output='<form action="'.getDispatchFile().'" method="get" id="entryform" name="entryform">';
 
       $output.='<input type="hidden" name="atknodetype" value="reports.weekreport">';
       $output.='<input type="hidden" name="atkaction" value="'.$this->m_action.'">';

@@ -115,13 +115,13 @@
 
   foreach ($incomplete_weeks as $user => $data)
   {
-    $body = stringparse(text("timeguard_mail_header"),array("userid"=>$userInfo[$user]["name"],
+    $body = stringparse(atktext("timeguard_mail_header"),array("userid"=>$userInfo[$user]["name"],
                                                      "startdate"=>$globalstart,
                                                      "enddate"=>$globalend))."\n";
 
     for ($i=0;$i<count($data);$i++)
     {
-      $body.= "\n".stringparse(text("timeguard_mail_line"),array("hours"=>$data[$i]["missing"],
+      $body.= "\n".stringparse(atktext("timeguard_mail_line"),array("hours"=>$data[$i]["missing"],
                                                             "week"=>$data[$i]["week"],
                                                             "startdate"=>$data[$i]["startdate"],
                                                             "enddate"=>$data[$i]["enddate"]));
@@ -137,7 +137,7 @@
 
     if ($to!="")
     {      
-      usermail($to,text("timeguard_mail_subject"),$body, $cc);
+      usermail($to,atktext("timeguard_mail_subject"),$body, $cc);
       echo "sent mail to $to";
       if ($cc!="") echo " and a cc to $cc";
       echo "\n";
@@ -150,7 +150,7 @@
       }
       else
       {     
-        usermail($cc,text("timeguard_mail_subject"),$body);
+        usermail($cc,atktext("timeguard_mail_subject"),$body);
         echo "would've sent mail to $user, but he doesn't have an email address. Sending only to supervisor\n";
       }
     }

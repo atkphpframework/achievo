@@ -84,13 +84,13 @@
     {
       $who = $whos[$j];
       $todos=$todometa[$who];
-      $body.=text("todocheck_mail_assigned_$who")."\n";
+      $body.=atktext("todocheck_mail_assigned_$who")."\n";
       $body.=str_repeat("-", 70)."\n\n";
 
       $today = $todos["today"];
       if (count($today)>0)
       {
-        $body.=text("todocheck_mail_duetoday")."\n\n";
+        $body.=atktext("todocheck_mail_duetoday")."\n\n";
         for ($i=0, $_i=count($today);$i<$_i;$i++)
         {
           $body.="  - ".$today[$i]["title"];
@@ -99,12 +99,12 @@
           // Display owner if this todo is assigned to you by somebody else then you.
           if ($who=="toyou" && $today[$i]["owner_email"]!=$to)
           {
-            $body.="\n    ".text("owner").": ".$today[$i]["owner_lastname"].", ".$today[$i]["owner_firstname"]." <".$today[$i]["owner_email"].">";
+            $body.="\n    ".atktext("owner").": ".$today[$i]["owner_lastname"].", ".$today[$i]["owner_firstname"]." <".$today[$i]["owner_email"].">";
           }
           // always show assigned_to. (bugs assigned to ourselve don't show up as a byyou, only as a toyou)
           else if ($who=="byyou")
           {
-            $body.="\n    ".text("assigned_to").": ".$today[$i]["assigned_lastname"].", ".$today[$i]["assigned_firstname"]." <".$today[$i]["assigned_email"].">";
+            $body.="\n    ".atktext("assigned_to").": ".$today[$i]["assigned_lastname"].", ".$today[$i]["assigned_firstname"]." <".$today[$i]["assigned_email"].">";
           }
           $body.="\n\n    ".str_replace("\n","\n    ",$today[$i]["description"])."\n\n";
         }
@@ -114,28 +114,28 @@
       $late = $todos["late"];
       if (count($late)>0)
       {
-        $body.=text("todocheck_mail_late")."\n\n";
+        $body.=atktext("todocheck_mail_late")."\n\n";
         for ($i=0, $_i=count($late);$i<$_i;$i++)
         {
           $body.="  - ".$late[$i]["title"];
-          if ($late[$i]["project_name"]!="") $body.= " (".text("project").": ".$late[$i]["project_name"].")\n";
-          $body.="    ".text("duedate").": ".$late[$i]["duedate"];
+          if ($late[$i]["project_name"]!="") $body.= " (".atktext("project").": ".$late[$i]["project_name"].")\n";
+          $body.="    ".atktext("duedate").": ".$late[$i]["duedate"];
           // Display owner if this todo is assigned to you by somebody else then you.
           if ($who=="toyou" && $late[$i]["owner_email"]!=$to)
           {
-            $body.="\n    ".text("owner").": ".$late[$i]["owner_lastname"].", ".$late[$i]["owner_firstname"]." <".$late[$i]["owner_email"].">";
+            $body.="\n    ".atktext("owner").": ".$late[$i]["owner_lastname"].", ".$late[$i]["owner_firstname"]." <".$late[$i]["owner_email"].">";
           }
           // always show assigned_to. (bugs assigned to ourselve don't show up as a byyou, only as a toyou)
           else if ($who=="byyou")
           {
-            $body.="\n    ".text("assigned_to").": ".$late[$i]["assigned_lastname"].", ".$late[$i]["assigned_firstname"]." <".$late[$i]["assigned_email"].">";
+            $body.="\n    ".atktext("assigned_to").": ".$late[$i]["assigned_lastname"].", ".$late[$i]["assigned_firstname"]." <".$late[$i]["assigned_email"].">";
           }
           $body.="\n\n    ".str_replace("\n", "\n    ",$late[$i]["description"])."\n\n";
         }
       }
       $body.="\n";
     }    
-    usermail($to,text("todocheck_mail_subject"),$body);
+    usermail($to,atktext("todocheck_mail_subject"),$body);
     echo "sent mail to $to";
     echo "\n";
 

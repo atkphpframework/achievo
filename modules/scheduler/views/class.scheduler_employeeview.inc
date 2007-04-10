@@ -22,7 +22,7 @@ class scheduler_employeeview extends scheduler_viewday
 
   function _dumpMatrix()
   {
-    $this->m_viewTitle  = text("seluserdate");
+    $this->m_viewTitle  = atktext("seluserdate");
     $tmp = $this->_view_header(false);
     $tmp.='<script language="javascript">
     function handleCheck(box, name, on, off)
@@ -51,7 +51,7 @@ class scheduler_employeeview extends scheduler_viewday
     $dummy_rec = array("viewdate"=>$this->_getInitialDate());
     $datebox = new atkDateAttribute("viewdate","F d Y","d F Y",0,0,AF_OBLIGATORY);
     $tmp.=$datebox->edit($dummy_rec);
-    $tmp.= '&nbsp;<input type="submit" value="'.text("refresh").'">'."\n";
+    $tmp.= '&nbsp;<input type="submit" value="'.atktext("refresh").'">'."\n";
     $tmp.= '</td></tr></table></form><hr>';
     if(count($this->m_employees)>0)
     {

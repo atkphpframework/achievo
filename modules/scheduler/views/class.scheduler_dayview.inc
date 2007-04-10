@@ -256,8 +256,9 @@ class scheduler_dayview extends scheduler_view
               {
                 $bgcolor = $colors[$info["category"]]["back"];
               }
+              $txt_color = $colors[$info["category"]]["front"];
 
-              $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' bgcolor='".$bgcolor."'>";
+              $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' style='background-color: ".$bgcolor.";color: ".$txt_color.";'>";
               $buff .= $this->renderItem($info,true);
               $buff .= "</td>";
             }

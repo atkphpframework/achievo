@@ -31,29 +31,43 @@ class scheduler_birthdayview extends scheduler_view
     atkimport("modules.utils.dateutil");
 
     $tmp = $this->_view_header();
-    $tmp.='<table cellpadding="5">
-           <tr>';
-    
-    for($i=1;$i<=12;$i++)
+
+    $tmp.="<br>";
+    $startmonth = date("m");
+    for($i=0;$i<12;$i++)
     {
-      $tmp.='<td valign="top"><b>'.ucfirst(dateutil::monthname($i)).'</b><br><br>';
-      if(isset($birthdays[$i]) && is_array($birthdays[$i]))
+      $month=$startmonth+$i;
+      if($month>12) $month-=12;
+      if(isset($birthdays[$month]) && is_array($birthdays[$month]))
       {
-        foreach($birthdays[$i] as $day => $names)
+        $tmp.='<b>'.ucfirst(dateutil::monthname($month)).'</b> ('.count($birthdays[$month]).')<br>';
+        foreach($birthdays[$month] as $day => $users)
         {
-          foreach($names as $name)
+          foreach($users as $info)
           {
-            $tmp.=sprintf("%02s %s",$day,$name)."<br>";
+            $age=0;
+            $tmp.=sprintf("%02d-%02d: %s (%d)",$day,$month,$info["name"],$this->calculateAge($info["birthday"]))."<br>";
           }
         }
+        $tmp.="<br>";
+
       }
-      $tmp.="</td>";
-      if($i%3==0) $tmp.="</tr><tr>";
     }
-    $tmp.="</tr></table>";
 
     return $tmp;
   }
+  
+  function calculateAge($birthdate)
+  {
+     if(!isset($birthdate["year"]) && $birthdate["year"]=="") return "-";
+     $current_year = date("Y");
+     if($birthdate["month"]<date("m")) // || ($birthdate["month"]==date("m") &&$birthdate["day"]<date("d")))
+       $current_year+=1;
+     
+     return ($current_year-$birthdate_year);
+  }
+  
+  
  /**
   * Render the view
   * @return string A renderd view

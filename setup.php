@@ -73,6 +73,7 @@
 
   // Some defines we need
   define("REQUIRED_PHP", "4.3.1");
+  define("ACHIEVO_MIN_MEM","32");
 
   /**
    * Function for checking php version.
@@ -143,6 +144,54 @@
                  <br>Please use the most recent stable PHP version.";
 
   }
+  
+  // Check memory limit
+  $memory_limit = ini_get('memory_limit');
+  if(empty($memory_limit))
+  {
+	  $memory_limit = "-1";
+  }
+  if( $memory_limit == "" )
+  {          
+      // memory_limit disabled at compile time, no memory limit
+  } 
+  elseif( $memory_limit == "-1" )
+  {   
+    // memory_limit enabled, but set to unlimited
+  } 
+  else 
+  {
+  	$mem_display = $memory_limit;
+    rtrim($memory_limit, 'M');
+    $memory_limit_int = (int) $memory_limit;
+    if( $memory_limit_int < ACHIEVO_MIN_MEM )
+    {
+      $errors[] = "The minimal memory limit for running Achievo is ".ACHIEVO_MIN_MEM."M.
+                  <br>Please change the memory limit in your php.ini (".get_cfg_var("cfg_file_path").").";
+    } 
+  }
+
+  // Check session Save path
+  $temp_dir = (isset($_ENV['TEMP'])) ? $_ENV['TEMP'] : "";
+  $session_save_path = (session_save_path() === "") ? $temp_dir : session_save_path();
+  if (strpos ($session_save_path, ";") !== FALSE) 
+  {
+  	$session_save_path = substr ($session_save_path, strpos ($session_save_path, ";")+1);
+  }
+  if(is_dir($session_save_path)) 
+  {
+  	if(!is_writable($session_save_path)) 
+  	{
+  	  $errors[]="The session save path ($session_save_path) isn't writable for the webserver.";
+  	}
+  } 
+  else 
+  {
+    $errors[]="The session save path ($session_save_path) is not a valid directory.";
+  }
+
+  
+  
 
   // Achievo relies on some PHP settings. In future versions, Achievo should not
   // rely on these, but for now, we need to check the settings to verify if they

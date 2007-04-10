@@ -293,7 +293,7 @@
 	    $footer.= $this->convertheck();
 
 	    // Start the output using a session form
-	    $formstart = '<form name="entryform" enctype="multipart/form-data" action="dispatch.php" method="post" onsubmit="globalSubmit(this)">';
+	    $formstart = '<form name="entryform" enctype="multipart/form-data" action="'.getDispatchFile().'" method="post" onsubmit="globalSubmit(this)">';
 	    $formstart.= session_form();
 	    // Close the form
 	    $formend = '</form>';
@@ -603,7 +603,8 @@
           $periodname = ($this->m_lockmode == "month") ? atktext($monthlist[ltrim($periodnumber, "0")]) : $periodnumber;
 
 	        // Add a periodnumberlink to the periods string
-	        $periods.=href('dispatch.php?viewuser='.$user["id"].'&viewdate='.date("Y-m-d",$this->getdatefromperiod($year.$prefix.$periodnumber))."&periodid=".$perioddata["id"],$periodname, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
+	        $periods.=href(dispatch_ulr($this->atknodetype(),$this->m_action,array("viewuser"=>$user["id"],"viewdate"=>date("Y-m-d",$this->getdatefromperiod($year.$prefix.$periodnumber)),"periodid"=>$perioddata["id"])),
+	                      $periodname, SESSION_DEFAULT, false, 'style="color: '.$color.';"')."&nbsp;";
 
 	      }
 

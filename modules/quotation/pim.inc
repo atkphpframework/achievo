@@ -10,7 +10,7 @@ function pimQuotation()
     $qnode->m_action="admin";
 
     $actions = array();
-    $actions["edit"] = "dispatch.php?atknodetype=quotation.quotation&atkaction=edit&atkselector=[pk]";
+    $actions["edit"] = dispatch_url("quotation.quotation","edit",array("atkselector"=>"[pk]"));
 
     $where = "quotation_quotation.status IN ('new','sent','called')
               AND quotation_quotation.assigned_to='".$userid."'";
@@ -24,7 +24,8 @@ function pimQuotation()
     {
       $ret.= atktext("pim_no_quotations")."<br>";
     }
-    $ret.= '<br>'.href("dispatch.php?atknodetype=quotation.quotation&atkaction=add&atkfilter=".rawurlencode("assigned_to.id='$userid'"),atktext('add_quotation'),SESSION_NESTED);
+    $ret.= '<br>'.href(dispatch_url("quotation.quotation","add",array("atkfilter"=>"assigned_to.id='$userid'")),
+                        atktext('add_quotation'),SESSION_NESTED);
     return $ret;
 }
 
@@ -82,7 +83,7 @@ function pimMyPipeline()
   $enddateatt = new atkDateAttribute("enddate","F d Y","d F Y");
   $statusatt = new atkMultiSelectAttribute("status",$optionArray,$valueArray,5);
 
-  $ret.='<form action="dispatch.php" method="get" name="entryform">';
+  $ret.='<form action="'.getDispatchFile().'" method="get" name="entryform">';
 
   $ret.=session_form();
   $ret.="Startdate: ".$startdateatt->edit($dummyrec)."<br>";

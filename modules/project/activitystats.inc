@@ -89,7 +89,7 @@
     $ui = &atkinstance("atk.ui.atkui");
     $page = &atkinstance("atk.ui.atkpage");
 
-    $output='<form action="dispatch.php" method="get">';
+    $output='<form action="'.getDispatchFile().'" method="get">';
     $output.='<input type="hidden" name="atknodetype" value="project.activity">';
     $output.='<input type="hidden" name="atkaction" value="'.$action.'">';
 

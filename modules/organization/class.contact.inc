@@ -13,6 +13,8 @@ class contact extends person
   function contact($name="contact")
   {
     $this->person($name);
+    $listener = &atknew("modules.crm.listeners.eventlistener");
+    $this->addListener($listener);
     $this->remove("userid");
 
     $this->addFilter("person.role='contact'");
@@ -36,6 +38,13 @@ class contact extends person
   function descriptor_def()
   {
     return "[lastname], [firstname]";
+  }
+  
+  function postDelete($record)
+  {
+    $eventlog = &atkGetNode("crm.eventlog");
+    $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    return true;
   }
 }
 
