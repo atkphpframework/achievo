@@ -460,7 +460,7 @@ class weekreport extends atkNode
       }    */
 
       $startdateatt = new atkDateAttribute("startdate","","", 0, date("Ymd"));
-      $enddateatt = new atkDateAttribute("enddate","","", 0, date("Ymd"));
+      $enddateatt = new atkDateAttribute("enddate","","", 0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"));
 
       $data[]= array(atktext("timespan"),$startdateatt->edit($dummyrec).' &nbsp;'.
                       atktext("until").
@@ -568,6 +568,9 @@ class weekreport extends atkNode
 
       $db = &atkGetDb();
       $periods      = $db->getRows("SELECT * FROM workperiod");
+      $periodids = array();
+      foreach($periods as $period)
+        $periodids[] = $period["id"];
       $strdow       = array("sun","mon","tue","wed","thu","fri","sat");
 
       // collect data..
@@ -586,9 +589,10 @@ class weekreport extends atkNode
         $key = weekstamp($stamp);
         $weekdata[$key]["period"] = $key;
         $uid = $raw[$i]["userid"];
+        $workperiod = in_array($raw[$i]["workperiod"], $periodids) ? $raw[$i]["workperiod"] : "unknownperiod";
 
         $weekdata[$key]["userdata"][$uid][$strdow[$dow]]          += $raw[$i]["time"];
-        $weekdata[$key]["userdata"][$uid][$raw[$i]["workperiod"]] += $raw[$i]["time"];
+        $weekdata[$key]["userdata"][$uid][$workperiod] += $raw[$i]["time"];
 
         //we do not add overtimecompensation hours to the total
         if($isovertimecompensation)
@@ -664,7 +668,7 @@ class weekreport extends atkNode
               $record[$periods[$i]["name"]] = $userdata[$periods[$i]["id"]];
               $newtotal += ($periods[$i]["percentage"]/100) * $userdata[$periods[$i]["id"]];
             }
-            $newtotal += $userdata[0];
+            $newtotal += $userdata["unknownperiod"];
             if ($newtotal == 0) $newtotal = $userdata["total"];
             //subtract overtimecompensation hours from newtotal
             $newtotal -= $userdata["overtimecompensation"];
