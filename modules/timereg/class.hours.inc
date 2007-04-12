@@ -111,7 +111,7 @@ class to_date extends atkDateAttribute
 {
   function to_date()
   {
-    $this->atkDateAttribute("todate", "","", 0, date("Ymd"), AF_NO_LABEL|AF_HIDE);
+    $this->atkDateAttribute("todate", "","", 0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"), AF_NO_LABEL|AF_HIDE);
   }
 
   function load() { return array();}
@@ -601,7 +601,7 @@ class hours extends atkNode
   function getDateJumper()
   {
     $dummy_rec = array("viewdate"=>$this->getInitialDate());
-    $datebox = new atkDateAttribute("viewdate","","",0, date("Ymd"),AF_OBLIGATORY);
+    $datebox = new atkDateAttribute("viewdate","","",0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"),AF_OBLIGATORY);
     return $datebox->edit($dummy_rec);
   }
 
@@ -1147,7 +1147,7 @@ class hours extends atkNode
       if ($this->m_insertmode=="multi")
       {
         $res = $this->m_attribList["activitydate"]->edit($record, $prefix, $mode);
-        $toDate = new atkDateAttribute("todate", "","", 0, date("Ymd"), AF_OBLIGATORY);
+        $toDate = new atkDateAttribute("todate", "","", 0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"), AF_OBLIGATORY);
 
         $res.= " ".atktext("uptoandincluding")." ".$toDate->edit($record, $prefix, $mode);
         $res.= '<input type="hidden" name="'.$prefix.'activitydate[multi]" value="1">';
