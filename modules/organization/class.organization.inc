@@ -76,6 +76,7 @@ class organization extends atkNode
     $this->add(new atkAttribute("bankaccount3", AF_HIDE_LIST|AF_HIDE_ADD, 30));
     $this->add(new atkAttribute("bankaccount4", AF_HIDE_LIST|AF_HIDE_ADD, 30));
     $this->add(new atkAttribute("vatnumber", AF_HIDE_LIST|AF_HIDE_ADD, 25));
+    $this->add(new atkAttribute("debtornumber", AF_HIDE_LIST|AF_HIDE_ADD, 30));
     $this->add(new atkManyToOneRelation("member_of","organization.organization",AF_HIDE_LIST|AF_LARGE|AF_HIDE_ADD));
     $this->add(new atkManyToOneRelation("status","crm.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST|AF_HIDE_ADD));
@@ -254,7 +255,7 @@ class organization extends atkNode
     $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
     return true;
   }
-  
+
   function createVCard($id)
   {
     include_once(moduleDir("utils")."vcard.php");
