@@ -215,7 +215,7 @@
       else
         return sprintf("%s: %s", $record["abbreviation"], $record["name"]);
     }
-    
+
     function postDelete($record)
     {
       $eventlog = &atkGetNode("crm.eventlog");
@@ -703,6 +703,44 @@
       return $view;
     }
 
+    /**
+     * Action select, add filter if user doens't have
+     * the any project right.
+     *
+     * @param object $handler Handler object
+     * @return string Select page
+     */
+    function action_select(&$handler)
+    {
+    	if (!$this->allowed("any_project"))
+      {
+		  	$pids = implode(",", $this->get_user_projects());
+	  		$this->addFilter("project.id IN ($pids)");
+      }
+      return $handler->action_select();
+    }
+
+    /**
+     * Get user project id's
+     *
+     * @return array Array with project id's
+     */
+    function get_user_projects()
+    {
+      $db = &atkGetDb();
+      $sql = "SELECT DISTINCT projectid
+	               FROM project_person
+	               WHERE personid = '".atkGetUserId()."'";
+  	  $records = $db->getrows($sql);
+  	  $id_array = array();
+  	  foreach($records as $row)
+  	  {
+  	    array_push($id_array, $row["projectid"]);
+  	  }
+  	  array_push($id_array, 0);
+  	  return $id_array;
+    }
+
     function action_admin(&$handler, $record=null)
     {
       $view = $this->getView();
@@ -758,7 +796,7 @@
       }
       else
       {
-        return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")), 
+        return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")),
                                                      atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
       }
     }
