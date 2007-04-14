@@ -18,7 +18,7 @@
   $nl = array(
   "abbreviation" => "Projectcode",
   "active" => "Actief",
-  "active_projects" => "Actieve projecten",  
+  "active_projects" => "Actieve projecten",
   "activity" => "Activiteit",
   "activitydate" => "Datum",
   "activityid" => "Activiteit",
@@ -191,7 +191,7 @@
   "holiday_date" => "Datum",
   "hourlock_userid_explanation" => "Selecteer de medewerker die je wilt blokkeren, of selecteer 'Geen' om alle medewerkers te blokkeren",
   "hourlock_week_explanation" => "Vul 4 cijferig jaar gevolgd door 2 cijferig weeknummer in (bijv. 200548)",
-  "hours_lock_week" => "Uren blokkeren", 
+  "hours_lock_week" => "Uren blokkeren",
   "hours" => "Uren",
   "hoursleft" => "Uren nog beschikbaar",
   "hourspda" => "Uren",
@@ -662,6 +662,8 @@
   "closedate"=>"Sluitdatum",
   "private"=>"Priv&eacute;",
   "complete"=>"Afgerond",
+  "debtornumber"=>"Debiteurnummer",
+
 );
 
 ?>
