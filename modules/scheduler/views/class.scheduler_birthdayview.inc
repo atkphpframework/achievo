@@ -64,7 +64,7 @@ class scheduler_birthdayview extends scheduler_view
      if($birthdate["month"]<date("m")) // || ($birthdate["month"]==date("m") &&$birthdate["day"]<date("d")))
        $current_year+=1;
      
-     return ($current_year-$birthdate_year);
+     return ($current_year-$birthdate["year"]);
   }
   
   
