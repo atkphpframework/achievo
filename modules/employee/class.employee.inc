@@ -127,12 +127,12 @@ class employee extends person
 
     if ($view=="active")
     {
-      return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"nonactive")), 
+      return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"nonactive")),
                                                            atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
     }
     else
     {
-      return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")), 
+      return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")),
                                                     atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
     }
   }
@@ -350,7 +350,7 @@ class employee extends person
     $file = new atkTmpFile("employee_birthdays.inc");
     if(!$file->exists())
     {
-      $birthday_recs = $this->selectDb("birthdate IS NOT NULL AND status='active'","month(birthdate), day(birthdate)","","",array("firstname","lastname","birthdate"));
+      $birthday_recs = $this->selectDb("birthdate IS NOT NULL AND status='active'","month(birthdate), dayofmonth(birthdate)","","",array("firstname","lastname","birthdate"));
       $items = array();
       foreach($birthday_recs as $birthday)
       {
