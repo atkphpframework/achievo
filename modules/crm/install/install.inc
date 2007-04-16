@@ -13,6 +13,6 @@
   $setup->installNode("crm.lead");
   $setup->installNode("crm.eventlog");
   
-  $setup->setVersion(2);
+  $setup->setVersion(3);
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+useattrib("atkupdatestampattribute");
 
 class eventLog extends atkNode
 {
