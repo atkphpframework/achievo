@@ -284,7 +284,7 @@
 
       // Put the projectname and coordinator in a html layout
       $projectinfo = '<table border="0">';
-      $projectinfo.= '<tr><td align="right"><b>'.atktext("name").': </b></td><td>'.$record['name'].'</td></tr>';
+      $projectinfo.= '<tr><td align="right"><b>'.atktext("name").': </b></td><td>'.$record["abbreviation"].': '.$record['name'].'</td></tr>';
       $projectinfo.= '<tr><td align="right"><b>'.atktext("coordinator").': </b></td><td>'.$record['coordinator']['lastname'].', '.$record['coordinator']['firstname'].'</td></tr>';
       $projectinfo.= '</table>';
 
