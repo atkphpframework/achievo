@@ -52,6 +52,7 @@ class person extends atkNode
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");
     $this->setIndex("lastname");
+    $this->setDescriptorTemplate("[lastname], [firstname] ([role])")
   }
 
   function lastname_display($record, $mode)
@@ -89,11 +90,6 @@ class person extends atkNode
     {
       return $this->m_attribList["phone"]->display($record, $mode);
     }
-  }
-
-  function descriptor_def()
-  {
-    return "[lastname], [firstname] ([role])";
   }
 
   function action_vcard()

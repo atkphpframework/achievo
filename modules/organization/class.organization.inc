@@ -114,6 +114,7 @@ class organization extends atkNode
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setIndex("name");
+    $this->setDescriptorTemplate("[name], [city] ([organizationcode])");
   }
 
   /**
@@ -213,12 +214,6 @@ class organization extends atkNode
      $attr = &$this->getAttribute("website");
      $org = $attr->edit($record, $mode);
      return "http://".$org;
-  }
-
-
-  function descriptor_def()
-  {
-    return "[name], [city] ([organizationcode])";
   }
 
   function archivedprojects_edit($record)

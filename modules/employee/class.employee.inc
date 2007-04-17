@@ -72,6 +72,7 @@ class employee extends person
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
 
     $this->setOrder("lastname");
+    $this->setDescriptorTemplate("[lastname], [firstname] ([userid])");
   }
 
   function addPasswordAttribute()
@@ -135,11 +136,6 @@ class employee extends person
       return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")),
                                                     atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
     }
-  }
-
-  function descriptor_def()
-  {
-    return "[lastname], [firstname] ([userid])";
   }
 
   function recordActions($rec, &$actions, &$mraactions)
