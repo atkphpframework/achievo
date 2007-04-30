@@ -172,7 +172,10 @@
 
     while (list($empname, $time) = each ($hoursperemp))
     {
-      $percentage = round($time/$total*100);
+      $percentage=0; 
+      if($total>0)
+        $percentage = round($time/$total*100);
+    
       $imgwidth = max(1,($percentage*3));
 
       $data[] = array($empname,time_format($time),'<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20"> &nbsp;('.$percentage.'%)');
@@ -189,7 +192,9 @@
 
     while (list($projname, $time) = each ($hoursperproj))
     {
-      $percentage = round($time/$total*100);
+      $percentage=0; 
+      if($total>0)
+        $percentage = round($time/$total*100);
       $imgwidth = max(1,($percentage*3));
       $data[] = array($projname,time_format($time),'<img src="images/stats_red50.gif" width="'.$imgwidth.'" height="20">&nbsp; ('.$percentage.'%)');
     }
