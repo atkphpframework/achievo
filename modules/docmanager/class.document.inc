@@ -153,7 +153,7 @@
       }
 
       // Raise an error if the documenttypeid is not passed
-      if (!isset($this->m_postvars["documenttypeid"]))
+      if (!isset($this->m_postvars["documenttypeid"]) || $this->m_postvars["documenttypeid"]=='')
       {
         atkerror("No documenttypeid present");
       }
