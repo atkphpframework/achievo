@@ -55,12 +55,6 @@
       $node->add(new documentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
     }
 
-    function project_project_modifier(&$node)
-    {
-      useattrib("docmanager.projectdocumentmanager");
-      $node->add(new projectDocumentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
-    }
-
     function getModifierFunctions(&$node)
     {
       $modifierfunctions = parent::getModifierFunctions($node);
