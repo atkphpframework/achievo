@@ -19,10 +19,10 @@
    * Theme definition
    */
   $theme["tabtype"] = "dhtml";
-  $theme["recordlist_orientation"]='right';
-  $theme['modern_menu_compat']=true;
-  $theme['frame_top_height']=149;
-  $theme['frame_menu_width']=210;
-  $theme['basetheme']='steelblue';
-  $theme['basethemelocation']='atk';
+  $theme["recordlist_orientation"] = 'right';
+  $theme['compatible_menus'] = array('achievo_modern');
+  $theme['frame_top_height'] = 149;
+  $theme['frame_menu_width'] = 210;
+  $theme['basetheme'] = 'steelblue';
+  $theme['basethemelocation'] = 'atk';
 ?>

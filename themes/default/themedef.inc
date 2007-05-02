@@ -18,5 +18,6 @@
    * Theme definition
    */
   $theme["customtpls"] = 'scan templates/';
-  $theme["graphBgColor"]="#eeeeee";
+  $theme["graphBgColor"] = "#eeeeee";
+  $theme['compatible_menus'] = array('achievo');
 ?>
