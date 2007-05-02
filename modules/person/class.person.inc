@@ -94,7 +94,20 @@ class person extends atkNode
 
   function action_vcard()
   {
-    return $this->createVCard($this->m_postvars["id"]);
+    $vcard = &$this->createVCard($this->m_postvars["id"]);
+    $output = $vcard->getVCard();
+    //$filename = $v->getFileName();
+    //Remove spaces that would break the vcard filename
+    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );
+    $filename = $name.".vcf";
+
+    Header("Content-Disposition: attachment; filename=$filename");
+    Header("Content-Length: ".strlen($output));
+    Header("Connection: close");
+    Header("Content-Type: text/x-vCard; name=$filename");
+
+    echo $output;
+    exit;
   }
 
   function createVCard($id)
@@ -113,22 +126,8 @@ class person extends atkNode
     $v->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"]);
     $v->setEmail($record["email"]);
     $v->setNote($record["remark"]);
-
-    $output = $v->getVCard();
-    //$filename = $v->getFileName();
-    //Remove spaces that would break the vcard filename
-    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );
-    $filename = $name.".vcf";
-
-    Header("Content-Disposition: attachment; filename=$filename");
-    Header("Content-Length: ".strlen($output));
-    Header("Connection: close");
-    Header("Content-Type: text/x-vCard; name=$filename");
-
-    echo $output;
-    exit;
+    return $v;
   }
-
 }
 
 ?>
