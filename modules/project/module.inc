@@ -10,7 +10,7 @@
     function getNodes()
     {
       /* register nodes */
-      registerNode("project.project", array("admin", "add", "edit", "delete", "stats","planning", "initialplanning", "any_project", "changeabbreviation"));
+      registerNode("project.project", array("admin", "add", "edit", "delete", "stats","planning", "initialplanning", "any_project", "changeabbreviation"), array("finance", "planning"));
       registerNode("project.phase", array("add", "edit", "delete"));
       registerNode("project.deliverable", array("add", "edit", "delete"));
       registerNode("project.activity", array("admin", "add", "edit", "delete", "stats"));
@@ -70,8 +70,8 @@
     {
       atkimport("module.project.hourslistener");
       $node->addListener(new hoursListener());
-    }   
-  
+    }
+
   }
 
 ?>
