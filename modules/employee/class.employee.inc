@@ -182,7 +182,7 @@ class employee extends person
   {
     $db = &atkGetDb();
     $data = $db->getrows("SELECT
-                              project.id, project.name, SUM(time) as total
+                              project.id, project.name, project.abbreviation, SUM(time) as total
                             FROM
                               hours, phase, project
                             WHERE
@@ -205,7 +205,8 @@ class employee extends person
     $dataset = array();
     for ($i=0, $_i=count($data); $i<$_i; $i++)
     {
-      $dataset[$data[$i]["name"]] = $data[$i]["total"];
+      $key = $data[$i]["abbreviation"].": ".$data[$i]["name"];
+      $dataset[$key] = $data[$i]["total"];
     }
 
     return array("registeredtimeperproj"=>$dataset);
