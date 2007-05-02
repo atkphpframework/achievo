@@ -3,6 +3,6 @@
   $setup->installNode("quotation.quotation");
   $setup->installNode("quotation.payment");
   $setup->installNode("project.project");
-  $setup->setVersion(5);
+  $setup->setVersion(6);
 
 ?>
