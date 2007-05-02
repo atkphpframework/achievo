@@ -1,4 +1,4 @@
 <?php
   $setup->installNode("email_template.email_template");
-  $setup->setVersion(2);
+  $setup->setVersion(3);
 ?>
