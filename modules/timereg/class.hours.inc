@@ -699,7 +699,7 @@ class hours extends atkNode
     for ($i=0;$i<count($data);$i++)
     {
       $rec = $data[$i];
-      $key = $rec["projectid"]["name"]." - ".$rec["phaseid"]["name"];
+      $key = $rec["projectid"]["abbreviation"].": ".$rec["projectid"]["name"]." - ".$rec["phaseid"]["name"];
       $date = $rec["activitydate"]["year"]."-".$rec["activitydate"]["month"]."-".$rec["activitydate"]["day"];
       $time = $rec["time"];
       $week[$key][$date] += $time;
