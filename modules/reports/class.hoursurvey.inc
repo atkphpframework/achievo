@@ -243,6 +243,14 @@ class hoursurvey extends atkNode
     $organizationpair =   explode("=",$g_sessionManager->pageVar("organizationid"));
     $organizationid =     stripQuotes($organizationpair[1]);
     if(!isset($organizationid)) $organizationid = "";
+
+    if(atkconfig::get("timereg","timereg_contact_link",false))
+    {
+      $contact_pair =       explode("=",$g_sessionManager->pageVar("contact_id"));
+      $contact_id =         stripQuotes($contact_pair[1]);
+      if(!isset($contact_id)) $contact_id = "";
+    }
+    
     $department_name =    $g_sessionManager->pageVar("departmentid");
     $functionlevelswitch =$g_sessionManager->pageVar("functionlevelswitch");
     $creditor_id =        $g_sessionManager->pageVar("creditor_id");
@@ -423,6 +431,11 @@ class hoursurvey extends atkNode
       "remark"  =>$remark
       );
 
+      if(atkconfig::get("timereg","timereg_contact_link",false))
+      {
+        $dummyrec["contact_id"] = array("id"=>$contact_id);
+      }
+
       if (moduleExists("billing"))
       $dummyrec["billing_projecttypeid"] = array("id"=>$billing_projecttypeid);
 
@@ -440,6 +453,12 @@ class hoursurvey extends atkNode
 
       $projectatt = &$hoursnode->m_attribList["projectid"];
       $projectatt->addDependee("phaseid");
+      
+      if(atkconfig::get("timereg","timereg_contact_link",false))
+      {
+        $projectatt->addDependee("contact_id");
+      }
+      
       $projectatt->m_ownerInstance = &$hoursnode;
       $projectatt->_registerDependees();
 
@@ -481,10 +500,28 @@ class hoursurvey extends atkNode
 
       $this->_addOr($data);
 
-      $organizationatt = &$this->add(new atkManyToOneRelation("organizationid", "organization.organization"));
+      $organizationatt = &$hoursnode->getAttribute("organizationid");
+
+      if(atkconfig::get("timereg","timereg_contact_link",false))
+      {
+        $organizationatt->addDependee("contact_id");
+        $organizationatt->m_ownerInstance = &$hoursnode;
+        $organizationatt->_registerDependees();
+      }
 
       $data[] = array(atktext("organization","project").':','<SELECT name="roleid">'.$this->get_roles($roleid).'</SELECT> '.$organizationatt->edit($dummyrec));
       $this->_addOr($data);
+
+      if(atkconfig::get("timereg","timereg_contact_link",false))
+      {
+        $contact_id_att = &$hoursnode->getAttribute("contact_id");
+        // addDependee don't work without id
+        $data[] = array(atktext("contact_id").':',
+        array('value'=>$contact_id_att->getEdit("edit",$dummyrec,''),
+        'id'=>str_replace(".","_",$this->getHoursNodeName())."_".$contact_id_att->m_name)
+        );
+        $this->_addOr($data);
+      }
 
       $data[] = array(atkText("department","project").':','<SELECT name="departmentid">'.$this->get_departments($department_name).'</SELECT>');
       $this->_addOr($data);
@@ -774,7 +811,16 @@ class hoursurvey extends atkNode
       if(!in_array("phaseid",$col))
       $col[] = "phaseid";
     }
-
+    if(atkconfig::get("timereg","timereg_contact_link",false))
+    {
+      if(!in_array("contact_id",$col))
+      $col[] = "contact_id";
+      if ($contact_id!="")
+      {
+        $filterarray[] = $this->_addFilterArrayItem("contact_id","='$contact_id'","hours");
+      }
+    }
+    
     $orderbystatement = $this->getOrderByStatement($orderby, $orderdirection);
 
     //Check if we need to add additional columns because of the selected filter.

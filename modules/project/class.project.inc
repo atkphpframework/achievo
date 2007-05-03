@@ -114,6 +114,11 @@
       $this->add(new dataGraphAttribute("emptimedistribution", "emptime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");
       $this->add(new dataGraphAttribute("activitytimedistribution", "activitytime", array("projectid"=>"[id]"), "auto", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT), "stats");
 
+      if(atkconfig::get("timereg","timereg_contact_link",false))
+      {
+        $this->add(new atkListAttribute("contact_restrict",array("restrict_project","restrict_eligible"),array(1,2),AF_HIDE_LIST|AF_FORCE_LOAD|AF_OBLIGATORY));
+      }
+          
       $this->setTable("project","project");
 
       $this->setOrder("project.abbreviation, project.name");

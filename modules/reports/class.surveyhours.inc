@@ -11,14 +11,17 @@ class surveyhours extends hours
       if (is_a($attr, 'atkmanytoonerelation'))
       {
         $attr->removeFlag(AF_RELATION_AUTOCOMPLETE);
+        //we remove all dependee - hoursurvey will add own
+        $attr->m_dependees = array();
       }
         
       if($attrName == "phaseid")
       {
-        $attr->m_dependees = array();
         $attr->removeFlag(AF_OBLIGATORY);
       }        
     }
+    
+    $this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
     
     $projectAtt = &$this->getAttribute("projectid");
     $projectAtt->removeFlag(AF_OBLIGATORY);

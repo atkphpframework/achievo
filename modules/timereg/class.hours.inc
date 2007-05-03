@@ -241,6 +241,12 @@ class hours extends atkNode
 
     $project = &new projectManyToOneRelation("projectid","project.projectselector",AF_OBLIGATORY|AF_FORCE_LOAD);
     $project->addDependee("phaseid");
+
+    if(atkconfig::get("timereg","timereg_contact_link",false))
+    {
+      $project->addDependee("contact_id");
+    }
+
     $this->add($project,null,20);
 
     if($oneActivity)
@@ -250,6 +256,10 @@ class hours extends atkNode
     $activity = &new atkManyToOneRelation("activityid","project.activity",AF_OBLIGATORY|$activity_flag);
     $this->add($activity);
 
+    if(atkconfig::get("timereg","timereg_contact_link",false))
+    {
+      $this->add(new atkManyToOneRelation("contact_id","organization.contact"));
+    }
 
     $this->add(new atkTextAttribute("remark", atkconfig("timereg_remark_lines", 1), 0));
     $this->addTime();
@@ -1444,6 +1454,39 @@ class hours extends atkNode
     return true;
   }
     // END WARNING
+
+  function contact_id_edit($record, $fieldprefix="", $mode="edit")
+  {
+    $restrict = atkArrayNvl($record['projectid'],"contact_restrict",0);
+    $p_attrib = &$this->getAttribute("contact_id");
+
+    //project priority -  if project selected, we use select_contract restriction from project
+    if($restrict == '2')
+    {
+      $p_attrib->addDestinationFilter("person.eligible='1'");
+    }
+    elseif($restrict == '1')
+    {
+      $node = &atkGetNode("project.project");
+      list($customer) = $node->selectDb("project.id='".$record['projectid']['id']."'","","","",array("customer"),"admin");
+      if ($customer['customer']['id'])
+      {
+            $p_attrib->addDestinationFilter("person.company='{$customer['customer']['id']}'");
+      }
+      else  $p_attrib->addDestinationFilter("0");
+    }
+    //if no project, but organization set, we use organization as filter for contact
+    elseif($restrict == '0' && atkArrayNvl($record['organizationid'],'id', false))
+    {
+      $p_attrib->addDestinationFilter("person.company='{$record['organizationid']['id']}'");
+    }
+    //if nothing select, we use eligible
+    else
+    {
+      $p_attrib->addDestinationFilter("person.eligible='1'");
+    }
+    return $p_attrib->edit($record, $fieldprefix, $mode);
+  }
 
 }
 

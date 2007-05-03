@@ -8,6 +8,7 @@ useattrib("atkCreateStampAttribute");
 useattrib("atkupdatedbyattribute");
 useattrib("atkupdatestampattribute");
 useattrib("atkdocumentattribute");
+useattrib('atkboolattribute');
 
 class contact extends person
 {
@@ -28,6 +29,11 @@ class contact extends person
     $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");
     $this->add(new atkUpdatedByAttribute("last_modified_by",AF_HIDE_LIST),"history");
     $this->add(new atkUpdateStampAttribute("last_modified_on",AF_HIDE_LIST),"history");
+
+    if(atkConfig::get("timereg","timereg_contact_link",false))
+    {
+      $this->add(new atkBoolAttribute("eligible",AF_HIDE_LIST|AF_HIDE_ADD));
+    }
     $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST));
     $this->m_securityMap["document"] = "view";
   }
