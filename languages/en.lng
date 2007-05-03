@@ -661,7 +661,11 @@
   "complete"=>"Complete",
   "mra_complete"=>"Complete",
   "debtornumber"=>"Debtornumber",
-
+  "contact_id"=>"Select contact",
+  "eligible"=>"Eligible for time registration field",
+  "contact_restrict"=>"Contact selection for time registration",
+  "restrict_project"=>"Only contacts for the project customer can be selected",
+  "restrict_eligible"=>"All eligible contacts can be selected",
 );
 
 ?>
