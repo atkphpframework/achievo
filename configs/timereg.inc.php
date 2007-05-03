@@ -55,4 +55,9 @@
 
   $config["hoursnotblocked_from_date"] = "";
 
+  /**
+   * This variable configures wether hour registrations should be have option
+   * to link time-registrations to specific contacts
+   */
+  $config["timereg_contact_link"] = false;
 ?>
