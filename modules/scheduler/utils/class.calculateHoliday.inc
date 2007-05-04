@@ -37,7 +37,7 @@ class calculateHoliday
      $weekday=($holiday["weekday"]!=""?$holiday["weekday"]:-1);
      $month=($holiday["month"]!=""?$holiday["month"]:0);
      $day=($holiday["day"]!=""?$holiday["day"]:0);
-     $offset=($holiday["offset"]!=""?$holiday["offset"]:0);
+     $offset=($holiday["day_offset"]!=""?$holiday["day_offset"]:0);
      $moveto=($holiday["moveto"]!=""?$holiday["moveto"]:0);
      $length=($holiday["length"]!=""?$holiday["length"]:1);
 

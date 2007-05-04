@@ -60,7 +60,7 @@
   foreach($templates as $record)
     $et->addDb($record);
 
-  $setup->setVersion(5);
+  $setup->setVersion(6);
   set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo
@@ -88,7 +88,10 @@
       {
         $db2 = $db;
       }
-    
+      global $config_debug;
+      atkdebug("Turn off debugging for scheduler patch");
+      $debug_old = $config_debug;
+      $config_debug=-1;
       atkimport("module.scheduler.utils.schedulertools");
       // Convert scheduler types
       $sql = "SELECT * FROM schedule_type";
@@ -204,5 +207,7 @@
     
       unset($type_lookup);
       unset($scheduler_lookup);
+      $config_debug=$debug_old;
+      atkdebug("Turn on debugging again in the scheduler patch");
   }
 ?>

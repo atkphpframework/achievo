@@ -872,7 +872,7 @@ class scheduler_view
                                                   "recur"=>"once",
                                                   "startdate"=>mktime(0,0,0,$i,$day,$this->m_year),
                                                   "enddate"=>mktime(23,59,59,$i,$day,$this->m_year),
-                                                  "title"=>$name." ".atktext("birthday"));
+                                                  "title"=>$name["name"]." ".atktext("birthday"));
             }
           }
         }
@@ -1058,7 +1058,7 @@ class scheduler_view
       // Also check if the current user is an attendee
       //$attendees_rows = $this->getAttendees($item["id"]);
       $numberofattendees = count($this->m_attendees[$item["id"]]);
-
+      atk_var_dump($this->m_attendees,"ATTENDEES ".$item["id"]);
       $names = "";
       for($i=0;$i<$numberofattendees;$i++)
       {
