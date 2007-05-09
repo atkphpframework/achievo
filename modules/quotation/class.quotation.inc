@@ -178,7 +178,7 @@
     {
       if ($this->m_view == "filtered")
       {
-        $this->addFilter("quotation_quotation.status NOT IN ('rejected', 'prepaidcompleted', 'billed')");
+        $this->addFilter("(quotation_quotation.status NOT IN ('rejected', 'prepaidcompleted', 'billed') OR quotation_quotation.status is null)");
       }
       return $handler->action_admin();
     }
@@ -417,7 +417,7 @@
 
       return array(atktext("my_pipeline","quotation")=>$dataset);
     }
-    
+
     function postDelete($record)
     {
       $eventlog = &atkGetNode("crm.eventlog");
