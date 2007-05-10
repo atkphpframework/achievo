@@ -11,14 +11,6 @@ class scheduler_birthdayview extends scheduler_view
     $this->setView("birthday");
   }
 
- /**
-  * navigate through years using prev/next year link
-  * @returns html code containing links for previous year, current year and next year
-  */
-  function _getNav()
-  {
-    return "";
-  }
 
  /**
   * the actual displaying function
@@ -65,6 +57,14 @@ class scheduler_birthdayview extends scheduler_view
        $current_year+=1;
      
      return ($current_year-$birthdate["year"]);
+  }
+  
+  /**
+   * Birthday view doesn't need a selector
+   */
+  function _getSelector()
+  {
+    return '';
   }
   
   

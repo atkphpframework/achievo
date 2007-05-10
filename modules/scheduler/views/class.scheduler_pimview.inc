@@ -54,7 +54,7 @@ class scheduler_pimview extends scheduler_view
         }
       }
     }
-    if($items=="") return $tmp.atkText("pim_scheduler_empty", "scheduler");
+    if($items=="") return $tmp.'<br /><br />'.atkText("pim_scheduler_empty", "scheduler").'<br /><br />';
     return $tmp.$items;
   }
 
