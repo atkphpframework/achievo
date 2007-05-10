@@ -346,6 +346,7 @@ Changes in Achievo 1.2.1
 * When adding a phase it will check if the enddate isn't before
   the startdate. (bug #439) [Sandy]
 * Fixed department criteria in Time Survey Report. (bug #656) [Sandy]
+* Fixed refresh of Master Gantt. (bug #836) [Ivo]
 
 Changes in Achievo 1.2
 ----------------------
