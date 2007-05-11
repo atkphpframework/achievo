@@ -44,6 +44,20 @@ class userpimitems extends atkNode
     $pimitemattr = &$this->getAttribute("pimitem");
     return $pimitemattr->display($record);
   }
+
+  function addDefaultPimItemsForUser($userid)
+  {
+    $defaultitems = array("timereg_timeregistration","scheduler_schedule","todo_todos");
+    $orderby=10;
+    foreach($defaultitems as $pimitem)
+    {
+      $record=array("userid"=>"$userid",
+                    "pimitem"=>$pimitem,
+                    "orderby"=>$orderby);
+      $this->addDb($record);
+      $orderby+=10;
+    }
+  }
 }
 
 ?>
