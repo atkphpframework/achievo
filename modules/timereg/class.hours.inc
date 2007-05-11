@@ -574,7 +574,7 @@ class hours extends atkNode
 
       $ui = &$this->getUi();
       $tplvars = array( 'yesterdayurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday))),
-                        'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday,"weekview"=>1))),
+                        'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>date('Y-m-d',$viewdatestamp),"weekview"=>1))),
                         'sessionform'=>session_form(),
                         'userselect'=>$this->getUserSelect(),
                         'datejumper'=>$this->getDateJumper(),
