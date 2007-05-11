@@ -945,7 +945,7 @@ class hours extends atkNode
   {
     $period = Locking::getPeriod($this->m_viewdate);
 
-    if (atkconfig("lock_period_approval_required"))
+    if (atkconfig::get("timereg","lock_period_approval_required",false))
     {
       Locking::lockPeriod($period);
     } else {
