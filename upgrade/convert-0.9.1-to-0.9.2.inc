@@ -129,7 +129,7 @@
   $projects = $db->getrows($sql);
  
   $customer_defaultcontacts = array(); 
-  
+  $contact_obligatory = atkconfig("project_contact_obligatory",false);
   for ($i=0;$i<count($projects);$i++)
   {  
     if ($projects[$i]["contact"] != 0)
@@ -139,7 +139,7 @@
     }
     else
     {    
-      if ($projects[$i]["customer"]!=0) // if customer is not set, we don't need to convert
+      if ($projects[$i]["customer"]!=0 && $contact_obligatory) // if customer is not set or contact is not obligatory, we don't need to convert
       {
         // project has a customer, but a contact person was not set. Create a default contact person.        
         if (empty($customer_defaultcontacts[$projects[$i]["customer"]])) // check if we already added a default contact for this customer.
@@ -175,7 +175,6 @@
   }
 
   $setup->dropColumn("project", "contact");
-  $setup->dropColumn("project", "customer");
   
   //add new fields to schedule table
   $setup->addColumn("schedule", "all_users", "int(1)");
