@@ -710,6 +710,7 @@
       $g_sessionManager->pageVar("atkdodisapprove");
 
       $page = &$this->getPage();
+      $theme = &atkTheme::getInstance();
       $page->register_style($theme->stylePath("style.css"));
       atkimport("atk.ui.atktheme");
       $theme = &atkTheme::getInstance();
