@@ -17,6 +17,12 @@
    * is disaproved will automatically get unlocked.
    */
   $config["hours_approve_unlock_on_disaprove"] = false;
+  
+  /**
+   * When the setting below is set to true, the week
+   * is not automaticly approved
+   */
+  $config["lock_period_approval_required"] = false;
 
   /**
    * Decides if locking should be based on months or
