@@ -309,6 +309,8 @@ class employee extends person
 
   function postAdd($record)
   {
+    $pimitems = &atkGetNode("pim.userpimitems");
+    $pimitems->addDefaultPimItemsForUser($record['id']);
     $this->removeBirthdaysCache();
     return true;
   }
