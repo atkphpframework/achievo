@@ -302,7 +302,7 @@ class weekreport extends atkNode
     if ($nameswitch=="supervisor" && $userid!='all')
     {
       $query = "SELECT
-                  period, hours_lock.userid
+                  period, hours_lock.userid,hours_lock.approved
                 FROM
                   hours_lock, person
                 WHERE
@@ -315,7 +315,7 @@ class weekreport extends atkNode
     {
       // Collect locks..
       $query = "SELECT
-                  period, userid
+                  period, userid, approved
                 FROM
                   hours_lock
                 WHERE
@@ -468,9 +468,10 @@ class weekreport extends atkNode
 
 
       $data[] = array(atktext("status"),'<select name="showstatus">
-                     <option VALUE="both" '.($showstatus=="both"?"selected":"").'>'.atktext("both").'
+                     <option VALUE="all" '.($showstatus=="all"?"selected":"").'>'.atktext("all").'
                      <option VALUE="locked" '.($showstatus=="locked"?"selected":"").'>'.atktext("locked").'
                      <option VALUE="unlocked" '.($showstatus=="unlocked"?"selected":"").'>'.atktext("unlocked").'
+                     <option VALUE="approved" '.($showstatus=="approved"?"selected":"").'>'.atktext("approved").'
                      </select>');
 
 
@@ -624,18 +625,25 @@ class weekreport extends atkNode
       }
 
       $locks = $this->getLocks($employeeswitch, $userid, $report_start_week, $report_end_week);
+      atk_var_dump($locks,"LOCKS");
 
       for($i=0,$_i=count($locks);$i<$_i;$i++)
       {
+        if($locks[$i]["approved"]==1)
+        {
+          $status = "approved";
+        }
+        else 
+        {
+          $status = "locked";
+        }
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
         {
-          atkdebug("<h2>A</h2>");
-          $weekdata[$locks[$i]["period"]]["userdata"][$userid]["status"]="locked";
+          $weekdata[$locks[$i]["period"]]["userdata"][$userid]["status"]=$status;
         }
         else
         {
-          atkdebug("<h2>B</h2>");
-          $weekdata[$locks[$i]["period"]]["userdata"][$locks[$i]["userid"]]["status"]="locked";
+          $weekdata[$locks[$i]["period"]]["userdata"][$locks[$i]["userid"]]["status"]=$status;
         }
 
       }
@@ -693,8 +701,19 @@ class weekreport extends atkNode
             {
               $record["status"] = $data["status"];
             }
-            $cmpstatus = (($record["status"]=="locked")?"locked":"unlocked");
-            if ($showstatus=="both" || $cmpstatus==$showstatus)
+            if($record["status"]=="locked")
+            {
+              $cmpstatus = "locked";
+            }
+            elseif($record["status"]=="approved")
+            {
+              $cmpstatus = "approved";
+            }
+            else 
+            {
+              $cmpstatus = "unlocked";
+            }
+            if ($showstatus=="all" || $cmpstatus==$showstatus)
             {
               for($i=0,$_i=count($strdow);$i<$_i;$i++)
               {
