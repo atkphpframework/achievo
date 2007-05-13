@@ -577,7 +577,7 @@ class weekreport extends atkNode
       // collect data..
       $raw = $this->getHourRecords($employeeswitch, $userid, $startdate, $enddate, $functionlevelswitch, $lowerlevels);
       $this->getHarvestedModuleObjects();
-
+      $users_array = array();
       for ($i=0,$_i=count($raw);$i<$_i;$i++)
       {
         //is this timeregistration a overtimecompensation?
@@ -590,6 +590,7 @@ class weekreport extends atkNode
         $key = weekstamp($stamp);
         $weekdata[$key]["period"] = $key;
         $uid = $raw[$i]["userid"];
+        $users_array[] = $uid;
         $workperiod = in_array($raw[$i]["workperiod"], $periodids) ? $raw[$i]["workperiod"] : "unknownperiod";
 
         $weekdata[$key]["userdata"][$uid][$strdow[$dow]]          += $raw[$i]["time"];
@@ -639,7 +640,11 @@ class weekreport extends atkNode
         }
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
         {
-          $weekdata[$locks[$i]["period"]]["userdata"][$userid]["status"]=$status;
+          // Lock is for all users
+          foreach($users_array as $uid)  
+          {        
+            $weekdata[$locks[$i]["period"]]["userdata"][$uid]["status"]=$status;
+          }
         }
         else
         {
