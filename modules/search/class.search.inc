@@ -81,6 +81,7 @@
       $tplvars = array( 'targetframe'=>$targetframe,
                         'sessionform'=>session_form($sessionstatus),
                         'searchstring'=>$searchstring,
+                        'dispatch'=>getDispatchFile(),
                        );
       return $ui->render($ui->templatePath('simplesearch.tpl'),$tplvars);
     }
