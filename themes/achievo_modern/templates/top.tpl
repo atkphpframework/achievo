@@ -12,6 +12,6 @@
   {crmlastviewed}
   </div>
   <div id="loginBox">
-  {atktext logged_in_as}: {$user} {if $username}[{$username}]{/if}
+  {atktext logged_in_as}: |{$user}|
   </div>
 </div>
