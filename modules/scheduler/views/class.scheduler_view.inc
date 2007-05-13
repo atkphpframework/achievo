@@ -206,7 +206,7 @@ class scheduler_view
   function _view_header()
   {
     $links = array();
-    $links["additem"] = dispatch_url("scheduler.scheduler", "add");
+    $links["additem"] = session_url(dispatch_url("scheduler.scheduler", "add"),SESSION_NESTED);
     $views = array("day", "week", "month", "birthday" /*, "year", "employee"*/);
     foreach($views as $view)
       $links[$view."view"] = dispatch_url("scheduler.scheduler", "admin", array("view"=>$view));
