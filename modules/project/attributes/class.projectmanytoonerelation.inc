@@ -22,10 +22,17 @@
   class projectManyToOneRelation extends atkManyToOneRelation 
   {
     var $m_store = false;
+    var $m_userid = "";
     
     function projectManyToOneRelation($name, $destination, $flags="")
-    {      
+    {
+      $this->m_userid = &atkGetUserId();
       parent::atkManyToOneRelation($name, $destination,$flags);      
+    }
+    
+    function setUserId($userid)
+    {
+      $this->m_userid = $userid;
     }
     
     function setStore($store=false)
@@ -134,13 +141,13 @@
       $query->addField("id","","project");      
       $query->addJoin("phase","","hours.phaseid=phase.id",true);
       $query->addJoin("project","","phase.projectid=project.id",true);      
-      $query->addCondition("hours.userid='{$user["id"]}'");
+      $query->addCondition("hours.userid='{$this->m_userid}'");
       $query->addCondition("project.status='active'");
       
       if (!$g_securityManager->allowed("timereg.hours", "any_project"))
       {
         $query->addJoin("project_person","","project_person.projectid = project.id",true);
-        $query->addCondition("(project_person.personid = ".$user["id"]." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
+        $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
             
       $query->addGroupBy("hours.phaseid");      
