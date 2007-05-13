@@ -36,8 +36,7 @@
      {
       $attrib = $this->getAttribute("every");
       $ret = $attrib->edit($record,$fieldprefix,$mode);
-      $ret.= '&nbsp;<span id="every_day">days</span><span id="every_week">weeks</span><span id="every_month">months</span><span id="every_year">years</span>';
-
+      $ret.= '&nbsp;<span id="every_day">'.atktext('days').'</span><span id="every_week">'.atktext('weeks').'</span><span id="every_month">'.atktext('months').'</span><span id="every_year">'.atktext('years').'</span>';
       return $ret;
      }
 
