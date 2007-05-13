@@ -241,6 +241,7 @@ class hours extends atkNode
 
     $project = &new projectManyToOneRelation("projectid","project.projectselector",AF_OBLIGATORY|AF_FORCE_LOAD);
     $project->addDependee("phaseid");
+    $project->setUserId($this->m_user);
 
     if(atkconfig::get("timereg","timereg_contact_link",false))
     {
@@ -817,6 +818,7 @@ class hours extends atkNode
                       'curuser'=>$record["userid"],
                       'curdate'=>weeknumber::getWeeknumber($viewtime,atkconfig("startday",1),atkconfig("firstweekcontains",4)).", ".date("Y",$viewtime),
                       'lockicon'=>Locking::getLockIcon($locks),
+                      'dispatch'=>getDispatchFile(),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
                      );
     if ($weekdates[8]['date'] <= date("Y-m-d"))
