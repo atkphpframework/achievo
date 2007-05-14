@@ -665,7 +665,7 @@
     function storeMembers($rec, $members)
     {
       $role_id = $this->fetchRoleId();
-
+     
       for ($i=0, $_i=count($members); $i<$_i; $i++)
       {
         $this->_addMemberRecord($rec["id"], $members[$i]["id"], $role_id);
@@ -679,7 +679,14 @@
       //$raw = $this->m_postvars["member_add_role"];
       $rolesel = new atkManyToOneRelation("member_add_role", "project.role", AF_OBLIGATORY);
       $role_id = $rolesel->fetchValue($this->m_postvars);
-      return $role_id["id"];
+      if($role_id["id"]!="")
+      {
+        return $role_id["id"];
+      }
+      else 
+      {
+        return 0;
+      }
     }
 
     function _addMemberRecord($project_id, $person_id, $role_id)
