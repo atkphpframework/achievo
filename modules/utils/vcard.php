@@ -69,7 +69,23 @@ function quoted_printable_encode($input, $line_max = 76) {
 class vCard {
     var $properties;
     var $filename;
-    
+
+    function setProperty($key, $value, $encode=false)
+    {
+      if (!$encode)
+        $this->properties[$key] = $value;
+      else
+        $this->properties[$key . ";ENCODING=QUOTED-PRINTABLE"] = quoted_printable_encode($value);
+    }
+
+    function getProperty($key, $encode=null)
+    {
+      if (isset($this->properties[$key . ";ENCODING=QUOTED-PRINTABLE"]) && $encode!==false)
+        return quoted_printable_decode($this->properties[$key . ";ENCODING=QUOTED-PRINTABLE"]);
+      else
+        return atkArrayNvl($this->properties, $key);
+    }
+
     function setPhoneNumber($number, $type="") {
     // type may be PREF | WORK | HOME | VOICE | FAX | MSG | CELL | PAGER | BBS | CAR | MODEM | ISDN | VIDEO or any senseful combination, e.g. "PREF;WORK;VOICE"
         $key = "TEL";
@@ -77,38 +93,38 @@ class vCard {
         $key.= ";ENCODING=QUOTED-PRINTABLE";
         $this->properties[$key] = quoted_printable_encode($number);
     }
-    
+
     // UNTESTED !!!
     function setPhoto($type, $photo) { // $type = "GIF" | "JPEG"
         $this->properties["PHOTO;TYPE=$type;ENCODING=BASE64"] = base64_encode($photo);
     }
-    
+
     function setFormattedName($name) {
         $this->properties["FN"] = quoted_printable_encode($name);
+        $this->filename = str_replace(" ", "_", trim($name) . ".vcf");
     }
-    
+
     function setName($family="", $first="", $additional="", $prefix="", $suffix="") {
         $this->properties["N"] = "$family;$first;$additional;$prefix;$suffix";
-        $this->filename = "$first%20$family.vcf";
         if ($this->properties["FN"]=="") $this->setFormattedName(trim("$prefix $first $additional $family $suffix"));
     }
-    
+
     function setBirthday($date) { // $date format is YYYY-MM-DD
         $this->properties["BDAY"] = $date;
     }
-    
+
     function setAddress($postoffice="", $extended="", $street="", $city="", $region="", $zip="", $country="", $type="HOME;POSTAL") {
     // $type may be DOM | INTL | POSTAL | PARCEL | HOME | WORK or any combination of these: e.g. "WORK;PARCEL;POSTAL"
         $key = "ADR";
         if ($type!="") $key.= ";$type";
         $key.= ";ENCODING=QUOTED-PRINTABLE";
         $this->properties[$key] = encode($name).";".encode($extended).";".encode($street).";".encode($city).";".encode($region).";".encode($zip).";".encode($country);
-        
+
         if ($this->properties["LABEL;$type;ENCODING=QUOTED-PRINTABLE"] == "") {
             //$this->setLabel($postoffice, $extended, $street, $city, $region, $zip, $country, $type);
         }
     }
-    
+
     function setLabel($postoffice="", $extended="", $street="", $city="", $region="", $zip="", $country="", $type="HOME;POSTAL") {
         $label = "";
         if ($postoffice!="") $label.= "$postoffice\r\n";
@@ -118,25 +134,25 @@ class vCard {
         if ($city!="") $label.= "$city\r\n";
         if ($region!="") $label.= "$region\r\n";
         if ($country!="") $country.= "$country\r\n";
-        
+
         $this->properties["LABEL;$type;ENCODING=QUOTED-PRINTABLE"] = quoted_printable_encode($label);
     }
-    
+
     function setEmail($address) {
         $this->properties["EMAIL;INTERNET"] = $address;
     }
-    
+
     function setNote($note) {
         $this->properties["NOTE;ENCODING=QUOTED-PRINTABLE"] = quoted_printable_encode($note);
     }
-    
+
     function setURL($url, $type="") {
     // $type may be WORK | HOME
         $key = "URL";
         if ($type!="") $key.= ";$type";
         $this->properties[$key] = $url;
     }
-    
+
     function getVCard() {
         $text = "BEGIN:VCARD\r\n";
         $text.= "VERSION:2.1\r\n";
@@ -148,7 +164,19 @@ class vCard {
         $text.= "END:VCARD\r\n";
         return $text;
     }
-    
+
+    function outputVCard() {
+        $output = $this->getVCard();
+        $filename = $this->getFileName();
+
+        Header("Content-Disposition: attachment; filename=$filename");
+        Header("Content-Length: ".strlen($output));
+        Header("Connection: close");
+        Header("Content-Type: text/x-vCard; name=$filename");
+
+        echo $output;
+    }
+
     function getFileName() {
         return $this->filename;
     }

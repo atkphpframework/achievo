@@ -239,11 +239,6 @@ class organization extends atkNode
     return atktext("none");
   }
 
-  function action_vcard(&$handler)
-  {
-    return $this->createVCard($this->m_postvars["id"]);
-  }
-
   function postDelete($record)
   {
     $eventlog = &atkGetNode("crm.eventlog");
@@ -251,40 +246,33 @@ class organization extends atkNode
     return true;
   }
 
-  function createVCard($id)
+  function action_vcard(&$handler)
   {
+    // Get the record
+    $id = atkArrayNvl($this->m_postvars, "id");
+    $organizations = $this->selectDb("organization.id='".$id."'", "", "", "", "", "view");
+
+    // Create the vcard
     include_once(moduleDir("utils")."vcard.php");
-    $v = new vCard();
+    $vcard = new vCard();
+    $this->assignVcard($vcard, $organizations[0]);
 
-    $recs = $this->selectDb("id='".$id."'", "", "", "", array("phone", "fax", "name",
-                                                              "address", "city", "state", "zipcode",
-                                                              "country", "mail_address", "mail_city", "mail_state",
-                                                              "mail_zipcode", "mail_country", "email", "website", "remark"));
-    $record = $recs[0];
-
-    $v->setPhoneNumber($record["phone"], "PREF;WORK;VOICE");
-    $v->setPhoneNumber($record["fax"], "FAX");
-    $v->setName($record["name"], "", "", "");
-    $v->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"], "HOME");
-    $v->setAddress("", "", $record["mail_address"], $record["mail_city"], $record["mail_state"], $record["mail_zipcode"], $record["mail_country"], "POSTAL");
-    $v->setEmail($record["email"]);
-    $v->setURL($record["website"]);
-    $v->setNote($record["remark"]);
-
-    $output = $v->getVCard();
-
-    //$filename = $v->getFileName();
-    //Remove spaces that would break the vcard filename
-    $name = str_replace(" ", "_", $record['name'] );
-    $filename = $name.".vcf";
-
-    Header("Content-Disposition: attachment; filename=$filename");
-    Header("Content-Length: ".strlen($output));
-    Header("Connection: close");
-    Header("Content-Type: text/x-vCard; name=$filename");
-
-    echo $output;
+    // Output the vcard and stop further script execution
+    $vcard->outputVCard();
     exit;
+  }
+
+  function assignVcard(&$vcard, $record, $isperson = false)
+  {
+    $vcard->setFormattedName($record["name"]);
+    $vcard->setProperty("ORG", $record["name"]);
+    $vcard->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"], "WORK");
+    $vcard->setAddress("", "", $record["mail_address"], $record["mail_city"], $record["mail_state"], $record["mail_zipcode"], $record["mail_country"], "POSTAL");
+    $vcard->setPhoneNumber($record["phone"], "WORK;VOICE");
+    $vcard->setPhoneNumber($record["fax"], "WORK;FAX");
+    $vcard->setEmail($record["email"]);
+    $vcard->setURL("http://" . $record["website"], "WORK");
+    $vcard->setNote($record["remark"]);
   }
 
 }

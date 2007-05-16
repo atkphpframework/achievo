@@ -77,6 +77,17 @@ class contact extends person
     $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
     return true;
   }
+
+  function assignVcard(&$vcard, $record)
+  {
+    // Get organization data for the record
+    $organizationnode = &atkGetNode("organization.organization");
+    $organizations = $organizationnode->selectDb("organization.id='".$record["company"]["id"]."'", "", "", "", "", "view");
+    if (count($organizations) > 0)
+      $organizationnode->assignVcard($vcard, $organizations[0]);
+    parent::assignVcard($vcard, $record);
+  }
+
 }
 
 ?>

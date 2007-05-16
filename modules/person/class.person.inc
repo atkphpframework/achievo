@@ -92,41 +92,32 @@ class person extends atkNode
     }
   }
 
-  function action_vcard()
+  function action_vcard(&$handler)
   {
-    $vcard = &$this->createVCard($this->m_postvars["id"]);
-    $output = $vcard->getVCard();
-    //$filename = $v->getFileName();
-    //Remove spaces that would break the vcard filename
-    $name = str_replace(" ", "_", $record['firstname']."_".$record['lastname'] );
-    $filename = $name.".vcf";
+    // Get the record
+    $id = atkArrayNvl($this->m_postvars, "id");
+    $persons = $this->selectDb("person.id='".$id."'", "", "", "", "", "view");
 
-    Header("Content-Disposition: attachment; filename=$filename");
-    Header("Content-Length: ".strlen($output));
-    Header("Connection: close");
-    Header("Content-Type: text/x-vCard; name=$filename");
+    // Create the vcard
+    include_once(moduleDir("utils")."vcard.php");
+    $vcard = new vCard();
+    $this->assignVcard($vcard, $persons[0]);
 
-    echo $output;
+    // Output the vcard and stop further script execution
+    $vcard->outputVCard();
     exit;
   }
 
-  function createVCard($id)
+  function assignVcard(&$vcard, $record)
   {
-    include_once(moduleDir("utils")."vcard.php");
-    $v = new vCard();
-
-    $recs = $this->selectDb("id='".$id."'", "", "", "", array("phone", "cellular", "lastname", "firstname",
-                                                              "address", "city", "state", "zipcode",
-                                                              "country", "email", "remark"));
-    $record = $recs[0];
-
-    $v->setPhoneNumber($record["phone"], "PREF;WORK;VOICE");
-    $v->setPhoneNumber($record["cellular"], "CELL");
-    $v->setName($record["lastname"], $record["firstname"], "", "");
-    $v->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"]);
-    $v->setEmail($record["email"]);
-    $v->setNote($record["remark"]);
-    return $v;
+    $vcard->setPhoneNumber($record["phone"], "HOME;VOICE");
+    $vcard->setPhoneNumber($record["cellular"], "HOME;CELL");
+    $vcard->setName($record["lastname"], $record["firstname"], "", $record["title_id"]["title"]);
+    $vcard->setFormattedName(trim($record["title_id"]["title"] . " " . $record["firstname"] . " " . $record["lastname"]));
+    $vcard->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"], "HOME");
+    $vcard->setEmail($record["email"]);
+    $vcard->setNote($record["remark"]);
+    $vcard->setProperty("TITLE", $record["function"]);
   }
 }
 
