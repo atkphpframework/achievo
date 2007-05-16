@@ -15,7 +15,7 @@
    */
 
   // Add the docmanager to any modules specified in the $config_docmanagernodes array
-  $modifiers = array_merge($modifiers, atkconfig("docmanagernodes", array()));
+  $modifiers = array_diff(array_merge($modifiers, atkconfig("docmanagernodes", array())), array("project.project"));
 
   /**
    * docmanager module class
