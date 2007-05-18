@@ -191,6 +191,10 @@
   // obligatory
   $config_project_contact_obligatory = false;
 
+  // Use autocompletion for project selection?
+  //
+  $config_project_selection_autocomplete = false;
+
   // Fill this config with a path relative to the achievo directory.
   // When you add a project the skel will be copied to the destionation directory
   // also a path relative to the achievo directory. And sends a mail when the skel
