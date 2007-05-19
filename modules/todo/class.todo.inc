@@ -21,8 +21,8 @@ class todo extends atkNode
 
     $this->add(new atkNumberAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE|AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_SEARCHABLE));
-    $this->add(new atkManyToOneRelation("contactid"    , "organization.contact",AF_SEARCHABLE));
+    $this->add(new atkManyToOneRelation("projectid"    , "project.project",AF_SEARCHABLE|AF_LARGE));
+    $this->add(new atkManyToOneRelation("contactid"    , "organization.contact",AF_SEARCHABLE|AF_LARGE));
     $this->add(new atkAttribute("title"                , AF_OBLIGATORY, 50));
     $p_attr = &$this->add(new atkManyToOneRelation("assigned_to"  , "employee.employee", AF_SEARCHABLE));
     $p_attr->setDestinationFilter("(status='active' OR userid='[assigned_to.id]')");
