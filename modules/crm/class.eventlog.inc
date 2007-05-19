@@ -25,7 +25,8 @@ class eventLog extends atkNode
   
   function delete_event_history($node,$primarykey)
   {
-    $this->deleteDB("node='$node' AND primarykey='$primarykey'");
+    $db = &atkGetDb();
+    $this->deleteDB("node='".$db->escapeSQL($node)."' AND primarykey='".$db->escapeSQL($primarykey)."'");
   }
   
   function pruneHistory($user_id)
