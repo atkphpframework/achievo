@@ -41,9 +41,7 @@
     function userprefs_modifier(&$node)
     {
       userelation("atkOneToOneRelation");
-      userelation("atkOneToManyRelation");
       $node->add(new atkOneToOneRelation("scheduler","scheduler.scheduler_userpreferences","userid",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR),"scheduler");
-      $node->add(new atkOneToManyRelation("assistant", "scheduler.scheduler_userassistants", "userid"), "scheduler");
     }
 
     function search($expression)

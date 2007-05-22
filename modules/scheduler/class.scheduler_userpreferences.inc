@@ -14,6 +14,7 @@
   userelation("atkshuttlerelation");
   userelation("atkmanytomanyrelation");
   userelation("atkmanyboolrelation");
+  userelation("atkshuttlerelation");
 
   class scheduler_userpreferences extends atkNode
   {
@@ -53,7 +54,7 @@
       $this->add(new atkListAttribute("default_userview",array($userdescriptor,"allusers"),array($userid,"*"),AF_OBLIGATORY),"scheduler");
       //$this->add(new atkListAttribute("startday",array("sunday","monday","saturday"),array(0,1,6),AF_OBLIGATORY));
       $this->add(new atkTimeAttribute("default_eventtime", 0, 23, $m_arr_minute_step,"01:00", 0),"scheduler");
-      $this->add(new atkManyToOneRelation("default_category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK),"scheduler");
+      $this->add(new atkManyToOneRelation("default_category", "scheduler.scheduler_category",AF_RELATION_AUTOLINK),"scheduler");
       $this->add(new atkDummyAttribute("group2","<br><b>".$this->text("colors")."</b>:<br>"),"scheduler");
       $this->add(new atkColorPickerAttribute("scheduler_emptycolor"),"scheduler");
       $this->add(new atkColorPickerAttribute("scheduler_emptyworkhourscolor"),"scheduler");
@@ -66,7 +67,10 @@
       $this->add(new atkBoolAttribute("email_rejectedevents"));
       */
       $this->add(new atkDummyAttribute("group4","<br><b>".$this->text("assistant")."</b>:<br>"),"scheduler");
-
+      $shuttle_rel = &$this->add(new atkShuttleRelation("assistant","scheduler.scheduler_userassistants","employee.employee",AF_NO_LABEL),"scheduler");
+      $shuttle_rel->setLocalKey("userid");
+      $shuttle_rel->setRemoteKey("employeeid");
+      $shuttle_rel->setDestinationFilter("person.status='active'");  
       $this->setTable("scheduler_userpreferences");
       $this->setSecurityAlias("employee.userprefs");
     }
