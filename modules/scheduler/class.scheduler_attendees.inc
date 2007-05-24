@@ -14,7 +14,9 @@
  */
 
 useattrib("atkboolattribute");
+useattrib("atklistattribute");
 userelation("atkmanytoonerelation");
+
 
 class scheduler_attendees extends atkNode
 {
@@ -24,9 +26,11 @@ class scheduler_attendees extends atkNode
 
     $this->add(new atkManyToOneRelation("schedule_id", "scheduler.scheduler", AF_PRIMARY|AF_HIDE));
     $this->add(new atkManyToOneRelation("person_id", "person.select_person", AF_PRIMARY|AF_LARGE));
+    $this->add(new atkListAttribute("status",array("no_response","accepted","rejected"),array(),AF_OBLIGATORY));
 
     $this->setTable("scheduler_attendees");
     $this->setSecurityAlias("scheduler.scheduler");
+    $this->addSecurityMap(array("accepted", "rejected"),"view");
   }
 
   function descriptor_def()
@@ -34,24 +38,81 @@ class scheduler_attendees extends atkNode
     return "[person_id.lastname], [person_id.firstname]";
   }
 
+  function preAdd(&$record)
+  {
+    if($record["person_id"]["role"]!="employee")
+      $record["status"]="accepted";
+    return true;
+  }
+  
+  function recordActions($rec,&$actions,&$mraactions)
+  {
+    atk_var_dump($rec,"ATTENDEE RECORD");
+    if ($rec["person_id"]["id"]==atkGetUserId()) 
+    {
+      if($rec["status"]!="accepted") $actions["accepted"]= session_url(dispatch_url($this->atknodetype(), "accepted", array("schedule_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="rejected") $actions["rejected"]= session_url(dispatch_url($this->atknodetype(), "rejected", array("schedule_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+    }
+  }
+  
+  function action_accepted(&$handler,$record=array(),$mode="")
+  {
+    $this->updateUserStatus('accepted');
+    $this->redirect();
+  }
+
+  function action_rejected(&$handler,$record=array(),$mode="")
+  {
+    $this->updateUserStatus('rejected');
+    $this->redirect();
+  }
+
+  function updateUserStatus($status)
+  {
+    $primkey = 'schedule_id.id=\''.$this->m_postvars["scheduler_id"].'\' AND person_id.id=\''.$this->m_postvars["person_id"].'\'';
+    $rows = $this->selectDb($primkey,"","","","","edit");
+    if(count($rows)==1)
+    {
+      // It seems updatedb needs the complete record
+      $rec = $rows[0];
+
+      //$rec['atkprimkey'] = $primkey;
+      $rec['status'] = $status;
+      $ret = $this->updateDb($rec,false);
+      atkdebug("SEND MAIL ?");
+      atk_var_dump($rec);
+      if($rec["person_id"]["role"]=="employee")
+      {
+        atkdebug("YES WE SEND A MAIL");
+        $this->sendEmail("user_notification",$rec["schedule_id"]["id"],$rec["person_id"]["id"],"date",$status,true);
+      }
+    }
+    return true;
+  }
+  
+  
   function postAdd($record)
   {
+    atkdebug("scheduler_attendees::postAdd");
     // Only for employees
     if($record["person_id"]["role"]=="employee")
-      $this->sendEmail("add_event",$record["schedule_id"]["id"],$record["person_id"]["id"],"date");
+      $this->sendEmail("add_event",$record["schedule_id"]["id"],$record["person_id"]["id"],"date","invited");
 
     return true;
   }
+  
+  function postDelete($record)
+  {
+    if($record["person_id"]["role"]=="employee")
+      $this->sendEmail("disinvited_user",$record["schedule_id"]["id"],$record["person_id"]["id"],"date","disinvited");
+    return true;
+  }
 
-  function sendEmail($action,$scheduler_id,$person_id,$date)
+  function sendEmail($action,$scheduler_id,$person_id,$date,$trigger_action="",$sendtoowner=false)
   {
     $template = &atknew("modules.scheduler.scheduler_email_template");
-    atkdebug("TEMPLATE MODULE IS: ".$template->m_module);
-    $action = "add_event";
     $template->initialize($action,$person_id);
-    atkdebug("TEMPLATE MODULE IS: ".$template->m_module);
-    $template->loadData($action,$scheduler_id,$date);
-    atkdebug("TEMPLATE MODULE IS: ".$template->m_module);
+    $template->loadData($action,$scheduler_id,$date,$trigger_action);
     $template->send();
   }
 }

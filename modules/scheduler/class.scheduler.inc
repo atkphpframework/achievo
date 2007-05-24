@@ -698,7 +698,7 @@
       // insert the owner as first attendee.
       $db = &atkGetDb();
       if($rec["owner_attendee"]==1)
-        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id) VALUES (".$rec["id"].", ".$rec["owner"]["id"].")");
+        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id,status) VALUES (".$rec["id"].", ".$rec["owner"]["id"].",'accepted')");
       $this->updateSchedulerDates($rec);
       return true;
     }
@@ -732,7 +732,7 @@
       $recs = $db->getrows("SELECT count(*) AS cnt FROM scheduler_attendees WHERE schedule_id = $schedule_id AND person_id = $person_id");
       if (!count($recs)||$recs[0]["cnt"]==0)
       {
-        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id) VALUES ($schedule_id, $person_id)");
+        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id,status) VALUES ($schedule_id, $person_id,'no_response')");
       }
     }
 

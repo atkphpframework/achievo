@@ -25,16 +25,36 @@ class scheduler_email_template extends email_template
                  "link");
   }
 
-  function loadData($action,$scheduler_id,$date)
+  function loadData($action,$scheduler_id,$date,$trigger_action="",$senttoowner=false)
   {
-    $this->m_data = $this->_getSchedulerItem($action,$scheduler_id);
+    $user = atkGetUser();
+    if($trigger_action=="") $trigger_action=$action;
+    $this->m_data = $this->_getSchedulerItem($action,$scheduler_id,$senttoowner);
+    $this->m_data["fullname"]=$user["firstname"]." ".$user["lastname"];
+    $this->m_data["firstname"]=$user["firstname"];
+    $this->m_data["lastname"]=$user["lastname"];
+    $this->m_data["email"]=$user["email"];
+    $this->m_data["date"]=date("d-m-Y");
+    $this->m_data["action"]=atktext($trigger_action,"scheduler");
+    $this->m_data["link"]=href(dispatch_url("scheduler.scheduler","view",array("atkselector"=>"scheduler_scheduler.id=".$scheduler_id,"scheduler_id"=>$scheduler_id,"itemdate"=>$date)),
+                   $item["title"],SESSION_NESTED);
   }
 
-  function _getSchedulerItem($action,$scheduler_id)
+  function _getSchedulerItem($action,$scheduler_id,$senttoowner)
   {
     $scheduler_node = &atkGetNode("scheduler.scheduler");
     $rec = $scheduler_node->selectDb("scheduler_scheduler.id = ".$scheduler_id);
-
+    
+/*
+    
+{$olddate}: Old startdate - scheduler
+{$action}: Action that caused the notify: Added, Accepted, Canceled,.... - scheduler
+{$link}: Link to view the event - scheduler
+*/   
+    if($senttoowner)
+    {
+      $this->setCustomerReceiver($rec[0]["owner"]["email"],$rec[0]["owner"]["firstname"]." ".$rec[0]["owner"]["lastname"]);
+    }
     return array("title"=>$rec[0]["title"],
                  "location"=>$rec[0]["location"],
                  "description"=>$rec[0]["description"],
@@ -44,8 +64,11 @@ class scheduler_email_template extends email_template
                  "priority"=>$rec[0]["priority"],
                  "participants"=>$this->getAttendees($rec[0]["attendees"]),
                  "owner"=>$rec[0]["owner"]["firstname"]." ".$rec[0]["owner"]["lastname"],
+                 "to-fullname"=>$rec[0]["owner"]["firstname"]." ".$rec[0]["owner"]["lastname"],
+                 "to-firstname"=>$rec[0]["owner"]["firstname"],
+                 "to-lastname"=>$rec[0]["owner"]["lastname"],
                  "repetition"=>$this->getRecurringInfo($rec[0]),
-                 "action"=>'');
+                );
 
 
   }
