@@ -50,7 +50,8 @@ class employee extends person
 
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
     $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
-    $preFilter->setDestinationFilter("userid !='[userid]' AND status ='active'");
+    $preFilter->setDestinationFilter("userid !='[userid]'");
+    $preFilter->setUseFilterForAddLink(false);
 
     $this->add($preFilter);
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.
