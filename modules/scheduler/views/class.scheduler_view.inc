@@ -613,7 +613,7 @@ class scheduler_view
     $name = "atk".atkconfig("database")."query";
     $query = atknew($name);
     $query->addTable('scheduler_scheduler');
-    $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.schedule_id=scheduler_scheduler.id', TRUE);
+    $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.scheduler_id=scheduler_scheduler.id', TRUE);
     $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
     $query->addJoin('person', 'owner', 'owner.id=scheduler_scheduler.owner', TRUE);
     $query->addJoin('scheduler_dates','','scheduler_dates.scheduler_id=scheduler_scheduler.id',TRUE);
@@ -684,7 +684,7 @@ class scheduler_view
 
     $query = &$db->createQuery();
     $query->addTable('scheduler_scheduler');
-    $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.schedule_id=scheduler_scheduler.id', TRUE);
+    $query->addJoin('scheduler_attendees', '', 'scheduler_attendees.scheduler_id=scheduler_scheduler.id', TRUE);
     $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
     $query->addJoin('person', 'owner', 'owner.id=scheduler_scheduler.owner', TRUE);
     $query->addJoin('scheduler_dates','','scheduler_dates.scheduler_id=scheduler_scheduler.id',TRUE);
@@ -856,6 +856,7 @@ class scheduler_view
         {
           foreach($names as $name)
           {
+            atk_var_dump($name,"NAME BIRTHDAY");
             $date = date("Y-m-d",mktime(0,0,0,$i,$day,$this->m_year));
             if($compact)
             {
@@ -939,18 +940,18 @@ class scheduler_view
     $query->addJoin('person', '', 'person.id=scheduler_attendees.person_id', TRUE);
 
     $query->addField('id', ' ', 'person');
-    $query->addField('schedule_id', ' ', 'scheduler_attendees');
+    $query->addField('scheduler_id', ' ', 'scheduler_attendees');
 
     $query->addField('lastname', ' ', 'person');
     $query->addField('firstname', ' ', 'person');
     $query->addField('role', ' ', 'person');
-    $query->addCondition("scheduler_attendees.schedule_id IN (".implode(",",$items).")");
+    $query->addCondition("scheduler_attendees.scheduler_id IN (".implode(",",$items).")");
 
     $querystring = $query->buildSelect(TRUE);
     $nrows = $db->getRows($querystring);
     for($i=0,$_i=count($nrows);$i<$_i;$i++)
     {
-      $this->m_attendees[$nrows[$i]["schedule_id"]][] = $nrows[$i]["id"];
+      $this->m_attendees[$nrows[$i]["scheduler_id"]][] = $nrows[$i]["id"];
       if(!array_key_exists($nrows[$i]["id"],$this->m_users))
       {
         $this->m_users[$nrows[$i]["id"]] = array("firstname"=>$nrows[$i]["firstname"],

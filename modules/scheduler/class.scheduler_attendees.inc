@@ -2,7 +2,7 @@
 
 /**
  * Module Calendar
- * Class schedule_attendee
+ * Class scheduler_attendee
  *
  * This class makes it possible to add attendees to a schedule. These attendees can be employees and contacts.
  * That is why the relation is linked to person.
@@ -24,7 +24,7 @@ class scheduler_attendees extends atkNode
   {
     $this->atkNode("scheduler_attendees",NF_MRA);
 
-    $this->add(new atkManyToOneRelation("schedule_id", "scheduler.scheduler", AF_PRIMARY|AF_HIDE));
+    $this->add(new atkManyToOneRelation("scheduler_id", "scheduler.scheduler", AF_PRIMARY|AF_HIDE));
     $this->add(new atkManyToOneRelation("person_id", "person.select_person", AF_PRIMARY|AF_LARGE));
     $this->add(new atkListAttribute("status",array("no_response","accepted","rejected"),array(),AF_OBLIGATORY));
 
@@ -50,26 +50,40 @@ class scheduler_attendees extends atkNode
     atk_var_dump($rec,"ATTENDEE RECORD");
     if ($rec["person_id"]["id"]==atkGetUserId()) 
     {
-      if($rec["status"]!="accepted") $actions["accepted"]= session_url(dispatch_url($this->atknodetype(), "accepted", array("schedule_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
-      if($rec["status"]!="rejected") $actions["rejected"]= session_url(dispatch_url($this->atknodetype(), "rejected", array("schedule_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="accepted") $actions["accepted"]= session_url(dispatch_url($this->atknodetype(), "accepted", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="rejected") $actions["rejected"]= session_url(dispatch_url($this->atknodetype(), "rejected", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
     }
   }
   
   function action_accepted(&$handler,$record=array(),$mode="")
   {
     $this->updateUserStatus('accepted');
-    $this->redirect();
+    $location = "";
+    if(atkLevel()<=0)
+    {
+      $this->setFeedback("accepted",ACTION_SUCCESS);
+      $location = $this->feedbackUrl("accepted", ACTION_SUCCESS,"",atktext("scheduled_item_accepted"));
+      $this->redirect($location);
+    }
+    $this->redirect($location);
   }
 
   function action_rejected(&$handler,$record=array(),$mode="")
   {
     $this->updateUserStatus('rejected');
-    $this->redirect();
+    $location = "";
+    if(atkLevel()<=0)
+    {
+      $this->setFeedback("rejected",ACTION_SUCCESS);
+      $location = $this->feedbackUrl("rejected", ACTION_SUCCESS,"",atktext("scheduled_item_rejected"));
+      $this->redirect($location);
+    }
+    $this->redirect($location);
   }
 
   function updateUserStatus($status)
   {
-    $primkey = 'schedule_id.id=\''.$this->m_postvars["scheduler_id"].'\' AND person_id.id=\''.$this->m_postvars["person_id"].'\'';
+    $primkey = 'scheduler_id.id=\''.$this->m_postvars["scheduler_id"].'\' AND person_id.id=\''.$this->m_postvars["person_id"].'\'';
     $rows = $this->selectDb($primkey,"","","","","edit");
     if(count($rows)==1)
     {
@@ -84,7 +98,7 @@ class scheduler_attendees extends atkNode
       if($rec["person_id"]["role"]=="employee")
       {
         atkdebug("YES WE SEND A MAIL");
-        $this->sendEmail("user_notification",$rec["schedule_id"]["id"],$rec["person_id"]["id"],"date",$status,true);
+        $this->sendEmail("user_notification",$rec["scheduler_id"]["id"],$rec["person_id"]["id"],"date",$status,true);
       }
     }
     return true;
@@ -94,9 +108,10 @@ class scheduler_attendees extends atkNode
   function postAdd($record)
   {
     atkdebug("scheduler_attendees::postAdd");
+    atk_var_dump($record,"ADD RECORD");
     // Only for employees
     if($record["person_id"]["role"]=="employee")
-      $this->sendEmail("add_event",$record["schedule_id"]["id"],$record["person_id"]["id"],"date","invited");
+      $this->sendEmail("add_event",$record["scheduler_id"]["id"],$record["person_id"]["id"],"date","invited");
 
     return true;
   }
@@ -104,7 +119,7 @@ class scheduler_attendees extends atkNode
   function postDelete($record)
   {
     if($record["person_id"]["role"]=="employee")
-      $this->sendEmail("disinvited_user",$record["schedule_id"]["id"],$record["person_id"]["id"],"date","disinvited");
+      $this->sendEmail("disinvited_user",$record["scheduler_id"]["id"],$record["person_id"]["id"],"date","disinvited");
     return true;
   }
 

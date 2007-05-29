@@ -66,10 +66,10 @@ $db->query($sql);
 while ($db->next_record())
 {
   $next_id = $db->nextid("scheduler_notes");
-  $insertsql = "INSERT INTO scheduler_notes (id,owner,schedule_id,entrydate,title,description)
+  $insertsql = "INSERT INTO scheduler_notes (id,owner,scheduler_id,entrydate,title,description)
           VALUES ($next_id,
                   '".$db->escapeSQL($db->m_record["owner"])."',
-                  '".$db->escapeSQL($scheduler_lookup[$db->m_record["schedule_id"]])."',
+                  '".$db->escapeSQL($scheduler_lookup[$db->m_record["scheduler_id"]])."',
                   '".$db->escapeSQL($db->m_record["entrydate"])."',
                   '".$db->escapeSQL($db->m_record["title"])."',
                   '".$db->escapeSQL($db->m_record["description"])."')";
@@ -81,8 +81,8 @@ $sql = "SELECT * FROM schedule_attendee";
 $db->query($sql);
 while ($db->next_record())
 {
-  $insertsql = "INSERT INTO scheduler_attendees (schedule_id,person_id)
-          VALUES ('".$db->escapeSQL($scheduler_lookup[$db->m_record["schedule_id"]])."',
+  $insertsql = "INSERT INTO scheduler_attendees (scheduler_id,person_id)
+          VALUES ('".$db->escapeSQL($scheduler_lookup[$db->m_record["scheduler_id"]])."',
                   '".$db->escapeSQL($db->m_record["person_id"])."')";
   $db_clone->query($insertsql);
 }

@@ -9,7 +9,7 @@ class scheduler_alarms extends atkNode
 {
   function scheduler_alarms()
   {
-    $users = $this->getUsers();
+    //$users = $this->getUsers();
     $this->atkNode("scheduler_alarms");
     $this->add(new atkNumberAttribute("scheduler_id",AF_PRIMARY|AF_HIDE));
     $this->add(new atkNumberAttribute("startdate",AF_PRIMARY|AF_READONLY));
@@ -17,11 +17,12 @@ class scheduler_alarms extends atkNode
     $this->add(new atkNumberAttribute("senddate",AF_HIDE));
     $this->add(new atkBoolAttribute("send",AF_HIDE,1));
     $this->add(new atkAttribute("type",AF_HIDE));
-    $this->add(new atkListAttribute("userid", array_values($users),array_keys($users),AF_PRIMARY));
+    $this->add(new atkManyToOneRelation("userid", "scheduler.scheduler_attendees",AF_PRIMARY));
+    //$this->add(new atkListAttribute("userid", array_values($users),array_keys($users),AF_PRIMARY));
     $this->add(new atkUpdatedByAttribute("owner"));
     $this->setTable("scheduler_alarms");
-    $this->setOrder("startdate,duration");
-    $this->addFilter("startdate>=".time());
+    $this->setOrder("scheduler_alarms.startdate,scheduler_alarms.duration");
+    $this->addFilter("scheduler_alarms.startdate>=".time());
     $this->setSecurityAlias("scheduler.scheduler");
   }
   
@@ -45,15 +46,20 @@ class scheduler_alarms extends atkNode
   function preAdd(&$rec)
   {
     // Pre calculate the senddate
-    $rec["senddate"] = ($rec["startdate"]-$rec["duration"]);
+    $rec["senddate"] = $this->_calculateSendDate($rec["startdate"],$rec["duration"]);
     return true;
   }
   
   function preUpdate(&$rec)
   {
     // Pre calculate the senddate
-    $rec["senddate"] = ($rec["startdate"]-$rec["duration"]);
+    $rec["senddate"] = $this->_calculateSendDate($rec["startdate"],$rec["duration"]);
     return true;
+  }
+  
+  function _calculateSendDate($startdate,$duration)
+  {
+    return ($startdate-$duration);
   }
   
   function duration_validate(&$rec)
@@ -64,19 +70,7 @@ class scheduler_alarms extends atkNode
     }
   }
   
-  function getUsers()
-  {
-    $db = &atkGetDb();
-    $sql = "SELECT id,lastname,firstname FROM person WHERE role='employee' ORDER BY lastname,firstname";
-    $nrows = $db->getRows($sql);
-    $users = array("-1"=>atktext("all_invited_employees"));
-    
-    foreach($nrows as $row)
-    {
-      $users[$row['id']] = $row['lastname'].", ".$row["firstname"];
-    }
-    return $users;
-  }
+  
 
 }
 ?>

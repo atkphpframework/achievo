@@ -84,10 +84,10 @@
 
       $this->add(new atkAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("title", AF_SEARCHABLE|AF_OBLIGATORY, 50));
-      $this->add(new atkOneToManyRelation("attendees", "scheduler.scheduler_attendees", "schedule_id", AF_HIDE_LIST|AF_CASCADE_DELETE));
+      $this->add(new atkOneToManyRelation("attendees", "scheduler.scheduler_attendees", "scheduler_id", AF_HIDE_LIST));
       $this->add(new atkDummyAttribute("hint", $this->text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
-      $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeAttendees", "multiselect"));
-      $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeAttendees", "multiselect"));
+      $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeEmployees", "multiselect"));
+      $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"));
       $this->add($recur_attr = new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
@@ -96,14 +96,14 @@
       $this->add($allday_attr = new atkBoolAttribute("allday"));
       $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, 0));
-      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE),"cyclus");
+      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_CASCADE_DELETE),"cyclus");
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("private"));
       $this->add(new atkBoolAttribute("all_users"));
       $this->add(new atkListAttribute("priority",array("","low","normal","high"),array(0,1,2,3),AF_LIST_NO_NULL_ITEM));
       $this->add(new atkBoolAttribute("nonblocking"));
-    //$this->add(new atkOneToManyRelation("alarms", "scheduler.scheduler_alarms", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "alarms"); // Disabled, not working yet
-      $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "schedule_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "notes");
+      //$this->add(new atkOneToManyRelation("alarms", "scheduler.scheduler_alarms", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "alarms"); // Disabled, not working yet
+      $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "notes");
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_OBLIGATORY));
       $this->add(new atkBoolAttribute("owner_attendee"));
       $this->add(new atkNumberAttribute("lastdate", AF_HIDE));
@@ -467,6 +467,7 @@
                                                 "formstart"=>$formstart,
                                                 "formend"=>'</form>',
                                                 "buttons"=>$buttons));
+      $record=array();
       $content = $ui->renderBox(array("title"=>$this->actionTitle($action, $record),
                                   "content"=>$output));
       $theme = &atkTheme::getInstance();
@@ -488,6 +489,7 @@
      */
     function action_editserieorsingle()
     {
+      $itemDate="";
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
       if($this->m_postvars["confirmedit"]!="" && $this->m_postvars["confirmsingle"]!="")
@@ -696,9 +698,10 @@
     function postAdd($rec)
     {
       // insert the owner as first attendee.
-      $db = &atkGetDb();
       if($rec["owner_attendee"]==1)
-        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id,status) VALUES (".$rec["id"].", ".$rec["owner"]["id"].",'accepted')");
+      {
+        $this->_addAttendeeRecord($rec["id"],$rec["owner"]["id"],"employee","accepted",false);
+      }
       $this->updateSchedulerDates($rec);
       return true;
     }
@@ -714,25 +717,91 @@
       $this->removeSchedulerDates($rec);
       return true;
     }
+    
+    function preDelete($rec)
+    {
+      $this->sendEmail($rec);
+      $this->deleteAttendees($rec);
+      return true;
+    }
+    
+    /**
+     * Send email to all attendees except the owner
+     * that the meeting is canceld
+     *
+     */
+    function sendEmail($rec)
+    {
+      atk_var_dump($rec["attendees"],"ATTENDEES DELETE");
+      $date="";
+      foreach($rec["attendees"] as $attendee)
+      {
+        // Don't send mail to the owner
+        if($attendee["person"]["id"]!=$rec["owner"]["id"] && $attendee["person"]["role"]=="employee")
+        {
+          $template = &atknew("modules.scheduler.scheduler_email_template");
+          $template->initialize("cancel_event",$attendee["person_id"]["id"]);
+          $template->loadData("cancel_event",$rec["id"],$date,"canceled");
+          $template->send();
+        }
+      }
+    }
+    /**
+     * Delete all attendees
+     *
+     * @param array $rec Array with the record of the scheduler item
+     */
+    function deleteAttendees($rec)
+    {
+      $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
+      foreach($rec["attendees"] as $attendee)
+      {
+        $attendee_node->deleteDb("scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
+      }
+      
+    }
 
-    function storeAttendees($rec, $attendees)
+    function storeEmployees($rec, $attendees)
+    {
+      return $this->storeAttendees($rec,$attendees,"employee");
+    }
+    function storeContacts($rec, $attendees)
+    {
+      return $this->storeAttendees($rec,$attendees,"contact");
+    }
+    
+    function storeAttendees($rec,$attendees,$role)
     {
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
       {
-        $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"]);
+        if($attendees[$i]["id"]==$rec["owner"]["id"])
+        {
+          $execTrigger=false;
+          $status="accepted";
+        }
+        else 
+        {
+          $execTrigger=true;
+          $status="no_response";
+        }
+        $this->_addAttendeeRecord($rec["id"], $attendees[$i]["id"],$role,$status,$execTrigger);
       }
       return true;
     }
 
-    function _addAttendeeRecord($schedule_id, $person_id)
+    function _addAttendeeRecord($scheduler_id, $person_id,$role,$status="no_response",$execTrigger=true)
     {
-      $db = &atkGetDb();
-
-      // attendee may already exist.
-      $recs = $db->getrows("SELECT count(*) AS cnt FROM scheduler_attendees WHERE schedule_id = $schedule_id AND person_id = $person_id");
-      if (!count($recs)||$recs[0]["cnt"]==0)
+      
+      $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
+      
+      $total = $attendee_node->countDb("scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
+      if($total==0)
       {
-        $db->query("INSERT INTO scheduler_attendees (schedule_id, person_id,status) VALUES ($schedule_id, $person_id,'no_response')");
+        $rec = array("scheduler_id"=>array("id"=>$scheduler_id),
+                     "person_id"=>array("id"=>$person_id,
+                                         "role"=>$role),
+                     "status"=>$status);
+        $attendee_node->addDb($rec,$execTrigger);
       }
     }
 
@@ -829,8 +898,8 @@
     {
       $db = &atkGetDb();
       $id = $rec["id"];
-      $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='$id'";
-      $db->query($sql);
+      $this->removeSchedulerDates($rec);
+
       atkimport("module.scheduler.utils.schedulertools");
       $startdate = $this->m_viewdate;
       if($rec["recur"]=="once")
@@ -863,9 +932,8 @@
     function removeSchedulerDates($rec)
     {
       $id = $rec["id"];
-      $db = &atkGetDb();
-      $sql = "DELETE FROM scheduler_dates WHERE scheduler_id='$id'";
-      $db->query($sql);
+      $s_dates = &atkGetNode("scheduler.scheduler_dates");
+      $s_dates->deleteDb("scheduler_id = '$id'");
     }
   }
 

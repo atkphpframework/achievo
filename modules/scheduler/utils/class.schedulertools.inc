@@ -214,7 +214,7 @@ class schedulertools
       function isAttendee($item_id,$userid)
       {
         $db = &atkGetDb();
-        $sql = "SELECT person_id FROM scheduler_attendees WHERE schedule_id='{$item_id}' AND person_id='{$userid}'";
+        $sql = "SELECT person_id FROM scheduler_attendees WHERE scheduler_id='{$item_id}' AND person_id='{$userid}'";
         $nrows = $db->getrows($sql);
         if(count($nrows)==1) return true;
         return false;
