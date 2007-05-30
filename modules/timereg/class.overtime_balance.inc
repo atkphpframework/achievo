@@ -328,17 +328,13 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
       $starttime = adodb_mktime(0,0,0,substr($begin,4,2),substr($begin,6,2),substr($begin,0,4));
       $endtime = adodb_mktime(0,0,0,substr($end,4,2),substr($end,6,2),substr($end,0,4));
 
-      $steps = (($endtime-$starttime)/(60*60*24));
+      $steps = round(($endtime-$starttime)/(60*60*24));
 
       for($i=0;$i<=$steps;$i++)
       {
         $dayofweek = date("w", adodb_mktime(0,0,0,substr($begin,4,2),substr($begin,6,2)+$i,substr($begin,0,4)));
 
-        if($has_workdays!==false)
-        {
-          if (in_array($dayofweek, $workdays)) $total++;
-        }
-        else
+        if (!$has_workdays || in_array($dayofweek, $workdays))
         {
           $total++;
         }
