@@ -113,7 +113,7 @@
 
       if($this->m_viewUser=="" && $this->m_view!="employeeview")
       {
-        if ($userprefs["default_view"]!="*" && !empty($userid))
+        if ($userprefs["default_userview"]!="*" && !empty($userid))
         {
           $this->m_viewUser = $userid;
         }
