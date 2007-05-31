@@ -209,8 +209,8 @@ class scheduler_view
     $links["additem"] = session_url(dispatch_url("scheduler.scheduler", "add"),SESSION_NESTED);
     $views = array("day", "week", "month", "birthday" /*, "year", "employee"*/);
     foreach($views as $view)
-      $links[$view."view"] = dispatch_url("scheduler.scheduler", "admin", array("view"=>$view));
-    $links["refreshview"] = dispatch_url("scheduler.scheduler", "admin", array("view"=>$this->m_view, "viewdate"=>$this->m_viewdate));
+      $links[$view."view"] = session_url(dispatch_url("scheduler.scheduler", "admin", array("view"=>$view)));
+    $links["refreshview"] = session_url(dispatch_url("scheduler.scheduler", "admin", array("view"=>$this->m_view, "viewdate"=>$this->m_viewdate)));
 
     $viewheaderparams = array(
       "links" => $links,
