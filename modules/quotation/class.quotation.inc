@@ -136,7 +136,8 @@
       $quotations = $this->selectDb($selector);
       $documentWriter->assignDocumentSingleRecord($this,$quotations[0]);
       $documentWriter->assignRecordByNodeAndSelector("organization.organization", sprintf("organization.id='%d'", $quotations[0]["organization_id"]["id"]), "organization_");
-      $documentWriter->assignRecordByNodeAndSelector("employee.employee", sprintf("person.id='%d'", $quotations[0]["owner"]["id"]), "owner_");
+      $documentWriter->assignRecordByNodeAndSelector("employee.employee", sprintf("person.id='%d'", $quotations[0]["created_by"]["id"]), "created_by_");
+      $documentWriter->assignRecordByNodeAndSelector("employee.employee", sprintf("person.id='%d'", $quotations[0]["last_updated_by"]["id"]), "last_updated_by_");
       $documentWriter->assignDocumentGenericVars();
     }
 
@@ -204,7 +205,6 @@
 
     function initial_values()
     {
-      $user = &getUser();
       $db = &atkGetDb();
 
       $query = "SELECT quotation_nr FROM quotation_quotation WHERE quotation_nr LIKE '".date("ymd")."%' ORDER BY quotation_nr DESC LIMIT 0,1";
@@ -218,7 +218,7 @@
                           "month"=>date("m", $stamp),
                           "year"=>date("Y", $stamp));
 
-      return array("quotation_nr"=>$quo_nr, "owner"=>$user, "expire_date"=>$expiredate);
+      return array("quotation_nr"=>$quo_nr, "expire_date"=>$expiredate);
     }
 
     /**
