@@ -66,6 +66,7 @@
         $linkparams = array(
                         "documenttypeid" => $documenttypeid,
                         "master_id" => $record["id"],
+                        "atkselector" => $record["atkprimkey"],
                         "atkfilter" => $this->m_destinationFilter,
                       );
 
