@@ -60,7 +60,7 @@
   foreach($templates as $record)
     $et->addDb($record);
 
-  $setup->setVersion(6);
+  $setup->setVersion(8);
   set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo
@@ -199,9 +199,10 @@
       while($db->next_record())
       {
         $attendee = $db->m_record;
-        $sql = "INSERT INTO scheduler_attendees (scheduler_id,person_id)
+        $sql = "INSERT INTO scheduler_attendees (scheduler_id,person_id,status)
                 VALUES ('".$db2->escapeSQL($scheduler_lookup[$attendee["schedule_id"]])."',
-                        '".$db2->escapeSQL($attendee["person_id"])."')";
+                        '".$db2->escapeSQL($attendee["person_id"])."',
+                        'accepted')";
         $db2->query($sql);
       }
     
