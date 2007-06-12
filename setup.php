@@ -171,27 +171,27 @@
     } 
   }
 
-  // Check session Save path
-  $temp_dir = (isset($_ENV['TEMP'])) ? $_ENV['TEMP'] : "";
-  $session_save_path = (session_save_path() === "") ? $temp_dir : session_save_path();
-  if (strpos ($session_save_path, ";") !== FALSE) 
+  // Check session Save path (only possible if we don't have a open_basedir restriction)
+  if (!ini_get("open_basedir"))
   {
-  	$session_save_path = substr ($session_save_path, strpos ($session_save_path, ";")+1);
+    $temp_dir = (isset($_ENV['TEMP'])) ? $_ENV['TEMP'] : "";
+    $session_save_path = (session_save_path() === "") ? $temp_dir : session_save_path();
+    if (strpos ($session_save_path, ";") !== FALSE) 
+    {
+      $session_save_path = substr ($session_save_path, strpos ($session_save_path, ";")+1);
+    }
+    if(is_dir($session_save_path)) 
+    {
+      if(!is_writable($session_save_path)) 
+      {
+        $errors[]="The session save path ($session_save_path) isn't writable for the webserver.";
+      }
+    }
+    else
+    {
+      $errors[]="The session save path ($session_save_path) is not a valid directory.";
+    }
   }
-  if(is_dir($session_save_path)) 
-  {
-  	if(!is_writable($session_save_path)) 
-  	{
-  	  $errors[]="The session save path ($session_save_path) isn't writable for the webserver.";
-  	}
-  } 
-  else 
-  {
-    $errors[]="The session save path ($session_save_path) is not a valid directory.";
-  }
-
-  
-  
 
   // Achievo relies on some PHP settings. In future versions, Achievo should not
   // rely on these, but for now, we need to check the settings to verify if they
