@@ -200,7 +200,7 @@
       {
         $attendee = $db->m_record;
         $sql = "INSERT INTO scheduler_attendees (scheduler_id,person_id)
-                VALUES ('".$db2->escapeSQL($scheduler_lookup[$attendee["scheduler_id"]])."',
+                VALUES ('".$db2->escapeSQL($scheduler_lookup[$attendee["schedule_id"]])."',
                         '".$db2->escapeSQL($attendee["person_id"])."')";
         $db2->query($sql);
       }
