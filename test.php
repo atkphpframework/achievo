@@ -24,7 +24,7 @@
   include_once("atk.inc");
 
   // Require ATK authentication if not running in text mode
-  if(php_sapi_name() != "cli")
+  if(PHP_SAPI != "cli")
   {
     atksession();
     atksecure();
@@ -36,8 +36,8 @@
   // Include the Achievo extended webtestcase (features loginAchievo function)
   atkimport("test.achievowebtestcase");
 
-  // Let the atktestsuite run all test files having a name starting with "class.test_"
+  // Let the atktestsuite run the requested tests in an appropriate format
   $suite = &atknew("atk.test.atktestsuite");
-  $suite->run((php_sapi_name() != "cli") ? "html" : "text", atkArrayNvl($_REQUEST, "atkmodule"));
+  $suite->run((PHP_SAPI != "cli") ? "html" : "text", atkArrayNvl($_REQUEST, "atkmodule"));
 
 ?>
