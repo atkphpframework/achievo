@@ -125,7 +125,7 @@ class schedulertools
             switch($item["recur"])
             {
               case 'daily':
-                $interval = $unix_date - $cyclus_startdate_time;
+                $interval = $unix_date - $cyclus_startdate;
   				    	$interval_days = floor($interval/(60*60*24));
   				    	$devided = $interval_days/$item["cyclus"]["every"];
   					    $match = (int) $devided;
@@ -135,7 +135,7 @@ class schedulertools
   					    }
   				      break;
   				    case 'weekly':
-                $interval = $unix_date - $cyclus_startdate_time;
+                $interval = $unix_date - $cyclus_startdate;
   				    	$interval_weeks = floor($interval/(60*60*24*7));
   				    	$devided = $interval_weeks/$item["cyclus"]["every"];
 
