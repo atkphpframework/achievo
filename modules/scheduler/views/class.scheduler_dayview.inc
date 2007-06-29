@@ -183,7 +183,7 @@ class scheduler_dayview extends scheduler_view
     for ($i=0;$i<count($this->m_allDayHours);$i++)
     {
       $time    = $this->m_allDayHours[$i];
-      $items   = $this->m_itemMatrix[$time];
+      $items   = (array_key_exists($time,$this->m_itemMatrix)?$this->m_itemMatrix[$time]:array());
       $now     = $this->m_year."-".$this->m_month."-".$this->m_day;
       $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
       if(in_array($time,$this->m_workHours))
