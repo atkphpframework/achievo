@@ -1,197 +1,57 @@
-function setPeriod()
-{
-  input = document.getElementById("defaultperiod").value;
-  alert(input);
-
-  if (substr(input,0,3) == "tri")
-  {
-    // we deal with a trimester selection
-    trimesternr = substr(input,3,1);
-    alert(trimesternr);
-    switch (trimesternr)
-    {
-      case "1": alert("test"); break;
-    }
-  }
-
-  //date_setValue("startdate", start["y"], start["m"], start["d"]);
-  //date_setValue("enddate", start["y"], start["m"], start["d"]);
+if (!window.Achievo) {
+  var Achievo = new Object();
 }
 
-function setStartEndDates(id, name, currentdate)
-{
-  /* current date attribute inputs */
-  input = Array();
-  input["d"] = document.getElementById(id+"[day]").value;
-  input["m"] = document.getElementById(id+"[month]").value;
-  input["y"] = document.getElementById(id+"[year]").value;
+Achievo.Timereg = {
 
-  switch (eval('document.entryform.'+name+'.value'))
-  {
-    case "0":
-      break;
-    case "1":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 7, 0, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 7, 0, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "2":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 14, 0, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 14, 0, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "3":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 21, 0, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 21, 0, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "4":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 28, 0, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 28, 0, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "5":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 0, 1, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 0, 1, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "6":
-      if (id == "enddate")
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 0, 2, 0);
-        date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-      }
-      else
-      {
-        start = calculateDate(input["y"], input["m"], input["d"], 0, 2, 1);
-        date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-      }
-      break;
-    case "7":
-    if (id == "enddate")
+  /**
+   * Sets the start or enddate using the other one plus or minus a period
+   */
+  setStartEndDates: function(startdate, enddate, period, direction) {
+    // Determine the source and target attributes
+    source = (direction == -1) ? enddate : startdate;
+    target = (direction == -1) ? startdate : enddate;
+
+    // Read the date from the source attribute
+    sourcedate = Array();
+    sourcedate["day"] =   document.getElementById(source+"[day]").value;
+    sourcedate["month"] = document.getElementById(source+"[month]").value;
+    sourcedate["year"] =  document.getElementById(source+"[year]").value;
+
+    // Apply the period mutation to determine the targetdate
+    switch (period)
     {
-      start = calculateDate(input["y"], input["m"], input["d"], 0, 3, 0);
-      date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
+      case "0": break;
+      case "1": targetdate = Achievo.Timereg.calculateDate(sourcedate, 7 * direction, 0); break;
+      case "2": targetdate = Achievo.Timereg.calculateDate(sourcedate, 14 * direction, 0); break;
+      case "3": targetdate = Achievo.Timereg.calculateDate(sourcedate, 21 * direction, 0); break;
+      case "4": targetdate = Achievo.Timereg.calculateDate(sourcedate, 28 * direction, 0); break;
+      case "5": targetdate = Achievo.Timereg.calculateDate(sourcedate, 0, 1 * direction); break;
+      case "6": targetdate = Achievo.Timereg.calculateDate(sourcedate, 0, 2 * direction); break;
+      case "7": targetdate = Achievo.Timereg.calculateDate(sourcedate, 0, 3 * direction); break;
+      case "8": targetdate = Achievo.Timereg.calculateDate(sourcedate, 0, 6 * direction); break;
     }
-    else
-    {
-      start = calculateDate(input["y"], input["m"], input["d"], 0, 3, 1);
-      date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-    }
-    break;
-    case "8":
-    if (id == "enddate")
-    {
-      start = calculateDate(input["y"], input["m"], input["d"], 0, 6, 0);
-      date_setValue("startdate", start["y"], start["m"], start["d"], currentdate);
-    }
-    else
-    {
-      start = calculateDate(input["y"], input["m"], input["d"], 0, 6, 1);
-      date_setValue("enddate", start["y"], start["m"], start["d"], currentdate);
-    }
-    break;
-  }
-}
 
-/*
- * This function calculates a new date ndays or nmonths prior to or after the input date
- */
-function calculateDate(year, month, day, ndays, nmonths, after)
-{
-  var newdate = new Date(year, month-1, day);
-  if (ndays != 0)
-  {
-    if (after == 1) newdate.setDate(newdate.getDate()+ndays);
-    else newdate.setDate(newdate.getDate()-ndays);
-  }
-  else
-  {
-    if (after == 1) newdate.setMonth(newdate.getMonth()+nmonths);
-    else newdate.setMonth(newdate.getMonth()-nmonths);
-  }
+    // Set the targetdate into the target attribute
+    ATK.DateAttribute.setValue(target, targetdate);
+  },
 
-  output = Array();
-  output["d"] = newdate.getDate();
-  output["m"] = newdate.getMonth()+1;
-  output["y"] = newdate.getFullYear();
-  return output;
-}
+  /**
+   * This function calculates a new date deltadays or deltamonths prior to or after the input date
+   */
+  calculateDate: function(input, deltadays, deltamonths) {
+    // Convert the input array to a date object
+    var dateobj = new Date(input["year"], input["month"]-1, input["day"]);
 
-function date_setValue(id, year, month, day, currentdate)
-{
-  month = parseInt(month, 10); // remove leading '0'
-  day = parseInt(day, 10);
+    // Apply the mutations to the date object
+    if (deltadays != 0)   dateobj.setDate(dateobj.getDate()+deltadays);
+    if (deltamonths != 0) dateobj.setMonth(dateobj.getMonth()+deltamonths);
 
-  format = eval('atkdateattribute_'+id+'.format');
-
-  var dayel = document.getElementById(id+"[day]");
-  var monthel = document.getElementById(id+"[month]");
-  var yearel = document.getElementById(id+"[year]");
-
-  // set year
-  yearel.value = year;
-
-  // I need to call this to calculate the correct months and days
-  // after setting the year.
-  // TODO FIXME: I don't have the arr ('enddate') and format parameters here!!
-  AdjustDate(yearel, id, format, 0, 0, false);
-
-  // set month
-  for (i=0; i<monthel.options.length;  i++)
-  {
-    if (monthel.options[i].value==month)
-    {
-      monthel.selectedIndex = i;
-    }
-  }
-
-  // I need to call this to calculate the correct days
-  // after setting the month.
-  // TODO FIXME: !!
-  AdjustDate(monthel, id, format, 0, currentdate, false);
-
-  // set day
-  for (i=0; i<dayel.options.length;  i++)
-  {
-    if (dayel.options[i].value==day)
-    {
-      dayel.selectedIndex = i;
-    }
+    // Convert the date object back to an array
+    output = Array();
+    output["day"] =   dateobj.getDate();
+    output["month"] = dateobj.getMonth()+1;
+    output["year"] =  dateobj.getFullYear();
+    return output;
   }
 }
