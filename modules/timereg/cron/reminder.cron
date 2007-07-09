@@ -137,8 +137,10 @@
 
     if ($to!="")
     {      
-      usermail($to,atktext("timeguard_mail_subject"),$body, $cc);
-      echo "sent mail to $to";
+      if (usermail($to,atkText("timeguard_mail_subject"),$body,$cc))
+          echo "Sent mail to $to";
+      else
+          echo "Failed sending mail to $to";
       if ($cc!="") echo " and a cc to $cc";
       echo "\n";
     }
