@@ -179,7 +179,7 @@
     {
       if ($this->m_view == "filtered")
       {
-        $this->addFilter("(quotation_quotation.status NOT IN ('rejected', 'prepaidcompleted', 'billed') OR quotation_quotation.status is null)");
+        $this->addFilter("(quotation_quotation.status NOT IN ('rejected', 'prepaidcompleted', 'billed', 'accepted', 'completed') OR quotation_quotation.status is null)");
       }
       return $handler->action_admin();
     }

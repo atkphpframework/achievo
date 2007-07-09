@@ -19,7 +19,7 @@
   "menu_quotation" => "Offertes",
   "quotation" => "Offerte",
   "quotation_accepted" => "Akkoord",
-  "quotation_archiveexplanation" => "Standaard worden afgeronde (gefactureerd of afgewezen) offertes verborgen.",
+  "quotation_archiveexplanation" => "Standaard worden afgeronde (gefactureerd, uitgevoerd, gefactureerd of afgewezen) offertes verborgen.",
   "quotation_billed" => "Gefactureerd",
   "quotation_called" => "Nagebeld, nog afwachten",
   "quotation_completed" => "Uitgevoerd",
