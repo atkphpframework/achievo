@@ -31,7 +31,7 @@ class contracts extends atkNode
 
   function contracts()
   {
-    $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD);
+    $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD | NF_EXPORT);
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE|AF_FORCE_LOAD, 20));
@@ -64,6 +64,7 @@ class contracts extends atkNode
 
     //The linkproject action is allowed by all
     $this->addAllowedAction("linkproject");
+    $this->addSecurityMap("export", "admin");
 
     $this->setTable("contract","contract");
     $this->setOrder("contract.startdate");
