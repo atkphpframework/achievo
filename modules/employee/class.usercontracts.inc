@@ -17,7 +17,7 @@ class usercontracts extends atkNode
     $m_arr_minute_step = array();
     for($i=0;$i<60;$i+=5) $m_arr_minute_step[] = sprintf("%02d",$i);
 
-    $this->atkNode("usercontracts"); // this is a support module who's called directly
+    $this->atkNode("usercontracts", NF_TRACK_CHANGES); // this is a support module who's called directly
 
     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY|AF_OBLIGATORY));
@@ -33,6 +33,17 @@ class usercontracts extends atkNode
     $this->setOrder("usercontract.id");
     $this->setDescriptorTemplate("[uc_hours] " . $this->text("hours"));
   }
+
+  function resetOvertimeBalance($record)
+  {
+    atkImport("module.utils.dateutil");
+    $balancenode = &atkGetNode("timereg.overtime_balance");
+    $balancenode->deleteBalance($record["userid"]["id"], dateutil::arr2str($record["startdate"], "Y-m-d"));
+  }
+
+  function postAdd($record)    { $this->resetOvertimeBalance($record); return true; }
+  function postUpdate($record) { $this->resetOvertimeBalance($record); $this->resetOvertimeBalance($record["atkorgrec"]); return true; }
+  function postDelete($record) { $this->resetOvertimeBalance($record); return true; }
 
   function initial_values()
   {

@@ -22,10 +22,10 @@
       return floor(($d2-$d1)/(60*60*24));
     }
 
-    function arr2str($arrdate)
+    function arr2str($arrdate, $format="Ymd")
     {
       if (!is_array($arrdate)) return "";
-      return sprintf("%04d%02d%02d", $arrdate["year"], $arrdate["month"], $arrdate["day"]);
+      return dateutil::stamp2str(dateutil::arr2stamp($arrdate), $format);
     }
 
     function str2arr($strdate)
@@ -43,9 +43,9 @@
       return adodb_mktime(12,0,0,$arrdate["month"],$arrdate["day"],$arrdate["year"]);
     }
 
-    function stamp2str($timestamp)
+    function stamp2str($timestamp, $format="Ymd")
     {
-      return date("Ymd", $timestamp);
+      return date($format, $timestamp);
     }
 
     function stamp2arr($timestamp)

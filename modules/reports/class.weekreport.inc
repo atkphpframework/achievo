@@ -3,6 +3,7 @@
 include_once("achievotools.inc");
 
 useattrib("atkdateattribute");
+atkImport("modules.utils.dateutil");
 
 define("ONEDAY", 24*60*60);
 define("ONEWEEK", 7*ONEDAY);
@@ -12,7 +13,7 @@ class timeDisplayAttribute extends atkAttribute
   function display($rec)
   {
     $time = $rec[$this->fieldName()];
-    if ($time==0) return "";
+    if (is_null($time==0)) return "";
     if ($time < 0) return sprintf("-%02d",(floor(abs($time)/60))).':'.sprintf("%02d",(abs($time)%60));
     return sprintf("%02d",floor($time/60)).':'.sprintf("%02d",$time%60);
   }
@@ -95,7 +96,7 @@ class weekreport extends atkNode
 
   function getOvertimeCompensationActivities()
   {
-    if($this->m_overtimeActivities != null)
+    if($this->m_overtimeActivities !== null)
       return;
 
     /* @var $db atkDb */
@@ -328,6 +329,28 @@ class weekreport extends atkNode
     return $db->getrows($query);
   }
 
+  function getStartdate()
+  {
+    $sessionmanager = &atkGetSessionManager();
+    $startdate = $sessionmanager->pageVar("startdate");
+    if (!isset($startdate)||$startdate=="")	$startdate =  date("Ymd" ,time()-(86400*7));
+    if (is_string($startdate)) $startdate = str_replace("-", "", $startdate);
+    if (is_array($startdate)) $startdate = dateutil::arr2str($startdate);
+    $startdate = dateutil::startOfWeek($startdate);
+    return dateutil::arr2str(dateutil::str2arr($startdate), "Y-m-d");
+  }
+
+  function getEnddate()
+  {
+    $sessionmanager = &atkGetSessionManager();
+    $enddate = $sessionmanager->pageVar("enddate");
+    if (!isset($enddate)||$enddate=="")	$enddate =  date("Ymd");
+    if (is_string($enddate)) $enddate = str_replace("-", "", $enddate);
+    if (is_array($enddate)) $enddate = dateutil::arr2str($enddate);
+    $enddate = dateutil::endOfWeek($enddate);
+    return dateutil::arr2str(dateutil::str2arr($enddate), "Y-m-d");
+  }
+
   function action_report(&$handler)
 	{
     global $g_securityManager, $g_user, $g_sessionManager;
@@ -376,27 +399,8 @@ class weekreport extends atkNode
     else
       $view_level = false;
 
-    $startdate = $g_sessionManager->pageVar("startdate");
-    $enddate = $g_sessionManager->pageVar("enddate");
-
-    if (is_array($startdate) && !empty($startdate["day"]) && !empty($startdate["month"]) && !empty($startdate["year"]) && isset($startdate) && $startdate!="")
-    {
-      $startdate = $startdate["year"]."-".sprintf("%02d",$startdate["month"])."-".sprintf("%02d",$startdate["day"]);
-    }
-    else
-    {
-      $startdate =  date("Y-m-d" ,time()-(86400*7));
-    }
-
-    if (is_array($enddate) && !empty($enddate["day"]) && !empty($enddate["month"]) && !empty($enddate["year"]) && isset($enddate) && $enddate!="")
-    {
-      $enddate = $enddate["year"]."-".sprintf("%02d",$enddate["month"])."-".sprintf("%02d",$enddate["day"]);
-    }
-    else
-    {
-      $enddate = date('Y-m-d');
-    }
-
+    $startdate = $this->getStartdate();
+    $enddate = $this->getEnddate();
     if (!isset($userid)||$userid=="")   			$userid=$g_user["id"];
     if (!isset($employeeswitch)||$employeeswitch=="")	$employeeswitch="name";
     if (!isset($showstatus)||$showstatus=="") $showstatus = "both";
@@ -420,12 +424,6 @@ class weekreport extends atkNode
                                          "month"=>substr($enddate,5,2),
                                         "day"=>substr($enddate,8,2)));
 
-//      $nameswitch = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($employeeswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>';
-
-//      if($view_all)
-//      {
-//        $users='<SELECT name="userid">'.$this->get_employees($userid).'</SELECT>';
-//      }
       if($view_all)
       {
         $nameswitch = '<SELECT name="nameswitch"><OPTION VALUE="name">'.atktext("name").': <OPTION VALUE="supervisor" '.($employeeswitch=="supervisor"?"selected":"").'>'.atktext("supervisor").': </SELECT>';
@@ -541,11 +539,26 @@ class weekreport extends atkNode
       $report_start_week = weekstamp($startstamp);
       $report_end_week = weekstamp($endstamp);
 
-      // determine contracthours per week..
-      $contracts = $repUtils->getContractHours($employeeswitch, $userid, $enddate, $startdate, $functionlevelswitch, $lowerlevels);
+      // determine employee names and contracts..
+      $query = "SELECT
+                  id, lastname, firstname
+                FROM
+                  person
+                 ";
+      if ($employeeswitch=="supervisor" && $userid!="all")
+      {
+        $query.= "WHERE supervisor = '".$userid."'";
+      }
+      if ($employeeswitch=="name" && $userid!="all")
+      {
+        $query.= "WHERE id = '".$userid."'";
+      }
+      $db = &atkGetDb();
+      $persons = $db->getrows($query);
 
       $end = endOfWeek(date("Y-m-d", $endstamp));
       $newendstamp = adodb_mktime(0,0,0,substr($end,5,2),substr($end,8,2)+1,substr($end,0,4));
+      $balancenode = &atkGetNode("timereg.overtime_balance");
       for ($j=$startstamp;$j<=$newendstamp;$j+=ONEWEEK)
       {
         $weekstamp = weekstamp($j);
@@ -556,18 +569,13 @@ class weekreport extends atkNode
                                substr($weekdata[$weekstamp]["enddate"],0,2),
                                substr($weekdata[$weekstamp]["enddate"],6,4)));
         $weekdata[$weekstamp]["period"] = $weekstamp;
-        for ($i=0;$i<count($contracts);$i++)
+        foreach($persons as $person)
         {
-          if ($contracts[$i]["startdate"] <= $start_week && ($contracts[$i]["enddate"] >= $start_week || $contracts[$i]["enddate"]==NULL))
-          {
-            $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["contract"] += $contracts[$i]["uc_hours"]*60;
-          }
-
-          $weekdata[$weekstamp]["userdata"][$contracts[$i]["id"]]["name"] = $contracts[$i]["lastname"].", ".$contracts[$i]["firstname"];
+          $weekdata[$weekstamp]["userdata"][$person["id"]]["name"] = $person["lastname"].", ".$person["firstname"];
+          $weekdata[$weekstamp]["userdata"][$person["id"]]["contract"] += ($balancenode->getContractHours($start_week, $end_week, $person["id"]) * 60);
         }
       }
 
-      $db = &atkGetDb();
       $periods      = $db->getRows("SELECT * FROM workperiod");
       $periodids = array();
       foreach($periods as $period)
@@ -626,7 +634,6 @@ class weekreport extends atkNode
       }
 
       $locks = $this->getLocks($employeeswitch, $userid, $report_start_week, $report_end_week);
-      atk_var_dump($locks,"LOCKS");
 
       for($i=0,$_i=count($locks);$i<$_i;$i++)
       {
@@ -658,7 +665,6 @@ class weekreport extends atkNode
       // by recordlist functions.
       // we also need to calculate some numbers.
       $rldata = array();
-      $balancenode = &atkGetNode("timereg.overtime_balance");
       foreach ($weekdata as $weeknr => $data)
       {
         $record = array();
@@ -751,6 +757,50 @@ class weekreport extends atkNode
       }
       if ($employeeswitch=="name" && $userid!="all") $suppress[] = "userid";
 
+//OVERTIMEBALANCEDEBUGGING START
+if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebugging") && atkConfig("debug") > 0)
+{
+  atkimport("modules.utils.dateutil",false);
+  $predate = $rldata[0]["enddate"];
+  $prestamp = date("Y-m-d", adodb_mktime(0,0,0,substr($rldata[0]["enddate"],3,2),substr($rldata[0]["enddate"],0,2),substr($rldata[0]["enddate"],6,4))  - (7 * 86400));
+  $prebalance = $balancenode->getBalance($prestamp, $userid);
+  $totalhours = 0;
+  $totalcontract = 0;
+  $prevbalance = $prebalance["balance"];
+
+  foreach($rldata as $rec)
+  {
+    $totalhours += $rec["total"];
+    $totalcontract += $rec["contract"];
+    $week = $rec["period"];
+    $shouldhaveovertime = $rec["total"] - $rec["contract"];
+    if (round($shouldhaveovertime) != round($rec["overtime"]))
+    {
+      atkerror("In week $week, overtime should be $shouldhaveovertime");
+    }
+    if (isset($prevbalance))
+    {
+      $diff = ($rec["balance"]["balance"] - $prevbalance) * 60;
+      if (round($shouldhaveovertime) != round($diff))
+      {
+        atkerror("In week $week, the balance should be $shouldhaveovertime higher than the previous balance ".($prevbalance*60).", but it is $diff higher");
+      }
+      if (round(($prevbalance * 60) + $shouldhaveovertime) != round($rec["balance"]["balance"] * 60))
+      {
+        atkerror("In week $week, the balance should be " . ($prevbalance * 60) . " + " . $shouldhaveovertime . " = " . (($prevbalance * 60) + $shouldhaveovertime) . " but it is calculated to be " . ($rec["balance"]["balance"] * 60));
+      }
+    }
+    $prevbalance = $rec["balance"]["balance"];
+  }
+  $postbalance = $rldata[count($rldata)-1]["balance"];
+  $balancediff = $postbalance["balance"] - $prebalance["balance"];
+  $shouldhavebalancediff = $totalhours - $totalcontract;
+  if (round($shouldhavebalancediff) != round($balancediff * 60))
+  {
+    atkerror("Overall balance mutation should be $totalhours - $totalcontract = $shouldhavebalancediff, but it is " . ($balancediff * 60));
+  }
+}
+//OVERTIMEBALANCEDEBUGGING END
       if ($outputType=="0")
       {
         if ($userid!="all")
@@ -767,7 +817,7 @@ class weekreport extends atkNode
           }
           $data = array();
           $data[] = array($label.": ",$emprec["lastname"].", ".$emprec["firstname"]);
-          $data[] = array(atktext("email"),$emprec["email"]);
+          $data[] = array(atktext("email").": ",$emprec["email"]);
         }
         $tbl = &atknew("atk.utils.atktablerenderer");
         $output = $tbl->render($data);

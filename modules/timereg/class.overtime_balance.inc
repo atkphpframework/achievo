@@ -159,6 +159,7 @@
     function addOvertimeBalance($userid, $day, $balance)
     {
 $this->debuglog(array("function"=>"addOvertimeBalance","userid"=>$userid, "day"=>$day, "balance"=>$balance));
+      if (strftime("%w", adodb_mktime(0,0,0,substr($day,5,2),substr($day,8,2),substr($day,0,4))) != 0) return;
       $db = &atkGetDb();
       $newid = $db->nextid("overtime_balance");
       $db->query("INSERT INTO overtime_balance (id, userid, day, balance, manual)
@@ -168,6 +169,7 @@ $this->debuglog(array("function"=>"addOvertimeBalance","userid"=>$userid, "day"=
     function saveOvertimeBalance($userid, $day, $balance)
     {
 $this->debuglog(array("function"=>"saveOvertimeBalance","userid"=>$userid, "day"=>$day, "balance"=>$balance));
+      if (strftime("%w", adodb_mktime(0,0,0,substr($day,5,2),substr($day,8,2),substr($day,0,4))) != 0) return;
       $db = &atkGetDb();
       $sql = "UPDATE overtime_balance SET balance = $balance WHERE userid = '$userid' AND day = '$day'";
       $db->query($sql);
@@ -175,17 +177,13 @@ $this->debuglog(array("function"=>"saveOvertimeBalance","userid"=>$userid, "day"
 
     function getPercentage($id)
     {
-      $db = &atkGetDb();
-      if ($id!="")
-      {
-        $result = $db->getRows("SELECT percentage FROM workperiod WHERE id = ".$id);
-      }
-      return (count($result) ? $result[0]["percentage"] : 100);
+      return atkArrayNvl($this->getPercentages(), $id, 100);
     }
 
     function updateOvertimeBalance($userid, $day, $balance)
     {
 $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "day"=>$day, "balance"=>$balance));
+      if (strftime("%w", adodb_mktime(0,0,0,substr($day,5,2),substr($day,8,2),substr($day,0,4))) != 0) return;
       $db = &atkGetDb();
       $recs = $db->getrows("SELECT id FROM overtime_balance WHERE userid = '$userid' AND day = '$day'");
       if (!count($recs))
@@ -207,7 +205,6 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
       $percentages = $this->getPercentages();
       $overtimeids = $this->getOvertimeCompensationActivities();
       $contracthours = $this->getContractHours($begin, $end, $userid);
-
       $hours = $this->getUserHours($begin, $end, $userid);
 
       $total = 0;
@@ -234,21 +231,29 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
 
     function getPercentages()
     {
+      static $s_percentages;
+
+      if (isset($s_percentages)) return $s_percentages;
+
       $db = &atkGetDb();
       $res = $db->getRows("SELECT id, percentage FROM workperiod");
-      $result = array();
+      $s_percentages = array();
       for ($i=0;$i<count($res);$i++)
       {
-        $result[$res[$i]["id"]] = $res[$i]["percentage"]/100;
+        $s_percentages[$res[$i]["id"]] = $res[$i]["percentage"]/100;
       }
-      return $result;
+      return $s_percentages;
     }
 
     function getOvertimeCompensationActivities()
     {
+      static $s_overtimecompact;
+
+      if (isset($s_overtimecompact)) return $s_overtimecompact;
+
       $db = &atkGetDb();
-      $res = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
-      return $res;
+      $s_overtimecompact = $db->getrows("SELECT id FROM activity WHERE overtimecompensation = 1");
+      return $s_overtimecompact;
     }
 
     function isOvertimeCompensationActivity($id, $overtimeactivities)
