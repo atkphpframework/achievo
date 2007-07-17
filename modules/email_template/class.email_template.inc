@@ -54,6 +54,8 @@ class email_template extends atkNode
    * @var string
    */
   var $m_from_name = "";
+  
+  var $m_customReceiver = "";
 
   /**
    * Array with all the data we need for the template
@@ -229,16 +231,26 @@ class email_template extends atkNode
    * Get user name and email
    *
    * @return mixed An array with the username and email or else false
-   * @todo implement correct return of user array
    */
   function _getUser()
   {
     if($this->m_user_id!="")
     {
-      return array("email"=>"sandy@generation-msx.nl",
-                    "name"=>"Sandy Pleyte");
+      $sql = "SELECT email, firstname, lastname FROM person WHERE id='".$this->m_user_id."'";
+      $db = &atkGetDb();
+      $nrow = $db->getrows($sql);
+      if(count($nrow)==1)
+      {
+        return array("email"=>$nrow[0]["email"],
+                    "name"=>$nrow[0]["firstname"]." ".$nrow[0]["lastname"]);
+      }
     }
     return false;
+  }
+  
+  function setCustomerReceiver($email,$username)
+  {
+    $this->m_customReceiver = array("email"=>$email,"name"=>$username);
   }
 
   /**
@@ -256,11 +268,19 @@ class email_template extends atkNode
 
       $mail->From     = $this->m_from_email;
       $mail->FromName = $this->m_from_name;
-      $mail->AddAddress($user["email"], $user["name"]);
+      if(is_array($this->m_customReceiver))
+      {
+        $mail->AddAddress($this->m_customReceiver["email"],$this->m_customReceiver["name"]);
+      }
+      else 
+      {
+        $mail->AddAddress($user["email"], $user["name"]);
+      }
       $mail->Subject  = $this->_getSubject();
       $mail->isHTML(true);
       $mail->Body     = $this->_getHtmlBody();
       $mail->AltBody  = $this->_getPlainBody();
+      atkdebug("SEND MAIL:<hr>".$mail->Body."<hr>");
       $ret = $mail->Send();
       return $ret;
     }
