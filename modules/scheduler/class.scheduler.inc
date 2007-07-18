@@ -91,10 +91,10 @@
       $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"));
-      $this->add($recur_attr = new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
+      $recur_attr = &$this->add(new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
       $this->add(new atkDateAttribute("startdate", "F d Y","d F Y", 0, 0));
       $this->add(new atkDateAttribute("enddate", "F d Y","d F Y", 0, 0));
-      $this->add($allday_attr = new atkBoolAttribute("allday"));
+      $allday_attr = &$this->add(new atkBoolAttribute("allday"));
       $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, 0));
       $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_CASCADE_DELETE),"cyclus");
@@ -718,14 +718,14 @@
       $this->removeSchedulerDates($rec);
       return true;
     }
-    
+
     function preDelete($rec)
     {
       $this->sendEmail($rec);
       $this->deleteAttendees($rec);
       return true;
     }
-    
+
     /**
      * Send email to all attendees except the owner
      * that the meeting is canceld
@@ -759,7 +759,7 @@
       {
         $attendee_node->deleteDb("scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
       }
-      
+
     }
 
     function storeEmployees($rec, $attendees)
@@ -770,7 +770,7 @@
     {
       return $this->storeAttendees($rec,$attendees,"contact");
     }
-    
+
     function storeAttendees($rec,$attendees,$role)
     {
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
@@ -780,7 +780,7 @@
           $execTrigger=false;
           $status="accepted";
         }
-        else 
+        else
         {
           $execTrigger=true;
           $status="no_response";
@@ -792,9 +792,9 @@
 
     function _addAttendeeRecord($scheduler_id, $person_id,$role,$status="no_response",$execTrigger=true)
     {
-      
+
       $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
-      
+
       $total = $attendee_node->countDb("scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
       if($total==0)
       {
