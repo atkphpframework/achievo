@@ -41,8 +41,9 @@
     var $m_minute_step = 5;
 
 
-    function scheduler()
+    function scheduler($type = "scheduler", $flags = 0)
     {
+      $flags |= NF_ADD_LINK|NF_TRACK_CHANGES;
       $sessionmanager = &atkGetSessionManager();
       $this->m_view = $sessionmanager->pageVar("view");
       $this->m_viewUser = $sessionmanager->pageVar("user");
@@ -80,7 +81,7 @@
         $default_end_time = strftime("%H:%M", mktime(substr($default_start_time,0,2),substr($default_start_time,3,2)+$user_eventtime));
       }
 
-      $this->atkNode("scheduler", NF_ADD_LINK|NF_TRACK_CHANGES);
+      $this->atkNode($type, $flags);
 
       $this->add(new atkAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("title", AF_SEARCHABLE|AF_OBLIGATORY, 50));
