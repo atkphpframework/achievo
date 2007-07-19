@@ -23,22 +23,21 @@
     function projectFilter()
     {
       $this->atkAttribute("projectfilter", AF_HIDE|AF_FORCE_LOAD);
-
     }
 
     function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level, $mode)
     {
+      if ($mode != 'select') return;
+
       global $g_securityManager;
       if (!$g_securityManager->allowed("timereg.hours", "any_project"))
       {
         $user = getUser();
-        $query->addJoin("project_person", "members", "members.projectid = project.id", true);
+        $query->addJoin("project_person", "members", "members.projectid = $tablename.id", true);
         $query->addGroupBy("project.id");
-        $query->addCondition("(members.personid = ".$user["id"]." OR project.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")
-                              OR
-                              (project.coordinator = ".$user["id"].")");
+        $query->addCondition("(members.personid = ".$user["id"]." OR $tablename.timereg_limit=".PRJ_TIMEREG_ALL_USERS.")");
       }
-      $query->addCondition("project.status='active'");
+      $query->addCondition("$tablename.status='active'");
     }
   }
 
