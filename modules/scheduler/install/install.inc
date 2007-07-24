@@ -10,7 +10,7 @@
   $setup->installNode("scheduler.scheduler_userassistants");
   $setup->installNode("scheduler.scheduler_dates");
   $setup->installNode("scheduler.scheduler_alarms");
-  
+
   // Insert the email templates we use for the scheduler
   $et = &atkGetNode('email_template.email_template');
   $templates = array();
@@ -56,7 +56,7 @@
                        'plain_body'=>'Here is your requested alarm.',
                        'html_body'=>'Here is your requested alarm.',
                        'lastupdatedon'=>date("Y-m-d H:i:s"));
-  
+
   foreach($templates as $record)
     $et->addDb($record);
 
@@ -65,20 +65,20 @@
 
   // Check if there exists a module calendar in the versioninfo
   // table. Ifso we need to convert the data
-  
+
   $sql = "SELECT * FROM versioninfo WHERE module='calendar'";
   $nrows = $db->getrows($sql);
-  
+
   if(count($nrows)>0)
   {
-      
-      
+
+
       // Convert data from calendar
       // This can take some time, set debug to -1 to speed up the process
       // with 100% because it doens't write debug anymore.
-    
+
       set_time_limit(0);
-    
+
       // Clone the db because we need 2 instances.
       if(version_compare(phpversion(), "5.0.0")>=0)
       {
@@ -96,9 +96,9 @@
       // Convert scheduler types
       $sql = "SELECT * FROM schedule_type";
       $types = $db->getrows($sql);
-    
+
       $type_lookup = array();
-    
+
       for($i=0,$_i=count($types);$i<$_i;$i++)
       {
         $next_id = $db->nextid("scheduler_category");
@@ -111,17 +111,17 @@
         $type_lookup[$types[$i]["id"]]=$next_id;
       }
       unset($types);
-    
+
       // Convert scheduler events
       $sql = "SELECT * FROM schedule";
       $db->query($sql);
-    
+
       while($db->next_record())
       {
         $rec = $db->m_record;
-    
+
         $next_id = $db2->nextid("scheduler_scheduler");
-    
+
         $sql = "INSERT INTO scheduler_scheduler (id,title,location,description,recur,startdate,enddate,starttime,endtime,allday,private,owner,all_users,category)
                 VALUES ($next_id,
                         '".$db2->escapeSQL($rec["title"])."',
@@ -137,11 +137,11 @@
                         '".$db2->escapeSQL($rec["owner"])."',
                         '".$db2->escapeSQL($rec["all_users"])."',
                         '".$db2->escapeSQL($type_lookup[$rec["scheduletype"]])."')";
-    
+
         $db2->query($sql);
         $scheduler_lookup[$rec["id"]]=$next_id;
         // Create dates records
-    
+
         $tmp_rec = array("recur"=>"once",
                          "startdate"=>array("day"=>substr($rec["startdate"],8,2),
                                             "month"=>substr($rec["startdate"],5,2),
@@ -162,22 +162,22 @@
           $tmp_start = mktime($tmp_rec["starttime"]["hours"],$tmp_rec["starttime"]["minutes"],$tmp_rec["starttime"]["seconds"],$tmp_rec["startdate"]["month"],$tmp_rec["startdate"]["day"],$tmp_rec["startdate"]["year"]);
           $tmp_end = mktime($tmp_rec["endtime"]["hours"],$tmp_rec["endtime"]["minutes"],$tmp_rec["endtime"]["seconds"],$tmp_rec["enddate"]["month"],$tmp_rec["enddate"]["day"],$tmp_rec["enddate"]["year"]);
           $duration = $tmp_end-$tmp_start;
-    
+
           $startdate = mktime($tmp_rec["starttime"]["hours"],$tmp_rec["starttime"]["minutes"],$tmp_rec["starttime"]["seconds"],substr($date,5,2),substr($date,8,2),substr($date,0,4));
           $enddate = $startdate+$duration;
-    
-    
+
+
           $sql = "INSERT INTO scheduler_dates (scheduler_id,startdate,enddate) VALUES ('$next_id','$startdate','$enddate')";
           $db2->query($sql);
         }
         $sql = "UPDATE scheduler_scheduler SET lastdate = '$enddate' WHERE id='$next_id'";
         $db2->query($sql);
-    
+
       }
       // Convert scheduler notes
       $sql = "SELECT * FROM schedule_note";
       $notes = $db->getrows($sql);
-    
+
       for($i=0,$_i=count($notes);$i<$_i;$i++)
       {
         $next_id = $db->nextid("scheduler_notes");
@@ -191,11 +191,11 @@
         $db->query($sql);
       }
       unset($notes);
-    
+
       // Convert scheduler attendees
       $sql = "SELECT * FROM schedule_attendee";
       $db->query($sql);
-    
+
       while($db->next_record())
       {
         $attendee = $db->m_record;
@@ -205,9 +205,18 @@
                         'accepted')";
         $db2->query($sql);
       }
-    
+
       unset($type_lookup);
       unset($scheduler_lookup);
+
+      // Copy accessrights from the calendar module
+      $db->query("UPDATE accessright SET node='scheduler.scheduler' WHERE node='calendar.schedule' AND action IN ('admin','add','edit','delete')");
+      $db->query("DELETE FROM accessright WHERE node='calendar.schedule' AND action NOT IN ('admin','add','edit','delete')");
+      $db->query("UPDATE accessright SET node='scheduler.scheduler_category' WHERE node='calendar.schedule_types' AND action IN ('admin','add','edit','delete')");
+      $db->query("DELETE FROM accessright WHERE node='calendar.schedule_types' AND action NOT IN ('admin','add','edit','delete')");
+      $db->query("UPDATE accessright SET node='scheduler.scheduler_holidays' WHERE node='calendar.holidays' AND action IN ('admin','add','edit','delete')");
+      $db->query("DELETE FROM accessright WHERE node='calendar.holidays' AND action NOT IN ('admin','add','edit','delete')");
+
       $config_debug=$debug_old;
       atkdebug("Turn on debugging again in the scheduler patch");
   }
