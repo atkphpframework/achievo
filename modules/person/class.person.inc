@@ -47,12 +47,12 @@ class person extends atkNode
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_HIDE, 15)); //discriminator
     $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
-    $this->m_securityMap["vcard"] = "view";
 
+    $this->addSecurityMap("vcard", "view");
     $this->setTable("person", "person");
     $this->setOrder("person.role, person.lastname");
     $this->setIndex("lastname");
-    $this->setDescriptorTemplate("[lastname], [firstname] ([role])");
+    $this->setDescriptorTemplate("[title_id.title] [lastname], [firstname] ([role])");
   }
 
   function lastname_display($record, $mode)

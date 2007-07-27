@@ -35,7 +35,8 @@ class contact extends person
       $this->add(new atkBoolAttribute("eligible",AF_HIDE_LIST|AF_HIDE_ADD));
     }
     $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST));
-    $this->m_securityMap["document"] = "view";
+    $this->addSecurityMap("document", "view");
+    $this->setDescriptorTemplate("[title_id.title] [lastname], [firstname]");
   }
 
   function assignDocumentVars(&$documentWriter, $selector)
@@ -64,11 +65,6 @@ class contact extends person
   {
     $initial["role"] = "contact";
     return $initial;
-  }
-
-  function descriptor_def()
-  {
-    return "[lastname], [firstname]";
   }
 
   function postDelete($record)
