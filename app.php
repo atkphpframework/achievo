@@ -48,6 +48,7 @@
   {
     $destination = "dispatch.php?atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
     if (isset($ATK_VARS["atkselector"])) $destination.="&atkselector=".$ATK_VARS["atkselector"];
+    if (isset($ATK_VARS["searchstring"])) $destination.="&searchstring=".$ATK_VARS["searchstring"];
   }
   else
   {
