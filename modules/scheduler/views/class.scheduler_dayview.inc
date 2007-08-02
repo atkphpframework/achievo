@@ -231,11 +231,11 @@ class scheduler_dayview extends scheduler_view
       {
         for ($j=0;$j<$cols;$j++)
         {
-          $item      = $items[$j];
-          $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
-          $info      = $this->m_matrixInfo[$time][$j]["info"];
+          $item      = (array_key_exists($j,$items)?$items[$j]:'');
           if(trim($item) != "")
           {
+            $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
+            $info      = $this->m_matrixInfo[$time][$j]["info"];
             if ($timeLap != 0)
             {
 
