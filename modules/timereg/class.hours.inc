@@ -232,7 +232,7 @@ class hours extends atkNode
 
     //phaseid must be added before the project id to make sure the join works
     //we need the projectid to sort on
-    $phase = &new atkManyToOneRelation("phaseid","project.phase",AF_OBLIGATORY|AF_FORCE_LOAD);
+    $phase = &new atkManyToOneRelation("phaseid","project.phaseselector",AF_OBLIGATORY|AF_FORCE_LOAD);
     $phase->setDestinationFilter("phase.projectid='[projectid.id]'");
     $oneActivity = (projectutils::getActivityCount() == 1);
     if(!$oneActivity)

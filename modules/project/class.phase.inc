@@ -28,12 +28,12 @@
 
   class phase extends atkNode
   {
-    function phase()
+    function phase($name="phase", $flags=0)
     {
       $securitymanager = &atkGetSecurityManager();
       $initialplanningallowed = isset($securitymanager) && $securitymanager->allowed("project.project","initialplanning");
 
-      $this->atkNode("phase",NF_AUTOSELECT|NF_EDITAFTERADD); // node() constructor is *not* called automatically!
+      $this->atkNode($name,$flags|NF_AUTOSELECT|NF_EDITAFTERADD); // node() constructor is *not* called automatically!
 
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
