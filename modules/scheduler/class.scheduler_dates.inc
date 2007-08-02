@@ -11,6 +11,7 @@ class scheduler_dates extends atkNode
     $this->add(new atkNumberAttribute("startdate",AF_PRIMARY));
     $this->add(new atkNumberAttribute("enddate"));
     $this->setTable("scheduler_dates");
+    $this->setSecurityAlias("scheduler.scheduler");
   }
 }
 
