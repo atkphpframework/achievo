@@ -527,10 +527,7 @@ class hours extends atkNode
    */
   function updatesessionrecordviewdate()
   {
-    //we override the atkformadata value of activity date to make sure it keeps using our own m_viewdate
-    // attribute.
-    if (isset($this->m_postvars["atkformdata"]["activitydate"]))
-      $this->m_postvars["atkformdata"]["activitydate"] = $this->getInitialDate();
+    $this->m_postvars["activitydate"] = $this->getInitialDate();
   }
 
   // override the admin action, because we have the weekview/dayview switch..
