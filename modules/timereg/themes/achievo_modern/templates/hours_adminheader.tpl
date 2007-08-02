@@ -1,4 +1,4 @@
-<form name="dayview" method="post" action="dispatch.php" style="position: relative;">
+<form name="dayview" method="post" action="{$dispatch}" style="position: relative;">
 {$sessionform}
 <table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">
   <tr>
