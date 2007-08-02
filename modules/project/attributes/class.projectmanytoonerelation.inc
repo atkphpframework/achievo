@@ -153,9 +153,11 @@
       }
 
       $query->addGroupBy("hours.phaseid");
+      
+      $query->addOrderBy("hours.activitydate DESC");
 
       $arr = $db->getrows($query->buildSelect(true),'0',$GLOBALS["config_numberofrecentprojects"]);
-
+      
       $newsel = $this->getHtmlId("");
       $newarr = array();
 
