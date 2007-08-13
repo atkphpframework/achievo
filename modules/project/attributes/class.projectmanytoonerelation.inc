@@ -140,12 +140,16 @@
       $query = $db->createQuery();
 
       $query->addTable("hours");
-      $query->addField("id","","project");
-      $query->addField("MAX(hours.activitydate)");
-      $query->addJoin("phase","","hours.phaseid=phase.id",true);
-      $query->addJoin("project","","phase.projectid=project.id",true);
+
+      // Magic Peter Code (tm) to get around a mysql3 limitation 
+      // that doesn't allow us to use subqueries, which would normally
+      // be needed to solve this particular set of distinct/order by 
+      // requirements.
+      $query->addField("ROUND(SUM(project.id) / COUNT(project.id)) as id");
+      $query->addJoin("phase","","hours.phaseid=phase.id",false);
+      $query->addJoin("project","","phase.projectid=project.id",false);
       $query->addCondition("hours.userid='{$this->m_userid}'");
-      $query->addCondition("project.status='active'");
+      $query->addCondition("project.status='active'");     
 
       if (!$g_securityManager->allowed("timereg.hours", "any_project"))
       {
@@ -154,7 +158,6 @@
       }
 
       $query->addGroupBy("project.id");
-      
       $query->addOrderBy("hours.activitydate DESC");
 
       $arr = $db->getrows($query->buildSelect(false),'0',$GLOBALS["config_numberofrecentprojects"]);
