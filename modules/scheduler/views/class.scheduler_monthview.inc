@@ -19,13 +19,13 @@ class scheduler_monthview extends scheduler_view
   function _getNav()
   {
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month-1, 1, $this->m_year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$prevTime&user=".$this->m_viewUser;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$prevTime";
 
     $thisTime = date("Y-m")."-1";
-    $thisUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$thisTime&user=".$this->m_viewUser;
+    $thisUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$thisTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month+1, 1, $this->m_year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$nextTime&user=".$this->m_viewUser;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=$nextTime";
 
     $this->title = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 
@@ -172,6 +172,9 @@ class scheduler_monthview extends scheduler_view
     $tmp.=$this->_getSmallCalendar(substr($next_date,8,2),substr($next_date,5,2),substr($next_date,0,4),false);
 
 
+    $tmp.="<br>";
+    $tmp.=$this->_getEmployeesCheckboxesForm();
+    
     $tmp.='  </td>
              </tr>
              </table><br><br>

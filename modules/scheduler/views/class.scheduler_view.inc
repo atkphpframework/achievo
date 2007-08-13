@@ -61,7 +61,7 @@ class scheduler_view
  /**
   * @var string $m_viewUser Current userview
   */
-  var $m_viewUser = "";
+  var $m_viewUsers = array();
 
  /**
   * @var string $m_viewTitle View Title
@@ -107,7 +107,6 @@ class scheduler_view
 
   var $m_showTodo = 0;
   var $m_showLunarPhases = 0;
-  var $m_employeeLookup = array();
 
  /**
   * Calender view constructor
@@ -127,12 +126,25 @@ class scheduler_view
   }
 
  /**
-  * Set view user
-  * @param string $user Current user
+  * Set one view user. If left to the default, all users will be displayed.
+  * if the value contains the string 'all' all users will be showed.
+  * @param string|array $user User to view scheduler of
   */
-  function setViewUser($user)
-  {
-     $this->m_viewUser = $user;
+  function setViewUsers($user)
+  {  
+     // empty string => all users
+     if (empty($user))
+     {
+       $user = array();
+     }
+         
+     // other string => only that user
+     if (!is_array($user))
+     {
+       $user = array((string) $user);
+     }
+     
+     $this->m_viewUsers = $user;
   }
 
  /**
@@ -210,6 +222,7 @@ class scheduler_view
     $views = array("day", "week", "month", "birthday" /*, "year", "employee"*/);
     foreach($views as $view)
       $links[$view."view"] = session_url(dispatch_url("scheduler.scheduler", "admin", array("view"=>$view)));
+      
     $links["refreshview"] = session_url(dispatch_url("scheduler.scheduler", "admin", array("view"=>$this->m_view, "viewdate"=>$this->m_viewdate)));
 
     $viewheaderparams = array(
@@ -238,7 +251,7 @@ class scheduler_view
     $weeknumber = weeknumber::getWeeknumber($timestamp,$startday,$firstweekcontains);
     return $weeknumber;
   }
-
+ 
   /**
    * Creates a small calendar with month navigation
    *
@@ -271,12 +284,12 @@ class scheduler_view
     $first_day_of_month = date("w", mktime(0,0,0,$month,1,$year));
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$month-1, 1, $year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$prevTime&user=".$this->m_viewUser;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$prevTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$month+1, 1, $year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime&user=".$this->m_viewUser;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime";
     $currentTime = date("Y-m-d", mktime(0,0,0,$month, 1, $year));
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$currentTime."&small_viewdate=$currentTime&user=".$this->m_viewUser;
+    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$currentTime."&small_viewdate=$currentTime";
 
 
     $tmp ='<table border="0" cellpadding="1" cellspacing="0">';
@@ -309,7 +322,7 @@ class scheduler_view
     $tmp.='<tr>';
     $week_number = $this->getWeekNumber(1,$month,$year);
     $weekTime = date("Y-m-d",mktime(12,0,0,$month,1,$year));
-    $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
+    $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime";
     if($this->m_showWeekNumbers==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     for ($i=1;$i<=$cellcount;$i++)
     {
@@ -333,7 +346,7 @@ class scheduler_view
           case 6: $tmp_i = $i+2;
         }
         $week_number = $this->getWeekNumber($tmp_i,$month,$year);
-        $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime&user=".$this->m_viewUser;
+        $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime";
         if($this->m_showWeekNumbers==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     		$cellcount=0;
     	}
@@ -357,7 +370,7 @@ class scheduler_view
     		$class="calendarNormal";
     	}
 
-    	$dayUrl = $_SERVER["PHP_SELF"]."?view=day&viewdate=$dayTime&user=".$this->m_viewUser;
+    	$dayUrl = $_SERVER["PHP_SELF"]."?view=day&viewdate=$dayTime";
     	$daynumber = ($i>9?$i:"&nbsp;".$i);
     	if(($this->m_view=="day" && $i == $this->m_day && $month == $this->m_month && $year == $this->m_year) ||
          ($this->m_view=="week" && $week_number == $this->m_weeknumber) ||
@@ -405,8 +418,8 @@ class scheduler_view
   }
 
  /**
-  * Creates a html form with a date/user selector
-  * @return string html form with a date/user selector
+  * Creates a html form with a date selector
+  * @return string html form with a date selector
   */
   function _getSelector()
   {
@@ -416,23 +429,19 @@ class scheduler_view
     $dummy_rec = array("viewdate"=>$this->_getInitialDate());
     $datebox = new atkDateAttribute("viewdate","F d Y","d F Y",0,0,AF_OBLIGATORY);
     $form .=$datebox->edit($dummy_rec);
-    $form.="&nbsp;&nbsp;";
-    $form .= $this->_getEmployees();
-    $form .= '&nbsp;<input type="submit" value="'.atkText("refresh","scheduler").'">'."\n";
+    $form .= '<input type="submit" value="'.atkText("refresh","scheduler").'">'."\n";
     $form .= '</form>'."\n";
     return $form;
   }
 
- /**
-  * Get a Employees select box or checkboxes
-  * @param array $user_id Userid
-  * @param string $form_type Selector (select,default) or Checkboxes (checkbox)
-  * @return string User selector / checkboxes
-  */
-  function _getEmployees($default=array(),$form_type="select",$show_all=true)
+  /**
+   * Gets employees. Used in getEmployeesInSelect and getEmployeesInCheckboxes
+   *
+   * @return array employees
+   */
+  function _getEmployees()
   {
     $g_db = &atkgetdb();
-    if(count($default)==0) $default[] = $this->m_viewUser;
 
     $sql = "SELECT lastname,firstname,id
             FROM person
@@ -441,33 +450,80 @@ class scheduler_view
            ";
 
     $records = $g_db->getrows($sql);
-    if($show_all)
+    return $records;
+  }
+  
+  /**
+   * Gets the employee selector as a form with checkboxes
+   *
+   * @return string html form
+   */
+  function _getEmployeesCheckboxesForm()
+  {
+    $buff = '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+    $buff.= session_form();
+    $buff.= '<input type="hidden" name="view" value="'.$this->m_view.'">';
+    $buff.= '<div class="employees_checklistheader">'.atkText("employeeview","scheduler").'</div>';
+    $buff.= $this->_getEmployeesCheckboxes();
+    $buff.= '<input type="submit" value="'.atkText("refresh","scheduler").'">'."\n";
+    $buff.= '<br>';
+    $buff.= '</form>';
+    
+    return $buff;
+  }
+  
+ /**
+  * Get Employee selector input elements as checkboxes
+  * @param array $default wich items should be checked?
+  * @param  bool $show_all show the 'all employees' option?
+  * @return string html of the input elements
+  */
+  function _getEmployeesCheckboxes($default=array(), $show_all=true)
+  {
+    // get the records
+    $records = $this->_getEmployees();
+    if(count($default)==0)
     {
-      if($form_type=="select")
-      {
-        $employee_code='<select name="user"><option value="all">'.atkText("allusers","scheduler");
-      }
-      else
-      {
-        if (in_array("all",$default)) { $sel="checked"; } else { $sel=""; }
-        $employee_code='<input type="checkbox" value="all" class="atkcheckbox" name="employee[]" '.$sel.'>'.atkText("allusers","scheduler").'<br>';
-      }
+      $default = $this->m_viewUsers;
     }
+    
+    $employee_code = '<ul class="employees_checklist">';
+	  $is_default_all = in_array('all', $default);
+	      
+    // add the 'all' option to top of records 
+    if($show_all)
+    {    
+      array_unshift($records, array(
+        'id'        => 'all',
+        'firstname' => '',
+        'lastname'  => '<strong>'.atkText("allusers","scheduler").'</strong>',
+      ));
+    }
+    
+    // build up the html
     for($i=0;$i<count($records);$i++)
     {
-      if($this->m_view=="employee") $this->m_employeeLookup[$records[$i]["id"]] = $records[$i]["lastname"].",<br>".$records[$i]["firstname"];
-      if(in_array($records[$i]["id"],$default)) { $sel=($form_type=="select"?"selected":"checked"); } else { $sel=""; }
-      if($form_type=="select")
+      $sel='';
+      if(in_array($records[$i]["id"],$default))
       {
-        $employee_code.='<option value="'.$records[$i]["id"].'" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"].'</option>';
+        $sel="checked";
       }
-      else
-      {
-
-        $employee_code.='<input type="checkbox" value="'.$records[$i]["id"].'" class="atkcheckbox" name="employee[]" '.$sel.'>'.$records[$i]["lastname"].', '.$records[$i]["firstname"]."(".$records[$i]["userid"].")<br>";
+      
+      // name format
+      $id    = $records[$i]["id"];
+      $name  = $records[$i]["lastname"];
+      if (!empty($records[$i]["firstname"])) {
+        $name .= ', '.$records[$i]["firstname"];
       }
+      
+      // checkboxes
+      $input = "<input id=\"user_{$id}\" type=\"checkbox\" value=\"{$id}\" name=\"user[]\" {$sel} />";
+      $label = "<label for=\"user_{$id}\">{$input}{$name}</label>";
+      
+      $employee_code .= "<li>{$label}</li>";
     }
-    if($form_type=="select") $employee_code.="</select>";
+    
+    $employee_code .= '</ul>';
     return $employee_code;
   }
 
@@ -606,8 +662,11 @@ class scheduler_view
    */
   function getItemsCompact($startdate,$enddate)
   {
-    $user = array();
-    if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
+    $user = array(); // @FIXME This if below will always return false. user array is empty!
+    if(count($user)==0)
+    {
+      $user = $this->m_viewUsers;
+    }
 
     $this->updateRecurringEvents($startdate,$enddate);
     $name = "atk".atkconfig("database")."query";
@@ -624,7 +683,7 @@ class scheduler_view
     $tmp_startdate = mktime(23,59,59,substr($enddate,5,2),substr($enddate,8,2),substr($enddate,0,4));
 
     $condition = "$tmp_enddate < scheduler_dates.enddate AND scheduler_dates.startdate < $tmp_startdate";
-    if(count($user)>0)
+    if(count($user)>0 && !in_array('all', $user))
     {
       $useridcondition = (count($user)>0) ? " OR scheduler_scheduler.owner IN ('".implode("','", $user)."') OR scheduler_attendees.person_id IN ('".implode("','", $user)."')" : "";
       $condition.=" AND (scheduler_scheduler.all_users = '1' $useridcondition)";
@@ -667,7 +726,10 @@ class scheduler_view
   {
     $db = &atkGetDb();
 
-    if(count($user)==0 && !empty($this->m_viewUser) && $this->m_viewUser!='all') $user[] = $this->m_viewUser;
+    if(count($user)==0)
+    {
+      $user = $this->m_viewUsers;
+    }
 
     $this->m_alldayItems = array();
     $this->m_appointmentItems = array();
@@ -711,7 +773,7 @@ class scheduler_view
 
     $condition = "$tmp_enddate < scheduler_dates.enddate AND scheduler_dates.startdate < $tmp_startdate";
 
-    if(count($user)>0)
+    if(count($user)>0 && !in_array('all', $user))
     {
       $useridcondition = (count($user)>0) ? " OR scheduler_scheduler.owner IN ('".implode("','", $user)."') OR scheduler_attendees.person_id IN ('".implode("','", $user)."')" : "";
       $condition.=" AND (scheduler_scheduler.all_users = '1' $useridcondition)";
@@ -1005,7 +1067,7 @@ class scheduler_view
    */
   function hasAlarm($item)
   {
-    return ($item["reminder"]==1);
+    return (array_key_exists('reminder', $item) && $item["reminder"]==1);
   }
 
   /**

@@ -24,12 +24,12 @@ class scheduler_weekview extends scheduler_view
     global $PHP_SELF;
 
     $prevTime = $this->m_weekdates[0]['date'];
-    $prevUrl  = $PHP_SELF."?view=week&viewdate=$prevTime&user=".$this->m_viewUser;
+    $prevUrl  = $PHP_SELF."?view=week&viewdate=$prevTime";
 
     $nextTime = $this->m_weekdates[8]['date'];
-    $nextUrl  = $PHP_SELF."?view=week&viewdate=$nextTime&user=".$this->m_viewUser;
+    $nextUrl  = $PHP_SELF."?view=week&viewdate=$nextTime";
 
-    $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d")."&user=".$this->m_viewUser;
+    $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d");
 
     $this->m_weeknumber = $this->getWeekNumber($this->m_day,$this->m_month,$this->m_year);//date("W", mktime(0,0,0,$this->m_month, $this->m_day, $this->m_year));
     $this->m_viewTitle = "<b>".atktext("week")."&nbsp;".$this->m_weeknumber."</b>";
@@ -44,7 +44,7 @@ class scheduler_weekview extends scheduler_view
   */
   function renderItems($weekday)
   {
-    $tmp.= "";
+    $tmp = "";
 
     for($i=0;$i<count($weekday["alldayitems"]);$i++)
     {
@@ -72,7 +72,7 @@ class scheduler_weekview extends scheduler_view
     for ($i=1;$i<=7;$i++)
     {
       $text  = atktext($this->m_weekdates[$i]["day"])." (".substr($this->m_weekdates[$i]["date"],8,2)."-".substr($this->m_weekdates[$i]["date"],5,2).")";
-      $href  = $_SERVER["PHP_SELF"]."?view=day&viewdate=".$this->m_weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
+      $href  = $_SERVER["PHP_SELF"]."?view=day&viewdate=".$this->m_weekdates[$i]["date"];
       $weekday[$i]["title"] = href($href,$text);
 
       //$this->getItems(substr($this->m_weekdates[$i]["date"],8,2),substr($this->m_weekdates[$i]["date"],5,2),substr($this->m_weekdates[$i]["date"],0,4));
@@ -156,7 +156,9 @@ class scheduler_weekview extends scheduler_view
     $next_date = date("Y-m-d",mktime(12,0,0,substr($this->m_small_viewdate,5,2)+1,substr($this->m_small_viewdate,8,2),substr($this->m_small_viewdate,0,4)));
     $buff.=$this->_getSmallCalendar(substr($next_date,8,2),substr($next_date,5,2),substr($next_date,0,4),false);
 
-
+    $buff.="<br>";
+    $buff.=$this->_getEmployeesCheckboxesForm();
+    
     $buff.='  </td>
              </tr>
              </table>

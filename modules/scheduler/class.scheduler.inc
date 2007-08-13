@@ -30,7 +30,7 @@
   {
     var $m_viewdate;
     var $m_small_viewdate;
-    var $m_viewUser;
+    var $m_viewUsers = array();
     var $m_view;
     var $m_employees;
     var $m_itemDate;
@@ -46,7 +46,7 @@
       $flags |= NF_ADD_LINK|NF_TRACK_CHANGES;
       $sessionmanager = &atkGetSessionManager();
       $this->m_view = $sessionmanager->pageVar("view");
-      $this->m_viewUser = $sessionmanager->pageVar("user");
+      $this->m_viewUsers = $sessionmanager->stackVar("user");
       $this->m_employees = $sessionmanager->pageVar("employee");
       $this->m_itemDate = $sessionmanager->stackVar("itemdate");
       $this->m_scheduler_id = $sessionmanager->stackVar("scheduler_id");
@@ -112,16 +112,16 @@
       $recur_attr->addOnChangeHandler("change_recur(newvalue);");
       $allday_attr->addOnChangeHandler("change_allday();");
 
-      if($this->m_viewUser=="" && $this->m_view!="employeeview")
+      if(empty($this->m_viewUsers) && $this->m_view!="employeeview")
       {
         if ($userprefs["default_userview"]!="*" && !empty($userid))
         {
-          $this->m_viewUser = $userid;
+          $this->m_viewUsers = array($userid);
         }
         else
         {
          // User has opted to show all users by default.
-          $this->m_viewUser = "all";
+          $this->m_viewUsers = array('all');
         }
       }
 
@@ -619,7 +619,7 @@
       $month = substr($this->m_small_viewdate, 5,2);
       $year  = substr($this->m_small_viewdate, 0,4);
       $dayview->setSmallViewDate($day,$month,$year);
-      $dayview->setViewUser($this->m_viewUser);
+      $dayview->setViewUsers($this->m_viewUsers);
       return $dayview->renderView();
     }
 
@@ -634,7 +634,7 @@
       $month = substr($this->m_small_viewdate, 5,2);
       $year  = substr($this->m_small_viewdate, 0,4);
       $weekview->setSmallViewDate($day,$month,$year);
-      $weekview->setViewUser($this->m_viewUser);
+      $weekview->setViewUsers($this->m_viewUsers);
       return $weekview->renderView();
 
     }
@@ -654,7 +654,7 @@
       $year  = substr($this->m_small_viewdate, 0,4);
       $monthview->setSmallViewDate($day,$month,$year);
 
-      $monthview->setViewUser($this->m_viewUser);
+      $monthview->setViewUsers($this->m_viewUsers);
       return $monthview->renderView();
     }
 
@@ -666,7 +666,7 @@
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
       $yearview->setViewDate($day,$month,$year);
-      $yearview->setViewUser($this->m_viewUser);
+      $yearview->setViewUsers($this->m_viewUsers);
       return $yearview->renderView();
     }
 
@@ -690,7 +690,7 @@
       $year  = substr($this->m_viewdate, 0,4);
 
       $birthdayview->setViewDate($day,$month,$year);
-      $birthdayview->setViewUser($this->m_viewUser);
+      $birthdayview->setViewUsers($this->m_viewUsers);
       return $birthdayview->renderView();
     }
 

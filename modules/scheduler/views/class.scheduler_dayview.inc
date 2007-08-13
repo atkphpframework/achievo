@@ -153,7 +153,7 @@ class scheduler_dayview extends scheduler_view
      $cWidth = floor(95/$cols)."%";
      $aCols  = $cols+1;
     }
-    $buff.='<table border=0 width="90%" cellspacing="2"><tr><td>';
+    $buff.='<table border="0" width="90%" cellspacing="2"><tr><td>';
     // if we have allday items show 'em in a seperate table
     if (count($this->m_allDayItems[$this->m_viewdate]) > 0)
     {
@@ -163,7 +163,7 @@ class scheduler_dayview extends scheduler_view
       $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'>".atkText("allday_events","scheduler")."</td>\n";
       $buff .= "</tr>\n";
 
-      for ($i=0;$i<=count($this->m_allDayItems)-1;$i++)
+      for ($i=0;$i<=count($this->m_allDayItems[$this->m_viewdate])-1;$i++)
       {
         $buff .= "<tr>\n";
         $buff .= '<td colspan="'.$aCols.'" valign="top" align="left">';
@@ -274,13 +274,16 @@ class scheduler_dayview extends scheduler_view
     }
     $buff .= "</table>";
     $buff.='</td><td width="200" valign="top">';
-
     $buff.=$this->_getSmallCalendar(substr($this->m_small_viewdate,8,2),substr($this->m_small_viewdate,5,2),substr($this->m_small_viewdate,0,4));
     $buff.="<br>";
     $next_date = date("Y-m-d",mktime(12,0,0,substr($this->m_small_viewdate,5,2)+1,substr($this->m_small_viewdate,8,2),substr($this->m_small_viewdate,0,4)));
     $buff.=$this->_getSmallCalendar(substr($next_date,8,2),substr($next_date,5,2),substr($next_date,0,4),false,true);
+
+    $buff.="<br>";
+    $buff.=$this->_getEmployeesCheckboxesForm();
     $buff.="</td></tr></table>";
     $buff.="<br><br>\n";
+    
     $buff.= $this->m_legend;
     return $buff;
   }
@@ -293,13 +296,13 @@ class scheduler_dayview extends scheduler_view
   {
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day-1, $this->m_year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime&user=".$this->m_viewUser;
+    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime";
 
     $currentTime = date("Y-m-d");
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime&user=".$this->m_viewUser;
+    $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day+1, $this->m_year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime&user=".$this->m_viewUser;
+    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime";
 
     return href($prevUrl, atkText("previous_day","scheduler"))."&nbsp;".href($currentUrl, atkText("today","scheduler"))."&nbsp;".href($nextUrl, atkText("next_day","scheduler"));
   }
