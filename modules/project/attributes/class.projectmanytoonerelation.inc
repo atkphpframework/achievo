@@ -141,6 +141,7 @@
 
       $query->addTable("hours");
       $query->addField("id","","project");
+      $query->addField("MAX(hours.activitydate)");
       $query->addJoin("phase","","hours.phaseid=phase.id",true);
       $query->addJoin("project","","phase.projectid=project.id",true);
       $query->addCondition("hours.userid='{$this->m_userid}'");
@@ -152,11 +153,11 @@
         $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
 
-      $query->addGroupBy("hours.phaseid");
+      $query->addGroupBy("project.id");
       
       $query->addOrderBy("hours.activitydate DESC");
 
-      $arr = $db->getrows($query->buildSelect(true),'0',$GLOBALS["config_numberofrecentprojects"]);
+      $arr = $db->getrows($query->buildSelect(false),'0',$GLOBALS["config_numberofrecentprojects"]);
       
       $newsel = $this->getHtmlId("");
       $newarr = array();
