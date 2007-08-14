@@ -29,9 +29,9 @@ class contracts extends atkNode
 {
   var $m_archive;
 
-  function contracts()
+  function contracts($name="contracts", $flags=0)
   {
-    $this->atkNode("contracts",NF_ADD_LINK | NF_EDITAFTERADD | NF_EXPORT);
+    $this->atkNode($name, $flags | NF_ADD_LINK | NF_EDITAFTERADD | NF_EXPORT);
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE|AF_FORCE_LOAD, 20));
