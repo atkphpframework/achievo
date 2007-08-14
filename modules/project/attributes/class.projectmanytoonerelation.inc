@@ -145,7 +145,7 @@
       // that doesn't allow us to use subqueries, which would normally
       // be needed to solve this particular set of distinct/order by 
       // requirements.
-      $query->addField("ROUND(SUM(project.id) / COUNT(project.id)) as id");
+      $query->addField("project.id");
       $query->addJoin("phase","","hours.phaseid=phase.id",false);
       $query->addJoin("project","","phase.projectid=project.id",false);
       $query->addCondition("hours.userid='{$this->m_userid}'");
@@ -156,11 +156,10 @@
         $query->addJoin("project_person","","project_person.projectid = project.id",true);
         $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
-
-      $query->addGroupBy("project.id");
+      
       $query->addOrderBy("hours.activitydate DESC");
 
-      $arr = $db->getrows($query->buildSelect(false),'0',$GLOBALS["config_numberofrecentprojects"]);
+      $arr = $db->getrows($query->buildSelect(false),'0',atkconfig("numberofrecentprojects")+100);
       
       $newsel = $this->getHtmlId("");
       $newarr = array();
@@ -176,11 +175,13 @@
         $newarr[] = $value;
       }
 
-
-      //some dbs do not support the limit in a query ?
-      for ($i=0,$_i=count($arr);($i<$_i)&&$j<$GLOBALS["config_numberofrecentprojects"];$i++)
+      // remove dupes because we can't distinct/group by and order by recency in mysql3
+      for ($i=0,$_i=count($arr);($i<$_i)&&count($newarr)<atkconfig("numberofrecentprojects");$i++)
       {
-        $newarr[] = (int) $arr[$i]['id'];
+      	if (!in_array($arr[$i]["id"], $newarr))
+      	{ 
+      		$newarr[] = (int) $arr[$i]['id'];
+      	}
       }
 
       return $newarr;
