@@ -53,11 +53,11 @@
 
     function initial_values()
     {
-    	$selector = $this->m_postvars['atkselector'];
-    	$node = &atkGetNode("organization.contracts");
-    	$rec = $node->selectDb($selector, "", "", "", array("subject"));
-
-    	return array("name" => $rec[0]['subject']);
+      $forceList = (isset($this->m_postvars['atkfilter'])) ? decodeKeyValueSet($this->m_postvars['atkfilter']) : array();
+      $node = &atkGetNode("organization.contracts");
+      $selector = sprintf("`contract`.`id`='%d'", $forceList["contract_id.id"]);
+      $rec = $node->selectDb($selector, "", "", "", array("contractname"));
+      return array("name" => $rec[0]['contractname']);
     }
   }
 
