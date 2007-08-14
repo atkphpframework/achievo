@@ -48,6 +48,7 @@
     {
       $db = &atkGetDb();
       $res = array();
+      $expression = $db->escapeSQL($expression);
       $sql = "SELECT scheduler_scheduler.*,scheduler_dates.startdate as realstartdate,scheduler_dates.enddate as realenddate FROM scheduler_scheduler,scheduler_dates WHERE scheduler_scheduler.id=scheduler_dates.scheduler_id AND (title LIKE '%$expression%' OR description LIKE '%$expression%') ORDER BY realstartdate";
       $nrows = $db->getrows($sql);
       $res["scheduler"] = $this->recLinks($nrows, "scheduler.scheduler");
