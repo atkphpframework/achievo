@@ -130,7 +130,7 @@ class scheduler_view
   * if the value contains the string 'all' all users will be showed.
   * @param string|array $user User to view scheduler of
   */
-  function setViewUsers($user)
+  function setViewUser($user)
   {  
      // empty string => all users
      if (empty($user))

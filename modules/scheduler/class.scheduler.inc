@@ -619,7 +619,7 @@
       $month = substr($this->m_small_viewdate, 5,2);
       $year  = substr($this->m_small_viewdate, 0,4);
       $dayview->setSmallViewDate($day,$month,$year);
-      $dayview->setViewUsers($this->m_viewUsers);
+      $dayview->setViewUser($this->m_viewUsers);
       return $dayview->renderView();
     }
 
@@ -634,7 +634,7 @@
       $month = substr($this->m_small_viewdate, 5,2);
       $year  = substr($this->m_small_viewdate, 0,4);
       $weekview->setSmallViewDate($day,$month,$year);
-      $weekview->setViewUsers($this->m_viewUsers);
+      $weekview->setViewUser($this->m_viewUsers);
       return $weekview->renderView();
 
     }
@@ -654,7 +654,7 @@
       $year  = substr($this->m_small_viewdate, 0,4);
       $monthview->setSmallViewDate($day,$month,$year);
 
-      $monthview->setViewUsers($this->m_viewUsers);
+      $monthview->setViewUser($this->m_viewUsers);
       return $monthview->renderView();
     }
 
@@ -666,7 +666,7 @@
       $month = substr($this->m_viewdate, 5,2);
       $year  = substr($this->m_viewdate, 0,4);
       $yearview->setViewDate($day,$month,$year);
-      $yearview->setViewUsers($this->m_viewUsers);
+      $yearview->setViewUser($this->m_viewUsers);
       return $yearview->renderView();
     }
 
@@ -690,7 +690,7 @@
       $year  = substr($this->m_viewdate, 0,4);
 
       $birthdayview->setViewDate($day,$month,$year);
-      $birthdayview->setViewUsers($this->m_viewUsers);
+      $birthdayview->setViewUser($this->m_viewUsers);
       return $birthdayview->renderView();
     }
 
