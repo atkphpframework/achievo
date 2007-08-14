@@ -330,6 +330,54 @@ class contracts extends atkNode
   	}
   	return true;
   }
+  
+  function getFormButtons($mode, $record)
+  {
+    $buttons = array();
+    if ($mode == 'edit')
+    {
+      if($record['status'] == "archived")
+      {
+        $buttons[] = '<input type="submit" class="btn_save" name="activate_contract" value="'.$this->text("activate_contract").'">';
+      }
+      else 
+      {
+        $buttons[] = '<input type="submit" class="btn_save" name="deactivate_contract" value="'.$this->text("deactivate_contract").'">';
+      }
+    }
+    return array_merge($buttons, parent::getFormButtons($mode,$record));
+  } 
+
+  function action_update(&$handler)
+  {
+    if (isset($this->m_postvars["activate_contract"]) || isset($this->m_postvars["deactivate_contract"]))
+    {
+      $this->m_postvars["atknoclose"] = 1;
+    }
+    // call original behaviour
+    return $handler->action_update();
+  } 
+
+  function preUpdate(&$record)
+  {
+    if (isset($this->m_postvars["activate_contract"]))
+    {
+      $db = &$this->getDb();
+      $db->query("UPDATE project SET status='active' WHERE project.contract_id={$record['id']}");
+      
+      $record['status'] = "active";
+    }
+    elseif (isset($this->m_postvars["deactivate_contract"]))
+    {
+      $db = &$this->getDb();
+      $db->query("UPDATE project SET status='archived' WHERE project.contract_id={$record['id']}");
+      
+      $record['status'] = "archived";
+    }
+
+    return true;
+  }
+  
 }
 
 ?>

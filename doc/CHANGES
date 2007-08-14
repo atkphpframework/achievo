@@ -6,6 +6,10 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.3
 ----------------------
++ Added 'activate'/'archive' button to the contract edit page. Pressing to
+  this button the status of contract and projects change accordingly - from
+  active to archive, and from archive to active to both contract and all
+  projects, that link to this contract. [Ivo,Yury]
 + Added a new user-selector to the scheduler. You can now select multiple
   users to compare agenda's with. Added current user selection as a stackvar.
   [Edgar]
