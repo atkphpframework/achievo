@@ -138,7 +138,7 @@
 
         // Try to find the person who registered the hours and throw an error if not found
         $employeenode = &atkGetNode("employee.employee");
-        $employeerecords = $employeenode->selectDb("person.id='".$projectrecords[0]["coordinator"]["id"]."'");
+        $employeerecords = $employeenode->selectDb("person.id='".$record["userid"]["id"]."'");
         if (count($employeerecords) == 0)
         {
           atkerror("Cannot find employee who registered the hours.");
