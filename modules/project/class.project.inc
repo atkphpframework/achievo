@@ -73,7 +73,7 @@
       }
 
       // Add the organization relation
-      $this->add(new atkManyToOneRelation("customer", "organization.organization", AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_HIDE_ADD|AF_SEARCHABLE), "", 500);
+      $this->add(new atkManyToOneRelation("customer", "organization.organization", AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_HIDE_ADD|AF_SEARCHABLE|AF_FORCE_LOAD), "", 500);
 
       $this->add(new atkOneToManyRelation("contacts","project.project_personcontact", "projectid", AF_HIDE_LIST|AF_CASCADE_DELETE|AF_HIDE_ADD|$flags));
 
@@ -120,7 +120,7 @@
       {
         $this->add(new atkListAttribute("contact_restrict",array("restrict_project","restrict_eligible"),array(1,2),AF_HIDE_LIST|AF_FORCE_LOAD|AF_OBLIGATORY));
       }
-          
+
       $this->setTable("project","project");
 
       $this->setOrder("project.abbreviation, project.name");
@@ -633,7 +633,7 @@
     function storeMembers($rec, $members)
     {
       $role_id = $this->fetchRoleId();
-     
+
       for ($i=0, $_i=count($members); $i<$_i; $i++)
       {
         $this->_addMemberRecord($rec["id"], $members[$i]["id"], $role_id);
@@ -651,7 +651,7 @@
       {
         return $role_id["id"];
       }
-      else 
+      else
       {
         return 0;
       }
