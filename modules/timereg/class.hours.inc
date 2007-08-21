@@ -152,6 +152,7 @@ class hours extends atkNode
     $this->m_weekview = $this->processGlobalVar("weekview");
     $this->m_viewdate = $this->processGlobalVar("viewdate");
     $this->m_user = $this->processGlobalVar("viewuser");
+atk_var_dump($this->m_viewdate);
     $this->m_lockmode = atkConfig::get("timereg", "lockmode", "week");
 
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
@@ -239,7 +240,7 @@ class hours extends atkNode
       $phase->addDependee("activityid");
     $this->add($phase,null, 30);
 
-    $project = &new projectManyToOneRelation("projectid","project.projectselector",AF_OBLIGATORY|AF_FORCE_LOAD);
+    $project = &new projectManyToOneRelation("projectid","project.project",AF_OBLIGATORY|AF_FORCE_LOAD);
     $project->addDependee("phaseid");
     $project->setUserId($this->m_user);
 
@@ -289,7 +290,7 @@ class hours extends atkNode
   function action_mra_move(&$handler)
   {
     $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
-    $this->redirect(session_url(dispatch_url("timereg.movehours", "add", array("atkselector"=>$selector)), SESSION_REPLACE));
+    $this->redirect(session_url(dispatch_url("timereg.movehours", "add", array("atkselector"=>$selector)), SESSION_DEFAULT));
   }
 
   function activityid_selection($record, $mode="")
@@ -559,36 +560,35 @@ class hours extends atkNode
 
   function adminHeader()
   {
-    $res='';
-    if ($this->m_weekview!=1)
+    if ($this->m_weekview==1)
+      return "";
+
+    $viewdatestamp = adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
+
+    // we substract 3601 seconds to account for Daylight Savings Time
+    $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
+    // we add 3601 seconds to account for Daylight Savings Time
+    $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
+    $today = date('Y-m-d');
+
+    $ui = &$this->getUi();
+    $tplvars = array( 'yesterdayurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday))),
+                      'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>date('Y-m-d',$viewdatestamp),"weekview"=>1))),
+                      'sessionform'=>session_form(),
+                      'userselect'=>$this->getUserSelect(),
+                      'datejumper'=>$this->getDateJumper(),
+                      'currentdate'=>atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
+                      'lockicon'=>Locking::getLockIcon($this->m_lock),
+                     );
+
+    if ($this->m_viewdate<date('Y-m-d') || atkConfig("timereg_allowfuture", false))
     {
-      $viewdatestamp = adodb_mktime(0,0,0,substr($this->m_viewdate,5,2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4));
-
-      // we substract 3601 seconds to account for Daylight Savings Time
-      $yesterday = date('Y-m-d',$viewdatestamp-(86400-3601));
-      // we add 3601 seconds to account for Daylight Savings Time
-      $tomorrow = date('Y-m-d',$viewdatestamp+86400+3601);
-      $today = date('Y-m-d');
-
-      $ui = &$this->getUi();
-      $tplvars = array( 'yesterdayurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday))),
-                        'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>date('Y-m-d',$viewdatestamp),"weekview"=>1))),
-                        'sessionform'=>session_form(),
-                        'userselect'=>$this->getUserSelect(),
-                        'datejumper'=>$this->getDateJumper(),
-                        'currentdate'=>atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
-                        'lockicon'=>Locking::getLockIcon($this->m_lock),
-                       );
-
-      if ($this->m_viewdate<date('Y-m-d'))
-      {
-        // If current is not today we can also move forward
-        $tplvars['tomorrowurl'] = session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$tomorrow)));
-        $tplvars['todayurl'] = session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$today)));
-      }
-      $res = $ui->render($ui->templatePath('hours_adminheader.tpl', 'timereg'),$tplvars);
+      // If current is not today we can also move forward
+      $tplvars['tomorrowurl'] = session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$tomorrow)));
+      $tplvars['todayurl'] = session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$today)));
     }
-    return $res;
+
+    return $ui->render($ui->templatePath('hours_adminheader.tpl', 'timereg'),$tplvars);
   }
 
   function adminFooter()
@@ -726,7 +726,7 @@ class hours extends atkNode
     $weekdata[0][] = atktext("project")." - ".atktext("phase");
     for ($i=1;$i<=7;$i++)
     {
-      if ($weekdates[$i]['date'] <= date("Y-m-d"))
+      if ($weekdates[$i]['date'] <= date("Y-m-d") || atkConfig("timereg_allowfuture", false))
       {
         // Individual lock icons for each locked day
         if ($this->m_lockmode != "week")
@@ -793,7 +793,6 @@ class hours extends atkNode
   function weekviewHeader($weekdates, $viewtime)
   {
     $userid           = $this->m_user;
-    $user             = &atkGetUser();
     $record["userid"] = $userid;
     $att = &$this->getAttribute("userid");
     $att->populate($record);
@@ -810,7 +809,8 @@ class hours extends atkNode
     $tplvars = array( 'session_form'=>session_form(),
                       'prevweekurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[0]['date']))),
                       'thisweekurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>date("Y-m-d")))),
-                      'dayviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>0,"viewdate"=>date("Y-m-d")))),
+                      'dayviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>0,"viewdate"=>date("Y-m-d", $viewtime)))),
+                      'userselect'=>$this->getUserSelect(),
                       'datejumper'=>$this->getDateJumper(),
                       'curuser'=>$record["userid"],
                       'curdate'=>weeknumber::getWeeknumber($viewtime,atkconfig("startday",1),atkconfig("firstweekcontains",4)).", ".date("Y",$viewtime),
@@ -818,7 +818,7 @@ class hours extends atkNode
                       'dispatch'=>getDispatchFile(),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
                      );
-    if ($weekdates[8]['date'] <= date("Y-m-d"))
+    if ($weekdates[8]['date'] <= date("Y-m-d") || atkConfig("timereg_allowfuture", false))
     {
       $tplvars['nextweekurl']=session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[8]['date'])));
     }
