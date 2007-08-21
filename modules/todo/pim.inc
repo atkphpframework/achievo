@@ -30,7 +30,7 @@
     $todo_assignedtome.= '<br>'.href(dispatch_url("todo.todo","add",array("atkfilter"=>"assigned_to.id='$userid'")),atktext('add'),SESSION_NESTED);
 
     $todo_assignedbyme = atktext("pim_assignedbyyou").":<br>";
-    $recs = $todonode->selectDb("todo.owner='$userid' AND assigned_to<>'$userid'");
+    $recs = $todonode->selectDb("todo.owner='$userid' AND todo.assigned_to<>'$userid'");
     if (count($recs)>0)
     {
       $todo_assignedbyme.= $rl->render($todonode,$recs,$actions,RL_MRA|RL_NO_EXTENDED_SEARCH|RL_NO_SEARCH|RL_NO_SORT, array('entrydate'),"todoassignedbyyou",array(),"todoassignedbyyou");
