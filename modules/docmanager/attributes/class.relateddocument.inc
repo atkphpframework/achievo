@@ -120,6 +120,11 @@
       // Get the list of document files
       $documenttypes = $this->getDocumentTypes($record);
 
+      if (empty($documenttypes))
+      {
+      	return $this->text("no_document_templates_found");
+      }
+      
       // Button counter
       static $cnt=0;
       $buttoncounter = ++$cnt;
