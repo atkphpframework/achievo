@@ -16,7 +16,7 @@
     function contract_project()
     {
       $this->project();
-      $this->m_flags |= NF_NO_EDIT|NF_NO_FILTER;;
+      $this->m_flags |= NF_NO_FILTER;;
       $this->m_type = "contract_project";
       $this->add(new atkAttribute("status",AF_FORCE_LOAD));
 
@@ -47,8 +47,9 @@
     function recordActions($record, &$actions, &$mraactions)
     {
     	$actions = array(); // Remove all default actions.
-      $actions["remove"] = dispatch_url($this->atkNodeType(), "remove", array("project_id"=>$record["id"]));
-      $actions["view"] = dispatch_url("project.project", "view", array("atkselector"=>$this->primaryKey($record)));
+      if ($this->allowed("remove", $record)) $actions["remove"] = dispatch_url($this->atkNodeType(), "remove", array("project_id"=>$record["id"]));
+      if ($this->allowed("view", $record)) $actions["view"] = dispatch_url("project.project", "view", array("atkselector"=>$this->primaryKey($record)));
+      if ($this->allowed("edit", $record)) $actions["edit"] = dispatch_url("project.project", "edit", array("atkselector"=>$this->primaryKey($record)));
     }
 
     function initial_values()
