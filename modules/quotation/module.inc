@@ -12,8 +12,8 @@
     function getMenuItems()
     {
       $this->menuitem("sales",dispatch_url("quotation.quotation", "admin"),"main",true,500);
-      $this->menuitem("quotation", dispatch_url("quotation.quotation", "admin"), "sales",1,685);
-      $this->menuitem("payment", dispatch_url("quotation.payment", "admin"), "setup");
+      $this->menuitem("quotation", dispatch_url("quotation.quotation", "admin"), "sales",array("quotation.quotation", "admin"),685);
+      $this->menuitem("payment", dispatch_url("quotation.payment", "admin"), "setup", array("quotation.payment", "admin"));
     }
 
     function getDescription()
