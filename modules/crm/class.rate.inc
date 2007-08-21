@@ -9,7 +9,7 @@ class rate extends atkNode
     $this->add(new atkAttribute("id",AF_AUTOKEY));
     $this->add(new atkAttribute("rate_name",AF_OBLIGATORY));
 
-    $this->setSecurityAlias("organization");
+    $this->setSecurityAlias("organization.organization");
     $this->setOrder("rate_name");
     $this->setTable("crm_rate");
   }
