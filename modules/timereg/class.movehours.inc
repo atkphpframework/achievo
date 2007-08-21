@@ -13,23 +13,23 @@
       for($i=0,$_i=count($attribkeys); $i<$_i; $i++)
         if (!in_array($attribkeys[$i], array("projectid", "phaseid", "activityid", "javascript")))
           $this->m_attribList[$attribkeys[$i]]->addFlag(AF_HIDE);
-          
+
     }
 
     function action_edit($handler)
     {
       global $g_user;
-      
+
       $atkselector = "";
       if(is_array($this->m_postvars["atkselector"]))
       {
-        $atkselector = "(".implode(" OR ", $this->m_postvars["atkselector"]).")";      
+        $atkselector = "(".implode(" OR ", $this->m_postvars["atkselector"]).")";
       }
-      else 
+      else
         $atkselector = $this->m_postvars["atkselector"];
-      
+
       $recs = $this->selectDb($atkselector, "hours.id", "", "", array("userid", "activitydate"));
-  
+
       $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],
                         sprintf("%02d-%02d-%02d", $recs[0]["activitydate"]["year"],
                                                   $recs[0]["activitydate"]["month"],
@@ -50,7 +50,7 @@
       }
     }
 
-    
+
     function allowed($action, $record="")
     {
       $secMgr = &atkGetSecurityManager();
@@ -70,7 +70,7 @@
     {
       // Get the relevant postvars
       $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
-      
+
       $phase = decodeKeyValuePair(atkArrayNvl($this->m_postvars, "phaseid"));
       $activity = decodeKeyValuePair(atkArrayNvl($this->m_postvars, "activityid"));
       $phaseid = $phase["phase.id"];
@@ -87,8 +87,7 @@
       $this->doMove($ids, $phaseid, $activityid);
 
       // Get a level back
-//      $this->redirect(session_url($_SERVER["PHP_SELF"],SESSION_BACK,2));
-      $this->redirect();
+      $this->redirect(session_url($_SERVER["PHP_SELF"],SESSION_BACK,2));
     }
 
     function editArray($mode="add", $record=NULL, $forceList="", $suppressList="", $fieldprefix="")
