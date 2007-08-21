@@ -102,6 +102,7 @@
   "contractname" => "Contract naam",
   "contractnumber" => "Overeenkomst nummer",
   "contracts" => "Klanten overeenkomsten",
+  "tab_contracts" => "Overeenkomsten",
   "contracts_fuzzyprojectaddhint" => "Vul trefwoorden in (komma-gescheiden) van projecten die gedekt worden door deze overeenkomst.",
   "contracts_number" => "Nummer",
   "contracts_projectadd" => "Projecten koppelen",

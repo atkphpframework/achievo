@@ -87,9 +87,9 @@ class organization extends atkNode
     $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
-    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects"),"contracts"=>array("contracts")),AF_HIDE_ADD|AF_NO_LABEL),"project");
+    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project");
 
-    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST), "contracts");
     $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST);
     $projectRelatie->addDestinationFilter("project.status='active'");
     $this->add($projectRelatie);
