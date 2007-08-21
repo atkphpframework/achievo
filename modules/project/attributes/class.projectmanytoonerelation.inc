@@ -105,6 +105,8 @@
         }
 
         $projectids = $this->getRecentProjectsIds($selectedprojectid);
+        if (!empty($record[$this->fieldName()]["id"]) && !in_array((int)$record[$this->fieldName()]["id"], $projectids))
+          $projectids[] = (int)$record[$this->fieldName()]["id"];
 
         if(count($projectids))
           $filter = "project.id IN (".implode(",",$projectids).")";
@@ -141,26 +143,27 @@
 
       $query->addTable("hours");
 
-      // Magic Peter Code (tm) to get around a mysql3 limitation 
+      // Magic Peter Code (tm) to get around a mysql3 limitation
       // that doesn't allow us to use subqueries, which would normally
-      // be needed to solve this particular set of distinct/order by 
+      // be needed to solve this particular set of distinct/order by
       // requirements.
       $query->addField("project.id");
       $query->addJoin("phase","","hours.phaseid=phase.id",false);
       $query->addJoin("project","","phase.projectid=project.id",false);
       $query->addCondition("hours.userid='{$this->m_userid}'");
-      $query->addCondition("project.status='active'");     
+      $query->addCondition("project.status='active'");
 
       if (!$g_securityManager->allowed("timereg.hours", "any_project"))
       {
-        $query->addJoin("project_person","","project_person.projectid = project.id",true);
-        $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
+        $query->addJoin("project_person","members","members.projectid = project.id",false);
+        $query->addGroupBy("project.id");
+        $query->addCondition("(members.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
-      
+
       $query->addOrderBy("hours.activitydate DESC");
 
       $arr = $db->getrows($query->buildSelect(false),'0',atkconfig("numberofrecentprojects")+100);
-      
+
       $newsel = $this->getHtmlId("");
       $newarr = array();
 
@@ -179,7 +182,7 @@
       for ($i=0,$_i=count($arr);($i<$_i)&&count($newarr)<atkconfig("numberofrecentprojects");$i++)
       {
       	if (!in_array($arr[$i]["id"], $newarr))
-      	{ 
+      	{
       		$newarr[] = (int) $arr[$i]['id'];
       	}
       }
