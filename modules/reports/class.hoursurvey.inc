@@ -702,7 +702,7 @@ class hoursurvey extends atkNode
       }
       $data[] = array(atktext('orderby','project').':',$orderstr);
 
-      $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY);
+      $boolattrib = new atkListAttribute("aggregate", array("do_not_aggregate", "aggregate_by_order"), array(0,1), AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM);
       $data[] = array(atktext('aggregate','project').':',$boolattrib->edit($dummyrec));
 
       $buttons = array();
@@ -897,6 +897,7 @@ class hoursurvey extends atkNode
       $contentblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
       $actionpage = $this->renderActionPage("admin", $contentblocks);
       $page->addContent($actionpage);;
+      $page->register_scriptcode("var atkErrorFields = new Array();");
     }
 
     if ($outputType=="2")
