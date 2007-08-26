@@ -858,7 +858,6 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $sessionmanager = &atkGetSessionManager();
     $this->m_viewdate = $this->processGlobalVar("viewdate",$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]));
     //$this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
 
@@ -873,7 +872,6 @@ class hours extends atkNode
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $sessionmanager = &atkGetSessionManager();
     $this->m_viewdate = $this->processGlobalVar("viewdate",$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]));
     //$this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
 
