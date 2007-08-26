@@ -353,7 +353,7 @@ class weekreport extends atkNode
 
   function action_report(&$handler)
 	{
-    global $g_securityManager, $g_user, $g_sessionManager;
+    global $g_user, $g_sessionManager;
 
     require_once(moduleDir('report').'utils/class.reportutils.inc');
 
@@ -503,6 +503,7 @@ class weekreport extends atkNode
     }
 
     // If we haven't got a userid by now, don't display the report
+    $rldata = null;
     if ($userid!="")
     {
       $weekdata = array();
@@ -756,51 +757,50 @@ class weekreport extends atkNode
         $suppress[] = "enddate";
       }
       if ($employeeswitch=="name" && $userid!="all") $suppress[] = "userid";
-
-//OVERTIMEBALANCEDEBUGGING START
-if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebugging") && atkConfig("debug") > 0)
-{
-  atkimport("modules.utils.dateutil",false);
-  $predate = $rldata[0]["enddate"];
-  $prestamp = date("Y-m-d", adodb_mktime(0,0,0,substr($rldata[0]["enddate"],3,2),substr($rldata[0]["enddate"],0,2),substr($rldata[0]["enddate"],6,4))  - (7 * 86400));
-  $prebalance = $balancenode->getBalance($prestamp, $userid);
-  $totalhours = 0;
-  $totalcontract = 0;
-  $prevbalance = $prebalance["balance"];
-
-  foreach($rldata as $rec)
-  {
-    $totalhours += $rec["total"];
-    $totalcontract += $rec["contract"];
-    $week = $rec["period"];
-    $shouldhaveovertime = $rec["total"] - $rec["contract"];
-    if (round($shouldhaveovertime) != round($rec["overtime"]))
-    {
-      atkerror("In week $week, overtime should be $shouldhaveovertime");
     }
-    if (isset($prevbalance))
+
+    //OVERTIMEBALANCEDEBUGGING START
+    if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebugging") && atkConfig("debug") > 0)
     {
-      $diff = ($rec["balance"]["balance"] - $prevbalance) * 60;
-      if (round($shouldhaveovertime) != round($diff))
+      atkimport("modules.utils.dateutil",false);
+      $prestamp = date("Y-m-d", adodb_mktime(0,0,0,substr($rldata[0]["enddate"],3,2),substr($rldata[0]["enddate"],0,2),substr($rldata[0]["enddate"],6,4))  - (7 * 86400));
+      $prebalance = $balancenode->getBalance($prestamp, $userid);
+      $totalhours = 0;
+      $totalcontract = 0;
+      $prevbalance = $prebalance["balance"];
+    
+      foreach($rldata as $rec)
       {
-        atkerror("In week $week, the balance should be $shouldhaveovertime higher than the previous balance ".($prevbalance*60).", but it is $diff higher");
+        $totalhours += $rec["total"];
+        $totalcontract += $rec["contract"];
+        $week = $rec["period"];
+        $shouldhaveovertime = $rec["total"] - $rec["contract"];
+        if (round($shouldhaveovertime) != round($rec["overtime"]))
+        {
+          atkerror("In week $week, overtime should be $shouldhaveovertime");
+        }
+        if (isset($prevbalance))
+        {
+          $diff = ($rec["balance"]["balance"] - $prevbalance) * 60;
+          if (round($shouldhaveovertime) != round($diff))
+          {
+            atkerror("In week $week, the balance should be $shouldhaveovertime higher than the previous balance ".($prevbalance*60).", but it is $diff higher");
+          }
+          if (round(($prevbalance * 60) + $shouldhaveovertime) != round($rec["balance"]["balance"] * 60))
+          {
+            atkerror("In week $week, the balance should be " . ($prevbalance * 60) . " + " . $shouldhaveovertime . " = " . (($prevbalance * 60) + $shouldhaveovertime) . " but it is calculated to be " . ($rec["balance"]["balance"] * 60));
+          }
+        }
+        $prevbalance = $rec["balance"]["balance"];
       }
-      if (round(($prevbalance * 60) + $shouldhaveovertime) != round($rec["balance"]["balance"] * 60))
+      $postbalance = $rldata[count($rldata)-1]["balance"];
+      $balancediff = $postbalance["balance"] - $prebalance["balance"];
+      $shouldhavebalancediff = $totalhours - $totalcontract;
+      if (round($shouldhavebalancediff) != round($balancediff * 60))
       {
-        atkerror("In week $week, the balance should be " . ($prevbalance * 60) . " + " . $shouldhaveovertime . " = " . (($prevbalance * 60) + $shouldhaveovertime) . " but it is calculated to be " . ($rec["balance"]["balance"] * 60));
+        atkerror("Overall balance mutation should be $totalhours - $totalcontract = $shouldhavebalancediff, but it is " . ($balancediff * 60));
       }
     }
-    $prevbalance = $rec["balance"]["balance"];
-  }
-  $postbalance = $rldata[count($rldata)-1]["balance"];
-  $balancediff = $postbalance["balance"] - $prebalance["balance"];
-  $shouldhavebalancediff = $totalhours - $totalcontract;
-  if (round($shouldhavebalancediff) != round($balancediff * 60))
-  {
-    atkerror("Overall balance mutation should be $totalhours - $totalcontract = $shouldhavebalancediff, but it is " . ($balancediff * 60));
-  }
-}
-//OVERTIMEBALANCEDEBUGGING END
       if ($outputType=="0")
       {
         if ($userid!="all")
@@ -819,11 +819,14 @@ if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebug
           $data[] = array($label.": ",$emprec["lastname"].", ".$emprec["firstname"]);
           $data[] = array(atktext("email").": ",$emprec["email"]);
         }
-        $tbl = &atknew("atk.utils.atktablerenderer");
-        $output = $tbl->render($data);
-        $rl = &atknew("atk.recordlist.atkrecordlist");
-        $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress,"rlform",array(),"","rlform");
-        $contentblocks[] = $ui->renderBox(array("title"=>atktext("weekreport")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate,"content"=>$output));
+        if(!is_null($rldata))
+        {
+          $tbl = &atknew("atk.utils.atktablerenderer");
+          $output = $tbl->render($data);
+          $rl = &atknew("atk.recordlist.atkrecordlist");
+          $output.='<br>'.$rl->render($this, $rldata, array(),false,$suppress,"rlform",array(),"","rlform");
+          $contentblocks[] = $ui->renderBox(array("title"=>atktext("weekreport")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate,"content"=>$output));
+        }
         $actionpage = $this->renderActionPage("admin", $contentblocks);
         $page->addContent($actionpage);
       }
@@ -839,7 +842,7 @@ if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebug
         $rl->render($this, $rldata, "", '"', '";', "\r\n", "1", "",$suppress);
       }
 
-    }
+    
   }
 }
 
