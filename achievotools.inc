@@ -41,8 +41,10 @@
   
   function getSearchPiece()
   {
+    $theme = &atkinstance("atk.ui.atktheme");
+    if($theme->getAttribute('useframes',true)) { $target='main'; } else { $target=""; }
     $searchnode = &atkGetNode("search.search");
-    $searchpiece = $searchnode->simpleSearchForm("", "main", SESSION_NEW);
+    $searchpiece = $searchnode->simpleSearchForm("", $target, SESSION_NEW);
     return $searchpiece;
   }
   
@@ -72,6 +74,7 @@
     $user = &atkGetUser();
     $username = "<b>".$user["name"]."</b>";
     if($user["name"]!="administrator") $username.=" [".$user["firstname"]." ".$user["lastname"]."]";
+    atkdebug("achievotools::getFullUsername() -> ".$username);
     return $username;
   }
   
