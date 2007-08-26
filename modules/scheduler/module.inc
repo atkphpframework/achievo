@@ -6,7 +6,7 @@
   {
     function getNodes()
     {
-      registerNode("scheduler.scheduler", array("admin", "add", "edit", "delete"));
+      registerNode("scheduler.scheduler", array("admin", "add", "edit", "delete","all_non_private"));
       registerNode("scheduler.scheduler_category", array("admin", "add", "edit", "delete"));
       registerNode("scheduler.scheduler_holidays", array("admin", "add", "edit", "delete" /*,"import","export","view_holidays"*/));
       registerNode("scheduler.scheduler_email_template", array("admin", "edit"));

@@ -4,7 +4,7 @@ atkimport("modules.scheduler.views.scheduler_view");
 
 class scheduler_dayview extends scheduler_view
 {
-
+  var $m_view = "day";
   /**
    * @var array $m_itemMatrix Array with items for the dayview
    */
@@ -15,21 +15,13 @@ class scheduler_dayview extends scheduler_view
    */
   var $m_matrixInfo = array();
 
-  var $m_scheduletime = 30;
-  var $m_work_starttime = "08:30";
-  var $m_work_endtime = "17:00";
+  var $m_contractInfo = array();
   var $m_allDayHours = array();
   var $m_workHours = array();
   var $m_maxcols = 15;
+  var $m_weekday_arr = array(1,2,4,8,16,32,64);
 
-  /**
-   * scheduler dayview constructor
-   */
-  function scheduler_dayview()
-  {
-     $this->setView("day");
-  }
-
+  
 
   /**
    * Find a value in an Array
@@ -102,11 +94,12 @@ class scheduler_dayview extends scheduler_view
     */
    function _setMatrix($item)
    {
-     $begin = $this->_correct_time(date("H:i",$item["startdate"]));
-     $einde = $this->_correct_time(date("H:i",$item["enddate"]),"up");
+     atk_var_dump($item,"SET MATRIX ITEM");
+     $begin = $this->m_model->correct_time(date("H:i",$item["startdate"]),$this->m_userPrefs["timeschedule"]);
+     $einde = $this->m_model->correct_time(date("H:i",$item["enddate"]),$this->m_userPrefs["timeschedule"],"up");
 
      $duration = $this->_duration($begin, $einde);
-     $appoints = count($this->m_itemMatrix[$begin]);
+     $appoints = (array_key_exists($begin,$this->m_itemMatrix)?count($this->m_itemMatrix[$begin]):0);
 
      // find the first free collumn in which this item fits
      if ($appoints == 0)
@@ -139,9 +132,21 @@ class scheduler_dayview extends scheduler_view
   function _dumpMatrix()
   {
     $buff   = $this->_view_header();
-    $cols   = $this->_getCols();
-    $colors = $this->m_itemColors;
+
+    $allDayItems = $this->m_model->getAlldayItems();
+    $appointments = $this->m_model->getAppointmentItems($this->m_model->getViewDate());
+    if(count($appointments)>0)
+    {
+      foreach($appointments as $item)
+      {
+        $this->_setMatrix($item);
+      }
+    }
+    $colors = $this->m_model->getLegendColors();
     $holiday = &getNode("scheduler.scheduler_holidays");
+    $contractInfo = $this->m_model->getContractInfo();
+    $cols   = $this->_getCols();
+
 
     if ($cols == 0)
     {
@@ -153,21 +158,21 @@ class scheduler_dayview extends scheduler_view
      $cWidth = floor(95/$cols)."%";
      $aCols  = $cols+1;
     }
-    $buff.='<table border="0" width="90%" cellspacing="2"><tr><td>';
+    $buff.='<table border=0 width="100%" cellspacing="2"><tr><td valign="top">';
     // if we have allday items show 'em in a seperate table
-    if (count($this->m_allDayItems[$this->m_viewdate]) > 0)
+    if (array_key_exists($this->m_model->m_viewdate,$allDayItems) && count($allDayItems[$this->m_model->m_viewdate]) > 0)
     {
-
-      $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='90%'>\n";
+      $schedulerItemObj = &atkinstance("module.scheduler.utils.scheduleritem");
+      $buff .= "<table border='0' cellpadding='1' cellspacing='1' width='100%'>\n";
       $buff .= "<tr>\n";
       $buff .= "<td colspan='$aCols' bgcolor='#D0D0D0' valign='top' align='left'>".atkText("allday_events","scheduler")."</td>\n";
       $buff .= "</tr>\n";
 
-      for ($i=0;$i<=count($this->m_allDayItems[$this->m_viewdate])-1;$i++)
+      for ($i=0;$i<=count($allDayItems[$this->m_model->m_viewdate])-1;$i++)
       {
         $buff .= "<tr>\n";
         $buff .= '<td colspan="'.$aCols.'" valign="top" align="left">';
-        $buff.= $this->renderItem($this->m_allDayItems[$this->m_viewdate][$i],true,"",true);
+        $buff.= $schedulerItemObj->render($allDayItems[$this->m_model->m_viewdate][$i],true,"",true);
         $buff .= "</td>";
         $buff .= "</tr>";
       }
@@ -175,7 +180,9 @@ class scheduler_dayview extends scheduler_view
     }
 
     // normal appointments
-    $buff .= "<table border='0' cellpadding='1' cellspacing='0' width='90%'>\n";
+    atk_var_dump($this->m_itemMatrix,"ITEM MATRIX");
+    atk_var_dump($this->m_matrixInfo,"MATRIX INFO");
+    $buff .= "<table border='0' cellpadding='1' cellspacing='0' width='100%'>\n";
     $lastHour="";
     $newHour=true;
     $theme = &atkTheme::getInstance();
@@ -184,23 +191,24 @@ class scheduler_dayview extends scheduler_view
     {
       $time    = $this->m_allDayHours[$i];
       $items   = (array_key_exists($time,$this->m_itemMatrix)?$this->m_itemMatrix[$time]:array());
-      $now     = $this->m_year."-".$this->m_month."-".$this->m_day;
+      atk_var_dump($items,"ITEMS");
+      $now     = $this->m_model->getYear()."-".$this->m_model->getMonth()."-".$this->m_model->getDay();
       $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
       if(in_array($time,$this->m_workHours))
       {
-        $weekday_number = date("w",mktime(12,0,0,$this->m_month,$this->m_day,$this->m_year));
-        if(hasFlag($this->m_workdays,$this->m_weekday_arr[$weekday_number]) && !$holiday->isHoliday($this->m_viewdate,"weekend"))
+        $weekday_number = date("w",mktime(12,0,0,$this->m_model->getMonth(),$this->m_model->getDay(),$this->m_model->getYear()));
+        if(hasFlag($contractInfo["workdays"],$this->m_weekday_arr[$weekday_number]) && !$holiday->isHoliday($this->m_model->m_viewdate,"weekend"))
         {
-          $empty_bgcolor= $this->m_emptyWorkHoursColor;
+          $empty_bgcolor= $this->m_userPrefs["scheduler_emptyworkhourscolor"];
         }
         else
         {
-          $empty_bgcolor=$this->m_emptyColor;
+          $empty_bgcolor=$this->m_userPrefs["scheduler_emptycolor"];
         }
       }
       else
       {
-        $empty_bgcolor=$this->m_emptyColor;
+        $empty_bgcolor=$this->m_userPrefs["scheduler_emptycolor"];
       }
       $buff .= "<tr>\n";
       if($i==0 || ($i%2)==0)
@@ -229,9 +237,11 @@ class scheduler_dayview extends scheduler_view
       }
       else
       {
+        $schedulerItemObj = &atkinstance("module.scheduler.utils.scheduleritem");
         for ($j=0;$j<$cols;$j++)
         {
           $item      = (array_key_exists($j,$items)?$items[$j]:'');
+          atk_var_dump($item,"Item $j");
           if(trim($item) != "")
           {
             $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
@@ -247,7 +257,7 @@ class scheduler_dayview extends scheduler_view
               {
                 $rowspan = 'rowspan="'.$timeLap.'"';
               }
-
+              /*
               if ($info["private"] == 1 && $info["owner"] != $this->owner)
               {
                 $bgcolor = $this->busyBgColor;
@@ -256,10 +266,12 @@ class scheduler_dayview extends scheduler_view
               {
                 $bgcolor = $colors[$info["category"]]["back"];
               }
+              */
+              $bgcolor = $colors[$info["category"]]["back"];
               $txt_color = $colors[$info["category"]]["front"];
 
               $buff .= "<td $rowspan height='100%' valign='top' width='$cWidth' align='left' style='background-color: ".$bgcolor.";color: ".$txt_color.";'>";
-              $buff .= $this->renderItem($info,true);
+              $buff .= $schedulerItemObj->render($info,true);
               $buff .= "</td>";
             }
           }
@@ -273,18 +285,22 @@ class scheduler_dayview extends scheduler_view
       $buff .= "</tr>\n";
     }
     $buff .= "</table>";
-    $buff.='</td><td width="200" valign="top">';
-    $buff.=$this->_getSmallCalendar(substr($this->m_small_viewdate,8,2),substr($this->m_small_viewdate,5,2),substr($this->m_small_viewdate,0,4));
-    $buff.="<br>";
-    $next_date = date("Y-m-d",mktime(12,0,0,substr($this->m_small_viewdate,5,2)+1,substr($this->m_small_viewdate,8,2),substr($this->m_small_viewdate,0,4)));
-    $buff.=$this->_getSmallCalendar(substr($next_date,8,2),substr($next_date,5,2),substr($next_date,0,4),false,true);
-
-    $buff.="<br>";
-    $buff.=$this->_getEmployeesCheckboxesForm();
+    $buff.='</td><td width="150" valign="top">';
+    $buff.=$this->getSideBar();
     $buff.="</td></tr></table>";
     $buff.="<br><br>\n";
-    
-    $buff.= $this->m_legend;
+    $buff.= $this->m_model->renderLegend();
+    return $buff;
+  }
+  
+  function getSideBar()
+  {
+    $buff=$this->m_model->_getSmallCalendar(substr($this->m_model->m_small_viewdate,8,2),substr($this->m_model->m_small_viewdate,5,2),substr($this->m_model->m_small_viewdate,0,4));
+    $buff.="<br>";
+    $next_date = date("Y-m-d",mktime(12,0,0,substr($this->m_model->m_small_viewdate,5,2)+1,substr($this->m_model->m_small_viewdate,8,2),substr($this->m_model->m_small_viewdate,0,4)));
+    $buff.=$this->m_model->_getSmallCalendar(substr($next_date,8,2),substr($next_date,5,2),substr($next_date,0,4),false,true);
+    $buff.="<br>";
+    $buff.=$this->m_model->_getEmployeesCheckboxesForm();
     return $buff;
   }
 
@@ -295,16 +311,20 @@ class scheduler_dayview extends scheduler_view
   function _getNav()
   {
 
-    $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day-1, $this->m_year));
+    $theme = &atktheme::getInstance();
+    $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay()-1, $this->m_model->getYear()));
     $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime";
+    $prevImg ='<img src="'.$theme->imgPath("arrow_left.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("previous_day","scheduler").'" alt="'.atktext("previous_day","scheduler").'">';
+
 
     $currentTime = date("Y-m-d");
     $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime";
 
-    $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_month, $this->m_day+1, $this->m_year));
+    $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay()+1, $this->m_model->getYear()));
     $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime";
+    $nextImg ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_day","scheduler").'" alt="'.atktext("next_day","scheduler").'">';
 
-    return href($prevUrl, atkText("previous_day","scheduler"))."&nbsp;".href($currentUrl, atkText("today","scheduler"))."&nbsp;".href($nextUrl, atkText("next_day","scheduler"));
+    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl, atkText("today","scheduler"));
   }
 
   /**
@@ -327,30 +347,30 @@ class scheduler_dayview extends scheduler_view
    *
    * @return string A rendered view
    */
-  function renderView()
+  function _render()
   {
      $page = &atkPage::getInstance();
      $page->register_script(atkconfig("atkroot")."atk/javascript/recordlist.js");
-     $this->_setUserSettings();
+     $contractInfo = $this->m_model->getContractInfo();
 
      // Fill $allDayHours and $workHours
      for($i=0;$i<=23;$i++)
      {
-        for($j=0;$j<=55;$j+=$this->m_scheduletime)
+        for($j=0;$j<=55;$j+=$this->m_userPrefs["timeschedule"])
         {
           $time = sprintf("%02d:%02d",$i,$j);
           $this->m_allDayHours[] =  $time;
-          if($time>=$this->_correct_time($this->m_work_starttime,"down") && $time<$this->_correct_time($this->m_work_endtime,"up"))
+          if($time>=$this->m_model->correct_time($contractInfo["workstarttime"],$this->m_userPrefs["timeschedule"],"down") && $time<$this->m_model->correct_time($contractInfo["workendtime"],$this->m_userPrefs["timeschedule"],"up"))
             $this->m_workHours[] = $time;
         }
      }
 
-     $this->m_viewTitle = "<b>".atkText(strtolower(date("l", mktime(0, 0, 0, $this->m_month, $this->m_day, $this->m_year))),"atk")." ".$this->m_day."-".$this->m_month."-".$this->m_year."</b>";
+     $this->m_viewTitle = "<b>".atkText(strtolower(date("l", mktime(0, 0, 0, $this->m_model->getMonth(), $this->m_model->getDay(), $this->m_model->getYear()))),"atk")." ".$this->m_model->getDay()."-".$this->m_model->getMonth()."-".$this->m_model->getYear()."</b>";
 
-     $this->getItems();
+     $this->m_model->getItems();
 
      // get scheduler Legend and Item colors
-     $this->getLegend();
+     $this->m_model->getLegend();
 
      // Return the matrix
      return $this->_dumpMatrix();

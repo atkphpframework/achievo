@@ -3,6 +3,7 @@
 $en = array("menu_scheduler"=>"Scheduler",
             "menu_scheduler_category"=>"Scheduler categories",
             "menu_scheduler_holidays"=>"Scheduler holidays",
+            "all_non_private"=>"Edit all non private items",
             // Class Holiday
             "name"=>"Name",
             "type"=>"Type",

@@ -7,13 +7,13 @@
    */
   function pimScheduler()
   {
-    // Setup the pimview to view the current date for the current user
-    $pimview = &atknew("modules.scheduler.views.scheduler_pimview");
-    $pimview->setViewDate();
-    $pimview->setViewUser(atkArrayNvl(getUser(), "id"));
-
-    // Build the result containing the rendered pimview
-    $res = $pimview->renderView();
+     $controller = &atkinstance("module.scheduler.scheduler_controller");
+     $request = array("view"=>"pim",
+                      "viewdate"=>null,
+                      "small_viewdate"=>null,
+                      "viewuser"=>atkArrayNvl(getUser(), "id"));
+                         
+     $res = $controller->handleRequest($request);
 
     // Add a link to the scheduler if allowed
     $securitymanager = &atkGetSecurityManager();

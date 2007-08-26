@@ -23,12 +23,7 @@
       // Call the parent constructor
       $this->atkNode("scheduler_userpreferences");
 
-      // Get the user description and userid
-      $usernode = &getNode("employee.employee");
-      $user = getUser();
-      $userid = atkArrayNvl($user, "id");
-      $userdescriptor = $usernode->descriptor($user);
-
+      $userviews = $this->getUserViews();
       // Get the possible minute steps
       $m_arr_minute_step = array();
       for($i=0;$i<60;$i+=5) $m_arr_minute_step[] = sprintf("%02d",$i);
@@ -50,9 +45,8 @@
       //$this->add(new atkBoolAttribute("showcustomerbirthdays"));
       $this->add(new atkBoolAttribute("autorefresh"),"scheduler");
       $this->add(new atkNumberAttribute("refresh_interval"),"scheduler");
-      $this->add(new atkListAttribute("default_view",array("day","week","month"),array(),AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM),"scheduler");
-      $this->add(new atkListAttribute("default_userview",array($userdescriptor,"allusers"),array($userid,"*"),AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM),"scheduler");
-      //$this->add(new atkListAttribute("startday",array("sunday","monday","saturday"),array(0,1,6),AF_OBLIGATORY));
+      $this->add(new atkListAttribute("default_view",array("day","week","month"),array(),AF_OBLIGATORY),"scheduler");
+      $this->add(new atkListAttribute("default_userview",array_values($userviews),array_keys($userviews),AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM),"scheduler");
       $this->add(new atkTimeAttribute("default_eventtime", 0, 23, $m_arr_minute_step,"01:00", 0),"scheduler");
       $this->add(new atkManyToOneRelation("default_category", "scheduler.scheduler_category",AF_RELATION_AUTOLINK),"scheduler");
       $this->add(new atkDummyAttribute("group2","<br><b>".$this->text("colors")."</b>:<br>"),"scheduler");
@@ -70,9 +64,41 @@
       $shuttle_rel = &$this->add(new atkShuttleRelation("assistant","scheduler.scheduler_userassistants","employee.employee",AF_NO_LABEL),"scheduler");
       $shuttle_rel->setLocalKey("userid");
       $shuttle_rel->setRemoteKey("employeeid");
-      $shuttle_rel->setDestinationFilter("person.status='active'");  
+      $shuttle_rel->setDestinationFilter("person.status='active'");
+      
+      $this->add(new atkDummyAttribute("group5","<br><b>".$this->text("groups")."</b>:<br>"),"scheduler");
+      $this->add(new atkOneToManyRelation("groups","scheduler.scheduler_group","userid"),"scheduler");
+      
+      
+        
       $this->setTable("scheduler_userpreferences");
       $this->setSecurityAlias("employee.userprefs");
+    }
+    
+    function getUserViews()
+    {
+      
+      $users = array();
+      // Add curent user
+      $usernode = &getNode("employee.employee");
+      $user = getUser();
+      $userid = atkArrayNvl($user, "id");
+      $userdescriptor = $usernode->descriptor($user);
+      $users[$userid] = $userdescriptor;
+      // Add groups
+      $groupnode = &getNode("scheduler.scheduler_group");
+      $recs = $groupnode->selectDb("userid = $userid");
+      if(count($recs)>0)
+      {
+        foreach($recs as $rec)
+        {
+          $users["g_".$rec["id"]] = $rec["name"];
+        }
+      }
+      // Add all users
+      $users["*"] = "allusers";
+      
+      return $users;
     }
 
     function refresh_interval_display($record="", $mode="")

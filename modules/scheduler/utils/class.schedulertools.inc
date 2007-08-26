@@ -52,14 +52,16 @@ class schedulertools
 
     }
     // Check if getDates has a range start/end date
+    atkdebug("RS: $rangeStartDate | RE: $rangeEndDate | S: $startdate | E: $enddate");
     if($rangeStartDate!=NULL && $rangeEndDate!=NULL)
     {
       if($rangeStartDate>$enddate) return array();
-      if($rangeStartDate>$startdate && $rangeStartDate<$enddate) $startdate = $rangeStartDate;
+      if($rangeStartDate>$startdate && $rangeStartDate<=$enddate) $startdate = $rangeStartDate;
       if($rangeEndDate<$enddate && $rangeEndDate>$startdate) $enddate = $rangeEndDate;
     }
 
     $endtime = mktime(12,0,0,substr($enddate,5,2),substr($enddate,8,2),substr($enddate,0,4));
+    
     atkdebug("LOOP FROM $startdate till $enddate");
     //return array();
 
@@ -193,13 +195,18 @@ class schedulertools
        */
       function assistantFor($userid)
       {
-        $db = &atkGetDb();
-        $sql = "SELECT userid FROM scheduler_userassistants WHERE employeeid='{$userid}'";
-        $nrows = $db->getrows($sql);
-        $assistantFor = array();
-        for($i=0;$i<count($nrows);$i++)
+        static $assistantFor = null;
+        
+        if(is_null($assistantFor))
         {
-          $assistantFor[] = $nrows[$i]["userid"];
+          $db = &atkGetDb();
+          $sql = "SELECT userid FROM scheduler_userassistants WHERE employeeid='{$userid}'";
+          $nrows = $db->getrows($sql);
+          $assistantFor = array();
+          for($i=0;$i<count($nrows);$i++)
+          {
+            $assistantFor[] = $nrows[$i]["userid"];
+          }
         }
         return $assistantFor;
       }
@@ -220,7 +227,101 @@ class schedulertools
         return false;
 
       }
+      
+    /**
+     * Convert an item to a record
+     *
+     * @param array $item Array with a scheduler item
+     * @return array Item record
+     */
+    function item2record($item)
+    {
+      return array("startdate"=>array("day"=>substr($item["startdate"],8,2),"month"=>substr($item["startdate"],5,2),"year"=>substr($item["startdate"],0,4)),
+                   "enddate"=>array("day"=>substr($item["enddate"],8,2),"month"=>substr($item["enddate"],5,2),"year"=>substr($item["enddate"],0,4)),
+                   "starttime"=>array("hours"=>substr($item["starttime"],0,2),"minutes"=>substr($item["starttime"],3,2),"seconds"=>substr($item["starttime"],6,2)),
+                   "endtime"=>array("hours"=>substr($item["endtime"],0,2),"minutes"=>substr($item["endtime"],3,2),"seconds"=>substr($item["endtime"],6,2)),
+                   "recur"=>$item["recur"],
+                   "lastdate"=>$item["lastdate"],
+                   "id"=>$item["id"],
+                   "cyclus"=>array("cyclus_enddate"=>array("day"=>substr($item["cyclus_enddate"],8,2),"month"=>substr($item["cyclus_enddate"],5,2),"year"=>substr($item["cyclus_enddate"],0,4)),
+                                "startday"=>$item["startday"],
+                                "endday"=>$item["endday"],
+                                "startmonth"=>$item["startmonth"],
+                                "endmonth"=>$item["endmonth"],
+                                "every"=>$item["every"],
+                                "month_time"=>$item["month_time"],
+                                "weekday"=>array($item["weekday"])));
+    }
 
+    function UpdateScheduleRec(&$rec)
+    {
+      if($rec["recur"]=="once")
+      {
+        $rec["cyclus"]["cyclus_startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["cyclus_enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["every"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
+      }
+      elseif($rec["recur"]=="daily")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
+      }
+      elseif($rec["recur"]=="weekly")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
+      }
+      elseif($rec["recur"]=="monthly_date")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
+      }
+      elseif($rec["recur"]=="monthly_day")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["startmonth"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+      }
+      elseif($rec["recur"]=="yearly_date")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["month_time"]=1;
+        $rec["cyclus"]["weekday"]=0;
+      }
+      elseif($rec["recur"]=="yearly_day")
+      {
+        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
+        $rec["cyclus"]["startday"]=1;
+        $rec["cyclus"]["endday"]=1;
+        $rec["cyclus"]["endmonth"]=1;
+      }
+    }
 
 
 }

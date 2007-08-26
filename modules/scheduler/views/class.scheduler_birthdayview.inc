@@ -3,14 +3,7 @@ atkimport("modules.scheduler.views.scheduler_view");
 
 class scheduler_birthdayview extends scheduler_view
 {
- /**
-  * scheduler yearview constructor
-  */
-  function scheduler_birthdayview()
-  {
-    $this->setView("birthday");
-  }
-
+   var $m_view = "birthday";
 
  /**
   * the actual displaying function
@@ -72,9 +65,8 @@ class scheduler_birthdayview extends scheduler_view
   * Render the view
   * @return string A renderd view
   */
-  function renderView()
+  function _render()
   {
-    $this->_setUserSettings();
     return $this->_dumpMatrix();
   }
 

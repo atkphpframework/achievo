@@ -22,10 +22,7 @@ class scheduler_category extends atkNode
   {
    $bgcolor = $record["bgcolor"];
    $fgcolor = $record["fgcolor"];
-
-   $buff  = "<table cellpadding='0' cellspacing='0' border='0'><tr>";
-   $buff .= "<td bgcolor='$bgcolor'><font face='verdana' size='-1' color='$fgcolor'>&nbsp;Scheduler item&nbsp;</font></td>";
-   $buff .= "</tr></table>";
+   $buff = '<span style="border: medium none ; background-color: '.$bgcolor.'; color: '.$fgcolor.';">&nbsp;Scheduler Item&nbsp;</span>';
    return $buff;
   }
 
@@ -38,6 +35,8 @@ class scheduler_category extends atkNode
   {
     return atktext("example").":".$this->example_display($record);
   }
+  
+  
 
 }
 ?>

@@ -10,6 +10,7 @@ class scheduler_alarms extends atkNode
   function scheduler_alarms()
   {
     //$users = $this->getUsers();
+    $users = array("-1"=>"All users",atkGetUserId()=>"sandy");
     $this->atkNode("scheduler_alarms");
     $this->add(new atkNumberAttribute("scheduler_id",AF_PRIMARY|AF_HIDE));
     $this->add(new atkNumberAttribute("startdate",AF_PRIMARY|AF_READONLY));
@@ -17,8 +18,7 @@ class scheduler_alarms extends atkNode
     $this->add(new atkNumberAttribute("senddate",AF_HIDE));
     $this->add(new atkBoolAttribute("send",AF_HIDE,1));
     $this->add(new atkAttribute("type",AF_HIDE));
-    $this->add(new atkManyToOneRelation("userid", "scheduler.scheduler_attendees",AF_PRIMARY));
-    //$this->add(new atkListAttribute("userid", array_values($users),array_keys($users),AF_PRIMARY));
+    $this->add(new atkListAttribute("userid", array_values($users),array_keys($users),AF_PRIMARY));
     $this->add(new atkUpdatedByAttribute("owner"));
     $this->setTable("scheduler_alarms");
     $this->setOrder("scheduler_alarms.startdate,scheduler_alarms.duration");

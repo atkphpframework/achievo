@@ -30,7 +30,7 @@ class scheduler_attendees extends atkNode
 
     $this->setTable("scheduler_attendees");
     $this->setSecurityAlias("scheduler.scheduler");
-    $this->addSecurityMap(array("accepted", "rejected"),"view");
+    $this->addSecurityMap(array("accept", "reject"),"view");
   }
 
   function descriptor_def()
@@ -47,35 +47,34 @@ class scheduler_attendees extends atkNode
   
   function recordActions($rec,&$actions,&$mraactions)
   {
-    atk_var_dump($rec,"ATTENDEE RECORD");
     if ($rec["person_id"]["id"]==atkGetUserId()) 
     {
-      if($rec["status"]!="accepted") $actions["accepted"]= session_url(dispatch_url($this->atknodetype(), "accepted", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
-      if($rec["status"]!="rejected") $actions["rejected"]= session_url(dispatch_url($this->atknodetype(), "rejected", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="accepted") $actions["accept"]= session_url(dispatch_url($this->atknodetype(), "accept", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="rejected") $actions["reject"]= session_url(dispatch_url($this->atknodetype(), "reject", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
     }
   }
   
-  function action_accepted(&$handler,$record=array(),$mode="")
+  function action_accept(&$handler,$record=array(),$mode="")
   {
     $this->updateUserStatus('accepted');
     $location = "";
     if(atkLevel()<=0)
     {
-      $this->setFeedback("accepted",ACTION_SUCCESS);
-      $location = $this->feedbackUrl("accepted", ACTION_SUCCESS,"",atktext("scheduled_item_accepted"));
+      $this->setFeedback("accept",ACTION_SUCCESS);
+      $location = $this->feedbackUrl("accept", ACTION_SUCCESS,"",atktext("scheduled_item_accepted"));
       $this->redirect($location);
     }
     $this->redirect($location);
   }
 
-  function action_rejected(&$handler,$record=array(),$mode="")
+  function action_reject(&$handler,$record=array(),$mode="")
   {
     $this->updateUserStatus('rejected');
     $location = "";
     if(atkLevel()<=0)
     {
-      $this->setFeedback("rejected",ACTION_SUCCESS);
-      $location = $this->feedbackUrl("rejected", ACTION_SUCCESS,"",atktext("scheduled_item_rejected"));
+      $this->setFeedback("reject",ACTION_SUCCESS);
+      $location = $this->feedbackUrl("reject", ACTION_SUCCESS,"",atktext("scheduled_item_rejected"));
       $this->redirect($location);
     }
     $this->redirect($location);
@@ -97,7 +96,6 @@ class scheduler_attendees extends atkNode
       atk_var_dump($rec);
       if($rec["person_id"]["role"]=="employee")
       {
-        atkdebug("YES WE SEND A MAIL");
         $this->sendEmail("user_notification",$rec["scheduler_id"]["id"],$rec["person_id"]["id"],"date",$status,true);
       }
     }
@@ -123,8 +121,21 @@ class scheduler_attendees extends atkNode
     return true;
   }
 
+  /**
+   * Send mail to user
+   * @todo: Fix mail
+   * 
+   * @param string $action
+   * @param int $scheduler_id
+   * @param int $person_id
+   * @param string $date
+   * @param string $trigger_action
+   * @param boolean $sendtoowner
+   * @return boolean
+   */
   function sendEmail($action,$scheduler_id,$person_id,$date,$trigger_action="",$sendtoowner=false)
   {
+    return true;
     $template = &atknew("modules.scheduler.scheduler_email_template");
     $template->initialize($action,$person_id);
     $template->loadData($action,$scheduler_id,$date,$trigger_action);

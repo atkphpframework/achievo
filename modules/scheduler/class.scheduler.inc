@@ -25,6 +25,8 @@
   userelation("atkonetoonerelation");
   useattrib("atkfuzzysearchattribute");
   useattrib("atkradioattribute");
+  atkimport("modules.scheduler.utils.schedulertools");
+
 
   class scheduler extends atkNode
   {
@@ -41,6 +43,12 @@
     var $m_minute_step = 5;
 
 
+    /**
+     * Constructor
+     *
+     * @todo Fix alarms
+     * @return scheduler
+     */
     function scheduler($type = "scheduler", $flags = 0)
     {
       $flags |= NF_ADD_LINK|NF_TRACK_CHANGES;
@@ -81,7 +89,7 @@
         $default_end_time = strftime("%H:%M", mktime(substr($default_start_time,0,2),substr($default_start_time,3,2)+$user_eventtime));
       }
 
-      $this->atkNode($type, $flags);
+      $this->atkNode($type,$flags);
 
       $this->add(new atkAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("title", AF_SEARCHABLE|AF_OBLIGATORY, 50));
@@ -91,10 +99,10 @@
       $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"));
-      $recur_attr = &$this->add(new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
+      $this->add($recur_attr = new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
       $this->add(new atkDateAttribute("startdate", "F d Y","d F Y", 0, 0));
       $this->add(new atkDateAttribute("enddate", "F d Y","d F Y", 0, 0));
-      $allday_attr = &$this->add(new atkBoolAttribute("allday"));
+      $this->add($allday_attr = new atkBoolAttribute("allday"));
       $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time, 0));
       $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, 0));
       $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_CASCADE_DELETE),"cyclus");
@@ -111,17 +119,17 @@
 
       $recur_attr->addOnChangeHandler("change_recur(newvalue);");
       $allday_attr->addOnChangeHandler("change_allday();");
-
-      if(empty($this->m_viewUsers) && $this->m_view!="employeeview")
+      
+      if($this->m_viewUsers=="" && $this->m_view!="employeeview")
       {
-        if ($userprefs["default_userview"]!="*" && !empty($userid))
+        if ($userprefs["default_userview"]!="*") // &&  substr($userprefs["default_userview"],0,2)!='g_' && !empty($userid))
         {
-          $this->m_viewUsers = array($userid);
+          $this->m_viewUsers = array($userprefs["default_userview"]);
         }
         else
         {
          // User has opted to show all users by default.
-          $this->m_viewUsers = array('all');
+          $this->m_viewUsers = array("all");
         }
       }
 
@@ -184,6 +192,23 @@
          return $attr->display($record, $mode);
       }
     }
+    
+    function alarms_display($record,$mode)
+    {
+      $attr = &$this->getAttribute("alarms");
+      if ($mode=="view") // in view mode we don't want readonly display
+                         // of the notes
+      {
+          $page = &$this->getPage();
+          $page->register_script('./atk/javascript/formsubmit.js');
+          return $attr->edit($record);
+      }
+      else
+      {
+         // regular situation
+         return $attr->display($record, $mode);
+      }
+    }
 
 
     function initial_values()
@@ -228,7 +253,7 @@
         $assistantFor = schedulertools::assistantFor($userid);
         if($isAttendee) atkdebug("CURRENT USER IS AN ATTENDEE ($action)");
 
-        if((!$isPrivate && in_array($owner,$assistantFor)) || $owner==$userid || ($action=="view" && $isAttendee))
+        if((!$isPrivate && (in_array($owner,$assistantFor) || parent::allowed("all_non_private"))) || $owner==$userid || ($action=="view" && $isAttendee))
         {
           // Item is not private and user is the owner or an assistant for the owner
           // or action is view and user is an attendee
@@ -237,11 +262,13 @@
         }
         else
         {
+          atkdebug("USER IS NOT ALLOWED");   
           return false;
         }
       }
       else
       {
+        atkdebug("PARENT ALLOWED");
         return parent::allowed($action,$record);
       }
     }
@@ -319,15 +346,13 @@
         $page->head("Schedule");
         $page->body();
 
-        if (method_exists($this, $this->m_view."view"))
-        {
-          $funcname = $this->m_view."view";
-          $result = $this->$funcname();
-        }
-        else
-        {
-          $result = "Niet bestaande view (".$this->m_view." view)";
-        }
+        $controller = &atkinstance("module.scheduler.scheduler_controller");
+        $request = array("view"=>$this->m_view,
+                         "viewdate"=>$this->m_viewdate,
+                         "small_viewdate"=>$this->m_small_viewdate,
+                         "viewusers"=>$this->m_viewUsers);
+                         
+        $result = $controller->handleRequest($request);
 
         // Add the refresh code if autorefresh is set and the refresh_interval is at least 1.
         $userprefs = $this->getUserSchedulerPrefs(atkArrayNvl(getUser(), "id"));
@@ -345,6 +370,7 @@
       {
          atkerror("ui object failure");
       }
+      
     }
 
     function viewPage(&$handler,$record,$node)
@@ -605,96 +631,6 @@
       return $handler->action_update();
     }
 
-
-
-
-    function dayview()
-    {
-      $dayview = &atknew("modules.scheduler.views.scheduler_dayview");
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-      $dayview->setViewDate($day,$month,$year);
-      $day   = substr($this->m_small_viewdate, 8,2);
-      $month = substr($this->m_small_viewdate, 5,2);
-      $year  = substr($this->m_small_viewdate, 0,4);
-      $dayview->setSmallViewDate($day,$month,$year);
-      $dayview->setViewUser($this->m_viewUsers);
-      return $dayview->renderView();
-    }
-
-    function weekview()
-    {
-      $weekview = &atknew("modules.scheduler.views.scheduler_weekview");
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-      $weekview->setViewDate($day,$month,$year);
-      $day   = substr($this->m_small_viewdate, 8,2);
-      $month = substr($this->m_small_viewdate, 5,2);
-      $year  = substr($this->m_small_viewdate, 0,4);
-      $weekview->setSmallViewDate($day,$month,$year);
-      $weekview->setViewUser($this->m_viewUsers);
-      return $weekview->renderView();
-
-    }
-
-    function monthview()
-    {
-      // viewdate is something like 2001-07-23
-      $monthview = &atknew("modules.scheduler.views.scheduler_monthview");
-
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-
-      $monthview->setViewDate($day,$month,$year);
-      $day   = substr($this->m_small_viewdate, 8,2);
-      $month = substr($this->m_small_viewdate, 5,2);
-      $year  = substr($this->m_small_viewdate, 0,4);
-      $monthview->setSmallViewDate($day,$month,$year);
-
-      $monthview->setViewUser($this->m_viewUsers);
-      return $monthview->renderView();
-    }
-
-    function yearview()
-    {
-      // viewdate is something like 2001-07-23
-      $yearview = &atknew("modules.scheduler.views.scheduler_yearview");
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-      $yearview->setViewDate($day,$month,$year);
-      $yearview->setViewUser($this->m_viewUsers);
-      return $yearview->renderView();
-    }
-
-    function employeeview()
-    {
-      $employeeview = &atknew("modules.scheduler.views.scheduler_employeeview");
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-
-      $employeeview->setViewDate($day,$month,$year);
-      $employeeview->setEmployees($this->m_employees);
-      return $employeeview->renderView();
-    }
-
-    function birthdayview()
-    {
-      $birthdayview = &atknew("modules.scheduler.views.scheduler_birthdayview");
-      $day   = substr($this->m_viewdate, 8,2);
-      $month = substr($this->m_viewdate, 5,2);
-      $year  = substr($this->m_viewdate, 0,4);
-
-      $birthdayview->setViewDate($day,$month,$year);
-      $birthdayview->setViewUser($this->m_viewUsers);
-      return $birthdayview->renderView();
-    }
-
-
     // Record functions
     function postAdd($rec)
     {
@@ -718,21 +654,23 @@
       $this->removeSchedulerDates($rec);
       return true;
     }
-
+    
     function preDelete($rec)
     {
       $this->sendEmail($rec);
       $this->deleteAttendees($rec);
       return true;
     }
-
+    
     /**
      * Send email to all attendees except the owner
      * that the meeting is canceld
      *
+     * @todo Fix mail
      */
     function sendEmail($rec)
     {
+      return true;
       atk_var_dump($rec["attendees"],"ATTENDEES DELETE");
       $date="";
       foreach($rec["attendees"] as $attendee)
@@ -759,7 +697,7 @@
       {
         $attendee_node->deleteDb("scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
       }
-
+      
     }
 
     function storeEmployees($rec, $attendees)
@@ -770,7 +708,7 @@
     {
       return $this->storeAttendees($rec,$attendees,"contact");
     }
-
+    
     function storeAttendees($rec,$attendees,$role)
     {
       for ($i=0, $_i=count($attendees); $i<$_i; $i++)
@@ -780,7 +718,7 @@
           $execTrigger=false;
           $status="accepted";
         }
-        else
+        else 
         {
           $execTrigger=true;
           $status="no_response";
@@ -792,9 +730,9 @@
 
     function _addAttendeeRecord($scheduler_id, $person_id,$role,$status="no_response",$execTrigger=true)
     {
-
+      
       $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
-
+      
       $total = $attendee_node->countDb("scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
       if($total==0)
       {
@@ -808,85 +746,16 @@
 
     function preAdd(&$rec)
     {
-      $this->UpdateScheduleRec($rec);
+      schedulertools::UpdateScheduleRec($rec);
       return true;
     }
 
     function preUpdate(&$rec)
     {
-      $this->UpdateScheduleRec($rec);
+      schedulertools::UpdateScheduleRec($rec);
       return true;
     }
 
-    function UpdateScheduleRec(&$rec)
-    {
-      if($rec["recur"]=="once")
-      {
-        $rec["cyclus"]["cyclus_startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["cyclus_enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startday"]=1;
-        $rec["cyclus"]["endday"]=1;
-        $rec["cyclus"]["startmonth"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-        $rec["cyclus"]["every"]=1;
-        $rec["cyclus"]["month_time"]=1;
-        $rec["cyclus"]["weekday"]=0;
-      }
-      elseif($rec["recur"]=="daily")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startday"]=1;
-        $rec["cyclus"]["endday"]=1;
-        $rec["cyclus"]["startmonth"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-        $rec["cyclus"]["month_time"]=1;
-        $rec["cyclus"]["weekday"]=0;
-      }
-      elseif($rec["recur"]=="weekly")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startday"]=1;
-        $rec["cyclus"]["endday"]=1;
-        $rec["cyclus"]["startmonth"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-        $rec["cyclus"]["month_time"]=1;
-      }
-      elseif($rec["recur"]=="monthly_date")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startmonth"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-        $rec["cyclus"]["month_time"]=1;
-        $rec["cyclus"]["weekday"]=0;
-      }
-      elseif($rec["recur"]=="monthly_day")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startday"]=1;
-        $rec["cyclus"]["endday"]=1;
-        $rec["cyclus"]["startmonth"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-      }
-      elseif($rec["recur"]=="yearly_date")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["month_time"]=1;
-        $rec["cyclus"]["weekday"]=0;
-      }
-      elseif($rec["recur"]=="yearly_day")
-      {
-        $rec["cyclus"]["startdate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["enddate"]=array("year"=>"0000","month"=>"0","day"=>"0");
-        $rec["cyclus"]["startday"]=1;
-        $rec["cyclus"]["endday"]=1;
-        $rec["cyclus"]["endmonth"]=1;
-      }
-    }
 
     function getUserSchedulerPrefs($userid)
     {
@@ -903,18 +772,19 @@
 
       atkimport("module.scheduler.utils.schedulertools");
       $startdate = $this->m_viewdate;
-      if($rec["recur"]=="once")
-      {
+      //if($rec["recur"]=="once")
+      //{
         $startdate = date("Y-m-d",mktime(12,0,0,$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]));
-      }
-      else
-      {
-        $startdate = date("Y-m-d",mktime(12,0,0,$rec["cyclus"]["cyclus_startdate"]["month"],$rec["cyclus"]["cyclus_startdate"]["day"],$rec["cyclus"]["cyclus_startdate"]["year"]));
-      }
+      //}
+      //else
+      //{
+      //  $startdate = date("Y-m-d",mktime(12,0,0,$rec["cyclus"]["cyclus_startdate"]["month"],$rec["cyclus"]["cyclus_startdate"]["day"],$rec["cyclus"]["cyclus_startdate"]["year"]));
+      //}
       // Enddate is startdate + 2 months (because of the small calendars)
       $enddate = date("Y-m-d",mktime(12,0,0,(substr($this->m_viewdate,5,2)+2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4)));
       $dates = schedulertools::getDates($rec,$startdate,$enddate);
-
+      $enddate = mktime($rec["endtime"]["hours"],$rec["endtime"]["minutes"],$rec["endtime"]["seconds"],$rec["enddate"]["month"],$rec["enddate"]["day"],$rec["enddate"]["year"]);
+      
       foreach($dates as $date)
       {
         $tmp_start = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]);
