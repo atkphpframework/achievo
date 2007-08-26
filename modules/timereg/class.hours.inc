@@ -152,7 +152,6 @@ class hours extends atkNode
     $this->m_weekview = $this->processGlobalVar("weekview");
     $this->m_viewdate = $this->processGlobalVar("viewdate");
     $this->m_user = $this->processGlobalVar("viewuser");
-atk_var_dump($this->m_viewdate);
     $this->m_lockmode = atkConfig::get("timereg", "lockmode", "week");
 
     if (is_array($this->m_viewdate)) // if set by the date jumper, viewdate is an array.
@@ -859,7 +858,9 @@ atk_var_dump($this->m_viewdate);
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    $sessionmanager = &atkGetSessionManager();
+    $this->m_viewdate = $this->processGlobalVar("viewdate",$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]));
+    //$this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
 
     // update overtime balance
     $this->calculateNewBalance($rec, "add");
@@ -872,7 +873,9 @@ atk_var_dump($this->m_viewdate);
     // to that date.
     // TODO this doesn't work anymore due to the fact that we move down in the session stack
     // where viewdate still has it's old value (do we need a way to alter the previous session?)
-    $this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
+    $sessionmanager = &atkGetSessionManager();
+    $this->m_viewdate = $this->processGlobalVar("viewdate",$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]));
+    //$this->m_viewdate=$rec["activitydate"]["year"]."-".sprintf("%02d",$rec["activitydate"]["month"])."-".sprintf("%02d",$rec["activitydate"]["day"]);
 
     // update overtime balance
     $this->calculateNewBalance($rec, "edit");
