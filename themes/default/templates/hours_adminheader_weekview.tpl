@@ -1,4 +1,4 @@
-<form name="weekview" method="post" action="dispatch.php">
+<form name="weekview" method="post" action="{dispatchfile}">
   {$session_form}
   <table border=0 cellpadding=0 cellspacing=0 width="100%" class="table">
     <tr>
