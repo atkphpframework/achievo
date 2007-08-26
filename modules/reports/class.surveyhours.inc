@@ -21,7 +21,13 @@ class surveyhours extends hours
       }        
     }
     
-    $this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
+    /* TODO:
+     * This feature was offerd to BlueWind, but never tested. When adding the next line you have
+     * the option to choose a organisation in the timereg field.
+     * Also the following patch is needed:
+     * $setup->addColumn("hours", "organizationid", "int(10)", true, "0");
+     */
+    //$this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
     
     $projectAtt = &$this->getAttribute("projectid");
     $projectAtt->removeFlag(AF_OBLIGATORY);
