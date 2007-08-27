@@ -1,6 +1,6 @@
 <?php
 atkimport("module.timereg.hours");
-class surveyhours extends hours 
+class surveyhours extends hours
 {
   function surveyhours()
   {
@@ -14,27 +14,29 @@ class surveyhours extends hours
         //we remove all dependee - hoursurvey will add own
         $attr->m_dependees = array();
       }
-        
+
       if($attrName == "phaseid")
       {
         $attr->removeFlag(AF_OBLIGATORY);
-      }        
+      }
     }
-    
-    /* TODO:
-     * This feature was offerd to BlueWind, but never tested. When adding the next line you have
-     * the option to choose a organisation in the timereg field.
-     * Also the following patch is needed:
-     * $setup->addColumn("hours", "organizationid", "int(10)", true, "0");
-     */
-    //$this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
-    
+
+    $this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
+
     $projectAtt = &$this->getAttribute("projectid");
     $projectAtt->removeFlag(AF_OBLIGATORY);
-    $this->setOrder("");    
-    $this->setSecurityAlias('timereg.hours');    
+    $this->setOrder("");
+    $this->setSecurityAlias('timereg.hours');
   }
-  
+
+  function recordActions($record, &$actions, &$mraactions)
+  {
+    foreach($actions as $key=>$url)
+    {
+      $actions[$key] = str_replace("reports.surveyhours", "timereg.hours", $url);
+    }
+  }
+
   /**
    * This filter is only needed in the hoursnode, where activityid
    * depends on the phaseid. So we override the function here to disable the
@@ -47,7 +49,7 @@ class surveyhours extends hours
   function activityid_selection($record, $mode="")
   {
     $attr = &$this->getAttribute('activityid');
-    return $attr->getSelectableRecords($record, $mode);    
+    return $attr->getSelectableRecords($record, $mode);
   }
 
   /**
