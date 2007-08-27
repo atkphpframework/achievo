@@ -65,39 +65,47 @@
       $shuttle_rel->setLocalKey("userid");
       $shuttle_rel->setRemoteKey("employeeid");
       $shuttle_rel->setDestinationFilter("person.status='active'");
-      
+
       $this->add(new atkDummyAttribute("group5","<br><b>".$this->text("groups")."</b>:<br>"),"scheduler");
       $this->add(new atkOneToManyRelation("groups","scheduler.scheduler_group","userid"),"scheduler");
-      
-      
-        
+
+
+
       $this->setTable("scheduler_userpreferences");
       $this->setSecurityAlias("employee.userprefs");
     }
-    
+
     function getUserViews()
     {
-      
       $users = array();
-      // Add curent user
-      $usernode = &getNode("employee.employee");
+
+      // Get current user information
       $user = getUser();
       $userid = atkArrayNvl($user, "id");
-      $userdescriptor = $usernode->descriptor($user);
-      $users[$userid] = $userdescriptor;
-      // Add groups
-      $groupnode = &getNode("scheduler.scheduler_group");
-      $recs = $groupnode->selectDb("userid = $userid");
-      if(count($recs)>0)
+
+      // If logged in as non-administrator
+      if (!empty($userid))
       {
-        foreach($recs as $rec)
+        // Add current user
+        $usernode = &getNode("employee.employee");
+        $userdescriptor = $usernode->descriptor($user);
+        $users[$userid] = $userdescriptor;
+
+        // Add groups
+        $groupnode = &getNode("scheduler.scheduler_group");
+        $recs = $groupnode->selectDb("`scheduler_group`.`userid`='$userid'");
+        if(count($recs)>0)
         {
-          $users["g_".$rec["id"]] = $rec["name"];
+          foreach($recs as $rec)
+          {
+            $users["g_".$rec["id"]] = $rec["name"];
+          }
         }
       }
+
       // Add all users
       $users["*"] = "allusers";
-      
+
       return $users;
     }
 
