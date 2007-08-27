@@ -155,9 +155,8 @@
 
       if (!$g_securityManager->allowed("timereg.hours", "any_project"))
       {
-        $query->addJoin("project_person","members","members.projectid = project.id",false);
-        $query->addGroupBy("project.id");
-        $query->addCondition("(members.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
+         $query->addJoin("project_person","","project_person.projectid = project.id",true);
+         $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
 
       $query->addOrderBy("hours.activitydate DESC");
