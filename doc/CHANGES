@@ -13,8 +13,6 @@ Changes in Achievo 1.3
 + Added a new user-selector to the scheduler. You can now select multiple
   users to compare agenda's with. Added current user selection as a stackvar.
   [Edgar]
-* Scheduler module. Fixed allday items of multiple users not displaying. 
-  And some more small bugs [Edgar]
 + Added CSV import possibility to projects and employees.
 + Added ability to set the following password restrictions: minimum length,
   minimum number of uppercase characters, minimum number of lowercase
@@ -341,7 +339,11 @@ Changes in Achievo 1.3
 * Fixed bug in weekreport with locks (bug #790) [Sandy]
 * Fixed adding supervisors from the employee screen (bug #675)
   [Peter, Sandy]
-
+* Fixed employee weekreport when using it as administrator. [Sandy] (bug #866)
+* Fixed problem with the 'Any Project' in the project
+  management. [Sandy] (bug #855)
+* Fixed Editing time registrations from hoursurvey [Sandy] (bug #852)
+* Fixed register time on other users [Sandy] (bug #850)
 
 
 Changes in Achievo 1.2.1
