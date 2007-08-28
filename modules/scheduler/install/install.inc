@@ -1,5 +1,7 @@
 <?php
   $setup->installNode("scheduler.scheduler_category");
+  $setup->installNode("scheduler.scheduler_group");
+  $setup->installNode("scheduler.scheduler_group_member");
   $setup->installNode("scheduler.scheduler_userpreferences");
   $setup->installNode("scheduler.scheduler_attendees");
   $setup->installNode("scheduler.scheduler_notes");
