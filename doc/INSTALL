@@ -69,12 +69,12 @@ have a working webserver with PHP support and a MySQL database installed.
 
    $ mysql -u root --password=secret mysql
 
-   mysql> create database achievo_1_2;
-   mysql> grant create,alter,select,insert,update,delete on achievo_1_2.*
+   mysql> create database achievo_1_3;
+   mysql> grant create,alter,select,insert,update,delete on achievo_1_3.*
                                   to achievo@localhost identified by 'secret';
    mysql> quit;
 
-   This creates a database named 'achievo_1_2', and a user with username
+   This creates a database named 'achievo_1_3', and a user with username
    'achievo' and password 'secret'.
 
    Note: the create and alter privileges are only needed during installation
@@ -92,7 +92,7 @@ have a working webserver with PHP support and a MySQL database installed.
 
    $config_db["default"]["driver"] = "mysql";
    $config_db["default"]["host"] = "localhost";
-   $config_db["default"]["db"] = "achievo_2_0";
+   $config_db["default"]["db"] = "achievo_1_3";
    $config_db["default"]["user"] = "demo";
    $config_db["default"]["password"] = "demo";
 
