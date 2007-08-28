@@ -294,20 +294,22 @@ class hours extends atkNode
 
   function activityid_selection($record, $mode="")
   {
-    $filter = "";
     $attr = &$this->getAttribute('activityid');
-
+    $attr->createDestination();
+    $node = $attr->m_destInstance;
+    $filter = $attr->createFilter($record);
     if ($mode == 'add' || $mode == 'edit' || $mode == 'select')
     {
       $activityids = projectutils::getAvailableActivityIds($record["phaseid"]["id"]);
+      if (trim($filter) != "")
+        $filter .= " AND ";
       if(count($activityids)>0)
-        $filter = "activity.id IN (".implode(",",$activityids).")";
+        $filter .= "(activity.id IN (".implode(",",$activityids)."))";
       else
-        $filter = "activity.id IN (NULL)";
-
-      $attr->addDestinationFilter($filter);
+        $filter .= "(activity.id IN (NULL))";
     }
-    return $attr->getSelectableRecords($record, $mode);
+    $result = $node->selectDb($filter, "", "", "", atk_array_merge($node->descriptorFields(), $node->m_primaryKey), $mode);
+    return $result;
   }
 
   function processGlobalVar($name, $value="")
