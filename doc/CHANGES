@@ -4,8 +4,8 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
-Changes in Achievo 1.3
-----------------------
+Changes in Achievo 1.3RC1
+-------------------------
 + Added 'activate'/'archive' button to the contract edit page. Pressing to
   this button the status of contract and projects change accordingly - from
   active to archive, and from archive to active to both contract and all
