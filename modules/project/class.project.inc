@@ -737,11 +737,14 @@
       // Access control
       if (!$this->allowed("any_project"))
       {
-        $user = getUser();
-        $this->addFilter("project.coordinator=".$user["id"]);
+        $user = atkGetUser();
+        $pids = implode(",", $this->get_user_projects());
+	  		
+        $this->addFilter("project.id IN ($pids) OR project.coordinator=".$user["id"]);
+        
         // we can hide the coordinator column from the list in this case.
-        $attr = &$this->getAttribute("coordinator");
-        $attr->addFlag(AF_HIDE_LIST);
+        //$attr = &$this->getAttribute("coordinator");
+        //$attr->addFlag(AF_HIDE_LIST);
       }
 
       return $handler->action_admin($record);
