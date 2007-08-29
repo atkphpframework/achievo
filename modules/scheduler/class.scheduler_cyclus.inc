@@ -25,9 +25,9 @@
        $this->add(new atkListAttribute("startmonth",$month_arr_disp,$month_arr_value,AF_OBLIGATORY),"cyclus");
        $this->add(new atkListAttribute("endmonth",$month_arr_disp,$month_arr_value,AF_OBLIGATORY),"cyclus");
 
-       $this->add(new atkListAttribute("every",array("none",2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION),"cyclus");
+       $this->add(new atkListAttribute("every",array(1,2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION|AF_LIST_NO_OBLIGATORY_NULL_ITEM),"cyclus");
 
-       $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY),"cyclus");
+       $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY|AF_NO_TRANSLATION|AF_LIST_NO_OBLIGATORY_NULL_ITEM),"cyclus");
        $this->add(new atkFlagAttribute("weekday",array("sunday","monday","thuesday","wednedsday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus"); 	 
        $this->add(new atkOneToManyRelation("exceptions","scheduler.scheduler_cyclus_not","scheduler_id"),"cyclus");
 
@@ -39,7 +39,7 @@
      {
       $attrib = $this->getAttribute("every");
       $ret = $attrib->edit($record,$fieldprefix,$mode);
-      $ret.= '&nbsp;<span id="every_day">'.atktext('days').'</span><span id="every_week">'.atktext('weeks').'</span><span id="every_month">'.atktext('months').'</span><span id="every_year">'.atktext('years').'</span>';
+      $ret.= '&nbsp;<span id="every_day">'.atktext('days',"scheduler").'</span><span id="every_week">'.atktext('weeks',"scheduler").'</span><span id="every_month">'.atktext('months',"scheduler").'</span><span id="every_year">'.atktext('years',"scheduler").'</span>';
       return $ret;
      }
 
