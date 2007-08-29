@@ -14,17 +14,17 @@ class scheduler_weekview extends scheduler_view
   */
   function _getNav()
   {
-    global $PHP_SELF;
+
     $theme = &atktheme::getInstance();
     $prevTime = $this->m_weekdates[0]['date'];
-    $prevUrl  = $PHP_SELF."?view=week&viewdate=$prevTime";
+    $prevUrl  = atkSelf()."?view=week&viewdate=$prevTime";
     $prevImg  ='<img src="'.$theme->imgPath("arrow_left.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("previous_week","scheduler").'" alt="'.atktext("previous_week","scheduler").'">';
 
     $nextTime = $this->m_weekdates[8]['date'];
-    $nextUrl  = $PHP_SELF."?view=week&viewdate=$nextTime";
+    $nextUrl  = atkSelf()."?view=week&viewdate=$nextTime";
     $nextImg  ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_week","scheduler").'" alt="'.atktext("next_week","scheduler").'">';
 
-    $currentUrl = $PHP_SELF."?view=week&viewdate=".date("Y-m-d");
+    $currentUrl = atkSelf()."?view=week&viewdate=".date("Y-m-d");
 
     atkimport("modules.scheduler.utils.weeknumber");
     $weeknumberFull = $this->m_model->getWeekNumber($this->m_model->getDay(),$this->m_model->getMonth(),$this->m_model->getYear(),true);
@@ -75,7 +75,7 @@ class scheduler_weekview extends scheduler_view
     for ($i=1;$i<=7;$i++)
     {
       $text  = atktext($this->m_weekdates[$i]["day"])." (".substr($this->m_weekdates[$i]["date"],8,2)."-".substr($this->m_weekdates[$i]["date"],5,2).")";
-      $href  = $_SERVER["PHP_SELF"]."?view=day&viewdate=".$this->m_weekdates[$i]["date"];
+      $href  = atkSelf()."?view=day&viewdate=".$this->m_weekdates[$i]["date"];
       $weekday[$i]["title"] = href($href,$text);
 
       //$this->getItems(substr($this->m_weekdates[$i]["date"],8,2),substr($this->m_weekdates[$i]["date"],5,2),substr($this->m_weekdates[$i]["date"],0,4));

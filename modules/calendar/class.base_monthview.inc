@@ -43,13 +43,13 @@
    {
 
     $prevTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month-1, 1, $this->year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$prevTime&dayview=".$this->showGlobal;
+    $prevUrl  = atkSelf()."?view=monthview&viewdate=$prevTime&dayview=".$this->showGlobal;
 
     $thisTime = date("Y-m")."-1";
-    $thisUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$thisTime&dayview=".$this->showGlobal;
+    $thisUrl  = atkSelf()."?view=monthview&viewdate=$thisTime&dayview=".$this->showGlobal;
 
     $nextTime = date("Y-m-d", adodb_mktime(0,0,0,$this->month+1, 1, $this->year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
+    $nextUrl  = atkSelf()."?view=monthview&viewdate=$nextTime&dayview=".$this->showGlobal;
 
     $this->title = "<font size='-1'><b>".atktext(strtolower(date("F", adodb_mktime(0,0,0,$this->month,1,$this->year))))." ".$this->year."</b></font>";
 
@@ -125,13 +125,13 @@
     for ($i=0;$i<=$this->weeks;$i++)
     {
      $weekno = strftime("%V", adodb_mktime(0,0,0,substr($this->items[$item]["date"],5,2), substr($this->items[$item]["date"],8,2), substr($this->items[$item]["date"],0,4)));
-     $href   = $_SERVER["PHP_SELF"]."?view=weekview&viewdate=".$this->items[$item]["date"];
+     $href   = atkSelf()."?view=weekview&viewdate=".$this->items[$item]["date"];
      $buff  .= "<tr>";
      $buff  .= "<td width='$colwidth' bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($href, $weekno)."</font></td>";
 
      for ($j=0;$j<=6;$j++)
      {
-      $url     = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->items[$item]["date"];
+      $url     = atkSelf()."?view=dayview&viewdate=".$this->items[$item]["date"];
       $day     = substr($this->items[$item]["date"],8,2);
       $month   = substr($this->items[$item]["date"],5,2);
       $bgcolor = "#C0C0C0";

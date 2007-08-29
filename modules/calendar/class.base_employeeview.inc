@@ -48,7 +48,7 @@
     for ($i=0;$i<count($this->workHours);$i++)
     {
       $time = $this->workHours[$i];
-      $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=calendar.schedule&viewdate=$date&time=$time";
+      $addurl  = atkSelf()."?atkaction=add&atknodetype=calendar.schedule&viewdate=$date&time=$time";
       $buff .= "<td bgcolor='#D0D0D0' valign='top' align='left'><font size='-1'>".href($addurl, "<font size='-1'>".$this->workHours[$i]."</font>",SESSION_NESTED)."</font></td>";
     }
     $buff .= "</tr>\n";

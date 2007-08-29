@@ -235,13 +235,13 @@
       {
         $funcname = $this->m_view;
               // link to weekview and monthview and employeeview
-        $result = href($_SERVER["PHP_SELF"]."?view=dayview&viewdate=$this->m_viewdate",atktext("dayview")) ."&nbsp;";
-        $result.= href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$this->m_viewdate",atktext("weekview")) ."&nbsp;";
-        $result.= href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$this->m_viewdate", atktext("monthview"))."&nbsp;";
+        $result = href(atkSelf()."?view=dayview&viewdate=$this->m_viewdate",atktext("dayview")) ."&nbsp;";
+        $result.= href(atkSelf()."?view=weekview&viewdate=$this->m_viewdate",atktext("weekview")) ."&nbsp;";
+        $result.= href(atkSelf()."?view=monthview&viewdate=$this->m_viewdate", atktext("monthview"))."&nbsp;";
         // Employee view doens't work in postgresql cause this calendar uses 24:00 as time (which is invalid)
         $dbconfig = atkconfig("db");
         if($dbconfig["default"]["driver"]!="pgsql")
-          $result.= href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"))."&nbsp;";
+          $result.= href(atkSelf()."?view=employeeview&viewdate=$viewdate", atktext("employeeview"))."&nbsp;";
         $result.= atkArrayNvl($this->getHelp(), "helplink", "");
 
         $result.= $this->$funcname($this->m_viewdate);
@@ -333,7 +333,7 @@
       }
 
       // get all users we can view
-      $form  = "<FORM name='frmemployeeview' method='post' action='".$_SERVER["PHP_SELF"]."'>\n";
+      $form  = "<FORM name='frmemployeeview' method='post' action='".atkSelf()."'>\n";
       $form .= session_form();
       $form .= "<input type='hidden' name='viewdate' value='$viewdate'>\n";
       $form .= $this->get_employees2($selemployee);
@@ -381,9 +381,6 @@
 
       // get the legend
       $legend .= $dummy->legend;
-
-      // link to weekview and monthview and employeeview
-      //$buff = href($_SERVER["PHP_SELF"]."?view=weekview&viewdate=$viewdate",atktext("weekview")) ."&nbsp;". href($_SERVER["PHP_SELF"]."?view=monthview&viewdate=$viewdate", atktext("monthview"))."&nbsp;".href($_SERVER["PHP_SELF"]."?view=employeeview&viewdate=$viewdate", atktext("employeeview"));
 
       // assign our output buffer
       $buff= "<br><br><table width='".$dummy->viewerWidth."'><tr>";

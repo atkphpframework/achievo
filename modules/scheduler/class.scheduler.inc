@@ -415,7 +415,7 @@
         $atkselector_str = '(('. implode($atkselector, ') OR (').'))';
       else $atkselector_str = $atkselector;
 
-      $formstart ='<form action="'.$_SERVER["PHP_SELF"].'?"'.SID.' method="post">';
+      $formstart ='<form action="'.atkSelf().'?"'.SID.' method="post">';
       $formstart.=session_form();
       $formstart.='<input type="hidden" name="atkaction" value="delete">';
       $formstart.='<input type="hidden" name="atknodetype" value="'.$this->atknodetype().'">';
@@ -473,7 +473,7 @@
 
       $this->addStyle("style.css");
 
-      $formstart = '<form action="'.$_SERVER["PHP_SELF"].'?"'.SID.' method="post">';
+      $formstart = '<form action="'.atkSelf().'?"'.SID.' method="post">';
       $formstart.= session_form();
       $formstart.= '<input type="hidden" name="atkaction" value="editserieorsingle">';
       $formstart.= '<input type="hidden" name="confirmedit" value="true">';

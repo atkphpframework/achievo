@@ -39,7 +39,7 @@ class scheduler_employeeview extends scheduler_viewday
     }
 
   </script>';
-    $tmp.= '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+    $tmp.= '<form method="get" action="'.atkSelf().'">'."\n";
     $tmp.= session_form();
     $tmp.= '<input type="hidden" name="view" value="'.$this->m_view.'">';
 
@@ -76,7 +76,7 @@ class scheduler_employeeview extends scheduler_viewday
       {
         if($this->m_allDayHours[$i]=="12:00") $tmp.=$header;
         $now     = $this->year."-".$this->month."-".$this->day;
-        $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=calendar.schedule&date=$now&time=".$this->m_allDayHours[$i];
+        $addurl  = atkSelf()."?atkaction=add&atknodetype=calendar.schedule&date=$now&time=".$this->m_allDayHours[$i];
 
         $tmp.='<tr>
                 <td bgcolor="#D0D0D0">'.href($addurl, "<font size='-1'>".$this->m_allDayHours[$i]."</font>").'</td>';

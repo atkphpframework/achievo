@@ -760,7 +760,7 @@ class scheduler_model
   */
   function getSelector()
   {
-    $form  = '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+    $form  = '<form method="get" action="'.atkSelf().'">'."\n";
     $form .= session_form();
     $form .= '<input type="hidden" name="view" value="'.$this->m_view.'">';
     $dummy_rec = array("viewdate"=>$this->_getInitialDate());
@@ -819,7 +819,7 @@ class scheduler_model
    */
   function _getEmployeesCheckboxesForm()
   {
-    $buff = '<form method="get" action="'.$_SERVER["PHP_SELF"].'">'."\n";
+    $buff = '<form method="get" action="'.atkSelf().'">'."\n";
     $buff.= session_form();
     $buff.= '<input type="hidden" name="view" value="'.$this->m_view.'">';
     $buff.= '<div class="employees_checklistheader">'.atkText("employeeview","scheduler").'</div>';
@@ -990,12 +990,12 @@ class scheduler_model
     $first_day_of_month = date("w", mktime(0,0,0,$month,1,$year));
 
     $prevTime = date("Y-m-d", mktime(0,0,0,$month-1, 1, $year));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$prevTime";
+    $prevUrl  = atkSelf()."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$prevTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$month+1, 1, $year));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime";
+    $nextUrl  = atkSelf()."?view=".$this->m_view."&viewdate=".$this->m_viewdate."&small_viewdate=$nextTime";
     $currentTime = date("Y-m-d", mktime(0,0,0,$month, 1, $year));
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=month&viewdate=".$currentTime."&small_viewdate=$currentTime";
+    $currentUrl  = atkSelf()."?view=month&viewdate=".$currentTime."&small_viewdate=$currentTime";
 
 
     $tmp ='<table border="0" cellpadding="1" cellspacing="0">';
@@ -1028,7 +1028,7 @@ class scheduler_model
     $tmp.='<tr>';
     $week_number = $this->getWeekNumber(1,$month,$year);
     $weekTime = date("Y-m-d",mktime(12,0,0,$month,1,$year));
-    $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime";
+    $weekUrl = atkSelf()."?view=week&viewdate=$weekTime";
     if($userprefs["showweeknumbers"]==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     for ($i=1;$i<=$cellcount;$i++)
     {
@@ -1052,7 +1052,7 @@ class scheduler_model
           case 6: $tmp_i = $i+2;
         }
         $week_number = $this->getWeekNumber($tmp_i,$month,$year);
-        $weekUrl = $_SERVER["PHP_SELF"]."?view=week&viewdate=$weekTime";
+        $weekUrl = atkSelf()."?view=week&viewdate=$weekTime";
         if($userprefs["showweeknumbers"]==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     		$cellcount=0;
     	}
@@ -1076,7 +1076,7 @@ class scheduler_model
     		$class="calendarNormal";
     	}
 
-    	$dayUrl = $_SERVER["PHP_SELF"]."?view=day&viewdate=$dayTime";
+    	$dayUrl = atkSelf()."?view=day&viewdate=$dayTime";
     	$daynumber = ($i>9?$i:"&nbsp;".$i);
     	if(($this->m_view=="day" && $i == $this->m_day && $month == $this->m_month && $year == $this->m_year) ||
          ($this->m_view=="week" && $week_number == $this->m_weeknumber) ||

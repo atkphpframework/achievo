@@ -193,7 +193,7 @@ class scheduler_dayview extends scheduler_view
       $items   = (array_key_exists($time,$this->m_itemMatrix)?$this->m_itemMatrix[$time]:array());
       atk_var_dump($items,"ITEMS");
       $now     = $this->m_model->getYear()."-".$this->m_model->getMonth()."-".$this->m_model->getDay();
-      $addurl  = $_SERVER["PHP_SELF"]."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
+      $addurl  = atkSelf()."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
       if(in_array($time,$this->m_workHours))
       {
         $weekday_number = date("w",mktime(12,0,0,$this->m_model->getMonth(),$this->m_model->getDay(),$this->m_model->getYear()));
@@ -313,15 +313,15 @@ class scheduler_dayview extends scheduler_view
 
     $theme = &atktheme::getInstance();
     $prevTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay()-1, $this->m_model->getYear()));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$prevTime";
+    $prevUrl  = atkSelf()."?view=".$this->m_view."&viewdate=$prevTime";
     $prevImg ='<img src="'.$theme->imgPath("arrow_left.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("previous_day","scheduler").'" alt="'.atktext("previous_day","scheduler").'">';
 
 
     $currentTime = date("Y-m-d");
-    $currentUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$currentTime";
+    $currentUrl  = atkSelf()."?view=".$this->m_view."&viewdate=$currentTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay()+1, $this->m_model->getYear()));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=".$this->m_view."&viewdate=$nextTime";
+    $nextUrl  = atkSelf()."?view=".$this->m_view."&viewdate=$nextTime";
     $nextImg ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_day","scheduler").'" alt="'.atktext("next_day","scheduler").'">';
 
     return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl, atkText("today","scheduler"));

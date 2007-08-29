@@ -71,7 +71,7 @@ class atkProjectAttribute extends atkAttribute
 
     $result .= '</select>&nbsp';
 
-    $targeturl = $_SERVER["PHP_SELF"]."?selectedprojectid=[id]&atklevel=".atkLevel();
+    $targeturl = atkSelf()."?selectedprojectid=[id]&atklevel=".atkLevel();
 
     if ($this->hasFlag(AF_FORMSUBMIT)) $submit = true; else $submit = false;
     $result .= href(dispatch_url("project.project", "select", array("atkfilter" => "project.status='active'", "atktarget" => $targeturl)), atktext("searchallprojects"),SESSION_NESTED, $submit);

@@ -87,7 +87,7 @@
       $this->doMove($ids, $phaseid, $activityid);
 
       // Get a level back
-      $this->redirect(session_url($_SERVER["PHP_SELF"],SESSION_BACK,2));
+      $this->redirect(session_url(atkSelf(),SESSION_BACK,2));
     }
 
     function editArray($mode="add", $record=NULL, $forceList="", $suppressList="", $fieldprefix="")

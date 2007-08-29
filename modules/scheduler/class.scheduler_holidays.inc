@@ -104,7 +104,7 @@ class scheduler_holidays extends atkNode
   {
     /*
     $g_db = &atkGetDb();
-    $ret = '<form name="country_select" method="get" action="'.$_SERVER["PHP_SELF"].'" onChange="document.forms[country_select].submit();">'."\n";
+    $ret = '<form name="country_select" method="get" action="'.atkSelf().'" onChange="document.forms[country_select].submit();">'."\n";
     $ret.= session_form();
     $ret.= $this->text("select_country").':&nbsp;';
     $ret.= '<select name="country_filter">';

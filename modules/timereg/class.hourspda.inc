@@ -328,7 +328,7 @@ class hoursPDA extends hours
 	*/
   function addVarToCurrentURL($variables, $url=null)
   {
-    global $PHP_SELF, $HTTP_SERVER_VARS;
+    global $HTTP_SERVER_VARS;
 
     if (!$url)
     {
@@ -375,7 +375,7 @@ class hoursPDA extends hours
 	*/
   function removeVarFromCurrentURL($varname, $url=null)
   {
-    global $PHP_SELF, $HTTP_SERVER_VARS;
+    global $HTTP_SERVER_VARS;
 
     if (!$url)
     {

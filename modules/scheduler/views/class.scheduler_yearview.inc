@@ -18,13 +18,13 @@ class scheduler_yearview extends scheduler_view
   function _getNav()
   {
     $prevTime = date("Y-m-d", mktime(0,0,0,1, 1, $this->m_year-1));
-    $prevUrl  = $_SERVER["PHP_SELF"]."?view=year&viewdate=$prevTime&dayview=".$this->showGlobal;
+    $prevUrl  = atkSelf()."?view=year&viewdate=$prevTime&dayview=".$this->showGlobal;
 
     $thisTime = date("Y-m-d");
-    $thisUrl  = $_SERVER["PHP_SELF"]."?view=year&viewdate=$thisTime&dayview=".$this->showGlobal;
+    $thisUrl  = atkSelf()."?view=year&viewdate=$thisTime&dayview=".$this->showGlobal;
 
     $nextTime = date("Y-m-d", mktime(0,0,0,1, 1, $this->m_year+1));
-    $nextUrl  = $_SERVER["PHP_SELF"]."?view=year&viewdate=$nextTime&dayview=".$this->showGlobal;
+    $nextUrl  = atkSelf()."?view=year&viewdate=$nextTime&dayview=".$this->showGlobal;
 
     $this->title = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 

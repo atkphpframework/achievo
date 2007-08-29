@@ -209,16 +209,14 @@
    */
    function weekNav()
    {
-    global $PHP_SELF;
-
     $prevTime = $this->weekdates[0]['date'];
-    $prevUrl  = $PHP_SELF."?view=weekview&viewdate=$prevTime&user=".$this->showGlobal;
+    $prevUrl  = atkSelf()."?view=weekview&viewdate=$prevTime&user=".$this->showGlobal;
 
     $thisTime = date("Y-m-d");
-    $thisUrl  = $_SERVER["PHP_SELF"]."?view=weekview&viewdate=$thisTime&user=".$this->showGlobal;
+    $thisUrl  = atkSelf()."?view=weekview&viewdate=$thisTime&user=".$this->showGlobal;
 
     $nextTime = $this->weekdates[8]['date'];
-    $nextUrl  = $PHP_SELF."?view=weekview&viewdate=$nextTime&user=".$this->showGlobal;
+    $nextUrl  = atkSelf()."?view=weekview&viewdate=$nextTime&user=".$this->showGlobal;
 
     $date     = $this->year."-".$this->month."-".$this->day;
     $this->title = "<font size='-1'><b>".atktext("week")."&nbsp;".strftime("%V", adodb_mktime(0,0,0,substr($date,5,2), substr($date,8,2), substr($date,0,4)))."</b></font>";
@@ -241,7 +239,7 @@
       for ($i=1;$i<=7;$i++)
       {
         $text  = atktext($this->weekdates[$i]["day"])."<br>(".substr($this->weekdates[$i]["date"],8,2)."-".substr($this->weekdates[$i]["date"],5,2).")";
-        $href  = $_SERVER["PHP_SELF"]."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
+        $href  = atkSelf()."?view=dayview&viewdate=".$this->weekdates[$i]["date"]."&dayview=".$this->m_showGlobal;
         $cells[0][$i] = href($href, $text);
         $matrix->setColAlignment($i, TBL_CENTER);
       }
@@ -270,14 +268,14 @@
             if ($g_user["id"]==$dayappointments[$j]["owner"] || (is_allowed("calendar.schedule", "edit_attendee") && $found == 1))
             {
               // This is your own record, you may edit it.
-              $link = href($_SERVER["PHP_SELF"]."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
+              $link = href(atkSelf()."?atkaction=edit&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
             }
             else
             {
               // this is somebody elses appointment. you may only view it if it is a public item.
               if ($dayappointments[$j]["publicitem"]==1)
               {
-                $link = href($_SERVER["PHP_SELF"]."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
+                $link = href(atkSelf()."?atkaction=view&atkselector=".rawurlencode("schedule.id=".$dayappointments[$j]["id"]), $dayappointments[$j]['title'], SESSION_NESTED);
               }
               else
               {
@@ -307,7 +305,7 @@
       for ($i=1;$i<=7;$i++)
       {
         $text  = atktext("add");
-        $href  = $_SERVER["PHP_SELF"]."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
+        $href  = atkSelf()."?atkaction=add&viewdate=".$this->weekdates[$i]["date"];
         $row[$i] = href($href, $text, SESSION_NESTED);
       }
       $cells[] = $row;
