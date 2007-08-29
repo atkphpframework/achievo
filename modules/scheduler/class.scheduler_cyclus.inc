@@ -28,7 +28,7 @@
        $this->add(new atkListAttribute("every",array(1,2,3,4,5,6,7,8,9,10),array(1,2,3,4,5,6,7,8,9,10),AF_OBLIGATORY|AF_NO_TRANSLATION|AF_LIST_NO_OBLIGATORY_NULL_ITEM),"cyclus");
 
        $this->add(new atkListAttribute("month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY|AF_NO_TRANSLATION|AF_LIST_NO_OBLIGATORY_NULL_ITEM),"cyclus");
-       $this->add(new atkFlagAttribute("weekday",array("sunday","monday","thuesday","wednedsday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus"); 	 
+       $this->add(new atkFlagAttribute("weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64)),"cyclus"); 	 
        $this->add(new atkOneToManyRelation("exceptions","scheduler.scheduler_cyclus_not","scheduler_id"),"cyclus");
 
        $this->setTable("scheduler_cyclus");
