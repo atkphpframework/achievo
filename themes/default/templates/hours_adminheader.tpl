@@ -1,4 +1,4 @@
-<form name="dayview" method="post" action="{dispatchfile}">
+<form name="dayview" method="post" action="{atkdispatchfile}">
   {$sessionform}
   <table border=0 cellpadding=0 cellspacing=0 width="100%" class="table" id="timereg-adminheader">
     <tr>
