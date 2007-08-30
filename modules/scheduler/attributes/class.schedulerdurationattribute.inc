@@ -20,7 +20,7 @@ class schedulerDurationAttribute extends atkAttribute
      {
        $result .= '<option value="'.$i.'" ';
        if ($fieldvalue["days"]==$i) $result.= "selected";
-       $result .='>'.$i.' '.atktext('days','atk');
+       $result .='>'.$i.' '.atktext('days','scheduler');
      }
      $result .= '</select>';
      

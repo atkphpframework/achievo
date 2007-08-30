@@ -3,6 +3,7 @@
 $nl = array("menu_scheduler"=>"Agenda",
             "menu_scheduler_category"=>"Agenda categorieen",
             "menu_scheduler_holidays"=>"Agenda vakanties",
+            "menu_scheduler_email_templates"=>"Agenda email templates",
             "all_non_private"=>"Bewerk alle niet prive afspraken",
             "scheduler"=>"Agenda",
             // Class Holiday
