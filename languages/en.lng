@@ -507,6 +507,7 @@
   "tab_finance" => "Finance",
   "tab_organization_details" => "Organization details",
   "tab_stats" => "Statistics",
+  "tab_scheduler"=>"Scheduler",
   "template" => "Template",
   "theme" => "Theme",
   "the_deliverable_on_which_this_phase_depense_is_not_complete_yet" => "The deliverable on which this phase depense is not complete yet",
@@ -639,6 +640,7 @@
   "projectselector" => "Project",
 
   'lng'=>'Language',
+  
   'language_bp'=>'Brazilian Portugese',
   'language_ca'=>'Catalan',
   'language_cs'=>'Czech',
@@ -668,6 +670,17 @@
   "restrict_eligible"=>"All eligible contacts can be selected",
   "activate_contract"=>"Activate contract & project(s)",
   "deactivate_contract"=>"Archive contract & project(s)",
+  "created_by"=>"Created by",
+  "created_on"=>"Created on",
+  "last_modified_by"=>"Last modified by",
+  "last_modified_on"=>"Last modified on",
+  "quotations"=>"Quotations",
+  "relation"=>"Relation",
+  "former_names"=>"Former names",
+  "source"=>"Source",
+  "payment_id"=>"Payment",
+  "payment"=>"Payment",
+
 );
 
 ?>
