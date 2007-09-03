@@ -344,7 +344,8 @@ Changes in Achievo 1.3RC1
   management. [Sandy] (bug #855)
 * Fixed Editing time registrations from hoursurvey [Sandy] (bug #852)
 * Fixed register time on other users [Sandy] (bug #850)
-
+* Fixed contract/project activate/deactivate button to work with the
+  ibscontracts module. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------

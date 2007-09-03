@@ -23,34 +23,22 @@ class contracts extends atkNode
     $this->add(new atkAttribute("contractname",AF_SEARCHABLE|AF_OBLIGATORY|AF_FORCE_LOAD));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_LARGE));
-
     $this->add(new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST));
-
-    //create sourceattrib
-    $attr = new atkListAttribute("billing_period",array("no_billing_period","monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST);
-
-    //add listener
+    $attr = $this->add(new atkListAttribute("billing_period",array("no_billing_period","monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));
     $attr->addOnChangeHandler("check_billing_period('billing_period', 'ar_period_price', 'period_price');");
-
-    //Add billing_period
-    $this->add($attr);
-
     $this->add(new atkCurrencyAttribute("period_price", AF_HIDE_LIST,13,"",2));
     $this->add(new atkDateAttribute("startdate","","", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","","", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
     $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
-
     $this->add(new atkDummyAttribute("status_change_warning", atktext("status_change_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
 
-    //The linkproject action is allowed by all
     $this->addAllowedAction("linkproject");
     $this->addSecurityMap("export", "admin");
-
     $this->setTable("contract","contract");
     $this->setOrder("contract.startdate");
   }
@@ -245,7 +233,7 @@ class contracts extends atkNode
 	  }
 	  else
 	  {
-	    return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>0)), 
+	    return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>0)),
 	                                             atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
 	  }
 	  return $res."<br>";
@@ -330,23 +318,23 @@ class contracts extends atkNode
   	}
   	return true;
   }
-  
+
   function getFormButtons($mode, $record)
   {
     $buttons = array();
     if ($mode == 'edit')
     {
-      if($record['status'] == "archived")
-      {
-        $buttons[] = '<input type="submit" class="btn_save" name="activate_contract" value="'.$this->text("activate_contract").'">';
-      }
-      else 
+      if($record['status'] == "active")
       {
         $buttons[] = '<input type="submit" class="btn_save" name="deactivate_contract" value="'.$this->text("deactivate_contract").'">';
       }
+      else
+      {
+        $buttons[] = '<input type="submit" class="btn_save" name="activate_contract" value="'.$this->text("activate_contract").'">';
+      }
     }
     return array_merge($buttons, parent::getFormButtons($mode,$record));
-  } 
+  }
 
   function action_update(&$handler)
   {
@@ -356,7 +344,7 @@ class contracts extends atkNode
     }
     // call original behaviour
     return $handler->action_update();
-  } 
+  }
 
   function preUpdate(&$record)
   {
@@ -364,20 +352,20 @@ class contracts extends atkNode
     {
       $db = &$this->getDb();
       $db->query("UPDATE project SET status='active' WHERE project.contract_id={$record['id']}");
-      
+
       $record['status'] = "active";
     }
     elseif (isset($this->m_postvars["deactivate_contract"]))
     {
       $db = &$this->getDb();
       $db->query("UPDATE project SET status='archived' WHERE project.contract_id={$record['id']}");
-      
+
       $record['status'] = "archived";
     }
 
     return true;
   }
-  
+
 }
 
 ?>
