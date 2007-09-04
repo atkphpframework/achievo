@@ -346,6 +346,7 @@ Changes in Achievo 1.3RC1
 * Fixed register time on other users [Sandy] (bug #850)
 * Fixed contract/project activate/deactivate button to work with the
   ibscontracts module. [Guido]
+* Fixed ticket 876: pim & user preferences links broken. [Ivo, Guido]
 
 Changes in Achievo 1.2.1
 ------------------------

@@ -29,7 +29,7 @@
     include(atkconfig("atkroot")."version.inc");
     return $achievo_state;
   }
-  
+
   function getAchievoTitle()
   {
     $achievo_version = achievoVersion();
@@ -38,7 +38,7 @@
     if($achievo_state!=="stable") $title.=" ($achievo_state)";
     return $title;
   }
-  
+
   function getSearchPiece()
   {
     $theme = &atkinstance("atk.ui.atktheme");
@@ -47,13 +47,21 @@
     $searchpiece = $searchnode->simpleSearchForm("", $target, SESSION_NEW);
     return $searchpiece;
   }
-  
+
   function getCenterPiece(&$centerpiece,&$centerpiecelinks)
   {
     $user = &atkGetUser();
     if ($user["name"]!="administrator")
     {
       $theme = &atkinstance("atk.ui.atktheme");
+
+      // Set the dispatchfile for this menu based on the theme setting, or to the default if not set.
+      // This makes sure that all calls to dispatch_url will generate a url for the main frame and not
+      // within the menu itself.
+      $dispatcher = $theme->getAttribute('dispatcher', atkconfig("dispatcher", "dispatch.php")); // do not use atkSelf here!
+      $c = &atkinstance("atk.atkcontroller");
+      $c->setPhpFile($dispatcher);
+
       if($theme->getAttribute('useframes',true)) { $target='target="main"'; } else { $target=""; }
       $centerpiece = $centerpiecelinks['pim'] = href(dispatch_url("pim.pim", "pim"), atktext("pim"), SESSION_NEW, false,$target);
       if (is_allowed("employee.userprefs", "edit"))
@@ -68,7 +76,7 @@
       $centerpiece = $centerpiecelinks['setup'] = href("setup.php", atktext("setup"), SESSION_NEW, false, 'target="_top"');
     }
   }
-  
+
   function getFullUsername()
   {
     $user = &atkGetUser();
@@ -77,8 +85,8 @@
     atkdebug("achievotools::getFullUsername() -> ".$username);
     return $username;
   }
-  
- 
+
+
   function updateSelectedProjects()
   {
     global $g_sessionManager, $g_projectnamesize;
