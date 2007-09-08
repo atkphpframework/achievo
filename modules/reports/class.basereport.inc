@@ -116,16 +116,16 @@
       $filters = array();
       foreach ($this->m_attribIndexList as $id=>$attr)
       {
-        $name = $attr["name"];
-        $attr = &$this->m_attribList[$name];
-        $label = $attr->getLabel();
-        if ($attr->hasFlag(AF_OBLIGATORY))
+        $p_attr = &$this->getAttribute($attr['name']);
+        $p_attr->_registerDependees();
+        $label = $p_attr->getLabel();
+        if ($p_attr->hasFlag(AF_OBLIGATORY))
           $label .= " $reqimg";
-        if ($attr->hasFlag(AF_READONLY))
-          $field = $attr->display($filterrecord).$attr->hide($filterrecord);
+        if ($p_attr->hasFlag(AF_READONLY))
+          $field = $p_attr->display($filterrecord).$p_attr->hide($filterrecord);
         else
-          $field = $attr->edit($filterrecord,"","report");
-        $filters[] = array($label, $field);
+          $field = $p_attr->edit($filterrecord,"","report");
+        $filters[] = array($label,array("value"=>$field,'id'=>str_replace('.','_',$this->atknodetype().'_'.$attr['name'])));
       }
       return $filters;
     }
