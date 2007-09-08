@@ -98,6 +98,7 @@ Changes in Achievo 1.3RC1
   'timereg_contact_link' timeregistration configuration option
   to true. [Yury,Boy]
 + Added security rights for the planning and financial tabs. [Guido]
+* Fix dependee between attributes in base report (bug #838) [Yury]
 * Bug fixed week report nameswitch wasn't working correctly [dennisjan]
 * When you have the right to see the hours of everyone, you will see now
   all the hours from the persons wich you are allowed to see. [dennisjan]
