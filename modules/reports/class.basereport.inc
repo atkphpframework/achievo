@@ -38,6 +38,8 @@
     function basereport($name, $flags=0)
     {
       $this->atkNode($name, $flags);
+      
+      $this->m_securityImplied = array("edit"=>"report");
 
       // Add the output types attribute
       //$outputtypes = $this->getOutputTypes();
