@@ -109,9 +109,9 @@
           $projectids[] = (int)$record[$this->fieldName()]["id"];
 
         if(count($projectids))
-          $filter = "project.id IN (".implode(",",$projectids).")";
+          $filter = "project.id IN (".implode(",",$projectids).") OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS;
         else
-          $filter = "project.id IN (NULL)";
+          $filter = "project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS;
 
         $this->setDestinationFilter($filter);
       }

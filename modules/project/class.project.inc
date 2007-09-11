@@ -695,7 +695,10 @@
     	if (!$this->allowed("any_project"))
       {
 		  	$pids = implode(",", $this->get_user_projects());
-	  		$this->addFilter("project.id IN ($pids)");
+        if(!empty($pids))
+          $this->addFilter("project.id IN ($pids) OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS);
+        else
+          $this->addFilter("project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS);
       }
       return $handler->action_select();
     }
@@ -739,9 +742,9 @@
       {
         $user = atkGetUser();
         $pids = implode(",", $this->get_user_projects());
-	  		
+
         $this->addFilter("project.id IN ($pids) OR project.coordinator=".$user["id"]);
-        
+
         // we can hide the coordinator column from the list in this case.
         //$attr = &$this->getAttribute("coordinator");
         //$attr->addFlag(AF_HIDE_LIST);
