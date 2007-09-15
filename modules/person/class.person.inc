@@ -112,6 +112,7 @@ class person extends atkNode
   {
     $vcard->setPhoneNumber($record["phone"], "HOME;VOICE");
     $vcard->setPhoneNumber($record["cellular"], "HOME;CELL");
+    $vcard->setPhoneNumber($record["fax"], "HOME;FAX");
     $vcard->setName($record["lastname"], $record["firstname"], "", $record["title_id"]["title"]);
     $vcard->setFormattedName(trim($record["title_id"]["title"] . " " . $record["firstname"] . " " . $record["lastname"]));
     $vcard->setAddress("", "", $record["address"], $record["city"], $record["state"], $record["zipcode"], $record["country"], "HOME");
