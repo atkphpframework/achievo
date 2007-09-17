@@ -353,6 +353,10 @@ Changes in Achievo 1.3RC1
 * Fixed project selection in time registration when you don't have the
   any_project right for projects that have timeregistration set to allowed
   for anyone. [Guido]
+* Fixed copying the project name and customer when creating a project from
+  a customer contract. [Guido]
+* Projects now have the default status (active) when created from a
+  customer contract. [Guido]
 
 Changes in Achievo 1.2.1
 ------------------------

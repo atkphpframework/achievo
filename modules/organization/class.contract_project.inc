@@ -18,7 +18,10 @@
       $this->project();
       $this->m_flags |= NF_NO_FILTER;;
       $this->m_type = "contract_project";
-      $this->add(new atkAttribute("status",AF_FORCE_LOAD));
+      $statusattr = &$this->getAttribute("status");
+      $statusattr->addFlag(AF_FORCE_LOAD);
+      $customerattr = &$this->getAttribute("customer");
+      $customerattr->setForceInsert(true);
 
       // Anyone who may edit contracts, may remove a project from the deposit.
       $this->m_securityMap["remove"] = "contracts.edit";
@@ -57,8 +60,11 @@
       $forceList = (isset($this->m_postvars['atkfilter'])) ? decodeKeyValueSet($this->m_postvars['atkfilter']) : array();
       $node = &atkGetNode("organization.contracts");
       $selector = sprintf("`contract`.`id`='%d'", $forceList["contract_id.id"]);
-      $rec = $node->selectDb($selector, "", "", "", array("contractname"));
-      return array("name" => $rec[0]['contractname']);
+      $rec = $node->selectDb($selector, "", "", "", array("contractname", "customer"));
+      $initial_values = parent::initial_values();
+      $initial_values["name"] = $rec[0]['contractname'];
+      $initial_values["customer"] = $rec[0]['customer'];
+      return $initial_values;
     }
   }
 
