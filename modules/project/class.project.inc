@@ -53,7 +53,7 @@
         $reportnodetype = "";
 
       /** @todo: Remove filters from project node constructor */
-      if (in_array($ATK_VARS["atknodetype"], array("project.project", "project.project_personcontact", "project.project_personemployee", "project.phase"))&& in_array($ATK_VARS["atkaction"],array("admin","add","save","update","edit","search", "view")) || $reportnodetype=="hoursurvey")
+      if (in_array($ATK_VARS["atknodetype"], array("project.project", "project.project_personcontact", "project.project_personemployee", "project.phase", "search.search"))&& in_array($ATK_VARS["atkaction"],array("admin","add","save","update","edit","search", "view")) || $reportnodetype=="hoursurvey")
       {
         $this->add(new atkListAttribute("status",array("active","nonactive","archived"),array(),AF_HIDE_ADD|AF_LIST_NO_NULL_ITEM|AF_HIDE_LIST, 15));
       }
