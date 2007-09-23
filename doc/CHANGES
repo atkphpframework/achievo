@@ -8,6 +8,7 @@ Changes in Achievo 1.3RC2
 -------------------------
 + Added missing dirs for docmanager module. [Sandy]
 + Added missing documents tab for quotations. [Sandy]
++ Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
 
 
 Changes in Achievo 1.3RC1
