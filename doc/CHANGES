@@ -4,6 +4,12 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.3RC2
+-------------------------
++ Added missing dirs for docmanager module. [Sandy]
++ Added missing documents tab for quotations. [Sandy]
+
+
 Changes in Achievo 1.3RC1
 -------------------------
 + Add pervonal Fax field to VCARD. (bug #848) [Yury]
