@@ -8,12 +8,24 @@ Changes in Achievo 1.3RC2
 -------------------------
 + Added missing dirs for docmanager module. [Sandy]
 + Added missing documents tab for quotations. [Sandy]
-+ Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
++ Added executeSQL function to setup module, this makes it possible
+  to execute SQL queries for creating tables etc. This makes it
+  possible to use the atkMetaNode. [Sandy]
+* Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
+* Fixed bug with obligatory fields in person table. [Sandy]
+* Removed some menu items when a user doens't have the rights
+  for it. [Sandy]
+* Removed contacts search from scheduler if the user doesn't
+  have the rights for it. [Sandy]
+* Fixed default userview database field size. [Sandy]
+* Fixed password restrictions in the userpreferences. [Sandy]
+ 
+
 
 
 Changes in Achievo 1.3RC1
 -------------------------
-+ Add pervonal Fax field to VCARD. (bug #848) [Yury]
++ Add personal Fax field to VCARD. (bug #848) [Yury]
 + Added 'activate'/'archive' button to the contract edit page. Pressing to
   this button the status of contract and projects change accordingly - from
   active to archive, and from archive to active to both contract and all
