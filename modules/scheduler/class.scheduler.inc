@@ -96,7 +96,9 @@
       $this->add(new atkOneToManyRelation("attendees", "scheduler.scheduler_attendees", "scheduler_id", AF_HIDE_LIST));
       $this->add(new atkDummyAttribute("hint", $this->text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
       $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeEmployees", "multiselect"));
-      $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
+      // Only add contact search if they have contact admin rigts
+      if(is_allowed("organization.contats","admin"))
+        $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"));
       $this->add($recur_attr = new atkRadioAttribute("recur",array("once","daily","weekly","monthly_date","monthly_day","yearly_date","yearly_day"),array()), "cyclus");
