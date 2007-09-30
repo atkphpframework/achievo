@@ -7,6 +7,8 @@ useattrib("atklistattribute");
 useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
 useattrib("atkdateattribute");
+useattrib('employee.adminlangselectattribute');
+
 include_once (moduleDir("person")."class.person.inc");
 include_once (moduleDir("utils")."class.dateutil.inc");
 
@@ -61,6 +63,8 @@ class employee extends person
       $statusfilter = ($this->getView() == "active") ? "active" : "nonactive";
       $this->addFilter("person.status",$statusfilter);
     }
+    $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY|AF_HIDE_LIST));
+
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
 
     //$this->add(new useridAttribute("userid" ,AF_OBLIGATORY|AF_UNIQUE|AF_SEARCHABLE), 1); // first field
@@ -68,7 +72,7 @@ class employee extends person
     if (in_array("db",explode(",",strtolower(atkconfig('authentication')))))
       $this->addPasswordAttribute();
 
-    $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 15)); // discriminator.
+    $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 50)); // discriminator.
 
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
 
@@ -95,6 +99,8 @@ class employee extends person
     $initial = array();
     $initial["role"] = "employee";
     $initial["status"] = "active";
+    $initial["lng"] = atkconfig("language");
+
     return $initial;
   }
 

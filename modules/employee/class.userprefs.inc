@@ -22,8 +22,7 @@ class userprefs extends atkNode
     $this->add(new atkAttribute("userid", AF_HIDE));
     if (atkconfig("authentication")=="db")
     {
-      $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST));
-      $this->add(new atkPasswordAttribute("password",AF_OBLIGATORY));
+      $this->addPasswordAttribute();
     }
     $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
@@ -34,7 +33,21 @@ class userprefs extends atkNode
 
   function initial_values()
   {
-    return array("startday"=>1);
+    return array("startday"=>1,"lng"=>atkconfig("language"));
+  }
+  
+  function addPasswordAttribute()
+  {
+    $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
+    $passwordrestrictions = array(
+      "minsize" => atkconfig("password_minsize", 0),
+      "minupperchars" => atkconfig("password_minupperchars", 0),
+      "minlowerchars" => atkconfig("password_minlowerchars", 0),
+      "minalphabeticchars" => atkconfig("password_minalphabeticchars", 0),
+      "minnumbers" => atkconfig("password_minnumbers", 0),
+      "minspecialchars" => atkconfig("password_minspecialchars", 0)
+    );
+    $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
   }
 
   function descriptor_def()
