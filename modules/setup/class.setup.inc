@@ -831,6 +831,12 @@
         $this->m_cancontinue=false;
       }
     }
+    
+    function executeSQL($sql)
+    {
+      $db = &atkGetDb();
+      return $db->query($sql);
+    }
 
     // TODO FIXME: functions that follow are *NOT* yet database
     // independent. They should use the abstractionlayer.
@@ -840,7 +846,7 @@
       $db = &atkGetDb();
       $sql = "UPDATE db_sequence SET seq_name='".$new_name."'
                 WHERE seq_name='".$seq_name."'";
-      $res = $db->query($sql);
+      return $db->query($sql);
     }
 
     function renameTable($old, $new)
@@ -850,7 +856,7 @@
       $res = $db->query($sql);
 
       //change db_sequence name
-      $this->renameSequence($old, $new);
+      return $this->renameSequence($old, $new);
     }
 
 
@@ -859,14 +865,14 @@
       $db = &atkGetDb();
       if($this->columnExists($table,$col))
       {
-        $this->alterColumn($table,$col,$col,$type,$nullable,$default);
+        return $this->alterColumn($table,$col,$col,$type,$nullable,$default);
       }
       else
       {
         $sql = "ALTER TABLE $table ADD $col $type";
         if (!$nullable) $sql.=" NOT NULL";
         if ($default!="") $sql.= " DEFAULT '$default'";
-        $db->query($sql);
+        return $db->query($sql);
       }
     }
 
@@ -876,7 +882,7 @@
       $sql = "ALTER TABLE $table CHANGE $col $newname $type";
       if (!$nullable) $sql.=" NOT NULL";
       if ($default!="") $sql.= " DEFAULT '$default'";
-      $db->query($sql);
+      return $db->query($sql);
     }
 
     function dropColumn($table, $col)
@@ -901,7 +907,10 @@
       $db = &atkGetDb();
       // Only delete sequence with mysql, since postgress and oracle use their own sequences
       if (strpos($db->m_type, "mysql") === 0)
-        $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
+        return $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
+      else 
+        return true; 
+     
     }
 
      /**
@@ -916,6 +925,7 @@
 
       $this->dropTable($table);
       if($seq>"") $this->dropSequence($seq);
+      return true;
     }
 
     function action_legacyupgrade(&$handler)
