@@ -46,7 +46,7 @@
       $this->add(new atkBoolAttribute("autorefresh"),"scheduler");
       $this->add(new atkNumberAttribute("refresh_interval"),"scheduler");
       $this->add(new atkListAttribute("default_view",array("day","week","month"),array(),AF_OBLIGATORY),"scheduler");
-      $this->add(new atkListAttribute("default_userview",array_values($userviews),array_keys($userviews),AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM),"scheduler");
+      $this->add(new atkListAttribute("default_userview",array_values($userviews),array_keys($userviews),AF_OBLIGATORY|AF_LIST_NO_NULL_ITEM,25),"scheduler");
       $this->add(new atkTimeAttribute("default_eventtime", 0, 23, $m_arr_minute_step,"01:00", 0),"scheduler");
       $this->add(new atkManyToOneRelation("default_category", "scheduler.scheduler_category",AF_RELATION_AUTOLINK),"scheduler");
       $this->add(new atkDummyAttribute("group2","<br><b>".$this->text("colors")."</b>:<br>"),"scheduler");
