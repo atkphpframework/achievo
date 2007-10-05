@@ -49,7 +49,7 @@
 
       // template *must* come after phase_activity, because phase_activity does a delete of all
       // records on store, so template must be stored after phase_activity.
-      $this->add(new atkManyToOneRelation("template","project.tpl_phase", AF_HIDE_LIST|AF_FORCE_LOAD));
+      $this->add(new phasetemplateAttribute("template","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD));
 
       $this->add(new atkDateAttribute("startdate", "", ""));
       $this->add(new atkDateAttribute("enddate", "", ""));
