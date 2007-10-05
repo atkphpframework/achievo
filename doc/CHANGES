@@ -22,7 +22,7 @@ Changes in Achievo 1.3RC2
 * Fixed in the todo history, project id isn't obligatry. [Sandy] 
 * Fixed the Phase Template functionallty. [Sandy] (bug 885)
 * Fixed patch 6 of the timereg module so the update from
-  Achievo 1.1 works. [Sandy] (bug 874)
+  Achievo 1.0/1.1 works. [Sandy] (bug 874)
 
 Changes in Achievo 1.3RC1
 -------------------------
