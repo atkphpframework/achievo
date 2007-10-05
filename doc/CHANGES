@@ -20,7 +20,7 @@ Changes in Achievo 1.3RC2
 * Fixed default userview database field size. [Sandy]
 * Fixed password restrictions in the userpreferences. [Sandy]
 * Fixed in the todo history, project id isn't obligatry. [Sandy] 
-
+* Fixed the Phase Template functionallty. [Sandy] (bug 885)
 
 
 Changes in Achievo 1.3RC1
