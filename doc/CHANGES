@@ -23,6 +23,8 @@ Changes in Achievo 1.3RC2
 * Fixed the Phase Template functionallty. [Sandy] (bug 885)
 * Fixed patch 6 of the timereg module so the update from
   Achievo 1.0/1.1 works. [Sandy] (bug 874)
+* Fixed missing version update for person module. [Guido]
+* Enlarged the project name field to 200 chars. [Guido]
 
 Changes in Achievo 1.3RC1
 -------------------------

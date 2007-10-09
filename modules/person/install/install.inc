@@ -3,6 +3,6 @@
   $setup->installNode("person.person");
   $setup->installNode("person.title");
   
-  $setup->setVersion(5);
+  $setup->setVersion(6);
 
 ?>
