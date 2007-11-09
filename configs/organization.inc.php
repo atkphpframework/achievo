@@ -25,6 +25,13 @@
   // Example:
   // $config["organization_contracts_mailtocoordinator"] = true;    
   
+  // This variable configures if a duplicatemail has to be sent to a substitute user in case of absence. It indicates wether
+  // a specific contract status and/or linked project has been set to another status.
+  // if omitted, no mail is sent.
+  // Example:
+  // $config["organization_contracts_duplicatemail"] = array("user@somewhere.zz" => "substituteuser@somewhere.zz");
+  $config["organization_contracts_duplicatemail"] = array();
+
   // This variable configures to which status the cronjob contracts sets
   // the linked projects when it finds an active project that is linked to an
   // expired or ended contract.
