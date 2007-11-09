@@ -121,6 +121,7 @@ Changes in Achievo 1.3RC1
   'timereg_contact_link' timeregistration configuration option
   to true. [Yury,Boy]
 + Added security rights for the planning and financial tabs. [Guido]
++ Added config organization_contracts_duplicatemail. [Rue]
 * Fix dependee between attributes in base report and fix permission error
   on the xmlhttprequest - edit must be equal to report action.(bug #838) [Yury]
 * Bug fixed week report nameswitch wasn't working correctly [dennisjan]
