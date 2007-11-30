@@ -19,6 +19,7 @@
   "abbreviation" => "Projectcode",
   "activate_contract" => "Activeer contract & project(en)",
   "active" => "Actief",
+  "activeprojects" => "Actieve projecten",
   "active_projects" => "Actieve projecten",
   "activity" => "Activiteit",
   "activitydate" => "Datum",

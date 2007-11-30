@@ -19,6 +19,7 @@
   "abbreviation" => "Projectcode",
   "activate_contract" => "Activate contract & project(s)",
   "active" => "Active",
+  "activeprojects" => "Active projects",
   "active_projects" => "Active projects",
   "activity" => "Activity",
   "activitydate" => "Date",
