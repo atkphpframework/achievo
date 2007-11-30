@@ -25,6 +25,7 @@ Changes in Achievo 1.3RC2
   Achievo 1.0/1.1 works. [Sandy] (bug 874)
 * Fixed missing version update for person module. [Guido]
 * Enlarged the project name field to 200 chars. [Guido]
+* Fixed translation of activeprojects. [Dennis]
 
 Changes in Achievo 1.3RC1
 -------------------------
