@@ -31,6 +31,7 @@ class surveyhours extends hours
 
   function recordActions($record, &$actions, &$mraactions)
   {
+    parent::recordActions($record, $actions, $mraactions);
     foreach($actions as $key=>$url)
     {
       $actions[$key] = str_replace("reports.surveyhours", "timereg.hours", $url);

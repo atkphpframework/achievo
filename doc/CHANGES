@@ -26,6 +26,7 @@ Changes in Achievo 1.3RC2
 * Fixed missing version update for person module. [Guido]
 * Enlarged the project name field to 200 chars. [Guido]
 * Fixed translation of activeprojects. [Dennis]
+* Fixed moving hour registrations in the hoursurvey. [Dennis]
 
 Changes in Achievo 1.3RC1
 -------------------------
