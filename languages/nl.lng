@@ -677,6 +677,8 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  "subproject" => "also calculate subprojects",
+
 );
 
 ?>

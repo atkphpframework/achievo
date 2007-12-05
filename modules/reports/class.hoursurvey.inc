@@ -255,6 +255,7 @@ class hoursurvey extends atkNode
     $functionlevelswitch =$g_sessionManager->pageVar("functionlevelswitch");
     $creditor_id =        $g_sessionManager->pageVar("creditor_id");
     $outputType =         atkArrayNvl($this->m_postvars, "outputType", "");
+    $subProject =         atkArrayNvl($this->m_postvars, "subproject", 0);
 
     $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
 
@@ -418,6 +419,7 @@ class hoursurvey extends atkNode
       // we have to pass a 'dummy' record to the attributes to set their default value.
       $dummyrec = array(
       "projectid"     =>array("id"=>$projectid),
+      "subproject"   =>$subProject,
       "organizationid"=>array("id"=>$organizationid), // manytoonerelation needs subarray
       "phaseid"       =>array("id"=>$phaseid),
       "activityid"    =>array("id"=>$activity_id),
@@ -471,6 +473,15 @@ class hoursurvey extends atkNode
         $dummyrec["subtotal[$i]"]=($columnConfig->hasSubTotalByOrder($i+1)?1:0);
       }
       $data[] = array(atktext('project','project').':',$projectatt->edit($dummyrec));
+      
+      $p_attr = new atkBoolAttribute("subproject");
+      $p_attr->addDependee("phaseid");
+      $p_attr->m_ownerInstance = &$hoursnode;
+      $p_attr->_registerDependees();
+      
+      
+      $data[] = array(atktext('subproject','project').':',$p_attr->edit($dummyrec));
+      
 
 
       $this->_addOr($data);
@@ -734,9 +745,17 @@ class hoursurvey extends atkNode
       $filterarray[] = $this->_addFilterArrayItem("phaseid","='$phaseid'","hours");
 
     if(!empty($projectid)&&$projectid!="")
-      $filterarray[] = $this->_addFilterArrayItem("projectid","='$projectid'","phaseid");
-
-
+    {
+      if($subProject)
+      {
+        $id = $hoursnode->_getProjectAndSubProjectId($projectid);
+        $condition = "IN(".implode(",",$id).")";
+        $filterarray[] = $this->_addFilterArrayItem("projectid",$condition,"phaseid");
+      }
+      else
+        $filterarray[] = $this->_addFilterArrayItem("projectid","='$projectid'","phaseid");
+    }
+        
     if(moduleExists("billing") && !empty($billing_projecttypeid) && ($billing_projecttypeid!=""))
       $filterarray[] = $this->_addFilterArrayItem("billing_type","='$billing_projecttypeid'","projectid");
 
@@ -876,7 +895,7 @@ class hoursurvey extends atkNode
     }
 
     $data = $this->getHourRecords($nameswitch, $userid, $filter, $orderbystatement, $col);
-
+    
     if ($outputType=="0")
     {
       $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;

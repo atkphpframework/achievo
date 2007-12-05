@@ -677,6 +677,7 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  "subproject" => "also calculate subprojects",
 );
 
 ?>

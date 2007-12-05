@@ -61,5 +61,40 @@ class surveyhours extends hours
   {
     return $handler->action_edit();
   }
+  
+  function phaseid_selection($record, $mode="")
+  {
+    $p_attr = &$this->getAttribute('phaseid');
+    if(atkArrayNvl($this->m_postvars, "subproject", 0) == 0)
+    {
+      return $p_attr->getSelectableRecords($record, $mode);
+    }
+    else 
+    {
+      $ids = $this->_getProjectAndSubProjectId($record['projectid']['id']);
+      
+      $p_attr->createDestination();
+
+      $selector = "phase.projectid IN(".implode(",",$ids).")";
+      $result = $p_attr->m_destInstance->selectDb($selector,"","","",atk_array_merge($p_attr->m_destInstance->descriptorFields(),$p_attr->m_destInstance->m_primaryKey),$mode);
+      return $result;
+    }
+  }
+  
+  function _getProjectAndSubProjectId($projectid)
+  {
+    $node = &atkGetNode("project.project");
+    $rows = $node->selectDb("project.master_project='$projectid'","","","",array("id"));
+    
+    $id = array();
+    $id[] = $projectid;
+    
+    foreach ($rows as $row)
+    {
+      $id[] = $row['id'];
+    }
+    return $id;
+  }
+
 }
 ?>
