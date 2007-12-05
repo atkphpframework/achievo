@@ -678,6 +678,7 @@
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
   "subproject" => "also calculate subprojects",
+  "master_project" => "Master project",
 
 );
 
