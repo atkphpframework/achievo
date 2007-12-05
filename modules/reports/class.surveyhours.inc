@@ -81,6 +81,12 @@ class surveyhours extends hours
     }
   }
   
+  /**
+   * Get IDs from project and his subprojects
+   *
+   * @param integer $projectid - master project id
+   * @return array with project and his subprojects
+   */
   function _getProjectAndSubProjectId($projectid)
   {
     $node = &atkGetNode("project.project");
