@@ -203,6 +203,10 @@ class hoursurvey extends atkNode
     $activity_id =        stripQuotes($activitypair[1]);
     $projectpair =        explode("=",$g_sessionManager->pageVar("projectid"));
     $projectid =          stripQuotes($projectpair[1]);
+    $categorypair =       explode("=",$g_sessionManager->pageVar("project_category"));
+    $category =           stripQuotes($categorypair[1]);
+    if(!isset($category)) $category = "";
+    
     if (moduleExists("billing"))
     {
       $billing_projecttypepair = $g_sessionManager->pageVar("billing_projecttypeid");
@@ -292,7 +296,6 @@ class hoursurvey extends atkNode
     $hoursnode->add(new creditorViewAttribute("creditor_id", AF_FORCE_LOAD));
 
     $columnConfig = &$hoursnode->getColumnConfig();
-
 
     if (is_array($orderby))
     {
@@ -419,6 +422,7 @@ class hoursurvey extends atkNode
       // we have to pass a 'dummy' record to the attributes to set their default value.
       $dummyrec = array(
       "projectid"     =>array("id"=>$projectid),
+      "project_category" => array("id"=>$category),
       "subproject"   =>$subProject,
       "organizationid"=>array("id"=>$organizationid), // manytoonerelation needs subarray
       "phaseid"       =>array("id"=>$phaseid),
@@ -479,10 +483,12 @@ class hoursurvey extends atkNode
       $p_attr->m_ownerInstance = &$hoursnode;
       $p_attr->_registerDependees();
       
-      
       $data[] = array(atktext('subproject','project').':',$p_attr->edit($dummyrec));
       
+      $p_attr = new atkManyToOneRelation("project_category","project.project_category");
+      $p_attr->m_ownerInstance = &$hoursnode;
 
+      $data[] = array(atktext('project_category','project').':',$p_attr->edit($dummyrec));
 
       $this->_addOr($data);
 
@@ -755,6 +761,9 @@ class hoursurvey extends atkNode
       else
         $filterarray[] = $this->_addFilterArrayItem("projectid","='$projectid'","phaseid");
     }
+
+    if($category)
+      $filterarray[] = $this->_addFilterArrayItem("project_category","='$category'","projectid");
         
     if(moduleExists("billing") && !empty($billing_projecttypeid) && ($billing_projecttypeid!=""))
       $filterarray[] = $this->_addFilterArrayItem("billing_type","='$billing_projecttypeid'","projectid");
