@@ -44,6 +44,7 @@
       }
       $this->menuitem("mastergantt", dispatch_url("project.mastergantt", "planning"), "projectmanagement", array("project.project", "planning"));
       $this->menuitem("activity_admin", dispatch_url("project.activity", "admin"), "setup", array("project.activity", "admin"));
+      $this->menuitem("project_categories", dispatch_url("project.project_category", "admin"), "setup", array("project.activity", "admin"));
       $this->menuitem("tpl_phase_admin", dispatch_url("project.tpl_phase", "admin"), "setup", array("project.tpl_phase", "admin"));
       $this->menuitem("tpl_project_admin", dispatch_url("project.tpl_project", "admin"), "setup", array("project.tpl_project", "admin"));
       $this->menuitem("role_admin", dispatch_url("project.role", "admin"), "setup", array("project.role", "admin"));
