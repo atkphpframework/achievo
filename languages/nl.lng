@@ -679,6 +679,8 @@
   "zipcode" => "Postcode",
   "subproject" => "also calculate subprojects",
   "master_project" => "Master project",
+  "menu_project_categories"=>"Categories of project",
+  "project_category"=>"Category",
 
 );
 
