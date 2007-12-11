@@ -37,6 +37,8 @@
       $this->add(new atkAttribute("abbreviation", AF_SEARCHABLE|AF_UNIQUE, 10));
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 200));
 
+      $this->add(new atkManyToOneRelation("project_category","project.project_category",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
+      
       $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $attr->setDestinationFilter("person.status='active'");
       
