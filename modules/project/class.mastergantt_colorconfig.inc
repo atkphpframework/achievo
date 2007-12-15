@@ -43,9 +43,10 @@
       if ($max=="") $max = 9999999; // improbable project maximum for
                                                                     // easier validation (yes, I am lazy) 
                                                                     // - Ivo
-      $filter = "(".$record["hours_min"]."<hours_max OR hours_max IS NULL) AND ".
-              "(".$max.">hours_min OR hours_min IS NULL)";
-      if ($mode=="update") $filter.= " AND id<>".$record["id"];
+      $filter = sprintf('(%d < hours_max OR hours_max IS NULL) AND 
+                          (%d > hours_min OR hours_min IS NULL)
+                        ',$record['hours_min'],$max); 
+      if ($mode=="update") $filter.= sprintF(" AND id<>%d",$record["id"]);
       
       $existing = $this->selectDb($filter, "", "", "", array("id"));
       
