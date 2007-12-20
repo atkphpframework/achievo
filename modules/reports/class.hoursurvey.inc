@@ -415,10 +415,12 @@ class hoursurvey extends atkNode
 
       $this->_addHiddenFields($content);
 
-      if(isset($this->m_postvars['add_project']))
+      $current = unserialize(atkArrayNvl($this->m_postvars,'projects'));
+      
+      if(isset($this->m_postvars['add_project']) || ($current && !empty($projectid)) )
       {
         //add_project button has been pressed
-        $list = $this->_addHiddenProjects($content,array($projectid, $phaseid));
+        $list = $this->_addHiddenProjects($content,array($projectid, $phaseid),null,$current);
         //clear current project/phase selection and remove it from stack
         $projectid = $phaseid = "";
         $g_sessionManager->pageVar("projectid"," ");
@@ -426,7 +428,7 @@ class hoursurvey extends atkNode
       }
       else 
       {
-        $list = $this->_addHiddenProjects($content,array(),atkArrayNvl($this->m_postvars,"delete_project"));
+        $list = $this->_addHiddenProjects($content,array(),atkArrayNvl($this->m_postvars,"delete_project"),$current);
       }
       
       $tbl = &atknew("atk.utils.atktablerenderer");
@@ -490,18 +492,18 @@ class hoursurvey extends atkNode
         $dummyrec["orderdirection[$i]"]=$columnConfig->getDirectionByOrder($i+1);
         $dummyrec["subtotal[$i]"]=($columnConfig->hasSubTotalByOrder($i+1)?1:0);
       }
+
+      if(!empty($list))
+      {
+        $data[] = array(atktext('projectlist','project').':',$this->_drowProjectsList($list));
+        $data[] = array('<hr>');
+      }
       
       $text = atktext("add_project");
       $link = atkHref(dispatch_url("reports.hoursurvey", "report",array("add_project"=>1)), $text,SESSION_DEFAULT,true);
 
       $data[] = array(atktext('project','project').':',$projectatt->edit($dummyrec)." ".$link);
 
-      if(count($list)>0)
-      {
-        $data[] = array('<hr>'.atktext('projectlist','project').':');
-        $data[] = array("",$this->_drowProjectsList($list));
-        $data[] = array('<hr>');
-      }
       
       $p_attr = new atkBoolAttribute("subproject");
       $p_attr->addDependee("phaseid");
@@ -509,6 +511,21 @@ class hoursurvey extends atkNode
       $p_attr->_registerDependees();
 
       $data[] = array(atktext('subproject','project').':',$p_attr->edit($dummyrec));
+
+      $phaseatt = &$hoursnode->m_attribList["phaseid"];
+      $phaseatt->setDestinationFilter("phase.projectid='[projectid.id]'");
+      $phaseatt->m_ownerInstance = &$hoursnode;
+
+      $g_sessionManager->stackVar("reportnodetype","hoursurvey");
+
+      //We add an array as a row to the data with the value and id fields,
+      //to make the atkTableRenderer render the id in the TD of this attribute.
+      $data[] = array(atktext('phase','project').':',
+      array('value'=>$phaseatt->edit($dummyrec),
+      'id'=>str_replace(".","_",$this->getHoursNodeName())."_".$phaseatt->m_name)
+      );
+
+      $this->_addOr($data);
       
       $p_attr = new atkManyToOneRelation("project_category","project.project_category");
       $p_attr->m_ownerInstance = &$hoursnode;
@@ -526,21 +543,6 @@ class hoursurvey extends atkNode
         $data[] = array(atktext('billing_type','billing').':',$projecttypeatt->edit($dummyrec));
         $this->_addOr($data);
       }
-
-      $phaseatt = &$hoursnode->m_attribList["phaseid"];
-      $phaseatt->setDestinationFilter("phase.projectid='[projectid.id]'");
-      $phaseatt->m_ownerInstance = &$hoursnode;
-
-      $g_sessionManager->stackVar("reportnodetype","hoursurvey");
-
-      //We add an array as a row to the data with the value and id fields,
-      //to make the atkTableRenderer render the id in the TD of this attribute.
-      $data[] = array(atktext('phase','project').':',
-      array('value'=>$phaseatt->edit($dummyrec),
-      'id'=>str_replace(".","_",$this->getHoursNodeName())."_".$phaseatt->m_name)
-      );
-
-      $this->_addOr($data);
 
       $organizationatt = &$hoursnode->getAttribute("organizationid");
 
@@ -844,7 +846,7 @@ class hoursurvey extends atkNode
     }
 
     if(!empty($creditor_id) && $creditor_id != "all")
-    $filterarray[] = $this->_addFilterArrayItem("id","='$creditor_id'","creditor_id");
+    $filterarray[] = $this->_addFilterArrayItem("creditor_id","='$creditor_id'","userid");
 
     //Add external columns to the filterarray
     foreach ($externalHourSurveyColumns as $module => $attrlist)
@@ -1181,45 +1183,39 @@ class hoursurvey extends atkNode
     $content.='<input type="hidden" name="atkaction" value="report">';
   }
   
-  function _addHiddenProjects(&$content,$item=array(),$id=null)
+  function _addHiddenProjects(&$content,$item=array(),$id=null,$current)
   {
-    $res = array();
-    $current = atkArrayNvl($this->m_postvars,'projects');
-    
     if(isset($id))
     {
-      $res = unserialize($current);
-      unset($res[$id]);
-      $this->_hiddenProjects($content,serialize($res));
+      unset($current[$id]);
+      $this->_hiddenProjects($content, $current);
     }
-    elseif( $current )
+    elseif( !empty($current) )
     {
-      if(count($item) > 0)
+      if(!empty($item))
       {
-        $res = unserialize($current);
-        $res[] = $item;
-        $this->_hiddenProjects($content,serialize($res));
+        $current[] = $item;
+        $this->_hiddenProjects($content,$current);
       }
       else
       {
         $this->_hiddenProjects($content,$current);
-        $res = unserialize($current);
       }
       
     }
-    elseif(count($item)> 0) 
+    elseif(!empty($item)) 
     {
-      $res[] = $item;
-      $this->_hiddenProjects($content,serialize($res));
+      $current = array($item);
+      $this->_hiddenProjects($content,$current);
     }
-    return $res;
+    return $current;
   }
 
   function _hiddenProjects(&$content,$value='')
   {
-    if($value)
+    if(!empty($value))
     {
-      $content .= '<input type="hidden" name="projects" '.'value="'.htmlspecialchars($value, ENT_QUOTES).'">';
+      $content .= '<input type="hidden" name="projects" '.'value="'.htmlspecialchars(serialize($value), ENT_QUOTES).'">';
     }
   }
   
