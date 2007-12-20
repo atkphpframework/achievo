@@ -11,11 +11,6 @@ class phasetemplateAttribute extends atkManyToOneRelation
   {
     $this->atkManyToOneRelation($name, $target, $flags);
   }
-
-  function addToQuery($query)
-  {
-    // do nothing
-  }
   
   function store($db, $record, $type)
   {
@@ -34,6 +29,16 @@ class phasetemplateAttribute extends atkManyToOneRelation
   function dbFieldType()
   {
     return "";
+  }
+  
+  function storageType($mode)
+  {
+    return POSTSTORE;
+  }
+  
+  function loadType($mode, $searching=false)
+  {
+    return NOLOAD;
   }
 }
 
