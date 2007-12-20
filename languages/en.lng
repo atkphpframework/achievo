@@ -681,7 +681,7 @@
   "master_project" => "Master project",
   "menu_project_categories"=>"Categories of project",
   "project_category"=>"Category",
-  "projectlist"=>"Projectlist",
+  "projectlist"=>"Selected projects",
 );
 
 ?>
