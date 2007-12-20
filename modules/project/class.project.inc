@@ -43,7 +43,7 @@
       $attr->setDestinationFilter("person.status='active'");
       
       $p_attr = &$this->add(new atkManyToOneRelation("master_project","project.project",AF_RELATION_AUTOCOMPLETE|AF_HIDE_LIST|AF_HIDE_ADD));
-      $p_attr->addDestinationFilter("project.id<>[id] AND project.master_project=0");
+      $p_attr->addDestinationFilter("project.id<>[id] AND (project.master_project=0 OR project.master_project IS NULL)");
 
       $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
@@ -96,13 +96,13 @@
 
       $this->add(new atkOneToManyRelation("deliverables", "project.deliverable", "project_id", AF_HIDE_LIST), "planning");
 
-      $tmp = &new atkManyBoolRelation("phasetemplatematrix","project.phase","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_SEARCH);
-      $tmp->m_localKey = "projectid";
-      $tmp->m_remoteKey = "template";
+      //$tmp = &new atkManyBoolRelation("phasetemplatematrix","project.phase","project.tpl_phase", AF_HIDE_LIST|AF_HIDE_SEARCH);
+      //$tmp->m_localKey = "projectid";
+      //$tmp->m_remoteKey = "template";
       //$tmp->setStoreDeletionFilter("phase.template IS NOT NULL AND phase.template!='' AND phase.template!=0");
       //The phasetemplatematrix is in add mode visible on tab 'default' and in other modes on the 'planning' tab
-      $tab = ($ATK_VARS["atkaction"]=="view"||$ATK_VARS["atkaction"]=="edit"||$ATK_VARS["atkaction"]=="update"?"planning":"default");
-      $this->add($tmp, $tab);
+      //$tab = ($ATK_VARS["atkaction"]=="view"||$ATK_VARS["atkaction"]=="edit"||$ATK_VARS["atkaction"]=="update"?"planning":"default");
+      //$this->add($tmp, $tab);
 
       //all phases (including manyally added ones) are shown in this relation.
       $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE),"planning");
@@ -869,7 +869,7 @@
     {
      $phaseTplNode = &atkGetNode("project.tpl_phase");
      $phaseNode = &atkGetNode("project.phase");
-
+/*
      foreach($record["phasetemplatematrix"] as $tpl)
      {
        atkdebug("Using template ".$tpl["template"]);
@@ -904,7 +904,7 @@
          }
          $this->addActivitiesPerPhase($template_id, $newphase["id"]);
        }
-     }
+     } */
     }
 
     function addActivitiesPerPhase($tpl_phase_id, $phaseid)
