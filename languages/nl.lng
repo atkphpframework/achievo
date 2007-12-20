@@ -36,7 +36,7 @@
   "aggregate_by_order" => "Aggregatie van ongesorteerde kolommen",
   "all" => "Alles",
   "allactivities" => "Alle activiteiten",
-  "allcreditors" => "Alle crediteuren",
+  "allcreditors" => "Alle werkgevers",
   "allday" => "Hele dag",
   "allday_appointments" => "Dag afspraken",
   "alldepartments" => "Alle afdelingen",
@@ -109,7 +109,7 @@
   "country" => "Land",
   "created_by" => "Gemaakt door",
   "created_on" => "Gemaakt op",
-  "creditor_id" => "Crediteur",
+  "creditor_id" => "Werkgever",
   "current_balance" => "Huidig saldo",
   "current_planning" => "Huidige planning",
   "customer" => "Opdrachtgever",
@@ -677,11 +677,11 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
-  "subproject" => "also calculate subprojects",
+  "subproject" => "Bereken ook subprojecten",
   "master_project" => "Master project",
-  "menu_project_categories"=>"Categories of project",
-  "project_category"=>"Category",
-  "projectlist"=>"Projectlist",
+  "menu_project_categories"=>"Projectcategorieen",
+  "project_category"=>"Categorie",
+  "projectlist"=>"Projectlijst",
 );
 
 ?>
