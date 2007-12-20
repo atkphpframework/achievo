@@ -419,8 +419,10 @@ class hoursurvey extends atkNode
       {
         //add_project button has been pressed
         $list = $this->_addHiddenProjects($content,array($projectid, $phaseid));
-        //clear current project/phase selection
+        //clear current project/phase selection and remove it from stack
         $projectid = $phaseid = "";
+        $g_sessionManager->pageVar("projectid"," ");
+        $g_sessionManager->pageVar("phaseid"," ");
       }
       else 
       {
