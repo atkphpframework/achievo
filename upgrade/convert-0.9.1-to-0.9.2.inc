@@ -38,7 +38,7 @@
   $setup->installNode("setup.versioninfo");
  
   // Create the schedule_notes table.
-  $setup->installNode("calendar.schedule_notes");
+  //$setup->installNode("calendar.schedule_notes");
 
   //convert contact table to person table and copy employees to person table
   $setup->renameTable("contact", "person");
