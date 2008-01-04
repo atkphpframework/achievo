@@ -13,6 +13,8 @@ Changes in Achievo 1.3RC2
 + Added executeSQL function to setup module, this makes it possible
   to execute SQL queries for creating tables etc. This makes it
   possible to use the atkMetaNode. [Sandy]
++ Active and archived contracts are now on seperate subtabs when viewing/editing an
+  organisation [Dennis]
 * Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
 * Fixed bug with obligatory fields in person table. [Sandy]
 * Removed some menu items when a user doens't have the rights

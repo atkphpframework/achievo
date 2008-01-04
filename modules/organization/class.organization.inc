@@ -89,7 +89,12 @@ class organization extends atkNode
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
     $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project");
 
-    $this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST), "contracts");
+    $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL), 'contracts');
+    $activeContracts = &$this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    $activeContracts->addDestinationFilter("contract.status='active'");
+    $archivedContracts = &$this->add(new atkOneToManyRelation("archivedcontracts","organization.contracts","customer",AF_HIDE_LIST));
+    $archivedContracts->addDestinationFilter("contract.status!='active'");
+
     $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST);
     $projectRelatie->addDestinationFilter("project.status='active'");
     $this->add($projectRelatie);
@@ -183,7 +188,7 @@ class organization extends atkNode
   function action_export(&$handler)
   {
     // Some attributes are not usefull in exports
-    foreach(array("contactperson", "contracts", "projects", "archivedprojects", "vcard", "document") as $attrname)
+    foreach(array("contactperson", "contracts", 'archivedcontracts', "projects", "archivedprojects", "vcard", "document") as $attrname)
     {
       $attr = &$this->getAttribute($attrname);
       $attr->addFlag(AF_HIDE);
