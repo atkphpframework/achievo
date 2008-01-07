@@ -684,6 +684,8 @@
   "menu_project_categories"=>"Projectcategorieen",
   "project_category"=>"Categorie",
   "projectlist"=>"Projectlijst",
+  "report_show_employer"=>"Show employer column",
+  "registrationnumber"=>"Registration number",
 );
 
 ?>
