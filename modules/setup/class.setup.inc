@@ -887,11 +887,15 @@
 
     function dropColumn($table, $col)
     {
-      $db = &atkGetDb();
-      $ddl = &$db->createDDL();
-      $ddl->setTable($table);
-      $ddl->dropField($col);
-      return $ddl->executeAlter();
+      if($this->columnExists($table,$col))
+      {
+        $db = &atkGetDb();
+        $ddl = &$db->createDDL();
+        $ddl->setTable($table);
+        $ddl->dropField($col);
+        return $ddl->executeAlter();
+      }
+      return true;
     }
 
     function dropTable($table)
