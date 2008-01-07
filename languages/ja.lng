@@ -35,7 +35,7 @@
   "aggregate_by_order" => "”ñ•ª—ÞƒRƒ‰ƒ€‚Ì?W?‡",
   "all" => "All", // Missing string!!!
   "allactivities" => "All activities", // Missing string!!!
-  "allcreditors" => "All creditors", // Missing string!!!
+  "allemployers" => "All employers", // Missing string!!!
   "allday" => "?I“ú",
   "allday_appointments" => "?I“ú‚Ì‰ï‚¤–ñ‘©",
   "alldepartments" => "All departments", // Missing string!!!
@@ -51,11 +51,11 @@
   "approved" => "Approved", // Missing string!!!
   "app_shorttitle" => "Achievo",
   "app_title" => "Achievo",
-  "archived" => "Ši”[‹L˜^‚³‚ê‚½",
+  "archived" => "Ši”[‹L?^‚³‚ê‚½",
   "archivedprojects" => "Archived projects", // Missing string!!!
   "archived_projects" => "Archived projects", // Missing string!!!
   "assigned_to" => "”C–½‚³‚ê‚é?l",
-  "attendee_contactsearch" => "˜A—??æ‚ð’Ç‰Á",
+  "attendee_contactsearch" => "?A—??æ‚ð’Ç‰Á",
   "attendee_empsearch" => "ŽÐˆõ‚ð’Ç‰Á",
   "attendee_fuzzyhint" => "Add a comma-separated list of names below. The database will be searched for matches.",
   "balance" => "Žc?‚",
@@ -75,8 +75,8 @@
   "cellular" => "Œa’ë",
   "changeabbreviation" => "Change abbreviation", // Missing string!!!
   "city" => "“sŽs",
-  "clicktoviewactiverecords" => "‚±‚±‚ÅƒNƒŠƒbƒN‚µ‚Ä?AƒAƒNƒeƒBƒu‚È‹L˜^‚ðŒ©‚Ä‚­‚¾‚³‚¢",
-  "clicktoviewarchive" => "‚±‚±‚ÅƒNƒŠƒbƒN‚µ‚Ä?AŠi”[‹L˜^‚ðŒ©‚Ä‚­‚¾‚³‚¢",
+  "clicktoviewactiverecords" => "‚±‚±‚ÅƒNƒŠƒbƒN‚µ‚Ä?AƒAƒNƒeƒBƒu‚È‹L?^‚ðŒ©‚Ä‚­‚¾‚³‚¢",
+  "clicktoviewarchive" => "‚±‚±‚ÅƒNƒŠƒbƒN‚µ‚Ä?AŠi”[‹L?^‚ðŒ©‚Ä‚­‚¾‚³‚¢",
   "closedate" => "Close date", // Missing string!!!
   "code" => "ƒR?[ƒh",
   "color" => "Color", // Missing string!!!
@@ -108,7 +108,7 @@
   "country" => "?‘",
   "created_by" => "Created by", // Missing string!!!
   "created_on" => "Created on", // Missing string!!!
-  "creditor_id" => "Creditor", // Missing string!!!
+  "employer_id" => "Employer", // Missing string!!!
   "current_balance" => "ŽžŠÔŠO‚ÌŽc?‚",
   "current_planning" => "Œ»?Ý‚ÌŒv‰æ",
   "customer" => "ŒÚ‹q",
@@ -236,7 +236,7 @@
   "lastname" => "?©",
   "last_modified_by" => "Last modified by", // Missing string!!!
   "last_modified_on" => "Last modified on", // Missing string!!!
-  "link_contact_add" => "?V‹K‚Ì˜A—?’S“–ŽÒ‚ð’Ç‰Á",
+  "link_contact_add" => "?V‹K‚Ì?A—?’S“–ŽÒ‚ð’Ç‰Á",
   "link_contracts_add" => "Œ_–ñ‚ð’Ç‰Á",
   "link_phase_add" => "ƒtƒF?[ƒY‚ð’Ç‰Á",
   "link_project_add" => "ƒvƒ?ƒWƒFƒNƒg‚ð’Ç‰Á",
@@ -284,7 +284,7 @@
   "menu_contact_admin" => "?Ú?G",
   "menu_contracts" => "‘g?DŒ_–ñ",
   "menu_contracttype" => "‘g?DŒ_–ñŒ^",
-  "menu_costregistration_admin" => "Œ´‰¿“o˜^",
+  "menu_costregistration_admin" => "Œ´‰¿“o?^",
   "menu_costregistration_costreport" => "Œ´‰¿ƒŒƒ|?[ƒg",
   "menu_employeemanagement" => "ŽÐˆõŠÇ—?",
   "menu_employee_admin" => "ŽÐˆõŠÇ—?",
@@ -292,7 +292,7 @@
   "menu_employee_stats" => "?]‹Æˆõ“?Œv",
   "menu_functionlevel_admin" => "ŠÖ?”ƒŒƒxƒ‹",
   "menu_holiday_admin" => "‹x“ú",
-  "menu_hours_admin" => "ŽžŠÔ“o˜^",
+  "menu_hours_admin" => "ŽžŠÔ“o?^",
   "menu_hours_approve_month" => "Approve months", // Missing string!!!
   "menu_hours_approve_week" => "Approve weeks", // Missing string!!!
   "menu_hours_hoursurvey" => "ŽžŠÔ’²?¸",
@@ -302,7 +302,7 @@
   "menu_mastergantt_colorconfig" => "Master-Gantt colors", // Missing string!!!
   "menu_online_support" => "ƒTƒ|?[ƒgƒIƒvƒVƒ‡ƒ“",
   "menu_organizationmanagement" => "‘g?D",
-  "menu_organizationreport" => "‘g?D‹L˜^•ÛŠÇ?Š",
+  "menu_organizationreport" => "‘g?D‹L?^•ÛŠÇ?Š",
   "menu_organization_admin" => "‘g?D",
   "menu_profile_admin" => "ƒZƒLƒ…ƒŠƒeƒBƒvƒ?ƒtƒB?[ƒ‹",
   "menu_projectactivityreport" => "ƒvƒ?ƒWƒFƒNƒgŠˆ“®",
@@ -321,13 +321,13 @@
   "menu_setup" => "?Ý’è",
   "menu_sponsorship" => "ƒXƒ|ƒ“ƒT?[’ñ‹Ÿ”Ô‘g",
   "menu_support" => "ƒTƒ|?[ƒg",
-  "menu_time_registration" => "ŽžŠÔ“o˜^",
+  "menu_time_registration" => "ŽžŠÔ“o?^",
   "menu_tpl_phase_admin" => "ƒtƒF?[ƒYƒeƒ“ƒvƒŒ?[ƒg",
   "menu_tpl_project_admin" => "ƒvƒ?ƒWƒFƒNƒgƒeƒ“ƒvƒŒ?[ƒg",
   "menu_weekreport" => "?]‹Æˆõ?T‚ÌƒŒƒ|?[ƒg",
-  "menu_workperiod_admin" => "˜J“­ŠúŠÔ",
+  "menu_workperiod_admin" => "?J“­ŠúŠÔ",
   "milestones" => "ƒ}ƒCƒ‹ƒXƒgƒ“",
-  "minutes" => "‹cŽ–˜^",
+  "minutes" => "‹cŽ–?^",
   "month" => "ŒŽ",
   "monthlocked" => "Month is locked", // Missing string!!!
   "monthly" => "ŒŽ–ˆ",
@@ -357,7 +357,7 @@
   "no_billing_period" => "No billing period", // Missing string!!!
   "number" => "Nr",
   "of" => "of",
-  "onlyactiverecordsareshown" => "ƒAƒNƒeƒBƒu‚È‹L˜^‚¾‚¯‚ªŽ¦‚³‚ê‚Ü‚·",
+  "onlyactiverecordsareshown" => "ƒAƒNƒeƒBƒu‚È‹L?^‚¾‚¯‚ªŽ¦‚³‚ê‚Ü‚·",
   "on_date_achievo_changed_contract_status_from_to" => "On %1\$s Achievo changed the contract status from %2\$s to %3\$s \n Comment: The contract has expired.", // Missing string!!!
   "on_date_achievo_changed_project_status_from_to" => "On %1\$s Achievo changed the project status from %2\$s to %3\$s \n Comment: The contract is not active (anymore).", // Missing string!!!
   "on_delivery" => "On delivery", // Missing string!!!
@@ -400,7 +400,7 @@
   "phase_activity" => "Šˆ“®",
   "phase_plan_employee" => "?]‹Æˆõ‚ðŒv‰æ",
   "phase_select" => "?H’ö‚ð‘I‘ð‚·‚é",
-  "phone" => "“d˜b”ÔŒà",
+  "phone" => "“d?b”ÔŒà",
   "pim" => "Pim", // Missing string!!!
   "pimitem" => "Pim item", // Missing string!!!
   "pimitems" => "Pim items", // Missing string!!!
@@ -413,7 +413,7 @@
   "pim_donations" => "Donations", // Missing string!!!
   "pim_firsttimeusage" => "First time usage", // Missing string!!!
   "pim_gotoschedule" => "ƒXƒPƒWƒ…?[ƒ‰‚Ö?s‚­",
-  "pim_gototimeregistration" => "ŽžŠÔ“o˜^‚Ö?s‚­",
+  "pim_gototimeregistration" => "ŽžŠÔ“o?^‚Ö?s‚­",
   "pim_loggedinasadmin" => "You are currently logged in as administrator.", // Missing string!!!
   "pim_nopimitems" => "No pim items configured, goto the user preferences for adding pim items to your pim page.", // Missing string!!!
   "pim_notarealaccount" => "As this is not a real account, do not use features like timeregistration etc. It is best to use this account only when you run Achievo for the first time, or when you need to upgrade.", // Missing string!!!
@@ -422,10 +422,10 @@
   "pim_schedule" => "?¡“ú‚Ì‰ï‚¤–ñ‘©",
   "pim_schedule_empty" => "?¡“ú‚Ì‰ï‚¤–ñ‘©‚ª‚ ‚è‚Ü‚¹‚ñ",
   "pim_setuppurposesonly" => "This account is for setup-purposes only", // Missing string!!!
-  "pim_timeregistration" => "?¡“ú‚Ì‚ ‚È‚½‚ÌŽžŠÔ“o˜^",
+  "pim_timeregistration" => "?¡“ú‚Ì‚ ‚È‚½‚ÌŽžŠÔ“o?^",
   "pim_timeregistration_empty" => "‚Ç‚ñ‚ÈŽžŠÔ‚à‚Ü‚¾Ž¦‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ‚Å‚µ‚½",
   "pim_todos" => "‚ ‚È‚½‚Ìƒ^ƒXƒN",
-  "pim_todo_empty" => "—˜—p‰Â”\‚Èƒ^ƒXƒN‚ª‚ ‚è‚Ü‚¹‚ñ",
+  "pim_todo_empty" => "—?—p‰Â”\‚Èƒ^ƒXƒN‚ª‚ ‚è‚Ü‚¹‚ñ",
   "pim_upgradesandinstallations" => "Upgrades and installations", // Missing string!!!
   "pim_usesetuplink" => "If you need to upgrade or if you installed a new module, use the 'Setup' link in the top frame to update the database.", // Missing string!!!
   "pim_welcome" => "Welcome to Achievo", // Missing string!!!
@@ -464,7 +464,7 @@
   "project_tab_notes" => "ƒm?[ƒg",
   "project_tab_planning" => "Šé‰æ—§ˆÄ",
   "project_tab_todos" => "ƒ^ƒXƒN",
-  "project_timereg_limit" => "ŽžŠÔ‚Ì“o˜^‚Ì‹–‚³‚ê‚é?l",
+  "project_timereg_limit" => "ŽžŠÔ‚Ì“o?^‚Ì‹–‚³‚ê‚é?l",
   "project_title_select" => "ƒvƒ?ƒWƒFƒNƒg‚ð‘I‘ð",
   "project_todoview" => "Project todo's",
   "publicitem" => "Œö‹¤‚Ì?€–Ú",
@@ -476,14 +476,14 @@
   "rank_4" => "4”Ô–Ú",
   "reason" => "Reason", // Missing string!!!
   "refresh" => "ƒŠƒtƒŒƒbƒVƒ…",
-  "registeredtimeperactivity" => "1Šˆ“®‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperday" => "1“ú‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperemp" => "1?]‹Æˆõ‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimepermonth" => "1ƒJŒŽ‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperphase" => "1?H’ö‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperproj" => "1ƒvƒ?ƒWƒFƒNƒg‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperweek" => "1?TŠÔ‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
-  "registeredtimeperweekday" => "1•½“ú‚ ‚½‚è‚Ì“o˜^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperactivity" => "1Šˆ“®‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperday" => "1“ú‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperemp" => "1?]‹Æˆõ‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimepermonth" => "1ƒJŒŽ‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperphase" => "1?H’ö‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperproj" => "1ƒvƒ?ƒWƒFƒNƒg‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperweek" => "1?TŠÔ‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
+  "registeredtimeperweekday" => "1•½“ú‚ ‚½‚è‚Ì“o?^‚³‚ê‚½ŽžŠÔ",
   "relation" => "Relation", // Missing string!!!
   "remark" => "’?ˆÓ",
   "remarkrequired" => "•K—v‚Å‚ ‚éŽd—l",
@@ -524,7 +524,7 @@
   "socialsecuritynumber" => "Social Security Number", // Missing string!!!
   "source" => "Source", // Missing string!!!
   "specrequired" => "•K—v‚Å‚ ‚éŽd—l",
-  "spend_hours" => "“o˜^‚³‚ê‚½ŽžŠÔ",
+  "spend_hours" => "“o?^‚³‚ê‚½ŽžŠÔ",
   "startdate" => "Œv‰æŠJŽn“ú",
   "startday" => "Week starts on", // Missing string!!!
   "starttime" => "?‰‚ßŽžŠÔ",
@@ -557,7 +557,7 @@
   "time" => "ŽžŠÔ",
   "timeguard_mail_header" => "Timeframe: [startdate] until [enddate]\n\nUser '[userid]' has the following gaps in his timeregistration:",
   "timeguard_mail_line" => "In week [week] ([startdate] - [enddate]), [hours] hours are unaccounted for.",
-  "timeguard_mail_subject" => "ŽžŠÔ‚Ì“o˜^•sŠ®‘S‚Å‚·",
+  "timeguard_mail_subject" => "ŽžŠÔ‚Ì“o?^•sŠ®‘S‚Å‚·",
   "timeline" => "ƒXƒPƒWƒ…?[ƒ‹",
   "timereg" => "Time registration", // Missing string!!!
   "timeregistration" => "Time registration", // Missing string!!!
@@ -574,7 +574,7 @@
   "timespan" => "ŠúŠÔ",
   "title" => "ƒ^ƒCƒgƒ‹",
   "title_activitystats" => "Šˆ“®“?Œv",
-  "title_activitystats_peremployee" => "ˆÈ‰º‚Ì?]‹Æˆõ‚Í‚±‚ÌŠˆ“®‚Ì‚Æ‚«‚ÉŽžŠÔ“o˜^‚µ‚Ü‚µ‚½",
+  "title_activitystats_peremployee" => "ˆÈ‰º‚Ì?]‹Æˆõ‚Í‚±‚ÌŠˆ“®‚Ì‚Æ‚«‚ÉŽžŠÔ“o?^‚µ‚Ü‚µ‚½",
   "title_activitystats_perproject" => "‚±‚ÌŠˆ“®‚ÍˆÈ‰º‚Ìƒvƒ?ƒWƒFƒNƒg‚ÉŽg—p‚³‚ê‚Ü‚µ‚½",
   "title_activitystats_totals" => "‘?“?Œv for",
   "title_billing" => "Billing",
@@ -584,8 +584,8 @@
   "title_employeestats_costs" => "‚±‚Ì?]‹Æˆõ‚ÍˆÈ‰º‚Ìƒvƒ?ƒWƒFƒNƒg‚ÌƒRƒXƒg‚ðŽ¦‚µ‚Ü‚µ‚½",
   "title_employeestats_details_hoursof" => "Hours of",
   "title_employeestats_details_onproject" => " on project",
-  "title_employeestats_peractivity" => "ˆÈ‰º‚ÌŠˆ“®‚Ì‚Æ‚«‚ÉŽžŠÔ“o˜^‚³‚ê‚½‚±‚Ì?]‹Æˆõ",
-  "title_employeestats_perproject" => "ŽžŠÔˆÈ‰º‚Ìƒvƒ?ƒWƒFƒNƒg‚É“o˜^‚³‚ê‚é‚±‚Ì?]‹Æˆõ",
+  "title_employeestats_peractivity" => "ˆÈ‰º‚ÌŠˆ“®‚Ì‚Æ‚«‚ÉŽžŠÔ“o?^‚³‚ê‚½‚±‚Ì?]‹Æˆõ",
+  "title_employeestats_perproject" => "ŽžŠÔˆÈ‰º‚Ìƒvƒ?ƒWƒFƒNƒg‚É“o?^‚³‚ê‚é‚±‚Ì?]‹Æˆõ",
   "title_employeestats_totals" => "‘?“?Œv for",
   "title_houradmin_approve" => "Approve hours registration", // Missing string!!!
   "title_houradmin_dayview" => "ƒGƒ“ƒgƒŠ?[",
@@ -607,13 +607,13 @@
   "title_projectstats" => "ƒvƒ?ƒWƒFƒNƒg“?Œv",
   "title_projectstats_costsperemp" => "ˆÈ‰º‚Ì?]‹Æˆõ‚Í‚±‚Ìƒvƒ?ƒWƒFƒNƒg‚Ì‚½‚ß‚É”ï—p‚ð?ì‚è‚Ü‚µ‚½",
   "title_projectstats_peractivity" => "ƒvƒ?ƒWƒFƒNƒg‚ÌˆÈ‰º‚ÌŠˆ“®‚É“­‚­?l?X",
-  "title_projectstats_peremployee" => "ˆÈ‰º‚Ì?]‹Æˆõ‚Í‚±‚Ìƒvƒ?ƒWƒFƒNƒg‚ÉŽžŠÔ‚ð“o˜^‚µ‚Ü‚µ‚½",
+  "title_projectstats_peremployee" => "ˆÈ‰º‚Ì?]‹Æˆõ‚Í‚±‚Ìƒvƒ?ƒWƒFƒNƒg‚ÉŽžŠÔ‚ð“o?^‚µ‚Ü‚µ‚½",
   "title_projectstats_perphase" => "‚±‚Ìƒvƒ?ƒWƒFƒNƒg‚ÌŠe?H’ö‚É“­‚­?l?X",
   "title_projectstats_totals" => "‘?“?Œv for",
-  "title_reportorganization_view" => "‘g?D‹L˜^•ÛŠÇ?Š",
+  "title_reportorganization_view" => "‘g?D‹L?^•ÛŠÇ?Š",
   "title_reports" => "ƒŒƒ|?[ƒg",
   "title_setup_setup" => "Achievo‚Ì?Ý’è",
-  "title_timereg" => "ŽžŠÔ“o˜^Time registration",
+  "title_timereg" => "ŽžŠÔ“o?^Time registration",
   "to" => "To", // Missing string!!!
   "today" => "?¡“ú",
   "today_and_appointments" => "?¡“ú‚Æ‰ï‚¤–ñ‘©",
@@ -674,7 +674,7 @@
   "workperiod" => "Worktime period",
   "year" => "Year", // Missing string!!!
   "yearly" => "”N",
-  "youareinthearchive" => "‚ ‚È‚½‚Í‹L˜^•ÛŠÇ?Š‚ðŒ©‚Ä‚¢‚Ü‚·",
+  "youareinthearchive" => "‚ ‚È‚½‚Í‹L?^•ÛŠÇ?Š‚ðŒ©‚Ä‚¢‚Ü‚·",
   "zipcode" => "—X•Ö”Ô?†",
 );
 
