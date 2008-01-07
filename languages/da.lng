@@ -35,7 +35,7 @@
   "aggregate_by_order" => "Samling af usorteret kolonner",
   "all" => "All", // Missing string!!!
   "allactivities" => "Alle aktiviteter",
-  "allcreditors" => "All creditors", // Missing string!!!
+  "allemployers" => "All employers", // Missing string!!!
   "allday" => "Hele dagen",
   "allday_appointments" => "Hel-dags aftaler",
   "alldepartments" => "All departments", // Missing string!!!
@@ -108,7 +108,7 @@
   "country" => "Land",
   "created_by" => "Created by", // Missing string!!!
   "created_on" => "Created on", // Missing string!!!
-  "creditor_id" => "Creditor", // Missing string!!!
+  "employer_id" => "Employer", // Missing string!!!
   "current_balance" => "Overtidsbalance",
   "current_planning" => "Nuværende planlægning",
   "customer" => "Kunde",

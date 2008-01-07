@@ -35,7 +35,7 @@
   "aggregate_by_order" => "Aggregation of unsorted columns", // Missing string!!!
   "all" => "All", // Missing string!!!
   "allactivities" => "Minden aktivitás",
-  "allcreditors" => "All creditors", // Missing string!!!
+  "allemployers" => "All employers", // Missing string!!!
   "allday" => "All day", // Missing string!!!
   "allday_appointments" => "All-day appointments", // Missing string!!!
   "alldepartments" => "All departments", // Missing string!!!
@@ -108,7 +108,7 @@
   "country" => "Ország",
   "created_by" => "Created by", // Missing string!!!
   "created_on" => "Created on", // Missing string!!!
-  "creditor_id" => "Creditor", // Missing string!!!
+  "employer_id" => "Employer", // Missing string!!!
   "current_balance" => "Overtime balance", // Missing string!!!
   "current_planning" => "Current planning", // Missing string!!!
   "customer" => "Cég",

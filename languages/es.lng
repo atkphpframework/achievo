@@ -35,7 +35,7 @@
   "aggregate_by_order" => "Conjunto de columnas desordenadas",
   "all" => "All", // Missing string!!!
   "allactivities" => "Todas las actividades",
-  "allcreditors" => "All creditors", // Missing string!!!
+  "allemployers" => "All employers", // Missing string!!!
   "allday" => "Todo el dia",
   "allday_appointments" => "Todas las citas del dia",
   "alldepartments" => "All departments", // Missing string!!!
@@ -108,7 +108,7 @@
   "country" => "País",
   "created_by" => "Created by", // Missing string!!!
   "created_on" => "Created on", // Missing string!!!
-  "creditor_id" => "Creditor", // Missing string!!!
+  "employer_id" => "Employer", // Missing string!!!
   "current_balance" => "Horas extra (balance)",
   "current_planning" => "Planificación actual",
   "customer" => "Cliente",
