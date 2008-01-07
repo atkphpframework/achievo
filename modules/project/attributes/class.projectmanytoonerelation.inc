@@ -50,6 +50,17 @@
         return parent::storageType($mode);
     }
 
+    function dbFieldType()
+    {
+      if($this->m_store == false)
+        return "";
+      else
+        return parent::dbFieldType();
+    }
+
+
+
+
     function edit(&$record, $fieldprefix="", $mode="")
     {
       $filter=$this->parseFilter($this->m_destinationFilter,$record);
