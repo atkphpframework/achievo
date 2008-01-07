@@ -84,6 +84,9 @@ have a working webserver with PHP support and a MySQL database installed.
    Note 2: if you are using MySQL 4, you must also grant the 'lock tables'
    privilege to the user.
 
+   mysql> grant LOCK TABLES on achievo.* to achievo@localhost
+          identified by 'secret';
+
 4) Edit the file config.inc.php in the achievo directory, and set the
    $config_db variable to match your setup.
 

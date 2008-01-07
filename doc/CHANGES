@@ -24,11 +24,14 @@ Changes in Achievo 1.3RC2
 * Fixed default userview database field size. [Sandy]
 * Fixed password restrictions in the userpreferences. [Sandy]
 * Fixed in the todo history, project id isn't obligatry. [Sandy] 
-* Fixed the Phase Template functionallty. [Sandy] (bug 885)
+* Fixed the Phase Template functionallty. (bug #885) [Sandy]
 * Fixed patch 6 of the timereg module so the update from
-  Achievo 1.0/1.1 works. [Sandy] (bug 874)
+  Achievo 1.0/1.1 works. (bug #874) [Sandy]
 * Fixed missing version update for person module. [Guido]
 * Enlarged the project name field to 200 chars. [Guido]
+* Fixed filter in Master-Gantt colors. [Sandy]
+* Fixed with adding contacts to a project. (bug #887) [Sandy]
+* Fixed problem with projectid in time registration. [Sandy]
 * Fixed translation of activeprojects. [Dennis]
 * Fixed moving hour registrations in the hoursurvey. [Dennis]
 
