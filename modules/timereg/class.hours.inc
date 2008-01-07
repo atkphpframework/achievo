@@ -1104,7 +1104,7 @@ class hours extends atkNode
 
   function getHourSurveyColumns()
   {
-    $defaultcolumns = array("activitydate","userid","phaseid","projectid","activityid","remark","time","functionlevel", "creditor_id");
+    $defaultcolumns = array("activitydate","userid","phaseid","projectid","activityid","remark","time","functionlevel", "employer_id");
     if (moduleExists("billing")) $defaultcolumns[] = "billing_projecttypeid";
     $additionalcolumns = atkHarvestModules("getHourSurveyColumns");
     return array_merge($defaultcolumns, $additionalcolumns);

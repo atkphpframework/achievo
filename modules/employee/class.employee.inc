@@ -43,7 +43,7 @@ class employee extends person
 
     $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
-    $this->add(new atkManyToOneRelation("creditor_id","organization.organization",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK),"finance");
+    $this->add(new atkManyToOneRelation("employer_id","organization.organization",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK),"finance");
 
     //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
     $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOL_AUTOLINK));
