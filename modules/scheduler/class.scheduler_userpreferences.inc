@@ -31,7 +31,7 @@
       //$datestyles = $this->getDateStyles();
       //$timezones = $this->getTimeZones();
 
-      $this->add(new atkAttribute("userid",AF_PRIMARY|AF_HIDE));
+      $this->add(new atkNumberAttribute("userid",AF_PRIMARY|AF_HIDE));
       $this->add(new atkDummyAttribute("group1","<b>".atktext("settings")."</b>:<br>"),"scheduler");
       //$this->add(new atkListAttribute("timezone",array_values($timezones),array_keys($timezones),AF_OBLIGATORY|AF_NO_TRANSLATION));
       //$this->add(new atkListAttribute("dateformat",array_keys($datestyles), array_values($datestyles),AF_OBLIGATORY|AF_NO_TRANSLATION));
@@ -126,7 +126,7 @@
 
     function initial_values()
     {
-      $userid = atkArrayNvl(getUser(), "id");
+      $userid = atkArrayNvl(atkgetUser(), "id");
       return array("timeschedule"=>30,
                    "showweeknumbers"=>false,
                    "showtodo"=>false,
@@ -232,6 +232,15 @@
         return $userPreferences[$userid];
       }
     }
+    
+    function createUserPreferences($userid)
+    {
+      $rec = $this->initial_values();
+      $rec['default_userview']=$userid;
+      $rec['userid']=$userid;
+      $this->addDb($rec);
+    }
+    
   }
 
 ?>

@@ -100,7 +100,7 @@ class scheduler_pimview extends scheduler_view
     {
       $tmp.='<option value="'.$i.'"'.($showdays==$i?' selected':'').'>'.($i==1?atktext("today","scheduler"):$i." ".atktext("days","scheduler")).'</option>';
     }
-    $tmp.='</select>&nbsp;<input type="submit" value="'.atktext('view',"scheduler").'"></form>';
+    $tmp.='</select>&nbsp;<input type="submit" value="'.atktext('view',"scheduler").'"></form><br>';
     return $tmp;
   }
 

@@ -168,6 +168,7 @@
   "yearly_day" => "Yearly day",
   "years" => "years",
   "yearview" => "Year view",
+  "end_choice"=>"End date",
 );
 
 ?>

@@ -99,6 +99,7 @@ class scheduler_view
    */
   function render($request)
   {
+    atk_var_dump($request,'scheduler_view::render()');
     $this->m_model->setViewDate($request["viewdate"]);
     $this->m_model->setSmallViewDate($request["small_viewdate"]);
     $this->m_model->setViewUser($request["viewusers"]);

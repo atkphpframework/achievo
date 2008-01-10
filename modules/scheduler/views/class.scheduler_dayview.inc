@@ -318,13 +318,14 @@ class scheduler_dayview extends scheduler_view
 
 
     $currentTime = date("Y-m-d");
+    $viewTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay(), $this->m_model->getYear()));
     $currentUrl  = atkSelf()."?view=".$this->m_view."&viewdate=$currentTime";
 
     $nextTime = date("Y-m-d", mktime(0,0,0,$this->m_model->getMonth(), $this->m_model->getDay()+1, $this->m_model->getYear()));
     $nextUrl  = atkSelf()."?view=".$this->m_view."&viewdate=$nextTime";
     $nextImg ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_day","scheduler").'" alt="'.atktext("next_day","scheduler").'">';
 
-    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl, atkText("today","scheduler"));
+    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".'<button id="scheduler_today" onclick="window.location=\''.atkSessionManager::sessionUrl($currentUrl).'\'"'.($viewTime==$currentTime?' disabled':'').'>'.atkText("today","scheduler").'</button>';
   }
 
   /**

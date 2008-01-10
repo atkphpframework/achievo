@@ -110,7 +110,7 @@ class scheduler_model
     }
       
     $this->m_viewUsers = $user;
-    
+    atk_var_dump($user,"scheduler_model::setViewUser");
   }
   
   function setView($view)
@@ -266,52 +266,8 @@ class scheduler_model
     return $legend;
   }
   
+ 
   /**
-   * Update recurring events for a given period
-   *
-   * @param string $startdate Start date
-   * @param string $enddate End date
-   */
-  function updateRecurringEvents($startdate,$enddate)
-  {
-    $db = &atkGetDb();
-    atkimport("module.scheduler.utils.schedulertools");
-    $tmp_startdate = mktime(0,0,0,substr($startdate,5,2),substr($startdate,8,2),substr($startdate,0,4));
-    $tmp_enddate = mktime(0,0,0,substr($enddate,5,2),substr($enddate,8,2),substr($enddate,0,4));
-
-    $sql = "SELECT * FROM scheduler_scheduler,scheduler_cyclus
-            WHERE scheduler_scheduler.id = scheduler_cyclus.scheduler_id
-              AND scheduler_scheduler.recur!='once'
-              AND scheduler_scheduler.lastdate > $tmp_startdate AND scheduler_scheduler.lastdate < $tmp_enddate
-              AND scheduler_cyclus.cyclus_enddate >='$startdate' AND scheduler_cyclus.cyclus_enddate <= '$enddate' ";
-    $nrows = $db->getrows($sql);
-    for($i=0,$_i=count($nrows);$i<$_i;$i++)
-    {
-      $id = $nrows[$i]["id"];
-      $rec = schedulerTools::item2record($nrows[$i]);
-
-      $startdate = date("Y-m-d",($rec["lastdate"]+86400));
-      $endstamp = $rec["lastdate"]+(32*86400);
-      $enddate = date("Y-m-t",$endstamp);
-      $dates = schedulertools::getDates($rec,$startdate,$enddate);
-      foreach($dates as $date)
-      {
-        $tmp_start = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]);
-        $tmp_end = mktime($rec["endtime"]["hours"],$rec["endtime"]["minutes"],$rec["endtime"]["seconds"],$rec["enddate"]["month"],$rec["enddate"]["day"],$rec["enddate"]["year"]);
-        $duration = $tmp_end-$tmp_start;
-
-        $startdate = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],substr($date,5,2),substr($date,8,2),substr($date,0,4));
-        $enddate = $startdate+$duration;
-
-        $sql = "INSERT INTO scheduler_dates (scheduler_id,startdate,enddate) VALUES ('$id','$startdate','$enddate')";
-        $db->query($sql);
-      }
-      $sql = "UPDATE scheduler_scheduler SET lastdate = '$endstamp' WHERE id='$id'";
-      $db->query($sql);
-    }
-  }
-  
-    /**
    * Get Items for the small scheduler
    *
    * @param string $startdate Startdate
@@ -325,7 +281,7 @@ class scheduler_model
        $user =$this->getSchedulerUsers();
     }
 
-    $this->updateRecurringEvents($startdate,$enddate);
+    schedulertools::updateRecurringEvents($startdate,$enddate);
     $name = "atk".atkconfig("database")."query";
     $query = atknew($name);
     $query->addTable('scheduler_scheduler');
@@ -374,6 +330,7 @@ class scheduler_model
   function getSchedulerUsers()
   {
     $users = $this->m_viewUsers;
+    atk_var_dump($users,"GET SCHEDULER USERS");
     $realUsers=array();
     // Check for groups
     for($i=0,$_i=count($users);$i<$_i;$i++)
@@ -401,12 +358,15 @@ class scheduler_model
   */
  function getItems($startdate="",$enddate="",$user=array())
   {
+    atkdebug('scheduler_model::getItems -> Get scheduler items for:');
+    atk_var_dump($user,"USERS");
     $db = &atkGetDb();
 
     if(count($user)==0)
     {
       $user = $this->getSchedulerUsers();
     }
+    atk_var_dump($user,"USERS2");
 
     $this->m_alldayItems = array();
     $this->m_appointmentItems = array();
@@ -417,7 +377,7 @@ class scheduler_model
        $startdate=$this->m_viewdate;
        $enddate=$this->m_viewdate;
     }
-    $this->updateRecurringEvents($startdate,$enddate);
+    schedulertools::updateRecurringEvents($startdate,$enddate);
     $tmp_array=array();
     $this->addHolidays(false,$tmp_array,$startdate,$enddate);
 
@@ -469,9 +429,9 @@ class scheduler_model
       $check_startdate = date("Ymd",$nrows[$i]["startdate"]);
       $check_enddate = date("Ymd",$nrows[$i]["enddate"]);
 
-      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*86400)))<=$check_enddate;$j++)
+      for($j=0;date("Ymd",($nrows[$i]["startdate"]+($j*DAY)))<=$check_enddate;$j++)
       {
-        $currenttime = $nrows[$i]["startdate"]+($j*86400);
+        $currenttime = $nrows[$i]["startdate"]+($j*DAY);
         /** @todo Optimize for week and month */
         if($this->m_view=="day" && date("Y-m-d",$currenttime)!=$this->m_viewdate) continue;
         $currentdate = date("Ymd",$currenttime);

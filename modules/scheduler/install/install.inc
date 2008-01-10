@@ -62,7 +62,7 @@
   foreach($templates as $record)
     $et->addDb($record);
 
-  $setup->setVersion(10);
+  $setup->setVersion(11);
   set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo
@@ -229,6 +229,18 @@
       $db->query("UPDATE accessright SET node='scheduler.scheduler_holidays' WHERE node='calendar.holidays' AND action IN ('admin','add','edit','delete')");
       $db->query("DELETE FROM accessright WHERE node='calendar.holidays' AND action NOT IN ('admin','add','edit','delete')");
 
+      
+      // Create default userprefs for all employees
+      $sql = "SELECT id FROM person WHERE role='employee'";
+      $db2->query($sql);
+      $userprefs = &atkGetNode("scheduler.scheduler_userpreferences");
+       
+      while($db2->next_record())
+      {
+         $userprefs->createUserPreferences($db2->m_record['id']);
+      }
+      
+      
       $config_debug=$debug_old;
       atkdebug("Turn on debugging again in the scheduler patch");
   }
