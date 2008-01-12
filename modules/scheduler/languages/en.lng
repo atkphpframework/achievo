@@ -169,6 +169,20 @@
   "years" => "years",
   "yearview" => "Year view",
   "end_choice"=>"End date",
+  'recur_info'=>'Recurring info',
+  'monthly_day'=>'Day',
+  'yearly_day'=>'Day',
+  'yearly_month'=>'Month',
+  'yearly_month2'=>'Month',
+  'daily_every'=>'Every',
+  'weekly_every'=>'Every',
+  'monthly_every'=>'Every',
+  'monthly_every2'=>'Every',
+  'monthly_month_time'=>'Month time',
+  'yearly_month_time'=>'Month time',
+  'weekly_weekday'=>'Weekday',
+  'monthly_weekday_list'=>'Weekday',
+  'yearly_weekday_list'=>'Weekday',
 );
 
 ?>

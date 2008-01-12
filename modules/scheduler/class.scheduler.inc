@@ -110,7 +110,7 @@
       $this->add(new atkBoolAttribute("allday"));
       $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time, AF_HIDE|AF_FORCE_LOAD));
       $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, AF_FORCE_LOAD|AF_HIDE))->setManualPaint(true);
-      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_CASCADE_DELETE),"cyclus");
+      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR|AF_CASCADE_DELETE),"cyclus");
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("all_users"));
       $this->add(new atkListAttribute("priority",array("","low","normal","high"),array(0,1,2,3),AF_LIST_NO_NULL_ITEM));
@@ -368,7 +368,6 @@
     {
       return "[title]";
     }
-
 
     /**
      * Validate enddate

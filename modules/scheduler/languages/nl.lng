@@ -152,7 +152,7 @@
   "startmonth" => "Maand",
   "starttime" => "Start tijd",
   "third" => "Derde",
-  "this_month" => "This month", // Missing string!!!
+  "this_month" => "Deze maand", 
   "this_year" => "Dit jaar",
   "timeschedule" => "Dag agenda interval",
   "title" => "Onderwerp",
@@ -168,6 +168,22 @@
   "yearly_day" => "Jaarlijks dag",
   "years" => "jaren",
   "yearview" => "Year overzicht",
+  "end_choice"=>"Einddatum",
+  'recur_info'=>'herhaal info',
+  'monthly_day'=>'Dag',
+  'yearly_day'=>'Dag',
+  'yearly_month'=>'Maand',
+  'yearly_month2'=>'maand',
+  'daily_every'=>'Iedere',
+  'weekly_every'=>'Iedere',
+  'monthly_every'=>'Iedere',
+  'monthly_every2'=>'Iedere',
+  'monthly_month_time'=>'Maand tijd',
+  'yearly_month_time'=>'Maand tijd',
+  'weekly_weekday'=>'Weekdag',
+  'monthly_weekday_list'=>'Weekdag',
+  'yearly_weekday_list'=>'Weekdag',
+
 );
 
 ?>

@@ -19,19 +19,19 @@
        $this->atkNode("scheduler_cyclus");
        $this->add(new atkAttribute("scheduler_id",AF_PRIMARY|AF_HIDE));
        $this->add(new atkDummyAttribute('recur_info','',AF_HIDE_ADD|AF_HIDE_EDIT|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_SELECT),'cyclus');
-       $this->add(new atkListAttribute("monthly_day",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("yearly_day",$day_arr,$day_arr,AF_OBLIGATORY|AF_NO_TRANSLATION|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("yearly_month",$month_arr_disp,$month_arr_value,AF_OBLIGATORY|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("yearly_month2",$month_arr_disp,$month_arr_value,AF_OBLIGATORY|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("monthly_day",$day_arr,$day_arr,AF_LIST_NO_NULL_ITEM|AF_NO_TRANSLATION|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("yearly_day",$day_arr,$day_arr,AF_LIST_NO_NULL_ITEM|AF_NO_TRANSLATION|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("yearly_month",$month_arr_disp,$month_arr_value,AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("yearly_month2",$month_arr_disp,$month_arr_value,AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("daily_every",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("weekly_every",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("monthly_every",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("monthly_every2",AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("monthly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY|AF_LIST_NO_OBLIGATORY_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("yearly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_OBLIGATORY|AF_LIST_NO_OBLIGATORY_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("monthly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("yearly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkFlagAttribute("weekly_weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64),'',AF_HIDE),"cyclus")->setManualPaint(true); 	 
-       $this->add(new atkListAttribute('monthly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_HIDE),'cyclus')->setManualPaint(true);
-       $this->add(new atkListAttribute('yearly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_HIDE),'cyclus')->setManualPaint(true);
+       $this->add(new atkListAttribute('monthly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
+       $this->add(new atkListAttribute('yearly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
        $this->add(new atkRadioAttribute('daily_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkDummyAttribute('weekly_choice','',AF_NO_LABEL|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkRadioAttribute('monthly_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
@@ -46,6 +46,15 @@
      }
      
 
+     
+     /**
+      * Custom yearly choice edit
+      *
+      * @param array $record Record
+      * @param string $fieldprefix Fieldprefix
+      * @param string $mode Mode
+      * @return string Edit for yearly choice
+      */
      function yearly_choice_edit($record="",$fieldprefix="",$mode)
      {
        $attrib = &$this->getAttribute("yearly_choice");
@@ -57,7 +66,6 @@
        $attrib->addOption($choice,1);
        $month_time = &$this->getAttribute("yearly_month_time");
        $weekday_list = &$this->getAttribute("yearly_weekday_list");
-       $month_every = &$this->getAttribute("yearly_every");
        $month = &$this->getAttribute("yearly_month2");
        $choice = atktext('the','scheduler').' '.$month_time->edit($record,$fieldprefix,$mode);
        $choice.= $weekday_list->edit($record,$fieldprefix,$mode).' '.atktext('of','scheduler').' ';
@@ -65,7 +73,15 @@
        $attrib->addOption($choice,2);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-
+     
+     /**
+      * Custom monthly choice edit
+      *
+      * @param array $record Record
+      * @param string $fieldprefix Fieldprefix
+      * @param string $mode Mode
+      * @return string Edit for monthly choice
+      */
      function monthly_choice_edit($record="",$fieldprefix="",$mode)
      {
        $attrib = &$this->getAttribute("monthly_choice");
@@ -85,6 +101,14 @@
        return $attrib->edit($record,$fieldprefix,$mode);
      }
      
+     /**
+      * Custom weekly choice edit
+      *
+      * @param array $record Record
+      * @param string $fieldprefix Fieldprefix
+      * @param string $mode Mode
+      * @return string Edit for weekly choice
+      */
      function weekly_choice_edit($record="",$fieldprefix="",$mode)
      {
        $attrib = &$this->getAttribute("weekly_choice");
@@ -96,6 +120,14 @@
        return $attrib->edit($record,$fieldprefix,$mode);
      }
      
+     /**
+      * Custom daily choice edit
+      *
+      * @param array $record Record
+      * @param string $fieldprefix Fieldprefix
+      * @param string $mode Mode
+      * @return string Edit for daily choice
+      */
      function daily_choice_edit($record="",$fieldprefix="",$mode)
      {
        $attrib = &$this->getAttribute("daily_choice");
@@ -106,6 +138,14 @@
        return $attrib->edit($record,$fieldprefix,$mode);
      }
           
+     /**
+      * Custom end choice edit
+      *
+      * @param array $record Record
+      * @param string $fieldprefix Fieldprefix
+      * @param string $mode Mode
+      * @return string Edit for end choice
+      */
      function end_choice_edit($record="",$fieldprefix="",$mode)
      {
        $attrib = &$this->getAttribute("end_choice");
@@ -122,26 +162,112 @@
      }
      
      
+     /**
+      * Display the recurring info
+      *
+      * @param array $record Record
+      * @param string $mode Mode
+      * @return string String with the recurring info
+      */
      function recur_info_display($record,$mode)
      {
        $ret='';
          
-       $ret.=$this->getDailyInfo($record);
-       $ret.=$this->getWeeklyInfo($record);
-       $ret.=$this->getMonthlyInfo($record);
-       $ret.=$this->getYearlyInfo($record);
-       if($ret!='') $ret.=', '.$this->getEndDateInfo($record);
+       $ret.=$this->getDailyInfo($record,$mode);
+       $ret.=$this->getWeeklyInfo($record,$mode);
+       $ret.=$this->getMonthlyInfo($record,$mode);
+       $ret.=$this->getYearlyInfo($record,$mode);
+       if($ret!='') $ret.=', '.$this->getEndDateInfo($record,$mode);
        return $ret;
      }
-     
-     function every_edit($record="", $fieldprefix="",$mode)
+    
+     /**
+      * Custom validate for all choices
+      *
+      * @param array $record Record
+      * @param string $mode Mode
+      * @param array $ignoreList Ignorelist
+      * @return boolean Validated or not
+      */
+     function validate(&$record, $mode, $ignoreList = array())
      {
-      $attrib = &$this->getAttribute("every");
-      $ret = $attrib->edit($record,$fieldprefix,$mode);
-      $ret.= '&nbsp;<span id="every_day">'.atktext('days',"scheduler").'</span><span id="every_week">'.atktext('weeks',"scheduler").'</span><span id="every_month">'.atktext('months',"scheduler").'</span><span id="every_year">'.atktext('years',"scheduler").'</span>';
-      return $ret;
+       global $ATK_VARS;
+       // Add extra obligatory flags when recur is not once
+       $valid_recur_types = array("daily","weekly","monthly","yearly");
+       $recur = $ATK_VARS['recur'];
+       atk_var_dump($record,"CYCLE RECORD");
+       atkdebug("<h1>VALIDATE scheduler cycle - $recur</h1>");
+
+       if(in_array($recur,$valid_recur_types))
+       {
+         switch($recur)
+         {
+           case 'daily':   if($record['daily_choice']==1)
+                           {
+                             $this->makeObligatory('daily_every');
+                           }
+                           break;
+           case 'weekly':  $this->makeObligatory('weekly_weekday','weekly_every');
+                           break;
+           case 'monthly': if($record['monthly_choice']==1)
+                           {
+                             $this->makeObligatory(array('monthly_day','monthly_every'));
+                           }
+                           else 
+                           {
+                             $this->makeObligatory('monthly_month_time','monthly_weekday_list','monthly_every2');
+                           }
+                           break;
+           case 'yearly':  if($record['yearly_choice']==1)
+                           {
+                             $this->makeObligatory('yearly_month', 'yearly_day');
+                           }
+                           else 
+                           {
+                             $this->makeObligatory('yearly_month_time','yearly_weekday_list','yearly_month2');
+                           }
+                           break;
+         }
+         if($record['end_choice']==2)
+         {
+            $this->makeObligatory('cyclus_enddate');           
+         }
+         else if($record['end_choice']==3)
+         {
+            $this->makeObligatory('cyclus_times');           
+         }
+         
+       }
+        
+       // Call the original validate method
+       return parent::validate($record, $mode, $ignoreList);
      }
      
+     /**
+      * Make attribute Obligatory
+      *
+      * @param string $attribname Attribute name
+      */
+     function makeObligatory($attrs)
+     {
+       
+       if (func_num_args() > 1)
+       {
+         $attrs = func_get_args();
+       }
+       else if (!is_array($attrs))
+         $attrs = array($attrs);
+        foreach ($attrs as $attr)
+           $this->getAttribute($attr)->addFlag(AF_OBLIGATORY);
+     }
+     
+     
+     /**
+      * Pre add function that will clear all the fields that are not used
+      *
+      * @param array $rec Record
+      * @return boolean
+      */
      function preAdd(&$rec)
      {
        global $ATK_VARS;
@@ -245,6 +371,11 @@
        }
      }
 
+     /**
+      * Initial values
+      *
+      * @return array Array with initial values
+      */
      function initial_values()
      {
       $initial=array();
@@ -259,7 +390,13 @@
       return $initial;
      }
      
-     function getDailyInfo($record)
+     /**
+      * Return daily information
+      *
+      * @param array $record Record
+      * @return string daily information
+      */
+     function getDailyInfo($record,$mode)
      {
        $ret = "";
        switch($record['daily_choice'])
@@ -273,7 +410,13 @@
        return $ret;
      }
      
-     function getWeeklyInfo($record)
+     /**
+      * Return weekly information
+      *
+      * @param array $record Record
+      * @return string weekly information
+      */
+     function getWeeklyInfo($record,$mode)
      {
        $ret = '';
        switch($record['weekly_choice'])
@@ -287,8 +430,14 @@
        }
        return $ret;
      }
-    
-     function getMonthlyInfo($record)
+     
+     /**
+      * Return monthly information
+      *
+      * @param array $record Record
+      * @return string monthly information
+      */
+     function getMonthlyInfo($record,$mode)
      {
        $ret='';
        switch($record['monthly_choice'])
@@ -309,7 +458,13 @@
        return $ret;
      }
      
-     function getYearlyInfo($record)
+     /**
+      * Return yearly information
+      *
+      * @param array $record Record
+      * @return string yearly information
+      */
+     function getYearlyInfo($record,$mode)
      {
        $ret='';
        switch($record['yearly_choice'])
@@ -321,7 +476,6 @@
                  break;
          case 2: $month_time = &$this->getAttribute("yearly_month_time");
                  $weekday_list = &$this->getAttribute("yearly_weekday_list");
-                 $month_every = &$this->getAttribute("yearly_every");
                  $month = &$this->getAttribute("yearly_month2");
                  $ret= atktext('the','scheduler').' '.$month_time->display($record,$mode);
                  $ret.= $weekday_list->display($record,$mode).' '.atktext('of','scheduler').' ';
@@ -331,7 +485,13 @@
        return $ret;
      }
      
-     function getEndDateInfo($record)
+     /**
+      * Return enddate information
+      *
+      * @param array $record Record
+      * @return string enddate information
+      */
+     function getEndDateInfo($record,$mode)
      {
        $ret="";
        switch($record['end_choice'])
