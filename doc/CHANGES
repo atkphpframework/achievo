@@ -6,7 +6,8 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.3RC2
 -------------------------
-+ Added projects category field project and projects category filter tohoursurvey. [Yury]
++ Added projects category field project and projects category filter
+  tohoursurvey. [Yury]
 + Added master/subproject support for project and hoursurvey. [Yury]
 + Added missing dirs for docmanager module. [Sandy]
 + Added missing documents tab for quotations. [Sandy]
@@ -15,6 +16,7 @@ Changes in Achievo 1.3RC2
   possible to use the atkMetaNode. [Sandy]
 + Active and archived contracts are now on seperate subtabs when viewing/editing an
   organisation [Dennis]
++ Added import link for contacts. [Sandy]
 * Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
 * Fixed bug with obligatory fields in person table. [Sandy]
 * Removed some menu items when a user doens't have the rights
@@ -34,6 +36,7 @@ Changes in Achievo 1.3RC2
 * Fixed problem with projectid in time registration. [Sandy]
 * Fixed translation of activeprojects. [Dennis]
 * Fixed moving hour registrations in the hoursurvey. [Dennis]
+
 
 Changes in Achievo 1.3RC1
 -------------------------
