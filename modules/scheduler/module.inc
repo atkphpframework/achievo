@@ -1,7 +1,7 @@
 <?php
 
-  define(HOUR,3600);
-  define(DAY,86400);
+  define('HOUR',3600);
+  define('DAY',86400);
 
   $modifiers[] = "employee.userprefs";
 
