@@ -33,7 +33,7 @@ class userprefs extends atkNode
 
   function initial_values()
   {
-    return array("startday"=>1,"lng"=>atkconfig("language"));
+    return array("lng"=>atkconfig("language"));
   }
   
   function addPasswordAttribute()

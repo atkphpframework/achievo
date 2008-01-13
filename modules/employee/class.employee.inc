@@ -319,6 +319,9 @@ class employee extends person
     $pimitems = &atkGetNode("pim.userpimitems");
     $pimitems->addDefaultPimItemsForUser($record['id']);
     $this->removeBirthdaysCache();
+    // Create scheduler userprefs
+    $userprefs = &atkGetNode("scheduler.scheduler_userpreferences");
+    $userprefs->createUserPreferences($record['id']);
     return true;
   }
 
@@ -331,6 +334,9 @@ class employee extends person
   function postDel($record)
   {
     $this->removeBirthdaysCache();
+    // Remove scheduler userprefs
+    $userprefs = &atkGetNode("scheduler.scheduler_userpreferences");
+    $userprefs->deleteDb("userid='".$record['id']."'");
     return true;
   }
 
