@@ -14,7 +14,7 @@ class contact extends person
 {
   function contact($name="contact")
   {
-    $this->person($name);
+    $this->person($name,NF_IMPORT);
     $listener = &atknew("modules.crm.listeners.eventlistener");
     $this->addListener($listener);
     $this->remove("userid");
