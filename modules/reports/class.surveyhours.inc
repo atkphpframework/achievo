@@ -21,8 +21,6 @@ class surveyhours extends hours
       }
     }
 
-    $this->add(new atkManyToOneRelation("organizationid", "organization.organization",AF_HIDE_LIST));
-
     $projectAtt = &$this->getAttribute("projectid");
     $projectAtt->removeFlag(AF_OBLIGATORY);
     $this->setOrder("");

@@ -544,8 +544,8 @@ class hoursurvey extends atkNode
         $this->_addOr($data);
       }
 
-      $organizationatt = &$hoursnode->getAttribute("organizationid");
-
+      $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization"));
+      
       if(atkconfig::get("timereg","timereg_contact_link",false))
       {
         $organizationatt->addDependee("contact_id");
