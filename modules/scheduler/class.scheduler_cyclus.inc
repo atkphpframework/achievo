@@ -169,7 +169,7 @@
       * @param string $mode Mode
       * @return string String with the recurring info
       */
-     function recur_info_display($record,$mode)
+     function recur_info_display($record,$mode="view")
      {
        $ret='';
          
@@ -402,7 +402,7 @@
        switch($record['daily_choice'])
        {
          case 1: $every = &$this->getAttribute("daily_every");
-                 $ret=atktext('info_every','scheduler').' '.$every->display($record,$mode).' '.atktext('days','scheduler');
+                 $ret=atktext('every','scheduler').' '.$every->display($record,$mode).' '.atktext('days','scheduler');
                  break;
          case 2: $ret=atktext("every_workday",'scheduler');
                  break;
@@ -419,14 +419,13 @@
      function getWeeklyInfo($record,$mode)
      {
        $ret = '';
-       switch($record['weekly_choice'])
+       
+       $every = &$this->getAttribute("weekly_every");
+       $weekdays = &$this->getAttribute("weekly_weekday");
+       if(!$every->isEmpty($record) && !$weekdays->isEmpty($record))
        {
-         case 1: $every = &$this->getAttribute("weekly_every");
-                 $ret=atktext('info_every','scheduler').' '.$every->display($record,$mode).' '.atktext('weeks','scheduler');
-                 break;
-         case 2: $weekdays = &$this->getAttribute("weekly_weekdays");
-                 $ret.=atktext('weekly','scheduler').' '.atktext('on',"scheduler").' '.$weekdays->display($record,$mode);
-                 break;
+         $ret=atktext('every','scheduler').' '.$every->display($record,$mode).' '.atktext('weeks','scheduler');
+         $ret.=' '.atktext('on',"scheduler").' '.$weekdays->display($record,$mode);
        }
        return $ret;
      }
