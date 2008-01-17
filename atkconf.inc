@@ -32,8 +32,7 @@
   $config_defaultfavico = "images/achievo.ico";
   $config_corporate_module_base = "modules.achievomodule";
   $config_supported_languages_module = 'langoverrides';
-  // Don't autoload, we must remain PHP4 compatible for now
-  $config_autoload_classes = false;
+  $config_autoload_classes = true;
 
 
   // -------------------------------------------
