@@ -979,9 +979,20 @@
      */
     function getUserSchedulerPrefs($userid)
     {
-      $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
-      $userprefs = $userprefsnode->selectDb("userid='".$userid."'");
-      atk_var_dump($userprefs,"scheduler::getUserSchedulerPrefs($userid)");
+      static $userprefs_cache = null;
+      
+      if(!is_null($userprefs_cache))
+      {
+        $userprefs = $userprefs_cache;        
+        atkdebug("scheduler::getUserSchedulerPrefs($userid) -> USE CACHE");
+      }
+      else 
+      {
+        $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
+        $userprefs = $userprefsnode->selectDb("userid='".$userid."'");
+        $userprefs_cache = $userprefs;
+        atk_var_dump($userprefs,"scheduler::getUserSchedulerPrefs($userid)");
+      }
       return atkArrayNvl($userprefs, 0);
     }
 
