@@ -165,19 +165,34 @@
      /**
       * Display the recurring info
       *
-      * @param array $record Record
+      * @param mixed $record Record or Scheduler id
       * @param string $mode Mode
       * @return string String with the recurring info
       */
      function recur_info_display($record,$mode="view")
      {
-       $ret='';
-         
-       $ret.=$this->getDailyInfo($record,$mode);
-       $ret.=$this->getWeeklyInfo($record,$mode);
-       $ret.=$this->getMonthlyInfo($record,$mode);
-       $ret.=$this->getYearlyInfo($record,$mode);
-       if($ret!='') $ret.=', '.$this->getEndDateInfo($record,$mode);
+       static $recur_info_lookup = array();
+       $scheduler_id = (is_array($record)?$record['scheduler_id']:intval($record));
+       if(array_key_exists($scheduler_id,$recur_info_lookup))
+       {
+         $ret = $recur_info_lookup[$scheduler_id];
+       }
+       else 
+       {
+         if(!is_array($record))
+         {
+           $tmp_record = $this->selectDb("scheduler_id=".$scheduler_id,'','',array('exceptions'));
+           $record = (count($tmp_record)==1?$tmp_record[0]:array());
+         }
+         $ret='';
+           
+         $ret.=$this->getDailyInfo($record,$mode);
+         $ret.=$this->getWeeklyInfo($record,$mode);
+         $ret.=$this->getMonthlyInfo($record,$mode);
+         $ret.=$this->getYearlyInfo($record,$mode);
+         if($ret!='') $ret.=', '.$this->getEndDateInfo($record,$mode);
+         $recur_info_lookup[$scheduler_id]=$ret;
+       }
        return $ret;
      }
     
@@ -195,8 +210,6 @@
        // Add extra obligatory flags when recur is not once
        $valid_recur_types = array("daily","weekly","monthly","yearly");
        $recur = $ATK_VARS['recur'];
-       atk_var_dump($record,"CYCLE RECORD");
-       atkdebug("<h1>VALIDATE scheduler cycle - $recur</h1>");
 
        if(in_array($recur,$valid_recur_types))
        {

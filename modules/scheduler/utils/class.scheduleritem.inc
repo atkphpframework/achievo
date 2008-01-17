@@ -60,8 +60,7 @@ class schedulerItem
        $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.atktext("note").'" alt="'.atktext("note").'">';
     if($this->isRecurring($item))
     { 
-      $rec = $this->scheduler_cyclus->selectDb("scheduler_id=".$item['id']);
-      $title= (count($rec)==1?$this->scheduler_cyclus->recur_info_display($rec[0]):'');
+      $title= $this->scheduler_cyclus->recur_info_display($item['id']);
       $tmp.='<img src="'.$theme->imgPath("recurring.gif","scheduler").'" width=16 height=16 title="'.atkText("recurring_event","scheduler").' - '.$title.'" alt="'.atkText("recurring_event","scheduler").' - '.$title.'">';
     }
     if($this->hasAlarm($item))
