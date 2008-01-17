@@ -3,10 +3,12 @@
 class schedulerItem
 {
   var $scheduler_model;
+  var $scheduler_cyclus;
   
   function schedulerItem()
   {
-    $this->scheduler_model= &atkinstance("module.scheduler.scheduler_model");;
+    $this->scheduler_model= &atkinstance("module.scheduler.scheduler_model");
+    $this->scheduler_cyclus = atkGetNode("scheduler.scheduler_cyclus");
   }
   
   function &getInstance()
@@ -57,7 +59,11 @@ class schedulerItem
     if($this->hasDescription($item))
        $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.atktext("note").'" alt="'.atktext("note").'">';
     if($this->isRecurring($item))
-      $tmp.='<img src="'.$theme->imgPath("recurring.gif","scheduler").'" width=16 height=16 title="'.atkText("recurring_event","scheduler").'" alt="'.atkText("recurring_event","scheduler").'">';
+    { 
+      $rec = $this->scheduler_cyclus->selectDb("scheduler_id=".$item['id']);
+      $title= (count($rec)==1?$this->scheduler_cyclus->recur_info_display($rec[0]):'');
+      $tmp.='<img src="'.$theme->imgPath("recurring.gif","scheduler").'" width=16 height=16 title="'.atkText("recurring_event","scheduler").' - '.$title.'" alt="'.atkText("recurring_event","scheduler").' - '.$title.'">';
+    }
     if($this->hasAlarm($item))
       $tmp.='<img src="'.$theme->imgPath("alarm.gif","scheduler").'" width=16 height=16 title="'.atkText("reminder_event","scheduler").'" alt="'.atkText("reminder_event","scheduler").'">';
     if($this->isPrivate($item))

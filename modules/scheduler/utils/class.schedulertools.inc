@@ -205,7 +205,7 @@ class schedulertools
         }
         break;
       case 'weekly':
-        if(hasFlag(array_sum($item["cyclus"]["weekday"]),$weekday)) { $show_item = true; } else { $show_item = false; }
+        if(hasFlag(array_sum($item["cyclus"]["weekly_weekday"]),$weekday)) { $show_item = true; } else { $show_item = false; }
         $every = $item['cyclus']['weekly_every'];
         $interval = $checkdate - $startdate;
   			$interval_weeks = floor($interval/(60*60*24*7));
