@@ -191,7 +191,6 @@ class scheduler_dayview extends scheduler_view
     {
       $time    = $this->m_allDayHours[$i];
       $items   = (array_key_exists($time,$this->m_itemMatrix)?$this->m_itemMatrix[$time]:array());
-      atk_var_dump($items,"ITEMS");
       $now     = $this->m_model->getYear()."-".$this->m_model->getMonth()."-".$this->m_model->getDay();
       $addurl  = atkSelf()."?atkaction=add&atknodetype=scheduler.scheduler&date=$now&time=$time";
       if(in_array($time,$this->m_workHours))
@@ -241,7 +240,6 @@ class scheduler_dayview extends scheduler_view
         for ($j=0;$j<$cols;$j++)
         {
           $item      = (array_key_exists($j,$items)?$items[$j]:'');
-          atk_var_dump($item,"Item $j");
           if(trim($item) != "")
           {
             $timeLap   = $this->m_matrixInfo[$time][$j]["duration"];
