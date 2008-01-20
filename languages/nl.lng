@@ -165,7 +165,7 @@
   "error_date" => "Einddatum moet na startdatum liggen.",
   "error_enddate_cannot_start_before_startdate" => "Einddatum kan niet voor de startdatum liggen.",
   "error_hoursindayexceeded" => "Je kunt niet meer dan 24 uur per dag boeken.",
-  "error_invalidmonth" => "A month entry must contain a valid year and a valid month number.", // Missing string!!!
+  "error_invalidmonth" => "Een maand-entry moet een geldig jaar en een geldig maand nummer bevatten.",
   "error_invalidweek" => "Een week-entry moet een geldig jaar en een geldig weeknummer bevatten.",
   "error_startbiggerthanend" => "De start-datum moet voor de eind-datum liggen.",
   "error_time" => "Eindtijd moet na starttijd liggen.",
@@ -192,7 +192,7 @@
   "history" => "Historie",
   "holidays" => "Feestdagen",
   "holiday_date" => "Datum",
-  "hourlock_month_explanation" => "Enter 4 digit year followed by 2 digit month number (e.g. 200601) for january 2006", // Missing string!!!
+  "hourlock_month_explanation" => "Vul 4 cijferig jaar gevolgd door 2 cijferig maand nummber in (bijv. 200601)",
   "hourlock_userid_explanation" => "Selecteer de medewerker die je wilt blokkeren, of selecteer 'Geen' om alle medewerkers te blokkeren",
   "hourlock_week_explanation" => "Vul 4 cijferig jaar gevolgd door 2 cijferig weeknummer in (bijv. 200548)",
   "hours" => "Uren",
@@ -201,13 +201,13 @@
   "hoursurvey" => "Uren overzicht",
   "hours_approve" => "Uren goedkeuren",
   "hours_approve_disapprovegivereason" => "Voer uw reden in om deze urenregistratie af te keuren",
-  "hours_approve_disapproveofapprovedperiodconfirmation" => "This %s was already approved, are you sure you want to disapprove it?", // Missing string!!!
+  "hours_approve_disapproveofapprovedperiodconfirmation" => "Deze %s was al goed gekeurd, weet je zeker dat u het wil afkeuren?",
   "hours_approve_noblockedperiod" => "Geen geblokkeerde weken",
   "hours_approve_registrationdisapprovedbody" => "Uw urenregistratie voor week %s in %s is afgekeurd om de volgende reden:\n\n%s",
   "hours_approve_registrationdisapprovedsubject" => "Urenregistratie afgekeurd",
   "hours_approve_remarkmanager" => "Alleen medewerkers waarvan je manager bent worden weergegeven.",
   "hours_approve_remarkperiodblock" => "Weken worden pas weergeven wanneer deze geblokkeerd zijn.",
-  "hours_approve_thestatusofthisperiodis" => "The status of this %s is", // Missing string!!!
+  "hours_approve_thestatusofthisperiodis" => "De status van deze %s is", 
   "hours_approve_week" => "Uren goedkeuren",
   "hours_lock" => "Uren blokkeren",
   "hours_lock_week" => "Uren blokkeren",
@@ -258,7 +258,7 @@
   "location" => "Locatie",
   "lock" => "Blokkeren",
   "locked" => "Geblokkeerd",
-  "locked_partially" => "Partially locked", // Missing string!!!
+  "locked_partially" => "Gedeeltelijk geblokkeerd",
   "login" => "Inloggen",
   "logout" => "Uitloggen",
   "logout_loggedinuser" => "Ingelogde medewerker",
@@ -296,11 +296,11 @@
   "menu_functionlevel_admin" => "Funktieniveau's",
   "menu_holiday_admin" => "Feestdagen",
   "menu_hours_admin" => "Tijd Registratie",
-  "menu_hours_approve_month" => "Approve months", // Missing string!!!
-  "menu_hours_approve_week" => "Approve weeks", // Missing string!!!
+  "menu_hours_approve_month" => "Maanden goedkeuren", 
+  "menu_hours_approve_week" => "Weken goedkeuren", 
   "menu_hours_hoursurvey" => "Uren overzicht",
-  "menu_hours_lock_month" => "Lock months", // Missing string!!!
-  "menu_hours_lock_week" => "Lock weeks", // Missing string!!!
+  "menu_hours_lock_month" => "Blokkeer maanden", 
+  "menu_hours_lock_week" => "Blokkeer weken", 
   "menu_mastergantt" => "Master-Gantt",
   "menu_mastergantt_colorconfig" => "Master-Gantt kleuren",
   "menu_online_support" => "Support opties",
@@ -332,7 +332,7 @@
   "milestones" => "Mijlpalen",
   "minutes" => "Minuten",
   "month" => "Maand",
-  "monthlocked" => "Month is locked", // Missing string!!!
+  "monthlocked" => "Maand is geblokkeerd",
   "monthly" => "Maand",
   "months" => "Maanden",
   "monthview" => "Maandoverzicht",
