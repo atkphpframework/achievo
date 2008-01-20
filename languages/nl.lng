@@ -694,6 +694,7 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
+  "virtual_time_warning"=>"note that this setting does not affect hours already registered",
 );
 
 ?>

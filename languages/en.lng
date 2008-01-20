@@ -695,6 +695,7 @@
   "yearly" => "Year",
   "youareinthearchive" => "You are viewing the archive.",
   "zipcode" => "Zipcode",
+  "virtual_time_warning"=>"note that this setting does not affect hours already registered",
 );
 
 ?>
