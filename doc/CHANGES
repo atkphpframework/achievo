@@ -4,6 +4,12 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.3
+----------------------
+* Fixed problem where adding multiple time registraions using a period of
+  time didn't work because the weekday filter selection was hidden. [Guido]
+
+
 Changes in Achievo 1.3RC2
 -------------------------
 + Added projects category field project and projects category filter
@@ -25,7 +31,7 @@ Changes in Achievo 1.3RC2
   have the rights for it. [Sandy]
 * Fixed default userview database field size. [Sandy]
 * Fixed password restrictions in the userpreferences. [Sandy]
-* Fixed in the todo history, project id isn't obligatry. [Sandy] 
+* Fixed in the todo history, project id isn't obligatry. [Sandy]
 * Fixed the Phase Template functionallty. (bug #885) [Sandy]
 * Fixed patch 6 of the timereg module so the update from
   Achievo 1.0/1.1 works. (bug #874) [Sandy]

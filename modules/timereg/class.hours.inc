@@ -225,6 +225,7 @@ class hours extends atkNode
 
     $this->add(new atkDateAttribute("activitydate","","", 0, (atkconfig("timereg_allowfuture", false)?0:date("Ymd")), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)),null,10);
     $this->add(new to_date());
+    $this->add(new atkDummyAttribute("dayfilter", "", AF_HIDE), null, 11);
 
     // force_load flag is set for userid, since several features rely on the
     // userid, even if it's not displayed on screen.
@@ -1145,7 +1146,7 @@ class hours extends atkNode
     {
       // When in multidate mode, add an extra attribute for filtering
       // what days we want to filter.
-      $this->add(new atkDummyAttribute("dayfilter", "", AF_HIDE_EDIT|AF_HIDE_LIST));
+      $this->getAttribute("dayfilter")->removeFlag(AF_HIDE_ADD);
     }
 
     return $handler->addPage($record);
@@ -1185,7 +1186,7 @@ class hours extends atkNode
 
   function dayfilter_edit($record, $prefix="", $mode="")
   {
-    $res= "<BR>".atktext("filterdays", $this->m_module, $this->m_type)."<BR>";
+    $res = atktext("filterdays", $this->m_module, $this->m_type)."<br>";
     $days = array("mon", "tue", "wed", "thu", "fri", "sat", "sun");
 
     // we use a hidden variable to indicate that the dayfilter has been edited.
