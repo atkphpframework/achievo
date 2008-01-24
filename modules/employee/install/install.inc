@@ -7,5 +7,5 @@
   $setup->installNode("employee.functionlevel");
   $setup->installNode("employee.department");
   $setup->installNode("employee.employeerole");
-  $setup->setVersion(22);
+  $setup->setVersion(23);
 ?>
