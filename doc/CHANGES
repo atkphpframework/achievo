@@ -8,7 +8,7 @@ Changes in Achievo 1.3
 ----------------------
 * Fixed problem where adding multiple time registraions using a period of
   time didn't work because the weekday filter selection was hidden. [Guido]
-
+* Fixed install files of timereg and employees. [Yury]
 
 Changes in Achievo 1.3RC2
 -------------------------
