@@ -1224,7 +1224,18 @@
       // clean compiled template file
       unlink($file);
     }
-
+    
+    /**
+     * Create VIEW in db
+     *
+     * @param string $name - name of view
+     * @param string $select - SQL SELECT statement
+     */
+    function createView($name, $select)
+    {
+      $db = &atkGetDb();
+      $ddl = &$db->createDDL();
+      $ddl->executeCreateView($name, $select);
+    }
   }
-
 ?>
