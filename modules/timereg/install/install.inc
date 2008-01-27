@@ -6,6 +6,9 @@
   $setup->installNode("timereg.overtime_balance");
   $setup->installNode("timereg.workperiod");
 
-  $setup->setVersion(13);
+  $setup->renameTable("hours","hoursbase");
+  $setup->createView("hours","SELECT * FROM hoursbase WHERE virtual_time=0", true);
+
+  $setup->setVersion(14);
 
 ?>
