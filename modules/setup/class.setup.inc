@@ -1230,12 +1230,13 @@
      *
      * @param string $name - name of view
      * @param string $select - SQL SELECT statement
+     * @param string $with_check_option - use SQL WITH CHECK OPTION
      */
-    function createView($name, $select)
+    function createView($name, $select, $with_check_option = false)
     {
       $db = &atkGetDb();
       $ddl = &$db->createDDL();
-      $ddl->executeCreateView($name, $select);
+      $ddl->executeCreateView($name, $select, $with_check_option);
     }
   }
 ?>
