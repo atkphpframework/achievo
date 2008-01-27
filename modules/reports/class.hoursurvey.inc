@@ -139,6 +139,7 @@ class hoursurvey extends atkNode
   function hoursurvey()
   {
     $this->atkNode("hoursurvey");
+    $this->setTable("hoursbase");
   }
 
   function getOrderByStatement($orderby, $orderdirection)
@@ -167,7 +168,7 @@ class hoursurvey extends atkNode
               break;
               //Other attributes have the table hours
             default:
-              $itsOrderby = "hours.".$itsOrderby;
+              $itsOrderby = $this->getTable().".".$itsOrderby;
               break;
           }
 
@@ -768,11 +769,11 @@ class hoursurvey extends atkNode
 
     /** Create filter array **/
     $filterarray = array();
-    $filterarray[] = $this->_addFilterArrayItem("activitydate", ">='$startdate'", "hours");
-    $filterarray[] = $this->_addFilterArrayItem("activitydate", "<='$enddate'", "hours");
+    $filterarray[] = $this->_addFilterArrayItem("activitydate", ">='$startdate'", $this->getTable());
+    $filterarray[] = $this->_addFilterArrayItem("activitydate", "<='$enddate'", $this->getTable());
 
     if(!empty($activity_id)&&$activity_id!="")
-      $filterarray[] = $this->_addFilterArrayItem("activityid","='$activity_id'","hours");
+      $filterarray[] = $this->_addFilterArrayItem("activityid","='$activity_id'",$this->getTable());
 
     //If we use multi project, we don't take into account project/phase,
     //selected in other controls
@@ -782,7 +783,7 @@ class hoursurvey extends atkNode
       foreach ($list as $l)
       {
         $line = "(phaseid.projectid='".$l[0]."'";
-        if(!empty($l[1])&&$l[1]!="") $line .= " AND hours.phaseid='".$l[1]."'";
+        if(!empty($l[1])&&$l[1]!="") $line .= " AND ".$this->getTable().".phaseid='".$l[1]."'";
         $line .= ")";
         $tmp[] = $line;
       }
@@ -792,7 +793,7 @@ class hoursurvey extends atkNode
     else 
     {
       if(!empty($phaseid)&&$phaseid!="")
-        $filterarray[] = $this->_addFilterArrayItem("phaseid","='$phaseid'","hours");
+        $filterarray[] = $this->_addFilterArrayItem("phaseid","='$phaseid'",$this->getTable());
   
       if(!empty($projectid)&&$projectid!="")
       {
@@ -814,7 +815,7 @@ class hoursurvey extends atkNode
       $filterarray[] = $this->_addFilterArrayItem("billing_type","='$billing_projecttypeid'","projectid");
 
     if(!empty($remark)&&$remark!="")
-      $filterarray[] = $this->_addFilterArrayItem("remark","LIKE lower('%".escapeSQL($remark)."%')","hours");
+      $filterarray[] = $this->_addFilterArrayItem("remark","LIKE lower('%".escapeSQL($remark)."%')",$this->getTable());
 
     if($department_name && $department_name != "all")
       $filterarray[] = $this->_addFilterArrayItem("department","='".escapeSQL($department_name)."'","userid");
@@ -858,7 +859,7 @@ class hoursurvey extends atkNode
           $var = "external$attr";
           $value = $$var;
           if (!empty($value))
-            $filterarray[] = $this->_addFilterArrayItem($attr,"='$value'","hours");
+            $filterarray[] = $this->_addFilterArrayItem($attr,"='$value'",$this->getTable());
 
         }
       }
@@ -890,7 +891,7 @@ class hoursurvey extends atkNode
       $col[] = "contact_id";
       if ($contact_id!="")
       {
-        $filterarray[] = $this->_addFilterArrayItem("contact_id","='$contact_id'","hours");
+        $filterarray[] = $this->_addFilterArrayItem("contact_id","='$contact_id'",$this->getTable());
       }
     }
 
@@ -1019,7 +1020,7 @@ class hoursurvey extends atkNode
     else
     {
       if ($user != "all")
-        $filter.= " AND hours.userid ='$user' ";
+        $filter.= " AND ".$this->getTable().".userid ='$user' ";
 
       return $this->getHourRecordsFromDB($filter, $orderby, $col);
     }
@@ -1028,7 +1029,7 @@ class hoursurvey extends atkNode
   function getHourRecordsFromDB($filter, $orderby, $col)
   {
     $hoursnode = &atkGetNode("timereg.hours");
-
+    $hoursnode->setTable("hoursbase");
     $records = $hoursnode->selectDb($filter,implode(",",$orderby), "", "", $col);
 
     if (is_array($records) && count($records) > 0)
