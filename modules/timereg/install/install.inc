@@ -7,7 +7,7 @@
   $setup->installNode("timereg.workperiod");
 
   $setup->renameTable("hours","hoursbase");
-  $setup->createView("hours","SELECT * FROM hoursbase WHERE virtual_time=0", true);
+  $setup->createView("hours","SELECT * FROM hoursbase WHERE virtual_time=0",false);
 
   $setup->setVersion(14);
 
