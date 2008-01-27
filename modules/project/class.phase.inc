@@ -1,6 +1,7 @@
 <?php
 
   useattrib("project.phasetemplateattribute");
+  useattrib("atkboolattribute");
   useattrib("atktextattribute");
   useattrib("atklistattribute");
   useattrib("atknumberattribute");
@@ -33,7 +34,7 @@
       $securitymanager = &atkGetSecurityManager();
       $initialplanningallowed = isset($securitymanager) && $securitymanager->allowed("project.project","initialplanning");
 
-      $this->atkNode($name,$flags|NF_AUTOSELECT|NF_EDITAFTERADD); // node() constructor is *not* called automatically!
+      $this->atkNode($name,$flags|NF_AUTOSELECT|NF_EDITAFTERADD|NF_TRACK_CHANGES); // node() constructor is *not* called automatically!
 
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
       $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
@@ -41,6 +42,7 @@
 
       $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_LIST));
       $this->add(new atkListAttribute("status",array("active","nonactive"), "", AF_OBLIGATORY));
+      $this->add(new atkBoolAttribute("virtual_time", AF_HIDE_ADD|AF_FORCE_LOAD));
 
       $tmp = new phaseManyBoolRelation("phase_activity", "project.phase_activity", "project.activity", AF_HIDE_LIST|AF_OBLIGATORY|AF_MANYBOOL_AUTOLINK);
       $tmp->m_localKey = "phaseid";
@@ -75,6 +77,16 @@
       $this->addSecurityMap("view","project.admin");
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
+    }
+
+    function postUpdate($rec)
+    {
+      if($rec['virtual_time']<>$rec['atkorgrec']['virtual_time'])
+      {
+        atkimport("atk.utils.atkmessagequeue");
+        atkMessageQueue::addMessage(atktext("virtual_time_warning"));        
+      }
+      return true;
     }
 
     function descriptor_def()
@@ -220,7 +232,7 @@
 
         // Get the date of the first registration for this node (or set $earliesttimeregdate to null if not found)
         $hoursNode = &atkGetNode("timereg.hours");
-        $earliesttimeregforphase = $hoursNode->selectDb("phaseid='" . $record["id"] . "'", "hours.activitydate ASC", 1);
+        $earliesttimeregforphase = $hoursNode->selectDb("phaseid='" . $record["id"] . "'", $hoursNode->getTable().".activitydate ASC", 1);
         atkimport("module.utils.dateutil");
         $earliesttimeregdate = empty($earliesttimeregforphase) ? null : dateutil::arr2stamp($earliesttimeregforphase["0"]["activitydate"]);
 
