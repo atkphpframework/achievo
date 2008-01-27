@@ -18,6 +18,6 @@
   $setup->installNode("project.mastergantt_colorconfig");
   $setup->installNode("project.project_category");
 
-  $setup->setVersion(23);
+  $setup->setVersion(24);
 
 ?>
