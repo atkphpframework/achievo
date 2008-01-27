@@ -9,6 +9,7 @@ useattrib("atktextattribute");
 useattrib("atkdurationattribute");
 useattrib("atkdummyattribute");
 useattrib("atktimeattribute");
+useattrib("atkboolattribute");
 useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 atkimport("module.timereg.locking");
@@ -222,6 +223,9 @@ class hours extends atkNode
 
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
+    
+    $p_attr = &$this->add(new atkBoolAttribute("virtual_time",AF_HIDE));
+    $p_attr->setForceInsert(true);
 
     $this->add(new atkDateAttribute("activitydate","","", 0, (atkconfig("timereg_allowfuture", false)?0:date("Ymd")), AF_OBLIGATORY|AF_FORCE_LOAD|($this->m_weekview?0:AF_HIDE_LIST)),null,10);
     $this->add(new to_date());
@@ -451,10 +455,11 @@ class hours extends atkNode
 
   function action_edit(&$handler)
   {
+    $this->setTable("hoursbase");
     $user = getUser();
 
     $recs = $this->selectDb($this->m_postvars["atkselector"],
-                            "hours.id", "", "",
+                            $this->getTable().".id", "", "",
                             array("userid", "activitydate"));
 
     $this->m_lock = Locking::getLockType($recs[0]["userid"]["id"],
@@ -465,7 +470,7 @@ class hours extends atkNode
     {
       if (!$this->allowed("any_user"))
       {
-        $this->addFilter("hours.userid",strtolower($user["id"]));
+        $this->addFilter($this->getTable().".userid",strtolower($user["id"]));
       }
       return $handler->action_edit();
     }
@@ -536,11 +541,12 @@ class hours extends atkNode
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin(&$handler)
   {
+    $this->setTable("hoursbase");
     $page = &$this->getPage();
 
     $this->setLock();
 
-    $this->addFilter("hours.userid",$this->m_user);
+    $this->addFilter($this->getTable().".userid",$this->m_user);
 
     //we need to make sure the activitydate has the same value as $this->m_viewdate.
     $this->updatesessionrecordviewdate();
@@ -697,7 +703,7 @@ class hours extends atkNode
 
     $where = "activitydate >= '".$weekdates[1]['date']."'
               AND activitydate <= '".$weekdates[7]['date']."'
-              AND hours.userid = '$userid'";
+              AND ".$this->getTable().".userid = '$userid'";
 
     if ($filterbycoordinator)
     {
@@ -989,7 +995,7 @@ class hours extends atkNode
               FROM
                 hours
               WHERE
-                hours.userid = '$userid'
+                ".$this->getTable().".userid = '$userid'
                 AND activitydate between '$start' and '$end'";
     $res = $db->getrows($query);
     if (count($res)==0 || count($result)==0)
@@ -1359,6 +1365,7 @@ class hours extends atkNode
 
   function preAdd(&$record)
   {
+    $record['virtual_time'] = $record['phaseid']['virtual_time'];
     $this->modifyfortime($record);
     return true;
   }
@@ -1491,6 +1498,17 @@ class hours extends atkNode
     return $p_attrib->edit($record, $fieldprefix, $mode);
   }
 
+  function action_delete(&$handler)
+  {
+    $this->setTable("hoursbase");
+    return $handler->action_delete();
+  }
+
+  function action_add(&$handler)
+  {
+    $this->setTable("hoursbase");
+    return $handler->action_add();
+  }
 }
 
 ?>
