@@ -959,9 +959,8 @@
     function _checkAnyProjectRight()
     {
       $sessionManager = &atkGetSessionManager();
-      $prevlevel = atkPrevLevel();
       $session = &atkSessionManager::getSession();
-      $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][$prevlevel];
+      $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][atkPrevLevel()];
       if((atkArrayNvl($session_prev,"atknodetype") == 'timereg.hours') &&
          (atkArrayNvl($session_prev,"atkaction") == 'admin'))
       {
