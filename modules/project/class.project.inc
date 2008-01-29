@@ -697,7 +697,7 @@
      */
     function action_select(&$handler)
     {
-    	if (!$this->allowed("any_project"))
+    	if (!$this->_checkAnyProjectRight())
       {
 		  	$pids = implode(",", $this->get_user_projects());
         if(!empty($pids))
@@ -955,6 +955,24 @@
       $this->_hideMasterProject($record['id']);
       return $handler->viewPage($record, $locked);
     }
+    
+    function _checkAnyProjectRight()
+    {
+      $sessionManager = &atkGetSessionManager();
+      $prevlevel = atkPrevLevel();
+      $session = &atkSessionManager::getSession();
+      $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][$prevlevel];
+      if((atkArrayNvl($session_prev,"atknodetype") == 'timereg.hours') &&
+         (atkArrayNvl($session_prev,"atkaction") == 'admin'))
+      {
+        //if we come from timereg screen - check timereg right
+        $securityManager = &atkGetSecurityManager();
+        $nodetype = 'timereg.hours';
+        return $securityManager->allowed("timereg.hours", "any_project");
+      }
+      else return $this->allowed("any_project");
+    }
+    
   }
 
 ?>
