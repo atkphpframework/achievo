@@ -967,7 +967,6 @@
       {
         //if we come from timereg screen - check timereg right
         $securityManager = &atkGetSecurityManager();
-        $nodetype = 'timereg.hours';
         return $securityManager->allowed("timereg.hours", "any_project");
       }
       else return $this->allowed("any_project");
