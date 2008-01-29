@@ -418,7 +418,7 @@ class hoursurvey extends atkNode
 
       $current = unserialize(atkArrayNvl($this->m_postvars,'projects'));
       
-      if(isset($this->m_postvars['add_project']) || ($current && !empty($projectid)) )
+      if(!empty($projectid) && (isset($this->m_postvars['add_project']) || $current) )
       {
         //add_project button has been pressed
         $list = $this->_addHiddenProjects($content,array($projectid, $phaseid),null,$current);
@@ -1195,7 +1195,7 @@ class hoursurvey extends atkNode
     {
       if(!empty($item))
       {
-        $current[] = $item;
+        if(array_search($item,$current) === false) $current[] = $item;
         $this->_hiddenProjects($content,$current);
       }
       else
