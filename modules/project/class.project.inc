@@ -105,8 +105,9 @@
       //$this->add($tmp, $tab);
 
       //all phases (including manyally added ones) are shown in this relation.
-      $this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE),"planning");
-
+      $p_attr = &$this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE),"planning");
+      $p_attr->setHeader("phaseLink");
+      
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW), "planning");
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD|AF_HIDE_SEARCH|AF_HIDE_VIEW));
 
@@ -677,15 +678,15 @@
     /**
      * Are we in 'active' emps or 'archive' mode?
      */
-    function getView()
+    function getView($varname)
     {
-      global $g_sessionManager;
-      $view = $g_sessionManager->stackVar("view");
-      if ($view=="")
+      $sessionManager = &atkGetSessionManager();
+      $value = $sessionManager->stackVar($varname);
+      if ($value=="")
       {
-        $view = "active";
+        $value = "active";
       }
-      return $view;
+      return $value;
     }
 
     /**
@@ -731,7 +732,7 @@
 
     function action_admin(&$handler, $record=null)
     {
-      $view = $this->getView();
+      $view = $this->getView("view");
       if ($view=="active")
       {
         $this->addFilter("project.status","active");
@@ -740,7 +741,6 @@
       {
         $this->addFilter("project.status<>'active'");
       }
-
 
       // Access control
       if (!$this->allowed("any_project"))
@@ -778,7 +778,7 @@
 
     function adminFooter()
     {
-      $view = $this->getView();
+      $view = $this->getView("view");
 
       if ($view=="active")
       {
@@ -970,6 +970,67 @@
       }
       else return $this->allowed("any_project");
     }
+
+    function phaseLink($record, $childrecords, $p_attr)
+    {
+      $page = $this->getPage();
+      $page->register_script(atkconfig('atkroot').'atk/javascript/class.atkattribute.js');
+      
+      $status = $this->getView("state");
+      
+      if($status == 'active')
+      {
+        $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"nonactive")));
+        $text = atktext("show_nonactive_phases");
+
+        $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"all")));
+        $text1 = atktext("show_all_phases");
+      }
+      elseif($status == "nonactive") 
+      {
+        $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"active")));
+        $text = atktext("show_active_phases");
+
+        $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"all")));
+        $text1 = atktext("show_all_phases");
+      }
+      else 
+      {
+        $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"nonactive")));
+        $text = atktext("show_nonactive_phases");
+        
+        $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"active")));
+        $text1 = atktext("show_active_phases");
+        
+      }
+
+      $code = "ATK.Attribute.refresh('$url');";
+      $code1 = "ATK.Attribute.refresh('$url1');";
+      
+      $link = '<a href="javascript:'.$code.'">'.$text.'</a>';
+      $link1 = '<a href="javascript:'.$code1.'">'.$text1.'</a>';
+      return $link." ".$link1;
+    }
+    
+    function phase_edit($record, $fieldprefix, $mode)
+    {
+      $status = $this->getView("state");
+      $p_attr = &$this->getAttribute("phase");
+      if ($status == "active")
+      {
+        $p_attr->addDestinationFilter("phase.status='active'");
+      }
+      elseif($status == "nonactive")
+      {
+        $p_attr->addDestinationFilter("phase.status='nonactive'");
+      }
+      else 
+      {
+        $p_attr->setDestinationFilter("");
+      }
+      return $p_attr->edit($record, $fieldprefix, $mode); 
+    }
+
     
   }
 
