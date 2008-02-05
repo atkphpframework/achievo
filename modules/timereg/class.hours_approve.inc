@@ -138,14 +138,8 @@
 	    else
 	    {
 	      $output.= atkButton(atktext("approve"),
-                            dispatch_url("timereg.hours_approve","approve"));
-
-  	    $output.= "&nbsp;&nbsp;".
-                  atkButton(atktext("disapprove"),
-                            dispatch_url("timereg.hours_approve",
-                                         "disapprove",
-                                         array("periodid"=>$periodid)),
-                            SESSION_NESTED);
+                            dispatch_url("timereg.hours_approve","approve",
+                                         array("periodid"=>$periodid)),SESSION_NESTED);
 	    }
 
 	    // Return the weekview including button
@@ -755,7 +749,7 @@
 
         // Show confirmation dialog
         $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove", array("periodid"=>$this->m_postvars["periodid"],"reason"=>$this->m_postvars["reason"])) . '" method="post">';
-        $content.= session_form(SESSION_BACK);
+        $content.= session_form(SESSION_REPLACE);
         $content.= '<table name="entryform" id="entryform" cellspacing="0">';
         $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . sprintf(atktext("hours_approve_disapproveofapprovedperiodconfirmation", "timereg"), $this->m_lockmode) . '</b></td></tr>';
         $content.= '</table>';
