@@ -22,7 +22,7 @@ class scheduler_attendees extends atkNode
 {
   function scheduler_attendees()
   {
-    $this->atkNode("scheduler_attendees",NF_MRA);
+    $this->atkNode("scheduler_attendees");
 
     $this->add(new atkManyToOneRelation("scheduler_id", "scheduler.scheduler", AF_PRIMARY|AF_HIDE));
     $this->add(new atkManyToOneRelation("person_id", "person.select_person", AF_PRIMARY|AF_LARGE));
