@@ -574,7 +574,7 @@
   "thisweek" => "Текущая неделя",
   "this_month" => "Текущий месяц",
   "time" => "Время",
-  "timeguard_mail_header" => "Период времени: [startdate] until [enddate]\n\nUser '[userid]' имеет следующие проблемы при планировании времени:",
+  "timeguard_mail_header" => "Период времени: [startdate] until [enddate]\n\nСотрудник '[userid]' имеет следующие проблемы при планировании времени:",
   "timeguard_mail_line" => "В неделю [week] ([startdate] - [enddate]), [hours] часов не учтено.",
   "timeguard_mail_subject" => "Планирование времени не завершено",
   "timeline" => "Временная диаграмма",
