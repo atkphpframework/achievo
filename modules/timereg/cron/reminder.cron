@@ -22,7 +22,7 @@
   
   // get emailaddresses for all users and presort them
   $query = "SELECT
-              id, userid, firstname, lastname, email
+              id, userid, firstname, lastname, email, lng
             FROM
               person
             WHERE
@@ -34,6 +34,7 @@
   {
     $userInfo[$users[$i]["id"]]["mail"] = $users[$i]["email"];
     $userInfo[$users[$i]["id"]]["name"] = $users[$i]["firstname"].' '.$users[$i]["lastname"];
+    $userInfo[$users[$i]["id"]]["lng"]  = $users[$i]["lng"];
   }
 
   $weekcheck = atkconfig("timereg_checkweeks");
@@ -115,13 +116,13 @@
 
   foreach ($incomplete_weeks as $user => $data)
   {
-    $body = stringparse(atktext("timeguard_mail_header"),array("userid"=>$userInfo[$user]["name"],
+    $body = stringparse(atktext("timeguard_mail_header","","",$userInfo[$user]["lng"]),array("userid"=>$userInfo[$user]["name"],
                                                      "startdate"=>$globalstart,
                                                      "enddate"=>$globalend))."\n";
 
     for ($i=0;$i<count($data);$i++)
     {
-      $body.= "\n".stringparse(atktext("timeguard_mail_line"),array("hours"=>$data[$i]["missing"],
+      $body.= "\n".stringparse(atktext("timeguard_mail_line","","",$userInfo[$user]["lng"]),array("hours"=>$data[$i]["missing"],
                                                             "week"=>$data[$i]["week"],
                                                             "startdate"=>$data[$i]["startdate"],
                                                             "enddate"=>$data[$i]["enddate"]));
@@ -137,7 +138,7 @@
 
     if ($to!="")
     {      
-      if (usermail($to,atkText("timeguard_mail_subject"),$body,$cc))
+      if (usermail($to,atkText("timeguard_mail_subject","","",$userInfo[$user]["lng"]),$body,$cc))
           echo "Sent mail to $to";
       else
           echo "Failed sending mail to $to";
@@ -152,7 +153,7 @@
       }
       else
       {     
-        usermail($cc,atktext("timeguard_mail_subject"),$body);
+        usermail($cc,atktext("timeguard_mail_subject","","",$userInfo[$user]["lng"]),$body);
         echo "would've sent mail to $user, but he doesn't have an email address. Sending only to supervisor\n";
       }
     }
