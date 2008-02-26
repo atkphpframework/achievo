@@ -129,18 +129,17 @@
       }
 
       // Add an approve or disapprove button to the weekview
-	    if ($hourlockapproved)
-  	    $output.= atkButton(atktext("disapprove"),
-                            dispatch_url("timereg.hours_approve",
-                                         "disapprove",
-                                         array("periodid"=>$periodid)),
-                            SESSION_NESTED);
-	    else
+	    if (!$hourlockapproved)
 	    {
 	      $output.= atkButton(atktext("approve"),
                             dispatch_url("timereg.hours_approve","approve",
-                                         array("periodid"=>$periodid)),SESSION_NESTED);
+                                         array("periodid"=>$periodid)),
+                            SESSION_NESTED) . "&nbsp;&nbsp;";
 	    }
+	    $output.= atkButton(atktext("disapprove"),
+                          dispatch_url("timereg.hours_approve","disapprove",
+                                       array("periodid"=>$periodid)),
+                          SESSION_NESTED);
 
 	    // Return the weekview including button
 	    return $output;
@@ -718,7 +717,7 @@
 
         // Show reason input dialog
         $content = '<form action="'. dispatch_url("timereg.hours_approve", "disapprove") . '" method="post">';
-        $content.= session_form($hoursapproved ? SESSION_DEFAULT : SESSION_BACK);
+        $content.= session_form(SESSION_DEFAULT);
         $content.= '<table name="entryform" id="entryform" cellspacing="0">';
         $content.= '<tr><td colspan="2" class="fieldlabel"><b>' . atktext("hours_approve_disapprovegivereason", "timereg") . '</b></td></tr>';
         $content.= '<tr><td colspan="2" class="fieldlabel">&nbsp;</td></tr>';
@@ -733,7 +732,7 @@
         $content.= '</form>';
         $content.= '<br>';
 
-        $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
+        $title = $this->text("disapprove");
 
         $ui = $this->getUi();
         $box = $ui->renderbox(array("title"=>$title,"content"=>$content));
@@ -759,7 +758,7 @@
         $content.= '</form>';
         $content.= '<br>';
 
-        $title = atktext("generate", "docmanager") . " " . $documenttype["name"];
+        $title = $this->text("disapprove");
 
         $ui = $this->getUi();
         $box = $ui->renderbox(array("title"=>$title,"content"=>$content));

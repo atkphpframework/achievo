@@ -205,6 +205,7 @@
   "hours_approve_disapprovegivereason" => "Enter your reason to dissaprove this time registrion",
   "hours_approve_disapproveofapprovedperiodconfirmation" => "This %s was already approved, are you sure you want to disapprove it?",
   "hours_approve_disapproveofapprovedweekconfirmation" => "This week was already approved, are you sure you want to disapprove it?",
+  "hours_approve_explain_teammembers_only" => "Only weeks and hours from project members in projects you are coordinator of are shown.",
   "hours_approve_noblockedperiod" => "No locked %ss yet",
   "hours_approve_noblockedweeksyet" => "No blocked weeks yet",
   "hours_approve_registrationdisapprovedbody" => "Your hours registration for %s %s in %s was disapproved for the following reason:\n\n%s",
