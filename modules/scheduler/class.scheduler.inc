@@ -108,8 +108,8 @@
       $this->add(new atkDateAttribute("enddate", "F d Y","d F Y", 0, 0,AF_FORCE_LOAD))->setManualPaint(true);
       $this->add($duration_attr = new dummydurationattribute('duration'));
       $this->add(new atkBoolAttribute("allday"));
-      $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time, AF_HIDE|AF_FORCE_LOAD));
-      $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, AF_FORCE_LOAD|AF_HIDE))->setManualPaint(true);
+      $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time,AF_FORCE_LOAD))->setManualPaint(true);
+      $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, AF_FORCE_LOAD))->setManualPaint(true);
       $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR|AF_CASCADE_DELETE),"cyclus");
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("all_users"));
@@ -774,7 +774,9 @@
        }
        else 
        {
-         $buttons[] = $controller->getButton('edit');
+          $buttons[] = '<input type="hidden" name="atkaction" value="edit">'.
+                      '<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">'.
+                      '&nbsp;'.$controller->getButton('edit').'&nbsp;';
        }
      }
      else 
