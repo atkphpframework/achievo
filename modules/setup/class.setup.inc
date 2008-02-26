@@ -1238,5 +1238,17 @@
       $ddl = &$db->createDDL();
       $ddl->executeCreateView($name, $select, $with_check_option);
     }
+    
+    /**
+     * Drop VIEW in db
+     *
+     * @param string $name - name of view
+     */
+    function dropView($name)
+    {
+      $db = &atkGetDb();
+      $ddl = &$db->createDDL();
+      $ddl->executeDropView($name);
+    }
   }
 ?>
