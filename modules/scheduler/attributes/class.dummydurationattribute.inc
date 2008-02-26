@@ -68,7 +68,11 @@ class dummydurationattribute extends atkListAttribute
     return "";
   }
   
-  
+  function needsUpdate()
+  {
+    return false;
+  }
+ 
   
 }
 
