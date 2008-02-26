@@ -38,10 +38,10 @@
       $this->add(new atkAttribute("name",AF_UNIQUE|AF_OBLIGATORY|AF_SEARCHABLE, 200));
 
       $this->add(new atkManyToOneRelation("project_category","project.project_category",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
-      
+
       $attr = &$this->add(new atkManyToOneRelation("coordinator","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_RELATION_AUTOLINK));
       $attr->setDestinationFilter("person.status='active'");
-      
+
       $p_attr = &$this->add(new atkManyToOneRelation("master_project","project.project",AF_RELATION_AUTOCOMPLETE|AF_HIDE_LIST|AF_HIDE_ADD));
       $p_attr->addDestinationFilter("project.id<>[id] AND (project.master_project=0 OR project.master_project IS NULL)");
 
@@ -107,7 +107,7 @@
       //all phases (including manyally added ones) are shown in this relation.
       $p_attr = &$this->add(new atkOneToManyRelation("phase","project.phase","projectid",AF_HIDE_LIST|AF_CASCADE_DELETE),"planning");
       $p_attr->setHeader("phaseLink");
-      
+
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW), "planning");
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD|AF_HIDE_SEARCH|AF_HIDE_VIEW));
 
@@ -202,28 +202,34 @@
       return true;
     }
 
-    function getInitialProjectcode()
+    function getInitialProjectcode($record)
     {
-      return "";
-    }
-
-    function initial_values()
-    {
-      $projectnumbermodule = atkConfig('projectnumbermodule');
+      $projectnumbermodule = atkConfig::get("project", "projectcode_module", atkConfig('projectnumbermodule'));
       if (!empty($projectnumbermodule))
       {
         atkdebug("Getting alternative project code.");
-        $numberingmodule = &getModule($projectnumbermodule);
-        $initialprojectcode = $numberingmodule->getInitialProjectcode();
+        return getModule($projectnumbermodule)->getInitialProjectcode($record);
       }
       else
       {
         atkdebug("Getting projectcode.");
-        $initialprojectcode = $this->getInitialProjectcode();
+        $template = atkConfig::get("project", "projectcode_prefix", "");
+        $parser = new atkStringParser($template);
+        $projectcode = $parser->parse($record);
+        if (atkConfig::get("project", "projectcode_autonumber", false))
+        {
+          $result = $this->getDb()->getrows("SELECT abbreviation FROM project WHERE abbreviation LIKE '$prefix%' ORDER BY abbreviation DESC LIMIT 1");
+          $number = count($result) ? ((int)substr($result[0]["abbreviation"], strlen($prefix)))+1 : 1;
+          $digits = atkConfig::get("project", "projectcode_autonumberdigits", 1);
+          $projectcode .= sprintf("%0".$digits."d", $number);
+        }
+        return $projectcode;
       }
+    }
 
-      return array("abbreviation" => $initialprojectcode,
-                   "startdate"=>array("year"=>date("Y"),
+    function initial_values()
+    {
+      $rec = array("startdate"=>array("year"=>date("Y"),
                                       "month"=>date("m"),
                                       "day"=>date("d")),
                    "enddate"=>array("year"=>(date("Y")+1),
@@ -232,6 +238,8 @@
                    "timereg_limit"=>PRJ_TIMEREG_MEMBERS_ONLY,
                    "status"=>"active",
                    "coordinator"=>getUser());
+      $rec["abbreviation"] = $this->getInitialProjectcode($rec);
+      return $rec;
     }
 
     /**
@@ -932,18 +940,18 @@
 
       $db->query($query);
     }
-    
+
     function _hideMasterProject($id)
     {
       $rows = &$this->selectDb("project.master_project='$id'","","","",array('id'));
-      
+
       if(count($rows)>0)
       {
         $p_attr = &$this->getAttribute("master_project");
         $p_attr->addFlag(AF_HIDE);
       }
     }
-    
+
     function editPage(&$handler, $record, $locked=FALSE)
     {
       $this->_hideMasterProject($record['id']);
@@ -955,7 +963,7 @@
       $this->_hideMasterProject($record['id']);
       return $handler->viewPage($record, $locked);
     }
-    
+
     function _checkAnyProjectRight()
     {
       $sessionManager = &atkGetSessionManager();
@@ -975,9 +983,9 @@
     {
       $page = $this->getPage();
       $page->register_script(atkconfig('atkroot').'atk/javascript/class.atkattribute.js');
-      
+
       $status = $this->getView("state");
-      
+
       if($status == 'active')
       {
         $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"nonactive")));
@@ -986,7 +994,7 @@
         $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"all")));
         $text1 = atktext("show_all_phases");
       }
-      elseif($status == "nonactive") 
+      elseif($status == "nonactive")
       {
         $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"active")));
         $text = atktext("show_active_phases");
@@ -994,24 +1002,24 @@
         $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"all")));
         $text1 = atktext("show_all_phases");
       }
-      else 
+      else
       {
         $url = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"nonactive")));
         $text = atktext("show_nonactive_phases");
-        
+
         $url1 = addslashes(partial_url($this->atkNodeType(), "edit", "attribute.phase.refresh", array("state"=>"active")));
         $text1 = atktext("show_active_phases");
-        
+
       }
 
       $code = "ATK.Attribute.refresh('$url');";
       $code1 = "ATK.Attribute.refresh('$url1');";
-      
+
       $link = '<a href="javascript:'.$code.'">'.$text.'</a>';
       $link1 = '<a href="javascript:'.$code1.'">'.$text1.'</a>';
       return $link." ".$link1;
     }
-    
+
     function phase_edit($record, $fieldprefix, $mode)
     {
       $status = $this->getView("state");
@@ -1024,14 +1032,14 @@
       {
         $p_attr->addDestinationFilter("phase.status='nonactive'");
       }
-      else 
+      else
       {
         $p_attr->setDestinationFilter("");
       }
-      return $p_attr->edit($record, $fieldprefix, $mode); 
+      return $p_attr->edit($record, $fieldprefix, $mode);
     }
 
-    
+
   }
 
 ?>
