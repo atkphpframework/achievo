@@ -19,13 +19,6 @@ class select_contact extends contact
     $this->setSecurityAlias("organization.contact");
   }
 
-  function initial_values()
-  {
-    return array(
-      "role" => "contact",
-    );
-  }
-
   function descriptor_def()
   {
     return "[lastname], [firstname] ([company.name])";
