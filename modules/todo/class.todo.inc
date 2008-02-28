@@ -41,11 +41,11 @@ class todo extends atkNode
     $userid = atkArrayNvl(getUser(), "id");
     if($name=="todo_history")
     {
-      $this->addFilter("(todoid.private=0 OR (todoid.private=1 and todoid.owner='".$userid."'))");
+      $this->addFilter("([table].private=0 OR ([table].private=1 and [table].owner='".$userid."'))");
     }
     else
     {
-      $this->addFilter("((todo.private=0) OR (todo.private is null) OR (todo.private=1 and (todo.owner='".$userid."' OR todo.assigned_to='".$userid."')))");
+      $this->addFilter("(([table].private=0) OR ([table].private is null) OR ([table].private=1 and ([table].owner='".$userid."' OR [table].assigned_to='".$userid."')))");
     }
     $this->addSecurityMap(array("complete", "mra_complete"),"edit");
     $this->setTable("todo");
