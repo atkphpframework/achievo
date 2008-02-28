@@ -995,7 +995,7 @@ class hours extends atkNode
               FROM
                 hours
               WHERE
-                ".$this->getTable().".userid = '$userid'
+                hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'";
     $res = $db->getrows($query);
     if (count($res)==0 || count($result)==0)
@@ -1508,6 +1508,12 @@ class hours extends atkNode
   {
     $this->setTable("hoursbase");
     return $handler->action_add();
+  }
+
+  function action_update(&$handler)
+  {
+    $this->setTable("hoursbase");
+    return $handler->action_update();
   }
 }
 
