@@ -22,7 +22,16 @@ class projecttemplateAttribute extends atkManyToOneRelation
     return ADDTOQUERY|POSTSTORE;
   }
 
-
+ /**
+   * Store phases and activities
+   *
+   * @todo add template field to the phase table (again) to activate the projectphasematrix 
+   * 
+   * @param object $db
+   * @param array $record
+   * @param string $type
+   * @return boolean
+   */
   function store($db, $record, $type)
   {
     // Todo, here we must save the activities from the template to the projectactivities table
