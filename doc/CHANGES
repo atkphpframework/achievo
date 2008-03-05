@@ -12,7 +12,9 @@ Changes in Achievo 1.4
   to an employee. [Yury]
 * Fixed adding todos which caused an SQL error. [Dennis]
 * Fixed aggregation of unsorted columns [Guido,Jeroen]
-  
+* Removed executable bit (svn:executable property in svn) from files that
+  aren't executable. [Guido]
+
 Changes in Achievo 1.3.1
 ------------------------
 * Fixed SQL Error and interface problems in hours approval functionallity.
