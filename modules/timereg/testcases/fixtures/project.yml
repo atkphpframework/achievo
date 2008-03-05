@@ -1,0 +1,270 @@
+project_1: 
+  id: 20
+  abbreviation: team1
+  name: include to team
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-02-26
+  enddate: 2009-02-26
+  template: 1
+project_2: 
+  id: 16
+  abbreviation: non-active
+  name: non-active
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: nonactive
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-02-26
+  enddate: 2009-02-26
+  template: 1
+project_3: 
+  id: 17
+  abbreviation: archive
+  name: archive
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: archived
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-02-26
+  enddate: 2009-02-26
+  template: 1
+project_4: 
+  id: 18
+  abbreviation: team
+  name: teammember only
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-02-26
+  enddate: 2009-02-26
+  template: 1
+project_5: 
+  id: 19
+  abbreviation: all_user
+  name: all_user
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-02-26
+  enddate: 2009-02-26
+  template: 1
+project_6: 
+  id: 21
+  abbreviation: 
+  name: pr1
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_7: 
+  id: 22
+  abbreviation: 
+  name: pr2
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_8: 
+  id: 23
+  abbreviation: 
+  name: pr3
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_9: 
+  id: 24
+  abbreviation: 
+  name: pr4
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_10: 
+  id: 25
+  abbreviation: 
+  name: pr5
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_11: 
+  id: 26
+  abbreviation: 
+  name: pr6
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_12: 
+  id: 27
+  abbreviation: 
+  name: pr7
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_13: 
+  id: 28
+  abbreviation: 
+  name: pr8
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_14: 
+  id: 29
+  abbreviation: 
+  name: pr9
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 1
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1
+project_15: 
+  id: 30
+  abbreviation: 
+  name: pr10
+  project_category: 
+  coordinator: 1
+  master_project: 
+  contract_id: 
+  description: 
+  quotation_number: 
+  fixed_price: 
+  status: active
+  customer: 
+  timereg_limit: 0
+  alwaysvisibleintimereg: 0
+  startdate: 2008-03-02
+  enddate: 2009-03-02
+  template: 1

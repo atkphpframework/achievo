@@ -1,0 +1,585 @@
+phase_1: 
+  id: 20
+  name: hight detail
+  projectid: 16
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_2: 
+  id: 19
+  name: middle detail
+  projectid: 16
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_3: 
+  id: 18
+  name: low detail
+  projectid: 16
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_4: 
+  id: 22
+  name: middle detail
+  projectid: 17
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_5: 
+  id: 21
+  name: low detail
+  projectid: 17
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_6: 
+  id: 23
+  name: hight detail
+  projectid: 17
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_7: 
+  id: 24
+  name: low detail
+  projectid: 18
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_8: 
+  id: 25
+  name: middle detail
+  projectid: 18
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_9: 
+  id: 26
+  name: hight detail
+  projectid: 18
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_10: 
+  id: 27
+  name: low detail
+  projectid: 19
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_11: 
+  id: 28
+  name: middle detail
+  projectid: 19
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_12: 
+  id: 29
+  name: hight detail
+  projectid: 19
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_13: 
+  id: 30
+  name: low detail
+  projectid: 20
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_14: 
+  id: 31
+  name: middle detail
+  projectid: 20
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_15: 
+  id: 32
+  name: hight detail
+  projectid: 20
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_16: 
+  id: 33
+  name: low detail
+  projectid: 21
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_17: 
+  id: 34
+  name: middle detail
+  projectid: 21
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_18: 
+  id: 35
+  name: hight detail
+  projectid: 21
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_19: 
+  id: 36
+  name: low detail
+  projectid: 22
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_20: 
+  id: 37
+  name: middle detail
+  projectid: 22
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_21: 
+  id: 38
+  name: hight detail
+  projectid: 22
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_22: 
+  id: 39
+  name: low detail
+  projectid: 23
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_23: 
+  id: 40
+  name: middle detail
+  projectid: 23
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_24: 
+  id: 41
+  name: hight detail
+  projectid: 23
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_25: 
+  id: 42
+  name: low detail
+  projectid: 24
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_26: 
+  id: 43
+  name: middle detail
+  projectid: 24
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_27: 
+  id: 44
+  name: hight detail
+  projectid: 24
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_28: 
+  id: 45
+  name: low detail
+  projectid: 25
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_29: 
+  id: 46
+  name: middle detail
+  projectid: 25
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_30: 
+  id: 47
+  name: hight detail
+  projectid: 25
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_31: 
+  id: 48
+  name: low detail
+  projectid: 26
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_32: 
+  id: 49
+  name: middle detail
+  projectid: 26
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_33: 
+  id: 50
+  name: hight detail
+  projectid: 26
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_34: 
+  id: 51
+  name: low detail
+  projectid: 27
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_35: 
+  id: 52
+  name: middle detail
+  projectid: 27
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_36: 
+  id: 53
+  name: hight detail
+  projectid: 27
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_37: 
+  id: 54
+  name: low detail
+  projectid: 28
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_38: 
+  id: 55
+  name: middle detail
+  projectid: 28
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_39: 
+  id: 56
+  name: hight detail
+  projectid: 28
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_40: 
+  id: 57
+  name: low detail
+  projectid: 29
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_41: 
+  id: 58
+  name: middle detail
+  projectid: 29
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_42: 
+  id: 59
+  name: hight detail
+  projectid: 29
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_43: 
+  id: 60
+  name: low detail
+  projectid: 30
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_44: 
+  id: 61
+  name: middle detail
+  projectid: 30
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 
+phase_45: 
+  id: 62
+  name: hight detail
+  projectid: 30
+  description: 
+  status: active
+  virtual_time: 
+  startdate: 
+  enddate: 
+  dependsondeliverable: 
+  initial_planning: 
+  current_planning: 
+  spend_hours: 

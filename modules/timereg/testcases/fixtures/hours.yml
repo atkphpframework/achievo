@@ -1,0 +1,312 @@
+hours_1: 
+  id: 1
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 2
+  phaseid: 29
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-26
+hours_2: 
+  id: 2
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 1
+  phaseid: 29
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_3: 
+  id: 3
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 1
+  phaseid: 23
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_4: 
+  id: 4
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 1
+  phaseid: 20
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_5: 
+  id: 5
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 1
+  phaseid: 26
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_6: 
+  id: 6
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 1
+  phaseid: 32
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_7: 
+  id: 7
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 2
+  phaseid: 32
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_8: 
+  id: 8
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 2
+  phaseid: 23
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_9: 
+  id: 9
+  virtual_time: 
+  activitydate: 2008-02-28
+  todate: 
+  userid: 2
+  phaseid: 20
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-02-28
+hours_10: 
+  id: 10
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 27
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_11: 
+  id: 11
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 28
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_12: 
+  id: 12
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 24
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_13: 
+  id: 13
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 25
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_14: 
+  id: 14
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 30
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_15: 
+  id: 15
+  virtual_time: 
+  activitydate: 2008-02-29
+  todate: 
+  userid: 1
+  phaseid: 31
+  activityid: 2
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_16: 
+  id: 16
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 35
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_17: 
+  id: 17
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 38
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_18: 
+  id: 18
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 41
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_19: 
+  id: 19
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 44
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_20: 
+  id: 20
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 47
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_21: 
+  id: 21
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 50
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_22: 
+  id: 22
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 53
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_23: 
+  id: 23
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 56
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_24: 
+  id: 24
+  virtual_time: 
+  activitydate: 2008-03-02
+  todate: 
+  userid: 1
+  phaseid: 29
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-02
+hours_25: 
+  id: 25
+  virtual_time: 
+  activitydate: 2008-03-05
+  todate: 
+  userid: 3
+  phaseid: 62
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-05
+hours_26: 
+  id: 26
+  virtual_time: 
+  activitydate: 2008-03-05
+  todate: 
+  userid: 3
+  phaseid: 29
+  activityid: 1
+  remark: 
+  time: 60
+  workperiod: 
+  entrydate: 2008-03-05
