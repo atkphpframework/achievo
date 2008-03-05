@@ -58,9 +58,6 @@
         return parent::dbFieldType();
     }
 
-
-
-
     function edit(&$record, $fieldprefix="", $mode="")
     {
       $filter=$this->parseFilter($this->m_destinationFilter,$record);
@@ -116,18 +113,12 @@
         }
 
         $projectids = $this->getRecentProjectsIds($selectedprojectid);
-        if (!empty($record[$this->fieldName()]["id"]) && !in_array((int)$record[$this->fieldName()]["id"], $projectids))
-          $projectids[] = (int)$record[$this->fieldName()]["id"];
-
-        if(count($projectids))
-          $filter = "project.id IN (".implode(",",$projectids).")";
-        else
-          $filter = "project.id IN (NULL)";
-
-        $this->setDestinationFilter($filter);
+        
+        if (!empty($record[$this->fieldName()]["id"]))
+          $this->_addProject($record[$this->fieldName()]["id"],$projectids);
       }
 
-      return parent::getSelectableRecords($record, $mode, $force);
+      return $projectids;
     }
 
     /**
@@ -143,63 +134,80 @@
      */
     function getRecentProjectsIds($selectedprojectid=0)
     {
-      global $g_securityManager;
-
-      $user = &getUser();
+      /* @var $securityManager atkSecurityManager */
+      $securityManager = &atkGetSecurityManager();
 
       /* @var $query atkQuery */
       /* @var $db atkDb */
       $db = &atkGetDb();
+      
+      $subquery = $db->createQuery();
+      $subquery->addTable("hours");
+      $subquery->addField("phaseid");
+      $subquery->addCondition("hours.userid='".$this->m_userid."'");
+      $subquery->addOrderBy("id DESC");
+      
       $query = $db->createQuery();
 
-      $query->addTable("hours");
+      $query->addTable("phase");
 
-      // Magic Peter Code (tm) to get around a mysql3 limitation
-      // that doesn't allow us to use subqueries, which would normally
-      // be needed to solve this particular set of distinct/order by
-      // requirements.
       $query->addField("project.id");
-      $query->addJoin("phase","","hours.phaseid=phase.id",false);
+      $query->addField("project.name");
+      $query->addField("project.abbreviation");
+      
       $query->addJoin("project","","phase.projectid=project.id",false);
-      $query->addCondition("hours.userid='{$this->m_userid}'");
+      $query->addJoin("(".$subquery->buildSelect().")","hours","phase.id=hours.phaseid",false);
       $query->addCondition("project.status='active'");
 
-      if (!$g_securityManager->allowed("timereg.hours", "any_project"))
+      if (!$securityManager->allowed("timereg.hours", "any_project"))
       {
          $query->addJoin("project_person","","project_person.projectid = project.id",true);
          $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
 
-      $query->addOrderBy("hours.activitydate DESC");
-
-      $arr = $db->getrows($query->buildSelect(false),'0',atkconfig("numberofrecentprojects")+100);
-
-      $newsel = $this->getHtmlId("");
-      $newarr = array();
+      $arr = $db->getrows($query->buildSelect(false),'0',atkconfig("numberofrecentprojects"));
 
       //we add the selected project id on top.
-      if(($selectedprojectid > 0) && (is_numeric($selectedprojectid)))
-        $newarr[] = $selectedprojectid;
-      else
+      if(!is_numeric($selectedprojectid))
       {
         $values = decodeKeyValuePair($selectedprojectid);
         $value = $values[$this->m_destInstance->m_table.".".$this->m_destInstance->m_primaryKey[0]];
         if(is_numeric($value) && $value!=0)
-        $newarr[] = $value;
+        $selectedprojectid = $value;
       }
-
-      // remove dupes because we can't distinct/group by and order by recency in mysql3
-      for ($i=0,$_i=count($arr);($i<$_i)&&count($newarr)<atkconfig("numberofrecentprojects");$i++)
-      {
-      	if (!in_array($arr[$i]["id"], $newarr))
-      	{
-      		$newarr[] = (int) $arr[$i]['id'];
-      	}
-      }
-
-      return $newarr;
+      $this->_addProject($selectedprojectid,$arr);
+      return $arr;
     }
 
+    function _addProject($id, &$arr)
+    {   
+      if($id>0)
+      {
+        $flag = true;
+        foreach ($arr as $key=>$value)
+        {
+          if($value['id'] == $id)
+          {
+            $flag = false;
+            break;
+          }
+        }
+        
+        if($flag)
+        {
+          $db = &atkGetDb();
+          $query = $db->createQuery();
+          $query->addTable("project");
+          $query->addField("project.id");
+          $query->addField("project.name");
+          $query->addField("project.abbreviation");
+          $query->addCondition("id='$id'");
+    
+          $result = $db->getrows($query->buildSelect());
+          $arr = array_merge($result,$arr);
+        }
+      }
+    }
 
   }
 ?>
