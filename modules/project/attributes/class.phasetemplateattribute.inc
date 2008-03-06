@@ -14,12 +14,25 @@ class phasetemplateAttribute extends atkManyToOneRelation
   
   function store($db, $record, $type)
   {
-    // Todo, here we must save the activities from the template to the projectactivities table
-    if ($type == "add")
+     if ($type == "add")
     {
       if ($record['template']['id']!="")
       {
-        $query = "INSERT INTO phase_activity (activityid, phaseid) SELECT activityid, ".$record['id']." FROM tpl_phase_activity WHERE phaseid = ".$record['template']['id'];
+        // Make sure we don't activities that don't exist allready
+        $query = "SELECT activityid FROM phase_activity WHERE phaseid='".$record['id']."'";
+        $rows = $db->getrows($query);
+        $where = '';
+        if(count($rows))
+        {
+          $where = "AND activityid NOT IN (";
+          for($i=0;$i<count($rows);$i++)
+          {
+            if($i>0) $where.=",";
+            $where.=$rows[$i]['activityid'];
+          }
+          $where.=")";
+        }
+        $query = "INSERT INTO phase_activity (activityid, phaseid) SELECT activityid, ".$record['id']." FROM tpl_phase_activity WHERE phaseid = ".$record['template']['id']." ".$where;
         $db->query($query);
       }
     }
