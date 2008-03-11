@@ -666,9 +666,14 @@
      * Edit copy action for when a user edits a single item of a recurring item
      *
      */
-    function action_editcopy()
+    function action_editcopy(&$handler)
     {
-
+      if ($this->m_postvars['call_original_editcopy'] == true) 
+      {
+        atkdebug("scheduler::action_editcopy() | calling original action_editcopy()");
+        return $handler->action_editcopy();
+      }
+      
       atkdebug("scheduler::action_editcopy()");
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");

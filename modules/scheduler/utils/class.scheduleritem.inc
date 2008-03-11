@@ -108,6 +108,10 @@ class schedulerItem
         $delete = '<img src="'.$theme->iconPath("delete", "recordlist").'" border="0">';
         $tmp.= href(dispatch_url("scheduler.scheduler","delete",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"])),
                     $delete, SESSION_NESTED);
+
+        $copy = '<img src="'.$theme->iconPath("copy", "recordlist").'" border="0">';
+        $tmp.= href(dispatch_url("scheduler.scheduler","editcopy",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"], "call_original_editcopy"=>true)),
+                    $copy, SESSION_NESTED);      
       }
       $tmp.='</td></tr></table>';
       return $tmp;
