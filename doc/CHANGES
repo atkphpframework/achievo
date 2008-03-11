@@ -8,6 +8,7 @@ Changes in Achievo 1.4
 ----------------------
 + Added ability to configure projectcode autonumbering in the configuration
   file configs/project.inc.php. [Guido]
++ Added ability to copy scheduler items [Jeroen]
 * Now we use the recipients language, when sending timeguard reminder email
   to an employee. [Yury]
 * Fixed adding todos which caused an SQL error. [Dennis]
