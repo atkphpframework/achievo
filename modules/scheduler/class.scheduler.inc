@@ -251,7 +251,7 @@
       {
           $page = &$this->getPage();
           $page->register_script('./atk/javascript/formsubmit.js');
-          return $attr->edit($record);
+          return $attr->edit($record,'', 'edit');
       }
       else
       {

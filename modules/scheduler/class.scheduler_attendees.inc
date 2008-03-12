@@ -8,13 +8,14 @@
  * That is why the relation is linked to person.
  *
  * $Id$
- * @author L. Willems  <lineke@ibuildings.nl>
+ * @author Sandy Pleyte  <sandy@ibuildings.nl>
  * @version $Revision$
  *
  */
 
 useattrib("atkboolattribute");
 useattrib("atklistattribute");
+useattrib("atknumberattribute");
 userelation("atkmanytoonerelation");
 
 
@@ -24,7 +25,7 @@ class scheduler_attendees extends atkNode
   {
     $this->atkNode("scheduler_attendees");
 
-    $this->add(new atkManyToOneRelation("scheduler_id", "scheduler.scheduler", AF_PRIMARY|AF_HIDE));
+    $this->add(new atkNumberAttribute("scheduler_id", AF_PRIMARY|AF_HIDE|AF_FORCE_LOAD));
     $this->add(new atkManyToOneRelation("person_id", "person.select_person", AF_PRIMARY|AF_LARGE));
     $this->add(new atkListAttribute("status",array("no_response","accepted","rejected"),array(),AF_OBLIGATORY));
 

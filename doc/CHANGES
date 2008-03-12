@@ -17,17 +17,38 @@ Changes in Achievo 1.4
 * Removed executable bit (svn:executable property in svn) from files that
   aren't executable. [Guido]
 
+Changes in Achievo 1.3.2
+------------------------
+* Fixed edit button of non recurring events in the scheduler. [Sandy]
+* Fixed saving of the duration of an event. [Sandy]
+* Fixed adding todos which caused an SQL error. [Dennis]
+* Fixed adding new contacts from the project screen. (bug #949) [Sandy]
+* Fixed adding new projects on 29 Feb. (bug #954) [Sandy]
+* Created workaroung for adding projects based on a phase
+  template, see ticket for more information. (bug #948) [Sandy]
+* Fixed SQL error when selecting activities that are also in
+  the selected template when adding a phase. [Sandy]
+* Fixed aggregation of unsorted columns [Guido,Jeroen]
+
 Changes in Achievo 1.3.1
 ------------------------
 * Fixed SQL Error and interface problems in hours approval functionallity.
   [Guido]
+* Fixed duplicated key error in the scheduler. [Sandy]
+* Fixed parse error in japanese language file. [Sandy]
+* Fixed fonts of Steelbue and Macoslike themes. [Sandy]
 
 Changes in Achievo 1.3.0
 ------------------------
++ Added equal project/phase combination to project list. [Yury]
 * Fixed problem where adding multiple time registraions using a period of
   time didn't work because the weekday filter selection was hidden. [Guido]
-* Fixed install files of timereg and employees. [Yury]
+* Fixed problem when editing scheduler notes/attendees. [Sandy]
+* Fixed version number in timereg/employee install file. [Yury]
+* Fixed sql error when subproject select in hoursurvey. (bug #927) [Yury] 
 * Fixed Error on 'approve week' page. (bug #936) [Yury]
+* Fixed deleting hours in hoursurvey report. [Yury]
+* Fixed problem with recurring events. [Sandy]
 
 Changes in Achievo 1.3RC2
 -------------------------

@@ -339,7 +339,10 @@ class schedulertools
         $startdate = date("Y-m-d",($rec["lastdate"]+DAY));
       }
       $endstamp = $rec["lastdate"]+(32*DAY);
+      if($endstamp<$tmp_enddate) $endstamp=$tmp_enddate;
       $enddate = date("Y-m-t",$endstamp);
+      $endstamp = strtotime($enddate);
+      atkdebug("schedulertools::updateRecurringEvents -> after recalculating $endstamp = $enddate");
       $dates = schedulertools::getDates($rec,$startdate,$enddate);
       foreach($dates as $date)
       {
@@ -353,6 +356,7 @@ class schedulertools
         $sql = "INSERT INTO scheduler_dates (scheduler_id,startdate,enddate) VALUES ('$id','$startdate','$enddate')";
         $db->query($sql);
       }
+      atkdebug("schedulertools::updateRecurringEvents -> update scheduler item lastdate: $endstamp = ".date("Y-m-d",$endstamp));
       $sql = "UPDATE scheduler_scheduler SET lastdate = '$endstamp', times =  COALESCE(times,0)+".count($dates)." WHERE id='$id'";
       $db->query($sql);
       $db->commit();

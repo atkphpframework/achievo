@@ -11,7 +11,7 @@
   // -------------------------------------------
 
   // The database to use. Default is mysqli.
-  // mysqli is currently the only officially supported database.
+  // mysql is currently the only officially supported database.
   // Experimental: If you want to use PostgreSQL, change this value to
   // "pgsql". For Oracle, use "oci8".
   $config_db["default"]["driver"] = "mysqli";
@@ -39,7 +39,7 @@
   // themes there are in the directory themes. Users can choose their own
   // theme in the user preferences section.
   //
-  $config_defaulttheme = "achievo_modern";
+  $config_defaulttheme = "steelblue";
 
   // The language of the application. You can use any language for which
   // a language file is present in the languages directory.
@@ -48,7 +48,7 @@
 
   // The menu to use (For older themes this is 'achievo', for newer this
   //  is 'achievo_modern'
-  $config_menu_layout = "cook";
+  $config_menu_layout = "modern";
 
   // This variable determines wether all manytoone dropdowns should have
   // the autocompletion feature (instead of dropdowns)
