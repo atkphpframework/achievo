@@ -110,7 +110,7 @@
       $this->add(new atkBoolAttribute("allday"));
       $this->add(new atkTimeAttribute("starttime", 0, 23, $m_arr_minute_step, $default_start_time,AF_FORCE_LOAD))->setManualPaint(true);
       $this->add(new atkTimeAttribute("endtime", 0, 23, $m_arr_minute_step, $default_end_time, AF_FORCE_LOAD))->setManualPaint(true);
-      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR|AF_CASCADE_DELETE),"cyclus");
+      $this->add(new atkOneToOneRelation("cyclus","scheduler.scheduler_cyclus","scheduler_id",AF_ONETOONE_INTEGRATE|AF_ONETOONE_ERROR|AF_CASCADE_DELETE|AF_FORCE_LOAD),"cyclus");
       $this->add(new atkManyToOneRelation("category", "scheduler.scheduler_category",AF_OBLIGATORY|AF_RELATION_AUTOLINK));
       $this->add(new atkBoolAttribute("all_users"));
       $this->add(new atkListAttribute("priority",array("","low","normal","high"),array(0,1,2,3),AF_LIST_NO_NULL_ITEM));
@@ -644,6 +644,12 @@
      */
     function preCopy(&$rec)
     {
+      if ($this->m_postvars['call_original_editcopy'] == true)
+      {
+        atkdebug("scheduler::preCopy() | calling original preCopy()");
+        return;
+      }
+      
       $starthour = ($rec["allday"]==0?$rec["starttime"]["hours"]:0);
       $startminute = ($rec["allday"]==0?$rec["starttime"]["minutes"]:0);
       $endhour = ($rec["allday"]==0?$rec["endtime"]["hours"]:0);
@@ -896,7 +902,7 @@
       $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
       foreach($rec["attendees"] as $attendee)
       {
-        $attendee_node->deleteDb("scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
+        $attendee_node->deleteDb("scheduler_attendees.scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
       }
       
     }
@@ -967,7 +973,7 @@
       
       $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
       
-      $total = $attendee_node->countDb("scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
+      $total = $attendee_node->countDb("scheduler_attendees.scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
       if($total==0)
       {
         $rec = array("scheduler_id"=>array("id"=>$scheduler_id),
