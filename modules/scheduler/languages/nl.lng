@@ -6,7 +6,7 @@
   // Language: Nederlands (nl)
   //
   // Translated by:
-  //   
+  //
   //
   // If you want to add a new language to achievo, please translate this
   // file and send it to translations@achievo.org
@@ -152,7 +152,7 @@
   "startmonth" => "Maand",
   "starttime" => "Start tijd",
   "third" => "Derde",
-  "this_month" => "Deze maand", 
+  "this_month" => "Deze maand",
   "this_year" => "Dit jaar",
   "timeschedule" => "Dag agenda interval",
   "title" => "Onderwerp",
@@ -183,7 +183,21 @@
   'weekly_weekday'=>'Weekdag',
   'monthly_weekday_list'=>'Weekdag',
   'yearly_weekday_list'=>'Weekdag',
-
+  "every_workday" => "Elke werkdag",
+  "of_every" => "van elke",
+  "the" => "De",
+  "no_enddate" => "Geen einddatum",
+  "ends_on" => "Eindigt op",
+  "ends_after" => "Eindigt na",
+  "on" => "op",
+  "times" => "keren",
+  "use_enddate" => "Gebruik einddatum",
+  "scheduler_yearly" => "Jaarlijks",
+  "scheduler_monthly" => "Maandelijks",
+  "delete_single" => "Verwijder alleen deze afspraak",
+  "delete_cyclus" => "Verwijder alle afspraken in deze cyclus",
+  "edit_single" => "Bewerk alleen deze afspraak",
+  "edit_cyclus" => "Bewerk alle afspraken in deze cyclus",
 );
 
 ?>

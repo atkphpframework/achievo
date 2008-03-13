@@ -45,16 +45,16 @@ class scheduler_attendees extends atkNode
       $record["status"]="accepted";
     return true;
   }
-  
+
   function recordActions($rec,&$actions,&$mraactions)
   {
-    if ($rec["person_id"]["id"]==atkGetUserId()) 
+    if ($rec["person_id"]["id"]==atkGetUserId())
     {
       if($rec["status"]!="accepted") $actions["accept"]= session_url(dispatch_url($this->atknodetype(), "accept", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
       if($rec["status"]!="rejected") $actions["reject"]= session_url(dispatch_url($this->atknodetype(), "reject", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
     }
   }
-  
+
   function action_accept(&$handler,$record=array(),$mode="")
   {
     $this->updateUserStatus('accepted');
@@ -102,8 +102,8 @@ class scheduler_attendees extends atkNode
     }
     return true;
   }
-  
-  
+
+
   function postAdd($record)
   {
     atkdebug("scheduler_attendees::postAdd");
@@ -114,7 +114,7 @@ class scheduler_attendees extends atkNode
 
     return true;
   }
-  
+
   function postDelete($record)
   {
     if($record["person_id"]["role"]=="employee")
@@ -125,7 +125,7 @@ class scheduler_attendees extends atkNode
   /**
    * Send mail to user
    * @todo: Fix mail
-   * 
+   *
    * @param string $action
    * @param int $scheduler_id
    * @param int $person_id
@@ -136,7 +136,6 @@ class scheduler_attendees extends atkNode
    */
   function sendEmail($action,$scheduler_id,$person_id,$date,$trigger_action="",$sendtoowner=false)
   {
-    return true;
     $template = &atknew("modules.scheduler.scheduler_email_template");
     $template->initialize($action,$person_id);
     $template->loadData($action,$scheduler_id,$date,$trigger_action);

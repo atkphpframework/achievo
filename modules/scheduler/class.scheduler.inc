@@ -103,7 +103,7 @@
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"),'description');
       $this->add(new atkDummyAttribute("recur_info",'',AF_NO_LABEL),'cyclus');
-      $this->add($recur_attr = new atkListAttribute("recur",array("once","daily","weekly","monthly","yearly"),array()), "cyclus");
+      $this->add($recur_attr = new atkListAttribute("recur",array("once","daily","weekly","monthly","yearly"),array(), AF_LIST_NO_NULL_ITEM), "cyclus");
       $this->add(new atkDateAttribute("startdate", "F d Y","d F Y", 0, 0));
       $this->add(new atkDateAttribute("enddate", "F d Y","d F Y", 0, 0,AF_FORCE_LOAD))->setManualPaint(true);
       $this->add($duration_attr = new dummydurationattribute('duration'));
@@ -127,7 +127,7 @@
       $recur_attr->addOnChangeHandler("change_recur(newvalue);");
 
       $duration_attr->addOnChangeHandler('change_duration(newvalue)');
-      
+
       if($this->m_viewUsers=="" && $this->m_view!="employeeview")
       {
         if ($userprefs["default_userview"]!="*") // &&  substr($userprefs["default_userview"],0,2)!='g_' && !empty($userid))
@@ -172,7 +172,7 @@
         $this->setOrder("startdate DESC, starttime");
       }
     }
-    
+
     function startdate_edit($record="", $fieldprefix="",$mode)
     {
       $attrib = $this->getAttribute("startdate");
@@ -182,7 +182,7 @@
       $ret.= $attrib->edit($record,$fieldprefix,$mode)."</span>";
       return $ret;
     }
-    
+
     function startdate_display($record,$mode)
     {
       $attrib = $this->getAttribute("startdate");
@@ -195,7 +195,7 @@
       }
       return $ret;
     }
-    
+
     function duration_edit($record="",$fieldprefix="",$mode)
     {
       $attrib = $this->getAttribute("duration");
@@ -209,10 +209,10 @@
       $ret.='</span>';
       return $ret;
     }
-    
+
     function duration_display($record,$mode)
     {
-      
+
       if(intval($record['allday'])==0)
       {
         $attrib = $this->getAttribute("duration");
@@ -222,21 +222,21 @@
           $ret.='&nbsp;&nbsp;&nbsp;';
           $attrib = $this->getAttribute("enddate");
           $ret.= $attrib->display($record,$mode);
-  
+
           $ret.='&nbsp;&nbsp;&nbsp;';
           $attrib = $this->getAttribute("endtime");
           $ret.= $attrib->display($record,$mode);
         }
       }
-      else 
+      else
       {
         $ret = '--';
       }
       return $ret;
     }
-    
+
     /**
-     * We override the display of notes, because attendees do have the possibility to 
+     * We override the display of notes, because attendees do have the possibility to
      * add nodes even when they can't edit the scheduler item
      *
      * @param array $record Scheduler item record
@@ -259,8 +259,8 @@
          return $attr->display($record, $mode);
       }
     }
-    
-    
+
+
     /**
      * Override alarms display, because we want the edit mode
      * in the mode is view
@@ -348,7 +348,7 @@
         }
         else
         {
-          atkdebug("USER IS NOT ALLOWED");   
+          atkdebug("USER IS NOT ALLOWED");
           return false;
         }
       }
@@ -443,7 +443,7 @@
                          "viewdate"=>$this->m_viewdate,
                          "small_viewdate"=>$this->m_small_viewdate,
                          "viewusers"=>$this->m_viewUsers);
-                         
+
         $result = $controller->handleRequest($request);
 
         // Add the refresh code if autorefresh is set and the refresh_interval is at least 1.
@@ -462,7 +462,7 @@
       {
          atkerror("ui object failure");
       }
-      
+
     }
 
     /**
@@ -528,7 +528,7 @@
     }
 
     /**
-     * Custom delete view which will appear when a user deletes a 
+     * Custom delete view which will appear when a user deletes a
      * recurring item. It will ask if it should delete a single item or
      * the complete cyclus
      *
@@ -562,8 +562,8 @@
 
       if($record["recur"]!="once")
       {
-        $buttons[] = '<input name="confirmsingle" class="btn" type="submit" value="'.atktext('delete_single').'">';
-        $buttons[] = '<input name="confirm" class="btn" type="submit" value="'.atktext("delete_cyclus").'">';
+        $buttons[] = '<input name="confirmsingle" class="btn" type="submit" value="'.$this->text("delete_single").'">';
+        $buttons[] = '<input name="confirm" class="btn" type="submit" value="'.$this->text("delete_cyclus").'">';
       }
       else
       {
@@ -601,7 +601,7 @@
       $location = $this->feedbackUrl("delete", ACTION_SUCCESS);
       $this->redirect($location);
     }
-    
+
     /**
      * Custom edit action for recurring events
      * It will first ask if the use want's to edit a single
@@ -750,7 +750,7 @@
       }
       return $handler->action_update();
     }
-    
+
    /**
     * Get forum buttons, we use this function to override the buttons of the view page
     *
@@ -765,10 +765,10 @@
        $controller = atkController::getInstance();
        atkimport("modules.scheduler.utils.scheduleritem");
        $schedulerItem = schedulerItem::getInstance();
-       $buttons[] = $controller->getButton('back'); 
+       $buttons[] = $controller->getButton('back');
        if($schedulerItem->isRecurring($record))
        {
-         
+
          if($this->allowed("edit", $record))
          {
            $buttons[] = '<input type="hidden" name="atkaction" value="editserieorsingle">
@@ -777,28 +777,28 @@
                          <input type="hidden" name="atkselector" value="'.$this->m_postvars["atkselector"].'">
                          <input type="hidden" name="itemdate" value="'.$this->m_postvars["itemdate"].'">
                          <input type="hidden" name="scheduler_id" value="'.$this->m_postvars["scheduler_id"].'">';
-           
-           $buttons[] = '&nbsp;<input name="confirm" type="submit" class="btn_save" value="'.atktext("edit_cyclus").'">&nbsp;';
-                        
-           $buttons[] = '&nbsp;<input name="confirmsingle" type="submit" class="btn_save" value="'.atktext("edit_single").'">&nbsp;';
+
+           $buttons[] = '&nbsp;<input name="confirm" type="submit" class="btn_save" value="'.$this->text("edit_cyclus").'">&nbsp;';
+
+           $buttons[] = '&nbsp;<input name="confirmsingle" type="submit" class="btn_save" value="'.$this->text("edit_single").'">&nbsp;';
          }
        }
-       else 
+       else
        {
           $buttons[] = '<input type="hidden" name="atkaction" value="edit">'.
                       '<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">'.
                       '&nbsp;'.$controller->getButton('edit').'&nbsp;';
        }
      }
-     else 
+     else
      {
        // Get the normal buttons
        $buttons = parent::getFormButtons($mode,$record);
      }
      return $buttons;
-  } 
-    
-    
+  }
+
+
 
     /**
      * Add owner as attendee
@@ -828,27 +828,27 @@
       $this->removeSchedulerDates($rec['id']);
       return true;
     }
-    
+
     function preDelete($rec)
     {
       $this->sendEmail($rec);
       $this->deleteAttendees($rec);
       return true;
     }
-    
+
     function preAdd(&$record)
     {
       $this->updateEndDate($record);
       return true;
     }
-    
+
     function preUpdate(&$record)
     {
       $this->removeSchedulerDates($record['id']);
       $this->updateEndDate($record);
-      return true;      
+      return true;
     }
-    
+
     /**
      * Calculate the endddate if the user used the duration dropdown
      *
@@ -869,7 +869,7 @@
       }
       $rec['lastdate'] = mktime($rec["endtime"]["hours"],$rec["endtime"]["minutes"],$rec["endtime"]["seconds"],$rec['enddate']['month'],$rec['enddate']['day'],$rec['enddate']['year']);
     }
-    
+
     /**
      * Send email to all attendees except the owner
      * that the meeting is canceld
@@ -904,7 +904,7 @@
       {
         $attendee_node->deleteDb("scheduler_attendees.scheduler_id='".$rec["id"]."' AND person_id='".$attendee["person_id"]["id"]."'",false);
       }
-      
+
     }
 
     /**
@@ -918,7 +918,7 @@
     {
       return $this->storeAttendees($rec,$attendees,"employee");
     }
-    
+
     /**
      * Store contacts
      *
@@ -930,7 +930,7 @@
     {
       return $this->storeAttendees($rec,$attendees,"contact");
     }
-    
+
     /**
      * Store attendees
      *
@@ -948,7 +948,7 @@
           $execTrigger=false;
           $status="accepted";
         }
-        else 
+        else
         {
           $execTrigger=true;
           $status="no_response";
@@ -970,9 +970,9 @@
      */
     function _addAttendeeRecord($scheduler_id, $person_id,$role,$status="no_response",$execTrigger=true)
     {
-      
+
       $attendee_node = &atkGetNode("scheduler.scheduler_attendees");
-      
+
       $total = $attendee_node->countDb("scheduler_attendees.scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
       if($total==0)
       {
@@ -993,13 +993,13 @@
     function getUserSchedulerPrefs($userid)
     {
       static $userprefs_cache = null;
-      
+
       if(!is_null($userprefs_cache))
       {
-        $userprefs = $userprefs_cache;        
+        $userprefs = $userprefs_cache;
         atkdebug("scheduler::getUserSchedulerPrefs($userid) -> USE CACHE");
       }
-      else 
+      else
       {
         $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
         $userprefs = $userprefsnode->selectDb("userid='".$userid."'");
@@ -1009,7 +1009,7 @@
       return atkArrayNvl($userprefs, 0);
     }
 
-    
+
     /**
      * Update scheduler dates for a record
      *
@@ -1021,11 +1021,11 @@
       atkimport("module.scheduler.utils.schedulertools");
       $startdate = date("Y-m-d",mktime(12,0,0,$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]));
       $enddate = date("Y-m-d",mktime(12,0,0,(substr($this->m_viewdate,5,2)+2),substr($this->m_viewdate,8,2),substr($this->m_viewdate,0,4)));
-      schedulertools::updateRecurringEvents($startdate,$enddate,$rec);     
+      schedulertools::updateRecurringEvents($startdate,$enddate,$rec);
     }
 
     /**
-     * Remove calculated scheduler dates 
+     * Remove calculated scheduler dates
      *
      * @param integer $id Scheduler item id
      */

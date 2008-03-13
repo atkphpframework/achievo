@@ -9,85 +9,46 @@
       $this->hours($name, $flags);
 
       // Hide anything but the projectid, phaseid and activityid relations
-      $attribkeys = array_keys($this->m_attribList);
-      for($i=0,$_i=count($attribkeys); $i<$_i; $i++)
-        if (!in_array($attribkeys[$i], array("projectid", "phaseid", "activityid", "javascript")))
-          $this->m_attribList[$attribkeys[$i]]->addFlag(AF_HIDE);
-
-    }
-
-    function action_edit($handler)
-    {
-      global $g_user;
-
-      $atkselector = "";
-      if(is_array($this->m_postvars["atkselector"]))
+      foreach(array_keys($this->m_attribList) as $attribname)
       {
-        $atkselector = "(".implode(" OR ", $this->m_postvars["atkselector"]).")";
-      }
-      else
-        $atkselector = $this->m_postvars["atkselector"];
-
-      $recs = $this->selectDb($atkselector, "hours.id", "", "", array("userid", "activitydate"));
-
-      $this->m_lock = $this->getLockType($recs[0]["userid"]["id"],
-                        sprintf("%02d-%02d-%02d", $recs[0]["activitydate"]["year"],
-                                                  $recs[0]["activitydate"]["month"],
-                                                  $recs[0]["activitydate"]["day"]));
-      if ($this->m_lock=="")
-      {
-        if (!$this->allowed("any_user"))
+        if (!in_array($attribname, array("projectid", "phaseid", "activityid", "javascript")))
         {
-          $this->addFilter("hours.userid",strtolower($g_user["id"]));
+          $this->m_attribList[$attribname]->addFlag(AF_HIDE);
+          $this->m_attribList[$attribname]->removeFlag(AF_OBLIGATORY);
         }
-        return $handler->action_edit();
-      }
-      else
-      {
-        // Week is locked. We may not edit, only view.
-        $handler = $this->getHandler("view");
-        return $handler->invoke("action_view");
       }
     }
-
 
     function allowed($action, $record="")
     {
-      $secMgr = &atkGetSecurityManager();
-      return $secMgr->allowed("timereg.hours", "edit");
+      return atkGetSecurityManager()->allowed("timereg.hours", "edit");
     }
 
-    function doMove($ids, $phaseid, $activityid)
+    function addDb()
     {
-      $db = &atkGetDb();
-      foreach($ids as $id)
-      {
-        $db->query("UPDATE hours SET phaseid='$phaseid', activityid='$activityid' WHERE hours.id='$id'");
-      }
-    }
-
-    function action_save(&$handler)
-    {
-      // Get the relevant postvars
-      $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
-
+      // Determine the other record parameters
       $phase = decodeKeyValuePair(atkArrayNvl($this->m_postvars, "phaseid"));
       $activity = decodeKeyValuePair(atkArrayNvl($this->m_postvars, "activityid"));
-      $phaseid = $phase["phase.id"];
-      $activityid = $activity["activity.id"];
+      $phaseid = intval($phase["phase.id"]);
+      $activityid = intval($activity["activity.id"]);
+      $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
+
+      // Error if empty phaseid or activityid
+      if (empty($phaseid) || empty($activityid))
+        halt("No phase or activity chosen to move hours to.", "critical");
+
+      // Error if no hours selected
+      if (empty($selector))
+        halt("No hours selected to move.", "critical");
 
       // Get a list of hours id's
       $ids = array();
       foreach($selector as $selectoritem)
-      {
-        $ids[] = intval(atkArrayNvl(decodeKeyValuePair($selectoritem), "hours.id"));
-      }
+        $ids[] = intval(atkArrayNvl(array_values(decodeKeyValuePair($selectoritem)), 0));
+      $idslist = implode(",", $ids);
 
-      // Move the hours
-      $this->doMove($ids, $phaseid, $activityid);
-
-      // Get a level back
-      $this->redirect(session_url(atkSelf(),SESSION_BACK,2));
+      // Change the time registrations using the chosen phase id and activity id.
+      return $this->getDb()->query("UPDATE hours SET phaseid='$phaseid', activityid='$activityid' WHERE hours.id IN ($idslist)");
     }
 
     function editArray($mode="add", $record=NULL, $forceList="", $suppressList="", $fieldprefix="")
@@ -95,7 +56,7 @@
       $result = parent::editArray($mode, $record, $forceList, $suppressList, $fieldprefix);
       $selector = atkArrayNvl($this->m_postvars, "atkselector", array());
       foreach($selector as $selectoritem)
-        $result["hide"][] = '<input type="hidden" name="atkselector[]" value="'.$selectoritem.'">';
+        $result["hide"][] = '<input type="hidden" name="atkselector[]" value="'.urldecode($selectoritem).'">';
       return $result;
     }
 

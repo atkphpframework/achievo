@@ -25,7 +25,7 @@ class moonphases
 	 * or nothing
 	 *
 	 * @param int $timestamp
-	 * @return string Moonphase 
+	 * @return string Moonphase
 	 */
 	function getMoonPhase($timestamp)
 	{
@@ -34,22 +34,22 @@ class moonphases
 	  $day=date("Ymd",$timestamp);
 	  return $moon_phases[$day];
 	}
-	
+
 	/**
 	 * Returns an array with all the phases of the moon for a whole year
-	 * 
+	 *
 	 * Code taken from http://www.zend.com/codex.php?id=830&single=1
    * Added new param to return the moon phases for only 1 month
    * and changed the return array in Ymd format.
 	 * Converted from Basic by Roger W. Sinnot, Sky & Telescope, March 1985.
 	 * Converted from javascript by Are Pedersen 2002
 	 * Javascript found at http://www.stellafane.com/moon_phase/moon_phase.htm
-	 * 
+	 *
 	 * @param int $year Year
 	 * @param int $month Month (january=1)
 	 * @return array Array with the moonphases of the given year
 	 */
-	function calculateMoonPhases( $year, $month=1) 
+	function calculateMoonPhases( $year, $month=1)
 	{
 	  $R1 = 3.14159265 / 180;
 	  $U = false;
@@ -76,7 +76,7 @@ class moonphases
 	  $B1 = 360*($B1 - intval($B1)) + 21.2964;
 	  $B1 -= 0.0016528*$T2;
 	  $B1 -= 0.00000239*$T3;
-	  for ( $K9=0; $K9 <= 28; $K9=$K9+0.5 ) 
+	  for ( $K9=0; $K9 <= 28; $K9=$K9+0.5 )
 	  {
 	    $J = $J0 + 14*$K9; $F = $F0 + 0.765294*$K9;
 	    $K = $K9/2;
@@ -99,10 +99,10 @@ class moonphases
 	    {
         $s = date ('Ymd',strtotime(jdtogregorian($julian)));
       }
-      else 
+      else
       {
-        $s = jd_to_greg($julian);
-      } 
+        $s = self::jd_to_greg($julian);
+      }
 	    //half K
 	    if (($K9-floor($K9))>0)
 	    {
@@ -110,7 +110,7 @@ class moonphases
 	      {
 	        //New half
 	        $phases[$s]="ny2";
-	      } 
+	      }
 	      else
 	      {
 	        //Full half
@@ -134,17 +134,18 @@ class moonphases
 	    }
 	  } // Next
 	  return $phases;
-	} 
-	
+	}
+
 	/**
 	 * Convert julian date to gregorian
 	 * function taken from http://us3.php.net/manual/en/function.jdtogregorian.php
 	 * used if calendar functions are not compiled in php
-	 * 
+	 *
+	 * @static
 	 * @param int $julian
 	 * @return string Date string (YYYYMMDD)
 	 */
-  function jd_to_greg($julian) 
+  function jd_to_greg($julian)
   {
     $julian = $julian - 1721119;
     $calc1 = 4 * $julian - 1;
@@ -159,7 +160,7 @@ class moonphases
     $month = floor($calc3 / 153);
     $day = $calc3 - 153 * $month;
     $day = floor(($day + 5) / 5);
-    $year = 100 * $year + $julian; 
+    $year = 100 * $year + $julian;
 
     if ($month < 10) {
         $month = $month + 3;
@@ -171,5 +172,5 @@ class moonphases
     return sprintf ( "%04d%02d%02d", $year, $month, $day);
   }
 
-} 
+}
 ?>

@@ -29,13 +29,13 @@
        $this->add(new atkNumberAttribute("monthly_every2",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkListAttribute("monthly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkListAttribute("yearly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkFlagAttribute("weekly_weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64),'',AF_HIDE),"cyclus")->setManualPaint(true); 	 
+       $this->add(new atkFlagAttribute("weekly_weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64),'',AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkListAttribute('monthly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
        $this->add(new atkListAttribute('yearly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
-       $this->add(new atkRadioAttribute('daily_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
-       $this->add(new atkDummyAttribute('weekly_choice','',AF_NO_LABEL|AF_HIDE_VIEW),'cyclus');
-       $this->add(new atkRadioAttribute('monthly_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
-       $this->add(new atkRadioAttribute('yearly_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
+       $this->add(new atkRadioAttribute('daily_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
+       $this->add(new atkDummyAttribute('weekly_choice','',AF_BLANK_LABEL|AF_HIDE_VIEW),'cyclus');
+       $this->add(new atkRadioAttribute('monthly_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
+       $this->add(new atkRadioAttribute('yearly_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkRadioAttribute('end_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkDateAttribute("cyclus_enddate", "F d Y","d F Y", 0, 0,AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute('cyclus_times',AF_HIDE),'cyclus')->setManualPaint(true);
@@ -44,9 +44,9 @@
        $this->setTable("scheduler_cyclus");
        $this->setSecurityAlias("scheduler.scheduler");
      }
-     
 
-     
+
+
      /**
       * Custom yearly choice edit
       *
@@ -62,18 +62,18 @@
        $month = &$this->getAttribute("yearly_month");
        $day = &$this->getAttribute("yearly_day");
        $choice = atktext('every','scheduler').' '.$month->edit($record,$fieldprefix,$mode).' ';
-       $choice.= $day->edit($record,$fieldprefix,$mode);       
+       $choice.= $day->edit($record,$fieldprefix,$mode);
        $attrib->addOption($choice,1);
        $month_time = &$this->getAttribute("yearly_month_time");
        $weekday_list = &$this->getAttribute("yearly_weekday_list");
        $month = &$this->getAttribute("yearly_month2");
-       $choice = atktext('the','scheduler').' '.$month_time->edit($record,$fieldprefix,$mode);
+       $choice = atktext('the','scheduler').' '.$month_time->edit($record,$fieldprefix,$mode).' ';
        $choice.= $weekday_list->edit($record,$fieldprefix,$mode).' '.atktext('of','scheduler').' ';
        $choice.= $month->edit($record,$fieldprefix,$mode);
        $attrib->addOption($choice,2);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-     
+
      /**
       * Custom monthly choice edit
       *
@@ -89,18 +89,18 @@
        $day = &$this->getAttribute("monthly_day");
        $every = &$this->getAttribute("monthly_every");
        $choice = atktext('day','scheduler').' '.$day->edit($record,$fieldprefix,$mode).' ';
-       $choice.= atktext('of_every','scheduler').' '.$every->edit($record,$fieldprefix,$mode).' '.atktext('months','scheduler');       
+       $choice.= atktext('of_every','scheduler').' '.$every->edit($record,$fieldprefix,$mode).' '.atktext('months','scheduler');
        $attrib->addOption($choice,1);
        $month_time = &$this->getAttribute("monthly_month_time");
        $weekday_list = &$this->getAttribute("monthly_weekday_list");
        $month_every = &$this->getAttribute("monthly_every2");
-       $choice = atktext('the','scheduler').' '.$month_time->edit($record,$fieldprefix,$mode);
+       $choice = atktext('the','scheduler').' '.$month_time->edit($record,$fieldprefix,$mode).' ';
        $choice.= $weekday_list->edit($record,$fieldprefix,$mode).' '.atktext('of_every','scheduler').' ';
        $choice.= $month_every->edit($record,$fieldprefix,$mode).' '.atktext('months','scheduler');
        $attrib->addOption($choice,2);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-     
+
      /**
       * Custom weekly choice edit
       *
@@ -119,7 +119,7 @@
        $attrib->setText($text);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-     
+
      /**
       * Custom daily choice edit
       *
@@ -137,7 +137,7 @@
        $attrib->addOption(atktext("every_workday",'scheduler'),2);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-          
+
      /**
       * Custom end choice edit
       *
@@ -150,9 +150,9 @@
      {
        $attrib = &$this->getAttribute("end_choice");
        $attrib->setClickableLabel(false);
-       
+
        $attrib->addOption(atktext("no_enddate",'scheduler'),1);
-       
+
        $enddate = &$this->getAttribute("cyclus_enddate");
        $attrib->addOption(atktext('ends_on','scheduler').' '.$enddate->edit($record,$fieldprefix,$mode),2);
 
@@ -160,8 +160,8 @@
        $attrib->addOption(atktext('ends_after','scheduler').' '.$times->edit($record,$fieldprefix,$mode).' '.atktext('times','scheduler'),3);
        return $attrib->edit($record,$fieldprefix,$mode);
      }
-     
-     
+
+
      /**
       * Display the recurring info
       *
@@ -177,7 +177,7 @@
        {
          $ret = $recur_info_lookup[$scheduler_id];
        }
-       else 
+       else
        {
          if(!is_array($record))
          {
@@ -185,7 +185,7 @@
            $record = (count($tmp_record)==1?$tmp_record[0]:array());
          }
          $ret='';
-           
+
          $ret.=$this->getDailyInfo($record,$mode);
          $ret.=$this->getWeeklyInfo($record,$mode);
          $ret.=$this->getMonthlyInfo($record,$mode);
@@ -195,7 +195,7 @@
        }
        return $ret;
      }
-    
+
      /**
       * Custom validate for all choices
       *
@@ -226,7 +226,7 @@
                            {
                              $this->makeObligatory(array('monthly_day','monthly_every'));
                            }
-                           else 
+                           else
                            {
                              $this->makeObligatory('monthly_month_time','monthly_weekday_list','monthly_every2');
                            }
@@ -235,7 +235,7 @@
                            {
                              $this->makeObligatory('yearly_month', 'yearly_day');
                            }
-                           else 
+                           else
                            {
                              $this->makeObligatory('yearly_month_time','yearly_weekday_list','yearly_month2');
                            }
@@ -243,19 +243,19 @@
          }
          if($record['end_choice']==2)
          {
-            $this->makeObligatory('cyclus_enddate');           
+            $this->makeObligatory('cyclus_enddate');
          }
          else if($record['end_choice']==3)
          {
-            $this->makeObligatory('cyclus_times');           
+            $this->makeObligatory('cyclus_times');
          }
-         
+
        }
-        
+
        // Call the original validate method
        return parent::validate($record, $mode, $ignoreList);
      }
-     
+
      /**
       * Make attribute Obligatory
       *
@@ -263,7 +263,7 @@
       */
      function makeObligatory($attrs)
      {
-       
+
        if (func_num_args() > 1)
        {
          $attrs = func_get_args();
@@ -273,8 +273,8 @@
         foreach ($attrs as $attr)
            $this->getAttribute($attr)->addFlag(AF_OBLIGATORY);
      }
-     
-     
+
+
      /**
       * Pre add function that will clear all the fields that are not used
       *
@@ -291,13 +291,13 @@
          switch($recur)
          {
            case 'daily':  if($rec['daily_choice']==1)
-                          { 
+                          {
                             // Don't clear: daily_every
                             $clearfields = array('monthly_day','yearly_day','yearly_month','yearly_month2','weekly_every','monthly_every','monthly_every2',
                                                  'monthly_month_time','yearly_month_time','weekly_weekday','monthly_weekday_list','yearly_weekday_list',
                                                  'monthly_choice','yearly_choice');
                           }
-                          else 
+                          else
                           {
                             // Clear everything
                             $clearfields = array('monthly_day','yearly_day','yearly_month','yearly_month2','daily_every','weekly_every','monthly_every','monthly_every2',
@@ -311,13 +311,13 @@
                                                'daily_choice','monthly_choice','yearly_choice');
                           break;
            case 'monthly':if($rec['monthly_choice']==1)
-                          { 
+                          {
                             // Don't clear: monthly_day, monthly_every
                             $clearfields = array('yearly_day','yearly_month','yearly_month2','daily_every','weekly_every','monthly_every2',
                                                'monthly_month_time','yearly_month_time','weekly_weekday','monthly_weekday_list','yearly_weekday_list',
                                                'daily_choice','yearly_choice');
                           }
-                          else 
+                          else
                           {
                             // Don't clear: monthly_month_time, monthly_weekday_list, monthly_every2
                             $clearfields = array('monthly_day','yearly_day','yearly_month','yearly_month2','daily_every','weekly_every','monthly_every',
@@ -326,13 +326,13 @@
                           }
                           break;
            case 'yearly': if($rec['yearly_choice']==1)
-                          { 
+                          {
                             // Don't clear: yearly_month, yearly_day
                             $clearfields = array('monthly_day','yearly_month2','daily_every','weekly_every','monthly_every','monthly_every2',
                                                'monthly_month_time','yearly_month_time','weekly_weekday','monthly_weekday_list','yearly_weekday_list',
                                                'daily_choice','monthly_choice');
                           }
-                          else 
+                          else
                           {
                             // Don't clear: yearly_month_time, yearly_weekday_list, yearly_month2
                             $clearfields = array('monthly_day','yearly_day','yearly_month','daily_every','weekly_every','monthly_every','monthly_every2',
@@ -345,9 +345,9 @@
                                                'monthly_month_time','yearly_month_time','weekly_weekday','monthly_weekday_list','yearly_weekday_list',
                                                'daily_choice','monthly_choice','yearly_choice','endchoice','cyclus_enddate','cyclus_times');
                           break;
-                       
+
          }
-         
+
          array_shift($valid_recur_types);
          if(in_array($recur,$valid_recur_types))
          {
@@ -366,9 +366,9 @@
        }
        return true;
      }
-     
+
      /**
-      * Empty fields  
+      * Empty fields
       *
       * @param array $rec Current record
       * @param array $fields Array with fields to empty
@@ -402,7 +402,7 @@
                                        'year'=>date("Y"));
       return $initial;
      }
-     
+
      /**
       * Return daily information
       *
@@ -422,7 +422,7 @@
        }
        return $ret;
      }
-     
+
      /**
       * Return weekly information
       *
@@ -432,7 +432,7 @@
      function getWeeklyInfo($record,$mode)
      {
        $ret = '';
-       
+
        $every = &$this->getAttribute("weekly_every");
        $weekdays = &$this->getAttribute("weekly_weekday");
        if(!$every->isEmpty($record) && !$weekdays->isEmpty($record))
@@ -442,7 +442,7 @@
        }
        return $ret;
      }
-     
+
      /**
       * Return monthly information
       *
@@ -465,11 +465,11 @@
                   $ret = atktext('the','scheduler').' '.$month_time->display($record,$mode);
                   $ret.= $weekday_list->display($record,$mode).' '.atktext('of_every','scheduler').' ';
                   $ret.= $month_every->display($record,$mode).' '.atktext('months','scheduler');
-                  break;    
+                  break;
        }
        return $ret;
      }
-     
+
      /**
       * Return yearly information
       *
@@ -484,7 +484,7 @@
          case 1: $month = &$this->getAttribute("yearly_month");
                  $day = &$this->getAttribute("yearly_day");
                  $ret = atktext('every','scheduler').' '.$month->display($record,$mode).' ';
-                 $ret.= $day->display($record,$mode);     
+                 $ret.= $day->display($record,$mode);
                  break;
          case 2: $month_time = &$this->getAttribute("yearly_month_time");
                  $weekday_list = &$this->getAttribute("yearly_weekday_list");
@@ -496,7 +496,7 @@
        }
        return $ret;
      }
-     
+
      /**
       * Return enddate information
       *

@@ -44,17 +44,18 @@ class scheduler_email_template extends email_template
   {
     $scheduler_node = &atkGetNode("scheduler.scheduler");
     $rec = $scheduler_node->selectDb("scheduler_scheduler.id = ".$scheduler_id);
-    
+
 /*
-    
+
 {$olddate}: Old startdate - scheduler
 {$action}: Action that caused the notify: Added, Accepted, Canceled,.... - scheduler
 {$link}: Link to view the event - scheduler
-*/   
+*/
     if($senttoowner)
     {
       $this->setCustomerReceiver($rec[0]["owner"]["email"],$rec[0]["owner"]["firstname"]." ".$rec[0]["owner"]["lastname"]);
     }
+    $cyclusnode = atkGetNode("scheduler.scheduler_cyclus");
     return array("title"=>$rec[0]["title"],
                  "location"=>$rec[0]["location"],
                  "description"=>$rec[0]["description"],
@@ -67,23 +68,9 @@ class scheduler_email_template extends email_template
                  "to-fullname"=>$rec[0]["owner"]["firstname"]." ".$rec[0]["owner"]["lastname"],
                  "to-firstname"=>$rec[0]["owner"]["firstname"],
                  "to-lastname"=>$rec[0]["owner"]["lastname"],
-                 "repetition"=>$this->getRecurringInfo($rec[0]),
+                 "repetition"=>$cyclusnode->recur_info_display($rec[0]),
                 );
 
-
-  }
-
-  function getRecurringInfo($rec)
-  {
-    if($rec["recur"]=="once") return '';
-    if($rec["recur"]=="daily")
-    {
-
-    }
-    elseif($rec["recur"]["weekly"])
-    {
-
-    }
 
   }
 

@@ -207,7 +207,7 @@ class hoursurvey extends atkNode
     $categorypair =       explode("=",$g_sessionManager->pageVar("project_category"));
     $category =           stripQuotes($categorypair[1]);
     if(!isset($category)) $category = "";
-    
+
     if (moduleExists("billing"))
     {
       $billing_projecttypepair = $g_sessionManager->pageVar("billing_projecttypeid");
@@ -417,7 +417,7 @@ class hoursurvey extends atkNode
       $this->_addHiddenFields($content);
 
       $current = unserialize(atkArrayNvl($this->m_postvars,'projects'));
-      
+
       if(!empty($projectid) && (isset($this->m_postvars['add_project']) || $current) )
       {
         //add_project button has been pressed
@@ -427,15 +427,15 @@ class hoursurvey extends atkNode
         $g_sessionManager->pageVar("projectid"," ");
         $g_sessionManager->pageVar("phaseid"," ");
       }
-      else 
+      else
       {
         $list = $this->_addHiddenProjects($content,array(),atkArrayNvl($this->m_postvars,"delete_project"),$current);
       }
-      
+
       $tbl = &atknew("atk.utils.atktablerenderer");
       $data[] = array("<b>".atkText("sethoursfilter","project")."</b>");
       $data[] = array('<hr>'.atktext('searchbyprojectorphase','project').':');
-      
+
       // we have to pass a 'dummy' record to the attributes to set their default value.
       $dummyrec = array(
       "projectid"     =>array("id"=>$projectid),
@@ -499,13 +499,13 @@ class hoursurvey extends atkNode
         $data[] = array(atktext('projectlist','project').':',$this->_drowProjectsList($list));
         $data[] = array('<hr>');
       }
-      
+
       $text = atktext("add_project");
       $link = atkHref(dispatch_url("reports.hoursurvey", "report",array("add_project"=>1)), $text,SESSION_DEFAULT,true);
 
       $data[] = array(atktext('project','project').':',$projectatt->edit($dummyrec)." ".$link);
 
-      
+
       $p_attr = new atkBoolAttribute("subproject");
       $p_attr->addDependee("phaseid");
       $p_attr->m_ownerInstance = &$hoursnode;
@@ -527,7 +527,7 @@ class hoursurvey extends atkNode
       );
 
       $this->_addOr($data);
-      
+
       $p_attr = new atkManyToOneRelation("project_category","project.project_category");
       $p_attr->m_ownerInstance = &$hoursnode;
 
@@ -546,7 +546,7 @@ class hoursurvey extends atkNode
       }
 
       $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization"));
-      
+
       if(atkconfig::get("timereg","timereg_contact_link",false))
       {
         $organizationatt->addDependee("contact_id");
@@ -790,11 +790,11 @@ class hoursurvey extends atkNode
       $all = "(".implode(" OR ",$tmp).")";
       $filterarray[] = $this->_addFilterArrayItem($all,'');
     }
-    else 
+    else
     {
       if(!empty($phaseid)&&$phaseid!="")
         $filterarray[] = $this->_addFilterArrayItem("phaseid","='$phaseid'",$this->getTable());
-  
+
       if(!empty($projectid)&&$projectid!="")
       {
         if($subProject)
@@ -807,10 +807,10 @@ class hoursurvey extends atkNode
           $filterarray[] = $this->_addFilterArrayItem("projectid","='$projectid'","phaseid");
       }
     }
-        
+
     if($category)
       $filterarray[] = $this->_addFilterArrayItem("project_category","='$category'","projectid");
-        
+
     if(moduleExists("billing") && !empty($billing_projecttypeid) && ($billing_projecttypeid!=""))
       $filterarray[] = $this->_addFilterArrayItem("billing_type","='$billing_projecttypeid'","projectid");
 
@@ -950,7 +950,7 @@ class hoursurvey extends atkNode
     }
 
     $data = $this->getHourRecords($hoursnode, $nameswitch, $userid, $filter, $orderbystatement, $col);
-    
+
     if ($outputType=="0")
     {
       $title = atktext("title_hoursurvey_hours")." ".atktext("report_intimespan")." ".$startdate." t/m ".$enddate;
@@ -964,8 +964,6 @@ class hoursurvey extends atkNode
       }
 
       $rl = &atknew("atk.recordlist.atkrecordlist");
-      // make the recordlist think its operating on reports node.
-      $rl->setMasterNode($this);
       $content.=$rl->render($hoursnode, $data, $actions, RL_EXT_SORT|RL_MRA|RL_NO_SORT, $suppress);
       $content.='<br>'.(atkLevel()>0?atkButton('<< '.atktext("back"), "", SESSION_BACK)."<br>":"").'<br>';
       $contentblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>';
@@ -1182,7 +1180,7 @@ class hoursurvey extends atkNode
     $content.='<input type="hidden" name="atknodetype" value="'.$this->atkNodeType().'">';
     $content.='<input type="hidden" name="atkaction" value="report">';
   }
-  
+
   function _addHiddenProjects(&$content,$item=array(),$id=null,$current)
   {
     if(isset($id))
@@ -1201,9 +1199,9 @@ class hoursurvey extends atkNode
       {
         $this->_hiddenProjects($content,$current);
       }
-      
+
     }
-    elseif(!empty($item)) 
+    elseif(!empty($item))
     {
       $current = array($item);
       $this->_hiddenProjects($content,$current);
@@ -1218,7 +1216,7 @@ class hoursurvey extends atkNode
       $content .= '<input type="hidden" name="projects" '.'value="'.htmlspecialchars(serialize($value), ENT_QUOTES).'">';
     }
   }
-  
+
   function _drowProjectsList($res)
   {
     $content = '';
@@ -1233,9 +1231,9 @@ class hoursurvey extends atkNode
         $link = atkHref(dispatch_url("reports.hoursurvey", "report",array("delete_project"=>$key)), "X",SESSION_DEFAULT,true);
         $data[] = array($link,$this->_getDescriptor($prj,"project.id='".$value[0]."'"), $this->_getDescriptor($phs,"phase.id='".$value[1]."'"));
       }
-      
+
       $tr = atknew("atk.utils.atktablerenderer");
-      $content = $tr->render($data, TBL_HEADER|TBL_ALTERNATE, "recordlist");    
+      $content = $tr->render($data, TBL_HEADER|TBL_ALTERNATE, "recordlist");
     }
     return $content;
   }
