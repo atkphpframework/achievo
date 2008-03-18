@@ -66,7 +66,7 @@
                               "centerpiece_links" => $centerpiecelinks,
                               "searchpiece" => $searchpiece,
                               "title" => $title,
-                              "user" => $g_user["name"],
+                              "user" => $username,
                               "username"=>$username,
                         ),
                         "top");
