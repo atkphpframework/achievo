@@ -3,7 +3,6 @@
 // File:	JPGRAPH_PIE.PHP
 // Description:	Pie plot extension for JpGraph
 // Created: 	2001-02-14
-// Author:	Johan Persson (johanp@aditus.nu)
 // Ver:		$Id$
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
@@ -23,36 +22,38 @@ DEFINE("PIE_VALUE_ADJPER",2);
 // Description: Draws a pie plot
 //===================================================
 class PiePlot {
-    var $posx=0.5,$posy=0.5;
-    var $radius=0.3;
-    var $explode_radius=array(),$explode_all=false,$explode_r=20;
-    var $labels=null, $legends=null;
-    var $csimtargets=null;  // Array of targets for CSIM
-    var $csimareas='';		// Generated CSIM text	
-    var $csimalts=null;		// ALT tags for corresponding target
-    var $data=null;
-    var $title;
-    var $startangle=0;
-    var $weight=1, $color="black";
-    var $legend_margin=6,$show_labels=true;
-    var $themearr = array(
+    public $posx=0.5,$posy=0.5;
+    protected $radius=0.3;
+    protected $explode_radius=array(),$explode_all=false,$explode_r=20;
+    protected $labels=null, $legends=null;
+    protected $csimtargets=null,$csimwintargets=null;  // Array of targets for CSIM
+    protected $csimareas='';		// Generated CSIM text	
+    protected $csimalts=null;		// ALT tags for corresponding target
+    protected $data=null;
+    public $title;
+    protected $startangle=0;
+    protected $weight=1, $color="black";
+    protected $legend_margin=6,$show_labels=true;
+    protected $themearr = array(
 	"earth" 	=> array(136,34,40,45,46,62,63,134,74,10,120,136,141,168,180,77,209,218,346,395,89,430),
 	"pastel" => array(27,415,128,59,66,79,105,110,42,147,152,230,236,240,331,337,405,38),
 	"water"  => array(8,370,24,40,335,56,213,237,268,14,326,387,10,388),
 	"sand"   => array(27,168,34,170,19,50,65,72,131,209,46,393));
-    var $theme="earth";
-    var $setslicecolors=array();
-    var $labeltype=0; // Default to percentage
-    var $pie_border=true,$pie_interior_border=true;
-    var $value;
-    var $ishadowcolor='',$ishadowdrop=4;
-    var $ilabelposadj=1;
-    var $legendcsimtargets = array();
-    var $legendcsimalts = array();
-    var $adjusted_data = array();
-    var $guideline = null,$guidelinemargin=10;
-    var $iShowGuideLineForSingle = false;
-    var $iGuideLineCurve = false,$iGuideVFactor=1.4,$iGuideLineRFactor=0.8;
+    protected $theme="earth";
+    protected $setslicecolors=array();
+    protected $labeltype=0; // Default to percentage
+    protected $pie_border=true,$pie_interior_border=true;
+    public $value;
+    protected $ishadowcolor='',$ishadowdrop=4;
+    protected $ilabelposadj=1;
+    protected $legendcsimtargets = array(),$legendcsimwintargets = array();
+    protected $legendcsimalts = array();
+    protected $adjusted_data = array();
+    public $guideline = null;
+    protected $guidelinemargin=10,$iShowGuideLineForSingle = false;
+    protected $iGuideLineCurve = false,$iGuideVFactor=1.4,$iGuideLineRFactor=0.8;
+    protected $la = array(); // Holds the exact angle for each label
+	
 //---------------
 // CONSTRUCTOR
     function PiePlot($data) {
@@ -98,10 +99,12 @@ class PiePlot {
 	$this->ishadowdrop = $aDropWidth;
     }
 
-    function SetCSIMTargets($targets,$alts=null) {
-	$this->csimtargets=array_reverse($targets);
-	if( is_array($alts) )
-	    $this->csimalts=array_reverse($alts);
+    function SetCSIMTargets($aTargets,$aAlts='',$aWinTargets='') {
+	$this->csimtargets=array_reverse($aTargets);
+	if( is_array($aWinTargets) )
+	    $this->csimwintargets=array_reverse($aWinTargets);
+	if( is_array($aAlts) )
+	    $this->csimalts=array_reverse($aAlts);
     }
 	
     function GetCSIMareas() {
@@ -109,7 +112,6 @@ class PiePlot {
     }
 
     function AddSliceToCSIM($i,$xc,$yc,$radius,$sa,$ea) {  
-
         //Slice number, ellipse centre (x,y), height, width, start angle, end angle
 	while( $sa > 2*M_PI ) $sa = $sa - 2*M_PI;
 	while( $ea > 2*M_PI ) $ea = $ea - 2*M_PI;
@@ -131,10 +133,11 @@ class PiePlot {
 	$xp = floor(($radius*cos($ea))+$xc);
 	$yp = floor($yc-$radius*sin($ea));
 	$coords.= ", $xp, $yp";
+	
 	//add coordinates every 0.2 radians
 	$a=$ea+0.2;
 
-	// If we cross the 260-limit with a slice we need to handle
+	// If we cross the 360-limit with a slice we need to handle
 	// the fact that end angle is smaller than start
 	if( $sa < $ea ) {
 	    while ($a <= 2*M_PI) {
@@ -145,6 +148,7 @@ class PiePlot {
 	    }
 	    $a -= 2*M_PI;
 	}
+
 
 	while ($a < $sa) {
 	    $xp = floor($radius*cos($a)+$xc);
@@ -160,11 +164,14 @@ class PiePlot {
 	if( !empty($this->csimtargets[$i]) ) {
 	    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".$this->csimtargets[$i]."\"";
 	    $tmp="";
+	    if( !empty($this->csimwintargets[$i]) ) {
+		$this->csimareas .= " target=\"".$this->csimwintargets[$i]."\" "; 
+	    }
 	    if( !empty($this->csimalts[$i]) ) {
 		$tmp=sprintf($this->csimalts[$i],$this->data[$i]);
-		$this->csimareas .= " title=\"$tmp\"";
+		$this->csimareas .= " title=\"$tmp\" alt=\"$tmp\" ";
 	    }
-	    $this->csimareas .= " alt=\"$tmp\" />\n";
+	    $this->csimareas .= " />\n";
 	}
     }
 
@@ -255,8 +262,8 @@ class PiePlot {
 	$this->pie_interior_border = $interior;
     }
 	
-    // Setup the legends (Framework method)
-    function Legend(&$graph) {
+    // Setup the legends
+    function Legend($graph) {
 	$colors = array_keys($graph->img->rgb->rgb_table);
    	sort($colors);	
    	$ta=$this->themearr[$this->theme];	
@@ -264,14 +271,14 @@ class PiePlot {
 
    	if( $this->setslicecolors==null ) {
 	    $numcolors=count($ta);
-	    if( is_a($this,'PiePlot3D') ) {
+	    if( class_exists('PiePlot3D',false) && ($this instanceof PiePlot3D) ) {
 		$ta = array_reverse(array_slice($ta,0,$n));
 	    }
 	}
    	else {
 	    $this->setslicecolors = array_slice($this->setslicecolors,0,$n);
 	    $numcolors=count($this->setslicecolors); 
-	    if( $graph->pieaa && is_a($this,'PiePlot') ) { 
+	    if( $graph->pieaa && !($this instanceof PiePlot3D) ) { 
 		$this->setslicecolors = array_reverse($this->setslicecolors);
 	    }
 	}
@@ -314,11 +321,18 @@ class PiePlot {
 		$alt = sprintf($fmt,$this->adjusted_data[$i]);
 	    }
 
-	    if( $this->setslicecolors==null ) {
-		$graph->legend->Add($l,$colors[$ta[$i%$numcolors]],"",0,$this->csimtargets[$i],$alt);
+	    if( empty($this->csimwintargets[$i]) ) {
+		$wintarg = '';
 	    }
 	    else {
-		$graph->legend->Add($l,$this->setslicecolors[$i%$numcolors],"",0,$this->csimtargets[$i],$alt);
+		$wintarg = $this->csimwintargets[$i];
+	    }
+
+	    if( $this->setslicecolors==null ) {
+		$graph->legend->Add($l,$colors[$ta[$i%$numcolors]],"",0,$this->csimtargets[$i],$alt,$wintarg);
+	    }
+	    else {
+		$graph->legend->Add($l,$this->setslicecolors[$i%$numcolors],"",0,$this->csimtargets[$i],$alt,$wintarg);
 	    }
 	}
     }
@@ -373,7 +387,7 @@ class PiePlot {
     }
 
 
-    function Stroke(&$img,$aaoption=0) {
+    function Stroke($img,$aaoption=0) {
 	// aaoption is used to handle antialias
 	// aaoption == 0 a normal pie
 	// aaoption == 1 just the body
@@ -397,12 +411,17 @@ class PiePlot {
 	    $numcolors=count($ta);
 	}
    	else {
-	    $this->setslicecolors = array_reverse(array_slice($this->setslicecolors,0,$n));
+	    // We need to create an array of colors as long as the data
+	    // since we need to reverse it to get the colors in the right order
 	    $numcolors=count($this->setslicecolors); 
-	    $tt = array_slice($this->setslicecolors,$n % $numcolors);
-	    $tt2 = array_slice($this->setslicecolors,0,$n % $numcolors);
-	    $tt2 = array_merge($tt, $tt2);
-	    $this->setslicecolors = $tt + $tt2;
+	    $i = 2*$numcolors;
+	    while( $n > $i ) {
+		$this->setslicecolors = array_merge($this->setslicecolors,$this->setslicecolors);
+		$i += $n;
+	    }
+	    $tt = array_slice($this->setslicecolors,0,$n % $numcolors);
+	    $this->setslicecolors = array_merge($this->setslicecolors,$tt);
+	    $this->setslicecolors = array_reverse($this->setslicecolors);
 	}
 
 	// Draw the slices
@@ -505,7 +524,7 @@ class PiePlot {
 	}
 
 	// Format the titles for each slice
-	if( $aaoption!==2) {
+	if( $aaoption !== 2 ) {
 	    for( $i=0; $i < $n; ++$i) {
 		if( $this->labeltype==0 ) {
 		    if( $sum != 0 )
@@ -526,13 +545,13 @@ class PiePlot {
 	    }
 	}
 
-	If( $this->value->show && $aaoption !== 1 ) {
+	if( $this->value->show && $aaoption !== 1 ) {
 	    $this->StrokeAllLabels($img,$xc,$yc,$radius);
 	}
 
 	// Adjust title position
 	if( $aaoption !== 1 ) {
-	    $this->title->Pos($xc,
+	    $this->title->SetPos($xc,
 			  $yc-$this->title->GetFontHeight($img)-$radius-$this->title->margin,
 			  "center","bottom");
 	    $this->title->Stroke($img);
@@ -695,7 +714,7 @@ class PiePlot {
 
 	// We use the font height as the base factor for how far we need to
 	// spread the labels in the Y-direction.
-	$img->SetFont($this->value->ff,$this->value->fs,$this->value->fsize);
+	$this->value->ApplyFont($img);
 	$fh = $img->GetFontHeight();
 	$origvstep=$fh*$this->iGuideVFactor;
 	$this->value->SetMargin(0);
@@ -848,12 +867,11 @@ class PiePlot {
     }
 
     // Position the labels of each slice
-    function StrokeLabel($label,$img,$xc,$yc,$a,$radius) {
+    function StrokeLabel($label,$img,$xc,$yc,$a,$r) {
 
 	// Default value
 	if( $this->ilabelposadj === 'auto' )
 	    $this->ilabelposadj = 0.65;
-	$r = $radius;
 
 	// We position the values diferently depending on if they are inside
 	// or outside the pie
@@ -878,7 +896,7 @@ class PiePlot {
 	    // that intersects with the extension of the corresponding axis. The code looks a little
 	    // bit messy but this is really the only way of having a reasonable position of the
 	    // axis titles.
-	    $img->SetFont($this->value->ff,$this->value->fs,$this->value->fsize);
+	    $this->value->ApplyFont($img);
 	    $h=$img->GetTextHeight($label);
 	    // For numeric values the format of the display value
 	    // must be taken into account
@@ -890,6 +908,7 @@ class PiePlot {
 	    }
 	    else
 		$w=$img->GetTextWidth($label);
+
 	    if( $this->ilabelposadj > 1.0 && $this->ilabelposadj < 5.0) {
 		$r *= $this->ilabelposadj;
 	    }
@@ -902,7 +921,7 @@ class PiePlot {
 	    // Normalize angle
 	    while( $a < 0 ) $a += 2*M_PI;
 	    while( $a > 2*M_PI ) $a -= 2*M_PI;
-		
+
 	    if( $a>=7*M_PI/4 || $a <= M_PI/4 ) $dx=0;
 	    if( $a>=M_PI/4 && $a <= 3*M_PI/4 ) $dx=($a-M_PI/4)*2/M_PI; 
 	    if( $a>=3*M_PI/4 && $a <= 5*M_PI/4 ) $dx=1;
@@ -926,10 +945,10 @@ class PiePlot {
 // filled circle in the center
 //===================================================
 class PiePlotC extends PiePlot {
-    var $imidsize=0.5;		// Fraction of total width
-    var $imidcolor='white';
-    var $midtitle='';
-    var $middlecsimtarget="",$middlecsimalt="";
+    private $imidsize=0.5;		// Fraction of total width
+    private $imidcolor='white';
+    public $midtitle='';
+    private $middlecsimtarget='',$middlecsimwintarget='',$middlecsimalt='';
 
     function PiePlotC($data,$aCenterTitle='') {
 	parent::PiePlot($data);
@@ -956,13 +975,13 @@ class PiePlotC extends PiePlot {
 	$this->imidcolor = $aColor ; 
     }
 
-    function SetMidCSIM($aTarget,$aAlt) {
+    function SetMidCSIM($aTarget,$aAlt='',$aWinTarget='') {
 	$this->middlecsimtarget = $aTarget;
+	$this->middlecsimwintarget = $aWinTarget;
 	$this->middlecsimalt = $aAlt;
     }
 
     function AddSliceToCSIM($i,$xc,$yc,$radius,$sa,$ea) {  
-
         //Slice number, ellipse centre (x,y), radius, start angle, end angle
 	while( $sa > 2*M_PI ) $sa = $sa - 2*M_PI;
 	while( $ea > 2*M_PI ) $ea = $ea - 2*M_PI;
@@ -984,7 +1003,7 @@ class PiePlotC extends PiePlot {
 	//add coordinates every 0.25 radians
 	$a=$ea+0.25;
 
-	// If we cross the 260-limit with a slice we need to handle
+	// If we cross the 360-limit with a slice we need to handle
 	// the fact that end angle is smaller than start
 	if( $sa < $ea ) {
 	    while ($a <= 2*M_PI) {
@@ -1035,11 +1054,14 @@ class PiePlotC extends PiePlot {
 	if( !empty($this->csimtargets[$i]) ) {
 	    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".
 		$this->csimtargets[$i]."\"";
+	    if( !empty($this->csimwintargets[$i]) ) {
+		$this->csimareas .= " target=\"".$this->csimwintargets[$i]."\" ";
+	    }
 	    if( !empty($this->csimalts[$i]) ) {
 		$tmp=sprintf($this->csimalts[$i],$this->data[$i]);
-		$this->csimareas .= " title=\"$tmp\"";
+		$this->csimareas .= " title=\"$tmp\"  alt=\"$tmp\" ";
 	    }
-	    $this->csimareas .= " alt=\"$tmp\" />\n";
+	    $this->csimareas .= " />\n";
 	}
     }
 
@@ -1081,7 +1103,7 @@ class PiePlotC extends PiePlot {
 
 	if( $this->value->show && $aaoption !== 1) {
 	    $this->StrokeAllLabels($img,$xc,$yc,$radius);
-	    $this->midtitle->Pos($xc,$yc,'center','center');
+	    $this->midtitle->SetPos($xc,$yc,'center','center');
 	    $this->midtitle->Stroke($img);
 	}
 
@@ -1091,11 +1113,14 @@ class PiePlotC extends PiePlot {
 	$xc=round($xc);$yc=round($yc);$r=round($r);
 	$this->csimareas .= "<area shape=\"circle\" coords=\"$xc,$yc,$r\" href=\"".
 	    $this->middlecsimtarget."\"";
+	if( !empty($this->middlecsimwintarget) ) {
+	    $this->csimareas .= " target=\"".$this->middlecsimwintarget."\"";
+	}
 	if( !empty($this->middlecsimalt) ) {
 	    $tmp = $this->middlecsimalt;
-	    $this->csimareas .= " title=\"$tmp\"";
+	    $this->csimareas .= " title=\"$tmp\" alt=\"$tmp\" ";
 	}
-	$this->csimareas .= " alt=\"$tmp\" />\n";
+	$this->csimareas .= " />\n";
     }
 
     function StrokeLabel($label,$img,$xc,$yc,$a,$r) {
@@ -1115,10 +1140,10 @@ class PiePlotC extends PiePlot {
 // Description: 
 //===================================================
 class PieGraph extends Graph {
-    var $posx, $posy, $radius;		
-    var $legends=array();	
-    var $plots=array();
-    var $pieaa = false ;
+    private $posx, $posy, $radius;		
+    private $legends=array();	
+    public $plots=array();
+    public $pieaa = false ;
 //---------------
 // CONSTRUCTOR
     function PieGraph($width=300,$height=200,$cachedName="",$timeout=0,$inline=1) {
@@ -1137,9 +1162,9 @@ class PieGraph extends Graph {
 	else
 	    $cl = $aObj;
 
-	if( is_a($cl,'Text') ) 
+	if( $cl instanceof Text ) 
 	    $this->AddText($aObj);
-	elseif( is_a($cl,'IconPlot') ) 
+	elseif( class_exists('IconPlot',false) && ($cl instanceof IconPlot) ) 
 	    $this->AddIcon($aObj);
 	else {
 	    if( is_array($aObj) ) {
@@ -1161,6 +1186,7 @@ class PieGraph extends Graph {
     function SetColor($c) {
 	$this->SetMarginColor($c);
     }
+
 
     function DisplayCSIMAreas() {
 	    $csim="";
@@ -1208,7 +1234,7 @@ class PieGraph extends Graph {
 	// and in the case of GetCSIM called before stroke to generate
 	// CSIM without storing an image to disk GetCSIM must call Stroke.
 	$this->iHasStroked = true;
-		
+
 	$n = count($this->plots);
 
 	if( $this->pieaa ) {
@@ -1219,6 +1245,7 @@ class PieGraph extends Graph {
 		}
 		else {
 		    $this->StrokeFrame();		
+		    $this->StrokeBackgroundGrad();
 		}
 	    }
 
@@ -1233,11 +1260,16 @@ class PieGraph extends Graph {
 	    $this->img->FilledRectangle(0,0,2*$w-1,2*$h-1);
 
 	    // Make all icons *2 i size since we will be scaling down the
-	    // image to do the anti aliasing
+	    // imahe to do the anti aliasing
 	    $ni = count($this->iIcons);
 	    for($i=0; $i < $ni; ++$i) {
 		$this->iIcons[$i]->iScale *= 2 ;
+		if( $this->iIcons[$i]->iX > 1 ) 
+		    $this->iIcons[$i]->iX *= 2 ;
+		if( $this->iIcons[$i]->iY > 1 ) 
+		    $this->iIcons[$i]->iY *= 2 ;
 	    }
+
 	    $this->StrokeIcons();
 
 	    for($i=0; $i < $n; ++$i) {
@@ -1270,14 +1302,13 @@ class PieGraph extends Graph {
 
 	}
 	else {
-	    // No antialias
+
 	    if( !$_csim ) {
 		if( $this->background_image != "" ) {
 		    $this->StrokeFrameBackground();		
 		}
 		else {
-		    $this->StrokeFrame();
-		    $this->StrokeBackgroundGrad();		
+		    $this->StrokeFrame();		
 		}
 	    }
 
@@ -1309,7 +1340,7 @@ class PieGraph extends Graph {
 
 	    // Should we do any final image transformation
 	    if( $this->iImgTrans ) {
-		if( !class_exists('ImgTrans') ) {
+		if( !class_exists('ImgTrans',false) ) {
 		    require_once('jpgraph_imgtrans.php');
 		    //JpGraphError::Raise('In order to use image transformation you must include the file jpgraph_imgtrans.php in your script.');
 		}

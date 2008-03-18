@@ -3,89 +3,32 @@
 // File:	JPGRAPH_PLOTMARK.PHP
 // Description:	Class file. Handles plotmarks
 // Created: 	2003-03-21
-// Author:	Johan Persson (johanp@aditus.nu)
-// Ver:		$Id$
+// Ver:		$Id: jpgraph_plotmark.inc.php 956 2007-11-17 13:19:20Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
 
 
-//========================================================================
-// CLASS ImgData
-// Description: Base class for all image data classes that contains the 
-// real image data.
-//========================================================================
-class ImgData {
-    var $name = '';		// Each subclass gives a name
-    var $an = array();		// Data array names
-    var $colors = array();	// Available colors
-    var $index  = array();	// Index for colors
-    var $maxidx = 0 ;		// Max color index
-    var $anchor_x=0.5, $anchor_y=0.5 ;    // Where is the center of the image
-    // Create a GD image from the data and return a GD handle
-    function GetImg($aMark,$aIdx) {
-	$n = $this->an[$aMark];
-	if( is_string($aIdx) ) {
-	    if( !in_array($aIdx,$this->colors) ) {
-		JpGraphError::RaiseL(23001,$this->name,$aIdx); //('This marker "'.($this->name).'" does not exist in color: '.$aIdx);
-	    }
-	    $idx = $this->index[$aIdx];
-	}
-	elseif( !is_integer($aIdx) || 
-		(is_integer($aIdx) && $aIdx > $this->maxidx ) ) {
-	    JpGraphError::RaiseL(23002,$this->name);
-//('Mark color index too large for marker "'.($this->name).'"');
-	}
-	else
-	    $idx = $aIdx ;
-	return Image::CreateFromString(base64_decode($this->{$n}[$idx][1]));   
-    }
-    function GetAnchor() {
-	return array($this->anchor_x,$this->anchor_y);
-    }
-}
-
-
-// Keep a global flag cache to reduce memory usage
-$_gFlagCache=array(
-    1 => null,
-    2 => null,
-    3 => null,
-    4 => null,
-);
-// Only supposed to b called as statics
-class FlagCache {
-    function GetFlagImgByName($aSize,$aName) {
-	global $_gFlagCache;
-	require_once('jpgraph_flags.php');
-	if( $_gFlagCache[$aSize] === null ) {
-	    $_gFlagCache[$aSize] =& new FlagImages($aSize);
-	}
-	$f =& $_gFlagCache[$aSize];
-	$idx = $f->GetIdxByName($aName,$aFullName);
-	return $f->GetImgByIdx($idx);
-    }
-}
-
 //===================================================
 // CLASS PlotMark
 // Description: Handles the plot marks in graphs
 //===================================================
+
 class PlotMark {
-    var $title, $show=true;
-    var $type,$weight=1;
-    var $color="black", $width=4, $fill_color="blue";
-    var $yvalue,$xvalue='',$csimtarget,$csimalt,$csimareas;
-    var $iFormatCallback="";
-    var $iFormatCallback2="";
-    var $markimg='',$iScale=1.0;
-    var $oldfilename='',$iFileName='';
-    var $imgdata_balls = null;
-    var $imgdata_diamonds = null;
-    var $imgdata_squares = null;
-    var $imgdata_bevels = null;
-    var $imgdata_stars = null;
-    var $imgdata_pushpins = null;
+    public $title, $show=true;
+    public $type,$weight=1;
+    public $iFormatCallback="", $iFormatCallback2="";
+    public $fill_color="blue";
+    public $color="black", $width=4;
+    private $yvalue,$xvalue='',$csimtarget,$csimwintarget='',$csimalt,$csimareas;
+    private $markimg='',$iScale=1.0;
+    private $oldfilename='',$iFileName='';
+    private $imgdata_balls = null;
+    private $imgdata_diamonds = null;
+    private $imgdata_squares = null;
+    private $imgdata_bevels = null;
+    private $imgdata_stars = null;
+    private $imgdata_pushpins = null;
 
 //--------------
 // CONSTRUCTOR
@@ -93,7 +36,6 @@ class PlotMark {
 	$this->title = new Text();
 	$this->title->Hide();
 	$this->csimareas = '';
-	$this->csimalt = '';
 	$this->type=-1;
     }
 //---------------
@@ -168,8 +110,9 @@ class PlotMark {
         $this->xvalue=$aX; 
     }
     
-    function SetCSIMTarget($aTarget) {
+    function SetCSIMTarget($aTarget,$aWinTarget='') {
         $this->csimtarget=$aTarget;
+        $this->csimwintarget=$aWinTarget;
     }
     
     function SetCSIMAlt($aAlt) {
@@ -188,12 +131,17 @@ class PlotMark {
         }
         $this->csimareas="";    
         if( !empty($this->csimtarget) ) {
-	    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".$this->csimtarget."\"";
+	    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".htmlentities($this->csimtarget)."\"";
+
+	    if( !empty($this->csimwintarget) ) {
+		$this->csimareas .= " target=\"".$this->csimwintarget."\" ";
+	    }
+
 	    if( !empty($this->csimalt) ) {										
 		$tmp=sprintf($this->csimalt,$this->yvalue,$this->xvalue);
-		$this->csimareas .= " title=\"$tmp\"";
+		$this->csimareas .= " title=\"$tmp\" alt=\"$tmp\"";
 	    }
-	    $this->csimareas .= " alt=\"$tmp\" />\n";
+	    $this->csimareas .= " />\n";
 	}
     }
     
@@ -201,16 +149,21 @@ class PlotMark {
     	$x = round($x); $y=round($y); $r=round($r);
         $this->csimareas="";    
         if( !empty($this->csimtarget) ) {
-	    $this->csimareas .= "<area shape=\"circle\" coords=\"$x,$y,$r\" href=\"".$this->csimtarget."\"";
+	    $this->csimareas .= "<area shape=\"circle\" coords=\"$x,$y,$r\" href=\"".htmlentities($this->csimtarget)."\"";
+
+	    if( !empty($this->csimwintarget) ) {
+		$this->csimareas .= " target=\"".$this->csimwintarget."\" ";
+	    }
+
     	    if( !empty($this->csimalt) ) {										
 		$tmp=sprintf($this->csimalt,$this->yvalue,$this->xvalue);
-		$this->csimareas .= " title=\"$tmp\"";
+		$this->csimareas .= " title=\"$tmp\" alt=\"$tmp\" ";
 	    }
-            $this->csimareas .= " alt=\"$tmp\" />\n";        
+	    $this->csimareas .= " />\n";
         }
     }
     	
-    function Stroke(&$img,$x,$y) {
+    function Stroke($img,$x,$y) {
 	if( !$this->show ) return;
 
 	if( $this->iFormatCallback != '' || $this->iFormatCallback2 != '' ) {
@@ -271,7 +224,7 @@ class PlotMark {
 		case MARK_IMG_SPUSHPIN:
 		case MARK_IMG_LPUSHPIN:
 		    if( $this->imgdata_pushpins == null ) {
-			require_once 'imgdata_pushpins.inc';
+			require_once 'imgdata_pushpins.inc.php';
 			$this->imgdata_pushpins = new ImgData_PushPins();
 		    }
 		    $this->markimg = $this->imgdata_pushpins->GetImg($this->type,$filename);
@@ -280,7 +233,7 @@ class PlotMark {
 
 		case MARK_IMG_SQUARE:
 		    if( $this->imgdata_squares == null ) {
-			require_once 'imgdata_squares.inc';
+			require_once 'imgdata_squares.inc.php';
 			$this->imgdata_squares = new ImgData_Squares();
 		    }
 		    $this->markimg = $this->imgdata_squares->GetImg($this->type,$filename);
@@ -289,7 +242,7 @@ class PlotMark {
 
 		case MARK_IMG_STAR:
 		    if( $this->imgdata_stars == null ) {
-			require_once 'imgdata_stars.inc';
+			require_once 'imgdata_stars.inc.php';
 			$this->imgdata_stars = new ImgData_Stars();
 		    }
 		    $this->markimg = $this->imgdata_stars->GetImg($this->type,$filename);
@@ -298,7 +251,7 @@ class PlotMark {
 
 		case MARK_IMG_BEVEL:
 		    if( $this->imgdata_bevels == null ) {
-			require_once 'imgdata_bevels.inc';
+			require_once 'imgdata_bevels.inc.php';
 			$this->imgdata_bevels = new ImgData_Bevels();
 		    }
 		    $this->markimg = $this->imgdata_bevels->GetImg($this->type,$filename);
@@ -307,7 +260,7 @@ class PlotMark {
 
 		case MARK_IMG_DIAMOND:
 		    if( $this->imgdata_diamonds == null ) {
-			require_once 'imgdata_diamonds.inc';
+			require_once 'imgdata_diamonds.inc.php';
 			$this->imgdata_diamonds = new ImgData_Diamonds();
 		    }
 		    $this->markimg = $this->imgdata_diamonds->GetImg($this->type,$filename);
@@ -319,7 +272,7 @@ class PlotMark {
 		case MARK_IMG_MBALL:		    
 		case MARK_IMG_LBALL:		    
 		    if( $this->imgdata_balls == null ) {
-			require_once 'imgdata_balls.inc';
+			require_once 'imgdata_balls.inc.php';
 			$this->imgdata_balls = new ImgData_Balls();
 		    }
 		    $this->markimg = $this->imgdata_balls->GetImg($this->type,$filename);
@@ -345,12 +298,17 @@ class PlotMark {
 	    if( !empty($this->csimtarget) ) {
 		$this->csimareas = "<area shape=\"rect\" coords=\"".
 		    $dx.','.$dy.','.round($dx+$dw).','.round($dy+$dh).'" '.
-		    "href=\"".$this->csimtarget."\"";
+		    "href=\"".htmlentities($this->csimtarget)."\"";
+		
+		if( !empty($this->csimwintarget) ) {
+		    $this->csimareas .= " target=\"".$this->csimwintarget."\" ";
+		}
+
 		if( !empty($this->csimalt) ) {
 		    $tmp=sprintf($this->csimalt,$this->yvalue,$this->xvalue);
-		    $this->csimareas .= " title=\"$tmp\"";
+		    $this->csimareas .= " title=\"$tmp\" alt=\"$tmp\" ";
 		}
-		$this->csimareas .= " alt=\"$tmp\" />\n";
+		$this->csimareas .= " />\n";
 	    }
 	    
 	    // Stroke title
@@ -478,5 +436,62 @@ class PlotMark {
     }
 } // Class
 
+
+
+//========================================================================
+// CLASS ImgData
+// Description: Base class for all image data classes that contains the 
+// real image data.
+//========================================================================
+class ImgData {
+    protected $name = '';		// Each subclass gives a name
+    protected $an = array();		// Data array names
+    protected $colors = array();	// Available colors
+    protected $index  = array();	// Index for colors
+    protected $maxidx = 0 ;		// Max color index
+    protected $anchor_x=0.5, $anchor_y=0.5 ;    // Where is the center of the image
+    // Create a GD image from the data and return a GD handle
+    function GetImg($aMark,$aIdx) {
+	$n = $this->an[$aMark];
+	if( is_string($aIdx) ) {
+	    if( !in_array($aIdx,$this->colors) ) {
+		JpGraphError::RaiseL(23001,$this->name,$aIdx);//('This marker "'.($this->name).'" does not exist in color: '.$aIdx);
+	    }
+	    $idx = $this->index[$aIdx];
+	}
+	elseif( !is_integer($aIdx) || 
+		(is_integer($aIdx) && $aIdx > $this->maxidx ) ) {
+	    JpGraphError::RaiseL(23002,$this->name);//('Mark color index too large for marker "'.($this->name).'"');
+	}
+	else
+	    $idx = $aIdx ;
+	return Image::CreateFromString(base64_decode($this->{$n}[$idx][1]));   
+    }
+    function GetAnchor() {
+	return array($this->anchor_x,$this->anchor_y);
+    }
+}
+
+
+// Keep a global flag cache to reduce memory usage
+$_gFlagCache=array(
+    1 => null,
+    2 => null,
+    3 => null,
+    4 => null,
+);
+// Only supposed to b called as statics
+class FlagCache {
+    static function GetFlagImgByName($aSize,$aName) {
+	global $_gFlagCache;
+	require_once('jpgraph_flags.php');
+	if( $_gFlagCache[$aSize] === null ) {
+	    $_gFlagCache[$aSize] = new FlagImages($aSize);
+	}
+	$f = $_gFlagCache[$aSize];
+	$idx = $f->GetIdxByName($aName,$aFullName);
+	return $f->GetImgByIdx($idx);
+    }
+}
 
 ?>

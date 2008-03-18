@@ -3,7 +3,6 @@
 // File:	JPGRAPH_BAR.PHP
 // Description:	Bar plot extension for JpGraph
 // Created: 	2001-01-08
-// Author:	Johan Persson (johanp@aditus.nu)
 // Ver:		$Id$
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
@@ -29,22 +28,23 @@ DEFINE('PATTERN_STRIPE2',10);
 // Description: Main code to produce a bar plot 
 //===================================================
 class BarPlot extends Plot {
-    var $width=0.4; // in percent of major ticks
-    var $abswidth=-1; // Width in absolute pixels
-    var $fill=false,$fill_color="lightblue"; // Default is to fill with light blue
-    var $ybase=0; // Bars start at 0 
-    var $align="center";
-    var $grad=false,$grad_style=1;
-    var $grad_fromcolor=array(50,50,200),$grad_tocolor=array(255,255,255);
-    var $bar_shadow=false;
-    var $bar_shadow_color="black";
-    var $bar_shadow_hsize=3,$bar_shadow_vsize=3;	
-    var $valuepos='top';
-    var $iPattern=-1,$iPatternDensity=80,$iPatternColor='black';
+    public $fill=false,$fill_color="lightblue"; // Default is to fill with light blue
+    public $iPattern=-1,$iPatternDensity=80,$iPatternColor='black';
+    public $valuepos='top';
+    public $grad=false,$grad_style=1;
+    public $grad_fromcolor=array(50,50,200),$grad_tocolor=array(255,255,255);
+    public $ymin=0;
+    protected $width=0.4; // in percent of major ticks
+    protected $abswidth=-1; // Width in absolute pixels
+    protected $ybase=0; // Bars start at 0 
+    protected $align="center";
+    protected $bar_shadow=false;
+    protected $bar_shadow_color="black";
+    protected $bar_shadow_hsize=3,$bar_shadow_vsize=3;	
 	
 //---------------
 // CONSTRUCTOR
-    function BarPlot(&$datay,$datax=false) {
+    function BarPlot($datay,$datax=false) {
 	$this->Plot($datay,$datax);		
 	++$this->numpoints;
     }
@@ -74,12 +74,12 @@ class BarPlot extends Plot {
 	$this->ybase=$aYStartValue;
     }
 	
-    function Legend(&$graph) {
+    function Legend($graph) {
 	if( $this->grad && $this->legend!="" && !$this->fill ) {
 	    $color=array($this->grad_fromcolor,$this->grad_tocolor);
 	    // In order to differentiate between gradients and cooors specified as an RGB triple
 	    $graph->legend->Add($this->legend,$color,"",-$this->grad_style,
-				$this->legendcsimtarget,$this->legendcsimalt);
+				$this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
 	}
 	elseif( $this->legend!="" && ($this->iPattern > -1 || is_array($this->iPattern)) ) {
 	    if( is_array($this->iPattern) ) {
@@ -95,22 +95,22 @@ class BarPlot extends Plot {
 	    $color = array($p1,$p2,$p3,$this->fill_color);
 	    // A kludge: Too mark that we add a pattern we use a type value of < 100
 	    $graph->legend->Add($this->legend,$color,"",-101,
-				$this->legendcsimtarget,$this->legendcsimalt);
+				$this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
 	}
 	elseif( $this->fill_color && $this->legend!="" ) {
 	    if( is_array($this->fill_color) ) {
 		$graph->legend->Add($this->legend,$this->fill_color[0],"",0,
-				    $this->legendcsimtarget,$this->legendcsimalt);
+				    $this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);
 	    }
 	    else {
 		$graph->legend->Add($this->legend,$this->fill_color,"",0,
-				    $this->legendcsimtarget,$this->legendcsimalt);	
+				    $this->legendcsimtarget,$this->legendcsimalt,$this->legendcsimwintarget);	
 	    }
 	}
     }
 
     // Gets called before any axis are stroked
-    function PreStrokeAdjust(&$graph) {
+    function PreStrokeAdjust($graph) {
 	parent::PreStrokeAdjust($graph);
 
 	// If we are using a log Y-scale we want the base to be at the
@@ -135,9 +135,8 @@ class BarPlot extends Plot {
 		elseif( $this->align == "right" )
 		    $graph->SetTextScaleOff(1-$this->width);			
 	    }
-
 	}
-	elseif( is_a($this,'AccBarPlot') || is_a($this,'GroupBarPlot') ) { 
+	elseif( ($this instanceof AccBarPlot) || ($this instanceof GroupBarPlot) ) { 
 	    // We only set an absolute width for linear and int scale
 	    // for text scale the width will be set to a fraction of
 	    // the majstep width.
@@ -164,8 +163,13 @@ class BarPlot extends Plot {
     }	
 	
     // Specify width as fractions of the major stepo size
-    function SetWidth($aFractionWidth) {
-	$this->width=$aFractionWidth;
+    function SetWidth($aWidth) {
+	if( $aWidth > 1 ) {
+	    // Interpret this as absolute width
+	    $this->abswidth=$aWidth;
+	}
+	else
+	    $this->width=$aWidth;
     }
 	
     // Specify width in absolute pixels. If specified this
@@ -189,11 +193,11 @@ class BarPlot extends Plot {
 	$this->fill_color=$aColor;
     }
 	
-    function SetFillGradient($from_color,$to_color,$style) {
-	$this->grad=true;
-	$this->grad_fromcolor=$from_color;
-	$this->grad_tocolor=$to_color;
-	$this->grad_style=$style;
+    function SetFillGradient($aFromColor,$aToColor=null,$aStyle=null) {
+	$this->grad = true;
+	$this->grad_fromcolor = $aFromColor;
+	$this->grad_tocolor   = $aToColor;
+	$this->grad_style     = $aStyle;
     }
 	
     function SetValuePos($aPos) {
@@ -208,7 +212,7 @@ class BarPlot extends Plot {
 	    if( is_array($aColor) ) {
 		$this->iPatternColor = array();
 		if( count($aColor) != $n ) {
-		    JpGraphError::RaiseL(2001);//('NUmber of colors is not the same as the number of patterns in BarPlot::SetPattern()');
+		    JpGraphError::Raise('NUmber of colors is not the same as the number of patterns in BarPlot::SetPattern()');
 		}
 	    }
 	    else
@@ -262,24 +266,23 @@ class BarPlot extends Plot {
 		break;
 	    case PATTERN_STRIPE1:
 		$aPatternValue= 5;
-		$aDensity = 95;
+		$aDensity = 90;
 		break;
 	    case PATTERN_STRIPE2:
 		$aPatternValue= 5;
-		$aDensity = 85;
+		$aDensity = 75;
 		break;
 	    default:
-		JpGraphError::RaiseL(2002);//('Unknown pattern specified in call to BarPlot::SetPattern()');
+		JpGraphError::Raise('Unknown pattern specified in call to BarPlot::SetPattern()');
 	}
     }
 
-    function Stroke(&$img,&$xscale,&$yscale) { 
+    function Stroke($img,$xscale,$yscale) { 
 		
 	$numpoints = count($this->coords[0]);
 	if( isset($this->coords[1]) ) {
 	    if( count($this->coords[1])!=$numpoints )
-		JpGraphError::RaiseL(2003,count($this->coords[1]),$numpoints);
-//("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])."Number of Y-points:$numpoints");
+		JpGraphError::Raise("Number of X and Y points are not equal. Number of X-points:".count($this->coords[1])."Number of Y-points:$numpoints");
 	    else
 		$exist_x = true;
 	}
@@ -304,17 +307,17 @@ class BarPlot extends Plot {
 	else
 	    $abswidth=round($this->width*$xscale->scale_factor,0);
 
-	// Count potential pattern array to avoid doing the count for each iteration
+	// Count pontetial pattern array to avoid doing the count for each iteration
 	if( is_array($this->iPattern) ) {
 	    $np = count($this->iPattern);
 	}
-					
+			
+	$grad = null;
 	for($i=0; $i < $numbars; ++$i) {
 
  	    // If value is NULL, or 0 then don't draw a bar at all
- 	    if ($this->coords[0][$i] === null ||
-		$this->coords[0][$i] === '' ||
-		$this->coords[0][$i] === 0 ) continue;    
+ 	    if ($this->coords[0][$i] === null || $this->coords[0][$i] === '' )
+		continue;    
 
 	    if( $exist_x ) $x=$this->coords[1][$i];
 	    else $x=$i;
@@ -330,7 +333,6 @@ class BarPlot extends Plot {
 		elseif($this->align=="right")
 		    $x -= $abswidth;			
 	    }
-
 */
 	    // Stroke fill color and fill gradient
 	    $pts=array(
@@ -339,10 +341,37 @@ class BarPlot extends Plot {
 		$x+$abswidth,$yscale->Translate($this->coords[0][$i]),
 		$x+$abswidth,$zp);
 	    if( $this->grad ) {
-		$grad = new Gradient($img);
-		$grad->FilledRectangle($pts[2],$pts[3],
-				       $pts[6],$pts[7],
-				       $this->grad_fromcolor,$this->grad_tocolor,$this->grad_style); 
+		if( $grad === null ) 
+		    $grad = new Gradient($img);
+		if( is_array($this->grad_fromcolor) ) {
+		    // The first argument (grad_fromcolor) can be either an array or a single color. If it is an array
+		    // then we have two choices. It can either a) be a single color specified as an RGB triple or it can be
+		    // an array to specify both (from, to style) for each individual bar. The way to know the difference is 
+		    // to investgate the first element. If this element is an integer [0,255] then we assume it is an RGB 
+		    // triple.
+		    $ng = count($this->grad_fromcolor);
+		    if( $ng === 3 ) {
+			if( is_numeric($this->grad_fromcolor[0]) && $this->grad_fromcolor[0] > 0 && $this->grad_fromcolor[0] < 256 ) {
+			    // RGB Triple
+			    $fromcolor = $this->grad_fromcolor;
+			    $tocolor = $this->grad_tocolor;
+			    $style = $this->grad_style;
+			}
+		    }
+		    else {
+			$fromcolor = $this->grad_fromcolor[$i % $ng][0];
+			$tocolor = $this->grad_fromcolor[$i % $ng][1];
+			$style = $this->grad_fromcolor[$i % $ng][2];
+		    }
+		    $grad->FilledRectangle($pts[2],$pts[3],
+					   $pts[6],$pts[7],
+					   $fromcolor,$tocolor,$style); 
+		}
+		else {
+		    $grad->FilledRectangle($pts[2],$pts[3],
+					   $pts[6],$pts[7],
+					   $this->grad_fromcolor,$this->grad_tocolor,$this->grad_style); 
+		}
 	    }
 	    elseif( !empty($this->fill_color) ) {
 		if(is_array($this->fill_color)) {
@@ -359,8 +388,7 @@ class BarPlot extends Plot {
 	    $val=$this->coords[0][$i];
 
 	    if( !empty($val) && !is_numeric($val) ) {
-		JpGraphError::RaiseL(2004,$i,$val);
-//('All values for a barplot must be numeric. You have specified value['.$i.'] == \''.$val.'\'');
+		JpGraphError::Raise('All values for a barplot must be numeric. You have specified value['.$i.'] == \''.$val.'\'');
 	    }
 
 	    // Determine the shadow
@@ -388,7 +416,7 @@ class BarPlot extends Plot {
 		if( is_array($this->bar_shadow_color) ) {
 		    $numcolors = count($this->bar_shadow_color);
 		    if( $numcolors == 0 ) {
-			JpGraphError::RaiseL(2005);//('You have specified an empty array for shadow colors in the bar plot.');
+			JpGraphError::Raise('You have specified an empty array for shadow colors in the bar plot.');
 		    }
 		    $img->PushColor($this->bar_shadow_color[$i % $numcolors]);
 		}
@@ -501,8 +529,7 @@ class BarPlot extends Plot {
 		$this->value->Stroke($img,$val,$x,$y);
 	    }
 	    else {
-		JpGraphError::RaiseL(2006,$this->valuepos);
-//('Unknown position for values on bars :'.$this->valuepos);
+		JpGraphError::Raise('Unknown position for values on bars :'.$this->valuepos);
 	    }
 	    // Create the client side image map
 	    $rpts = $img->ArrRotate($pts);		
@@ -512,13 +539,18 @@ class BarPlot extends Plot {
 	    }	    	    
 	    if( !empty($this->csimtargets[$i]) ) {
 		$this->csimareas .= '<area shape="poly" coords="'.$csimcoord.'" ';    	    
-		$this->csimareas .= " href=\"".$this->csimtargets[$i]."\"";
+		$this->csimareas .= " href=\"".htmlentities($this->csimtargets[$i])."\"";
+
+		if( !empty($this->csimwintargets[$i]) ) {
+		    $this->csimareas .= " target=\"".$this->csimwintargets[$i]."\" ";
+		}
+
 		$sval='';
 		if( !empty($this->csimalts[$i]) ) {
 		    $sval=sprintf($this->csimalts[$i],$this->coords[0][$i]);
-		    $this->csimareas .= " title=\"$sval\" ";
+		    $this->csimareas .= " title=\"$sval\" alt=\"$sval\" ";
 		}
-		$this->csimareas .= " alt=\"$sval\" />\n";
+		$this->csimareas .= " />\n";
 	    }
 	}
 	return true;
@@ -530,34 +562,33 @@ class BarPlot extends Plot {
 // Description: Produce grouped bar plots
 //===================================================
 class GroupBarPlot extends BarPlot {
-    var $plots;
-    var $width=0.7;
-    var $nbrplots=0;
-    var $numpoints;
+    private $plots, $nbrplots=0;
 //---------------
 // CONSTRUCTOR
     function GroupBarPlot($plots) {
+	$this->width=0.7;
 	$this->plots = $plots;
 	$this->nbrplots = count($plots);
 	if( $this->nbrplots < 1 ) {
-	    JpGraphError::RaiseL(2007);//('Cannot create GroupBarPlot from empty plot array.');
+	    JpGraphError::Raise('Cannot create GroupBarPlot from empty plot array.');
 	}
 	for($i=0; $i < $this->nbrplots; ++$i ) {
 	    if( empty($this->plots[$i]) || !isset($this->plots[$i]) ) {
-		JpGraphError::RaiseL(2008,$i);//("Group bar plot element nbr $i is undefined or empty.");
+		JpGraphError::Raise("Group bar plot element nbr $i is undefined or empty.");
 	    }
 	}
 	$this->numpoints = $plots[0]->numpoints;
+	$this->width=0.7;
     }
 
 //---------------
 // PUBLIC METHODS	
-    function Legend(&$graph) {
+    function Legend($graph) {
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
 	    $c = get_class($this->plots[$i]);
-	    if( !is_a($this->plots[$i],'BarPlot') ) {
-		JpGraphError::RaiseL(2009,$c);//('One of the objects submitted to GroupBar is not a BarPlot. Make sure that you create the Group Bar plot from an array of BarPlot or AccBarPlot objects. (Class = '.$c.')');
+	    if( !($this->plots[$i] instanceof BarPlot) ) {
+		JpGraphError::Raise('One of the objects submitted to GroupBar is not a BarPlot. Make sure that you create the Group Bar plot from an array of BarPlot or AccBarPlot objects. (Class = '.$c.')');
 	    }
 	    $this->plots[$i]->DoLegend($graph);
 	}
@@ -595,10 +626,11 @@ class GroupBarPlot extends BarPlot {
     }
 	
     // Stroke all the bars next to each other
-    function Stroke(&$img,&$xscale,&$yscale) { 
+    function Stroke($img,$xscale,$yscale) { 
 	$tmp=$xscale->off;
 	$n = count($this->plots);
 	$subwidth = $this->width/$this->nbrplots ; 
+
 	for( $i=0; $i < $n; ++$i ) {
 	    $this->plots[$i]->ymin=$this->ybase;
 	    $this->plots[$i]->SetWidth($subwidth);
@@ -608,8 +640,7 @@ class GroupBarPlot extends BarPlot {
 	    // If we assume it is always one the positioning will work
 	    // fine with a text scale but this will not work with
 	    // arbitrary linear scale
-	    $xscale->off = $tmp+$i*round(/*$xscale->ticks->major_step* */
-					$xscale->scale_factor* $subwidth);
+	    $xscale->off = $tmp+$i*round($xscale->scale_factor* $subwidth);
 	    $this->plots[$i]->Stroke($img,$xscale,$yscale);
 	}
 	$xscale->off=$tmp;
@@ -621,18 +652,18 @@ class GroupBarPlot extends BarPlot {
 // Description: Produce accumulated bar plots
 //===================================================
 class AccBarPlot extends BarPlot {
-    var $plots=null,$nbrplots=0,$numpoints=0;
+    private $plots=null,$nbrplots=0;
 //---------------
 // CONSTRUCTOR
     function AccBarPlot($plots) {
 	$this->plots = $plots;
 	$this->nbrplots = count($plots);
 	if( $this->nbrplots < 1 ) {
-	    JpGraphError::RaiseL(2010);//('Cannot create AccBarPlot from empty plot array.');
+	    JpGraphError::Raise('Cannot create AccBarPlot from empty plot array.');
 	}
 	for($i=0; $i < $this->nbrplots; ++$i ) {
 	    if( empty($this->plots[$i]) || !isset($this->plots[$i]) ) {
-		JpGraphError::RaiseL(2011,$i);//("Acc bar plot element nbr $i is undefined or empty.");
+		JpGraphError::Raise("Acc bar plot element nbr $i is undefined or empty.");
 	    }
 	}
 	$this->numpoints = $plots[0]->numpoints;		
@@ -641,12 +672,12 @@ class AccBarPlot extends BarPlot {
 
 //---------------
 // PUBLIC METHODS	
-    function Legend(&$graph) {
+    function Legend($graph) {
 	$n = count($this->plots);
 	for( $i=$n-1; $i >= 0; --$i ) {
 	    $c = get_class($this->plots[$i]);
-	    if( !is_a($this->plots[$i],'BarPlot') ) {
-		JpGraphError::RaiseL(2012,$c);//('One of the objects submitted to AccBar is not a BarPlot. Make sure that you create the AccBar plot from an array of BarPlot objects.(Class='.$c.')');
+	    if( !($this->plots[$i] instanceof BarPlot) ) {
+		JpGraphError::Raise('One of the objects submitted to AccBar is not a BarPlot. Make sure that you create the AccBar plot from an array of BarPlot objects.(Class='.$c.')');
 	    }	    
 	    $this->plots[$i]->DoLegend($graph);
 	}
@@ -723,7 +754,7 @@ class AccBarPlot extends BarPlot {
     }
 
     // Stroke acc bar plot
-    function Stroke(&$img,&$xscale,&$yscale) {
+    function Stroke($img,$xscale,$yscale) {
 	$pattern=NULL;
 	$img->SetLineWeight($this->weight);
 	for($i=0; $i < $this->numpoints-1; $i++) {
@@ -783,7 +814,7 @@ class AccBarPlot extends BarPlot {
 			if( is_array($this->bar_shadow_color) ) {
 			    $numcolors = count($this->bar_shadow_color);
 			    if( $numcolors == 0 ) {
-				JpGraphError::RaiseL(2013);//('You have specified an empty array for shadow colors in the bar plot.');
+				JpGraphError::Raise('You have specified an empty array for shadow colors in the bar plot.');
 			    }
 			    $img->PushColor($this->bar_shadow_color[$i % $numcolors]);
 			}
@@ -822,12 +853,18 @@ class AccBarPlot extends BarPlot {
 		} else {
 		    if (is_array($this->plots[$j]->fill_color) ) {
 			$numcolors = count($this->plots[$j]->fill_color);
-			$img->SetColor($this->plots[$j]->fill_color[$i % $numcolors]);
+			$fillcolor = $this->plots[$j]->fill_color[$i % $numcolors];
+			// If the bar is specified to be non filled then the fill color is false
+			if( $fillcolor !== false ) 
+			    $img->SetColor($this->plots[$j]->fill_color[$i % $numcolors]);
 		    }
 		    else {
-			$img->SetColor($this->plots[$j]->fill_color);
+			$fillcolor = $this->plots[$j]->fill_color;
+			if( $fillcolor !== false ) 
+			    $img->SetColor($this->plots[$j]->fill_color);
 		    }
-		    $img->FilledPolygon($pts);
+		    if( $fillcolor !== false )
+			$img->FilledPolygon($pts);
 		    $img->SetColor($this->plots[$j]->color);
 		}				  
 
@@ -864,7 +901,13 @@ class AccBarPlot extends BarPlot {
 		    }	    	    
 		    if( ! empty($this->plots[$j]->csimtargets[$i]) ) {
 			$this->csimareas.= '<area shape="poly" coords="'.$csimcoord.'" '; 
-			$this->csimareas.= " href=\"".$this->plots[$j]->csimtargets[$i]."\"";
+			$this->csimareas.= " href=\"".$this->plots[$j]->csimtargets[$i]."\" ";
+
+			if( ! empty($this->plots[$j]->csimwintargets[$i]) ) {
+			    $this->csimareas.= " target=\"".$this->plots[$j]->csimwintargets[$i]."\" ";
+			}
+
+			$sval='';
 			if( !empty($this->plots[$j]->csimalts[$i]) ) {
 			    $sval=sprintf($this->plots[$j]->csimalts[$i],$this->plots[$j]->coords[0][$i]);
 			    $this->csimareas .= " title=\"$sval\" ";
@@ -875,7 +918,9 @@ class AccBarPlot extends BarPlot {
 
 		$pts[] = $pts[0];
 		$pts[] = $pts[1];
+		$img->SetLineWeight($this->plots[$j]->line_weight);
 		$img->Polygon($pts);
+		$img->SetLineWeight(1);
 	    }
 		
 	    // Draw labels for each acc.bar

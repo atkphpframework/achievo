@@ -162,8 +162,8 @@
       $title = key($data);
 
       // Setup the basic parameters for the graph
-      $graphwidth   = atkconfig("graph_width",550);
-      $graphheight  = round($graphwidth / 650 * 250);
+      $graphwidth   = atkconfig("graph_width",750);
+      $graphheight  = round($graphwidth / 750 * 300);
 
       $datay=array_values($dataset);
       $datax=array_keys($dataset);
@@ -240,8 +240,8 @@
 
       $defcolors = array('red', 'blue', 'green', 'yellow', 'black');
 
-      $graphwidth   = atkconfig("graph_width",650);
-      $graphheight  = round($graphwidth / 650 * 250);
+      $graphwidth   = atkconfig("graph_width",750);
+      $graphheight  = round($graphwidth / 750 * 300);
 
       $graph        = new  Graph($graphwidth,$graphheight,"auto");
 
@@ -301,8 +301,8 @@
       $dataset = reset($data);
       $title = key($data);
 
-      $graphwidth = atkconfig("graph_width",550);
-      $graphheight = round($graphwidth / 550 * 250);
+      $graphwidth = atkconfig("graph_width",750);
+      $graphheight = round($graphwidth / 750 * 300);
 
       $graph = new PieGraph($graphwidth,$graphheight,"auto");
 
@@ -320,7 +320,14 @@
       $p1 = new PiePlot(array_values($dataset));
 
       $p1->setCenter(0.26,0.5);
-      $p1->SetLegends(array_keys($dataset));
+      $legends = array_keys($dataset);
+      for($i=0,$_i=count($legends);$i<$_i;$i++)
+      {
+        if(strlen($legends[$i])>45)
+          $legends[$i] = substr($legends[$i],0,45)."...";
+      }
+
+      $p1->SetLegends($legends);
 
       $graph->Add($p1);
 

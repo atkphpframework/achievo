@@ -3,8 +3,7 @@
 // File:	JPG-CONFIG.INC
 // Description:	Configuration file for JpGraph library
 // Created: 	2004-03-27
-// Author:	Johan Persson (johanp@aditus.nu)
-// Ver:		$Id$
+// Ver:		$Id: jpg-config.inc.php 781 2006-10-08 08:07:47Z ljp $
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
@@ -64,6 +63,13 @@ DEFINE("CSIMCACHE_HTTP_DIR","csimcache/");
 // either FF_CHINESE or FF_BIG5
 DEFINE('CHINESE_TTF_FONT','bkai00mp.ttf');
 
+// Special unicode greek language support
+DEFINE("LANGUAGE_GREEK",false);
+
+// If you are setting this config to true the conversion of greek characters
+// will assume that the input text is windows 1251 
+DEFINE("GREEK_FROM_WINDOWS",false);
+
 // Special unicode cyrillic language support
 DEFINE("LANGUAGE_CYRILLIC",false);
 
@@ -72,11 +78,43 @@ DEFINE("LANGUAGE_CYRILLIC",false);
 // false it will assume koi8-r
 DEFINE("CYRILLIC_FROM_WINDOWS",false);
 
+// The following constant is used to auto-detect
+// whether cyrillic conversion is really necessary
+// if enabled. Just replace 'windows-1251' with a variable
+// containing the input character encoding string
+// of your application calling jpgraph.
+// A typical such string would be 'UTF-8' or 'utf-8'.
+// The comparison is case-insensitive.
+// If this charset is not a 'koi8-r' or 'windows-1251'
+// derivate then no conversion is done.
+//
+// This constant can be very important in multi-user
+// multi-language environments where a cyrillic conversion
+// could be needed for some cyrillic people
+// and resulting in just erraneous conversions
+// for not-cyrillic language based people.
+//
+// Example: In the free project management
+// software dotproject.net $locale_char_set is dynamically
+// set by the language environment the user has chosen.
+//
+// Usage: DEFINE('LANGUAGE_CHARSET', $locale_char_set);
+//
+// where $locale_char_set is a GLOBAL (string) variable
+// from the application including JpGraph.
+// 
+DEFINE('LANGUAGE_CHARSET', null);
+
 // Japanese TrueType font used with FF_MINCHO, FF_PMINCHO, FF_GOTHIC, FF_PGOTHIC
 DEFINE('MINCHO_TTF_FONT','ipam.ttf');
 DEFINE('PMINCHO_TTF_FONT','ipamp.ttf');
 DEFINE('GOTHIC_TTF_FONT','ipag.ttf');
 DEFINE('PGOTHIC_TTF_FONT','ipagp.ttf');
+
+// Assume that Japanese text have been entered in EUC-JP encoding.
+// If this define is true then conversion from EUC-JP to UTF8 is done 
+// automatically in the library using the mbstring module in PHP.
+DEFINE('ASSUME_EUCJP_ENCODING',false);
 
 //------------------------------------------------------------------------
 // Various JpGraph Settings. Adjust accordingly to your
@@ -84,26 +122,14 @@ DEFINE('PGOTHIC_TTF_FONT','ipagp.ttf');
 // default (Enable by setting USE_CACHE to true)
 //------------------------------------------------------------------------
 
+// Deafult locale for error messages.
+// This defaults to English = 'en'
+DEFINE('DEFAULT_ERR_LOCALE','en');
+
 // Deafult graphic format set to "auto" which will automatically
 // choose the best available format in the order png,gif,jpeg
 // (The supported format depends on what your PHP installation supports)
 DEFINE("DEFAULT_GFORMAT","auto");
-
-// Should the image be a truecolor image? 
-// Note 1: Has only effect with GD 2.0.1 and above.
-// Note 2: GD 2.0.1 + PHP 4.0.6 on Win32 crashes when trying to use 
-// trucolor.
-// Note 3: MUST be enabled to get background images working with GD2
-DEFINE('USE_TRUECOLOR',true);
-
-// Specify what version of the GD library is installed.
-// If this is set to 'auto' the version will be automatically 
-// determined.
-// However since determining the library takes ~1ms you can also 
-// manually specify the version if you know what version you have. 
-// This means that you should 
-// set this define to true if you have GD 2.x installed to save 1ms. 
-DEFINE("USE_LIBRARY_GD2",'auto');
 
 // Should the cache be used at all? By setting this to false no
 // files will be generated in the cache directory.  
@@ -125,18 +151,18 @@ DEFINE("READ_CACHE",true);
 // always return an image even in case of errors.
 DEFINE("USE_IMAGE_ERROR_HANDLER",true);
 
-// Determine if the library should also setup the default PHP
-// error handler to generate a graphic error mesage. This is useful
-// during development to be able to see the error message as an image
-// instead as a "red-cross" in a page where an image is expected.
-DEFINE("INSTALL_PHP_ERR_HANDLER",false);
-
 // Should the library examin the global php_errmsg string and convert
 // any error in it to a graphical representation. This is handy for the
 // occasions when, for example, header files cannot be found and this results
 // in the graph not being created and just a "red-cross" image would be seen.
 // This should be turned off for a production site.
-DEFINE("CATCH_PHPERRMSG",false);
+DEFINE("CATCH_PHPERRMSG",true);
+
+// Determine if the library should also setup the default PHP
+// error handler to generate a graphic error mesage. This is useful
+// during development to be able to see the error message as an image
+// instead as a "red-cross" in a page where an image is expected.
+DEFINE("INSTALL_PHP_ERR_HANDLER",false);
 
 // If the color palette is full should JpGraph try to allocate
 // the closest match? If you plan on using background images or
@@ -151,7 +177,7 @@ DEFINE("USE_APPROX_COLORS",true);
 
 // Should usage of deprecated functions and parameters give a fatal error?
 // (Useful to check if code is future proof.)
-DEFINE("ERR_DEPRECATED",false);
+DEFINE("ERR_DEPRECATED",true);
 
 // Should the time taken to generate each picture be branded to the lower
 // left in corner in each generated image? Useful for performace measurements

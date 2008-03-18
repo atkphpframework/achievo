@@ -1,9 +1,8 @@
 <?php
 /*=======================================================================
-// File: 	ERRMSG_EN.INC.PHP
+// File: 	EN.INC.PHP
 // Description: English language file for error messages
 // Created: 	2006-01-25
-// Author:	Johan Persson (johanp@aditus.nu)
 // Ver:		$Id$
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
@@ -16,14 +15,16 @@ $_jpg_messages = array(
 /*
 ** Headers already sent error. This is formatted as HTML different since this will be sent back directly as text
 */
-10  => array('<table border=1><tr><td><font color=darkred size=4><b>JpGraph Error:</b> 
-HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at line <b>%d</b>.</font></td></tr><tr><td><b>Explanation:</b><br>HTTP headers have already been sent back to the browser indicating the data as text before the library got a chance to send it\'s image HTTP header to this browser. This makes it impossible for the library to send back image data to the browser (since that would be interpretated as text by the browser and show up as junk text).<p>Most likely you have some text in your script before the call to <i>Graph::Stroke()</i>. If this texts gets sent back to the browser the browser will assume that all data is plain text. Look for any text, even spaces and newlines, that might have been sent back to the browser. <p>For example it is a common mistake to leave a blank line before the opening "<b>&lt;?php</b>".</td></tr></table>',2),
+10  => array('<table border="1"><tr><td style="color:darkred; font-size:1.2em;"><b>JpGraph Error:</b> 
+HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at line <b>%d</b>.</td></tr><tr><td><b>Explanation:</b><br>HTTP headers have already been sent back to the browser indicating the data as text before the library got a chance to send it\'s image HTTP header to this browser. This makes it impossible for the library to send back image data to the browser (since that would be interpretated as text by the browser and show up as junk text).<p>Most likely you have some text in your script before the call to <i>Graph::Stroke()</i>. If this texts gets sent back to the browser the browser will assume that all data is plain text. Look for any text, even spaces and newlines, that might have been sent back to the browser. <p>For example it is a common mistake to leave a blank line before the opening "<b>&lt;?php</b>".</td></tr></table>',2),
 
 /*
 ** Setup errors
 */
 11 => array('No path specified for CACHE_DIR. Please specify CACHE_DIR manually in jpg-config.inc',0),
 12 => array('No path specified for TTF_DIR and path can not be determined automatically. Please specify TTF_DIR manually (in jpg-config.inc).',0),
+13 => array('The installed PHP version (%s) is not compatible with this release of the library. The library requires at least PHP version %s',2),
+
 
 /*
 **  jpgraph_bar
@@ -252,7 +253,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 
 24001 => array('FuncGenerator : No function specified. ',0),
 24002 => array('FuncGenerator : Syntax error in function specification ',0),
-
+24003 => array('DateScaleUtils: Unknown tick type specified in call to GetTicks()',0),
 /*
 **  jpgraph
 */
@@ -332,8 +333,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 25067 => array('Your manually specified scale and ticks is not correct. The scale seems to be too small to hold any of the specified tick marks.',0),
 25068 => array('A plot has an illegal scale. This could for example be that you are trying to use text auto scaling to draw a line plot with only one point or that the plot area is too small. It could also be that no input data value is numeric (perhaps only \'-\' or \'x\')',0),
 25069 => array('Grace must be larger then 0',0),
-
-25070 => array('Your data contains non-numeric values.',0),
+25070 => array('Either X or Y data arrays contains non-numeric values. Check that the data is really specified as numeric data and not as strings. It is an error to specify data for example as \'-2345.2\' (using quotes).',0),
 25071 => array('You have specified a min value with SetAutoMin() which is larger than the maximum value used for the scale. This is not possible.',0),
 25072 => array('You have specified a max value with SetAutoMax() which is smaller than the minimum value used for the scale. This is not possible.',0),
 25073 => array('Internal error. Integer scale algorithm comparison out of bound (r=%f)',1),
@@ -394,6 +394,8 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 25124 => array('The input data array must have consecutive values from position 0 and forward. The given y-array starts with empty values (NULL)',0),
 25125 => array('Illegal direction for static line',0),
 25126 => array('Can\'t create truecolor image. Check that the GD2 library is properly setup with PHP.',0),
+25127 => array('The library has been configured for automatic encoding conversion of Japanese fonts. This requires that PHP has the mb_convert_encoding() function. Your PHP installation lacks this function (PHP needs the "--enable-mbstring" when compiled).',0),
+25128 => array('The function imageantialias() is not available in your PHP installation. Use the GD version that comes with PHP and not the standalone version.',0),
 
 /*
 **---------------------------------------------------------------------------------------------
@@ -405,27 +407,27 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 **  jpgraph_table 
 */
 
-24001 => array('GTextTable: Invalid argument to Set(). Array argument must be 2 dimensional',0),
-24002 => array('GTextTable: Invalid argument to Set()',0),
-24003 => array('GTextTable: Wrong number of arguments to GTextTable::SetColor()',0),
-24004 => array('GTextTable: Specified cell range to be merged is not valid.',0),
-24005 => array('GTextTable: Cannot merge already merged cells in the range: (%d,%d) to (%d,%d)',4),
-24006 => array('GTextTable: Column argument = %d is outside specified table size.',1),
-24007 => array('GTextTable: Row argument = %d is outside specified table size.',1),
-24008 => array('GTextTable: Column and row size arrays must match the dimensions of the table',0),
-24009 => array('GTextTable: Number of table columns or rows are 0. Make sure Init() or Set() is called.',0),
-24010 => array('GTextTable: No alignment specified in call to SetAlign()',0),
-24011 => array('GTextTable: Unknown alignment specified in SetAlign(). Horizontal=%s, Vertical=%s',2),
-24012 => array('GTextTable: Internal error. Invalid alignment specified =%s',1),
-24013 => array('GTextTable: Argument to FormatNumber() must be a string.',0),
-24014 => array('GTextTable: Table is not initilaized with either a call to Set() or Init()',0),
-24015 => array('GTextTable: Cell image constrain type must be TIMG_WIDTH or TIMG_HEIGHT',0),
+27001 => array('GTextTable: Invalid argument to Set(). Array argument must be 2 dimensional',0),
+27002 => array('GTextTable: Invalid argument to Set()',0),
+27003 => array('GTextTable: Wrong number of arguments to GTextTable::SetColor()',0),
+27004 => array('GTextTable: Specified cell range to be merged is not valid.',0),
+27005 => array('GTextTable: Cannot merge already merged cells in the range: (%d,%d) to (%d,%d)',4),
+27006 => array('GTextTable: Column argument = %d is outside specified table size.',1),
+27007 => array('GTextTable: Row argument = %d is outside specified table size.',1),
+27008 => array('GTextTable: Column and row size arrays must match the dimensions of the table',0),
+27009 => array('GTextTable: Number of table columns or rows are 0. Make sure Init() or Set() is called.',0),
+27010 => array('GTextTable: No alignment specified in call to SetAlign()',0),
+27011 => array('GTextTable: Unknown alignment specified in SetAlign(). Horizontal=%s, Vertical=%s',2),
+27012 => array('GTextTable: Internal error. Invalid alignment specified =%s',1),
+27013 => array('GTextTable: Argument to FormatNumber() must be a string.',0),
+27014 => array('GTextTable: Table is not initilaized with either a call to Set() or Init()',0),
+27015 => array('GTextTable: Cell image constrain type must be TIMG_WIDTH or TIMG_HEIGHT',0),
 
 /*
 **  jpgraph_windrose
 */
 
-22001 => array('Total percentage for all windrose legs in a windrose plot can not exceed 100% !\n(Current max is: %d)',1),
+22001 => array('Total percentage for all windrose legs in a windrose plot can not exceed 100%% !\n(Current max is: %d)',1),
 22002 => array('Graph is too small to have a scale. Please make the graph larger.',0),
 22004 => array('Label specification for windrose directions must have 16 values (one for each compass direction).',0),
 22005 => array('Line style for radial lines must be on of ("solid","dotted","dashed","longdashed") ',0),
@@ -444,7 +446,7 @@ HTTP headers have already been sent.<br>Caused by output from file <b>%s</b> at 
 22018 => array('You have specified data for the same compass direction twice, once with text and once with index (Index=%d)',1),
 22019 => array('Index for direction must be between 0 and 15. You can\'t specify angles for a Regular Windplot, only index and compass directions.',0),
 22020 => array('Windrose plot is too large to fit the specified Graph size. Please use WindrosePlot::SetSize() to make the plot smaller or increase the size of the Graph in the initial WindroseGraph() call.',0),
-
+22021 => array('It is only possible to add Text, IconPlot or WindrosePlot to a Windrose Graph',0),
 /*
 **  jpgraph_odometer
 */
