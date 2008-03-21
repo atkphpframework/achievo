@@ -12,6 +12,15 @@ Changes in Achievo 1.4
 + Added copying recurring items. Updated version.inc to 1.4.0 dev [Sandy,Jeroen]
 + Added email functionallity to scheduler so employees get notified by the
   scheduler by email when an event is triggered. [Guido]
++ Added scheduler email system which for example sends an email to you
+  when you are invited to an appointment in the scheduler. [Sandy,Guido]
+* Fixed some PHP Notices. [Guido]
+* Fixed minor layout issues in the scheduler. [Guido]
+* Added missing dutch translations into the scheduler. [Guido]
+* Fixed some scheduler email template codes not being parsed. [Guido]
+* Fixed SQL errors when performing operations on scheduler attendees. [Guido]
+* Partially fixed issues with recurring appointments that end after # times.
+  [Guido]
 * Now we use the recipients language, when sending timeguard reminder email
   to an employee. [Yury]
 * Fixed adding todos which caused an SQL error. [Dennis]

@@ -21,7 +21,7 @@
       $this->assertEqual(schedulertools::weekdaynumbertoflag(5),32,'Weekday Friday');
       $this->assertEqual(schedulertools::weekdaynumbertoflag(6),64,'Weekday Saturday');
     }
-    
+
     function test_isLeapYear()
     {
       $this->assertTrue(schedulertools::isLeapYear(2000),' 2000 is a leapyear');
@@ -29,7 +29,7 @@
       $this->assertFalse(schedulertools::isLeapYear(2100),'2100 is not a leapyear');
       $this->assertFalse(schedulertools::isLeapYear(2300),'2300 is not a leapyear');
     }
-    
+
     function test_dayOfWeek()
     {
       $this->assertEqual(schedulertools::dayOfWeek(2,12,2007),1,'Sunday - '.schedulertools::dayOfWeek(2,12,2007));
@@ -40,7 +40,7 @@
       $this->assertEqual(schedulertools::dayOfWeek(7,12,2007),6,'Friday - '.schedulertools::dayOfWeek(7,12,2007));
       $this->assertEqual(schedulertools::dayOfWeek(8,12,2007),7,'Saturday - '.schedulertools::dayOfWeek(8,12,2007));
     }
-    
+
     function test_nthday()
     {
        $this->assertEqual(schedulertools::nthDay(1,1,4,1997),6,'Daylight Savings Time begins - Sunday 6th April 1997 - '.schedulertools::nthDay(1,1,4,1997));
@@ -50,15 +50,15 @@
        $this->assertEqual(schedulertools::nthDay(5,4,12,1997),31,'5th Wednesday in December 1997 - Wednesday 31st December 1997 - '.schedulertools::nthDay(5,4,12,1997));
        $this->assertEqual(schedulertools::nthDay(-1,1,10,1997),26,'Daylight Savings Time ends - Sunday 26th October 1997 - '.schedulertools::nthDay(-1,1,10,1997));
     }
-    
-    
+
+
     function test_getItemStartDate()
     {
       $rec = array('startdate'=>array('day'=>1,'month'=>1,'year'=>2008));
       $date = schedulertools::getItemStartDate($rec);
       $this->assertEqual(1199185200, $date, "Item startdate is 2008-01-01 - $date");
     }
-    
+
     function test_getItemEndDate()
     {
       $rec = array('recur'=>'once',
@@ -67,7 +67,7 @@
                                    'end_choice'=>1));
       $date = schedulertools::getItemEndDate($rec);
       $this->assertEqual(1230807600, $date, "Item enddate is 2009-01-01");
-      $rec['recur']='monthly';                             
+      $rec['recur']='monthly';
       $date = schedulertools::getItemEndDate($rec);
       $this->assertEqual(2145870000, $date, "Item has no enddate");
       $rec['cyclus']['end_choice']=2;
@@ -77,7 +77,7 @@
       $date = schedulertools::getItemEndDate($rec);
       $this->assertNull($date, "Item enddate ends after x times");
     }
-    
+
     function test_showItemOnce()
     {
       $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
@@ -92,7 +92,7 @@
       $checkdate = time();
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show once item on 1 oct 2006');
     }
-    
+
     /**
      *  0 - Every x days
      *  1 - Every workday
@@ -117,13 +117,13 @@
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show daily item (every x days)');
 
       $item['cyclus']=array("daily_choice"=>2,
-                            "cyclus_enddate"=>array("day"=>5,"month"=>10,"year"=>2006));     
+                            "cyclus_enddate"=>array("day"=>5,"month"=>10,"year"=>2006));
       $checkdate = mktime(12,0,0,10,1,2006);
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show daily item (every workday)');
       $checkdate = mktime(12,0,0,10,2,2006);
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show daily item (every workday)');
     }
-    
+
     /**
      * - Every x weeks
      * - weekday (flag)
@@ -146,7 +146,7 @@
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show weekly item');
       $checkdate = mktime(0,0,0,10,4,2006);
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t show weekly item, day is not a monday or tuesday');
-      
+
       $item["cyclus"]=array("cyclus_enddate"=>array("day"=>31,"month"=>10,"year"=>2006),
                       'end_choice'=>2,
                       "weekly_every"=>2,
@@ -158,7 +158,7 @@
       $checkdate = mktime(0,0,0,10,17,2006);
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show weekly item');
     }
-    
+
     /**
      * - Day x of every x months
      * - xth weekday of x months
@@ -183,8 +183,8 @@
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show Monthly item');
       $checkdate = mktime(0,0,0,12,1,2006);
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show Monthly item');
-              
-              
+
+
       $item['cyclus']=array("monthly_choice"=>2,
                             "cyclus_enddate"=>array("day"=>10,"month"=>10,"year"=>2007),
                               'end_choice'=>2,
@@ -198,7 +198,7 @@
       $checkdate = mktime(0,0,0,12,17,2006);
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show Monthly item');
     }
-    
+
     /**
      * - every month, day
      * - xth weekday of month
@@ -234,10 +234,10 @@
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show Yearly item');
       $checkdate = mktime(0,0,0,2,17,2008);
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show Yearly item');
-    
+
     }
-    
-    
+
+
     function test_getDates_once()
     {
        // Once item on the same day
@@ -262,7 +262,7 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertFalse($ret, "Once item on multiple days");
     }
-    
+
     /**
      *  0 - Every x days
      *  1 - Every workday
@@ -297,7 +297,7 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Daily item, every workday");
     }
-    
+
     /**
      * - Every x weeks
      * - weekday (flag)
@@ -328,7 +328,7 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Weekly item, every 2 weeks on Monday, Tuesday");
     }
-    
+
      /**
      * - Day x of every x months
      * - xth weekday of x months
@@ -349,7 +349,7 @@
       $dates = schedulertools::getDates($item,"2008-09-15","2009-10-20");
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Monthly item, day 1 of every 2 months");
-              
+
       $item['cyclus']=array("monthly_choice"=>2,
                               'end_choice'=>2,
                             "cyclus_enddate"=>array("day"=>10,"month"=>10,"year"=>2009),
@@ -372,14 +372,13 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Monthly item, last sunday of every 2 months");
     }
-    
+
      /**
      * - every month, day
      * - xth weekday of month
      */
     function test_getDates_yearly()
     {
-      atkdebug("TEST YEARLY DATES");
        $item = array("startdate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "enddate"=>array("day"=>1,"month"=>10,"year"=>2006),
               "starttime"=>"10:00",
@@ -406,7 +405,7 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Yearly item, every 3th sunday of februari");
 
-    
+
       $item['cyclus']=array("yearly_choice"=>2,
                               "cyclus_enddate"=>array("day"=>10,"month"=>10,"year"=>2009),
                               'end_choice'=>2,
@@ -418,11 +417,11 @@
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Yearly item, every last sunday of februari");
 
-    
-    
+
+
     }
-    
-    
-    
+
+
+
 
   }

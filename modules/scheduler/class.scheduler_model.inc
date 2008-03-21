@@ -3,7 +3,7 @@ atkimport("modules.scheduler.utils.schedulertools");
 
 class scheduler_model
 {
-  
+
   /**
   * @var int $m_day Day
   */
@@ -72,14 +72,14 @@ class scheduler_model
 
   var $m_showTodo = 0;
   var $m_employeeLookup = array();
-  
-  
-  
+
+
+
   function scheduler_model()
   {
-    
+
   }
-  
+
   function getInstance()
   {
     static $s_in = null;
@@ -90,7 +90,7 @@ class scheduler_model
     }
     return $s_in;
   }
-  
+
   /**
   * Set view user
   * @param string $user Current user
@@ -102,17 +102,16 @@ class scheduler_model
     {
       $user = array();
     }
-      
+
     // other string => only that user
     if (!is_array($user))
     {
       $user = array((string) $user);
     }
-      
+
     $this->m_viewUsers = $user;
-    atk_var_dump($user,"scheduler_model::setViewUser");
   }
-  
+
   function setView($view)
   {
     $this->m_view = $view;
@@ -125,7 +124,7 @@ class scheduler_model
   * @param int $year Year
   */
   function setViewDate($date)
-  { 
+  {
     if($date=="")
     {
       $date = date("Y-m-d");
@@ -139,22 +138,22 @@ class scheduler_model
     $this->m_viewdate = sprintf('%04d-%02d-%02d',$this->m_year,$this->m_month,$this->m_day);
     $this->m_weeknumber = $this->getWeekNumber($this->m_day,$this->m_month,$this->m_year);
   }
-  
+
   function getViewDate()
   {
     return $this->m_viewdate;
   }
-  
+
   function getDay()
   {
     return $this->m_day;
   }
-  
+
   function getMonth()
   {
     return $this->m_month;
   }
-  
+
   function getYear()
   {
     return $this->m_year;
@@ -181,7 +180,7 @@ class scheduler_model
       $this->m_small_viewdate = sprintf('%04d-%02d-%02d',$year,$month,$day);
     }
   }
-  
+
   /**
   * Set the calendar start day
   * @param int $day Startday 0=Sunday, 1=Monday
@@ -190,7 +189,7 @@ class scheduler_model
   {
     $this->m_calendarStartDay = $day;
   }
-  
+
   /**
    * Get weekNumber
    *
@@ -208,7 +207,7 @@ class scheduler_model
     $weeknumber = weeknumber::getWeeknumber($timestamp,$startday,$firstweekcontains,$full);
     return $weeknumber;
   }
-  
+
   /**
   * Get the legend of the calendar
   * @return string html table with the calendar legend
@@ -216,19 +215,19 @@ class scheduler_model
   function getLegend()
   {
     static $rows = null;
-    
+
     if(is_null($rows))
     {
-      
+
       $g_db = &atkgetdb();
-  
+
       // get the defined colors for each scheduler-type
       $query = "SELECT * FROM scheduler_category ORDER BY id";
       $rows = $g_db->getRows($query);
     }
     return $rows;
   }
-  
+
   function getLegendColors()
   {
     static $itemColors =  null;
@@ -241,17 +240,17 @@ class scheduler_model
         $itemColors[$nrows[$i]["id"]]["desc"] = $nrows[$i]["description"];
         $itemColors[$nrows[$i]["id"]]["fore"] = $nrows[$i]["fgcolor"];
         $itemColors[$nrows[$i]["id"]]["back"] = $nrows[$i]["bgcolor"];
-        
+
       }
     }
     return $itemColors;
   }
-  
+
   function renderLegend()
   {
     $nrows = $this->getLegend();
     if(count($nrows)==0) return "";
-    
+
     $legend = '<div style="border: 1px solid black; background: white none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-size: 1em;">
                  <dl><b>'.atktext("legend","scheduler").':</b></dl>
                <div style="margin-left: 2em;">';
@@ -265,8 +264,8 @@ class scheduler_model
     $legend.='</div><br></div>';
     return $legend;
   }
-  
- 
+
+
   /**
    * Get Items for the small scheduler
    *
@@ -326,11 +325,10 @@ class scheduler_model
       $this->addTodos(true,$dates,$startdate,$enddate);
     return $dates;
   }
-  
+
   function getSchedulerUsers()
   {
     $users = $this->m_viewUsers;
-    atk_var_dump($users,"GET SCHEDULER USERS");
     $realUsers=array();
     // Check for groups
     for($i=0,$_i=count($users);$i<$_i;$i++)
@@ -341,7 +339,7 @@ class scheduler_model
         $groupUsers = $this->groupToUsers($group_id);
         array_merge($realUsers,$groupUsers);
       }
-      else 
+      else
       {
         $realUsers[] = $users[$i];
       }
@@ -358,15 +356,12 @@ class scheduler_model
   */
  function getItems($startdate="",$enddate="",$user=array())
   {
-    atkdebug('scheduler_model::getItems -> Get scheduler items for:');
-    atk_var_dump($user,"USERS");
     $db = &atkGetDb();
 
     if(count($user)==0)
     {
       $user = $this->getSchedulerUsers();
     }
-    atk_var_dump($user,"USERS2");
 
     $this->m_alldayItems = array();
     $this->m_appointmentItems = array();
@@ -455,7 +450,7 @@ class scheduler_model
             $tmp_nrow["starttime"] = "00:00:00";
           }
           $this->m_appointmentItems[date("Y-m-d",$currenttime)][] = $tmp_nrow;
-          
+
         }
       }
     }
@@ -473,7 +468,7 @@ class scheduler_model
     }
 
   }
-  
+
   function getAllDayItems($date="")
   {
     if($date=="")
@@ -486,7 +481,7 @@ class scheduler_model
     }
     return array();
   }
-  
+
   function getAppointmentItems($date="")
   {
     if($date=="")
@@ -498,7 +493,7 @@ class scheduler_model
       return $this->m_appointmentItems[$date];
     }
     return array();
-    
+
   }
 
   /**
@@ -573,7 +568,6 @@ class scheduler_model
         {
           foreach($names as $name)
           {
-            atk_var_dump($name,"NAME BIRTHDAY");
             $date = date("Y-m-d",mktime(0,0,0,$i,$day,$this->m_year));
             if($compact)
             {
@@ -712,8 +706,8 @@ class scheduler_model
       return substr($time,0,2).":".$minutes;
     }
   }
-  
-  
+
+
   /**
   * Creates a html form with a date/user selector
   * @return string html form with a date/user selector
@@ -730,7 +724,7 @@ class scheduler_model
     $form .= '</form>'."\n";
     return $form;
   }
-  
+
   /**
   * Return the initalDate for a view
   * @return array Initial Date
@@ -751,7 +745,7 @@ class scheduler_model
     }
     return $initial_date;
   }
-  
+
 
 /**
    * Gets employees. Used in getEmployeesInSelect and getEmployeesInCheckboxes
@@ -771,7 +765,7 @@ class scheduler_model
     $records = $g_db->getrows($sql);
     return $records;
   }
-  
+
   /**
    * Gets the employee selector as a form with checkboxes
    *
@@ -787,10 +781,10 @@ class scheduler_model
     $buff.= '<input type="submit" value="'.atkText("refresh","scheduler").'">'."\n";
     $buff.= '<br>';
     $buff.= '</form>';
-    
+
     return $buff;
   }
-  
+
  /**
   * Get Employee selector input elements as checkboxes
   * @param array $default wich items should be checked?
@@ -806,11 +800,8 @@ class scheduler_model
     {
       $default = $this->m_viewUsers;
     }
-    atk_var_dump($default,"DEFAULT CHECKED");
-    
-    $employee_code = '<ul class="employees_checklist">';
-          $is_default_all = in_array('all', $default);
 
+    $employee_code = '<ul class="employees_checklist">';
 
     if($show_groups || $show_all)
     {
@@ -820,7 +811,7 @@ class scheduler_model
           'lastname'  => '',
         ));
     }
-    
+
     // Add groups
     if($show_groups)
     {
@@ -839,55 +830,55 @@ class scheduler_model
         }
       }
     }
-    
-       
-          
-          
-    // add the 'all' option to top of records 
+
+
+
+
+    // add the 'all' option to top of records
     if($show_all)
-    {    
+    {
       array_unshift($records, array(
         'id'        => 'all',
         'firstname' => '',
         'lastname'  => '<strong>'.atkText("allusers","scheduler").'</strong>',
       ));
     }
-    
-    
-    
+
+
+
     // build up the html
     for($i=0;$i<count($records);$i++)
     {
-      if($records[$i]["id"]=="spacer") 
+      if($records[$i]["id"]=="spacer")
       {
         $employee_code.="<hr>";
         continue;
       }
-      
+
       $sel='';
       if(in_array($records[$i]["id"],$default))
       {
         $sel="checked";
       }
-      
+
       // name format
       $id    = $records[$i]["id"];
       $name  = $records[$i]["lastname"];
       if (!empty($records[$i]["firstname"])) {
         $name .= ', '.$records[$i]["firstname"];
       }
-      
+
       // checkboxes
       $input = "<input id=\"user_{$id}\" type=\"checkbox\" value=\"{$id}\" name=\"user[]\" {$sel} />";
       $label = "<label for=\"user_{$id}\">{$input}{$name}</label>";
-      
+
       $employee_code .= "<li>{$label}</li>";
     }
-    
+
     $employee_code .= '</ul>';
     return $employee_code;
   }
-  
+
   function groupToUsers($group_id)
   {
      $userprefs = $this->getUserSchedulerPrefs();
@@ -908,14 +899,14 @@ class scheduler_model
        }
        return $members;
      }
-     else 
+     else
      {
        return array();
      }
-    
+
   }
-  
-  
+
+
 
    /**
    * Creates a small calendar with month navigation
@@ -934,11 +925,11 @@ class scheduler_model
        $year = $this->m_year;
     }
     $userprefs = $this->getUserSchedulerPrefs();
-    
+
     atkimport("modules.utils.dateutil");
     $days = dateutil::short_daylist();
     for($i=0;$i<=6;$i++)
-      $days[$i] = atkText($days[$i],"atk");
+      $days[$i] = substr(atkText($days[$i],"atk"), 0, 2);
 
     $months = dateutil::monthlist();
     for($i=1; $i<=12; $i++)
@@ -1061,12 +1052,12 @@ class scheduler_model
     $tmp.='</table>';
     return $tmp;
   }
-  
-  
+
+
   function getContractInfo()
   {
     static $contractInfo = null;
-    
+
     if(is_null($contractInfo))
     {
       $user = &atkGetUser();
@@ -1103,9 +1094,9 @@ class scheduler_model
     return $contractInfo;
   }
 
-  
-  
-  
+
+
+
   function getUserSchedulerPrefs()
   {
     $user = getUser();
@@ -1120,10 +1111,9 @@ class scheduler_model
     if($userprefs["showlunarphases"]=="") $userprefs["showlunarphases"]=false;
     if($userprefs["showtodo"]=="") $userprefs["showtodo"]=false;
     if($userprefs["showemployeebirthdays"]=="") $userprefs["showemployeebirthdays"]=false;
-    //atk_var_dump($userprefs,"USER PREFS");
     return $userprefs;
   }
-  
+
 }
 
 ?>

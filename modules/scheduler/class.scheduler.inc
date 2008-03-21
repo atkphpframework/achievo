@@ -337,24 +337,20 @@
         $isPrivate = $record["private"];
         $isAttendee = schedulertools::isAttendee($record["id"],$userid);
         $assistantFor = schedulertools::assistantFor($userid);
-        if($isAttendee) atkdebug("CURRENT USER IS AN ATTENDEE ($action)");
 
         if((!$isPrivate && (in_array($owner,$assistantFor) || parent::allowed("all_non_private"))) || $owner==$userid || ($action=="view" && $isAttendee))
         {
           // Item is not private and user is the owner or an assistant for the owner
           // or action is view and user is an attendee
-          atkdebug("USER IS ALLOWED");
           return true;
         }
         else
         {
-          atkdebug("USER IS NOT ALLOWED");
           return false;
         }
       }
       else
       {
-        atkdebug("PARENT ALLOWED");
         return parent::allowed($action,$record);
       }
     }
@@ -615,7 +611,7 @@
       $itemDate="";
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
-      if($this->m_postvars["confirmedit"]!="" && $this->m_postvars["confirmsingle"]!="")
+      if(atkArrayNvl($this->m_postvars, "confirmedit")!="" && atkArrayNvl($this->m_postvars, "confirmsingle")!="")
       {
          $this->action_editcopy();
       }
@@ -646,10 +642,9 @@
     {
       if ($this->m_postvars['call_original_editcopy'] == true)
       {
-        atkdebug("scheduler::preCopy() | calling original preCopy()");
         return;
       }
-      
+
       $starthour = ($rec["allday"]==0?$rec["starttime"]["hours"]:0);
       $startminute = ($rec["allday"]==0?$rec["starttime"]["minutes"]:0);
       $endhour = ($rec["allday"]==0?$rec["endtime"]["hours"]:0);
@@ -658,7 +653,6 @@
       $starttime = mktime($starthour,$startminute,0,$rec["startdate"]["month"],$rec["startdate"]["day"],$rec["startdate"]["year"]);
       $endtime = mktime($endhour,$endminute,0,$rec["enddate"]["month"],$rec["enddate"]["day"],$rec["enddate"]["year"]);
       $duration = $endtime-$starttime;
-      atkdebug("<h1>Item DATE: ".date("Y-m-d H:i",$this->m_itemDate)."</h1>");
       $rec["startdate"]["day"]=date("d",$this->m_itemDate);
       $rec["startdate"]["month"]=date("m",$this->m_itemDate);
       $rec["startdate"]["year"]=date("Y",$this->m_itemDate);
@@ -674,13 +668,11 @@
      */
     function action_editcopy(&$handler)
     {
-      if ($this->m_postvars['call_original_editcopy'] == true) 
+      if ($this->m_postvars['call_original_editcopy'] == true)
       {
-        atkdebug("scheduler::action_editcopy() | calling original action_editcopy()");
         return $handler->action_editcopy();
       }
-      
-      atkdebug("scheduler::action_editcopy()");
+
       $sessionmanager = &atkGetSessionManager();
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
       $itemDate = $sessionmanager->stackVar("itemdate");
@@ -719,7 +711,6 @@
 
       else
       {
-        atkdebug("No records found with selector: ".$this->m_postvars['atkselector']);
         $this->redirect();
       }
     }
@@ -736,7 +727,6 @@
       $confirmsingle = $sessionmanager->stackVar("confirmsingle");
       $itemDate = $sessionmanager->stackVar("itemdate");
       $scheduler_id = $sessionmanager->stackVar("scheduler_id");
-      atkdebug("<h1>UPDATE ".$confirmsingle."</h1>");
       if ($handler->m_postvars['atkcancel'] &&  $confirmsingle!="")
       {
          $record = $this->updateRecord();
@@ -976,7 +966,7 @@
       $total = $attendee_node->countDb("scheduler_attendees.scheduler_id = ".$scheduler_id." AND person_id = ".$person_id);
       if($total==0)
       {
-        $rec = array("scheduler_id"=>array("id"=>$scheduler_id),
+        $rec = array("scheduler_id"=>$scheduler_id,
                      "person_id"=>array("id"=>$person_id,
                                          "role"=>$role),
                      "status"=>$status);
@@ -997,14 +987,12 @@
       if(!is_null($userprefs_cache))
       {
         $userprefs = $userprefs_cache;
-        atkdebug("scheduler::getUserSchedulerPrefs($userid) -> USE CACHE");
       }
       else
       {
         $userprefsnode = &atkNew("module.scheduler.scheduler_userpreferences");
         $userprefs = $userprefsnode->selectDb("userid='".$userid."'");
         $userprefs_cache = $userprefs;
-        atk_var_dump($userprefs,"scheduler::getUserSchedulerPrefs($userid)");
       }
       return atkArrayNvl($userprefs, 0);
     }
@@ -1033,6 +1021,9 @@
     {
       $s_dates = &atkGetNode("scheduler.scheduler_dates");
       $s_dates->deleteDb("scheduler_id = '$id'");
+      $db = $this->getDb();
+      $db->query("UPDATE scheduler_scheduler SET lastdate = NULL, times = 0 WHERE id='$id'");
+      $db->commit();
     }
   }
 

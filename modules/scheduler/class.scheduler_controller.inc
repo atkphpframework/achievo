@@ -2,7 +2,7 @@
 
 class scheduler_controller
 {
-  
+
   function &getInstance()
   {
     static $s_ins;
@@ -28,8 +28,6 @@ class scheduler_controller
     */
   function handleRequest($request)
   {
-    atkdebug("scheduler_controller::handleRequest");
-
     $model = &atkinstance("module.scheduler.scheduler_model");
 
     $view = &$this->getView($request["view"]);
@@ -37,29 +35,28 @@ class scheduler_controller
     {
       $ret = $view->render($request);
     }
-    else 
+    else
     {
       $ret = atktext("view doesn't exist (".$request["view"]."view)");
     }
     return $ret;
   }
-  
+
   function &getView($view)
   {
     $valid_views = array("day","week","month","birthday","pim");
 
     if(in_array($view,$valid_views))
     {
-      atkdebug("scheduler_controller::getView -> View is $view");
-      $view = &atkinstance("modules.scheduler.views.scheduler_".$view."view",$view);
+      atkimport("modules.scheduler.views.scheduler_".$view."view");
+      $view = scheduler_view::getInstance($view);
       return $view;
     }
-    atkdebug("scheduler_controller::getView -> $view is invalid");
     return false;
   }
-  
-  
-  
+
+
+
 }
 
 ?>

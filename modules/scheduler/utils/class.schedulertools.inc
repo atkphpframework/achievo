@@ -117,20 +117,23 @@ class schedulertools
     $startdate = schedulertools::getItemStartDate($item);
     $enddate = schedulertools::getItemEndDate($item);
 
-    atkdebug("schedulertools::getDates -> RangeStart: $rangeStartDate | RangeEnd: $rangeEndDate | Startdate: ".date('Y-m-d',$startdate)." | Enddate: ".date('Y-m-d',$enddate));
-
     if($rangeStartDate!=NULL && $rangeEndDate!=NULL)
     {
       if(!is_null($enddate) && $rangeStartDate>date('Y-m-d',$enddate)) return array();
       if($rangeStartDate>date('Y-m-d',$startdate) && $rangeStartDate<=$enddate) $startdate = mktime(12,0,0,substr($rangeStartDate,5,2),substr($rangeStartDate,8,2),substr($rangeStartDate,0,4));
       if(($item['cyclus']['end_choice']==2 && $rangeEndDate<date('Y-m-d',$enddate) && $rangeEndDate>$startdate) || $item['cyclus']['end_choice']!=2) $enddate = mktime(12,0,0,substr($rangeEndDate,5,2),substr($rangeEndDate,8,2),substr($rangeEndDate,0,4));
     }
-    atkdebug("schedulertools::getDates -> (AFTER RANGE CHECK) RangeStart: $rangeStartDate | RangeEnd: $rangeEndDate | Startdate: ".date('Y-m-d',$startdate)." | Enddate: ".date('Y-m-d',$enddate));
 
-    while(true)
+    if ($item["recur"] == "once")
+      $maxtimes = 1;
+    elseif ($item["cyclus"]["end_choice"] == 3)
+      $maxtimes = $item["cyclus"]["cyclus_times"] - intval($item["times"]);
+    else
+      $maxtimes = false;
+
+    while (($maxtimes === false) || ($validdates < $maxtimes))
     {
       $checkdate = $startdate+($datecounter*86400);
-      $unix_date = $checkdate;
       if($checkdate>$enddate) break;
       // Skip all months that we don't need for the yearly day/date events
       if($item['recur']=="yearly" && date("n",$checkdate)!=$item["cyclus"]["yearly_month"]
@@ -143,21 +146,13 @@ class schedulertools
         continue;
       }
 
-
       if(schedulertools::showItem($item,$checkdate,$startdate,$enddate))
       {
-
         $dates[] = date("Y-m-d",$checkdate);
         $validdates++;
       }
       $datecounter++;
-      if($item["recur"]=="once" ||
-         ($item["cyclus"]["end_choice"]==3 &&
-          ($item["cyclus"]["cyclus_times"]-intval($item["times"])==$validdates))) break;
     }
-    atk_var_dump($item,"schedulertools::getDates() -> SchedulerItem");
-    atk_var_dump($dates,"schedulertools::getDates($rangeStartDate,$rangeEndDate)");
-
 
     return $dates;
   }
@@ -173,7 +168,6 @@ class schedulertools
    */
   function showItem($item,$checkdate,$startdate,$enddate)
   {
-    $month_time = ceil(date("d",$checkdate)/7);
     $day = date("j",$checkdate);
     $month = date("n",$checkdate);
     $year = date("Y",$checkdate);
@@ -305,7 +299,6 @@ class schedulertools
    */
   function updateRecurringEvents($startdate,$enddate,$rec=null)
   {
-    atkdebug("scheduler_model::updateRecurringEvents($startdate, $enddate)");
     $db = &atkGetDb();
     atkimport("module.scheduler.utils.schedulertools");
     $tmp_startdate = mktime(0,0,0,substr($startdate,5,2),substr($startdate,8,2),substr($startdate,0,4));
@@ -342,7 +335,6 @@ class schedulertools
       if($endstamp<$tmp_enddate) $endstamp=$tmp_enddate;
       $enddate = date("Y-m-t",$endstamp);
       $endstamp = strtotime($enddate);
-      atkdebug("schedulertools::updateRecurringEvents -> after recalculating $endstamp = $enddate");
       $dates = schedulertools::getDates($rec,$startdate,$enddate);
       foreach($dates as $date)
       {
@@ -356,7 +348,6 @@ class schedulertools
         $sql = "INSERT IGNORE INTO scheduler_dates (scheduler_id,startdate,enddate) VALUES ('$id','$startdate','$enddate')";
         $db->query($sql);
       }
-      atkdebug("schedulertools::updateRecurringEvents -> update scheduler item lastdate: $endstamp = ".date("Y-m-d",$endstamp));
       $sql = "UPDATE scheduler_scheduler SET lastdate = '$endstamp', times =  COALESCE(times,0)+".count($dates)." WHERE id='$id'";
       $db->query($sql);
       $db->commit();

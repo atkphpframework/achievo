@@ -21,7 +21,7 @@ class scheduler_dayview extends scheduler_view
   var $m_maxcols = 15;
   var $m_weekday_arr = array(1,2,4,8,16,32,64);
 
-  
+
 
   /**
    * Find a value in an Array
@@ -94,7 +94,6 @@ class scheduler_dayview extends scheduler_view
     */
    function _setMatrix($item)
    {
-     atk_var_dump($item,"SET MATRIX ITEM");
      $begin = $this->m_model->correct_time(date("H:i",$item["startdate"]),$this->m_userPrefs["timeschedule"]);
      $einde = $this->m_model->correct_time(date("H:i",$item["enddate"]),$this->m_userPrefs["timeschedule"],"up");
 
@@ -180,8 +179,6 @@ class scheduler_dayview extends scheduler_view
     }
 
     // normal appointments
-    atk_var_dump($this->m_itemMatrix,"ITEM MATRIX");
-    atk_var_dump($this->m_matrixInfo,"MATRIX INFO");
     $buff .= "<table border='0' cellpadding='1' cellspacing='0' width='100%'>\n";
     $lastHour="";
     $newHour=true;
@@ -282,15 +279,16 @@ class scheduler_dayview extends scheduler_view
 
       $buff .= "</tr>\n";
     }
-    $buff .= "</table>";
+    $buff.= "</table>";
+    $buff.= "<br>";
+    $buff.= $this->m_model->renderLegend();
     $buff.='</td><td width="150" valign="top">';
     $buff.=$this->getSideBar();
     $buff.="</td></tr></table>";
     $buff.="<br><br>\n";
-    $buff.= $this->m_model->renderLegend();
     return $buff;
   }
-  
+
   function getSideBar()
   {
     $buff=$this->m_model->_getSmallCalendar(substr($this->m_model->m_small_viewdate,8,2),substr($this->m_model->m_small_viewdate,5,2),substr($this->m_model->m_small_viewdate,0,4));

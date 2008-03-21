@@ -13,8 +13,9 @@
        $month_arr_value = array_keys($month_array);
        $month_arr_disp = array_values($month_array);
 
-       $day_arr = array();
-       for($i=1;$i<32;$i++) $day_arr[]=$i;
+       $day_arr = range(1, 31, 1);
+       $time_arr = array("first","second","third","fourth");
+       $weekday_arr = array("sunday","monday","tuesday","wednesday","thursday","friday","saturday");
 
        $this->atkNode("scheduler_cyclus");
        $this->add(new atkAttribute("scheduler_id",AF_PRIMARY|AF_HIDE));
@@ -27,18 +28,18 @@
        $this->add(new atkNumberAttribute("weekly_every",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("monthly_every",AF_HIDE),"cyclus")->setManualPaint(true);
        $this->add(new atkNumberAttribute("monthly_every2",AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("monthly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute("yearly_month_time",array("first","second","third","fourth"),array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkFlagAttribute("weekly_weekday",array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(1,2,4,8,16,32,64),'',AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkListAttribute('monthly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
-       $this->add(new atkListAttribute('yearly_weekday_list',array("sunday","monday","tuesday","wednesday","thursday","friday","saturday"),array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
+       $this->add(new atkListAttribute("monthly_month_time",$time_arr,array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute("yearly_month_time",$time_arr,array(1,2,3,4),AF_LIST_NO_NULL_ITEM|AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkFlagAttribute("weekly_weekday",$weekday_arr,array(1,2,4,8,16,32,64),'',AF_HIDE),"cyclus")->setManualPaint(true);
+       $this->add(new atkListAttribute('monthly_weekday_list',$weekday_arr,array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
+       $this->add(new atkListAttribute('yearly_weekday_list',$weekday_arr,array(0,1,2,3,4,5,6),AF_LIST_NO_NULL_ITEM|AF_HIDE),'cyclus')->setManualPaint(true);
        $this->add(new atkRadioAttribute('daily_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkDummyAttribute('weekly_choice','',AF_BLANK_LABEL|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkRadioAttribute('monthly_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkRadioAttribute('yearly_choice',array(),array(),AF_DISPLAY_VERT|AF_BLANK_LABEL|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
        $this->add(new atkRadioAttribute('end_choice',array(),array(),AF_DISPLAY_VERT|AF_NO_TRANSLATION|AF_HIDE_VIEW),'cyclus');
-       $this->add(new atkDateAttribute("cyclus_enddate", "F d Y","d F Y", 0, 0,AF_HIDE),"cyclus")->setManualPaint(true);
-       $this->add(new atkNumberAttribute('cyclus_times',AF_HIDE),'cyclus')->setManualPaint(true);
+       $this->add(new atkDateAttribute("cyclus_enddate", "F d Y","d F Y", 0, 0, AF_HIDE_VIEW),"cyclus")->setManualPaint(true);
+       $this->add(new atkNumberAttribute('cyclus_times', AF_HIDE_VIEW),'cyclus')->setManualPaint(true);
        $this->add(new atkOneToManyRelation("exceptions","scheduler.scheduler_cyclus_not","scheduler_id"),"cyclus");
 
        $this->setTable("scheduler_cyclus");

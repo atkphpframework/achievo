@@ -54,7 +54,7 @@ class email_template extends atkNode
    * @var string
    */
   var $m_from_name = "";
-  
+
   var $m_customReceiver = "";
 
   /**
@@ -132,8 +132,8 @@ class email_template extends atkNode
     if(count($codes)==0) return '';
 
     $ret="";
-    $ret.=atkText("You can use certain variables which get substituted with the data of the event.")."<br /><br />";
-    $ret.=atkText("Substitutions and their meanings:")."<br />";
+    $ret.=$this->text("You can use certain variables which get substituted with the data of the event.")."<br /><br />";
+    $ret.=$this->text("Substitutions and their meanings:")."<br />";
     foreach($codes as $code)
     {
       $ret.=$this->_getHelpLine($code);
@@ -151,7 +151,7 @@ class email_template extends atkNode
    */
   function _getHelpLine($code)
   {
-    return '<b>{$'.$code.'}</b>: '.atktext("help_".$code,$this->m_module).' - '.$this->m_module.'<br/ >';
+    return '<b>{$'.$code.'}</b>: '.$this->text("help_".$code).' - '.$this->text($this->m_module).'<br/ >';
   }
 
   /**
@@ -247,7 +247,7 @@ class email_template extends atkNode
     }
     return false;
   }
-  
+
   function setCustomerReceiver($email,$username)
   {
     $this->m_customReceiver = array("email"=>$email,"name"=>$username);
@@ -272,7 +272,7 @@ class email_template extends atkNode
       {
         $mail->AddAddress($this->m_customReceiver["email"],$this->m_customReceiver["name"]);
       }
-      else 
+      else
       {
         $mail->AddAddress($user["email"], $user["name"]);
       }

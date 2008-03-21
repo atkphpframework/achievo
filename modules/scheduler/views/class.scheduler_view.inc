@@ -29,7 +29,7 @@ class scheduler_view
   {
     $this->m_model = &atkinstance("module.scheduler.scheduler_model");
   }
-  
+
   function &getInstance($name)
   {
     static $s_instance = null;
@@ -39,7 +39,7 @@ class scheduler_view
     }
     return $s_instance;
   }
- 
+
  /**
   * Create default view header html
   *
@@ -83,7 +83,7 @@ class scheduler_view
     );
     return $this->_view_header_html($viewheaderparams);
   }
- 
+
  /**
   * Returns the default view navigation
   * @return string default view navigation
@@ -99,7 +99,6 @@ class scheduler_view
    */
   function render($request)
   {
-    atk_var_dump($request,'scheduler_view::render()');
     $this->m_model->setViewDate($request["viewdate"]);
     $this->m_model->setSmallViewDate($request["small_viewdate"]);
     $this->m_model->setViewUser($request["viewusers"]);

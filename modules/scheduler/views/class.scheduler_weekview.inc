@@ -33,7 +33,7 @@ class scheduler_weekview extends scheduler_view
     if($this->m_userPrefs["showweeknumbers"]==true) $this->m_viewTitle.= atktext("week")."&nbsp;".$this->m_weeknumber.", ";
     $this->m_viewTitle.= date("d-m-Y",$weeknumberFull["firstweekstart"])." - ".date("d-m-Y",$weeknumberFull["firstweekend"])."</b>";
 
-    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl,atktext("current_week"));
+    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl,atktext("current_week","scheduler"));
 
   }
   /**
@@ -71,7 +71,7 @@ class scheduler_weekview extends scheduler_view
     $weekday = array();
     $alldayItems = $this->m_model->getAlldayItems();
     $appointmentItems = $this->m_model->getAppointmentItems();
-    
+
     for ($i=1;$i<=7;$i++)
     {
       $text  = atktext($this->m_weekdates[$i]["day"])." (".substr($this->m_weekdates[$i]["date"],8,2)."-".substr($this->m_weekdates[$i]["date"],5,2).")";
@@ -152,6 +152,8 @@ class scheduler_weekview extends scheduler_view
 
 
               </table>
+              <br>
+              '.$this->m_model->renderLegend().'
               </td>
               <td width=150 valign="top">';
     $buff.=$this->m_model->_getSmallCalendar(substr($this->m_model->m_small_viewdate,8,2),substr($this->m_model->m_small_viewdate,5,2),substr($this->m_model->m_small_viewdate,0,4));
@@ -165,7 +167,7 @@ class scheduler_weekview extends scheduler_view
              </tr>
              </table>
              <br><br>
-             '.$this->m_model->renderLegend();
+             ';
 
 
     return $buff;
@@ -177,22 +179,15 @@ class scheduler_weekview extends scheduler_view
   */
   function _render()
   {
-    if ($this->m_model->m_viewdate!="")
-    {
-      $viewtime = mktime(12,12,0,$this->m_model->getMonth(),$this->m_model->getDay(),$this->m_model->getYear());
-    }
-    else
+    if (empty($this->m_model->m_viewdate))
     {
       $this->m_model->m_viewdate = date("Y-m-d");
-      $viewtime = time();
     }
-    $weekday  = strftime("%w",$viewtime);
 
-    //if ($weekday==0) $weekday=7;
     $weeknumberFull = $this->m_model->getWeekNumber($this->m_model->getDay(),$this->m_model->getMonth(),$this->m_model->getYear(),true);
     $startdate = $weeknumberFull["firstweekstart"];
     $enddate = $weeknumberFull["firstweekend"];
-    
+
     for ($i=0; $i<=6;$i++)
     {
       $this->m_weekdates[$i+1]['date']  = date("Y-m-d" ,$startdate+(86400*$i));
@@ -205,10 +200,8 @@ class scheduler_weekview extends scheduler_view
     $this->m_weekdates[0]['stamp'] = $startdate-86400;
     $this->m_weekdates[8]['date']  = date("Y-m-d" ,$enddate+86400);
     $this->m_weekdates[8]['day']   = strtolower(date("D" ,$enddate+86400));
-    $this->m_weekdates[8]['stamp'] = $enddatee+86400;
-    
-    
-    atk_var_dump($this->m_weekdates,"WEEK DATES");
+    $this->m_weekdates[8]['stamp'] = $enddate+86400;
+
     $this->m_model->getItems($this->m_weekdates[1]['date'],$this->m_weekdates[7]['date']);
 
     // get scheduler Legend and Item colors

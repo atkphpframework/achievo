@@ -4,13 +4,13 @@ class schedulerItem
 {
   var $scheduler_model;
   var $scheduler_cyclus;
-  
+
   function schedulerItem()
   {
     $this->scheduler_model= &atkinstance("module.scheduler.scheduler_model");
     $this->scheduler_cyclus = atkGetNode("scheduler.scheduler_cyclus");
   }
-  
+
   function &getInstance()
   {
     static $s_instance = null;
@@ -20,7 +20,7 @@ class schedulerItem
     }
     return $s_instance;
   }
-  
+
   /**
   * Renders a calendar items
   * @param array $item Calendar item
@@ -29,10 +29,9 @@ class schedulerItem
   */
   function render($item,$admin=false,$itemDate="",$showcategory=false)
   {
-    atk_var_dump($item,"RENDER ITEM");
     $theme = &atktheme::getInstance();
     if(!is_array($item)) return "";
-    
+
     if($itemDate=="") $itemDate=$this->scheduler_model->m_viewdate;
     $tmp="";
 
@@ -57,16 +56,16 @@ class schedulerItem
     }
 
     if($this->hasDescription($item))
-       $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.atktext("note").'" alt="'.atktext("note").'">';
+       $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.htmlspecialchars(substr($item["description"], 0, 200)).'" alt="'.htmlspecialchars(substr($item["description"], 0, 200)).'">';
     if($this->isRecurring($item))
-    { 
+    {
       $title= $this->scheduler_cyclus->recur_info_display($item['id']);
       $tmp.='<img src="'.$theme->imgPath("recurring.gif","scheduler").'" width=16 height=16 title="'.atkText("recurring_event","scheduler").' - '.$title.'" alt="'.atkText("recurring_event","scheduler").' - '.$title.'">';
     }
     if($this->hasAlarm($item))
       $tmp.='<img src="'.$theme->imgPath("alarm.gif","scheduler").'" width=16 height=16 title="'.atkText("reminder_event","scheduler").'" alt="'.atkText("reminder_event","scheduler").'">';
     if($this->isPrivate($item))
-      $tmp.='<img src="'.$theme->imgPath("private.gif","scheduler").'" width=16 height=16 title="'.atkText("private_event").'" alt="'.atkText("private_event","scheduler").'">';
+      $tmp.='<img src="'.$theme->imgPath("private.gif","scheduler").'" width=16 height=16 title="'.atkText("private_event","scheduler").'" alt="'.atkText("private_event","scheduler").'">';
     $isAttendee = false;
     $tmp.=$this->getAttendees($item,$isAttendee);
 
@@ -89,7 +88,7 @@ class schedulerItem
 
     return $tmp;
   }
-  
+
   function addAdminLinks($content,$item,$showcategory)
   {
     $user = atkGetUser();
@@ -111,13 +110,13 @@ class schedulerItem
 
         $copy = '<img src="'.$theme->iconPath("copy", "recordlist").'" border="0">';
         $tmp.= href(dispatch_url("scheduler.scheduler","editcopy",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"], "call_original_editcopy"=>true)),
-                    $copy, SESSION_NESTED);      
+                    $copy, SESSION_NESTED);
       }
       $tmp.='</td></tr></table>';
       return $tmp;
-      
+
   }
-  
+
   function getAttendees($item,&$isAttendee)
   {
     $theme = &atktheme::getInstance();
@@ -128,12 +127,11 @@ class schedulerItem
       $names=atkText("allusers","scheduler");
       $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">';
     }
-    elseif(!$this->isBirthDay($item) && !$this->isTodo($item))
+    elseif(!$this->isBirthDay($item) && !$this->isTodo($item) && isset($this->scheduler_model->m_attendees[$item["id"]]))
     {
       // Also check if the current user is an attendee
       //$attendees_rows = $this->getAttendees($item["id"]);
       $numberofattendees = count($this->scheduler_model->m_attendees[$item["id"]]);
-      atk_var_dump($this->scheduler_model->m_attendees,"ATTENDEES ".$item["id"]);
       $names = "";
       for($i=0;$i<$numberofattendees;$i++)
       {
@@ -143,7 +141,7 @@ class schedulerItem
         if($i>0) $names.=", ";
         $names.= $this->scheduler_model->m_users[$userid]["firstname"]." ".$this->scheduler_model->m_users[$userid]["lastname"].($this->scheduler_model->m_users[$userid]["role"]!="employee"?" (".$this->scheduler_model->m_users[$userid]["role"].")":"");
       }
-      
+
       if($numberofattendees==1)
       {
         $attendees='<img src="'.$theme->imgPath("attendee.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">';
@@ -153,13 +151,13 @@ class schedulerItem
         $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">';
       }
     }
-    else 
+    else
     {
       $attendees='';
     }
     return $attendees;
   }
-  
+
   function getDescription($item,$isAttendee,$showcategory)
   {
     /*
@@ -206,22 +204,22 @@ class schedulerItem
     }
     return $tmp;
   }
-  
+
   function allowed($action)
   {
     return true;
   }
-  
+
   function isBirthday($item)
   {
     return (array_key_exists("birthday",$item) && $item["birthday"]!=''?true:false);
   }
-  
+
   function isTodo($item)
   {
     return (array_key_exists("todo",$item) && $item["todo"]!=''?true:false);
   }
-  
+
   function getCategory($item)
   {
     if(array_key_exists("category",$item) && isset($item["category"]))
@@ -231,7 +229,7 @@ class schedulerItem
     }
     return '';
   }
-  
+
    /**
    * Is a calendar item recurring
    *
@@ -286,8 +284,8 @@ class schedulerItem
   {
     return (array_key_exists("description",$item) && $item["description"]!="");
   }
-  
-  
+
+
 }
 
 

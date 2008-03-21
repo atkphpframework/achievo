@@ -50,8 +50,8 @@ class scheduler_attendees extends atkNode
   {
     if ($rec["person_id"]["id"]==atkGetUserId())
     {
-      if($rec["status"]!="accepted") $actions["accept"]= session_url(dispatch_url($this->atknodetype(), "accept", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
-      if($rec["status"]!="rejected") $actions["reject"]= session_url(dispatch_url($this->atknodetype(), "reject", array("scheduler_id"=>$rec["scheduler_id"]["id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="accepted") $actions["accept"]= session_url(dispatch_url($this->atknodetype(), "accept", array("scheduler_id"=>$rec["scheduler_id"],"person_id"=>$rec["person_id"]["id"])));
+      if($rec["status"]!="rejected") $actions["reject"]= session_url(dispatch_url($this->atknodetype(), "reject", array("scheduler_id"=>$rec["scheduler_id"],"person_id"=>$rec["person_id"]["id"])));
     }
   }
 
@@ -83,7 +83,7 @@ class scheduler_attendees extends atkNode
 
   function updateUserStatus($status)
   {
-    $primkey = 'scheduler_id.id=\''.$this->m_postvars["scheduler_id"].'\' AND person_id.id=\''.$this->m_postvars["person_id"].'\'';
+    $primkey = 'scheduler_id=\''.$this->m_postvars["scheduler_id"].'\' AND person_id.id=\''.$this->m_postvars["person_id"].'\'';
     $rows = $this->selectDb($primkey,"","","","","edit");
     if(count($rows)==1)
     {
@@ -93,11 +93,9 @@ class scheduler_attendees extends atkNode
       //$rec['atkprimkey'] = $primkey;
       $rec['status'] = $status;
       $ret = $this->updateDb($rec,false);
-      atkdebug("SEND MAIL ?");
-      atk_var_dump($rec);
       if($rec["person_id"]["role"]=="employee")
       {
-        $this->sendEmail("user_notification",$rec["scheduler_id"]["id"],$rec["person_id"]["id"],"date",$status,true);
+        $this->sendEmail("user_notification",$rec["scheduler_id"],$rec["person_id"]["id"],"date",$status,true);
       }
     }
     return true;
@@ -106,11 +104,9 @@ class scheduler_attendees extends atkNode
 
   function postAdd($record)
   {
-    atkdebug("scheduler_attendees::postAdd");
-    atk_var_dump($record,"ADD RECORD");
     // Only for employees
     if($record["person_id"]["role"]=="employee")
-      $this->sendEmail("add_event",$record["scheduler_id"]["id"],$record["person_id"]["id"],"date","invited");
+      $this->sendEmail("add_event",$record["scheduler_id"],$record["person_id"]["id"],"date","invited");
 
     return true;
   }
@@ -118,7 +114,7 @@ class scheduler_attendees extends atkNode
   function postDelete($record)
   {
     if($record["person_id"]["role"]=="employee")
-      $this->sendEmail("disinvited_user",$record["scheduler_id"]["id"],$record["person_id"]["id"],"date","disinvited");
+      $this->sendEmail("disinvited_user",$record["scheduler_id"],$record["person_id"]["id"],"date","disinvited");
     return true;
   }
 

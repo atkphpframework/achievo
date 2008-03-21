@@ -136,7 +136,6 @@ class scheduler_holidays extends atkNode
     $date = str_replace("-","",$date);
     $year = substr($date, 0,4);
     $holidays = $this->_getHolidays($year);
-    if(array_key_exists($date,$holidays) && is_array($holidays[$date]) && count($holidays[$date])>0) atkdebug("IS HOLIDAY");
     return (array_key_exists($date,$holidays) && is_array($holidays[$date]) && count($holidays[$date])>0?true:false);
   }
 
