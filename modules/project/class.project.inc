@@ -969,10 +969,12 @@
       $sessionManager = &atkGetSessionManager();
       $session = &atkSessionManager::getSession();
       $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][atkPrevLevel()];
-      if((atkArrayNvl($session_prev,"atknodetype") == 'timereg.hours') &&
-         (atkArrayNvl($session_prev,"atkaction") == 'admin'))
+      $prevnode = atkArrayNvl($session_prev,"atknodetype");
+      $prevaction = atkArrayNvl($session_prev,"atkaction");
+      if((($prevnode == 'timereg.hours') && ($prevaction == 'admin'))
+       || (($prevnode == 'reports.hoursurvey') && ($prevaction == 'report')))
       {
-        //if we come from timereg screen - check timereg right
+        //if we come from timereg or hoursurvey screen - check timereg right
         $securityManager = &atkGetSecurityManager();
         return $securityManager->allowed("timereg.hours", "any_project");
       }
