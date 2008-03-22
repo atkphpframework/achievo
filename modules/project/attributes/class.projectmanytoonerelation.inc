@@ -164,8 +164,9 @@
          $query->addJoin("project_person","","project_person.projectid = project.id",true);
          $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
-
-      $arr = $db->getrows($query->buildSelect(false),'0',atkconfig("numberofrecentprojects"));
+      
+      $query->setLimit(0,atkconfig("numberofrecentprojects"));
+      $arr = $db->getrows($query->buildSelect(true));
 
       //we add the selected project id on top.
       if(!is_numeric($selectedprojectid))
