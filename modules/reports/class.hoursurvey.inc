@@ -142,38 +142,34 @@ class hoursurvey extends atkNode
     $this->setTable("hoursbase");
   }
 
-  function getOrderByStatement($orderby, $orderdirection)
+  function getOrderByStatement($columnConfig)
   {
     $orderbystatement = array();
-    if ($orderby)
+    foreach($columnConfig->m_colcfg as $itsOrderby => $property)
     {
-      foreach($orderby as $key => $itsOrderby)
+      if(!empty($property))
       {
-        if ($itsOrderby && $itsOrderby != "-")
+        //We need to add the tablename before the attribute.
+        switch($itsOrderby)
         {
-          //We need to add the tablename before the attribute.
-          switch($itsOrderby)
-          {
-            //functionlevel has another table- AND fieldname
-            case "functionlevel":
-              $itsOrderby = "functionlevelid.name";
-              break;
-              //employer_id has another table- AND fieldname
-            case "employer_id":
-              $itsOrderby = "employer_id.name";
-              break;
-              //projectid has the table phaseid
-            case "projectid":
-              $itsOrderby = "phaseid.".$itsOrderby;
-              break;
-              //Other attributes have the table hours
-            default:
-              $itsOrderby = $this->getTable().".".$itsOrderby;
-              break;
-          }
-
-          $orderbystatement[] = $itsOrderby . " " . $orderdirection[$key];
+          //functionlevel has another table- AND fieldname
+          case "functionlevel":
+            $itsOrderby = "functionlevelid.name";
+            break;
+            //employer_id has another table- AND fieldname
+          case "employer_id":
+            $itsOrderby = "employer_id.name";
+            break;
+            //projectid has the table phaseid
+          case "projectid":
+            $itsOrderby = "phaseid.".$itsOrderby;
+            break;
+            //Other attributes have the table hours
+          default:
+            $itsOrderby = $this->getTable().".".$itsOrderby;
+            break;
         }
+        $orderbystatement[] = $itsOrderby . " " . $property['direction'];
       }
     }
     return $orderbystatement;
@@ -895,7 +891,7 @@ class hoursurvey extends atkNode
       }
     }
 
-    $orderbystatement = $this->getOrderByStatement($orderby, $orderdirection);
+    $orderbystatement = $this->getOrderByStatement($columnConfig);
 
     //Check if we need to add additional columns because of the selected filter.
     foreach($filterarray as $item)
