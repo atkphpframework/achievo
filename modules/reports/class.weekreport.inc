@@ -458,7 +458,7 @@ class weekreport extends atkNode
       }    */
 
       $startdateatt = new atkDateAttribute("startdate","","", 0, date("Ymd"));
-      $enddateatt = new atkDateAttribute("enddate","","", 0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"));
+      $enddateatt = new atkDateAttribute("enddate","","", 0, atkConfig::get("timereg","timereg_allowfuture", false) ? 0 : date("Ymd"));
 
       $data[]= array(atktext("timespan"),$startdateatt->edit($dummyrec).' &nbsp;'.
                       atktext("until").
@@ -760,7 +760,7 @@ class weekreport extends atkNode
     }
 
     //OVERTIMEBALANCEDEBUGGING START
-    if ($employeeswitch=="name" && $userid!="all" && atkConfig("overtimebalancedebugging") && atkConfig("debug") > 0)
+    if ($employeeswitch=="name" && $userid!="all" && atkConfig::get("timereg","overtimebalancedebugging") && atkConfig("debug") > 0)
     {
       atkimport("modules.utils.dateutil",false);
       $prestamp = date("Y-m-d", adodb_mktime(0,0,0,substr($rldata[0]["enddate"],3,2),substr($rldata[0]["enddate"],0,2),substr($rldata[0]["enddate"],6,4))  - (7 * 86400));

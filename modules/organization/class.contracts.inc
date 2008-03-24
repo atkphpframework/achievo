@@ -31,7 +31,7 @@ class contracts extends atkNode
     $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","","", 0, 0, AF_OBLIGATORY));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
-    $this->add(new atkNumberAttribute("priceperhour",AF_HIDE_LIST,10,2));
+    $this->add(new atkCurrencyAttribute("priceperhour",AF_HIDE_LIST,10,"",2));
     $this->add(new atkDummyAttribute("status_change_warning", atktext("status_change_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
@@ -239,11 +239,7 @@ class contracts extends atkNode
 	  return $res."<br>";
 	}
 
-	function period_price_edit($rec)
-  {
-    return $this->m_attribList["period_price"]->edit($rec)." ".atkconfig("currency_symbol");
-  }
-
+	
   function descriptor_commit()
   {
     return "[description]";
@@ -266,9 +262,13 @@ class contracts extends atkNode
   function initial_values()
   {
 
-	  return array(	"enddate" =>	array("year"=>(date("Y")+1),
-	  																	"month"=>date("m"),
-	  														"day"=>date("d")));
+    $enddatetime = strtotime("+1 year");
+	  return array("startdate" =>	array("year"=>(date("Y")),
+	  															  "month"=>date("m"),
+	  														    "day"=>date("d")),
+	  			       "enddate" =>	array("year"=>(date("Y",$enddatetime)),
+	  																"month"=>date("m",$enddatetime),
+	  														    "day"=>date("d",$enddatetime)));
   }
 
   //todo: updateDb doesn't update the status for some reason. Query should be changed to using updateDb.

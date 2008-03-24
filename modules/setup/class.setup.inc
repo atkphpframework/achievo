@@ -10,6 +10,10 @@
 
   class setup extends atkNode
   {
+    
+    const PHP_FILE = 1;
+    const SQL_FILE = 2;
+    
     var $m_report = array();
     var $m_cancontinue = true;
     var $m_currentmodule = "";
@@ -23,11 +27,21 @@
                              "notfound" => "Not installed (Module could not be found)",
                              "patched" => "Patch applied succesfully");
 
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     function setup()
     {
       $this->atkNode("setup");
     }
 
+    /**
+     * Introduction action
+     *
+     * @param object $handler
+     */
     function action_intro(&$handler)
     {
       // We start setup by clearing the theme cache, as setup might be run after an update,
@@ -52,6 +66,12 @@
 
     }
 
+    /**
+     * Database check aciton
+     *
+     * @param object $handler
+     * @return boolean 
+     */
     function action_dbcheck(&$handler)
     {
       $res = $this->getDbStatus();
@@ -68,6 +88,11 @@
       }
     }
 
+    /**
+     * Get database status
+     *
+     * @return int Database status
+     */
     function getDbStatus()
     {
       $db = &atkGetDb();
@@ -100,6 +125,9 @@
      * handle connections, DB_SUCCESS needs to be confirmed by
      * performing a query. If handleDbStatus is not called with
      * confirmed=true, it will perform this query and confirm itself.
+     * 
+     * @param int $dbstatus Database status
+     * @return string Text for the screen
      */
     function handleDbStatus($dbstatus)
     {
@@ -166,6 +194,14 @@
       }
     }
 
+    /**
+     * Create Setupscreen
+     *
+     * @param string $title Title for the screen
+     * @param string $output Text for the screen
+     * @param string $nextaction Next action
+     * @param array $params Array with extra params
+     */
     function setupScreen($title, $output, $nextaction="", $params=array())
     {
       atkimport("atk.ui.atkui");
@@ -212,6 +248,11 @@
 
     }
 
+    /**
+     * Get table names
+     *
+     * @return array Array with tablenames
+     */
     function getTableNames()
     {
       $db = &atkGetDb();
@@ -227,6 +268,8 @@
 
     /**
      * Check what version of the Achievo database we are using.
+     * 
+     * @param object $handler
      */
     function action_versioncheck(&$handler)
     {
@@ -338,6 +381,12 @@
       }
     }
 
+    /**
+     * Install Database
+     *
+     * @param object $handler
+     * @return string Screen with the install status
+     */
     function action_installdb(&$handler)
     {
       global $g_modules;
@@ -387,6 +436,12 @@
       }
     }
 
+    /**
+     * Render report
+     *
+     * @param string $output
+     * @return boolean Report status
+     */
     function renderReport(&$output)
     {
       $ok = true;
@@ -522,7 +577,17 @@
       $installfile = moduleDir($modname)."install/install.inc";
       if ($this->needsInstall($modname))
       {
-        $this->includeInstallFile($modname, $installfile);
+        $installfile = $this->getInstallFile($modname);
+        $type = $this->installFileType($installfile);
+        if($type==PHP_FILE)
+        {
+          $this->includeInstallFile($modname, $installfile);
+        }
+        elseif($type==SQL_FILE)
+        {
+          $this->executeSQLFile($modname,$installfile);
+        }
+
         if (!$this->m_cancontinue)
         {
           //  Something went wrong.
@@ -545,7 +610,105 @@
       return true;
 
     }
+    
+    /**
+     * Get install file
+     *
+     * @param string $modname Module name
+     * @return string Install file
+     */
+    function getInstallFile($modname)
+    {
+      
+      $filename = moduleDir($modname)."install/install.";
+      if(file_exists($filename."sql"))
+      {
+        return $filename."sql";
+      }
+      elseif(file_exists($filename."inc"))
+      {
+        return $filename."inc";
+      }
+      return "";
+    }
+    
+    /**
+     * Get Patchfile
+     *
+     * @param string $modname Module name
+     * @param int $patchNumber Patch number
+     * @return string Patchfile
+     */
+    function getPatchFile($modname,$patchNumber)
+    {
+      $filename = moduleDir($modname)."install/patch-".$patchNumber.".";
+      if(file_exists($filename."sql"))
+      {
+        return $filename."sql";
+      }
+      elseif(file_exists($filename."inc"))
+      {
+        return $filename."inc";
+      }
+      return "";
+    }
+    
+    /**
+     * Check file type
+     *
+     * @param string $filename Filename
+     * @return int SQL or PHP
+     */
+    function installFileType($filename)
+    {
+      $filename = strtolower($filename) ;
+      $exts = split("[/\\.]", $filename) ;
+      $n = count($exts)-1;
+      $exts = $exts[$n];
+      if($exts=="sql")
+      {
+        return SQL_FILE;
+      }
+      else 
+      {
+        return PHP_FILE;
+      }
+    }
+    
+    /**
+     * Execute SQL File
+     *
+     * @param string $modname Module name
+     * @param string $installfile Installation file
+     * @return boolean
+     */
+    function executeSQLFile($modname,$installfile)
+    {
+      $db = &atkGetDb();
+      $file_content = file_get_contents($installfile);
+      $queries = explode(';',$file_content);
+      $this->m_currentmodule = $modname;
+      
+      foreach($queries as $query)
+      {
+        atk_var_dump($query,"SETUP::EXECUTESQLFILE");
+        if(trim($query)!='') $ret = $db->query($query);
+        //if($ret==false) return false;
+      }
+      
+      return true;
+    }
+    
+    
+    
 
+    /**
+     * Include install file
+     *
+     * @param string $modname Module name
+     * @param string $installfile Install name
+     * @return boolean Included ?
+     */
     function includeInstallFile($modname, $installfile)
     {
       // give included file access to $db and $this ("$setup");
@@ -560,14 +723,28 @@
         include($installfile);
         return true;
       }
+      return false;
     }
-
+    
+    /**
+     * Install file exists ?
+     *
+     * @param string $modname Module name
+     * @return boolean Install file exists
+     */
     function needsInstall($modname)
     {
       $installfile = moduleDir($modname)."install/install.inc";
-      return (file_exists($installfile));
+      $installsqlfile = moduleDir($modname)."install/install.sql";
+      
+      return (file_exists($installphpfile) || file_exists($installsqlfile));
     }
 
+    /**
+     * Check if we have a versioninfo table
+     *
+     * @return boolean
+     */
     function hasVersionInfo()
     {
       static $s_hasversioninfo=false;
@@ -582,7 +759,7 @@
     /**
      * This function retrieves the list of installed modules.
      *
-     * @return An array, where the modulename is the key, and the current
+     * @return Array An array, where the modulename is the key, and the current
      *         installed version of the module is the value.
      */
     function getInstalledModules()
@@ -617,6 +794,12 @@
       return $result;
     }
 
+    /**
+     * Install a node
+     *
+     * @param string $nodename Node name
+     * @return boolean
+     */
     function installNode($nodename)
     {
       // Check if previous calls all went ok. If one went wrong, we should stop.
@@ -754,6 +937,14 @@
       return true;
     }
 
+    /**
+     * Check if a column Exists
+     *
+     * @param string $table Table name
+     * @param string $column Column name
+     * @param string $type Column name
+     * @return boolean
+     */
     function columnExists($table, $column,$type="")
     {
       $db = &atkGetDb();
@@ -776,6 +967,13 @@
       return false;
     }
 
+    /**
+     * Set version
+     *
+     * @param int $version Version number
+     * @param string $module Module name
+     * @return void
+     */
     function setVersion($version, $module="")
     {
       // if something went wrong, we should ignore the setVersion call.
@@ -816,6 +1014,10 @@
      *           reported to the user.
      * error - Indicates an error during conversion. The installer will not
      *         run any further script when an error is encountered.
+     * 
+     * @param string $progressmsg Progress message
+     * @param string $type Message type
+     * @return void
      */
     function report($progressmsg, $type="info")
     {
@@ -832,6 +1034,12 @@
       }
     }
     
+    /**
+     * Execute single sql statement
+     *
+     * @param string $sql Single sql statement
+     * @return boolean
+     */
     function executeSQL($sql)
     {
       $db = &atkGetDb();
@@ -841,6 +1049,13 @@
     // TODO FIXME: functions that follow are *NOT* yet database
     // independent. They should use the abstractionlayer.
 
+    /**
+     * Rename sequence
+     *
+     * @param string $seq_name Current sequence name
+     * @param string $new_name New sequence name
+     * @return boolean
+     */
     function renameSequence($seq_name,$new_name)
     {
       $db = &atkGetDb();
@@ -849,6 +1064,13 @@
       return $db->query($sql);
     }
 
+    /**
+     * Rename table
+     *
+     * @param string $old Current tablename
+     * @param string $new New tablename
+     * @return boolean
+     */
     function renameTable($old, $new)
     {
       $db = &atkGetDb();
@@ -859,7 +1081,16 @@
       return $this->renameSequence($old, $new);
     }
 
-
+    /**
+     * Add column
+     *
+     * @param string $table Table name
+     * @param string $col Column name
+     * @param string $type Column type
+     * @param boolean $nullable Nullable
+     * @param mixed $default Default value
+     * @return boolean
+     */
     function addColumn($table, $col, $type, $nullable=true, $default="")
     {
       $db = &atkGetDb();
@@ -876,6 +1107,17 @@
       }
     }
 
+    /**
+     * Alter column
+     *
+     * @param string $table Tablename
+     * @param string $col current column name
+     * @param string $newname New column name
+     * @param string $type Column type
+     * @param boolean $nullable Nullable
+     * @param mixed $default Default value
+     * @return boolean
+     */
     function alterColumn($table, $col, $newname, $type, $nullable=true, $default="")
     {
       $db = &atkGetDb();
@@ -885,6 +1127,13 @@
       return $db->query($sql);
     }
 
+    /**
+     * Drop column
+     *
+     * @param string $table Table name
+     * @param string $col Column name
+     * @return boolean
+     */
     function dropColumn($table, $col)
     {
       if($this->columnExists($table,$col))
@@ -898,6 +1147,12 @@
       return true;
     }
 
+    /**
+     * Drop table
+     *
+     * @param string $table Table name
+     * @return boolean
+     */
     function dropTable($table)
     {
       $db = &atkGetDb();
@@ -906,6 +1161,12 @@
       return $ddl->executeDrop();
     }
 
+    /**
+     * Drop sequence
+     *
+     * @param string $sequence Sequence name
+     * @return boolean
+     */
     function dropSequence($sequence)
     {
       $db = &atkGetDb();
@@ -920,6 +1181,9 @@
      /**
       * Delete nodes db table and nodes sequence from db_sequence.
       * Use it in uninstall.inc
+      * 
+      * @param $node Node name
+      * @return boolean
       */
     function dropNode($node)
     {
@@ -932,6 +1196,11 @@
       return true;
     }
 
+    /**
+     * Legacy Upgrade
+     *
+     * @param object $handler
+     */
     function action_legacyupgrade(&$handler)
     {
 
@@ -1016,6 +1285,12 @@
 
     }
 
+    /**
+     * Render result
+     *
+     * @param array $result Result to render
+     * @return string Table with installed modules
+     */
     function renderResult($result)
     {
       $table = &atknew("atk.utils.atktablerenderer");
@@ -1035,6 +1310,12 @@
       return "";
     }
 
+    /**
+     * Action upgrade database
+     *
+     * @param object $handler
+     * @return string Setupscreen with upgrade result
+     */
     function action_upgradedb(&$handler)
     {
       $result = array();
@@ -1060,6 +1341,12 @@
       }
     }
 
+    /**
+     * Upgrade database
+     *
+     * @param string $result
+     * @return boolean
+     */
     function upgradedb(&$result)
     {
       global $g_modules;
@@ -1113,8 +1400,16 @@
 
               for($i=0, $_i=count($availablepatches); $i<$_i; $i++)
               {
-                $patchfile = moduleDir($modname)."install/patch-".$availablepatches[$i].".inc";
-                if ($this->includeInstallFile($modname, $patchfile))
+                $patchfile = $this->getPatchFile($modname,$availablepatches[$i]);
+                if($this->installFileType($patchfile)==SQL_FILE)
+                {
+                  $ret = $this->executeSQLFile($modname,$patchfile);
+                }
+                else
+                {
+                  $ret = $this->includeInstallFile($modname, $patchfile);
+                }
+                if($ret)
                 {
                   $this->setVersion($availablepatches[$i]);
                   $result[$modname] = "patched";
@@ -1132,6 +1427,11 @@
       return $stufftodo;
     }
 
+    /**
+     * Check upgrade
+     *
+     * @return string Setup screen with upgrade check result
+     */
     function upgradeCheck()
     {
       global $g_modules;
@@ -1219,6 +1519,12 @@
       $dt->traverse(atkconfig("atktempdir", "achievotmp")."themes/");
     }
 
+    
+    /**
+     * Delete all compiled template files
+     *
+     * @param string $file Filename
+     */
     function visitFile($file)
     {
       // clean compiled template file
@@ -1228,21 +1534,21 @@
     /**
      * Create VIEW in db
      *
-     * @param string $name - name of view
-     * @param string $select - SQL SELECT statement
-     * @param string $with_check_option - use SQL WITH CHECK OPTION
+     * @param string $name Name of view
+     * @param string $select SQL SELECT statement
+     * @param boolean $withCheckOption use SQL WITH CHECK OPTION
      */
-    function createView($name, $select, $with_check_option = false)
+    function createView($name, $select, $withCheckOption = false)
     {
       $db = &atkGetDb();
       $ddl = &$db->createDDL();
-      $ddl->executeCreateView($name, $select, $with_check_option);
+      $ddl->executeCreateView($name, $select, $withCheckOption);
     }
     
     /**
      * Drop VIEW in db
      *
-     * @param string $name - name of view
+     * @param string $name Name of view
      */
     function dropView($name)
     {

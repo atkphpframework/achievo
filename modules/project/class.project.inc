@@ -48,7 +48,7 @@
       $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkAttribute("quotation_number", AF_HIDE_LIST|AF_HIDE_ADD));
-      $this->add(new atkNumberAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13, 2), "finance");
+      $this->add(new atkCurrencyAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13,"", 2), "finance");
 
       // If we are in project administration mode, we show all projects. Otherwise, we only
       // show active projects.
@@ -68,7 +68,7 @@
         $this->addFilter("project.status='active'");
       }
 
-      if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && atkconfig("project_contact_obligatory"))
+      if (($ATK_VARS['atkaction'] == "edit" || $ATK_VARS['atkaction'] == "update") && atkconfig::get("project","project_contact_obligatory"))
       {
         $flags = AF_OBLIGATORY;
       }
@@ -328,8 +328,8 @@
     {
       $this->handleTemplateMatrix($rec);
 
-      $skel = atkconfig('project_dir_skel');
-      $dest = atkconfig('project_dir_destination');
+      $skel = atkconfig::get("project",'project_dir_skel');
+      $dest = atkconfig::get("project",'project_dir_destination');
 
     	if ($skel != '' && $dest != '' && is_dir($skel))
     	{
@@ -348,7 +348,7 @@
     	    $succes = true;
     	  }
 
-    	  $dirname = atkFileUtils::parseDirectoryName(atkconfig('project_dir_name_template'), $rec);
+    	  $dirname = atkFileUtils::parseDirectoryName(atkconfig::get("project",'project_dir_name_template'), $rec);
 
     	  if (atkFileUtils::copyDirRecursive($skel, $dest, $dirname) && $succes)
     	  {
@@ -358,7 +358,7 @@
 
     	    $body = sprintf(atktext("project_body"), $rec['abbreviation'], getcwd()."/".$dest."/".$dirname);
 
-    	    switch (atkconfig("project_formatmail"))
+    	    switch (atkconfig::get("project","project_formatmail",'htmlplain'))
     	    {
     	      default:
     	        break;
@@ -373,12 +373,12 @@
     	        break;
     	    }
 
-    	    $mailer->From = atkconfig("mail_sender", "achievo");
-    	    $mailer->AddAddress(atkconfig("project_sendto"));
+    	    $mailer->From = atkconfig::get("project","mail_sender", "achievo");
+    	    $mailer->AddAddress(atkconfig::get("project","project_sendto"));
     	    $mailer->Subject = atktext("project_subject").$rec['abbreviation'];
     	    $mailer->Body = $body;
     	    $mailer->Send();
-    	    atkdebug("Mail send to ".atkconfig("project_sendto")."?");
+    	    atkdebug("Mail send to ".atkconfig::get("project","project_sendto")."?");
     	  }
     	  else
     	    atkerror("No write permisson on destination: ".$dest);
@@ -398,11 +398,6 @@
       // Therefore NF_DELETED_FLAG should be realised for hours, projects and
       // employees.
       return true;
-    }
-
-    function fixed_price_edit($rec)
-    {
-      return $this->m_attribList["fixed_price"]->edit($rec)." ".atkconfig("currency_symbol");
     }
 
     function graph_phasetime($params, $raw=false)

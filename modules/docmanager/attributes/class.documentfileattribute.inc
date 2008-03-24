@@ -40,7 +40,7 @@
     // $type = "dir" or "url"
     function defaultdir($rec, $type)
     {
-      $options = atkConfig("docmanageroptions", array());
+      $options = atkconfig::get("docmanager","docmanageroptions", array());
       $result = "";
       // If localpath set, prefix it with file://, if not, use the default m_url
       if ($this->m_localpath != "")
@@ -148,8 +148,8 @@
         chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0660);
 
         // Modify the file group if set in config:
-        if (atkconfig("docmanager_filegroup") != "")
-          chgrp($this->m_dir . $rec[$this->fieldName()]["filename"], atkconfig("docmanager_filegroup"));
+        if (atkconfig::get("docmanager","docmanager_filegroup") != "")
+          chgrp($this->m_dir . $rec[$this->fieldName()]["filename"], atkconfig::get("docmanager","docmanager_filegroup"));
       }
       else
       {

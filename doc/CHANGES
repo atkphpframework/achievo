@@ -8,12 +8,12 @@ Changes in Achievo 1.4
 ----------------------
 + Added ability to configure projectcode autonumbering in the configuration
   file configs/project.inc.php. [Guido]
-+ Added ability to copy scheduler items [Jeroen]
-+ Added copying recurring items. Updated version.inc to 1.4.0 dev [Sandy,Jeroen]
++ Added ability to copy scheduler items. [Jeroen]
 + Added email functionallity to scheduler so employees get notified by the
   scheduler by email when an event is triggered. [Guido]
 + Added scheduler email system which for example sends an email to you
   when you are invited to an appointment in the scheduler. [Sandy,Guido]
++ Added support for .sql install/patch files. [Sandy]
 * Fixed some PHP Notices. [Guido]
 * Fixed minor layout issues in the scheduler. [Guido]
 * Added missing dutch translations into the scheduler. [Guido]
@@ -37,7 +37,11 @@ Changes in Achievo 1.4
   registrations invalid. [Guido]
 * Updated jpgraph to version 2.3 (php5 version) (bug #924) [Sandy]
 * Updated default witdh of graphs to 750px. [Sandy]
-
+* Fixed currency symbol in organization contracts and projects. [Sandy]
+* Moved all configs to module specific config files in /configs. [Sandy]
+* Available themes are now cached in 
+  achievotmp/themes/available_themes.inc [Sandy]
+  
 
 Changes in Achievo 1.3.2
 ------------------------

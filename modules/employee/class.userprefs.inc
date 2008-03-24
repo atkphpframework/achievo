@@ -57,11 +57,22 @@ class userprefs extends atkNode
 
   function getThemes()
   {
-    $traverser = &atknew('atk.utils.atkdirectorytraverser');
-    $themefinder = &atknew('module.employee.utils.themefinder');
-    $traverser->addCallbackObject($themefinder);
-    $traverser->traverse(atkconfig('atkroot'));
-    return $themefinder->getThemes();
+    atkimport("atk.utils.atktmpfile");
+    $file = new atkTmpFile("themes/available_themes.inc");
+    if(!$file->exists())
+    {
+      $traverser = &atknew('atk.utils.atkdirectorytraverser');
+      $themefinder = &atknew('module.employee.utils.themefinder');
+      $traverser->addCallbackObject($themefinder);
+      $traverser->traverse(atkconfig('atkroot'));
+      $themes = $themefinder->getThemes();
+      $file->writeAsPhp("themes",$themes);
+    }
+    else
+    {
+      include $file->getPath();
+    }
+    return $themes;
   }
 
   function postUpdate($record)

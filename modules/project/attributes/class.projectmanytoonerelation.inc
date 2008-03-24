@@ -27,7 +27,7 @@
     function projectManyToOneRelation($name, $destination, $flags=0)
     {
       $this->m_userid = &atkGetUserId();
-      if (atkConfig("project_selection_autocomplete", false))
+      if (atkConfig::get("project","project_selection_autocomplete", false))
         $flags |= AF_LARGE;
       parent::atkManyToOneRelation($name, $destination,$flags);
     }
@@ -165,7 +165,7 @@
          $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
       
-      $query->setLimit(0,atkconfig("numberofrecentprojects"));
+      $query->setLimit(0,atkconfig::get("project","numberofrecentprojects"));
       $arr = $db->getrows($query->buildSelect(true));
 
       //we add the selected project id on top.

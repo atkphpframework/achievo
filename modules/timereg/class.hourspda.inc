@@ -195,7 +195,7 @@ class hoursPDA extends hours
     }
     else
     {
-      if (atkconfig("timereg_week_bookable")==true && $this->m_lock=="") $this->addPage();
+      if (atkconfig::get("timereg","timereg_week_bookable")==true && $this->m_lock=="") $this->addPage();
       $this->weekview();
     }
   }

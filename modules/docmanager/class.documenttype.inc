@@ -35,9 +35,9 @@
       $this->atkNode("documenttype");
       $this->add(new atkAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("name", AF_OBLIGATORY));
-      $this->add(new documentFileAttribute("template", atkconfig("docmanager_doctypetemplatepath", moduledir("docmanager") . "doctypetemplates/"), atkconfig("docmanager_localdocumenttypepath"), false, AF_OBLIGATORY));
+      $this->add(new documentFileAttribute("template", atkconfig::get("docmanager","docmanager_doctypetemplatepath", moduledir("docmanager") . "doctypetemplates/"), atkconfig::get("docmanager","docmanager_localdocumenttypepath"), false, AF_OBLIGATORY));
 
-      $nodes = atkconfig("docmanagernodes", array());
+      $nodes = atkconfig::get("docmanager","docmanagernodes", array());
       $nodes[] = "project.project_personcontact";
       $nodetranslations = array();
       foreach ($nodes as $node)

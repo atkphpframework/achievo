@@ -91,7 +91,7 @@
       $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
 
       // Remove disallowed pimitems from the list
-      $disallowedpimitems = atkConfig("disallowedpimitems", array());
+      $disallowedpimitems = atkConfig::get("pim","disallowedpimitems", array());
       foreach($disallowedpimitems as $disallowedpimitem)
         if (array_key_exists($disallowedpimitem, $this->m_lookup))
           unset($this->m_lookup[$disallowedpimitem]);

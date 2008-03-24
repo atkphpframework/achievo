@@ -66,4 +66,49 @@
    * to link time-registrations to specific contacts
    */
   $config["timereg_contact_link"] = false;
+  
+  // Default view (day or week)
+  $config['timereg_defaultview']='day';
+  
+  // Number of lines for the timereg remark field
+  $config['timereg_remark_lines']=1;
+  
+  // Use duration dropdown by time registration
+  $config['use_duration']=true;
+  
+  // Max bookable hours for a time registration
+  $config['max_bookable']=10;
+  
+  // Time resolution in minutes
+  $config['timereg_resolution']="15m";
+  
+  // Overtime threshold
+  $config['overtimethreshold']=10;
+  
+  // Is it possible to lock incomplete weeks ?
+  $config['timereg_incompleteweeklock']=false;
+  
+  // Allow future time registrations
+  $config['timereg_allowfuture']=false;
+  
+  
+  // Confirm hours are saved
+  $config['hours_confirm_save']=false;
+  
+  // Week bookable
+  $config['timereg_week_bookable']=true;
+  
+  // Lock week approval required ?
+  $config['lock_week_approval_required']=false;
+  
+  // Use startpoint for the overtime balance
+  $config['timereg_overtime_balance_use_startingpoint']=false;
+
+  // Turn Overtime debug on and it will write
+  // a log file into achievotmp/overtime.log
+  $config['overtimebalancedebugging']=false;
+  
+  // Check weeks in the reminder cron
+  $config['timereg_checkweeks']=true;
+  
 ?>

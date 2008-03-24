@@ -9,9 +9,9 @@
 
     function action_pim(&$handler)
     {
-      if (atkconfig('pim_redirect_to') != "")
+      if (atkconfig::get('pim','pim_redirect_to') != "")
       {
-        header("Location: " . atkconfig('pim_redirect_to'));
+        header("Location: " . atkconfig::get('pim','pim_redirect_to'));
         return;
       }
       
@@ -19,7 +19,7 @@
       $userpimitems = &atknew("module.pim.userpimitems");
       $user = getuser();
       $userDbItems = $userpimitems->selectDb("userpimitems.userid='".$user["id"]."'","","",array("id","userid"));
-      $disallowedpimitems = atkConfig("disallowedpimitems", array());
+      $disallowedpimitems = atkconfig::get("pim","disallowedpimitems", array());
       $res = array();
       if(count($userDbItems)==0)
       {

@@ -7,5 +7,8 @@
   $config['quotation_addproject'] = true;
 
   $config['quotation_dir'] = "./documents/quotation/";
+  
+  $config['doctemplatedir']="doctemplates/";
+  
 
 ?>

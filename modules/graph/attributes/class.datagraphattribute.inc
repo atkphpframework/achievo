@@ -162,7 +162,7 @@
       $title = key($data);
 
       // Setup the basic parameters for the graph
-      $graphwidth   = atkconfig("graph_width",750);
+      $graphwidth   = atkconfig::get("graph","graph_width",750);
       $graphheight  = round($graphwidth / 750 * 300);
 
       $datay=array_values($dataset);
@@ -240,7 +240,7 @@
 
       $defcolors = array('red', 'blue', 'green', 'yellow', 'black');
 
-      $graphwidth   = atkconfig("graph_width",750);
+      $graphwidth   = atkconfig::get("graph","graph_width",750);
       $graphheight  = round($graphwidth / 750 * 300);
 
       $graph        = new  Graph($graphwidth,$graphheight,"auto");
@@ -301,7 +301,7 @@
       $dataset = reset($data);
       $title = key($data);
 
-      $graphwidth = atkconfig("graph_width",750);
+      $graphwidth = atkconfig::get("graph","graph_width",750);
       $graphheight = round($graphwidth / 750 * 300);
 
       $graph = new PieGraph($graphwidth,$graphheight,"auto");

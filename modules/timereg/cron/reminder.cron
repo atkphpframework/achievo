@@ -37,7 +37,7 @@
     $userInfo[$users[$i]["id"]]["lng"]  = $users[$i]["lng"];
   }
 
-  $weekcheck = atkconfig("timereg_checkweeks");
+  $weekcheck = atkconfig::get("timereg","timereg_checkweeks");
   if ($weekcheck=="") $weekcheck=1;
   for ($weekloop=1;$weekloop<=$weekcheck;$weekloop++)
   {

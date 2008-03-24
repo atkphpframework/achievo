@@ -12,7 +12,7 @@ class sumAttribute extends atkDurationAttribute
 
   function sumAttribute($name, $groupbyfields)
   {
-    $this->atkDurationAttribute($name, atkconfig("timereg_resolution", "15m"), '10h',AF_OBLIGATORY|AF_TOTAL);
+    $this->atkDurationAttribute($name, atkconfig::get("timereg","timereg_resolution", "15m"), '10h',AF_OBLIGATORY|AF_TOTAL);
 
     $this->m_groupbyfields = $groupbyfields;
   }
@@ -609,7 +609,7 @@ class hoursurvey extends atkNode
       $data[] = array('<hr>');
 
       $startdateatt = new atkDateAttribute("startdate","","", 0, date("Ymd"),AF_OBLIGATORY);
-      $enddateatt = new atkDateAttribute("enddate","","", 0, atkConfig("timereg_allowfuture", false) ? 0 : date("Ymd"), AF_OBLIGATORY);
+      $enddateatt = new atkDateAttribute("enddate","","", 0, atkConfig::get("timereg","timereg_allowfuture", false) ? 0 : date("Ymd"), AF_OBLIGATORY);
 
       $timespan='<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td>'.$startdateatt->edit($dummyrec).'</td><td class="table"> &nbsp;'.
       atktext("until").'&nbsp; </td><td align="right">'.$enddateatt->edit($dummyrec).'</td></tr></table>';
@@ -761,7 +761,7 @@ class hoursurvey extends atkNode
 
       $content.=$tbl->render($data);
       $content.='</form><br>';
-      if (atkConfig("report_hide_parameters", false))
+      if (atkConfig::get("reports","report_hide_parameters", false))
         $contentblocks[] = '<div class="displaynone">'.$ui->renderBox(array("title"=>$title, "content"=>$content)).'</div>';
       else
         $contentblocks[] = '<div class="contentblock">'.$ui->renderBox(array("title"=>$title, "content"=>'<div class="content">'.$content.'</div>')).'</div>';

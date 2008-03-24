@@ -92,7 +92,7 @@
       $cnt_result = count($result);
       if (!$cnt_result)
       {
-        $startingpoint = atkconfig("timereg_overtime_balance_use_startingpoint",false);
+        $startingpoint = atkconfig::get("timereg","timereg_overtime_balance_use_startingpoint",false);
         if($startingpoint==="")
           return $this->getDummyBalance($day, $userid);
         else
@@ -366,7 +366,7 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
 
     function debuglog($params)
     {
-      if (!atkconfig("overtimebalancedebugging", false)) return;
+      if (!atkconfig::get("timereg","overtimebalancedebugging", false)) return;
       $logarr = $params;
       foreach(array("atknodetype", "atkaction", "atkselector") as $item)
         $logarr[$item]=$this->m_postvars[$item];

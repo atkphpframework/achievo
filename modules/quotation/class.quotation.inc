@@ -277,7 +277,7 @@
         $actions["set_".$states[$i]] = dispatch_url("quotation.quotation", "setstate", array("status"=>$states[$i], "id"=>"[id]", "title"=>"[title]"));
       }
 
-      $quotationdoc = atkconfig("doctemplatedir", "doctemplates/")."quotation/quotation/quotation.odt";
+      $quotationdoc = atkconfig::get("quotation","doctemplatedir", "doctemplates/")."quotation/quotation/quotation.odt";
       if (file_exists($quotationdoc))
       {
         // Recordaction definition to call the document action handler without using the documentattribute.
