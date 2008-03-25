@@ -287,7 +287,7 @@ class hours extends atkNode
  */
     $this->setOrder("projectid.abbreviation");
 
-    $this->setTable("hours","hours");
+    $this->setTable("hours","hoursbase");
     $this->addSecurityMap("mra_move", "edit");
   }
 
@@ -486,6 +486,7 @@ class hours extends atkNode
   // in a confirm box on the first timeregistration for the project
   function action_save(&$handler)
   {
+    $this->setTable("hoursbase");
     if (atkconfig::get("timereg","hours_confirm_save") && ($this->_isThisTheFirstTimeRegForThisProject() || !empty($this->m_postvars['confirm'])))
     {
       $sessionManager = &atkGetSessionManager();
