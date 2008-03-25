@@ -965,9 +965,7 @@
       $session = &atkSessionManager::getSession();
       $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][atkPrevLevel()];
       $prevnode = atkArrayNvl($session_prev,"atknodetype");
-      $prevaction = atkArrayNvl($session_prev,"atkaction");
-      if((($prevnode == 'timereg.hours') && ($prevaction == 'admin'))
-       || (($prevnode == 'reports.hoursurvey') && ($prevaction == 'report')))
+      if(($prevnode == 'timereg.hours') || ($prevnode == 'reports.hoursurvey'))
       {
         //if we come from timereg or hoursurvey screen - check timereg right
         $securityManager = &atkGetSecurityManager();
