@@ -142,9 +142,9 @@
       $db = &atkGetDb();
       
       $subquery = $db->createQuery();
-      $subquery->addTable("hours");
+      $subquery->addTable("hoursbase");
       $subquery->addField("phaseid");
-      $subquery->addCondition("hours.userid='".$this->m_userid."'");
+      $subquery->addCondition("hoursbase.userid='".$this->m_userid."'");
       $subquery->addOrderBy("id DESC");
       
       $query = $db->createQuery();
