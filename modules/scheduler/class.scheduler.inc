@@ -829,14 +829,22 @@
     function preAdd(&$record)
     {
       $this->updateEndDate($record);
+      $this->setLastDate($record);
       return true;
     }
 
     function preUpdate(&$record)
     {
+      atk_var_dump($record,"PRE UPDATE RECORD");
       $this->removeSchedulerDates($record['id']);
       $this->updateEndDate($record);
+      $this->setLastDate($record);
       return true;
+    }
+    
+    function setLastDate(&$rec)
+    {
+      $rec['lastdate'] = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],$rec['startdate']['month'],$rec['startdate']['day'],$rec['startdate']['year']);
     }
 
     /**
@@ -857,7 +865,6 @@
         $rec['enddate']['month']=date("m",$enddate);
         $rec['enddate']['year']=date("Y",$enddate);
       }
-      $rec['lastdate'] = mktime($rec["endtime"]["hours"],$rec["endtime"]["minutes"],$rec["endtime"]["seconds"],$rec['enddate']['month'],$rec['enddate']['day'],$rec['enddate']['year']);
     }
 
     /**
