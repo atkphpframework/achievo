@@ -989,7 +989,7 @@ class hours extends atkNode
     // first get the total of contract hours
     $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
                 AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
-    $result = $db->getRows($sql);
+    list($result) = $db->getRows($sql);
 
     // get the total of time already registered this week
     $query = "SELECT sum(time) as totaal
@@ -998,15 +998,16 @@ class hours extends atkNode
               WHERE
                 hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'";
-    $res = $db->getrows($query);
-    if (count($res)==0 || count($result)==0)
-    {
+    list($res) = $db->getrows($query);
+    
+    if ($res['contract']==0 || $result['totaal']==0)
+    {    
       // either no contract in this period, or no hours booked at all..
       return false;
     }
     else
     {
-      return ($result[0]["contract"] - $res[0]["totaal"]<=0);
+      return ($result["contract"] - $res["totaal"]<=0);
     }
   }
 

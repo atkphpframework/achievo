@@ -42,7 +42,11 @@ Changes in Achievo 1.4
 * Available themes are now cached in 
   achievotmp/themes/available_themes.inc [Sandy]
   
-
+Changes in Achievo 1.3.3
+------------------------
+* Fixed weekComplete check: If there were no contracts and/or 
+  timeregistrations, a week still appeared to be completely booked. [Dennis]
+  
 Changes in Achievo 1.3.2
 ------------------------
 * Fixed edit button of non recurring events in the scheduler. [Sandy]
@@ -55,6 +59,9 @@ Changes in Achievo 1.3.2
 * Fixed SQL error when selecting activities that are also in
   the selected template when adding a phase. [Sandy]
 * Fixed aggregation of unsorted columns [Guido,Jeroen]
+* Fixed weekComplete check: If there were no contracts and/or
+  timeregistrations, a week still appeared to be completely
+  booked. [Dennis]
 
 Changes in Achievo 1.3.1
 ------------------------
