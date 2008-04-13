@@ -734,7 +734,7 @@
      */
     function needsInstall($modname)
     {
-      $installfile = moduleDir($modname)."install/install.inc";
+      $installphpfile = moduleDir($modname)."install/install.inc";
       $installsqlfile = moduleDir($modname)."install/install.sql";
       
       return (file_exists($installphpfile) || file_exists($installsqlfile));
