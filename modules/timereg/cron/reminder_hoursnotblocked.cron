@@ -86,13 +86,13 @@
     
     foreach($employees as $personid)
     {
-      $result = $db->getRows("SELECT week FROM hours_lock WHERE userid = '$personid' AND week IN ('".implode("','",$weeks)."')");
+      $result = $db->getRows("SELECT period FROM hours_lock WHERE userid = '$personid' AND period IN ('".implode("','",$weeks)."')");
       
       // now, see if there are weeknumbers missing in the returned array
       $weeknumbers_locked = array();
       
       foreach($result as $row)
-        $weeknumbers_locked[] = $row['week'];
+        $weeknumbers_locked[] = $row['period'];
         
       $locks_missing = array_diff($weeks,$weeknumbers_locked);
       
