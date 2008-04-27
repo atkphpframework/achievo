@@ -43,7 +43,8 @@
   {
     $theme = &atkinstance("atk.ui.atktheme");
     if($theme->getAttribute('useframes',true)) { $target='main'; } else { $target=""; }
-    $searchnode = &atkGetNode("search.search");
+    $node = atkconfig("top_search_node") ? atkconfig("top_search_node") : "search.search";
+    $searchnode = &atkGetNode($node);
     $searchpiece = $searchnode->simpleSearchForm("", $target, SESSION_NEW);
     return $searchpiece;
   }
