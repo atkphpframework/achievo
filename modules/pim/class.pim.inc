@@ -9,9 +9,11 @@
 
     function action_pim(&$handler)
     {
-      if (atkconfig::get('pim','pim_redirect_to') != "")
+      $url = atkconfig::get('pim','pim_redirect_to');
+      if ($url != "" && is_array($url))
       {
-        header("Location: " . atkconfig::get('pim','pim_redirect_to'));
+        $param = atkconfig::get('pim','pim_redirect_to');
+        header("Location: " . session_url(dispatch_url($param[0],$param[1])));
         return;
       }
       
