@@ -3,7 +3,7 @@
 // File:	JPGRAPH_PLOTMARK.PHP
 // Description:	Class file. Handles plotmarks
 // Created: 	2003-03-21
-// Ver:		$Id: jpgraph_plotmark.inc.php 956 2007-11-17 13:19:20Z ljp $
+// Ver:		$Id$
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
