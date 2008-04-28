@@ -1214,7 +1214,7 @@
         $ok = true;
         for ($script=$startidx, $_script=count($history); $script<$_script-1 && $ok; $script++)
         {
-          $scriptname = "upgrade/convert-".$history[$script]."-to-".$history[$script+1].".inc";
+          $scriptname = moduleDir("setup") . "upgrade/convert-".$history[$script]."-to-".$history[$script+1].".inc";
           $output.="<br><br>Start of conversion from ".$history[$script]." to ".$history[$script+1].".";
 
           // Upgrade scripts might take a while. We'll set the timelimit to 0,

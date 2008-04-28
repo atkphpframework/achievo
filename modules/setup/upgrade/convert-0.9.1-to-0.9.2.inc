@@ -313,8 +313,8 @@
   $setup->alterColumn("project_notes", "description", "description", "text", false);
   $setup->alterColumn("schedule", "id", "id", "int(10)", false);
   $setup->alterColumn("schedule_type", "id", "id", "int(10)", false);
-  $setup->alterColumn("schedule_note", "owner", "owner", "int(10)", false);
-  $setup->alterColumn("schedule_note", "schedule_id", "schedule_id", "int(10)", false);
+  //$setup->alterColumn("schedule_note", "owner", "owner", "int(10)", false);
+  //$setup->alterColumn("schedule_note", "schedule_id", "schedule_id", "int(10)", false);
   $setup->alterColumn("todo", "id", "id", "int(10)", false);
   $setup->alterColumn("todo", "projectid", "projectid", "int(10)", false);
   $setup->alterColumn("todo", "status", "status", "int(1)", false);
