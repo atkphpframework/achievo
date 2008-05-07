@@ -109,6 +109,8 @@
   "contract_id" => "Contract",
   "contract_project_remove" => "Unlink",
   "coordinator" => "Coordinator",
+  "coordinator_mail_hours_locked_subject" => "Someone has locked a week in time registration.",
+  "coordinator_mail_hours_locked_bodytemplate" => "%s has locked his hours for week %s, a response (approve or disapprove) is required!",
   "costdate" => "Date of expense",
   "country" => "Country",
   "created_by" => "Created by",

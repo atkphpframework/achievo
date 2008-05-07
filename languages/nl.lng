@@ -108,6 +108,8 @@
   "contract_id" => "Overeenkomst",
   "contract_project_remove" => "Ontkoppelen",
   "coordinator" => "Coordinator",
+  "coordinator_mail_hours_locked_subject" => "Iemand heeft een week geblokkeerd in de tijdregistratie.",
+  "coordinator_mail_hours_locked_bodytemplate" => "%s heeft uren geblokkeerd voor week %s, uw actie (goedkeuren of afkeuren) is vereist!",
   "costdate" => "Datum uitgave",
   "country" => "Land",
   "created_by" => "Gemaakt door",

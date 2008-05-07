@@ -61,11 +61,14 @@ Changes in Achievo 1.4
 
 Changes in Achievo 1.3.3
 ------------------------
-* Fixed weekComplete check: If there were no contracts and/or 
+* Fixed weekComplete check: If there were no contracts and/or
   timeregistrations, a week still appeared to be completely
   booked. [Dennis]
 * Fixed SQL error in reminder_hoursnotblocked cron. [Guido]
-  
+* Fixed missing translations in emails sent to project coordinators
+  when one of their team members locks a week in the time registration.
+  [Guido]
+
 Changes in Achievo 1.3.2
 ------------------------
 * Fixed edit button of non recurring events in the scheduler. [Sandy]

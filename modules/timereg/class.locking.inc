@@ -1,11 +1,11 @@
 <?php
 
 include_once("achievotools.inc");
-  
+
 /**
  * Locking related functions for all modules using the monthly/weekly locking
  * and approval.
- * 
+ *
  */
 class Locking {
 
@@ -13,7 +13,7 @@ class Locking {
    * Check if this period (week or month) may be booked..
    *
    * @param $userid
-   * @param $date     yy-mm-dd 
+   * @param $date     yy-mm-dd
    *
    * @return ""           - not locked
    *         "individual" - locked for the user only
@@ -81,27 +81,27 @@ class Locking {
   **/
   function lockPeriod($period, $approved=null)
   {
-    
+
     $record = array();
     $record["userid"]["id"] = atkArrayNvl(getUser(), "id");
     $record["period"] = $period;
     $record["approved"] = $approved;
     $locknode = &atkGetNode("timereg.hours_lock");
     $lockmode = atkConfig::get('timereg','lockmode','week');
-    
+
     if (atkConfig::get('timereg','approve_period_per_coordinator') == true)
     {
       // Add record for every coordinator
       // First, get all coordinators who have to validate - this are the coordinators
       // for the projects the person has registered time for this week.
       $db = &atkGetDb();
-       
+
       if ($lockmode == "week") {
         $dateformat = "%Y%u";
       } else {
         $dateformat = "%Y%m";
       }
-      
+
       $result = $db->getRows("
                 SELECT DISTINCT person.id AS coordinator, person.firstname, person.lastname, person.email
                 FROM hours
@@ -111,60 +111,60 @@ class Locking {
                 WHERE hours.userid = '{$record['userid']['id']}'
                 AND DATE_FORMAT(activitydate,'{$dateformat}') = '{$record['period']}'
                 AND coordinator IS NOT NULL");
- 
+
       foreach($result as $r)
       {
         $record['coordinator'] = $r['coordinator'];
         $locknode->addDb($record);
-      
-       if (atkConfig::get('timereg','mail_coordinators_on_lock') == true)
+
+        if (atkConfig::get('timereg','mail_coordinators_on_lock') == true)
         {
           // sendout an e-mail to the coordinator
           $userdetails = array_pop($db->getRows("SELECT firstname,lastname,userid FROM person WHERE id='{$record["userid"]["id"]}'"));
           $username = $userdetails['userid'] . " ({$userdetails['firstname']} {$userdetails['lastname']}) ";
-          
+
           $to = $r['firstname'] . " " . $r['lastname'] . " <{$r['email']}>";
-          $subject = atktext('coordinator_mail_hours_locked_subject','weektimereg');
-          
-          $mailbody = atktext('coordinator_mail_hours_locked_bodytemplate','weektimereg');
-          $mailbody = sprintf($mailbody,$username,$record["week"]);
-          
+          $subject = atktext('coordinator_mail_hours_locked_subject');
+
+          $mailbody = atktext('coordinator_mail_hours_locked_bodytemplate');
+          $mailbody = sprintf($mailbody,$username,$record["period"]);
+
           usermail($to,$subject,$mailbody,"From: ".atkConfig::get('timereg','from','Achievo <automailer@achievo.org>'));
         }
       }
     }
-    else 
+    else
     {
       $locknode->addDb($record);
     }
   }
 
-  
+
   /**
-   * Remove lock from specified period for current user. 
-   * 
-   * @param int $period 
+   * Remove lock from specified period for current user.
+   *
+   * @param int $period
    * @access public
    * @return void
    */
   function unlockPeriod($period)
   {
-    $userid = atkArrayNvl(getUser(), "id");   
-    $locknode = &atkGetNode("timereg.hours_lock");    
+    $userid = atkArrayNvl(getUser(), "id");
+    $locknode = &atkGetNode("timereg.hours_lock");
     $locknode->deleteDb("hours_lock.period = '$period' AND hours_lock.userid = '$userid'");
   }
-  
-  
+
+
   /**
-   * Return the period a date belongs to. 
-   * 
-   * @param String $date YYYY-MM-DD 
+   * Return the period a date belongs to.
+   *
+   * @param String $date YYYY-MM-DD
    * @access public
    * @return void
    */
   function getPeriod($date) {
     $period = "";
-    
+
     if (atkConfig::get("timereg", "lockmode", "week") == "week") {
       $period = weekstamp(adodb_mktime(0,0,0,substr($date,5,2),
                                        substr($date,8,2),
@@ -193,16 +193,16 @@ class Locking {
 
 
   /**
-   * getFirstNonLockedDayOfPeriod 
-   * 
-   * @param array $days   Two-dimensional array. 
-   * @param mixed $offset Which index in $days day to begin looking at 
-   * @return string       Date of the first non-locked day of this period 
+   * getFirstNonLockedDayOfPeriod
+   *
+   * @param array $days   Two-dimensional array.
+   * @param mixed $offset Which index in $days day to begin looking at
+   * @return string       Date of the first non-locked day of this period
   */
   function getFirstNonLockedDayOfPeriod($days, $offset) {
-    
+
     $retval = $days[$offset]['date'];
-    
+
     for ($i=$offset; $i<$offset+7; $i++)
     {
       if (Locking::getLockType(atkArrayNvl(getUser(), "id"),
@@ -216,8 +216,8 @@ class Locking {
     return $retval;
   }
 
- 
-  
+
+
 } // end class
 
 ?>
