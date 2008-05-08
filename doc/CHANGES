@@ -14,6 +14,8 @@ Changes in Achievo 1.4
 + Added scheduler email system which for example sends an email to you
   when you are invited to an appointment in the scheduler. [Sandy,Guido]
 + Added support for .sql install/patch files. [Sandy]
++ Added documentation for the quotation.reminder and
+  timereg.reminder_hoursnotblocked cronjobs. [Guido]
 - Removed /manual/guide.html because of outdated information. Please refer
   to the Achievo wiki for current information on how to use Achievo. [Guido]
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
