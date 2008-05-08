@@ -8,7 +8,7 @@ If you want to update one of the unmaintained languages, use en.lng
 from the languages directory as basis for your new translation.
 Please also translate the corresponding language file in the atk/languages 
 directory. For more information see also:
-http://www.achievo.org/wiki/index.php/Languages
+http://www.achievo.org/wiki/Achievo_HOWTO_Languages
 
 Please send your updated translation to translations@achievo.org so we can include
 it in the next release.

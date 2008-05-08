@@ -117,7 +117,7 @@ have a working webserver with PHP support and a MySQL database installed.
    http://yourserver/achievo/
 
    If this is the first time you're using Achievo, you might want to take the
-   Guided Tour on http://www.achievo.org/support/manual/tour, which will show
+   Guided Tour on http://www.achievo.org/wiki/Guided_Tour, which will show
    you everything you should do to make Achievo useable for your users.
 
 9) Achievo contains some useful cron scripts that can be run periodically from

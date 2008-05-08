@@ -77,7 +77,7 @@
       $content.= $this->text("usesetuplink") . '<br><br>';
       $content.= '<b>' . $this->text("donations") . '</b><br>';
       $content.= $this->text("becomeasponsor") . '<br><br>';
-      $content.= '<a href="http://www.achievo.org/support/donate" target="_new">';
+      $content.= '<a href="http://www.achievo.org/services/donate/" target="_new">';
       $content.= '<img border="0" src="modules/pim/paypal_donate.gif" alt="' . $this->text("donate") . '">';
       $content.= '</a>';
       $content.= '</div><br>';
