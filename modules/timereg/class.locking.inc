@@ -89,7 +89,9 @@ class Locking {
     $locknode = &atkGetNode("timereg.hours_lock");
     $lockmode = atkConfig::get('timereg','lockmode','week');
 
-    if (atkConfig::get('timereg','approve_period_per_coordinator') == true)
+    $approveperiodpercoordinator = atkConfig::get('timereg','approve_period_per_coordinator') == true;
+    $result = 0;
+    if ($approveperiodpercoordinator)
     {
       // Add record for every coordinator
       // First, get all coordinators who have to validate - this are the coordinators
@@ -111,7 +113,10 @@ class Locking {
                 WHERE hours.userid = '{$record['userid']['id']}'
                 AND DATE_FORMAT(activitydate,'{$dateformat}') = '{$record['period']}'
                 AND coordinator IS NOT NULL");
+    }
 
+    if ($approveperiodpercoordinator && count($result)>0)
+    {
       foreach($result as $r)
       {
         $record['coordinator'] = $r['coordinator'];
@@ -121,7 +126,7 @@ class Locking {
         {
           // sendout an e-mail to the coordinator
           $userdetails = array_pop($db->getRows("SELECT firstname,lastname,userid FROM person WHERE id='{$record["userid"]["id"]}'"));
-          $username = $userdetails['userid'] . " ({$userdetails['firstname']} {$userdetails['lastname']}) ";
+          $username = $userdetails['userid'] . " ({$userdetails['firstname']} {$userdetails['lastname']})";
 
           $to = $r['firstname'] . " " . $r['lastname'] . " <{$r['email']}>";
           $subject = atktext('coordinator_mail_hours_locked_subject');

@@ -544,7 +544,7 @@ class hoursurvey extends atkNode
         $this->_addOr($data);
       }
 
-      $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization"));
+      $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization", AF_HIDE));
 
       if(atkconfig::get("timereg","timereg_contact_link",false))
       {

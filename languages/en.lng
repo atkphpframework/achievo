@@ -210,6 +210,7 @@
   "hours_approve_explain_teammembers_only" => "Only weeks and hours from project members in projects you are coordinator of are shown.",
   "hours_approve_noblockedperiod" => "No locked %ss yet",
   "hours_approve_noblockedweeksyet" => "No blocked weeks yet",
+  "hours_approve_only_show_not_approved" => "Only weeks that aren't approved are shown.",
   "hours_approve_registrationdisapprovedbody" => "Your hours registration for %s %s in %s was disapproved for the following reason:\n\n%s",
   "hours_approve_registrationdisapprovedsubject" => "Hours registration disapproved",
   "hours_approve_remarkmanager" => "Only the employees you are the supervisor of are displayed.",

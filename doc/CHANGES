@@ -65,12 +65,22 @@ Changes in Achievo 1.4
 
 Changes in Achievo 1.3.3
 ------------------------
++ Added hours_approve_only_show_not_approved translation. [Guido]
+- Removed non-used 'organization' column from hoursurvey. [Guido]
+* Fixed validation of obligatory reason for blocked week disapproval. [Guido]
+* Fixed ability to block weeks in which no project hours are registered when
+  approve_period_per_coordinator is set to true in the configuration file.
+  [Guido]
+* Fixed timereg.reminder_hoursnotblocked cronjob sending emails when a week is
+  blocked for everyone. [Guido]
 * Fixed weekComplete check: If there were no contracts and/or
   timeregistrations, a week still appeared to be completely
   booked. [Dennis]
 * Fixed SQL error in reminder_hoursnotblocked cron. [Guido]
 * Fixed missing translations in emails sent to project coordinators
   when one of their team members locks a week in the time registration.
+  [Guido]
+* Fixed timeout in reports when two employees are eachothers supervisor.
   [Guido]
 
 Changes in Achievo 1.3.2

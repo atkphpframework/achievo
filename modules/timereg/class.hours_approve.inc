@@ -708,7 +708,7 @@
       atkimport("atk.ui.atktheme");
       $theme = &atkTheme::getInstance();
 
-      if (!isset($this->m_postvars["reason"]))
+      if (!isset($this->m_postvars["reason"]) || empty($this->m_postvars["reason"]))
       {
 
         $reqimg = '<img align="top" onMouseOver="javascript:window.status=\''.
