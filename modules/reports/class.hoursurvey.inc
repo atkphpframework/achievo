@@ -30,9 +30,12 @@ class sumAttribute extends atkDurationAttribute
       if ($field!=$this->fieldName()) // can't aggregate on ourselves
       {
         $groupby = $tablename.".".$field;
-        if ($groupby == "hours.projectid") { $groupby = "phaseid.projectid"; }
-        if ($groupby == "hours.functionlevel") { $groupby = "userid.functionlevel"; }
-        if ($groupby == "hours.employer_id") { $groupby = "userid.employer_id"; }
+        if ($tablename=="hours" || $tablename =="hoursbase")
+        {
+          if ($field == "projectid") { $groupby = "phaseid.projectid"; }
+          if ($field == "functionlevel") { $groupby = "userid.functionlevel"; }
+          if ($field == "employer_id") { $groupby = "userid.employer_id"; }
+        }
         $query->addGroupBy($groupby);
       }
     }
@@ -40,7 +43,7 @@ class sumAttribute extends atkDurationAttribute
 
   function db2value($rec)
   {
-    $rec["time"] = $rec['SUM(hours.time)'];
+    $rec["time"] = $rec['SUM('.$this->m_ownerInstance->m_table.'.'.$this->fieldName().')'];
     return parent::db2value($rec);
   }
 }
