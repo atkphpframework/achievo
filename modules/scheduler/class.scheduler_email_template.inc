@@ -54,7 +54,7 @@ class scheduler_email_template extends email_template
                  "location"=>$rec[0]["location"],
                  "description"=>$rec[0]["description"],
                  "startdate"=>$this->getDate($rec[0],"start"),
-                 "endddate"=>$this->getDate($rec[0],"end"),
+                 "enddate"=>$this->getDate($rec[0],"end"),
                  "category"=>$rec[0]["category"]["description"],
                  "priority"=>$scheduler_node->getAttribute("priority")->display($rec[0]),
                  "participants"=>$this->getAttendees($rec[0]["attendees"]),
