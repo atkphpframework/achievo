@@ -197,6 +197,7 @@
       $this->assertTrue(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Show Monthly item');
       $checkdate = mktime(0,0,0,12,17,2006);
       $this->assertFalse(schedulertools::showItem($item,$checkdate,$startdate,$enddate),'Don\'t Show Monthly item');
+
     }
 
     /**
@@ -371,6 +372,24 @@
       $dates = schedulertools::getDates($item,"2008-09-15","2009-10-20");
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Monthly item, last sunday of every 2 months");
+
+      $item = array("startdate"=>array("day"=>11,"month"=>6,"year"=>2008),
+              "enddate"=>array("day"=>11,"month"=>6,"year"=>2008),
+              "starttime"=>"10:00",
+              "endtime"=>"12:00",
+              "cyclus"=>array("monthly_choice"=>2,
+                              'monthly_month_time'=>4, // Fourth
+                              'monthly_weekday_list'=>4, // wednesday
+                              "monthly_every2"=>1, //every month
+                              'end_choice'=>3, // end after x times
+                              'cyclus_times'=>3), // end after 10 times
+              "recur"=>"monthly");
+      $dates = schedulertools::getDates($item,"2008-06-10","2009-01-01");
+      $valid_dates = array('2008-06-25','2008-07-23','2008-08-27');
+      $ret = atkArrayCompare($valid_dates,$dates);
+      $this->assertEqual(false, $ret, "Monthly item, every fourth wednesday of every month");
+      atk_var_dump($dates,"Monthly item, every fourth wednesday of every month");
+
     }
 
      /**
