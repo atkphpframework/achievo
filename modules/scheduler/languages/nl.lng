@@ -91,6 +91,7 @@
                                    // Class scheduler", // Missing string!!!
   "ifsunthen" => "Zondag",
   "import" => "Importeer vakanties",
+  "last"=>"Laatste",
   "location" => "Lokatie",
   "menu_scheduler" => "Agenda",
   "menu_scheduler_category" => "Agenda categorieen",

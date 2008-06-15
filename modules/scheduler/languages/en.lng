@@ -91,6 +91,7 @@
                                    // Class scheduler",
   "ifsunthen" => "Sunday",
   "import" => "Import holidays",
+  "last"=>"Last",
   "location" => "Location",
   "menu_scheduler" => "Scheduler",
   "menu_scheduler_category" => "Scheduler categories",
