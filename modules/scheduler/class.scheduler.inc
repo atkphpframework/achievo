@@ -666,9 +666,9 @@
      * Edit copy action for when a user edits a single item of a recurring item
      *
      */
-    function action_editcopy(&$handler)
+    function action_editcopy($handler="")
     {
-      if ($this->m_postvars['call_original_editcopy'] == true)
+      if ($this->m_postvars['call_original_editcopy'] == true && is_object($handler))
       {
         return $handler->action_editcopy();
       }
