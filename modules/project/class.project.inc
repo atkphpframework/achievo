@@ -229,12 +229,13 @@
 
     function initial_values()
     {
+      $nextyear = strtotime("+1 year");
       $rec = array("startdate"=>array("year"=>date("Y"),
                                       "month"=>date("m"),
                                       "day"=>date("d")),
-                   "enddate"=>array("year"=>(date("Y")+1),
-                                    "month"=>date("m"),
-                                    "day"=>date("d")),
+                   "enddate"=>array("year"=>(date("Y",$nextyear)),
+                                    "month"=>date("m",$nextyear),
+                                    "day"=>date("d",$nextyear)),
                    "timereg_limit"=>PRJ_TIMEREG_MEMBERS_ONLY,
                    "status"=>"active",
                    "coordinator"=>getUser());
