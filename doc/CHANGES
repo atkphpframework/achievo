@@ -16,6 +16,7 @@ Changes in Achievo 1.4
 + Added support for .sql install/patch files. [Sandy]
 + Added documentation for the quotation.reminder and
   timereg.reminder_hoursnotblocked cronjobs. [Guido]
++ Added caching for retrieving total activities. [Sandy]
 - Removed /manual/guide.html because of outdated information. Please refer
   to the Achievo wiki for current information on how to use Achievo. [Guido]
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
@@ -55,15 +56,17 @@ Changes in Achievo 1.4
 * Updated default width of graphs to 750px. [Sandy]
 * Fixed currency symbol in organization contracts and projects. [Sandy]
 * Moved all configs to module specific config files in /configs. [Sandy]
-* Available themes are now cached in 
+* Available themes are now cached in
   achievotmp/themes/available_themes.inc [Sandy]
 * Moved upgrade sql files into the setup module directory. [Guido]
 * Fixed scheduler-related upgrade issue when upgrading from a pre-0.9.2
   version of Achievo. [Guido]
 * Fixed SQL error when using aggregation of certain columns in the
   hours survey. [Guido]
+* Fixed achievo title in framed themes. [Sandy]
+* Show full username in top like frameless themes. [Sandy]
 
-Changes in Achievo 1.3.3
+Changes in Achievo 1.3.4
 ------------------------
 + Added hours_approve_only_show_not_approved translation. [Guido]
 - Removed non-used 'organization' column from hoursurvey. [Guido]
@@ -82,6 +85,11 @@ Changes in Achievo 1.3.3
   [Guido]
 * Fixed timeout in reports when two employees are eachothers supervisor.
   [Guido]
+
+Changes in Achievo 1.3.3
+------------------------
+- Removed mcpuk file manager of the fckeditor in ATK because
+  it contains a security exploit. [Sandy]
 
 Changes in Achievo 1.3.2
 ------------------------
