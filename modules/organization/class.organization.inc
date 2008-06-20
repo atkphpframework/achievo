@@ -119,7 +119,15 @@ class organization extends atkNode
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setIndex("name");
-    $this->setDescriptorTemplate("[name], [city] ([organizationcode])");
+  }
+
+  function descriptor($rec)
+  {
+    $tpl = '[name]';
+    if($rec['city']!='') $tpl.=', [city]';
+    if($rec['organizationcode']!='') $tpl.=' ([organizationcode])';
+    $this->setDescriptorTemplate($tpl);
+    return parent::descriptor($rec);
   }
 
   /**
