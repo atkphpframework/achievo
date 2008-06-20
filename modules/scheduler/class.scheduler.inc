@@ -558,8 +558,8 @@
 
       if($record["recur"]!="once")
       {
-        $buttons[] = '<input name="confirmsingle" class="btn" type="submit" value="'.$this->text("delete_single").'">';
-        $buttons[] = '<input name="confirm" class="btn" type="submit" value="'.$this->text("delete_cyclus").'">';
+        $buttons[] = '<input name="confirmsingle" class="btn" type="submit" value="'.$this->text("delete_single",'scheduler').'">';
+        $buttons[] = '<input name="confirm" class="btn" type="submit" value="'.$this->text("delete_cyclus",'scheduler').'">';
       }
       else
       {

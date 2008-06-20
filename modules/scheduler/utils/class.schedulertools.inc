@@ -131,6 +131,7 @@ class schedulertools
     else
       $maxtimes = false;
 
+    atkdebug("MAXTIMES: $maxtimes");
     while (($maxtimes === false) || ($validdates < $maxtimes))
     {
       $checkdate = $startdate+($datecounter*86400);

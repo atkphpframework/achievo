@@ -18,11 +18,11 @@ class scheduler_weekview extends scheduler_view
     $theme = &atktheme::getInstance();
     $prevTime = $this->m_weekdates[0]['date'];
     $prevUrl  = atkSelf()."?view=week&viewdate=$prevTime";
-    $prevImg  ='<img src="'.$theme->imgPath("arrow_left.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("previous_week","scheduler").'" alt="'.atktext("previous_week","scheduler").'">';
+    $prevImg  ='<img src="'.$theme->imgPath("arrow_left.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("previousweek","scheduler").'" alt="'.atktext("previousweek","scheduler").'">';
 
     $nextTime = $this->m_weekdates[8]['date'];
     $nextUrl  = atkSelf()."?view=week&viewdate=$nextTime";
-    $nextImg  ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_week","scheduler").'" alt="'.atktext("next_week","scheduler").'">';
+    $nextImg  ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("nextweek","scheduler").'" alt="'.atktext("nextweek","scheduler").'">';
 
     $currentUrl = atkSelf()."?view=week&viewdate=".date("Y-m-d");
 
@@ -33,7 +33,7 @@ class scheduler_weekview extends scheduler_view
     if($this->m_userPrefs["showweeknumbers"]==true) $this->m_viewTitle.= atktext("week")."&nbsp;".$this->m_weeknumber.", ";
     $this->m_viewTitle.= date("d-m-Y",$weeknumberFull["firstweekstart"])." - ".date("d-m-Y",$weeknumberFull["firstweekend"])."</b>";
 
-    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl,atktext("current_week","scheduler"));
+    return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($currentUrl,atktext("currentweek","scheduler"));
 
   }
   /**

@@ -25,7 +25,7 @@ class scheduler_birthdayview extends scheduler_view
       if($month>12) $month-=12;
       if(isset($birthdays[$month]) && is_array($birthdays[$month]))
       {
-        $tmp.='<b>'.ucfirst(dateutil::monthname($month)).'</b> ('.count($birthdays[$month]).')<br>';
+        $tmp.='<b>'.ucfirst(atktext(dateutil::monthname($month),'atk')).'</b> ('.count($birthdays[$month]).')<br>';
         foreach($birthdays[$month] as $day => $users)
         {
           foreach($users as $info)

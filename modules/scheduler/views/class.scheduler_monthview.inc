@@ -73,7 +73,7 @@ class scheduler_monthview extends scheduler_view
              <tr>
               <td valign="top">';
     $tmp.='<table border="0" cellpadding="0" cellspacing="0" width="100%">';
-    $tmp.='<tr style="background-color: #DDDDDD;"><td width="40">Week</td>';
+    $tmp.='<tr style="background-color: #DDDDDD;"><td width="40">'.atktext('week','scheduler').'</td>';
 
     $day_number = $daystart;
     for ($i=0;$i<7;$i++)
