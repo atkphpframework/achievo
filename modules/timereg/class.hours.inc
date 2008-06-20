@@ -223,7 +223,7 @@ class hours extends atkNode
 
 
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-    
+
     $p_attr = &$this->add(new atkBoolAttribute("virtual_time",AF_HIDE));
     $p_attr->setForceInsert(true);
 
@@ -258,7 +258,7 @@ class hours extends atkNode
     if($oneActivity)
       $activity_flag = AF_HIDE|AF_FORCE_LOAD;
     else
-      $activity_flag = AF_LIST_OBLIGATORY_NULL_ITEM;
+      $activity_flag = AF_FORCE_LOAD;
     $activity = &new atkManyToOneRelation("activityid","project.activity",AF_OBLIGATORY|$activity_flag);
     $this->add($activity);
 
@@ -542,11 +542,15 @@ class hours extends atkNode
   // override the admin action, because we have the weekview/dayview switch..
   function action_admin(&$handler)
   {
-    $this->setTable("hoursbase");
     $page = &$this->getPage();
+    if ($this->m_partial == 'datagrid')
+    {
+       $page->addContent($handler->partial_datagrid());
+       return;
+    }
 
+    $this->setTable("hoursbase");
     $this->setLock();
-
     $this->addFilter($this->getTable().".userid",$this->m_user);
 
     //we need to make sure the activitydate has the same value as $this->m_viewdate.

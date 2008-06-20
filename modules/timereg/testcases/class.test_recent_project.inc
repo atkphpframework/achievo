@@ -17,6 +17,12 @@ class test_recent_project extends atkTestCase
     $this->addFixture('timereg.accessright');
   }
   
+  public function skip()
+  {
+    $this->skipIf(!$this->useTestDatabase() && $this->useFixture(),'Test database isn\'t configured');
+  }
+  
+  
   public function setUp()
   {
     parent::setUp();
