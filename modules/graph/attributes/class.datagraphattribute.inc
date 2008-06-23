@@ -1,4 +1,19 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage graph
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
   useattrib("graph.graphattribute");
 
@@ -16,23 +31,8 @@
    * a graph is plotted based on the supplied input data.
    *
    * @author Ivo Jansch <ivo@achievo.org>
-   *
-   * @version $Revision$
-   *
-   * $Id$
-   *
-   * This file is part of Achievo.
-   *
-   * Achievo is free software; you can redistribute it and/or modify
-   * it under the terms of the GNU General Public License as published by
-   * the Free Software Foundation; either version 2 of the License, or
-   * (at your option) any later version.
-   *
-   * Achievo is distributed in the hope that it will be useful,
-   * but WITHOUT ANY WARRANTY; without even the implied warranty of
-   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   * GNU General Public License for more details.
-   *
+   * @package achievo
+   * @subpackage graph
    */
   class dataGraphAttribute extends graphAttribute
   {
@@ -91,6 +91,8 @@
 
   /**
    * Plotter companion class for dataGraphAttribute.
+   * @package achievo
+   * @subpackage graph
    */
   class dataGraphAttributePlotter
   {
@@ -99,6 +101,8 @@
      * Called by the graph.php image wrapper, to perform the actual plot.
      *
      * Do not call directly. Internal framework use only, as they say.
+     * @param array $postvars Postvars
+     * @return string
      */
     function plot($postvars)
     {
@@ -149,11 +153,17 @@
         }
       }
 
-      $funcname = $graphtype."Plot";      
+      $funcname = $graphtype."Plot";
       return $this->$funcname($data);
 
     }
 
+    /**
+     * Bar plotter
+     *
+     * @param array $data Graph data
+     * @return boolean
+     */
     function barPlot($data)
     {
       usegraph("bar");
@@ -234,6 +244,12 @@
 
     }
 
+    /**
+     * Line plotter
+     *
+     * @param array $data Graph data
+     * @return boolean
+     */
     function linePlot($data)
     {
       usegraph("line");
@@ -292,6 +308,12 @@
 
     }
 
+    /**
+     * Pie plotter
+     *
+     * @param array $data Data for the graph
+     * @return boolean
+     */
     function piePlot($data)
     {
       usegraph("pie");
