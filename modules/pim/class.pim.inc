@@ -1,12 +1,41 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage pim
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
+  /**
+   * Class for rendering the pim page
+   *
+   * @package achievo
+   * @subpackage pim
+   */
   class pim extends atkNode
   {
+    /**
+     * Constructor
+     */
     function pim()
     {
       $this->atkNode("pim",NF_NO_SECURITY);
     }
 
+    /**
+     * Render action page with all pim items
+     *
+     * @param object $handler Handler
+     */
     function action_pim(&$handler)
     {
       $url = atkconfig::get('pim','pim_redirect_to');
@@ -16,7 +45,7 @@
         header("Location: " . session_url(dispatch_url($param[0],$param[1])));
         return;
       }
-      
+
       $pimItems = atkHarvestModules("getPimItems","",true);
       $userpimitems = &atknew("module.pim.userpimitems");
       $user = getuser();
@@ -62,6 +91,11 @@
       $page->addContent($content);
     }
 
+    /**
+     * Get administrator pim content
+     *
+     * @return string
+     */
     function getAdminPimContent()
     {
       // Generate the content
@@ -86,6 +120,11 @@
       return $content;
     }
 
+    /**
+     * Administrator pim action
+     *
+     * @param object $handler Handler
+     */
     function action_adminpim(&$handler)
     {
       // Initialize the title and content
@@ -94,22 +133,29 @@
 
       // Render the page
       $page = &$this->getPage();
-      
+
       $content = $this->renderContent($title,$content);
       $page->addContent($content);
     }
-    
+
+    /**
+     * Render content
+     *
+     * @param string $title Title
+     * @param string $content Content
+     * @return string
+     */
     function renderContent($title,$content)
     {
       $theme = &atkinstance('atk.ui.atktheme');
       if ($theme->getAttribute('useframes',true))
       {
-         $renderd_content = $this->genericPage($title, $content);        
+         $renderd_content = $this->genericPage($title, $content);
       }
-      else 
+      else
       {
          $ui = &$this->getUi();
-         
+
           if (!is_array($content)) $content = array($title=>$content);
           $renderd_content="";
           foreach($content as $itemtitle => $itemcontent)
