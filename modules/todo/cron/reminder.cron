@@ -1,8 +1,21 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage todo
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
- /*
-  * @version $Revision$
-  * @Author Ivo Jansch <ivo@achievo.org>
+ /**
   *
   * Sends an email reminder if there are any todo's that have a
   * due date <= today. The reminder is sent to the person to whom
@@ -12,12 +25,12 @@
   * This script should be run daily, preferably in the morning, so
   * people are notified of the todo's that should be fixed today.
   *
-  * $Id$
+  * @author Ivo Jansch <ivo@achievo.org>
   *
-  */  
- 	 	
+  */
+
  	$db = &atkGetDb();
- 	
+
   // check which todo's have a duedate of today or earlier, and which have a
   // status of new, in_progress or on_hold.
   $todos = $db->getrows("SELECT
@@ -134,7 +147,7 @@
         }
       }
       $body.="\n";
-    }    
+    }
     usermail($to,atktext("todocheck_mail_subject"),$body);
     echo "sent mail to $to";
     echo "\n";

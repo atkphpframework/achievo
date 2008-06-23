@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage todo
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 require_once("achievotools.inc");
 userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
@@ -10,11 +24,23 @@ useattrib("atktextattribute");
 useattrib("atknumberattribute");
 useattrib("atkboolattribute");
 
+/**
+ * Class for managing the todo's
+ *
+ * @package achievo
+ * @subpackage todo
+ */
 class todo extends atkNode
 {
   var $prioId   = array(1,2,3,4,5);
   var $prioName = array("highest","high","normal","low","lowest");
 
+  /**
+   * Constructor
+   *
+   * @param string $name Node name, default todo
+   * @return void
+   */
   function todo($name="todo")
   {
     $this->atkNode($name, NF_TRACK_CHANGES|NF_MRA);
@@ -53,6 +79,13 @@ class todo extends atkNode
 
   }
 
+  /**
+   * Add complete record action
+   *
+   * @param array $rec Record
+   * @param array $actions Actions
+   * @param array $mraactions Multi record actions
+   */
   function recordActions($rec,&$actions,&$mraactions)
   {
     if($rec['status']<>'5')
@@ -62,6 +95,12 @@ class todo extends atkNode
     }
   }
 
+  /**
+   * Update close date if complete is 100% or status is 5
+   *
+   * @param array $rec Record
+   * @return boolean
+   */
   function preUpdate(&$rec)
   {
     if(($rec["completed"]==100 || $rec["status"]==5) && $rec["closedate"]["year"]=="" && $rec["closedate"]["month"]==0 && $rec["closedate"]["day"]==0)
@@ -84,6 +123,14 @@ class todo extends atkNode
   }
 
 
+  /**
+   * When action is complete, update completed, status and closedate
+   *
+   * @param object $handler Handler
+   * @param array $record Record
+   * @param string $mode Mode
+   * @param string $selector ATK Selected
+   */
   function action_complete(&$handler,$record=array(),$mode="",$selector=NULL)
   {
     if($selector!=NULL)
@@ -112,6 +159,10 @@ class todo extends atkNode
     $this->redirect();
   }
 
+  /**
+   * Complete Multi record action
+   *
+   */
   function action_mra_complete()
   {
     if (is_array($this->m_postvars['atkselector']))
@@ -125,6 +176,11 @@ class todo extends atkNode
     $this->redirect();
   }
 
+  /**
+   * Initial values
+   *
+   * @return Array
+   */
   function initial_values()
   {
     global $g_user;
@@ -145,6 +201,13 @@ class todo extends atkNode
                  "priority"=>3);
   }
 
+  /**
+   * Override title display
+   *
+   * @param array $record Record
+   * @param string $mode Mode
+   * @return string
+   */
   function title_display($record,$mode)
   {
     if (($mode=="plain") || ($mode=="csv"))
@@ -154,7 +217,12 @@ class todo extends atkNode
     return href(dispatch_url("todo.todo",$defaultaction, array("atkselector"=>"todo.id='".$record["id"]."'")), $record["title"], SESSION_NESTED);
   }
 
-  // overide display of priority (set high to a red font)
+  /**
+   * overide display of priority (set high to a red font)
+   *
+   * @param array $rec Record
+   * @return string
+   */
   function priority_display($rec)
   {
    $prio = $rec["priority"];
@@ -176,6 +244,12 @@ class todo extends atkNode
    return $result;
   }
 
+  /**
+   * Override completed display to draw a bar
+   *
+   * @param array $rec Record
+   * @return string
+   */
   function completed_display($rec)
   {
     $percentage = (isset($rec["completed"]) && is_numeric($rec["completed"])?$rec["completed"]:0);
@@ -193,6 +267,12 @@ class todo extends atkNode
             </div>';
   }
 
+  /**
+   * Duedate display override
+   *
+   * @param record $rec Record
+   * @return string
+   */
   function duedate_display($rec)
   {
     $duedate = sprintf("%d-%02d-%02d", $rec["duedate"]["year"], $rec["duedate"]["month"], $rec["duedate"]["day"]);
@@ -214,12 +294,21 @@ class todo extends atkNode
     }
   }
 
+  /**
+   * Set descriptor template
+   *
+   * @return string
+   */
   function descriptor_def()
   {
    return "[title]";
   }
 
-  // support function to add the priority header to a mail message
+  /**
+   * support function to add the priority header to a mail message
+   * @param int $level priority level
+   * @return string
+   */
   function prioHeader($level)
   {
    $cr = chr(13).chr(10);
@@ -256,6 +345,12 @@ class todo extends atkNode
    return $header;
   }
 
+  /**
+   * Send an email when a todo is added
+   *
+   * @param record $rec Record
+   * @return boolean
+   */
   function postAdd($rec)
   {
    $db = &atkGetDb();
@@ -304,6 +399,13 @@ class todo extends atkNode
    return true;
   }
 
+  /**
+   * Check if a todo is changed
+   *
+   * @param unknown_type $new New
+   * @param unknown_type $old Old
+   * @return boolean
+   */
   function todoChanged($new, $old)
   {
     foreach (array_keys($this->m_attribList) as $attribname)
@@ -323,6 +425,12 @@ class todo extends atkNode
     return false;
   }
 
+  /**
+   * Send mail to todo owner when todo is changed
+   *
+   * @param array $rec Record
+   * @return boolean
+   */
   function postUpdate($rec)
   {
    global $g_user;
@@ -391,6 +499,9 @@ class todo extends atkNode
    * dangerous.
    * Since this only happens to very few todo's that were converted when a certain
    * conversion bug was still present, this workaround suffices.
+   *
+   * @param array $record @record
+   * @return array
    */
   function edit_values($record)
   {
@@ -401,6 +512,13 @@ class todo extends atkNode
     return $record;
   }
 
+  /**
+   * Calculate days left
+   *
+   * @param string $start Start date (yyyy-mm-dd)
+   * @param string $end End date (yyyy-mm-dd)
+   * @return int
+   */
    function daysLeft($start, $end)
    {
      if ($start==""||$end=="") return 0;

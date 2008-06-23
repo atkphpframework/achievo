@@ -1,17 +1,19 @@
 <?php
-
-  /**
-   * Todo history, to keep track of changes to todo's.
-   *
-   * @author Dan Frame <dan_frame@jabil.com>
-   *
-   * Rewriten to be an extension of todo class by Ivo.
-   *
-   * @version $Revision$
-   *
-   * $Id$
-   *
-   */
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage todo
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
   require_once("achievotools.inc");
   require_once(moduleDir("todo")."class.todo.inc");
@@ -19,8 +21,22 @@
   useattrib("atkupdatestampattribute");
   userelation("atkmanytoonerelation");
 
+  /**
+   * Todo history, to keep track of changes to todo's.
+   * Rewriten to be an extension of todo class by Ivo.
+   *
+   * @author Dan Frame <dan_frame@jabil.com>
+   * @author Ivo Jansch <ivo@achievo.org>
+   * @package achievo
+   * @subpackage todo
+   */
   class todo_history extends todo
   {
+    /**
+     * Constructor
+     *
+     * @return void
+     */
     function todo_history()
     {
       $this->todo("todo_history"); // call baseclass constructor, but with new name.
@@ -44,18 +60,27 @@
     }
 
 
-
+    /**
+     * do nothing. we need to define this dummy, otherwise todo::postUpdate
+     * might be called, which creates another history item.
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function postUpdate($rec)
     {
-      // do nothing. we need to define this dummy, otherwise todo::postUpdate
-      // might be called, which creates another history item.
       return true;
     }
 
+    /**
+     * do nothing. we need to define this dummy, otherwise todo::postAdd
+     * might be called, which creates another history item.
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function postAdd($rec)
     {
-      // do nothing. we need to define this dummy, otherwise todo::postAdd
-      // might be called, which spams people about new todo's.
       return true;
     }
 
