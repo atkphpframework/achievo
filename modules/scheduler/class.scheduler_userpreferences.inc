@@ -1,6 +1,20 @@
 <?php
-
-// TODO: Timezone
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage scheduler
+ *
+ * @copyright (c)2008 Sandy Pleyte
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
   useattrib("atklistattribute");
   useattrib("atktimeattribute");
@@ -15,7 +29,16 @@
   userelation("atkmanytomanyrelation");
   userelation("atkmanyboolrelation");
   userelation("atkshuttlerelation");
-
+  
+  /**
+   * This class for managing the scheduler preferences of a user
+   * 
+   * @author Sandy Pleyte <sandy@achievo.org>
+   * @package achievo
+   * @subpackage scheduler
+   * @since 1.3.0
+   * @todo Support for timezones
+   */
   class scheduler_userpreferences extends atkNode
   {
     function scheduler_userpreferences()

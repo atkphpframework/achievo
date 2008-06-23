@@ -1,15 +1,19 @@
 <?php
   /**
-   * Module scheduler
-   * Class schedule
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
    *
-   * This class makes it possible to schedule a appointment.
+   * @package achievo
+   * @subpackage scheduler
    *
-   * $Id$
-   * @author Sandy Pleyte <sandy@achievo.org>
+   * @copyright (c)2008 Sandy Pleyte
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
+   *
    * @version $Revision$
-   * @todo $scheduler->isAvailable("sandy", "2003-10-28", "11.00", "13.00",30);
-   *       heeft sandy op 28 oktober tussen 11 en 13 minimaal een half uur vrij in zijn agenda
+   * $Id$
    */
   useattrib("atknumberattribute");
   useattrib("atkdateattribute");
@@ -28,7 +32,16 @@
   atkimport("modules.scheduler.utils.schedulertools");
   useattrib("scheduler.dummydurationattribute");
 
-
+  /**
+   * This class makes it possible to schedule a appointment.
+   * 
+   * @author Sandy Pleyte <sandy@achievo.org>
+   * @package achievo
+   * @subpackage scheduler
+   * @since 1.3.0
+   * @todo $scheduler->isAvailable("sandy", "2003-10-28", "11.00", "13.00",30);
+   *       Does sandy has an half hour free on 28 oktober between 11 en 13 hours
+   */
   class scheduler extends atkNode
   {
     var $m_viewdate;
@@ -38,17 +51,25 @@
     var $m_employees;
     var $m_itemDate;
     var $m_scheduler_id;
+    /**
+     * @var string
+     */
     var $m_confirmsingle;
 
-    // Default minute step
+    /**
+     * Default minute step
+     * @var int
+     */
     var $m_minute_step = 5;
 
 
     /**
      * Constructor
      *
-     * @todo Fix alarms
-     * @return scheduler
+     * @todo Fix scheduler alarms
+     * @param string $type Scheduler name
+     * @param int $flags Flags
+     * @return void
      */
     function scheduler($type = "scheduler", $flags = 0)
     {
@@ -173,6 +194,14 @@
       }
     }
 
+    /**
+     * Override edit of the startdate, add the starttime behind the startdate edit box
+     *
+     * @param array $record Item record
+     * @param string $fieldprefix Fieldprefix
+     * @param string $mode Mode
+     * @return string
+     */
     function startdate_edit($record="", $fieldprefix="",$mode)
     {
       $attrib = $this->getAttribute("startdate");
@@ -183,6 +212,14 @@
       return $ret;
     }
 
+    /**
+     * Override display of the startdate, add the starttime behind the
+     * startdate.
+     *
+     * @param array $record Record
+     * @param string $mode Mode
+     * @return string
+     */
     function startdate_display($record,$mode)
     {
       $attrib = $this->getAttribute("startdate");
@@ -196,6 +233,15 @@
       return $ret;
     }
 
+    /**
+     * Override duration edit, place enddate and endtime hidden after 
+     * the duration dropdown.
+     *
+     * @param array $record Record
+     * @param string $fieldprefix Fieldprefix
+     * @param string $mode Mode
+     * @return string
+     */
     function duration_edit($record="",$fieldprefix="",$mode)
     {
       $attrib = $this->getAttribute("duration");
@@ -210,6 +256,13 @@
       return $ret;
     }
 
+    /**
+     * Override duration display, if duration is -1, show enddate and endtime
+     *
+     * @param array $record Record
+     * @param string $mode Mode
+     * @return string
+     */
     function duration_display($record,$mode)
     {
 
@@ -289,7 +342,7 @@
     /**
      * Set some initial values
      *
-     * @return unknown
+     * @return array
      */
     function initial_values()
     {
@@ -318,7 +371,8 @@
     }
 
     /**
-     *
+     * Check rights for an appointment
+     * 
      * owner = view private, edit, delete, view
      * attendee = view private, view
      * assistant = edit, delete, view
@@ -358,7 +412,7 @@
     /**
      * Discriptor for this scheduler item
      *
-     * @return unknown
+     * @return string
      */
     function descriptor_def()
     {
@@ -368,8 +422,8 @@
     /**
      * Validate enddate
      *
-     * @param unknown_type $record
-     * @param unknown_type $mode
+     * @param array $record Record
+     * @param string $mode Mode
      */
     function enddate_validate(&$record, $mode)
     {
@@ -393,6 +447,12 @@
       }
     }
 
+    /**
+     * Validate endtime
+     *
+     * @param array $record Record
+     * @param string $mode Mode
+     */
     function endtime_validate(&$record, $mode)
     {
       // check if start and enddate are the same else don't validate
@@ -490,7 +550,7 @@
      * Customer edit action to register the javascripts
      *
      * @param object $handler
-     * @return string Edit apge
+     * @return string Edit page
      */
     function action_edit(&$handler)
     {
@@ -604,7 +664,7 @@
      * item or the complete serie, after that it will execute
      * the correct action.
      *
-     * @return unknown
+     * @return void
      */
     function action_editserieorsingle()
     {
@@ -664,7 +724,7 @@
 
     /**
      * Edit copy action for when a user edits a single item of a recurring item
-     *
+     * @param object $handler
      */
     function action_editcopy($handler="")
     {
@@ -789,10 +849,11 @@
 
 
     /**
-     * Add owner as attendee
+     * Add owner as attendee and 
+     * recalculate the scheduler dates for the item
      *
-     * @param unknown_type $rec
-     * @return unknown
+     * @param array $rec Record
+     * @return boolean
      */
     function postAdd($rec)
     {
@@ -805,18 +866,36 @@
       return true;
     }
 
+    /**
+     * Recalculate the scheduler dates
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function postUpdate($rec)
     {
       $this->updateSchedulerDates($rec);
       return true;
     }
 
+    /**
+     * Remove scheduler dates for deleted item
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function postDelete($rec)
     {
       $this->removeSchedulerDates($rec['id'],$rec);
       return true;
     }
 
+    /**
+     * Send email and delete attendees when the event is deleted
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function preDelete($rec)
     {
       $this->sendEmail($rec);
@@ -824,6 +903,13 @@
       return true;
     }
 
+    /**
+     * Before we add the item we update the enddate and set
+     * the lastdate for the item.
+     *
+     * @param array $record Record
+     * @return boolean
+     */
     function preAdd(&$record)
     {
       $this->updateEndDate($record);
@@ -831,6 +917,13 @@
       return true;
     }
 
+    /**
+     * Remove scheduler dates, update enddate and set
+     * the lastdate for the item.
+     *
+     * @param array $record Record
+     * @return boolean
+     */
     function preUpdate(&$record)
     {
       atk_var_dump($record,"PRE UPDATE RECORD");
@@ -840,6 +933,11 @@
       return true;
     }
 
+    /**
+     * Set lastdate of an item
+     *
+     * @param array $rec Record
+     */
     function setLastDate(&$rec)
     {
       $rec['lastdate'] = mktime($rec["starttime"]["hours"],$rec["starttime"]["minutes"],$rec["starttime"]["seconds"],$rec['startdate']['month'],$rec['startdate']['day'],$rec['startdate']['year']);
@@ -848,7 +946,7 @@
     /**
      * Calculate the endddate if the user used the duration dropdown
      *
-     * @param unknown_type $rec
+     * @param array $rec Record
      */
     function updateEndDate(&$rec)
     {
@@ -869,6 +967,7 @@
      * Send email to all attendees except the owner
      * that the meeting is canceld
      *
+     * @param array $rec Record
      * @todo Fix mail
      */
     function sendEmail($rec)
@@ -887,6 +986,7 @@
         }
       }
     }
+    
     /**
      * Delete all attendees
      *
