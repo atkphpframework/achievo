@@ -1,11 +1,16 @@
 <?php
 /**
- * Email template class
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
  *
  * @package achievo
- * @subpackage modules
+ * @subpackage crm
  *
- * @author sandy <sandy@achievo.org>
+ * @copyright (c)2008 Sandy Pleyte
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
  *
  * @version $Revision$
  * $Id$
@@ -17,6 +22,14 @@ useattrib("atkdummyattribute");
 useattrib("atkupdatestampattribute");
 useattrib("atkupdatedbyattribute");
 
+/**
+ * Class for sending email templates
+ * 
+ * @author Sandy Pleyte <sandy@achievo.org>
+ * @package achievo
+ * @subpackage crm
+ * @since 1.3.0
+ */
 class email_template extends atkNode
 {
 
@@ -84,6 +97,7 @@ class email_template extends atkNode
     $this->add(new atkUpdatedByAttribute("lastupdatedby",AF_HIDE_LIST),"history");
     $this->setTable("email_template");
     $this->setOrder("email_template.title");
+    $this->setDescriptorTemplate('[title]');
   }
 
   /**
@@ -100,21 +114,31 @@ class email_template extends atkNode
     return $handler->editPage($record,$locked);
   }
 
-  function descriptor_def()
-  {
-    return "[title]";
-  }
-
+  /**
+   * Set module name
+   *
+   * @param string $module Module name
+   */
   function setModule($module)
   {
     $this->m_module = $module;
   }
 
+  /**
+   * Set from email address
+   *
+   * @param string $email Email address
+   */
   function setFromEmail($email)
   {
     $this->m_from_email = $email;
   }
 
+  /**
+   * Set from name
+   *
+   * @param string $name Name
+   */
   function setFromName($name)
   {
     $this->m_from_name = $name;
@@ -248,6 +272,12 @@ class email_template extends atkNode
     return false;
   }
 
+  /**
+   * Set customer receiver
+   *
+   * @param string $email Email
+   * @param string $username Username
+   */
   function setCustomerReceiver($email,$username)
   {
     $this->m_customReceiver = array("email"=>$email,"name"=>$username);

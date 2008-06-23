@@ -1,6 +1,23 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage crm
+ *
+ * @copyright (c)2008 Sandy Pleyte
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
 /**
+ * Get smarty template from database
  * Smarty resource plugin for fetching email templates from
  * the database. $tpl_name is parsed as a uri type of string where
  * the path to the template field is encoded as:
@@ -9,9 +26,13 @@
  *
  * results in:
  *    SELECT field FROM email_template WHERE code='code' ...
- * -------------------------------------------------------------
+ *
+ * @param string $tpl_name
+ * @param string $tpl_source
+ * @param ibject $smarty
+ * @param boolean $default
+ * @return string
  */
-
 function smarty_resource_templatedb_fetch($tpl_name, &$tpl_source, &$smarty, $default=false)
 {
    $_url = parse_url($tpl_name);
@@ -37,9 +58,16 @@ function smarty_resource_templatedb_fetch($tpl_name, &$tpl_source, &$smarty, $de
    }
 }
 
+/**
+ * Check source 
+ *
+ * @param string $tpl_name
+ * @param string $tpl_source
+ * @param object $smarty
+ * @return boolean
+ */
 function smarty_resource_templatedb_source($tpl_name, &$tpl_source, &$smarty)
 {
-  atkdebug("TEMPLATE SOURCE ?");
    if (smarty_resource_templatedb_fetch($tpl_name, $tpl_source, $smarty)) {
       $tpl_source = stripslashes($tpl_source);
       return true;
@@ -48,7 +76,14 @@ function smarty_resource_templatedb_source($tpl_name, &$tpl_source, &$smarty)
 }
 
 
-
+/**
+ * Get template timestamp
+ *
+ * @param string $tpl_name
+ * @param string $tpl_source
+ * @param object $smarty
+ * @return string
+ */
 function smarty_resource_templatedb_timestamp($tpl_name, &$tpl_source, &$smarty)
 {
    $_url = parse_url($tpl_name);
@@ -61,11 +96,26 @@ function smarty_resource_templatedb_timestamp($tpl_name, &$tpl_source, &$smarty)
    return smarty_resource_templatedb_fetch($tpl_name, $tpl_source, $smarty, microtime());
 }
 
+/**
+ * Check for security
+ *
+ * @param string $tpl_name
+ * @param object $smarty
+ * @return boolean
+ */
 function smarty_resource_templatedb_secure($tpl_name, &$smarty)
 {
   // Assuming the templates are secure
    return true;
 }
+
+/**
+ * Can the template be trusted
+ *
+ * @param string $tpl_name
+ * @param object $smarty
+ * @return boolean
+ */
 function smarty_resource_templatedb_trusted($tpl_name, &$smarty)
 {
    return true;
