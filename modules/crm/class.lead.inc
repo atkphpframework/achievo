@@ -1,4 +1,21 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage crm
+ *
+ * @copyright (c)2008 Sandy Pleyte
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
+
 useattrib("atkListAttribute");
 useattrib("atkTextAttribute");
 useattrib("atkDateAttribute");
@@ -11,8 +28,23 @@ useattrib("atkCreateStampAttribute");
 useattrib("atkupdatedbyattribute");
 useattrib("atkupdatestampattribute");
 
+
+
+/**
+ * Class for managing leads
+ * 
+ * @author Sandy Pleyte <sandy@achievo.org>
+ * @package achievo
+ * @subpackage crm
+ * @since 1.3.0
+ */
 class lead extends atkNode
 {
+  /**
+   * Constructor
+   *
+   * @return void
+   */
   function lead()
   {
     $this->atkNode("lead",NF_ADD_LINK);
@@ -44,7 +76,7 @@ class lead extends atkNode
     $this->add(new atkAttribute("city",AF_HIDE_LIST, 100));
     $this->add(new atkAttribute("state",AF_HIDE_LIST, 100));
     $this->add(new atkAttribute("country",AF_HIDE_LIST, 100));
-    $this->add(new atkAttribute("website",AF_SEARCHABLE, 100));
+    $this->add(new atkUrlAttribute("website",AF_SEARCHABLE|AF_URL_STRIPHTTP|AF_POPUP, 100));
     $this->add(new atkDummyAttribute("divider", "<br>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
 
     $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE));
@@ -57,34 +89,27 @@ class lead extends atkNode
     
     $this->setOrder("lastname");
     $this->setTable("crm_lead");
+    $this->setDescriptorTemplate('[name]');
   }
 
-  function descriptor_def()
-  {
-    return "[name]";
-  }
-  
-
+  /**
+   * Add convert record action
+   *
+   * @param array $rec
+   * @param array $actions
+   * @param array $mraactions
+   */
   function recordActions($rec, &$actions, &$mraactions)
   {
     if($this->allowed("convert") && $rec["status"]!="converted") $actions["convert"] = session_url(dispatch_url($this->atknodetype(),"convert",array("atkselector"=>"[pk]")));
   }
 
-  function website_display($record)
-  {
-    $website = $record["website"];
-    if (strlen($website)>0) return '<a href="http://'.$website.'" target="_blank">'.$website.'</a>';
-    return "";
-  }
-
-  function website_edit($record, $mode)
-  {
-     $attr = &$this->getAttribute("website");
-     $org = $attr->edit($record, $mode);
-     return "http://".$org;
-  }
-
-
+  /**
+   * Override name display to make it clickable
+   *
+   * @param array $record
+   * @return string
+   */
   function name_display($record)
   {
     global $ATK_VARS;
@@ -95,6 +120,13 @@ class lead extends atkNode
     return $name;
   }
 
+  /**
+   * Convert lead to a contact
+   *
+   * @param object $handler
+   * @param array $record
+   * @param string $mode
+   */
   function action_convert(&$handler,$record=array(),$mode="")
   {
     // Convert lead to contact/company
@@ -148,6 +180,12 @@ class lead extends atkNode
     $this->redirect($location);
   }
 
+  /**
+   * When lead is deleted, delete it from the eventlog
+   *
+   * @param array $record
+   * @return boolean
+   */
   function postDelete($record)
   {
     $eventlog = &atkGetNode("crm.eventlog");

@@ -1,18 +1,47 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage crm
+ *
+ * @copyright (c)2008 Sandy Pleyte
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 useattrib("atkdateattribute");
 useattrib("atktextattribute");
 useattrib("atkcurrencyattribute");
 useattrib("atkUpdateStampAttribute");
 userelation("atkmanytoonerelation");
- useattrib("atkcreatedbyattribute");
-  useattrib("atkCreateStampAttribute");
-  useattrib("atkupdatedbyattribute");
-  useattrib("atkupdatestampattribute");
+useattrib("atkcreatedbyattribute");
+useattrib("atkCreateStampAttribute");
+useattrib("atkupdatedbyattribute");
+useattrib("atkupdatestampattribute");
 
+
+/**
+ * Class for managing activities
+ * 
+ * @author Sandy Pleyte <sandy@achievo.org>
+ * @package achievo
+ * @subpackage crm
+ * @since 1.3.0
+ */
 class campaign extends atkNode
 {
 
+  /**
+   * Constructor
+   *
+   * @return void
+   */
   function campaign()
   {
     $this->atkNode("campaign",NF_MRA|NF_ADD_LINK);
@@ -39,16 +68,15 @@ class campaign extends atkNode
 
     $this->setOrder("title");
     $this->setTable("crm_campaign");
-  }
-
-
-
-
-  function descriptor_def()
-  {
-    return "[title]";
+    $this->setDescriptorTemplate('[title]');
   }
   
+  /**
+   * Delete campaign from event history when it's deleted
+   *
+   * @param array $record Campaign record
+   * @return boolean
+   */
   function postDelete($record)
   {
     $eventlog = &atkGetNode("crm.eventlog");
