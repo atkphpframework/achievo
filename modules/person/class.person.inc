@@ -1,17 +1,20 @@
 <?php
-
 /**
- * Module Person
- * Class person
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
  *
- * This class is a generalisation of employee and contact and is used for schedule_attendees
- * and for the general attribute of employee and contact.
+ * @package achievo
+ * @subpackage person
  *
- * $Id$
- * @author L. Willems  <lineke@ibuildings.nl>
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
  * @version $Revision$
- *
+ * $Id$
  */
+
 
 userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
@@ -22,8 +25,22 @@ useattrib("atkparserattribute");
 useattrib("atknumberattribute");
 useattrib("person.useridattribute");
 
+/**
+ * This class is a generalisation of employee and contact and is used for schedule_attendees
+ * and for the general attribute of employee and contact.
+ *
+ * @author L. Willems  <lineke@ibuildings.nl>
+ * @package achievo
+ * @subpackage person
+ */
 class person extends atkNode
 {
+  /**
+   * constructor
+   *
+   * @param string $name Name
+   * @param int $flags Flags
+   */
   function person($name="person", $flags=0)
   {
     $this->atkNode($name, $flags|NF_ADD_LINK);
@@ -55,6 +72,13 @@ class person extends atkNode
     $this->setDescriptorTemplate("[title_id.title] [lastname], [firstname] ([role])");
   }
 
+  /**
+   * Override lastname display, in list mode show first name if available
+   *
+   * @param array $record Record
+   * @param string $mode Mode
+   * @return string
+   */
   function lastname_display($record, $mode)
   {
     if ($mode=="list")
@@ -67,6 +91,13 @@ class person extends atkNode
     }
   }
 
+  /**
+   * Phone display override, show all phone numers in list mode
+   *
+   * @param array $record Record
+   * @param string $mode Mode
+   * @return string
+   */
   function phone_display($record, $mode)
   {
     if ($mode=="list") // in listmode, group the numbers
@@ -92,6 +123,11 @@ class person extends atkNode
     }
   }
 
+  /**
+   * Vcard action
+   *
+   * @param object $handler Handler
+   */
   function action_vcard(&$handler)
   {
     // Get the record
@@ -108,6 +144,12 @@ class person extends atkNode
     exit;
   }
 
+  /**
+   * Assign values to vcard
+   *
+   * @param object $vcard Vcard object
+   * @param array $record Record
+   */
   function assignVcard(&$vcard, $record)
   {
     $vcard->setPhoneNumber($record["phone"], "HOME;VOICE");
