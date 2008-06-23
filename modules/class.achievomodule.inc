@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage modules
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
+
   define("DEP_INSTALL", 1);
   define("DEP_RUN"    , 2);
   define("DEP_ALL"    , DEP_INSTALL|DEP_RUN);
@@ -8,9 +24,8 @@
    * specially for some Achievo functions.
    *
    * @author Ivo Jansch <ivo@achievo.org>
-   * @version $Revision$
-   *
-   * $Id$
+   * @package achievo
+   * @subpackage modules
    */
   class achievoModule extends atkModule
   {
