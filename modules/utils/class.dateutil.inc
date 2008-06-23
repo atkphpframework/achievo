@@ -1,9 +1,30 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage utils
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
   define("ONEDAY", 24*60*60);
   define("ONEWEEK", ONEDAY*7);
   require_once(atkConfig("atkroot")."atk/utils/adodb-time.inc.php");
 
+
+/**
+ * Static class with date functions
+ *
+ * @package achievo
+ * @subpackage utils
+ */
   class dateutil
   {
     /**
@@ -22,67 +43,135 @@
       return floor(($d2-$d1)/(60*60*24));
     }
 
+    /**
+     * Convert date array to string
+     *
+     * @param array $arrdate Date array
+     * @param string $format Date format
+     * @return string
+     */
     function arr2str($arrdate, $format="Ymd")
     {
       if (!is_array($arrdate)) return "";
       return dateutil::stamp2str(dateutil::arr2stamp($arrdate), $format);
     }
 
+    /**
+     * Date string to an array with the elements: year, month, day
+     *
+     * @param string $strdate Date string in the format yyyymmdd
+     * @return array
+     */
     function str2arr($strdate)
     {
       return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,4,2), "day"=>substr($strdate,6,2));
     }
 
+    /**
+     * Date string to timestamp
+     *
+     * @param string $strdate Date string in the format yyyymmdd
+     * @return int
+     */
     function str2stamp($strdate)
     {
       return dateutil::arr2stamp(dateutil::str2arr($strdate));
     }
 
+    /**
+     * Date array to timestamp
+     *
+     * @param array $arrdate Date array with elements: year, month, day
+     * @return int
+     */
     function arr2stamp($arrdate)
     {
       return adodb_mktime(12,0,0,$arrdate["month"],$arrdate["day"],$arrdate["year"]);
     }
 
+    /**
+     * Timestamp to date string
+     *
+     * @param int $timestamp Timestamp
+     * @param string $format Date format
+     * @return string
+     */
     function stamp2str($timestamp, $format="Ymd")
     {
       return date($format, $timestamp);
     }
 
+    /**
+     * Timestamp to array with elements: day, month, year
+     *
+     * @param int $timestamp Timestamp
+     * @return array
+     */
     function stamp2arr($timestamp)
     {
       return dateutil::str2arr(dateutil::stamp2str($timestamp));
     }
 
+    /**
+     * Return array with all month names
+     *
+     * @return array
+     */
     function monthlist()
     {
       return array(1=>"january", 2=>"february", 3=>"march", 4=>"april", 5=>"may", 6=>"june", 7=>"july", 8=>"august", 9=>"september", 10=>"october", 11=>"november", 12=>"december");
     }
 
+    /**
+     * Give month name for a given number
+     *
+     * @param int $monthnumber
+     * @return string
+     */
     function monthname($monthnumber)
     {
       $months = dateutil::monthlist();
       return $months[$monthnumber];
     }
 
+    /**
+     * Return short month list
+     *
+     * @return array
+     */
     function short_monthlist()
     {
       return array(1=>"jan", 2=>"feb", 3=>"mar", 4=>"apr", 5=>"may", 6=>"jun", 7=>"jul", 8=>"aug", 9=>"sep", 10=>"oct", 11=>"nov", 12=>"dec");
     }
 
+    /**
+     * Return short daylist (3 letter days)
+     *
+     * @return array
+     */
     function short_daylist()
     {
       return array(0=>"sun",1=>"mon",2=>"tue",3=>"wed",4=>"thu",5=>"fri",6=>"sat");
     }
 
+    /**
+     * Return short month name for a given number
+     *
+     * @param int $monthnumber
+     * @return string
+     */
     function short_monthname($monthnumber)
     {
       $months = dateutil::short_monthlist();
       return $months[$monthnumber];
     }
 
-    /*
+    /**
      * Given a date in the form "20010325", this function returns the date of the first
      * day (monday) of that week.
+     *
+     * @param string $strdate Date string
+     * @return string
      */
     function startOfWeek($strdate)
     {
@@ -92,9 +181,12 @@
       return date("Ymd" ,$viewtime-(86400*($weekday-1)));
     }
 
-    /*
+    /**
      * Given a date in the form "20010325", this function returns the date of the last
      * day (sunday) of that week.
+     *
+     * @param string $strdate Date string
+     * @return string
      */
     function endOfWeek($strdate)
     {
@@ -108,6 +200,8 @@
      * Calculates the weeknumber, startdate/enddate of the week for each week
      * within the passed date range.
      *
+     * @param string $strstart Start date
+     * @param string $strend End date
      * @return array Array containing arrays like "week"=>weeknumber,"startdate"=>startdate,
      * "enddate"=>enddate
      */
@@ -189,7 +283,6 @@
      * @param int $year Year
      * @return int Timestap of the date
      */
-
     function lastDayOfMonth($day, $month, $year)
     {
       // Get the timestamp for the 1. day of the month
