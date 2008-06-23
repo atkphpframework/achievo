@@ -1,4 +1,19 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage setup
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
   /**
    * You might have noticed, that the module.inc file for the setup module
@@ -6,14 +21,16 @@
    * any rights to use the setup node.
    * This ensures, that only the administrator user can make use of the
    * stuff presented here
+   *
+   * @package achievo
+   * @subpackage setup
    */
-
   class setup extends atkNode
   {
-    
+
     const PHP_FILE = 1;
     const SQL_FILE = 2;
-    
+
     var $m_report = array();
     var $m_cancontinue = true;
     var $m_currentmodule = "";
@@ -70,7 +87,7 @@
      * Database check aciton
      *
      * @param object $handler
-     * @return boolean 
+     * @return boolean
      */
     function action_dbcheck(&$handler)
     {
@@ -125,7 +142,7 @@
      * handle connections, DB_SUCCESS needs to be confirmed by
      * performing a query. If handleDbStatus is not called with
      * confirmed=true, it will perform this query and confirm itself.
-     * 
+     *
      * @param int $dbstatus Database status
      * @return string Text for the screen
      */
@@ -268,7 +285,7 @@
 
     /**
      * Check what version of the Achievo database we are using.
-     * 
+     *
      * @param object $handler
      */
     function action_versioncheck(&$handler)
@@ -610,7 +627,7 @@
       return true;
 
     }
-    
+
     /**
      * Get install file
      *
@@ -619,7 +636,7 @@
      */
     function getInstallFile($modname)
     {
-      
+
       $filename = moduleDir($modname)."install/install.";
       if(file_exists($filename."sql"))
       {
@@ -631,7 +648,7 @@
       }
       return "";
     }
-    
+
     /**
      * Get Patchfile
      *
@@ -652,7 +669,7 @@
       }
       return "";
     }
-    
+
     /**
      * Check file type
      *
@@ -669,12 +686,12 @@
       {
         return SQL_FILE;
       }
-      else 
+      else
       {
         return PHP_FILE;
       }
     }
-    
+
     /**
      * Execute SQL File
      *
@@ -688,19 +705,19 @@
       $file_content = file_get_contents($installfile);
       $queries = explode(';',$file_content);
       $this->m_currentmodule = $modname;
-      
+
       foreach($queries as $query)
       {
         atk_var_dump($query,"SETUP::EXECUTESQLFILE");
         if(trim($query)!='') $ret = $db->query($query);
         //if($ret==false) return false;
       }
-      
+
       return true;
     }
-    
-    
-    
+
+
+
 
     /**
      * Include install file
@@ -725,7 +742,7 @@
       }
       return false;
     }
-    
+
     /**
      * Install file exists ?
      *
@@ -736,7 +753,6 @@
     {
       $installphpfile = moduleDir($modname)."install/install.inc";
       $installsqlfile = moduleDir($modname)."install/install.sql";
-      
       return (file_exists($installphpfile) || file_exists($installsqlfile));
     }
 
@@ -1014,7 +1030,7 @@
      *           reported to the user.
      * error - Indicates an error during conversion. The installer will not
      *         run any further script when an error is encountered.
-     * 
+     *
      * @param string $progressmsg Progress message
      * @param string $type Message type
      * @return void
@@ -1033,7 +1049,7 @@
         $this->m_cancontinue=false;
       }
     }
-    
+
     /**
      * Execute single sql statement
      *
@@ -1173,15 +1189,15 @@
       // Only delete sequence with mysql, since postgress and oracle use their own sequences
       if (strpos($db->m_type, "mysql") === 0)
         return $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
-      else 
-        return true; 
-     
+      else
+        return true;
+
     }
 
      /**
       * Delete nodes db table and nodes sequence from db_sequence.
       * Use it in uninstall.inc
-      * 
+      *
       * @param $node Node name
       * @return boolean
       */
@@ -1443,9 +1459,11 @@
 
       foreach ($g_modules as $modname=>$moduledir)
       {
+        atkdebug("CHECK $modname");
         if (!in_array($modname, array_keys($installedmodules)) && $this->needsInstall($modname))
         {
           // module is not installed yet.
+          atkdebug("INSTALL $modname");
           $installs[] = $modname;
         }
         else
@@ -1519,7 +1537,7 @@
       $dt->traverse(atkconfig("atktempdir", "achievotmp")."themes/");
     }
 
-    
+
     /**
      * Delete all compiled template files
      *
@@ -1530,7 +1548,7 @@
       // clean compiled template file
       unlink($file);
     }
-    
+
     /**
      * Create VIEW in db
      *
@@ -1544,7 +1562,7 @@
       $ddl = &$db->createDDL();
       $ddl->executeCreateView($name, $select, $withCheckOption);
     }
-    
+
     /**
      * Drop VIEW in db
      *
