@@ -1,4 +1,19 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage employee
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
 userelation("atkmanytoonerelation");
 userelation("atkonetomanyrelation");
@@ -12,6 +27,11 @@ useattrib('employee.adminlangselectattribute');
 include_once (moduleDir("person")."class.person.inc");
 include_once (moduleDir("utils")."class.dateutil.inc");
 
+/**
+ * Class for managing employees
+ * @package achievo
+ * @subpackage employee
+ */
 class employee extends person
 {
   function employee()

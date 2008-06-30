@@ -1,5 +1,19 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage employee
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 // The ability to add contracts per user was sponsored by Tryllian BV, Netherlands.
 
 userelation("atkmanytoonerelation");
@@ -9,9 +23,16 @@ useattrib("atknumberattribute");
 useattrib("atkmultiselectattribute");
 useattrib("atknumberattribute");
 useattrib("atktimeattribute");
-
+/**
+ * Class for managing user contracts
+ * @package achievo
+ * @subpackage employee
+ */
 class usercontracts extends atkNode
 {
+  /**
+   * Constructor
+   */
   function usercontracts()
   {
     $m_arr_minute_step = array();
@@ -34,6 +55,11 @@ class usercontracts extends atkNode
     $this->setDescriptorTemplate("[uc_hours] " . $this->text("hours"));
   }
 
+  /**
+   * Reset overtime balance
+   *
+   * @param array $record Record
+   */
   function resetOvertimeBalance($record)
   {
     atkImport("module.utils.dateutil");
@@ -41,10 +67,36 @@ class usercontracts extends atkNode
     $balancenode->deleteBalance($record["userid"]["id"], dateutil::arr2str($record["startdate"], "Y-m-d"));
   }
 
+  /**
+   * Reset overtime balance after adding a contract
+   *
+   * @param array $record Record
+   * @return boolean
+   */
   function postAdd($record)    { $this->resetOvertimeBalance($record); return true; }
+
+  /**
+   * Reset overtime balance after updating a contract
+   *
+   * @param array $record Record
+   * @return boolean
+   *
+   */
   function postUpdate($record) { $this->resetOvertimeBalance($record); $this->resetOvertimeBalance($record["atkorgrec"]); return true; }
+
+  /**
+   * Reset overtime balance after deleting a contract
+   *
+   * @param array $record Record
+   * @return boolean
+   */
   function postDelete($record) { $this->resetOvertimeBalance($record); return true; }
 
+  /**
+   * Set initial values for a contract
+   *
+   * @return array
+   */
   function initial_values()
   {
     return array("uc_hours"=>40,
@@ -68,6 +120,11 @@ class usercontracts extends atkNode
    * - workingdays is set to the workingdays of the previous contract
    * - startdate is set to the enddate of the previous contract
    * - enddate is set to startdate + 1 year.
+   *
+   * @param array $record Record
+   * @param string $prefix Prefix
+   * @param string $mode Mode
+   * @return string
    */
   function uc_hours_edit(&$record, $prefix, $mode)
   {
@@ -115,6 +172,12 @@ class usercontracts extends atkNode
     return $this->m_attribList["uc_hours"]->edit($record, $prefix, $mode);
   }
 
+  /**
+   * Get most recent contract
+   *
+   * @param int $userid
+   * @return array
+   */
   function getMostRecentContract($userid)
   {
     if ($userid!="")

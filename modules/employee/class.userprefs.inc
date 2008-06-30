@@ -1,18 +1,34 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage employee
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
 useattrib("atkdummyattribute");
 useattrib("atknumberattribute");
 useattrib("atkpasswordattribute");
 useattrib("atklistattribute");
 useattrib('employee.adminlangselectattribute');
-
+/**
+ * Class for managing user preferences
+ * @package achievo
+ * @subpackage employee
+ */
 class userprefs extends atkNode
 {
   /**
    * Constructor
-   *
-   * @todo support more startdays (http://www.pjh2.de/datetime/weeknumber/wnd.php?l=en)
-   * @return userprefs
    */
   function userprefs()
   {
@@ -31,11 +47,20 @@ class userprefs extends atkNode
     $this->setTable("person", "person");
   }
 
+  /**
+   * Initial values
+   *
+   * @return array
+   */
   function initial_values()
   {
     return array("lng"=>atkconfig("language"));
   }
-  
+
+  /**
+   * Add password attribute to the node
+   *
+   */
   function addPasswordAttribute()
   {
     $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
@@ -50,11 +75,22 @@ class userprefs extends atkNode
     $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
   }
 
+  /**
+   * Set descriptor template
+   *
+   * @return unknown
+   */
   function descriptor_def()
   {
     return "[userid]";
   }
 
+  /**
+   * Find available themes
+   *
+   * @return array
+   * @todo use atkCache for this
+   */
   function getThemes()
   {
     atkimport("atk.utils.atktmpfile");
@@ -75,6 +111,12 @@ class userprefs extends atkNode
     return $themes;
   }
 
+  /**
+   * Refresh screen when theme is changes
+   *
+   * @param array $record Record
+   * @return boolean
+   */
   function postUpdate($record)
   {
     global $g_user, $g_sessionManager, $g_securityManager, $ATK_VARS;

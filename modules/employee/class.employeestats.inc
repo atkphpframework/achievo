@@ -1,5 +1,25 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage employee
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
+/**
+ * Class for generating employee stats
+ * @package achievo
+ * @subpackage employee
+ */
   class employeestats extends atkNode
   {
     var $m_viewstart = "";
@@ -8,6 +28,9 @@
     var $m_employeeid = "";
     var $m_resolution = "";
 
+    /**
+     * Constructor
+     */
     function employeestats()
     {
       global $g_sessionManager, $ATK_VARS;
@@ -65,6 +88,11 @@
       $this->setSecurityAlias("employee.employee");
     }
 
+    /**
+     * Statistics action
+     *
+     * @param object $handler
+     */
     function action_stats(&$handler)
     {
       $startdate = $this->m_viewstart;
@@ -155,12 +183,23 @@
       $page->addContent($actionpage);
     }
 
+    /**
+     * Create form with contents
+     *
+     * @param string $contents Form
+     * @return string
+     */
     function _paramForm($contents)
     {
       return '<form method="get">'.session_form().$contents.
                 '<input type="submit" value="'.atktext('refresh').'"></form>';
     }
 
+    /**
+     * Create navigator
+     *
+     * @return string
+     */
     function navigator()
     {
       useattrib("atkdateattribute");
@@ -204,6 +243,16 @@
     }
 
 
+    /**
+     * Create table of the stats
+     *
+     * @param string $itemheader Item headers
+     * @param array $dataset Data set
+     * @param array $datasetdescriptors Data descriptors
+     * @param aarray $detailparams Detail params
+     * @param string $idparam Id
+     * @return string
+     */
     function _tableStats($itemheader, $dataset, $datasetdescriptors, $detailparams, $idparam="")
     {
       global $g_securityManager;
