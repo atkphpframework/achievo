@@ -46,7 +46,10 @@
       $this->menuitem("-","","main",true,620);
     }
 
-    function getDependencies($mode)
+   /**
+    * Set dependencies for employee module
+    */
+   function getDependencies($mode)
     {
       return array("person");
     }
