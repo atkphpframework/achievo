@@ -1,4 +1,20 @@
 <?php
+  /**
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
+   * projecttpl_doctype node class file
+   *
+   * @package achievo
+   * @subpackage docmanager
+   *
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
 
   userelation("atkonetomanyrelation");
 
@@ -7,15 +23,29 @@
    * Creates a onetomanyrelation dynamically by using the module.node of
    * the owning node as a filter and a generic foreign key, to be able
    * to store documents for any node.
+   * @author guido <guido@ibuildings.nl>
+   * @package achievo_modules
+   * @subpackage docmanager
    */
   class documentManager extends atkOneToManyRelation
   {
 
+    /**
+     * Constructor
+     *
+     * @param string $name Attribute name
+     * @param int $flags Flags
+     */
     function documentManager($name, $flags=0)
     {
       $this->atkOneToManyRelation($name,"docmanager.document", "master_id", $flags);
     }
 
+    /**
+     * Init function to set a destination filter
+     *
+     * @return boolean
+     */
     function init()
     {
       if ($this->m_destinationFilter != "")
@@ -24,6 +54,12 @@
       return parent::init();
     }
 
+    /**
+     * Get document types
+     *
+     * @param array $record Record
+     * @return array
+     */
     function getDocumentTypes($record = null)
     {
       // Get a reference to the documenttype node

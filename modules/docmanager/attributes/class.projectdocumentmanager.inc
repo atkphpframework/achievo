@@ -1,14 +1,16 @@
 <?php
   /**
-   * projectdocumentmanager attribute class file
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
+   * projecttpl_doctype node class file
    *
-   * @package achievo_modules
+   * @package achievo
    * @subpackage docmanager
    *
-   * @author guido <guido@ibuildings.nl>
-   *
-   * @copyright (c) 2005 Ibuildings.nl BV
-   * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
    *
    * @version $Revision$
    * $Id$
@@ -32,10 +34,8 @@
     /**
      * Returns the document types to be offered for generation by this attribute
      *
-     * Full description of the function
-     *
-     * @param type name description
-     * @return type description
+     * @param array $record Record
+     * @return array
      */
     function getDocumentTypes($record)
     {

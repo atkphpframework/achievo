@@ -1,6 +1,30 @@
 <?php
+  /**
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
+   * projecttpl_doctype node class file
+   *
+   * @package achievo
+   * @subpackage docmanager
+   *
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
+
   useattrib("atkfileattribute");
 
+  /**
+   * The class for documentFileAttribute attribute.
+   *
+   * @author guido <guido@ibuildings.nl>
+   * @package achievo_modules
+   * @subpackage docmanager
+   */
   class documentFileAttribute extends atkFileAttribute
   {
 
@@ -24,6 +48,16 @@
      */
     var $m_allowpathcustomization;
 
+    /**
+     * Constructor
+     *
+     * @param array $name Attribute name
+     * @param string $dir Directory
+     * @param string $localpath Local path
+     * @param boolean $allowpathcustomization Allow path customization
+     * @param int $flags Flags
+     * @param int $size Field size
+     */
     function documentFileAttribute($name, $dir, $localpath="", $allowpathcustomization=false, $flags=0, $size=0)
     {
       // Call the parent constructor
@@ -37,7 +71,13 @@
       $this->m_allowpathcustomization = $allowpathcustomization;
     }
 
-    // $type = "dir" or "url"
+    /**
+     * Default directory
+     *
+     * @param array $rec Record
+     * @param string $type "dir" or "url"
+     * @return string
+     */
     function defaultdir($rec, $type)
     {
       $options = atkconfig::get("docmanager","docmanageroptions", array());
@@ -62,6 +102,13 @@
     }
 
 
+    /**
+     * Get custom dir
+     *
+     * @param array $rec
+     * @param string $defaultdir Default directory
+     * @return string
+     */
     function customdir($rec, $defaultdir)
     {
       if (!$this->m_allowpathcustomization)
@@ -85,6 +132,14 @@
       return $defaultdir;
     }
 
+    /**
+     * Override edit
+     *
+     * @param array $record Record
+     * @param string $fieldprefix Field prefix
+     * @param string $mode Mode
+     * @return string
+     */
     function edit($record="", $fieldprefix="", $mode="")
     {
       if($mode=="add")
@@ -100,6 +155,12 @@
       return parent::edit($record, $fieldprefix, $mode);
     }
 
+    /**
+     * Display override
+     *
+     * @param array $record Record
+     * @return string
+     */
     function display(&$record)
     {
       // Let the customdir function determine the right directory using
@@ -131,6 +192,12 @@
       }
     }
 
+    /**
+     * value to database, use custom dir to set the storage dir
+     *
+     * @param array $rec Record
+     * @return boolean
+     */
     function value2db($rec)
     {
       // Let the customdir function set the storage dir for the documentfile
@@ -159,6 +226,12 @@
       return $result;
     }
 
+    /**
+     * database to value
+     *
+     * @param array $rec Record
+     * @return string
+     */
     function db2value($rec)
     {
       // Let the customdir function set the storage dir for the documentfile

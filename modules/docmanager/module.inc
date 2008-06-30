@@ -1,28 +1,30 @@
 <?php
-  /**
-   * Docmanager module file
-   *
-   * @package achievo_modules
-   * @subpackage docmanager
-   *
-   * @author guido <guido@ibuildings.nl>
-   *
-   * @copyright (c) 2005 Ibuildings.nl BV
-   * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
-   *
-   * @version $Revision$
-   * $Id$
-   */
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage docmanager
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
   // Add the docmanager to any modules specified in the $config_docmanagernodes array
   $modifiers = array_values(array_diff(array_merge($modifiers, atkconfig::get("docmanager","docmanagernodes", array())), array("project.project")));
 
   /**
-   * docmanager module class
+   * Module file for the menu items and security
    *
    * @author guido <guido@ibuildings.nl>
    * @package achievo_modules
    * @subpackage docmanager
+   * @since 1.3.0
    */
   class mod_docmanager extends achievoModule
   {
@@ -55,6 +57,12 @@
       $node->add(new documentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
     }
 
+    /**
+     * Get modifier functions
+     *
+     * @param atkNode $node Node
+     * @return array
+     */
     function getModifierFunctions(&$node)
     {
       $modifierfunctions = parent::getModifierFunctions($node);
