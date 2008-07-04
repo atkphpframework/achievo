@@ -1,5 +1,21 @@
 <?php
-
+  /**
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
+   *
+   * @package achievo
+   * @subpackage project
+   *
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
+  useattrib("atkdummyattribute");
+  
   /**
    * If you add the following attribute to a node that has project information
    * in it (the project node itself, or for example the hoursurvey where project
@@ -18,16 +34,27 @@
    *
    * @author Ivo Jansch <ivo@ibuildings.nl>
    * @author Guido <guido@ibuildings.nl>
-   * @version $Revision$
-   *
-   * $Id$
+   * @package achievo
+   * @subpackage project
    */
-  useattrib("atkdummyattribute");
-
   class filterProjectByContactAttrib extends atkDummyAttribute
   {
+    /**
+     * Person id
+     * @var int
+     */
     var $m_personid = NULL;
+    
+    /**
+     * Project alias
+     * @var string
+     */
     var $m_projectalias = NULL;
+    
+    /**
+     * Role id
+     * @var int
+     */
     var $m_roleid = NULL;
 
     /**
@@ -63,6 +90,16 @@
       $this->m_roleid = $roleid;
     }
 
+    /**
+     * Add field to query
+     *
+     * @param atkQuery $query ATK Query object
+     * @param string $table Tablename
+     * @param string $aliasprefix Alias prefix
+     * @param array $rec Record
+     * @param int $level Level
+     * @param string $mode Mode
+     */
     function addToQuery(&$query, $table="", $aliasprefix="", $rec="", $level, $mode)
     {
       if (!empty($this->m_personid))

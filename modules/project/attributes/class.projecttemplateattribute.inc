@@ -1,22 +1,52 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 userelation("atkmanytoonerelation");
 
 // When a new project is saved, you can base it on a template, i.e. select a set of
 // default activities. To accomplish this, we make a new attribute based on a ManyToOneRelation
 // that isn't stored in the db, but used to add records to the projectactivities table.
+
+/**
+ * Phase dependency attribute
+ * 
+ * @package achievo
+ * @subpackage project
+ */
 class projecttemplateAttribute extends atkManyToOneRelation
 {
+  /**
+   * Constructor
+   *
+   * @param string $name
+   * @param string $target
+   * @param int $flags
+   */
   function projecttemplateAttribute($name, $target, $flags)
   {
     $this->atkManyToOneRelation($name, $target, $flags);
   }
-/*
-  function addToQuery($query)
-  {
-    // do nothing
-  }
-*/
+  
+  
+  /**
+   * get Storage type
+   *
+   * @param string $mode
+   * @return int
+   */
   function storageType($mode)
   {
     return ADDTOQUERY|POSTSTORE;
@@ -84,6 +114,13 @@ class projecttemplateAttribute extends atkManyToOneRelation
     return true;
   }
   
+  /**
+   * Select templates
+   *
+   * @param atkDb $db Atk DB
+   * @param array $record Record
+   * @return array
+   */
   function selectTemplates(&$db, $record)
   {
     $query = "

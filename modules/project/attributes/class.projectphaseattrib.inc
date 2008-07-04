@@ -1,11 +1,36 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 define("AF_JS_UPDATEACTIVITY", AF_SPECIFIC_1);
 include_once(moduleDir("project")."class.project.inc"); // used for some defines
 
+/**
+ * Project phase attribute
+ * 
+ * @package achievo
+ * @subpackage project
+ */
 class atkProjectPhaseAttribute extends atkAttribute
 {
-  var $m_nested = true; // nested in a form?
+  /**
+   * Nested in a form
+   *
+   * @var boolean
+   */
+  var $m_nested = true; 
 
   /**
    * Constructor
@@ -18,6 +43,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     $this->atkAttribute($name, $flags);
   }
 
+  /**
+   * Fetch value
+   *
+   * @param array $rec
+   * @return array
+   */
   function fetchValue($rec)
   {
     return Array("phaseid"=>$rec["phaseid"]);
@@ -164,6 +195,7 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $result;
   }
 
+  
   function display($rec)
   {
     $value = $rec[$this->fieldName()];
@@ -184,6 +216,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     return "&nbsp;";
   }
 
+  /**
+   * Database to value
+   *
+   * @param array $rec Record
+   * @return array
+   */
   function db2value($rec)
   {
     return Array("projname"=>$rec["proj_name"],
@@ -193,11 +231,27 @@ class atkProjectPhaseAttribute extends atkAttribute
                  "activityname"=>$rec["activity_name"]);
   }
 
+  /**
+   * Value 2 database
+   *
+   * @param array $rec Record
+   * @return int
+   */
   function value2db($rec)
   {
     return empty($rec[$this->fieldName()]["phaseid"]) ? 0 : $rec[$this->fieldName()]["phaseid"];
   }
 
+ /**
+   * Add field to query
+   *
+   * @param atkQuery $query ATK Query object
+   * @param string $table Tablename
+   * @param string $aliasprefix Alias prefix
+   * @param array $rec Record
+   * @param int $level Level
+   * @param string $mode Mode
+   */
   function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
   {
     if ($mode == "add" || $mode == "update")
@@ -219,11 +273,21 @@ class atkProjectPhaseAttribute extends atkAttribute
 
   }
 
+  /**
+   * Get Order by statement
+   *
+   * @return string
+   */
   function getOrderByStatement()
   {
     return "B.abbreviation, B.name, A.name";
   }
 
+  /**
+   * Get recent phases
+   *
+   * @return array
+   */
   function getRecentPhases()
   {
     global $g_securityManager, $ATK_VARS, $g_sessionManager;
@@ -270,6 +334,13 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $newarr;
   }
 
+  /**
+   * Compare on project abbreviation
+   *
+   * @param array $a Record A
+   * @param array $b Record B
+   * @return boolean
+   */
   function cmp_projectabbreviation($a, $b)
   {
     if ($a["projectabbreviation"] != $b["projectabbreviation"])
@@ -279,6 +350,12 @@ class atkProjectPhaseAttribute extends atkAttribute
   }
 
 
+  /**
+   * Get Phase
+   *
+   * @param int $phaseid Phase id
+   * @return array
+   */
   function getPhase($phaseid)
   {
     $db = &atkGetDb();
@@ -293,6 +370,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $phase;
   }
 
+  /**
+   * Get activities for phase
+   *
+   * @param array $phaseid_arr Array with phase id's
+   * @return array
+   */
   function getActivities($phaseid_arr)
   {
     $db = &atkGetDb();
@@ -304,6 +387,12 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $db->getrows($query);
   }
 
+  /**
+   * Add javascript
+   *
+   * @param array $phasearray Phases array
+   * @return string
+   */
   function javascript($phasearray)
   {
     $result = '<script type="text/javascript" language="javascript">';
@@ -382,11 +471,23 @@ class atkProjectPhaseAttribute extends atkAttribute
     return $result;
   }
 
+  /**
+   * Database Field type
+   *
+   * @return string
+   */
   function dbFieldType()
   {
     return "number";
   }
 
+  /**
+   * Equal function for sorting
+   *
+   * @param array $recA Record A
+   * @param array $recB Record B
+   * @return boolean
+   */
   function equal($recA, $recB)
   {
     return $recA["phaseid"]["phaseid"]==$recB["phaseid"]["phaseid"];

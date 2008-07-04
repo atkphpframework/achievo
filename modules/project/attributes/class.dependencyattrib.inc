@@ -1,7 +1,28 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 useattrib("atklistattribute");
 
+
+/**
+ * Phase dependency attribute
+ * 
+ * @package achievo
+ * @subpackage project
+ */
 class dependencyAttribute extends atkAttribute
 {
   /**
@@ -15,6 +36,12 @@ class dependencyAttribute extends atkAttribute
     $this->atkAttribute($name, $flags);
   }
 
+  /**
+   * Fetch values
+   *
+   * @param array $postvars Postvars
+   * @return array
+   */
   function fetchValue($postvars)
   {
     $values = isset($postvars[$this->formName()]) ? $postvars[$this->formName()] : null;
@@ -194,17 +221,33 @@ class dependencyAttribute extends atkAttribute
     return true;
   }
 
+  /**
+   * Search not supported
+   *
+   * @return array
+   */
   function getSearchModes()
   {
-    // search not supported.
     return array();
   }
 
+  /**
+   * Search condition not supported
+   *
+   * @param atkQuery $query
+   * @param string $table
+   * @param mixed $value
+   * @param string $searchmode
+   */
   function searchCondition(&$query, $table, $value, $searchmode)
   {
-    // Search not supported.
   }
 
+  /**
+   * Field type not supported
+   *
+   * @return string
+   */
   function dbFieldType()
   {
     return "";

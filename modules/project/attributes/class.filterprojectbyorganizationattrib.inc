@@ -1,4 +1,21 @@
 <?php
+  /**
+   * This file is part of the Achievo distribution.
+   * Detailed copyright and licensing information can be found
+   * in the doc/COPYRIGHT and doc/LICENSE files which should be
+   * included in the distribution.
+   *
+   * @package achievo
+   * @subpackage project
+   *
+   * @copyright (c)2008 Ibuildings B.V.
+   * @license http://www.achievo.org/licensing Achievo Open Source License
+   *
+   * @version $Revision$
+   * $Id$
+   */
+      
+   useattrib("atkdummyattribute");    
 
   /**
     * If you add the following attribute to a node that has project information
@@ -18,17 +35,25 @@
     *    (all projects where 'Graphic International' acted as 'Designer')    
     *
     * @author Ivo Jansch <ivo@ibuildings.nl>
-    * @version $Revision$
-    *
-    * $Id$
+    * @package achievo
+    * @subpackage project
     */
-    
-   useattrib("atkdummyattribute");    
-
   class filterProjectByOrganizationAttrib extends atkDummyAttribute
   {
+    /**
+     * Organization id
+     * @var int
+     */
     var $m_organizationid = NULL;
+    /**
+     * Project alias
+     * @var string
+     */
     var $m_projectalias = NULL;
+    /**
+     * Role id
+     * @var int
+     */
     var $m_roleid = NULL;
   
     /**
@@ -63,7 +88,17 @@
       $this->m_projectalias = $projectalias;
       $this->m_roleid = $roleid;
     }
- 
+    
+    /**
+     * Add field to query
+     *
+     * @param atkQuery $query ATK Query object
+     * @param string $table Tablename
+     * @param string $aliasprefix Alias prefix
+     * @param array $rec Record
+     * @param int $level Level
+     * @param string $mode Mode
+     */
     function addToQuery(&$query, $table="", $aliasprefix="", $rec="", $level, $mode)
     {    
       if (!empty($this->m_organizationid))

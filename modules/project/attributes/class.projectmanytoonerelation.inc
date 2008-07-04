@@ -1,29 +1,53 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
+
+  userelation("atkmanytoonerelation");
 
   /**
    * Relation has the same functionality as the normal manytoonerelation,
    * but the attribute itself is not stored in the node.
    *
    * @package modules
-   * @subpackage timereg
+   * @subpackage project
    *
    * @author dennis <dennis@ibuildings.nl>
-   *
-   * @copyright (c) 2006 Ibuildings.nl BV
-   * @license http://www.achievo.org/atk/licensing/ ATK open source license
-   * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2
-   *
-   * @version $Revision$
-   * $Id$
    */
-
-  userelation("atkmanytoonerelation");
-
   class projectManyToOneRelation extends atkManyToOneRelation
   {
+    /**
+     * Store or not
+     *
+     * @var boolean
+     */
     var $m_store = false;
+    /**
+     * User id
+     *
+     * @var int
+     */
     var $m_userid = "";
 
+    /**
+     * Constructor
+     *
+     * @param string $name Name
+     * @param string $destination Destination
+     * @param int $flags Flags
+     */
     function projectManyToOneRelation($name, $destination, $flags=0)
     {
       $this->m_userid = &atkGetUserId();
@@ -32,16 +56,32 @@
       parent::atkManyToOneRelation($name, $destination,$flags);
     }
 
+    /**
+     * Set Userid
+     *
+     * @param int $userid User id
+     */
     function setUserId($userid)
     {
       $this->m_userid = $userid;
     }
 
+    /**
+     * Set store 
+     *
+     * @param boolean $store Store or not
+     */
     function setStore($store=false)
     {
       $this->m_store = $store;
     }
 
+    /**
+     * Storage type
+     *
+     * @param string $mode Mode
+     * @return int
+     */
     function storageType($mode)
     {
       if($this->m_store == false)
@@ -50,6 +90,11 @@
         return parent::storageType($mode);
     }
 
+    /**
+     * Database fieldtype
+     *
+     * @return string
+     */
     function dbFieldType()
     {
       if($this->m_store == false)
@@ -58,6 +103,14 @@
         return parent::dbFieldType();
     }
 
+    /**
+     * Override edit function
+     *
+     * @param array $record Record
+     * @param string $fieldprefix Fieldprefix
+     * @param string $mode Mode
+     * @return string
+     */
     function edit(&$record, $fieldprefix="", $mode="")
     {
       $filter=$this->parseFilter($this->m_destinationFilter,$record);
@@ -74,6 +127,8 @@
 
     /**
      * Creates a link to the selection page of the projectnode.
+     * @param int $id Id
+     * @param string $filter Filter
      *
      */
     function createSelectionLink($id,$filter)
@@ -87,7 +142,7 @@
      * set the join-condition with the phase manually.
      * otherwise, we can use the normal join condition.
      *
-     * @param object $query
+     * @param atkquery $query
      * @param String $tablename
      * @param String $fieldalias
      * @return String join condition
@@ -100,6 +155,14 @@
       return parent::getJoinCondition($query,$tablename,$fieldalias);
     }
 
+    /**
+     * Get selectable records
+     *
+     * @param array $record Record
+     * @param string $mode Mode
+     * @param boolean $force Force
+     * @return array
+     */
     function getSelectableRecords($record=array(), $mode="",$force=false)
     {
       $newsel = $this->getHtmlId("");
@@ -180,6 +243,13 @@
       return $arr;
     }
 
+    /**
+     * Add project
+     *
+     * @access private
+     * @param int $id Project id
+     * @param array $arr Projects array
+     */
     function _addProject($id, &$arr)
     {   
       if($id>0)

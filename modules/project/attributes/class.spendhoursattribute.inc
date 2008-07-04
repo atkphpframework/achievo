@@ -1,15 +1,36 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
   include_once("achievotools.inc"); // for time_format
 
  /**
   * Small attribute to calculate the amount of spend hours
   * on a phase
   */
+/**
+ * Phase dependency attribute
+ * 
+ * @package achievo
+ * @subpackage project
+ */
   class spendHoursAttribute extends atkAttribute
   {
     /**
      * The field that contains the phaseid
+     * @var int
      */
     var $m_phaseid_field = "";
 
@@ -31,6 +52,7 @@
      * @param atkDb $db pointer to the database
      * @param array $record Record
      * @param string $mode Mode for loading (admin, select, copy, etc)
+     * @return int
      */
     function load(&$db, $record, $mode="")
     {
@@ -44,6 +66,9 @@
 
     /**
      * Display override. If possible, displays a link to the hoursurvey to view details.
+     * @param array $record Record
+     * @param string $mode mode
+     * @return string
      */
     function display($record, $mode)
     {
@@ -72,6 +97,11 @@
 
     /**
      * No function, but is neccesary
+     * 
+     * @param atkDb $db atkDb
+     * @param array $record Record
+     * @param string $type Type
+     * @return boolean
      */
     function store($db, $record, $type)
     {
@@ -80,6 +110,12 @@
 
     /**
      * No function, but is neccesary
+     *
+     * @param atkQuery $query ATK Query object
+     * @param string $table Tablename
+     * @param string $aliasprefix Alias prefix
+     * @param array $rec Record
+     * @param int $level Level
      */
     function addToQuery(&$query, $tablename="", $fieldaliasprefix="",$level)
     {

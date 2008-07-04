@@ -1,7 +1,27 @@
 <?php
-
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage project
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 define("AF_FORMSUBMIT", AF_SPECIFIC_1);
 
+/**
+ * Phase dependency attribute
+ * 
+ * @package achievo
+ * @subpackage project
+ */
 class atkProjectAttribute extends atkAttribute
 {
   /**
@@ -19,7 +39,7 @@ class atkProjectAttribute extends atkAttribute
    * Returns a piece of html code that can be used in a form to edit this
    * attribute's value.
    * @param $record array with fields
-   * @return piece of html code with a textarea
+   * @return string piece of html code with a textarea
    */
   function edit($record="")
   {
@@ -79,16 +99,38 @@ class atkProjectAttribute extends atkAttribute
     return $result;
   }
 
+  /**
+   * Display project name
+   *
+   * @param array $rec Record
+   * @return string
+   */
   function display($rec)
   {
     return $rec[$this->fieldName()]["projname"];
   }
 
+  /**
+   * Database to value
+   *
+   * @param array $rec Record
+   * @return array
+   */
   function db2value($rec)
   {
     return Array("projname"=>$rec["proj_name"], "projectid"=>$rec["projectid"]);
   }
 
+  /**
+   * Add to query
+   *
+   * @param atkQuery $query Query
+   * @param string $tablename Tablename
+   * @param string $fieldaliasprefix Field alias prefix
+   * @param array $rec Record
+   * @param int $level Level
+   * @param string $mode Mode
+   */
   function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level=0, $mode="")
   {
     if ($mode == "select" || $mode == "admin")
@@ -108,6 +150,11 @@ class atkProjectAttribute extends atkAttribute
       $query->addField($this->fieldName(),$this->value2db($rec),"","",!$this->hasFlag(AF_NO_QUOTES));
   }
 
+  /**
+   * Get recent projects
+   *
+   * @return array
+   */
   function getRecentProjects()
   {
     global $g_user;
@@ -139,6 +186,12 @@ class atkProjectAttribute extends atkAttribute
    return $newarr;
   }
 
+  /**
+   * Get project id and name
+   *
+   * @param int $projectid Project id
+   * @return array
+   */
   function getProject($projectid)
   {
     $db = &atkGetDb();
