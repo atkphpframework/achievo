@@ -32,7 +32,7 @@ Changes in Achievo 1.4
 * Now we use the recipients language, when sending timeguard reminder email
   to an employee. [Yury]
 * Fixed adding todos which caused an SQL error. [Dennis]
-* Fixed aggregation of unsorted columns [Guido,Jeroen]
+* Fixed aggregation of unsorted columns. [Guido,Jeroen]
 * Fixed svn properties. [Guido]
   * Property svn:executable should be set on *.sh files only. Other files
     should not have this attribute.
