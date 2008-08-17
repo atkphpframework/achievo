@@ -1,5 +1,27 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage timereg
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
 
+
+  /**
+   * Class with timereg utility functions
+   *
+   * @package achievo
+   * @subpackage timereg
+   */
 class TimeregUtils {
 
   /**
@@ -31,8 +53,8 @@ class TimeregUtils {
    * @param string $viewdate date of yyyy-mm-dd format
    * @return array
    */
-  function getWeekDates($viewdate) {
-    $user = &atkGetUser();
+  function getWeekDates($viewdate) 
+  {
     atkdebug("Viewdate: ".$viewdate);
     $viewtime = TimeregUtils::getViewTime($viewdate);
     atkdebug("Viewdate(2): ".date("Y-m-d",$viewtime));
@@ -54,7 +76,6 @@ class TimeregUtils {
       $weekdates[$i]['month']   = atktext(strtolower(date("F" ,$day_timestamp)));
       $weekdates[$i]['stamp']   = $day_timestamp;
       $weekdates[$i]['lock']    = Locking::getLockType(atkArrayNvl(getUser(), "id"),$weekdates[$i]['date']);
-      $counter++;
     }
 
     return $weekdates;

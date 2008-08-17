@@ -1,4 +1,20 @@
 <?php
+/**
+ * This file is part of the Achievo distribution.
+ * Detailed copyright and licensing information can be found
+ * in the doc/COPYRIGHT and doc/LICENSE files which should be
+ * included in the distribution.
+ *
+ * @package achievo
+ * @subpackage timereg
+ *
+ * @copyright (c)2008 Ibuildings B.V.
+ * @license http://www.achievo.org/licensing Achievo Open Source License
+ *
+ * @version $Revision$
+ * $Id$
+ */
+
 
   userelation("atkmanytoonerelation");
   useattrib("atktextattribute");
@@ -7,8 +23,17 @@
   useattrib("timereg.manualattribute");
   useattrib("atknumberattribute");
 
+  /**
+   * Node for keeping track of the overtime balance
+   *
+   * @package achievo
+   * @subpackage timereg
+   */
   class overtime_balance extends atkNode
   {
+  	/**
+  	 * Constructor
+  	 */
     function overtime_balance()
     {
       $this->atkNode("overtime_balance");
@@ -24,24 +49,48 @@
       $this->m_securityMap["save"] = "edit";
     }
 
+    /**
+     * Delete overtime balance after an update
+     *
+     * @param array $rec
+     * @return boolean
+     */
     function postUpdate($rec)
     {
       $this->deleteBalance($rec["userid"]["id"], date("Y-m-d", adodb_mktime(0,0,0,$rec["day"]["month"],$rec["day"]["day"],$rec["day"]["year"])));
       return true;
     }
 
+    /**
+     * Delete overtime balance after adding a record
+     *
+     * @param array $rec
+     * @return boolean
+     */
     function postAdd($rec)
     {
       $this->deleteBalance($rec["userid"]["id"], date("Y-m-d", adodb_mktime(0,0,0,$rec["day"]["month"],$rec["day"]["day"],$rec["day"]["year"])));
       return true;
     }
 
+    /**
+     * Delete overtime balance after deleting a record
+     *
+     * @param array $rec
+     * @return boolean
+     */
     function postDel($rec)
     {
       $this->deleteBalance($rec["userid"]["id"], date("Y-m-d", adodb_mktime(0,0,0,$rec["day"]["month"],$rec["day"]["day"],$rec["day"]["year"])));
       return true;
     }
 
+    /**
+     * Create overtime link
+     *
+     * @param array $rec recorc
+     * @return string
+     */
     function getOvertimeLink($rec)
     {
       if ($rec["balance"]["balance"] != atktext("not_inserted")) $res = time_format(60*$rec["balance"]["balance"], true);
@@ -84,6 +133,13 @@
       return $res.($manual ? ' *' : '').' '.$deletelink;
     }
 
+    /**
+     * Get balance of a user on a specific day
+     *
+     * @param int $day Day
+     * @param int $userid User id
+     * @return int
+     */
     function getBalance($day, $userid)
     {
       $node = &atkGetNode("timereg.overtime_balance");
@@ -119,9 +175,18 @@
         return $this->recalculateBalance(date("Y-m-d", adodb_mktime(0,0,0,$result[0]["day"]["month"],$result[0]["day"]["day"]+1,$result[0]["day"]["year"])), $day, $userid, $result[0]["balance"]);
       }
       else if (count($result)) return $result[0];
-
+      return 0;
     }
 
+    /**
+     * Get Dummy balance
+     *
+     * @param int $day Day
+     * @param int $userid User id
+     * @param int $balance Balance
+     * @param int $id id
+     * @return int
+     */
     function getDummyBalance($day, $userid, $balance="", $id=0)
     {
       if ($balance === "") $res["balance"] = atktext("not_inserted"); else $res["balance"] = $balance;
