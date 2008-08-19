@@ -22,7 +22,6 @@
   module("utils");
   module("email_template");
   module("setup");
-  module("setup2");
   module("employee");
   module("person");
   module("timereg");
