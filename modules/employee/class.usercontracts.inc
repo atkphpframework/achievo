@@ -41,7 +41,7 @@ class usercontracts extends atkNode
     $this->atkNode("usercontracts", NF_TRACK_CHANGES); // this is a support module who's called directly
 
     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("userid","employee.employee",AF_READONLY|AF_OBLIGATORY));
+    $this->add(new atkNumberAttribute('userid',AF_READONLY|AF_OBLIGATORY));
     $this->add(new atkNumberAttribute("uc_hours", AF_OBLIGATORY, 4,2));
     $this->add(new atkDateAttribute("startdate","","",0,0, AF_OBLIGATORY));
     $this->add(new atkDateAttribute("enddate", "",""));
