@@ -99,10 +99,14 @@ class usercontracts extends atkNode
    */
   function initial_values()
   {
+  	$nextyear = strtotime("+1 year");
     return array("uc_hours"=>40,
-                 "enddate"=>array("year"=>(date("Y")+1),
+                 "startdate"=>array("year"=>(date("Y")),
                                   "month"=>date("m"),
                                   "day"=>date("d")),
+                 "enddate"=>array("year"=>date("Y",$nextyear),
+                                  "month"=>date("m",$nextyear),
+                                  "day"=>date("d",$nextyear)),
                  "workstarttime"=>array("hours"=>"08",
                                         "minutes"=>"30",
                                         "seconds"=>"00"),
