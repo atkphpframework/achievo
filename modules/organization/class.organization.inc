@@ -130,7 +130,7 @@ class organization extends atkNode
     return parent::descriptor($rec);
   }
 
-  function descriptorFields($rec)
+  function descriptorFields()
   {
     return array("name", "city", "organizationcode");
   }
