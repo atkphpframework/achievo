@@ -130,6 +130,11 @@ class organization extends atkNode
     return parent::descriptor($rec);
   }
 
+  function descriptorFields($rec)
+  {
+    return array("name", "city", "organizationcode");
+  }
+
   /**
    * Determines the current view to be used (active or archive)
    *

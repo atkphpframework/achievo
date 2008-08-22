@@ -65,6 +65,7 @@ Changes in Achievo 1.4
   hours survey. [Guido]
 * Fixed achievo title in framed themes. [Sandy]
 * Show full username in top like frameless themes. [Sandy]
+* Fixed empty descriptors for organizations. [Guido]
 
 Changes in Achievo 1.3.4
 ------------------------
