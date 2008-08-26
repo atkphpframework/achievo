@@ -89,13 +89,13 @@ class organization extends atkNode
     $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
     $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project");
 
-    $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL), 'contracts');
+    $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL|AF_HIDE_ADD), 'contracts');
     $activeContracts = &$this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
     $activeContracts->addDestinationFilter("contract.status='active'");
     $archivedContracts = &$this->add(new atkOneToManyRelation("archivedcontracts","organization.contracts","customer",AF_HIDE_LIST));
     $archivedContracts->addDestinationFilter("contract.status!='active'");
 
-    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST);
+    $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST|AF_HIDE_ADD);
     $projectRelatie->addDestinationFilter("project.status='active'");
     $this->add($projectRelatie);
     $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
