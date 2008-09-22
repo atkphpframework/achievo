@@ -19,15 +19,17 @@ class timeDisplayAttribute extends atkAttribute
   }
 }
 
-function compare_by_field($a, $b, $field)
-{
-  if ($a[$field]==$b[$field])
-  {
-    // equal items are always sorted by week
-    if ($a["period"]==$b["period"]) return 0;
-    return ($a["period"] < $b["period"]) ? -1 : 1;
-  }
-  return ($a[$field] < $b[$field]) ? -1 : 1;
+if(!function_exists("compare_by_field")) {
+	function compare_by_field($a, $b, $field)
+	{
+	  if ($a[$field]==$b[$field])
+	  {
+	    // equal items are always sorted by week
+	    if ($a["period"]==$b["period"]) return 0;
+	    return ($a["period"] < $b["period"]) ? -1 : 1;
+	  }
+	  return ($a[$field] < $b[$field]) ? -1 : 1;
+	}
 }
 
 class weekreport extends atkNode
