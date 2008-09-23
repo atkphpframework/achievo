@@ -682,6 +682,7 @@ class scheduler_model
     $query->addField('lastname', ' ', 'person');
     $query->addField('firstname', ' ', 'person');
     $query->addField('role', ' ', 'person');
+    $query->addField('initials', ' ', 'person');
     $query->addCondition("scheduler_attendees.scheduler_id IN (".implode(",",$items).")");
 
     $querystring = $query->buildSelect(TRUE);
@@ -693,7 +694,8 @@ class scheduler_model
       {
         $this->m_users[$nrows[$i]["id"]] = array("firstname"=>$nrows[$i]["firstname"],
                                                  "lastname"=>$nrows[$i]["lastname"],
-                                                 "role"=>$nrows[$i]["role"]
+                                                 "role"=>$nrows[$i]["role"],
+                                                 "initials"=>$nrows[$i]["initials"]
                                                 );
       }
     }

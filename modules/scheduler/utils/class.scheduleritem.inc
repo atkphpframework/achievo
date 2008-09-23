@@ -156,6 +156,7 @@ class schedulerItem
       //$attendees_rows = $this->getAttendees($item["id"]);
       $numberofattendees = count($this->scheduler_model->m_attendees[$item["id"]]);
       $names = "";
+      $initials = "";
       for($i=0;$i<$numberofattendees;$i++)
       {
 
@@ -163,15 +164,21 @@ class schedulerItem
         if($userid==$user["id"]) $isAttendee=true;
         if($i>0) $names.=", ";
         $names.= $this->scheduler_model->m_users[$userid]["firstname"]." ".$this->scheduler_model->m_users[$userid]["lastname"].($this->scheduler_model->m_users[$userid]["role"]!="employee"?" (".$this->scheduler_model->m_users[$userid]["role"].")":"");
+        $the_initials=$this->scheduler_model->m_users[$userid]["initials"];
+     	  if(strlen($the_initials))
+ 	      {
+ 	        if($i>0) $initials.=", ";
+ 	        $initials.= $the_initials;
+ 	      }
       }
 
       if($numberofattendees==1)
       {
-        $attendees='<img src="'.$theme->imgPath("attendee.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">';
+        $attendees='<img src="'.$theme->imgPath("attendee.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">'.$initials.':';
       }
       else
       {
-        $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">';
+        $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">'.$initials.':';
       }
     }
     else
