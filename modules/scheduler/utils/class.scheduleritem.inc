@@ -174,11 +174,11 @@ class schedulerItem
 
       if($numberofattendees==1)
       {
-        $attendees='<img src="'.$theme->imgPath("attendee.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">'.$initials.':';
+        $attendees='<img src="'.$theme->imgPath("attendee.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'"> '.$initials.':';
       }
       else
       {
-        $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'">'.$initials.':';
+        $attendees='<img src="'.$theme->imgPath("attendees.gif","scheduler").'" width=16 height=16 title="'.$names.'" alt="'.$names.'"> '.$initials.':';
       }
     }
     else
