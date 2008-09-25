@@ -119,7 +119,7 @@
       $this->add(new atkDummyAttribute("hint", $this->text("attendee_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW));
       $this->add(new atkfuzzySearchAttribute("attendee_empsearch", "employee.employee", "storeEmployees", "multiselect"));
       // Only add contact search if they have contact admin rigts
-      if(is_allowed("organization.contats","admin"))
+      if(is_allowed("organization.contact","admin"))
         $this->add(new atkfuzzySearchAttribute("attendee_contactsearch", "organization.contact", "storeContacts", "multiselect"));
       $this->add(new atkAttribute("location", AF_SEARCHABLE, 50));
       $this->add(new atkTextAttribute("description"),'description');
