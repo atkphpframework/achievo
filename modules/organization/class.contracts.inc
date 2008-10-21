@@ -30,11 +30,12 @@ class contracts extends atkNode
     $this->add(new atkDateAttribute("startdate","","", 0, 0, AF_OBLIGATORY|AF_HIDE_LIST));
     $this->add(new atkDummyAttribute("enddate_expire_warning",atktext("enddate_expire_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkDateAttribute("enddate","","", 0, 0, AF_OBLIGATORY));
+    $this->add(new atkDateAttribute("term_of_notice","","", 0, 0));
     $this->add(new atkListAttribute("aftercalculation", array("no","yes"), array(0,1),AF_HIDE_LIST | AF_LIST_NO_NULL_ITEM));
     $this->add(new atkCurrencyAttribute("priceperhour",AF_HIDE_LIST,10,"",2));
     $this->add(new atkDummyAttribute("status_change_warning", atktext("status_change_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_OBLIGATORY));
+    $this->add(new atkTextAttribute("description", AF_HIDE_LIST | AF_OBLIGATORY));
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
 
     $this->addAllowedAction("linkproject");
@@ -257,6 +258,47 @@ class contracts extends atkNode
     return $ret;
   }
 
+   /**
+   * Return rowcolor based on days towards term of notice.
+   *
+   * @param array record a record
+   * @return string output color code or nothing
+   */
+    function rowColor($record)
+    {
+      $term_of_notice = sprintf("%d-%02d-%02d", $record["term_of_notice"]["year"], $record["term_of_notice"]["month"], $record["term_of_notice"]["day"]);
+      //$days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
+      $days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
+
+      // If contract term of notice is within 15 days, we get red..
+      if ($days_left<=15 && $term_of_notice != "0-00-00")
+      {
+        return COLOR_ERROR;
+      }
+      // If contract term of notice is within 31 days, we get orange..
+      else if ($days_left<=31 && $term_of_notice != "0-00-00")
+      {
+        return COLOR_WARNING;
+      }
+      // do nothing (will result in the default color)
+    }
+    
+   /**
+   * Return number of days difference between two dates
+   *
+   * @param string start date (yyyy-mm-dd)
+   * @param string end date (yyyy-mm-dd)
+   * @return string floored number of days difference.
+   */   
+    function daysLeft($start, $end)
+    {
+      if ($start==""||$end=="") return 0;
+
+      $d1 = mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));
+      $d2 = mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));
+      return floor(($d2-$d1)/(60*60*24));
+    }
+
 
 
   function initial_values()
@@ -333,7 +375,8 @@ class contracts extends atkNode
         $buttons[] = '<input type="submit" class="btn_save" name="activate_contract" value="'.$this->text("activate_contract").'">';
       }
     }
-    return array_merge($buttons, parent::getFormButtons($mode,$record));
+    return array_merge(parent::getFormButtons($mode,$record),$buttons);
+    
   }
 
   function action_update(&$handler)

@@ -1,0 +1,7 @@
+<?php
+
+$nl = array(
+"term_of_notice" => "opzegtermijn";
+)
+
+?>

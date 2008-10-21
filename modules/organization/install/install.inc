@@ -5,6 +5,6 @@
   $setup->installNode("organization.contracts");
   $setup->installNode("organization.organization");
 
-  $setup->setVersion(20);
+  $setup->setVersion(22);
 
 ?>
