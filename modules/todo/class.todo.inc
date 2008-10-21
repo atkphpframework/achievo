@@ -197,7 +197,7 @@ class todo extends atkNode
                  "duedate"=>$duedate,
                  "updated"=>$entrydate,
                  "completed"=>0,
-                 "status"=>0,
+                 "status"=>1,
                  "priority"=>3);
   }
 
