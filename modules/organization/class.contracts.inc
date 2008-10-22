@@ -305,12 +305,16 @@ class contracts extends atkNode
   {
 
     $enddatetime = strtotime("+1 year");
-	  return array("startdate" =>	array("year"=>(date("Y")),
-	  															  "month"=>date("m"),
-	  														    "day"=>date("d")),
-	  			       "enddate" =>	array("year"=>(date("Y",$enddatetime)),
-	  																"month"=>date("m",$enddatetime),
-	  														    "day"=>date("d",$enddatetime)));
+	  return array(
+	    "startdate" => array("year"=>(date("Y")),
+							"month"=>date("m"),
+							"day"=>date("d")),
+		"enddate" => array("year"=>(date("Y",$enddatetime)),
+							"month"=>date("m",$enddatetime),
+							"day"=>date("d",$enddatetime)),
+        "status"=>"active",
+
+	);
   }
 
   //todo: updateDb doesn't update the status for some reason. Query should be changed to using updateDb.
