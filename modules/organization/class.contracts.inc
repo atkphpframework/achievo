@@ -35,7 +35,7 @@ class contracts extends atkNode
     $this->add(new atkCurrencyAttribute("priceperhour",AF_HIDE_LIST,10,"",2));
     $this->add(new atkDummyAttribute("status_change_warning", atktext("status_change_warning","organization","contracts"),AF_HIDE_LIST));
     $this->add(new atkListAttribute("status", array("active", "archived"), "", AF_OBLIGATORY|AF_HIDE_LIST));
-    $this->add(new atkTextAttribute("description", AF_HIDE_LIST | AF_OBLIGATORY));
+    $this->add(new atkTextAttribute("description", TEXT_SMALL, AF_HIDE_LIST ));
     $this->add(new atkOneToManyRelation("projects", "organization.contract_project", "contract_id", AF_HIDE_LIST));
 
     $this->addAllowedAction("linkproject");
