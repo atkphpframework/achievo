@@ -45,6 +45,7 @@ class userprefs extends atkNode
     $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
 
     $this->setTable("person", "person");
+    $this->setDescriptorTemplate('[userid]');
   }
 
   /**
@@ -74,16 +75,24 @@ class userprefs extends atkNode
     );
     $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
   }
-
+  
+  
   /**
-   * Set descriptor template
-   *
-   * @return unknown
+   * Check rights for user settings, user can only edit his own settings
+   * 
+   * @param string $action The action we want to allow
+   * @param array $record The record for the action
+   * @return boolean Are we allowed to execute the action
    */
-  function descriptor_def()
+  function allowed($action,$record="")
   {
-    return "[userid]";
+    global $ATK_VARS;
+    $userid = atkGetUser('id');
+    $selector = decodeKeyValueSet($ATK_VARS['atkselector']);
+    if(array_key_exists('person.id',$selector) && $selector['person.id']==$userid) return true;
+    return false;  
   }
+  
 
   /**
    * Find available themes
