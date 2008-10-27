@@ -233,7 +233,7 @@ class hours extends atkNode
 
     // force_load flag is set for userid, since several features rely on the
     // userid, even if it's not displayed on screen.
-    $this->add(new atkManyToOneRelation("userid","employee.employee", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
+    $this->add(new atkManyToOneRelation("userid","employee.employeeselector", AF_HIDE|AF_FORCE_LOAD|AF_OBLIGATORY));
 
     //phaseid must be added before the project id to make sure the join works
     //we need the projectid to sort on
@@ -244,7 +244,7 @@ class hours extends atkNode
       $phase->addDependee("activityid");
     $this->add($phase,null, 30);
 
-    $project = &new projectManyToOneRelation("projectid","project.project",AF_OBLIGATORY|AF_FORCE_LOAD);
+    $project = &new projectManyToOneRelation("projectid","project.projectselector",AF_OBLIGATORY|AF_FORCE_LOAD);
     $project->addDependee("phaseid");
     $project->setUserId($this->m_user);
 
@@ -330,7 +330,7 @@ class hours extends atkNode
   function descriptor($record)
   {
     $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
-    $employeenode = &atkGetNode("employee.employee");
+    $employeenode = &atkGetNode("employee.employeeselector");
     $users = $employeenode->selectDb("person.id='{$record["userid"]["id"]}'");
     return sprintf("%s, %s (%s)", $users[0]["lastname"], $users[0]["firstname"],$datestr);
   }
@@ -644,7 +644,7 @@ class hours extends atkNode
       $orderby = $this->viewuserOrderBy();
 
       //Init desc fields
-      $empNode = &atkGetNode("employee.employee");
+      $empNode = &atkGetNode("employee.employeeselector");
       $fieldsArr = $empNode->descriptorFields();
       if(!in_array("id", $fieldsArr)) $fieldsArr[] = "id";
       $fields = implode(", ",$fieldsArr);

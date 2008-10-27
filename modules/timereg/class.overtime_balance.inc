@@ -38,7 +38,7 @@
     {
       $this->atkNode("overtime_balance");
       $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-      $this->add(new atkManyToOneRelation("userid", "employee.employee", AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
+      $this->add(new atkManyToOneRelation("userid", "employee.employeeselector", AF_OBLIGATORY|AF_SEARCHABLE|AF_READONLY));
       $this->add(new atkDateAttribute("day","","", 0, date("Y-m-d"), AF_SEARCHABLE|AF_OBLIGATORY));
       $this->add(new atkNumberAttribute("balance", AF_OBLIGATORY, 10,2));
       $this->add(new manualAttribute("manual", AF_HIDE, 1, 0));
