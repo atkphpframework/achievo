@@ -75,7 +75,7 @@ class todo extends atkNode
     }
     $this->addSecurityMap(array("complete", "mra_complete"),"edit");
     $this->setTable("todo");
-    $this->setOrder("status, duedate, priority");
+    $this->setOrder("todo.status, todo.duedate, todo.priority");
 
   }
 
