@@ -17,6 +17,7 @@ Changes in Achievo 1.4
 + Added documentation for the quotation.reminder and
   timereg.reminder_hoursnotblocked cronjobs. [Guido]
 + Added caching for retrieving total activities. [Sandy]
++ Added Vera open source font for graph module. [Sandy]
 - Removed /manual/guide.html because of outdated information. Please refer
   to the Achievo wiki for current information on how to use Achievo. [Guido]
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
