@@ -144,7 +144,7 @@ DEFINE("USE_CACHE",false);
 // regenerate the image. Note that even if reading the cache is 
 // disabled the cached will still be updated with the newly generated
 // image. Set also "USE_CACHE" below.
-DEFINE("READ_CACHE",true);
+DEFINE("READ_CACHE",false);
 
 // Determine if the error handler should be image based or purely
 // text based. Image based makes it easier since the script will

@@ -194,12 +194,12 @@
 
       // Setup title
       $graph->title->Set($title);
-      $graph->title->SetFont(FF_VERDANA,FS_BOLD,14);
+      $graph->title->SetFont(FF_VERA,FS_BOLD,14);
       //$graph->subtitle->Set("(Axis at top)");
 
       // Setup X-axis
       $graph->xaxis->SetTickLabels($datax);
-      $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,12);
+      $graph->xaxis->SetFont(FF_VERA,FS_NORMAL,12);
 
       // Some extra margin looks nicer
       $graph->xaxis->SetLabelMargin(5);
@@ -213,7 +213,7 @@
       $graph->yaxis->SetLabelAlign('center','bottom');
       $graph->yaxis->SetLabelAngle(60);
       $graph->yaxis->SetLabelFormat('%d');
-      $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,12);
+      $graph->yaxis->SetFont(FF_VERA,FS_NORMAL,12);
 
       // We don't want to display Y-axis
       //$graph->yaxis->Hide();
@@ -228,7 +228,7 @@
 
       // We want to display the value of each bar at the top
       $bplot->value->Show();
-      $bplot->value->SetFont(FF_ARIAL,FS_BOLD,12);
+      $bplot->value->SetFont(FF_VERA,FS_BOLD,12);
       $bplot->value->SetAlign('left','center');
       $bplot->value->SetColor("black","darkred");
       $bplot->value->SetFormat(atktext("currencysymbol","atk","","","",true).' %.0f');
@@ -270,7 +270,7 @@
       $graph->SetScale("textlin");
 
       // Use built in font
-      $graph->title->SetFont(FF_FONT1,FS_BOLD);
+      $graph->title->SetFont(FF_VERA,FS_BOLD);
 
       $xlabels = array_keys(reset($data));
       $graph->xaxis->SetTickLabels($xlabels);
@@ -336,7 +336,7 @@
       $graph->title->Set(atktext($title));
 
       // Use built in font
-      $graph->title->SetFont(FF_FONT1,FS_BOLD);
+      $graph->title->SetFont(FF_VERA,FS_BOLD);
 
       // Create a plot
       $p1 = new PiePlot(array_values($dataset));

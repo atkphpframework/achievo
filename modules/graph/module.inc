@@ -15,6 +15,8 @@
  * $Id$
  */
 
+  DEFINE("TTF_DIR",'./modules/graph/fonts/');
+  DEFINE("CACHE_DIR",atkconfig('atktempdir').'graph/');
 
   /**
    * Module file for the menu items and security
