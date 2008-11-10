@@ -284,7 +284,7 @@ class hoursurvey extends atkNode
     }
 
     $hoursnode = &atkGetNode($this->getHoursNodeName());
-
+    
     $hoursnode->m_postvars = $this->m_postvars; // Share postvars.
 
     $hoursnode->add(new functionLevelAttribute("functionlevel",AF_FORCE_LOAD));
@@ -979,7 +979,18 @@ class hoursurvey extends atkNode
     {
       // Custom recordList can export to file
       $rl = &atknew("atk.recordlist.atkcustomrecordlist");
-      $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress);
+
+      $mod_filename = atkconfig::get("reports","filename");
+      if($mod_filename)
+      {
+        atkimport($mod_filename."filename");
+        $filename = array("filename"=>filename::getFileName($startdate, $enddate,$organizationid,$projectid,$employer_id,$userid));
+      }
+      else 
+      {
+        $filename = '';
+      }
+      $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress,$filename);
     }
   }
 
