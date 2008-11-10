@@ -295,6 +295,10 @@ class hoursurvey extends atkNode
     }
     $hoursnode->add(new employerViewAttribute("employer_id", AF_FORCE_LOAD));
 
+    //Place entrydate into the end of list
+    $hoursnode->remove("entrydate");
+    $hoursnode->add(new atkDateAttribute("entrydate", AF_FORCE_LOAD));
+
     $columnConfig = &$hoursnode->getColumnConfig();
 
     if (is_array($orderby))
