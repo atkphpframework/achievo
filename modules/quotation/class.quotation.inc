@@ -29,7 +29,8 @@
       $this->add(new atkAttribute("id", AF_AUTOKEY));
       $this->add(new atkAttribute("quotation_nr", AF_READONLY|AF_SEARCHABLE|AF_OBLIGATORY, 10));
 
-      $organization_attribute = &$this->add(new atkManyToOneRelation("organization_id","organization.organization"  , AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_SEARCHABLE));
+      $organization_attribute = &$this->add(new atkManyToOneRelation("organization_id","organization.organizationselector"  , AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_SEARCHABLE));
+      $organization_attribute->setAutoLinkDestination('organization.organization');
 
       if (atkConfig::get('quotation','contact_is_relation',false))
       {
