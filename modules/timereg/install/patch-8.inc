@@ -1,5 +1,5 @@
 <?php
 
-  $setup->installNode("timereg.overtime_balance");
+  $setup->addColumn("overtime_balance", "remark", "text", true);
 
 ?>
