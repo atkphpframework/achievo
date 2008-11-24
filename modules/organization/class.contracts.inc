@@ -22,7 +22,8 @@ class contracts extends atkNode
     $this->add(new atkAttribute("contractnumber",AF_SEARCHABLE|AF_FORCE_LOAD, 20));
     $this->add(new atkAttribute("contractname",AF_SEARCHABLE|AF_OBLIGATORY|AF_FORCE_LOAD));
     $this->add(new atkManyToOneRelation("contracttype","organization.contracttype",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK));
-    $this->add(new atkManyToOneRelation("customer","organization.organization",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_LARGE));
+    $attr = $this->add(new atkManyToOneRelation("customer","organization.organizationselector",AF_SEARCHABLE|AF_OBLIGATORY|AF_RELATION_AUTOLINK|AF_LARGE));
+    $attr->setAutoLinkDestination('organization.organization');
     $this->add(new atkListAttribute("billing_type", array("by_period","on_delivery"), array("period","delivery"),AF_LIST_NO_NULL_ITEM | AF_HIDE_LIST));
     $attr = $this->add(new atkListAttribute("billing_period",array("no_billing_period","monthly","quarterly","yearly", "per_incident"),"",AF_OBLIGATORY|AF_HIDE_LIST));
     $attr->addOnChangeHandler("check_billing_period('billing_period', 'ar_period_price', 'period_price');");
