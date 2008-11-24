@@ -1,5 +1,5 @@
 <?php
-
-  $setup->installNode("organization.organization");
+  // Added organizationcode field to organizations. 
+  $setup->addColumn('organization', 'organizationcode','varchar(100)'); 
 
 ?>

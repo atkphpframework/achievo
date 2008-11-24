@@ -8,12 +8,12 @@ class organizationselector extends atkNode
     $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
     $this->add(new atkAttribute("organizationcode", AF_SEARCHABLE));
     $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
-    $this->add(new atkAttribute("city", AF_SEARCHABLE, 100));
+    $this->add(new atkAttribute("visit_city", AF_SEARCHABLE, 100));
     $this->add(new atkListAttribute("type", array("customer", "supplier"), "", AF_HIDE_LIST));
     $this->setTable("organization", "organization");
     $this->setOrder("organization.name");
     $this->setSecurityAlias('organization.organization');
-    $this->setDescriptorTemplate('[name] [city] ([organizationcode])');
+    $this->setDescriptorTemplate('[name] [visit_city] ([organizationcode])');
   }
 
 
@@ -23,7 +23,7 @@ class organizationselector extends atkNode
     if(!empty($rec))
     {
       $tpl = '[name]';
-      if($rec['city']!='') $tpl.=', [city]';
+      if($rec['visit_city']!='') $tpl.=', [visit_city]';
       if($rec['organizationcode']!='') $tpl.=' ([organizationcode])';
       $this->setDescriptorTemplate($tpl);
     }

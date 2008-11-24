@@ -1,5 +1,6 @@
 <?php
-
-  $setup->installNode("organization.organization");
+  //Added debtornumber field 
+  $setup->addColumn('organization', 'debtornumber','varchar(30)'); 
+  
 
 ?>
