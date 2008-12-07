@@ -7,7 +7,7 @@
   else
     $GLOBALS["g_theme"]["Name"] = atkConfig("defaulttheme");
 
-  $page = &atkNew("atk.ui.atkpage");
+  $page = &atkinstance("atk.ui.atkpage");
   $theme = &atkInstance("atk.ui.atktheme");
 
   $page->register_style($theme->stylePath("style.css"));

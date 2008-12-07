@@ -14,7 +14,7 @@ class achievo_modern extends atkPlainMenu
 
       $menuitems = $this->getMenuItems($g_menu,$atkmenutop);
 
-      $page = &atknew("atk.ui.atkpage");
+      $page = &atkinstance("atk.ui.atkpage");
       $page->register_style($theme->stylePath("style.css"));
       $page->register_style($theme->stylePath("menu.css"));
       $page->register_script(atkconfig("atkroot")."atk/javascript/menuload.js");

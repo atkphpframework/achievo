@@ -16,7 +16,7 @@
   {
     // Fullscreen mode. Use index.php as launcher, and launch app.php fullscreen.
 
-    $page = &atknew("atk.ui.atkpage");
+    $page = &atkinstance("atk.ui.atkpage");
     $ui = &atkinstance("atk.ui.atkui");
     $theme = &atkinstance("atk.ui.atktheme");
     $output = &atkinstance("atk.ui.atkoutput");

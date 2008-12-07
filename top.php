@@ -34,7 +34,7 @@
 
   require("theme.inc");
 
-  $page = &atknew("atk.ui.atkpage");
+  $page = &atkinstance("atk.ui.atkpage");
   $ui = &atkinstance("atk.ui.atkui");
   $theme = &atkTheme::getInstance();
   $output = &atkOutput::getInstance();

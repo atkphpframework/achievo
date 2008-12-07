@@ -38,7 +38,7 @@
   {
     // no nodetype passed, or session expired
 
-    $page = &atknew("atk.ui.atkpage");
+    $page = &atkinstance("atk.ui.atkpage");
     $ui = &atkinstance("atk.ui.atkui");
     $theme = &atkTheme::getInstance();
 
