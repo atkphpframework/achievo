@@ -37,6 +37,7 @@
   
   $output = &atkOutput::getInstance();
   $page = &atkinstance("atk.ui.atkpage");
+  $page->unregister_all_scripts();
   $theme = &atkTheme::getInstance();  
   $ui = &atkinstance("atk.ui.atkui");
 
