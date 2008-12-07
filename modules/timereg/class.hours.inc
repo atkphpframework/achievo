@@ -793,7 +793,7 @@ class hours extends atkNode
 
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
     $output.= "<br>".$this->weekviewFooter($weekdates, $viewtime);
-    $ui = &atknew("atk.ui.atkui");
+    $ui = &atkinstance("atk.ui.atkui");
     return $ui->renderBox(array("title"=>$this->weekviewTitle($userid, $viewtime),
                                     "content"=>$output));
   }
@@ -1003,9 +1003,9 @@ class hours extends atkNode
                 hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'";
     list($res) = $db->getrows($query);
-    
+
     if ($res['contract']==0 || $result['totaal']==0)
-    {    
+    {
       // either no contract in this period, or no hours booked at all..
       return false;
     }

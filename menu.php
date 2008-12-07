@@ -38,7 +38,7 @@
   $output = &atkOutput::getInstance();
   $page = &atkinstance("atk.ui.atkpage");
   $theme = &atkTheme::getInstance();  
-  $ui = &atknew("atk.ui.atkui");
+  $ui = &atkinstance("atk.ui.atkui");
 
 
   /* general menu stuff */
