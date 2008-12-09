@@ -67,15 +67,18 @@ class surveyhours extends hours
     {
       return $p_attr->getSelectableRecords($record, $mode);
     }
-    else 
+    elseif($record['projectid']['id']!='')
     {
       $ids = $this->_getProjectAndSubProjectId($record['projectid']['id']);
-      
       $p_attr->createDestination();
 
       $selector = "phase.projectid IN(".implode(",",$ids).")";
       $result = $p_attr->m_destInstance->selectDb($selector,"","","",atk_array_merge($p_attr->m_destInstance->descriptorFields(),$p_attr->m_destInstance->m_primaryKey),$mode);
       return $result;
+    }
+    else 
+    {
+      return array();
     }
   }
   
@@ -87,16 +90,19 @@ class surveyhours extends hours
    */
   function _getProjectAndSubProjectId($projectid)
   {
-    $node = &atkGetNode("project.project");
-    $rows = $node->selectDb("project.master_project='$projectid'","","","",array("id"));
-    
     $id = array();
-    $id[] = $projectid;
+  	if($projectid!='')
+  	{
+      $node = &atkGetNode("project.project");
+      $rows = $node->selectDb("project.master_project='$projectid'","","","",array("id"));
     
-    foreach ($rows as $row)
-    {
-      $id[] = $row['id'];
-    }
+      $id[] = $projectid;
+    
+      foreach ($rows as $row)
+      {
+        $id[] = $row['id'];
+      }
+  	}
     return $id;
   }
 

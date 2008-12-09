@@ -67,6 +67,8 @@ Changes in Achievo 1.4
 * Fixed achievo title in framed themes. [Sandy]
 * Show full username in top like frameless themes. [Sandy]
 * Fixed empty descriptors for organizations. [Guido]
+* Fixed SQL error when using subprojects if there isn't a project
+  selected in the surveyhours. [Sandy]
 
 Changes in Achievo 1.3.4
 ------------------------
