@@ -16,7 +16,7 @@
    */
   function achievoVersion()
   {
-    include(atkconfig("atkroot")."version.inc");
+    require(atkconfig("atkroot")."version.inc");
     return $achievo_version;
   }
 
@@ -26,7 +26,7 @@
    */
   function achievoState()
   {
-    include(atkconfig("atkroot")."version.inc");
+    require(atkconfig("atkroot")."version.inc");
     return $achievo_state;
   }
 
