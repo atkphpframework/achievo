@@ -69,6 +69,7 @@ Changes in Achievo 1.4
 * Fixed empty descriptors for organizations. [Guido]
 * Fixed SQL error when using subprojects if there isn't a project
   selected in the surveyhours. [Sandy]
+* Swedish javascript calendar works again. (bug #1061) [Sandy]
 
 Changes in Achievo 1.3.4
 ------------------------
