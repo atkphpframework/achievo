@@ -57,9 +57,7 @@ class weeknumber
   function getWeeknumber($timestamp,$startday=1,$firstweekcontains=4,$full=false)
   {
     $enddate = weeknumber::getLastDayFromFirstWeek($timestamp,$startday,$firstweekcontains);
-		atkdebug('ENDDATE: '.date("Y-m-d",$enddate));
     $enddate_nextyear = weeknumber::getLastDayFromFirstWeek(strtotime("+1 year",$timestamp),$startday,$firstweekcontains);
-		atkdebug('ENDDATE NEXTYEAR: '.date("Y-m-d",$enddate_nextyear));
     $weeknumber = weeknumber::searchWeekNumber($timestamp,$enddate,$enddate_nextyear);
 
     if($full)
@@ -83,8 +81,6 @@ class weeknumber
     $year = date("Y",$timestamp);
     $tmp_time = mktime(0,0,0,1,$firstweekcontains,$year);
     $weekday = date("w",$tmp_time);
-		atkdebug("Stamp: ".date("Y-m-d",$timestamp)." - Year: $year - Firstweek: ".$firstweekcontains);
-		atkdebug('Weekday (0=sunday): '.$weekday.' - S:'.$startday );
     if($weekday==$startday)
     {
       return $tmp_time+(6*$day);
@@ -112,8 +108,6 @@ class weeknumber
    */
   function searchWeekNumber($timestamp,$enddate,$enddate_nextyear)
   {
-  	atkdebug("SearchWeeknumber for ".date("Y-m-d",$timestamp));
-  	atkdebug("Between ".date("Y-m-d",$enddate).' AND '.date('Y-m-d',$enddate_nextyear));
     $weeknumber=0;
     $day = 86400;
     $week = 7*$day;
@@ -138,7 +132,6 @@ class weeknumber
         $found=true;
       }
     }
-		atkdebug("FOUND: $weeknumber");
     $tmp_array = array("weeknumber"=>$weeknumber,
                        "firstweekstart"=>$weekstart,
                        "firstweekend"=>$weekend);
