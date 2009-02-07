@@ -125,7 +125,6 @@ class weeknumber
                   "firstweekend"=>$enddate_nextyear);
     }
 
-    $startyear = date("Y",$timestamp);
 		$endyear = date("Y",$enddate_nextyear);
     $found=false;
     for($i=$enddate;date("Y",$i)<=$endyear&&!$found;$i+=$week)
