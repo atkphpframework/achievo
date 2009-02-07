@@ -57,7 +57,9 @@ class weeknumber
   function getWeeknumber($timestamp,$startday=1,$firstweekcontains=4,$full=false)
   {
     $enddate = weeknumber::getLastDayFromFirstWeek($timestamp,$startday,$firstweekcontains);
+		atkdebug('ENDDATE: '.date("Y-m-d",$enddate));
     $enddate_nextyear = weeknumber::getLastDayFromFirstWeek(strtotime("+1 year",$timestamp),$startday,$firstweekcontains);
+		atkdebug('ENDDATE NEXTYEAR: '.date("Y-m-d",$enddate_nextyear));
     $weeknumber = weeknumber::searchWeekNumber($timestamp,$enddate,$enddate_nextyear);
 
     if($full)
@@ -79,11 +81,13 @@ class weeknumber
   {
     $day = 86400;
     $year = date("Y",$timestamp);
-    $tmp_time = mktime(12,0,0,1,$firstweekcontains,$year);
+    $tmp_time = mktime(0,0,0,1,$firstweekcontains,$year);
     $weekday = date("w",$tmp_time);
+		atkdebug("Stamp: ".date("Y-m-d",$timestamp)." - Year: $year - Firstweek: ".$firstweekcontains);
+		atkdebug('Weekday (0=sunday): '.$weekday.' - S:'.$startday );
     if($weekday==$startday)
     {
-      return $tmp_time+(7*$day);
+      return $tmp_time+(6*$day);
     }
     else
     {
@@ -108,6 +112,8 @@ class weeknumber
    */
   function searchWeekNumber($timestamp,$enddate,$enddate_nextyear)
   {
+  	atkdebug("SearchWeeknumber for ".date("Y-m-d",$timestamp));
+  	atkdebug("Between ".date("Y-m-d",$enddate).' AND '.date('Y-m-d',$enddate_nextyear));
     $weeknumber=0;
     $day = 86400;
     $week = 7*$day;
@@ -120,10 +126,12 @@ class weeknumber
     }
 
     $startyear = date("Y",$timestamp);
+		$endyear = date("Y",$enddate_nextyear);
     $found=false;
-    for($i=$enddate;date("Y",$i)==$startyear&&!$found;$i+=$week)
+    for($i=$enddate;date("Y",$i)<=$endyear&&!$found;$i+=$week)
     {
       $weeknumber++;
+			if($weeknumber>53) $weeknumber=1;
       $weekstart = ($i-(6*$day));
       $weekend = $i;
       if(date("Y-m-d",$timestamp)>=date("Y-m-d",$weekstart) && date("Y-m-d",$timestamp)<=date("Y-m-d",$weekend))
@@ -131,6 +139,7 @@ class weeknumber
         $found=true;
       }
     }
+		atkdebug("FOUND: $weeknumber");
     $tmp_array = array("weeknumber"=>$weeknumber,
                        "firstweekstart"=>$weekstart,
                        "firstweekend"=>$weekend);

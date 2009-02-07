@@ -159,6 +159,16 @@ Sunday is the first day of week.
        $expected=29;
        $this->assertEqual($weeknumber,$expected,date("d-m-Y",$timestamp).sprintf($msg,$weeknumber,$this->_getStartDay($startday),$weekcontains,$expected));
 
+       atkdebug("<b>Search 11-01-2010 - Startday: 1 - Weekcontains 4 jan</b>");
+       $startday=1; // Sunday
+       $weekcontains=4; // 1 januari
+       $msg = " is in weeknumber %d (Startday %s, week contains %d jan) (expected %d)";
+       $timestamp = mktime(12,0,0,1,11,2010);
+       $weeknumber = weeknumber::getWeeknumber($timestamp,$startday,$weekcontains);
+			 atkdebug("<b>End search</b>");
+       $expected=2;
+       $this->assertEqual($weeknumber,$expected,date("d-m-Y",$timestamp).sprintf($msg,$weeknumber,$this->_getStartDay($startday),$weekcontains,$expected));
+
         
      }
     
