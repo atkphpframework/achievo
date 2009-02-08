@@ -97,10 +97,13 @@
     function value2db($record)
     {
       global $g_sessionManager;
-      $fieldname = atkconfig('auth_languagefield');
-      $session = &atkSessionManager::getSession();
-      $session['globals']['authentication']['user'][$fieldname] = $record[$this->fieldName()];
-      sessionStore('reload_page','true');
+      if($this->m_owner=='userpreferences')
+      {
+        $fieldname = atkconfig('auth_languagefield');
+        $session = &atkSessionManager::getSession();
+        $session['globals']['authentication']['user'][$fieldname] = $record[$this->fieldName()];
+        sessionStore('reload_page','true');
+      }
       return parent::value2db($record);
     }
 
