@@ -73,6 +73,8 @@ Changes in Achievo 1.4
 * Popup calendar now also works when only day and month
   are selected. (bug #1007) [Sandy]
 * Fixed bug in the weeknumber calculation for 2010. [Sandy]
+* Only Change the session language if the owner object
+  is userpreferences. (bug #1241) [Sandy]
 
 
 Changes in Achievo 1.3.4
