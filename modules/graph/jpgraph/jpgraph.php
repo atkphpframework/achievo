@@ -7129,7 +7129,7 @@ class Legend {
     private $xlmargin=2, $ylmargin='';
     private $xpos=0.05, $ypos=0.15, $xabspos=-1, $yabspos=-1;
     private $halign="right", $valign="top";
-    private $font_family=FF_FONT1,$font_style=FS_NORMAL,$font_size=12;
+    private $font_family=FF_FREESANS,$font_style=FS_NORMAL,$font_size=9;
     private $font_color='black';
     private $hide=false,$layout_n=1;
     private $weight=1,$frameweight=1;

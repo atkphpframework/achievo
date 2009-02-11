@@ -145,7 +145,7 @@ class GanttActivityInfo {
     public $vgrid = null;
     private $iColor='black';
     private $iBackgroundColor='lightgray';
-    private $iFFamily=FF_FONT1,$iFStyle=FS_NORMAL,$iFSize=10,$iFontColor='black';
+    private $iFFamily=FF_FREESANS,$iFStyle=FS_NORMAL,$iFSize=8,$iFontColor='black';
     private $iTitles=array();
     private $iWidth=array(),$iHeight=-1;
     private $iTopHeaderMargin = 4;
@@ -335,7 +335,7 @@ class GanttGraph extends Graph {
     private $iLabelHMarginFactor=0.2;	// 10% margin on each side of the labels
     private $iLabelVMarginFactor=0.4;	// 40% margin on top and bottom of label
     private $iLayout=GANTT_FROMTOP;	// Could also be GANTT_EVEN
-    private $iSimpleFont = FF_FONT1,$iSimpleFontSize=11;
+    private $iSimpleFont = FF_FREESANS,$iSimpleFontSize=9;
     private $iSimpleStyle=GANTT_RDIAG,$iSimpleColor='yellow',$iSimpleBkgColor='red';
     private $iSimpleProgressBkgColor='gray',$iSimpleProgressColor='darkgreen';
     private $iSimpleProgressStyle=GANTT_SOLID;
@@ -1498,7 +1498,7 @@ class IconImage {
 class TextProperty {
     public $iShow=true;
     public $csimtarget='',$csimwintarget='',$csimalt='';
-    private $iFFamily=FF_FONT1,$iFStyle=FS_NORMAL,$iFSize=10;
+    private $iFFamily=FF_FREESANS,$iFStyle=FS_NORMAL,$iFSize=8;
     private $iColor="black";
     private $iText="";
     private $iHAlign="left",$iVAlign="bottom";
