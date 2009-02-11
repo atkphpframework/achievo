@@ -24,6 +24,13 @@
       return atkGetSecurityManager()->allowed("timereg.hours", "edit");
     }
 
+    function validate($record, $mode)
+    {
+      // When moving hours we do not want the validation for the remark-required field.
+      $this->handleValidation($record, $mode);
+      return parent::validate($record, $mode);
+    }
+
     function addDb()
     {
       // Determine the other record parameters

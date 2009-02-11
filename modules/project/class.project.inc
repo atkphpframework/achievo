@@ -966,7 +966,8 @@
     {
       $sessionManager = &atkGetSessionManager();
       $session = &atkSessionManager::getSession();
-      $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][atkPrevLevel()];
+      $prevlevel = atkPrevLevel() - ($this->isPartial() ? 1 : 0);
+      $session_prev = $session[$sessionManager->getNameSpace()]["stack"][atkStackID()][$prevlevel];
       $prevnode = atkArrayNvl($session_prev,"atknodetype");
       if(($prevnode == 'timereg.hours') || ($prevnode == 'reports.hoursurvey'))
       {
@@ -1034,6 +1035,8 @@
       {
         $p_attr->setDestinationFilter("");
       }
+      $p_attr->setUseFilterForAddLink(false);
+      $p_attr->setUseFilterForEditLink(false);
       return $p_attr->edit($record, $fieldprefix, $mode);
     }
 

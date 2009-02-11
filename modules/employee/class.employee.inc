@@ -83,7 +83,7 @@ class employee extends person
       $statusfilter = ($this->getView() == "active") ? "active" : "nonactive";
       $this->addFilter("person.status",$statusfilter);
     }
-    $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY|AF_HIDE_LIST));
+    $this->add(new adminLangSelectAttribute('lng',AF_HIDE_LIST));
 
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
 
@@ -119,7 +119,6 @@ class employee extends person
     $initial = array();
     $initial["role"] = "employee";
     $initial["status"] = "active";
-    $initial["lng"] = atkconfig("language");
 
     return $initial;
   }

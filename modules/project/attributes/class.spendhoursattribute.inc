@@ -58,7 +58,7 @@
     {
       $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
 
-      $sql = "SELECT sum(time) as spend_minutes FROM hours WHERE phaseid=".$phaseattrib->value2db($record);
+      $sql = "SELECT sum(time) as spend_minutes FROM hoursbase WHERE phaseid=".$phaseattrib->value2db($record);
       if(isset($record["personid"]["id"])) $sql.=" AND userid='".$record["personid"]["id"]."'";
       $nrow = $db->getrows($sql);
       return ($nrow[0]["spend_minutes"]/60);
@@ -80,7 +80,7 @@
         $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
         $params["phaseid"] = "phase.id='".$phaseattrib->value2db($record)."'";
         $params["startdate"] = "2000-01-01";
-        $params["enddate"] = date("Y-m-d");        
+        $params["enddate"] = date("Y-m-d");
         if(isset($record["personid"]["id"]))
         {
           $params["userid"] = $record["personid"]["id"];

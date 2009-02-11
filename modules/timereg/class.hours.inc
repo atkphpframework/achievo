@@ -1051,6 +1051,12 @@ class hours extends atkNode
   {
     $this->validateActivityId($record);
 
+    $this->handleValidation($record,$mode);
+    atkNode::validate($record, $mode);
+  }
+  
+  function handleValidation($record, $mode)
+  {    
     // when inserting multiple days at once, we don't break on invalid days
     // (we will just skip them later on).
     if ($record["activitydate"]["multi"]!=1)
@@ -1074,8 +1080,6 @@ class hours extends atkNode
         triggerError($record, "activitydate", "error_startbiggerthanend");
       }
     }
-    // continue with original validation
-    atkNode::validate($record, $mode);
   }
 
   function validateActivityId(&$record)

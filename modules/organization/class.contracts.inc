@@ -64,10 +64,10 @@ class contracts extends atkNode
   	$result = substr($result, 0, -6);										//Remove the '<br />' from the end
 
   	$target_url = dispatch_url("organization.contracts", "linkproject", array("projectid"=>"[id]", "contractid"=>$record["id"]));
- 		$select_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter"=>"projectid=[id]","atktarget"=>atkurlencode($target_url)));
- 		$select = session_url($select_url,SESSION_NESTED);
+ 	$select_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter"=>"projectid=[id]","atktarget"=>atkurlencode($target_url)));
+ 	$select = session_url($select_url,SESSION_NESTED);
 
- 		//Add link to result
+ 	//Add link to result
     return $result."&nbsp;&nbsp;&nbsp;".href($select,atktext("selectandaddnewproject","organization","contracts"))."<br />";
   }
 
@@ -88,15 +88,16 @@ class contracts extends atkNode
   	//Check if the behaviour change is actually needed.
   	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
   	{
-  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.
-  		$attr->m_flags ^= AF_OBLIGATORY;
-			$result = $attr->edit($record, $prefix, $mode);
-			//Change back to normal behaviour
-			$attr->m_flags |= AF_OBLIGATORY;
-			return $result;
+  	  //Make the dropdownlist show an 'empty' option, even though the field is obligatory.
+  	  $attr->m_flags ^= AF_OBLIGATORY;
+      $result = $attr->edit($record, $prefix, $mode);
+      
+      //Change back to normal behaviour
+      $attr->m_flags |= AF_OBLIGATORY;
+      return $result;
   	}
   	else   //not needed
-			return $attr->edit($record, $prefix, $mode);
+      return $attr->edit($record, $prefix, $mode);
   }
 
   /**
@@ -115,18 +116,19 @@ class contracts extends atkNode
   	//Check if the behaviour change is actually needed.
   	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
   	{
-  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.
-  		$attr->m_flags ^= AF_OBLIGATORY;
-			$result = $attr->edit($record, $prefix, $mode);
-			//Change back to normal behaviour
-			$attr->m_flags |= AF_OBLIGATORY;
-			return $result;
+  	  //Make the dropdownlist show an 'empty' option, even though the field is obligatory.
+  	  $attr->m_flags ^= AF_OBLIGATORY;
+	  $result = $attr->edit($record, $prefix, $mode);
+
+	  //Change back to normal behaviour
+      $attr->m_flags |= AF_OBLIGATORY;
+      return $result;
   	}
   	else   //not needed
-			return $attr->edit($record, $prefix, $mode);
+      return $attr->edit($record, $prefix, $mode);
   }
 
-   /**
+  /**
    * Make the dropdownlist show an 'empty' option.
    *
    * Hack! Needed to make the dropdownlist show an 'empty' option, even though the field is obligatory.
@@ -142,59 +144,58 @@ class contracts extends atkNode
   	//Check if the behaviour change is actually needed.
   	if($attr->hasFlag(AF_OBLIGATORY))//yes needed
   	{
-  		//Make the dropdownlist show an 'empty' option, even though the field is obligatory.
-  		$attr->m_flags ^= AF_OBLIGATORY;
-			$result = $attr->edit($record, $prefix, $mode);
-			//Change back to normal behaviour
-			$attr->m_flags |= AF_OBLIGATORY;
-			return $result;
+      //Make the dropdownlist show an 'empty' option, even though the field is obligatory.
+  	  $attr->m_flags ^= AF_OBLIGATORY;
+	  $result = $attr->edit($record, $prefix, $mode);
+		
+	  //Change back to normal behaviour
+	  $attr->m_flags |= AF_OBLIGATORY;
+	  return $result;
   	}
   	else   //not needed
-			return $attr->edit($record, $prefix, $mode);
+		return $attr->edit($record, $prefix, $mode);
   }
 
 
-
   function action_linkproject(&$handler)
- 	{
- 	  $db = &atkGetDb();
- 	  $contractid = $db->escapeSQL($this->m_postvars["contractid"]);
- 	  $projectid = $db->escapeSQL($this->m_postvars["projectid"]);
+  {
+    $db = &atkGetDb();
+    $contractid = $db->escapeSQL($this->m_postvars["contractid"]);
+ 	$projectid = $db->escapeSQL($this->m_postvars["projectid"]);
     if ($projectid!="" && $contractid != "")
     {
       $db->query("UPDATE project SET contract_id = $contractid WHERE project.id = ".$projectid);
     }
-    $this->redirect(session_url("", SESSION_BACK, 2));
- 	}
+      $this->redirect(session_url("", SESSION_BACK, 2));
+  }
 
-	function action_admin(&$handler)
-	{
-	  global $g_sessionManager;
-	  $this->m_archive = $g_sessionManager->pageVar("archive");
+  function action_admin(&$handler)
+  {
+    global $g_sessionManager;
+    $this->m_archive = $g_sessionManager->pageVar("archive");
 
-	  if ($this->m_archive==1)
-	  {
-	    $this->addFilter("contract.status='archived'");
-	  }
-	  else
-	  {
-	    $this->addFilter("contract.status='active'");
-	  }
-
-	  return $handler->action_admin();
-	}
-
-	function action_edit(&$handler)
+    if ($this->m_archive==1)
     {
-    	$this->registerLoadScripts();
-      return $handler->action_edit();
+      $this->addFilter("contract.status='archived'");
     }
-
-    function action_add(&$handler)
+    else
     {
-    	$this->registerLoadScripts();
-    	return $handler->action_add();
+      $this->addFilter("contract.status='active'");
     }
+    return $handler->action_admin();
+  }
+
+  function action_edit(&$handler)
+  {
+  	$this->registerLoadScripts();
+    return $handler->action_edit();
+  }
+
+  function action_add(&$handler)
+  {
+  	$this->registerLoadScripts();
+  	return $handler->action_add();
+  }
 
 	/**
    * Register scripts for visibility of period_price
@@ -225,21 +226,21 @@ class contracts extends atkNode
     $page->register_loadscript("check_billing_period('billing_period', 'ar_period_price', 'period_price');");
   }
 
-	function adminFooter()
-	{
-	  $res = "" ;
-	  if ($this->m_archive!=1)
-	  {
-	    return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>1)),
-	                                                    atktext('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
-	  }
-	  else
-	  {
-	    return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>0)),
-	                                             atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
-	  }
-	  return $res."<br>";
-	}
+  function adminFooter()
+  {
+    $res = "" ;
+    if ($this->m_archive!=1)
+    {
+      return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>1)),
+                                                      atktext('clicktoviewarchive', $this->m_type, $this->m_module))."<br>";
+    }
+    else
+    {
+      return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("archive"=>0)),
+                                               atktext('clicktoviewactiverecords', $this->m_type, $this->m_module))."<br>";
+    }
+    return $res."<br>";
+  }
 
 	
   function descriptor_commit()
@@ -265,46 +266,43 @@ class contracts extends atkNode
    * @param array record a record
    * @return string output color code or nothing
    */
-    function rowColor($record)
-    {
-      $term_of_notice = sprintf("%d-%02d-%02d", $record["term_of_notice"]["year"], $record["term_of_notice"]["month"], $record["term_of_notice"]["day"]);
-      //$days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
-      $days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
+  function rowColor($record)
+  {
+    $term_of_notice = sprintf("%d-%02d-%02d", $record["term_of_notice"]["year"], $record["term_of_notice"]["month"], $record["term_of_notice"]["day"]);
+    //$days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
+    $days_left = $this->daysLeft(date("Y-m-d"), $term_of_notice);
 
-      // If contract term of notice is within 15 days, we get red..
-      if ($days_left<=15 && $term_of_notice != "0-00-00")
-      {
-        return COLOR_ERROR;
-      }
-      // If contract term of notice is within 31 days, we get orange..
-      else if ($days_left<=31 && $term_of_notice != "0-00-00")
-      {
-        return COLOR_WARNING;
-      }
-      // do nothing (will result in the default color)
+    // If contract term of notice is within 15 days, we get red..
+    if ($days_left<=15 && $term_of_notice != "0-00-00")
+    {
+      return COLOR_ERROR;
     }
+    // If contract term of notice is within 31 days, we get orange..
+    else if ($days_left<=31 && $term_of_notice != "0-00-00")
+    {
+      return COLOR_WARNING;
+    }
+    // do nothing (will result in the default color)
+  }
     
-   /**
+  /**
    * Return number of days difference between two dates
    *
    * @param string start date (yyyy-mm-dd)
    * @param string end date (yyyy-mm-dd)
    * @return string floored number of days difference.
    */   
-    function daysLeft($start, $end)
-    {
-      if ($start==""||$end=="") return 0;
+  function daysLeft($start, $end)
+  {
+    if ($start==""||$end=="") return 0;
 
-      $d1 = mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));
-      $d2 = mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));
-      return floor(($d2-$d1)/(60*60*24));
-    }
-
-
+    $d1 = mktime(12,0,0,substr($start,5,2), substr($start,8,2), substr($start,0,4));
+    $d2 = mktime(12,0,0,substr($end,5,2), substr($end,8,2), substr($end,0,4));
+    return floor(($d2-$d1)/(60*60*24));
+  }
 
   function initial_values()
   {
-
     $enddatetime = strtotime("+1 year");
 	  return array(
 	    "startdate" => array("year"=>(date("Y")),
@@ -327,41 +325,40 @@ class contracts extends atkNode
   	//Does this contract have an enddate?
   	if($rec['enddate'] != array() && isset($rec['enddate']))
   	{
-	  	//get current date as a timestamp
-	  	$now = mktime(12,0,0,date("m"),date("d"),date("Y"));
-
-	  	//get enddate of record as a timestamp.
-	  	$enddate = mktime(12,0,0,$rec['enddate']['month'],$rec['enddate']['day'],$rec['enddate']['year']);
-
-	  	//did it expire?
-  		$expired = ($now > $enddate);
+  	  //get current date as a timestamp
+      $now = mktime(12,0,0,date("m"),date("d"),date("Y"));
+  
+      //get enddate of record as a timestamp.
+      $enddate = mktime(12,0,0,$rec['enddate']['month'],$rec['enddate']['day'],$rec['enddate']['year']);
+  
+      //did it expire?
+  	  $expired = ($now > $enddate);
   	}
-
 
   	//When status changes to 'archived' All linked projects are set to non-active.
   	//Or if the enddate has passed, all linked projects are set to non-active as well.
   	if(($rec['status'] == 'archived') || $expired)
   	{
-  		$db = &atkGetDb();
+  	  $db = &atkGetDb();
 
-  		//If contract expired, set its status to archived
-  		if($expired)
-  		{
-  			//set contract status to archived
-  			$query = "UPDATE contract SET contract.status='archived' WHERE contract.id='".$rec['id']."'";
-  			$db->query($query);
-  		}
-
-  		$contractid = $rec['id'];
-  		$node = &atkGetNode("project.project");
-
-  		//Select projects linked to this contract that are active.
-  		$projects = $node->selectDb("(project.contract_id='$contractid' AND project.status='active')","","","",array("id","name"));
-  		foreach($projects as $record)
-  		{
-  			$query = "UPDATE project SET project.status='nonactive' WHERE project.id='".$record['id']."'";
-  			$db->query($query);
-  		}
+      //If contract expired, set its status to archived
+      if($expired)
+      {
+      	//set contract status to archived
+      	$query = "UPDATE contract SET contract.status='archived' WHERE contract.id='".$rec['id']."'";
+      	$db->query($query);
+      }
+      
+      $contractid = $rec['id'];
+      $node = &atkGetNode("project.project");
+      
+      //Select projects linked to this contract that are active.
+      $projects = $node->selectDb("(project.contract_id='$contractid' AND project.status='active')","","","",array("id","name"));
+      foreach($projects as $record)
+      {
+      	$query = "UPDATE project SET project.status='nonactive' WHERE project.id='".$record['id']."'";
+      	$db->query($query);
+      }
   	}
   	return true;
   }
@@ -380,8 +377,7 @@ class contracts extends atkNode
         $buttons[] = '<input type="submit" class="btn_save" name="activate_contract" value="'.$this->text("activate_contract").'">';
       }
     }
-    return array_merge(parent::getFormButtons($mode,$record),$buttons);
-    
+    return array_merge(parent::getFormButtons($mode,$record), $buttons);
   }
 
   function action_update(&$handler)

@@ -10,11 +10,7 @@
  * and collect all relations between nodes together with the underlying
  * database relations.
  * 
- * Present the relations in order to facilitate the creation of database
- * queries for Crystal Reports
- * 
  */
-
 
 
 // bootstrap atk

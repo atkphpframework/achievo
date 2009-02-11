@@ -42,7 +42,7 @@ class userprefs extends atkNode
     }
     $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
-    $this->add(new adminLangSelectAttribute('lng',AF_OBLIGATORY));
+    $this->add(new adminLangSelectAttribute("lng", AF_APPLY));
 
     $this->setTable("person", "person");
     $this->setDescriptorTemplate('[userid]');
