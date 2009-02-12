@@ -939,9 +939,17 @@
       $db->query($query);
     }
 
+    /**
+     * If the current project is a master project, make it impossible to
+     * set a master project for this project by hiding the master_project
+     * field.
+     *
+     * @param Integer $id The project Id
+     */
     function _hideMasterProject($id)
     {
-      $rows = &$this->selectDb("project.master_project='$id'","","","",array('id'));
+      $node = &newNode($this->atkNodeType());
+      $rows = &$node->selectDb("project.master_project='$id'","","","",array('id'));
 
       if(count($rows)>0)
       {

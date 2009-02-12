@@ -78,7 +78,10 @@ Changes in Achievo 1.4
 * Fixed bug in the weeknumber calculation for 2010. [Sandy]
 * Only Change the session language if the owner object
   is userpreferences. (bug #1241) [Sandy]
-
+* Fixed adding a project to a contract which caused an SQL error in some 
+  cases. [Dennis]
+* Fixed fresh install of the person module so it installs completely
+  instead of only installing until patch 6. [Dennis]
 
 Changes in Achievo 1.3.4
 ------------------------
