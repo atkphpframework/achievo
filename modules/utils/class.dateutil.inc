@@ -59,13 +59,36 @@
     /**
      * Date string to an array with the elements: year, month, day
      *
-     * @param string $strdate Date string in the format yyyymmdd
+     * @param string $strdate Date string in the format yyyymmdd or yyyy-mm-dd
      * @return array
      */
     function str2arr($strdate)
     {
-      return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,4,2), "day"=>substr($strdate,6,2));
+      // parse dates in the common formats yyyymmdd and yyyy-mm-dd
+      if ( strlen($strdate) == 8 ) 
+			{
+        return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,4,2), "day"=>substr($strdate,6,2));
+      } 
+			elseif ( strlen($strdate) == 10 ) 
+			{
+        return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,5,2), "day"=>substr($strdate,8,2));
+      } 
+			else 
+			{
+        return array(); 
+			}
     }
+		
+    /**
+     * Date string to formatted string
+     *
+     * @param string $strdate Date string
+     * @return formatted string
+     */
+    function str2str($strdate, $format="Ymd")
+    {
+      return dateutil::arr2str(dateutil::str2arr($strdate), $format);
+     } 
 
     /**
      * Date string to timestamp
