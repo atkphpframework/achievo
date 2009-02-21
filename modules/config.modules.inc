@@ -19,22 +19,22 @@
  * Turn on the default achievo modules, custom modules should be
  * added in the config.inc.php
  */
-  module("utils");
-  module("email_template");
-  module("setup");
-  module("employee");
-  module("person");
-  module("timereg");
-  module("project");
-  module("organization");
-  module("notes");
-  module("scheduler");
-  module("todo");
-  module("reports");
-  module("pim");
-  module("search");
-  module("graph");
-  module("quotation");
-  module("docmanager");
-  module("crm");
+  module("utils",'',MF_NO_PRELOAD);
+  module("email_template",'',MF_NO_PRELOAD);
+  module("setup",'',MF_NO_PRELOAD);
+  module("employee",'',MF_NO_PRELOAD);
+  module("person",'',MF_NO_PRELOAD);
+  module("timereg",'',MF_NO_PRELOAD);
+  module("project",'',MF_NO_PRELOAD);
+  module("organization",'',MF_NO_PRELOAD);
+  module("notes",'',MF_NO_PRELOAD);
+  module("scheduler",'',MF_NO_PRELOAD);
+  module("todo",'',MF_NO_PRELOAD);
+  module("reports",'',MF_NO_PRELOAD);
+  module("pim",'',MF_NO_PRELOAD);
+  module("search",'',MF_NO_PRELOAD);
+  module("graph",'',MF_NO_PRELOAD);
+  module("quotation",'',MF_NO_PRELOAD);
+  module("docmanager",'',MF_NO_PRELOAD);
+  module("crm",'',MF_NO_PRELOAD);
 ?>
