@@ -51,33 +51,45 @@ class TimeregUtils {
    * the next and previous week.
    *
    * @param string $viewdate date of yyyy-mm-dd format
+   * @param boolean $checklock Check for locks
    * @return array
    */
-  function getWeekDates($viewdate) 
+  function getWeekDates($viewdate,$checklock=true) 
   {
-    atkdebug("Viewdate: ".$viewdate);
     $viewtime = TimeregUtils::getViewTime($viewdate);
-    atkdebug("Viewdate(2): ".date("Y-m-d",$viewtime));
-    atkimport("modules.scheduler.utils.weeknumber");
-    $weeknumber = weeknumber::getWeeknumber($viewtime,atkconfig("startday",1),atkconfig("firstweekcontains",4),true);
 
     $weekdates = array();
     $day = 86400;
-    $weekstartday = $weeknumber["firstweekstart"];
-    atkdebug("Viewdate(3): ".date("Y-m-d",$weekstartday));
+		$weekday = date("w",$viewtime);
+		$startday = atkconfig("startday",1);
+		if($weekday==$startday)
+		{
+			$weekstartday = $viewtime;
+		}
+		elseif($weekday<$startday)
+		{
+			$diff = ($startday-$weekday) + (6-$startday);
+			$weekstartday = $viewtime-($diff*$day);
+		}
+		elseif($weekday>$startday)
+		{
+			$diff = $weekday-$startday;
+			$weekstartday = $viewtime-($diff*$day);
+		}
+		
+    //$weekstartday = $weeknumber["firstweekstart"];
     for ($i=0; $i<=8;$i++)
     {
       $multiplier = ($i-1);
       $day_timestamp = $weekstartday+($day*$multiplier);
-      atkdebug("Weekdates (".($i)."): ".date("Y-m-d" ,$day_timestamp));
       $weekdates[$i]['date']    = date("Y-m-d" ,$day_timestamp);
       $weekdates[$i]['day']     = atktext(strtolower(date("D" ,$day_timestamp)));
       $weekdates[$i]['dateday'] = strtolower(date("d" ,$day_timestamp));
       $weekdates[$i]['month']   = atktext(strtolower(date("F" ,$day_timestamp)));
       $weekdates[$i]['stamp']   = $day_timestamp;
-      $weekdates[$i]['lock']    = Locking::getLockType(atkArrayNvl(getUser(), "id"),$weekdates[$i]['date']);
+			if($checklock)
+        $weekdates[$i]['lock']    = Locking::getLockType(atkArrayNvl(getUser(), "id"),$weekdates[$i]['date']);
     }
-
     return $weekdates;
   }
 

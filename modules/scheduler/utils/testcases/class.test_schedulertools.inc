@@ -388,7 +388,6 @@
       $valid_dates = array('2008-06-25','2008-07-23','2008-08-27');
       $ret = atkArrayCompare($valid_dates,$dates);
       $this->assertEqual(false, $ret, "Monthly item, every fourth wednesday of every month");
-      atk_var_dump($dates,"Monthly item, every fourth wednesday of every month");
 
     }
 

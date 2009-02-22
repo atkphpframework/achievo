@@ -326,6 +326,96 @@
       return $tempDate;
       }
     }
+		
+		/**
+		 * Check if the given year is a leap year
+		 * @return boolean
+		 * @param object $year[optional]
+		 */
+		function isLeapYear ( $year = '' ) 
+		{
+      if ( empty ( $year ) )
+      $year = strftime ( '%Y', time () );
+
+      if ( strlen ( $year ) != 4 || preg_match ( '/\D/', $year ) )
+        return false;
+
+       return ( ( $year % 4 == 0 && $year % 100 != 0 ) || $year % 400 == 0 );
+    }
+		
+		/**
+		 * Check if we have an ISO8601 week
+		 * @return boolean
+		 */
+		function isISO8601()
+		{
+			return (atkconfig("startday",1)==1 &&
+		          atkconfig("firstweekcontains",4)==4);
+		}
+		
+	/**
+	 * Calculate the weeknumber for an ISO8601 date
+	 * based on pear/Date/Calc.php 
+	 * @return int
+	 * @param int $day
+	 * @param int $month
+	 * @param int $year
+	 */
+  function getWeeknumber($day,$month,$year)
+	{
+		 $mnth = array (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+        $y_isleap = dateutil::isLeapYear($year);
+        $y_1_isleap = dateutil::isLeapYear($year - 1);
+        $day_of_year_number = $day + $mnth[$month - 1];
+        if ($y_isleap && $month > 2) {
+            $day_of_year_number++;
+        }
+        // find Jan 1 weekday (monday = 1, sunday = 7)
+        $yy = ($year - 1) % 100;
+        $c = ($year - 1) - $yy;
+        $g = $yy + intval($yy / 4);
+        $jan1_weekday = 1 + intval((((($c / 100) % 4) * 5) + $g) % 7);
+        // weekday for year-month-day
+        $h = $day_of_year_number + ($jan1_weekday - 1);
+        $weekday = 1 + intval(($h - 1) % 7);
+        // find if Y M D falls in YearNumber Y-1, WeekNumber 52 or
+        if ($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4){
+            $yearnumber = $year - 1;
+            if ($jan1_weekday == 5 || ($jan1_weekday == 6 && $y_1_isleap)) {
+                $weeknumber = 53;
+            } else {
+                $weeknumber = 52;
+            }   
+        } else {
+        	     $yearnumber = $year;
+        }
+        // find if Y M D falls in YearNumber Y+1, WeekNumber 1
+        if ($yearnumber == $year) {
+            if ($y_isleap) {
+                $i = 366;   
+            } else {
+                $i = 365;
+            }
+            if (($i - $day_of_year_number) < (4 - $weekday)) {
+                $yearnumber++;
+                $weeknumber = 1;
+            }
+        }
+        // find if Y M D falls in YearNumber Y, WeekNumber 1 through 53
+        if ($yearnumber == $year) {
+            $j = $day_of_year_number + (7 - $weekday) + ($jan1_weekday - 1);
+            $weeknumber = intval($j / 7);
+            if ($jan1_weekday > 4) {
+                $weeknumber--;
+            }
+        }
+        // put it all together
+        if ($weeknumber < 10) {
+            $weeknumber = '0'.$weeknumber;
+        }
+        return $weeknumber;		
+	  }
+		
 
   }
 

@@ -112,7 +112,8 @@ class scheduler_monthview extends scheduler_view
     if ($cellcount < 0) $cellcount = 7 + $cellcount;
     $bg_color="#FFFFFF";
     $tmp.='<tr style="background-color: '.$bg_color.'; height: 100px;">';
-    $week_number =$this->m_model->getWeekNumber(2,$month,$year);
+		
+    $week_number =$this->m_model->getWeekNumber(1,$month,$year);
 
     $date = $year."-".sprintf("%02d",$month)."-".sprintf("%02d",1);
     $tmp.='<td style="border: 1px solid #000000;"><i>'.href(atkSelf()."?view=week&viewdate=".$date,$week_number,SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
@@ -133,7 +134,7 @@ class scheduler_monthview extends scheduler_view
     	{
     	  if($bg_color=="#FFFFFF") { $bg_color="#EEEEEE"; } else { $bg_color="#FFFFFF"; }
     		$tmp.="</tr><tr style=\"background-color: $bg_color; height: 100px;\">\n";
-    		$week_number++;
+        $week_number =$this->m_model->getWeekNumber($i,$month,$year);
     		$tmp.='<td style="border: 1px solid #000000;"><i>'.href(atkSelf()."?view=week&viewdate=".$date,sprintf("%02d",$week_number),SESSION_DEFAULT,false,'title="'.atktext("weekview","scheduler").'"').'</i>&nbsp;</td>';
     		$cellcount=0;
     	}

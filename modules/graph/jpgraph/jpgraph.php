@@ -3017,7 +3017,7 @@ class Text {
 
 	// Create CSIM targets
 	$coords = $bbox[0].','.$bbox[1].','.$bbox[2].','.$bbox[3].','.$bbox[4].','.$bbox[5].','.$bbox[6].','.$bbox[7];
-	$this->iCSIMarea = "<area shape=\"poly\" coords=\"$coords\" href=\"".htmlentities($this->iCSIMtarget)."\" ";
+	$this->iCSIMarea = "<area shape=\"poly\" coords=\"$coords\" href=\"".atk_htmlentities($this->iCSIMtarget)."\" ";
 	if( trim($this->iCSIMalt) != '' ) {
 	    $this->iCSIMarea .= " alt=\"".$this->iCSIMalt."\" "; 
 	    $this->iCSIMarea .= " title=\"".$this->iCSIMalt."\" ";
@@ -7464,7 +7464,7 @@ class Legend {
 		$ye = $y1 + max($this->mark_abs_vsize,$aImg->GetTextHeight($p[0]));
 		$coords = "$x1,$y1,$xe,$y1,$xe,$ye,$x1,$ye";
 		if( ! empty($p[4]) ) {
-		    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".htmlentities($p[4])."\"";
+		    $this->csimareas .= "<area shape=\"poly\" coords=\"$coords\" href=\"".atk_htmlentities($p[4])."\"";
 
 		    if( !empty($p[6]) ) {
 			$this->csimareas .= " target=\"".$p[6]."\"";

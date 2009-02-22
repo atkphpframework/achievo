@@ -114,6 +114,7 @@ class scheduler_view
     $this->m_model->setSmallViewDate($request["small_viewdate"]);
     $this->m_model->setViewUser($request["viewusers"]);
     $this->m_model->setView($this->m_view);
+		$this->m_model->setCalendarStartDay(atkconfig('startday',1));
     $this->m_userPrefs = $this->m_model->getUserSchedulerPrefs();
     return $this->_render();
   }

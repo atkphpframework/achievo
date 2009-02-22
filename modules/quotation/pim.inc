@@ -64,7 +64,6 @@ function pimMyPipeline()
       $initial_status[$value]=$value;
     }
   }
-  atk_var_dump($initial_status,"INITIAL STATUS");
 
   $dummyrec = array(
         "startdate"=>array("year"=>date("Y",$starttime),

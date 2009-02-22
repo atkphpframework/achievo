@@ -708,7 +708,6 @@
 
       foreach($queries as $query)
       {
-        atk_var_dump($query,"SETUP::EXECUTESQLFILE");
         if(trim($query)!='') $ret = $db->query($query);
         //if($ret==false) return false;
       }

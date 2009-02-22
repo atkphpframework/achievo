@@ -926,7 +926,6 @@
      */
     function preUpdate(&$record)
     {
-      atk_var_dump($record,"PRE UPDATE RECORD");
       $this->removeSchedulerDates($record['id'],$record);
       $this->updateEndDate($record);
       $this->setLastDate($record);

@@ -221,14 +221,10 @@ class scheduler_model
    * @param int $year Year
    * @return int Weeknumber
    */
-  function getWeekNumber($day,$month,$year,$full=false)
+  function getWeekNumber($day,$month,$year)
   {
-    atkimport("modules.scheduler.utils.weeknumber");
-    $timestamp = mktime(12,0,0,$month,$day,$year);
-    $startday = atkconfig("startday",1);
-    $firstweekcontains = atkconfig("firstweekcontains",4);
-    $weeknumber = weeknumber::getWeeknumber($timestamp,$startday,$firstweekcontains,$full);
-    return $weeknumber;
+  	atkImport("modules.utils.dateutil");
+		return dateutil::getWeeknumber($day,$month,$year);
   }
 
   /**
@@ -943,6 +939,7 @@ class scheduler_model
    */
   function _getSmallCalendar($day="",$month="",$year="",$monthNav=true,$showdaysnextmonth=false)
   {
+  	
     if($day=="" && $month=="" && $year=="")
     {
        $day = $this->m_day;
@@ -950,7 +947,16 @@ class scheduler_model
        $year = $this->m_year;
     }
     $userprefs = $this->getUserSchedulerPrefs();
-
+		$weekstartday=0;
+		$weekendday=0;
+		if($this->m_view=="week")
+		{
+      atkimport("modules.timereg.timeregutils");
+	  	$weekdays = TimeregUtils::getWeekdates($this->m_viewdate,false);
+			$weekstartday = $weekdays[1]['date'];
+			$weekendday = $weekdays[7]['date'];
+		}
+		
     atkimport("modules.utils.dateutil");
     $days = dateutil::short_daylist();
     for($i=0;$i<=6;$i++)
@@ -979,7 +985,7 @@ class scheduler_model
     $tmp.='<td align="left">';
     if($monthNav) $tmp.= href($prevUrl,"&lt&lt");
     $tmp.='</td>';
-    $tmp.='<td align="center" colspan="'.($userprefs["showweeknumbers"]?6:5).'">';
+    $tmp.='<td align="center" colspan="'.(dateutil::isISO8601()?6:5).'">';
   	$tmp.= href($currentUrl,$months[intval($month)].' '.$year);
     $tmp.='</td>';
     $tmp.='<td align="right">';
@@ -987,9 +993,10 @@ class scheduler_model
     $tmp.='</td>';
 
     $tmp.='</tr><tr>';
-    if($userprefs["showweeknumbers"]==1) $tmp.='<td>&nbsp;</td>';
+    if(dateutil::isISO8601()) $tmp.='<td>&nbsp;</td>';
 
     $day_number = $this->m_calendarStartDay;
+		atkdebug("<h1>$day_number</h1>");
     for ($i=0;$i<7;$i++)
     {
     	if ($day_number == 7) $day_number = 0;
@@ -1005,7 +1012,7 @@ class scheduler_model
     $week_number = $this->getWeekNumber(1,$month,$year);
     $weekTime = date("Y-m-d",mktime(12,0,0,$month,1,$year));
     $weekUrl = atkSelf()."?view=week&viewdate=$weekTime";
-    if($userprefs["showweeknumbers"]==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
+    if(dateutil::isISO8601()) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     for ($i=1;$i<=$cellcount;$i++)
     {
     	$tmp.='<td>&nbsp;</td>';
@@ -1029,7 +1036,7 @@ class scheduler_model
         }
         $week_number = $this->getWeekNumber($tmp_i,$month,$year);
         $weekUrl = atkSelf()."?view=week&viewdate=$weekTime";
-        if($userprefs["showweeknumbers"]==1) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
+        if(dateutil::isISO8601()) $tmp.='<td style="border-right: 1px solid #C0C0C0;"><i>'.href($weekUrl,$week_number).'</i>&nbsp;</td>';
     		$cellcount=0;
     	}
     	$cellcount++;
@@ -1054,8 +1061,10 @@ class scheduler_model
 
     	$dayUrl = atkSelf()."?view=day&viewdate=$dayTime";
     	$daynumber = ($i>9?$i:"&nbsp;".$i);
+			$date = sprintf('%4d-%02d-%02d',$year,$month,$i);
+			atkdebug("Date: $date | start: $weekstartday | end: $weekendday");
     	if(($this->m_view=="day" && $i == $this->m_day && $month == $this->m_month && $year == $this->m_year) ||
-         ($this->m_view=="week" && $week_number == $this->m_weeknumber) ||
+         ($this->m_view=="week" && $date>=$weekstartday && $date<=$weekendday) ||
          ($this->m_view=="month" && $this->m_month==$month))
     	{
     	  $bgcolor="#FFDD00";

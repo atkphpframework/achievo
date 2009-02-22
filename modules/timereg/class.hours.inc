@@ -691,7 +691,7 @@ class hours extends atkNode
 
     $viewtime = TimeregUtils::getViewTime($this->m_viewdate);
     $weekdates = TimeregUtils::getWeekDates($this->m_viewdate);
-
+		
     $this->addStyle("style.css");
     return $this->getWeekviewData($viewtime,
                                   $weekdates,
@@ -728,7 +728,7 @@ class hours extends atkNode
       $daytotals[$date] += $time;
       $total += $time;
     }
-
+   
     $output = $this->weekviewHeader($weekdates, $viewtime);
 
     $weekdata = array();
@@ -794,13 +794,20 @@ class hours extends atkNode
     $output.=$table->render($weekdata, TBL_FOOTER|TBL_DATA, "recordlist");
     $output.= "<br>".$this->weekviewFooter($weekdates, $viewtime);
     $ui = &atkinstance("atk.ui.atkui");
-    return $ui->renderBox(array("title"=>$this->weekviewTitle($userid, $viewtime),
+    return $ui->renderBox(array("title"=>$this->weekviewTitle($userid, $viewtime,$weekdates),
                                     "content"=>$output));
   }
 
-  function weekviewTitle($userid, $viewtime)
+  function weekviewTitle($userid, $viewtime,$weekdates)
   {
-    return atktext("title_houradmin_weekview")." ".strftime("%V, %Y",$viewtime);
+  	atkimport('modules.util.dateutil');
+		$title = dateutil::stamp2str($weekdates[1]['stamp'],atktext('date_format_view')). ' - '.
+		           dateutil::stamp2str($weekdates[7]['stamp'],atktext('date_format_view'));
+		if(dateutil::isISO8601())
+		{
+			$title.= ' ('.atktext('week').' '.dateutil::getWeeknumber(date('d',$viewtime),date('m',$viewtime),date('Y',$viewtime)).')';
+		}
+    return atktext("title_houradmin_weekview")." ".$title;
   }
 
   function weekviewHeader($weekdates, $viewtime)
@@ -818,7 +825,8 @@ class hours extends atkNode
     }
 
     $ui = &$this->getUi();
-    atkimport("modules.scheduler.utils.weeknumber");
+    atkimport("modules.utils.dateutil");
+
     $tplvars = array( 'session_form'=>session_form(),
                       'prevweekurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[0]['date']))),
                       'thisweekurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>date("Y-m-d")))),
@@ -826,7 +834,6 @@ class hours extends atkNode
                       'userselect'=>$this->getUserSelect(),
                       'datejumper'=>$this->getDateJumper(),
                       'curuser'=>$record["userid"],
-                      'curdate'=>weeknumber::getWeeknumber($viewtime,atkconfig("startday",1),atkconfig("firstweekcontains",4)).", ".date("Y",$viewtime),
                       'lockicon'=>Locking::getLockIcon($locks),
                       'dispatch'=>getDispatchFile(),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
