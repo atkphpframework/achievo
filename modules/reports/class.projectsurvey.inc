@@ -44,6 +44,10 @@ class projectsurvey extends basereport
      */
     $this->add(new atkAttribute("description",0,50));
     
+    /**
+     * We want to have default only active projects/phases but
+     * in the search criteria make it possible to search in only closed projects or both
+     */
     $this->add(new atkListAttribute("projectstatus",array("active","nonactive","archived","all"),"",AF_LIST_NO_NULL_ITEM));
     $this->add(new atkListAttribute("phasestatus",array("active","nonactive","all"),"",AF_LIST_NO_NULL_ITEM));
 
@@ -132,6 +136,17 @@ class projectsurvey extends basereport
     $db = &$this->getDb();
     $node = &atkGetNode("project.project");
 
+    /**
+     * If I choose to hide the phase column, then it needs to just show 1 line per project, 
+     * and the initial/current/actual should be the sum of the phases. I.o.w. if I have a 
+     * 3-phase project, each with 50 hours, and I'm asking for a report on all my current 
+     * projects but not at the phase level, it should just show the project with 150 as planning.
+     * 
+     * We have to see first hour/last hour and start/end in both scenario's.
+     * If we display only the project, it's the first and last hour booked on the
+     * project. If we show all phases, then it's the first and last hour on the phase.
+     * Same for the dates. 
+     */
     $querystring = "
       SELECT"
     . (!in_array("project",$filterrecord['show_only_columns']) ? "" : " p.name project, p.id projectid,")
