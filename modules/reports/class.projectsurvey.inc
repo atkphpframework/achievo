@@ -143,10 +143,13 @@ class projectsurvey extends basereport
         (!in_array("phase",$filterrecord['show_only_columns']) ? " SUM(t.initial_planning) initial_planning," : " t.initial_planning,"))
     . (!in_array("current_planning",$filterrecord['show_only_columns']) ? "" :  
         (!in_array("phase",$filterrecord['show_only_columns']) ? " SUM(t.current_planning) current_planning," : " t.current_planning,"))
-    . (!in_array("startdate",$filterrecord['show_only_columns']) ? "" : " t.startdate,") 
-    . (!in_array("enddate",$filterrecord['show_only_columns']) ? "" : " t.enddate,")
     . (!in_array("spend_hours",$filterrecord['show_only_columns']) ? "" : 
         (!in_array("phase",$filterrecord['show_only_columns']) ? " SUM(s.spend_hours) spend_hours," : " s.spend_hours,"))
+    . (!in_array("phase",$filterrecord['show_only_columns']) ? 
+        ((!in_array("startdate",$filterrecord['show_only_columns']) ? "" : " p.startdate,") 
+       . (!in_array("enddate",$filterrecord['show_only_columns']) ? "" : " p.enddate,")) :
+        ((!in_array("startdate",$filterrecord['show_only_columns']) ? "" : " t.startdate,") 
+       . (!in_array("enddate",$filterrecord['show_only_columns']) ? "" : " t.enddate,")) )
     . "0 FROM
         project p
         JOIN phase t on p.id=t.projectid
@@ -161,11 +164,9 @@ class projectsurvey extends basereport
             t.id phaseid
            FROM 
              hoursbase h JOIN phase t ON h.phaseid=t.id"
-           . (isset($filterrecord['worked_on_by']['id']) ? " WHERE h.userid='".$filterrecord['worked_on_by']['id']."'" : ""). 
-           " GROUP BY
-            t.id
-          ) s ON s.projectid=p.id AND t.id=s.phaseid
-    ";
+           . (isset($filterrecord['worked_on_by']['id']) ? " WHERE h.userid='".$filterrecord['worked_on_by']['id']."'" : "")
+           . (!in_array("phase",$filterrecord['show_only_columns']) ? " GROUP BY t.projectid" : " GROUP BY t.id")
+           . ") s ON s.projectid=p.id AND t.id=s.phaseid";
 
     //Build where condition
     $where = $this->buildWhere($filterrecord);
