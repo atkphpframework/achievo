@@ -214,7 +214,7 @@
       $rows = $db->getrows($query);
 
 
-      $quo_nr = count($rows) ? strval(substr($rows[0]["quotation_nr"],0,6).(substr($rows[0]["quotation_nr"],6,strlen($rows[0]["quotation_nr"]))+1)) : date("ymd")."0";
+      $quo_nr = count($rows) ? strval(atk_substr($rows[0]["quotation_nr"],0,6).(atk_substr($rows[0]["quotation_nr"],6,atk_strlen($rows[0]["quotation_nr"]))+1)) : date("ymd")."0";
 
       $stamp = mktime(12,0,0,date("m"), date("d")+35, date("Y"));
       $expiredate = array("day"=>date("d", $stamp),

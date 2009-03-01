@@ -221,7 +221,7 @@
         if (atkConfig::get("project", "projectcode_autonumber", false))
         {
           $result = $this->getDb()->getrows("SELECT abbreviation FROM project WHERE abbreviation LIKE '$prefix%' ORDER BY abbreviation DESC LIMIT 1");
-          $number = count($result) ? ((int)substr($result[0]["abbreviation"], strlen($prefix)))+1 : 1;
+          $number = count($result) ? ((int)atk_substr($result[0]["abbreviation"], strlen($prefix)))+1 : 1;
           $digits = atkConfig::get("project", "projectcode_autonumberdigits", 1);
           $projectcode .= sprintf("%0".$digits."d", $number);
         }
@@ -621,8 +621,8 @@
       {
         // output nice monthnames
         $months = array("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",  "nov", "dec");
-        $shortyear = substr($label, 2, 2);
-        $month = sprintf("%d", substr($label, 4, 2));
+        $shortyear = atk_substr($label, 2, 2);
+        $month = sprintf("%d", atk_substr($label, 4, 2));
         return atktext($months[$month-1])." '".$shortyear;
       }
       else

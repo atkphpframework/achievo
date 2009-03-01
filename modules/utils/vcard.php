@@ -46,7 +46,7 @@ function quoted_printable_encode($input, $line_max = 76) {
         $linlen = strlen($line);
         $newline = "";
         for($i = 0; $i < $linlen; $i++) {
-            $c = substr($line, $i, 1);
+            $c = atk_substr($line, $i, 1);
             $dec = ord($c);
             if ( ($dec == 32) && ($i == ($linlen - 1)) ) { // convert space at eol only
                 $c = "=20";

@@ -470,7 +470,7 @@ class hours extends atkNode
     {
       if (!$this->allowed("any_user"))
       {
-        $this->addFilter($this->getTable().".userid",strtolower($user["id"]));
+        $this->addFilter($this->getTable().".userid",atk_strtolower($user["id"]));
       }
       return $handler->action_edit();
     }
@@ -590,7 +590,7 @@ class hours extends atkNode
                       'sessionform'=>session_form(),
                       'userselect'=>$this->getUserSelect(),
                       'datejumper'=>$this->getDateJumper(),
-                      'currentdate'=>atktext(strtolower(date("l", $viewdatestamp)))." ".atktext(strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
+                      'currentdate'=>atktext(atk_strtolower(date("l", $viewdatestamp)))." ".atktext(atk_strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
                       'lockicon'=>Locking::getLockIcon($this->m_lock),
                      );
 

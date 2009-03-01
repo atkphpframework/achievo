@@ -79,7 +79,7 @@ class schedulerItem
     }
 
     if($this->hasDescription($item))
-       $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.htmlspecialchars(substr($item["description"], 0, 200)).'" alt="'.htmlspecialchars(substr($item["description"], 0, 200)).'">';
+       $tmp.='<img src="'.$theme->imgPath("note.gif","scheduler").'" width=16 height=16 title="'.htmlspecialchars(atk_substr($item["description"], 0, 200)).'" alt="'.htmlspecialchars(atk_substr($item["description"], 0, 200)).'">';
     if($this->isRecurring($item))
     {
       $title= $this->scheduler_cyclus->recur_info_display($item['id']);
@@ -165,7 +165,7 @@ class schedulerItem
         if($i>0) $names.=", ";
         $names.= $this->scheduler_model->m_users[$userid]["firstname"]." ".$this->scheduler_model->m_users[$userid]["lastname"].($this->scheduler_model->m_users[$userid]["role"]!="employee"?" (".$this->scheduler_model->m_users[$userid]["role"].")":"");
         $the_initials=$this->scheduler_model->m_users[$userid]["initials"];
-     	  if(strlen($the_initials))
+     	  if(atk_strlen($the_initials))
  	      {
  	        if($i>0) $initials.=", ";
  	        $initials.= $the_initials;

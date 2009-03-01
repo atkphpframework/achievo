@@ -345,8 +345,8 @@
       $legends = array_keys($dataset);
       for($i=0,$_i=count($legends);$i<$_i;$i++)
       {
-        if(strlen($legends[$i])>45)
-          $legends[$i] = substr($legends[$i],0,45)."...";
+        if(atk_strlen($legends[$i])>45)
+          $legends[$i] = atk_substr($legends[$i],0,45)."...";
       }
 
       $p1->SetLegends($legends);

@@ -385,7 +385,7 @@ class scheduler_dayview extends scheduler_view
         }
      }
 
-     $this->m_viewTitle = "<b>".atkText(strtolower(date("l", mktime(0, 0, 0, $this->m_model->getMonth(), $this->m_model->getDay(), $this->m_model->getYear()))),"atk")." ".$this->m_model->getDay()."-".$this->m_model->getMonth()."-".$this->m_model->getYear()."</b>";
+     $this->m_viewTitle = "<b>".atkText(atk_strtolower(date("l", mktime(0, 0, 0, $this->m_model->getMonth(), $this->m_model->getDay(), $this->m_model->getYear()))),"atk")." ".$this->m_model->getDay()."-".$this->m_model->getMonth()."-".$this->m_model->getYear()."</b>";
 
      $this->m_model->getItems();
 

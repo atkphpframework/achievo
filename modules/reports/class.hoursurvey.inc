@@ -623,27 +623,27 @@ class hoursurvey extends atkNode
       $lookbackperiod = '<table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="33%">';
       $lookbackperiod .= '<select name="startperiod" onchange="Achievo.Timereg.setStartEndDates(\'startdate\', \'enddate\', document.entryform.startperiod.value, -1); document.entryform.startperiod.value = 0;">
                         <option value="0" selected>---</option>
-                        <option value="1">1 '.strtolower(atktext("week")).'</option>
-                        <option value="2">2 '.strtolower(atktext("weeks")).'</option>
-                        <option value="3">3 '.strtolower(atktext("weeks")).'</option>
-                        <option value="4">4 '.strtolower(atktext("weeks")).'</option>
-                        <option value="5">1 '.strtolower(atktext("month")).'</option>
-                        <option value="6">2 '.strtolower(atktext("months")).'</option>
-                        <option value="7">3 '.strtolower(atktext("months")).'</option>
-                        <option value="8">6 '.strtolower(atktext("months")).'</option>
+                        <option value="1">1 '.atk_strtolower(atktext("week")).'</option>
+                        <option value="2">2 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="3">3 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="4">4 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="5">1 '.atk_strtolower(atktext("month")).'</option>
+                        <option value="6">2 '.atk_strtolower(atktext("months")).'</option>
+                        <option value="7">3 '.atk_strtolower(atktext("months")).'</option>
+                        <option value="8">6 '.atk_strtolower(atktext("months")).'</option>
                        </select></td>';
 
       $lookbackperiod .= '<td width="34%" align="center">&nbsp;</td>';
       $lookbackperiod .= '<td width="33%" align="right"><select name="endperiod" onchange="Achievo.Timereg.setStartEndDates(\'startdate\', \'enddate\', document.entryform.endperiod.value, 1); document.entryform.endperiod.value = 0;">
                         <option value="0" selected>---</option>
-                        <option value="1">1 '.strtolower(atktext("week")).'</option>
-                        <option value="2">2 '.strtolower(atktext("weeks")).'</option>
-                        <option value="3">3 '.strtolower(atktext("weeks")).'</option>
-                        <option value="4">4 '.strtolower(atktext("weeks")).'</option>
-                        <option value="5">1 '.strtolower(atktext("month")).'</option>
-                        <option value="6">2 '.strtolower(atktext("months")).'</option>
-                        <option value="7">3 '.strtolower(atktext("months")).'</option>
-                        <option value="8">6 '.strtolower(atktext("months")).'</option>
+                        <option value="1">1 '.atk_strtolower(atktext("week")).'</option>
+                        <option value="2">2 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="3">3 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="4">4 '.atk_strtolower(atktext("weeks")).'</option>
+                        <option value="5">1 '.atk_strtolower(atktext("month")).'</option>
+                        <option value="6">2 '.atk_strtolower(atktext("months")).'</option>
+                        <option value="7">3 '.atk_strtolower(atktext("months")).'</option>
+                        <option value="8">6 '.atk_strtolower(atktext("months")).'</option>
                        </select></td></tr></table>';
       $data[] = array(atktext("lookbackperiod","project"),$lookbackperiod);
       $data[] = array("<hr>");
@@ -840,7 +840,7 @@ class hoursurvey extends atkNode
           foreach ($functionlevels as $level)
             $levelStr .= $level['id'].',';
 
-          $levelStr = substr($levelStr,0,-1);
+          $levelStr = atk_substr($levelStr,0,-1);
 
           $filterarray[] = $this->_addFilterArrayItem("functionlevel"," IN ($levelStr)","userid");
         }

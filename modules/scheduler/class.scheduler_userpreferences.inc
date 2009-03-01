@@ -173,10 +173,10 @@
     {
       $time = time();
       $datestyles = array (
-        "F d, Y"=> atktext(strtolower(date("F",$time))) . date(" d, Y",$time),
-        "d F, Y"=> date("d ",$time) . atktext(strtolower(date("F",$time))) . date(", Y",$time),
-        "d-F-Y"=> date("d-",$time) . atktext(strtolower(date("F",$time))) . date("-Y",$time),
-        "d-F-y"=> date("d-",$time) . atktext(strtolower(date("F",$time))) . date("-y",$time),
+        "F d, Y"=> atktext(atk_strtolower(date("F",$time))) . date(" d, Y",$time),
+        "d F, Y"=> date("d ",$time) . atktext(atk_strtolower(date("F",$time))) . date(", Y",$time),
+        "d-F-Y"=> date("d-",$time) . atktext(atk_strtolower(date("F",$time))) . date("-Y",$time),
+        "d-F-y"=> date("d-",$time) . atktext(atk_strtolower(date("F",$time))) . date("-y",$time),
         "m/d/Y"=> date("m/d/Y",$time),
         "m/d/y"=> date("m/d/y",$time),
         "m-d-Y"=> date("m-d-Y",$time),

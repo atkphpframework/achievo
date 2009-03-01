@@ -966,9 +966,9 @@
       $meta = $db->metadata($table, true);
       for ($i=0, $_i=count($meta); $i<$_i; $i++)
       {
-        if (strtolower($meta[$i]["name"]) == strtolower($column))
+        if (atk_strtolower($meta[$i]["name"]) == atk_strtolower($column))
         {
-          if($type!="" && strtolower($meta[$i]["gentype"]) == strtolower($type))
+          if($type!="" && atk_strtolower($meta[$i]["gentype"]) == atk_strtolower($type))
           {
             return true;
           }

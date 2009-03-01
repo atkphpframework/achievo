@@ -960,7 +960,7 @@ class scheduler_model
     atkimport("modules.utils.dateutil");
     $days = dateutil::short_daylist();
     for($i=0;$i<=6;$i++)
-      $days[$i] = substr(atkText($days[$i],"atk"), 0, 2);
+      $days[$i] = atk_substr(atkText($days[$i],"atk"), 0, 2);
 
     $months = dateutil::monthlist();
     for($i=1; $i<=12; $i++)

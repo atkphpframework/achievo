@@ -83,9 +83,9 @@ class TimeregUtils {
       $multiplier = ($i-1);
       $day_timestamp = $weekstartday+($day*$multiplier);
       $weekdates[$i]['date']    = date("Y-m-d" ,$day_timestamp);
-      $weekdates[$i]['day']     = atktext(strtolower(date("D" ,$day_timestamp)));
-      $weekdates[$i]['dateday'] = strtolower(date("d" ,$day_timestamp));
-      $weekdates[$i]['month']   = atktext(strtolower(date("F" ,$day_timestamp)));
+      $weekdates[$i]['day']     = atktext(atk_strtolower(date("D" ,$day_timestamp)));
+      $weekdates[$i]['dateday'] = atk_strtolower(date("d" ,$day_timestamp));
+      $weekdates[$i]['month']   = atktext(atk_strtolower(date("F" ,$day_timestamp)));
       $weekdates[$i]['stamp']   = $day_timestamp;
 			if($checklock)
         $weekdates[$i]['lock']    = Locking::getLockType(atkArrayNvl(getUser(), "id"),$weekdates[$i]['date']);

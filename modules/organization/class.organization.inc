@@ -222,7 +222,7 @@ class organization extends atkNode
   function email_display($record, $mode)
   {
     $email = $record["email"];
-    if (!in_array($mode, array("csv", "plain")) && (strlen($email)>0))
+    if (!in_array($mode, array("csv", "plain")) && $email!='')
       $email = sprintf('<a href="mailto:%1$s">%1$s</a>', $email);
     return $email;
   }
@@ -230,7 +230,7 @@ class organization extends atkNode
    function website_display($record, $mode)
   {
     $website = $record["website"];
-    if (!in_array($mode, array("csv", "plain")) && strlen($website)>0)
+    if (!in_array($mode, array("csv", "plain")) && $website!='')
       $website = '<a href="http://'.$website.'" target="_blank">'.$website.'</a>';
     return $website;
   }

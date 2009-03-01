@@ -61,7 +61,7 @@ class contracts extends atkNode
   {
   	$attr = &$this->getAttribute("projects");
   	$result = $attr->edit($record, $prefix, $mode )	;
-  	$result = substr($result, 0, -6);										//Remove the '<br />' from the end
+  	$result = atk_substr($result, 0, -6);										//Remove the '<br />' from the end
 
   	$target_url = dispatch_url("organization.contracts", "linkproject", array("projectid"=>"[id]", "contractid"=>$record["id"]));
  	$select_url = dispatch_url("organization.contract_projectselector", "select", array("atkfilter"=>"projectid=[id]","atktarget"=>atkurlencode($target_url)));

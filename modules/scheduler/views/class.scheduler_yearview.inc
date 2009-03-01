@@ -49,7 +49,7 @@ atkimport("modules.scheduler.views.scheduler_view");
     $nextTime = date("Y-m-d", mktime(0,0,0,1, 1, $this->m_year+1));
     $nextUrl  = atkSelf()."?view=year&viewdate=$nextTime&dayview=".$this->showGlobal;
 
-    $this->title = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
+    $this->title = "<b>".atktext(atk_strtolower(date("F", mktime(0,0,0,$this->m_month,1,$this->m_year))))." ".$this->m_year."</b>";
 
     return href($prevUrl, atktext("previous_year"))."&nbsp;".href($thisUrl, atktext("this_year"))."&nbsp;".href($nextUrl, atktext("next_year"));
 

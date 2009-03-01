@@ -153,9 +153,9 @@
          $query = "SELECT project.abbreviation as projectcode, project.name as projectname FROM project WHERE id='".$selectedPrj['projectid']."'";
          $arr = $db->getrows($query);
          $projectdescriptor = empty($arr[0]['projectcode']) ? $arr[0]['projectname'] : ($arr[0]['projectcode'] . ": " . $arr[0]['projectname']);
-         if (strlen($projectdescriptor) > $g_projectnamesize)
+         if (atk_strlen($projectdescriptor) > $g_projectnamesize)
          {
-           $selectedPrj['projectname'] = substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
+           $selectedPrj['projectname'] = atk_substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
          }
          else
          {
@@ -224,8 +224,8 @@
       {
         $projectid = $arr[$i]['projectid'];
         $projectdescriptor = empty($arr[$i]['projectcode']) ? $arr[$i]['projectname'] : ($arr[$i]['projectcode'] . ": " . $arr[$i]['projectname']);
-        if (strlen($projectdescriptor) > $g_projectnamesize)
-          $projectdescriptor = substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
+        if (atk_strlen($projectdescriptor) > $g_projectnamesize)
+          $projectdescriptor = atk_substr($projectdescriptor, 0, $g_projectnamesize-2).".."; //update because of phases
         $newarr[] = array("projectid"=>$projectid, "projectname"=>$projectdescriptor);
         $alreadyhad[] = $projectid;
       }

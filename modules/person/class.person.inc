@@ -105,15 +105,15 @@ class person extends atkNode
       $res = array();
       if ($record["phone"]!="")
       {
-        $res[] = "<b>".substr(atktext("phone"),0,1).":</b> ".$record["phone"];
+        $res[] = "<b>".atk_substr(atktext("phone"),0,1).":</b> ".$record["phone"];
       }
       if ($record["cellular"]!="")
       {
-        $res[] = "<b>".substr(atktext("cellular"),0,1).": </b>".$record["cellular"];
+        $res[] = "<b>".atk_substr(atktext("cellular"),0,1).": </b>".$record["cellular"];
       }
       if ($record["fax"]!="")
       {
-        $res[] = "<b>".substr(atktext("fax"),0,1).": </b>".$record["fax"];
+        $res[] = "<b>".atk_substr(atktext("fax"),0,1).": </b>".$record["fax"];
       }
       return implode("<BR>", $res);
     }

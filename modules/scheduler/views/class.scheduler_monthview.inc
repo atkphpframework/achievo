@@ -48,7 +48,7 @@ class scheduler_monthview extends scheduler_view
     $nextUrl  = atkSelf()."?view=month&viewdate=$nextTime";
     $nextImg  ='<img src="'.$theme->imgPath("arrow_right.gif","scheduler").'" border=0 width=16 height=16 title="'.atktext("next_month","scheduler").'" alt="'.atktext("next_month","scheduler").'">';
 
-    $this->m_viewTitle = "<b>".atktext(strtolower(date("F", mktime(0,0,0,$this->m_model->getMonth(),1,$this->m_model->getYear()))))." ".$this->m_model->getYear()."</b>";
+    $this->m_viewTitle = "<b>".atktext(atk_strtolower(date("F", mktime(0,0,0,$this->m_model->getMonth(),1,$this->m_model->getYear()))))." ".$this->m_model->getYear()."</b>";
     $theme = &atktheme::getInstance();
 
     return href($prevUrl, $prevImg)."&nbsp;".href($nextUrl, $nextImg)."&nbsp;".href($thisUrl, atktext("current_month","scheduler"));
