@@ -40,6 +40,12 @@
 // DEFINE("TTF_DIR","/usr/X11R6/lib/X11/fonts/truetype/");
 // DEFINE("MBTTF_DIR","/usr/share/fonts/ja/TrueType/");
 
+DEFINE("TTF_DIR",'./modules/graph/fonts/');
+DEFINE("CACHE_DIR",atkconfig('atktempdir').'graph/');
+  
+
+
+
 //-------------------------------------------------------------------------
 // Cache directory specification for use with CSIM graphs that are
 // using the cache.
@@ -103,7 +109,7 @@ DEFINE("CYRILLIC_FROM_WINDOWS",false);
 // where $locale_char_set is a GLOBAL (string) variable
 // from the application including JpGraph.
 // 
-DEFINE('LANGUAGE_CHARSET', null);
+DEFINE('LANGUAGE_CHARSET', 'utf-8');
 
 // Japanese TrueType font used with FF_MINCHO, FF_PMINCHO, FF_GOTHIC, FF_PGOTHIC
 DEFINE('MINCHO_TTF_FONT','ipam.ttf');

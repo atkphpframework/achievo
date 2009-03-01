@@ -77,7 +77,7 @@ DEFINE("FF_FONT2",4);
 //=================================================================
 class LanguageConv {
     function Convert($aTxt,$aFF) {
-        return atk_iconv(atktext("charset", "atk"), "utf-8", $aTxt);
+        return atk_iconv(atkGetCharset(), "utf-8", $aTxt);
     }
 }
 
