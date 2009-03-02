@@ -295,5 +295,30 @@ class reportutils
 
     return $contracts;
   }
+  
+  /**
+   * Get IDs from project and his subprojects
+   *
+   * @param integer $projectid - master project id
+   * @return array with project and his subprojects
+   */
+  static function getProjectAndSubProjectId($projectid)
+  {
+    $id = array();
+  	if(!empty($projectid))
+  	{
+      $db = &atkGetDb();
+      $rows = $db->getrows("SELECT id FROM project WHERE master_project='$projectid'");
+    
+      $id[] = $projectid;
+    
+      foreach ($rows as $row)
+      {
+        $id[] = $row['id'];
+      }
+  	}
+    return $id;
+  }
+
 }
 ?>
