@@ -7,6 +7,7 @@ userelation("atkmanytoonerelation");
 useattrib("atkdateattribute");
 useattrib("atkboolattribute");
 useattrib("atklistattribute");
+useattrib("atkboolattribute");
 
 class projectsurvey extends basereport
 {
@@ -20,6 +21,8 @@ class projectsurvey extends basereport
      */
     $this->add(new atkManyToOneRelation("project","project.project", AF_MANYTOONE_AUTOCOMPLETE))
     ->setAutoCompleteSearchFields(array("name","abbreviation"));
+    
+    $this->add(new atkBoolAttribute("subproject"));
 
     /**
      * from/to dates; if set, will only show projects/phases that 
@@ -65,7 +68,7 @@ class projectsurvey extends basereport
   public function initial_values()
   {
     return array("show_only_columns"=>array("project", "phase", "coordinator","startdate", "enddate", "first_hr", "last_hr",
-    "initial_planning", "current_planning", "spend_hours"),"projectstatus"=>"active","phasestatus"=>"active");
+    "initial_planning", "current_planning", "spend_hours"),"projectstatus"=>"active","phasestatus"=>"active","subproject"=>0);
   }
   
   public function project_selection($record, $mode)
@@ -92,7 +95,17 @@ class projectsurvey extends basereport
     
     if(isset($filterrecord['project']['id']))
     {
-      $where .= ($where == "" ? " WHERE " : " AND ") . "p.id = '".$filterrecord['project']['id']."'";
+      if(atkArrayNvl($filterrecord,'subproject'))
+      {
+        atkimport('modules.reports.utils.reportutils');
+        $ids = reportutils::getProjectAndSubProjectId($filterrecord['project']['id']);
+        $condition = "IN(".implode(",",$ids).")";
+        $where .= ($where == "" ? " WHERE " : " AND ") . "p.id $condition";
+      }
+      else 
+      {
+        $where .= ($where == "" ? " WHERE " : " AND ") . "p.id = '".$filterrecord['project']['id']."'";
+      }
     }
     
     if(!empty($filterrecord['from']))
