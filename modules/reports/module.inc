@@ -5,7 +5,7 @@
     function getNodes()
     {
       registerNode("reports.weekreport",array("report","view_all","view_managed"));
-      registerNode("reports.hoursurvey",array("report","view_all","view_managed"));
+      registerNode("reports.hoursurvey",array("report","view_all","view_managed","save_for_all_users"));
       registerNode("reports.projectstatus",array("report", "any_user"));
       registerNode("reports.projectsurvey",array("report"));
     }
