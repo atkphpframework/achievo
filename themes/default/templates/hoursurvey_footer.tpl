@@ -3,7 +3,7 @@
 {$saved_criteria.toggle_save_criteria} {$saved_criteria.label_save_criteria} {$saved_criteria.save_criteria}
 </div>
 <div>
-{$saved_criteria.dynamic_dates} {$saved_criteria.label_dynamic_dates}  
+{* {$saved_criteria.dynamic_dates} {$saved_criteria.label_dynamic_dates}  *}
 </div>
 {if $saved_criteria.all_users}
 <div>
