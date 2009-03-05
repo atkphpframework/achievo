@@ -192,8 +192,8 @@ class hourSurveyHandler extends atkAbstractSearchHandler
       $result = parent::getSavedCriteria($current);
       if(!empty($result))
       {
-        $result['label_dynamic_dates'] = atk_htmlentities(atktext('label_dynamic_dates'));
-        $result['dynamic_dates'] = $this->getDynamicDates();
+//        $result['label_dynamic_dates'] = atk_htmlentities(atktext('label_dynamic_dates'));
+//        $result['dynamic_dates'] = $this->getDynamicDates();
 
         if($this->m_node->allowed("save_for_all_users"))
         {
