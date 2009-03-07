@@ -977,6 +977,7 @@ class hoursurvey extends atkNode
     if ($outputType=="2")
     {
       // Custom recordList can export to file
+      /*@var $rl atkCustomRecordList*/
       $rl = &atknew("atk.recordlist.atkcustomrecordlist");
 
       $mod_filename = atkconfig::get("reports","filename");
@@ -989,7 +990,7 @@ class hoursurvey extends atkNode
       {
         $filename = '';
       }
-      $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress,$filename);
+      $rl->render($hoursnode, $data, "", '"', '";', "\r\n", "1", "",$suppress,$filename,"export");
     }
   }
 
