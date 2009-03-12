@@ -707,10 +707,11 @@
     	if (!$this->_checkAnyProjectRight())
       {
 		  	$pids = implode(",", $this->get_user_projects());
-        if(!empty($pids))
-          $this->addFilter("project.id IN ($pids) OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS);
+        $filter = "project.coordinator='".atkGetUserId()."' OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS;
+		  	if(!empty($pids))
+          $this->addFilter($filter." OR project.id IN ($pids)");
         else
-          $this->addFilter("project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS);
+          $this->addFilter($filter);
       }
       return $handler->action_select();
     }
