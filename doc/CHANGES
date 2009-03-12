@@ -25,6 +25,9 @@ Changes in Achievo 1.4
   to the Achievo wiki for current information on how to use Achievo. [Guido]
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
   by the hours move function. [Guido]
+* Fixed select page issue - project coordinator don't have access to project 
+  (if project only for member) on select page, if he don't have any_project 
+  right. [Yury] 
 * Moved cron documentation from /cron/README to /doc/CRON. [Guido]
 * Fixed some PHP Notices. [Guido]
 * Fixed minor layout issues in the scheduler. [Guido]
