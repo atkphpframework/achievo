@@ -15,6 +15,8 @@ userelation("atkmanytoonerelation");
 atkimport("module.timereg.locking");
 atkimport("module.timereg.timeregutils");
 atkimport("module.project.utils.projectutils");
+atkimport('modules.utils.dateutil');
+
 
 /**
  * Converts the starttime - endtime notation to a duration notation
@@ -329,6 +331,7 @@ class hours extends atkNode
 
   function descriptor($record)
   {
+
     $datestr = date("d-m-Y", dateutil::arr2stamp($record["activitydate"]));
     $employeenode = &atkGetNode("employee.employeeselector");
     $users = $employeenode->selectDb("person.id='{$record["userid"]["id"]}'");
@@ -800,7 +803,6 @@ class hours extends atkNode
 
   function weekviewTitle($userid, $viewtime,$weekdates)
   {
-  	atkimport('modules.util.dateutil');
 		$title = dateutil::stamp2str($weekdates[1]['stamp'],atktext('date_format_view')). ' - '.
 		           dateutil::stamp2str($weekdates[7]['stamp'],atktext('date_format_view'));
 		if(dateutil::isISO8601())
@@ -825,7 +827,6 @@ class hours extends atkNode
     }
 
     $ui = &$this->getUi();
-    atkimport("modules.utils.dateutil");
 
     $tplvars = array( 'session_form'=>session_form(),
                       'prevweekurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[0]['date']))),
