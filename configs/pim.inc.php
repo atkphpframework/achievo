@@ -5,5 +5,3 @@ $config['pim_redirect_to']='';
 
 // Array with disallowed pim items
 $config['disallowedpimitems']=array();
-
-?>
