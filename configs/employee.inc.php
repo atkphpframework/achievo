@@ -53,6 +53,6 @@
   // This variable configures wether a warning mail should also be send to the user who's contract expires  
   // $config_employee_usercontracts_expiration_send_warning_to_user = true;
   $config["employee_usercontracts_expiration_send_warning_to_user"] = false;
-?>
-
-
+  
+  // This variable configures the default amount of hours that an employee works in one week
+  $config["default_weekly_contract_hours"] = 40;

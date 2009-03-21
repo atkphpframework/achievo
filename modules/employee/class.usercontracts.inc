@@ -100,7 +100,7 @@ class usercontracts extends atkNode
   function initial_values()
   {
   	$nextyear = strtotime("+1 year");
-    return array("uc_hours"=>40,
+    return array("uc_hours"=>atkConfig::get('employee','default_weekly_contract_hours',40),
                  "startdate"=>array("year"=>(date("Y")),
                                   "month"=>date("m"),
                                   "day"=>date("d")),
