@@ -67,7 +67,7 @@
         $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
         foreach($pimitems as $key => $item)
         {
-          if($mode=="add" || ($record["pimitem"]==$item["pimitem"] && $mode="edit"))
+          if($mode=="add" || ($record["pimitem"]!=$item["pimitem"] && $mode="edit"))
             $useritems[] = $item['pimitem'];
         }
       }
@@ -88,11 +88,6 @@
             $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
         }
       }
-
-      // Remove items that the user allready has
-      $user = getUser();
-      $userpimitemsnode = &atkGetNode("pim.userpimitems");
-      $pimitems = $userpimitemsnode->selectDb("userpimitems.userid = '".$user["id"]."'");
 
       // Remove disallowed pimitems from the list
       $disallowedpimitems = atkConfig::get("pim","disallowedpimitems", array());

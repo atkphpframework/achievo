@@ -37,7 +37,7 @@ class userpimitems extends atkNode
     $this->atkNode("userpimitems");
     $this->setTable("userpimitems");
     $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-    $this->add(new atkManyToOneRelation("userid","employee.userprefs",AF_HIDE));
+    $this->add(new atkManyToOneRelation("userid","employee.userprefs",AF_HIDE|AF_FORCE_LOAD));
     $this->add(new pimItemAttribute("pimitem",AF_OBLIGATORY|AF_NO_TRANSLATION));
     $this->add(new atkDummyAttribute("pim_orderby_help",atktext("pim_orderby_help"),AF_BLANK_LABEL|AF_HIDE_LIST));
     $this->add(new atkNumberAttribute("orderby"));
