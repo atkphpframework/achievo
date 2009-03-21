@@ -27,8 +27,7 @@ include moduleDir("scheduler")."utils/class.xmlfunctions.inc";
 atkimport("modules.utils.dateutil");
 
 /**
- * This class makes it possible to add attendees to a schedule. These attendees can be employees and contacts.
- * That is why the relation is linked to person.
+ * This class makes it possible to schedule holidays.
  * @author Sandy Pleyte <sandy@achievo.org>
  * @package achievo
  * @subpackage scheduler
