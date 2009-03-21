@@ -133,6 +133,7 @@
 
       $this->setOrder("project.abbreviation, project.name");
       $this->setIndex("name");
+      $this->setDescriptorTemplate('[abbreviation] [name]');
     }
 
     function graph_topprojects($params)

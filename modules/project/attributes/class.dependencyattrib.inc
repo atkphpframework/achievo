@@ -112,8 +112,8 @@ class dependencyAttribute extends atkAttribute
       $ids[] = $recs[$i]["id"];
     }
 
-    $phaselist1 = new atkListAttribute($this->formName()."[first]",$names, $ids);
-    $phaselist2 = new atkListAttribute($this->formName()."[last]",$names, $ids);
+    $phaselist1 = new atkListAttribute($this->formName()."[first]",$names, $ids,AF_LIST_NO_NULL_ITEM);
+    $phaselist2 = new atkListAttribute($this->formName()."[last]",$names, $ids,AF_LIST_NO_NULL_ITEM);
 
     if (count($names)>2)
     {
