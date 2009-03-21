@@ -27,6 +27,7 @@
     function getNodes()
     {
       registerNode("todo.todo", array("admin", "add", "edit", "delete"));
+      registerNode("todo.todo_history",array('view'));
     }
 
     function getMenuItems()

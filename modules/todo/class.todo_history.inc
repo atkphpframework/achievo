@@ -41,8 +41,7 @@
     {
       $this->todo("todo_history"); // call baseclass constructor, but with new name.
       $this->m_type = "todo_history";
-
-      $this->m_flags|= NF_READONLY;
+      $this->addFlag(NF_READONLY);
       $this->add(new atkManyToOneRelation("todoid", "todo.todo",AF_READONLY|AF_OBLIGATORY|AF_SEARCHABLE));
 
       // We also need to change the updated attribute, because now we no longer want it hide_list,
@@ -55,8 +54,19 @@
 
       // Ordering by id makes sure we sort in order of history.
       $this->setOrder("id");
-      $this->setSecurityAlias("todo");
+      $this->addSecurityMap("view",'todo.admin');
 
+    }
+    
+    /**
+     * Override title_display for not showing a link
+     * @return string
+     * @param array $record Record
+     * @param string $mode Mode
+     */
+    function title_display($record,$mode)
+    {
+      return $record["title"];
     }
 
 
