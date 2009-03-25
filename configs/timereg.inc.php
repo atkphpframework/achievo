@@ -82,8 +82,8 @@
   // Time resolution in minutes
   $config['timereg_resolution']="15m";
   
-  // Overtime threshold
-  $config['overtimethreshold']=10;
+  // Overtime threshold in minutes (default 10h = 600m)
+  $config['overtimethreshold']=600;
   
   // Is it possible to lock incomplete weeks ?
   $config['timereg_incompleteweeklock']=false;
