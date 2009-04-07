@@ -61,14 +61,8 @@ class employee extends person
     $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD), "finance");
     $this->add(new atkAttribute("socialsecuritynumber", AF_HIDE_LIST|AF_HIDE_ADD), "finance");
 
-    $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
+    $this->add(new atkManyToOneRelation("employer_id","organization.organization",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK|AF_LARGE));
     $this->add(new atkManyToOneRelation("department","employee.department",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
-    $this->add(new atkManyToOneRelation("employer_id","organization.organization",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK),"finance");
-
-    //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
-    $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOL_AUTOLINK));
-    $rel->setLocalKey("employee_id");
-    $rel->setRemoteKey("role_id");
 
     // you can't be your own supervisor neither can a nonactive employee be a supervisor
     $preFilter = new atkManyToOneRelation("supervisor","employee.employee",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK);
@@ -76,14 +70,22 @@ class employee extends person
     $preFilter->setUseFilterForAddLink(false);
 
     $this->add($preFilter);
+      
+    $this->add(new atkManyToOneRelation("functionlevel", "employee.functionlevel",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
+
+    //$this->add(new atkManyToOneRelation("entity", "employee.profile",AF_RELATION_AUTOLINK|AF_HIDE_ADD));
+    $rel = &$this->add(new atkManyBoolRelation("profiles", "employee.employeerole", "employee.profile", AF_HIDE_LIST|AF_MANYBOOL_AUTOLINK), "account");
+    $rel->setLocalKey("employee_id");
+    $rel->setRemoteKey("role_id");
+
     // If we are in employee administration mode, we show all users. Otherwise, we only show active users.
-    $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST|AF_HIDE_ADD|AF_FORCE_LOAD));
+    $this->add(new atkListAttribute("status", array("active","nonactive"), array(), AF_HIDE_LIST|AF_HIDE_ADD|AF_FORCE_LOAD), "account");
     if ((atkArrayNvl($ATK_VARS, "atknodetype", "") == "employee.employee") && in_array(atkArrayNvl($ATK_VARS, "atkaction", ""), array("admin", "add", "update", "edit")))
     {
       $statusfilter = ($this->getView() == "active") ? "active" : "nonactive";
       $this->addFilter("person.status",$statusfilter);
     }
-    $this->add(new adminLangSelectAttribute('lng',AF_HIDE_LIST));
+    $this->add(new adminLangSelectAttribute('lng',AF_HIDE_LIST), "account");
 
     $this->add(new atkOneToManyRelation("usercontract","employee.usercontracts","userid",AF_HIDE_LIST|AF_HIDE_ADD));
 
@@ -102,7 +104,7 @@ class employee extends person
 
   function addPasswordAttribute()
   {
-    $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW));
+    $this->add(new atkDummyAttribute("passwordexplanation", atktext("password_leaveblankifunchanged"), AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_SEARCH|AF_HIDE_VIEW), "account");
     $passwordrestrictions = array(
       "minsize" => atkconfig("password_minsize", 0),
       "minupperchars" => atkconfig("password_minupperchars", 0),
@@ -111,7 +113,7 @@ class employee extends person
       "minnumbers" => atkconfig("password_minnumbers", 0),
       "minspecialchars" => atkconfig("password_minspecialchars", 0)
     );
-    $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
+    $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions), "account");
   }
 
   function initial_values()
