@@ -25,7 +25,9 @@
   $config_db["default"]["db"]   = "achievo_1_4";
   $config_db["default"]["user"] = "demo";
   $config_db["default"]["password"] = "demo";
-
+  $config_db["default"]["charset"] = "utf8";
+  $config_db["default"]["collate"] = "utf8_general_ci";
+  
   // -------------------------------------------
   //           LAYOUT CONFIGURATION
   // -------------------------------------------
