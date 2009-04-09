@@ -1074,9 +1074,8 @@
     function renameSequence($seq_name,$new_name)
     {
       $db = &atkGetDb();
-      $sql = "UPDATE db_sequence SET seq_name='".$new_name."'
-                WHERE seq_name='".$seq_name."'";
-      return $db->query($sql);
+      $ddl = &$db->createDDL();
+      return $ddl->renameSequence($seq_name, $new_name);
     }
 
     /**
@@ -1089,12 +1088,45 @@
     function renameTable($old, $new)
     {
       $db = &atkGetDb();
-      $sql = "ALTER TABLE $old RENAME $new";
-      $res = $db->query($sql);
+      $ddl = &$db->createDDL();
+      $ddl->renameTable($old,$new);
 
       //change db_sequence name
-      return $this->renameSequence($old, $new);
+      return $ddl->renameSequence($old, $new);
     }
+    
+    /**
+     * Create index
+     *
+     * @param string $table Table name
+     * @param string $name Index name without postfix
+     * @param array $definition Index definition
+     * @return boolean
+     */
+    function createIndex($table,$name,$definition)
+    {
+       $db = &atkGetDb();
+       $ddl = &$db->createDDL();
+       $ddl->setTable($table);
+       return $ddl->createIndex($name,$definition);
+    }
+
+    /**
+     * Drop index
+     *
+     * @param string $table Table name
+     * @param string $name Index name without postfix
+     * @return boolean
+     */
+    function dropIndex($table,$name)
+    {
+      $db = &atkGetDb();
+      $ddl = &$db->createDDL();
+      $ddl->setTable($table);
+      return $ddl->dropIndex($name);
+    }    
+    
+    
 
     /**
      * Add column
@@ -1185,12 +1217,8 @@
     function dropSequence($sequence)
     {
       $db = &atkGetDb();
-      // Only delete sequence with mysql, since postgress and oracle use their own sequences
-      if (strpos($db->m_type, "mysql") === 0)
-        return $db->query("DELETE FROM ".$db->m_seq_table." WHERE ".$db->m_seq_namefield." = '$sequence'");
-      else
-        return true;
-
+      $ddl = &$db->createDDL();
+      return $ddl->dropSequence($sequence);
     }
 
      /**

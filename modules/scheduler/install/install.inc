@@ -12,6 +12,11 @@
   $setup->installNode("scheduler.scheduler_userassistants");
   $setup->installNode("scheduler.scheduler_dates");
   $setup->installNode("scheduler.scheduler_alarms");
+  
+  $setup->createIndex('scheduler_dates','enddate',array('fields'=>array('enddate'=>array('sorting' => 'ascending',                                           
+																																							'length' => ''                                                      
+                                                                              ))));
+ 
 
   // Insert the email templates we use for the scheduler
   $et = &atkGetNode('email_template.email_template');
@@ -62,7 +67,7 @@
   foreach($templates as $record)
     $et->addDb($record);
 
-  $setup->setVersion(11);
+  $setup->setVersion(12);
   set_time_limit(0);
 
   // Check if there exists a module calendar in the versioninfo

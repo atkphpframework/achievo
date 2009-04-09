@@ -17,7 +17,15 @@
   $setup->installNode("project.deliverable");
   $setup->installNode("project.mastergantt_colorconfig");
   $setup->installNode("project.project_category");
+  
+  $setup->createIndex('project','name',array('fields'=>array('name'=>array('sorting' => 'ascending',                                           
+                                                                           'length' => 25                                                      
+                                                                           ))));
+                                                                           
+  $setup->createIndex('phase','project_id',array('fields'=>array('projectid'=>array('sorting' => 'ascending',                                           
+                                                                         'length' => ''                                                      
+                                                                         ))));
 
-  $setup->setVersion(24);
+  $setup->setVersion(25);
 
 ?>
