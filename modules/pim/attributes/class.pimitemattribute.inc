@@ -78,14 +78,30 @@
       // Harvest the modules for pim items and populate m_lookup, m_options
       // and m_values
       $pimItems = atkHarvestModules("getPimItems","",true);
+      $pimRights = atkHarvestModules("getPimRights","",true);
       $this->m_lookup = array();
       foreach ($pimItems as $module => $items)
       {
         foreach($items as $itemName => $itemFunc)
         {
-          $item = $module.'_'.$itemName;
-          if(!in_array($item,$useritems))
-            $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
+          $allowed = true;
+          //Check, if access right is set for this item
+          if(isset($pimRights[$module][$itemName]))
+          {
+            list($nodename,$action) = $pimRights[$module][$itemName];
+            $node = &atkGetNode($nodename);
+            if(!$node->allowed($action))
+            {
+              $allowed = false;
+            }
+          }
+          if($allowed)
+          {
+            $item = $module.'_'.$itemName;
+            if(!in_array($item,$useritems))
+              $this->m_lookup[$item] = atkText($module,$module).' - '.atkText(array("pim_$itemName", $itemName),$module);
+        
+          }
         }
       }
 
