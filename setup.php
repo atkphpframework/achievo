@@ -275,9 +275,7 @@
   // the installer can install the database if needed. Here, we just check if PHP
   // was compiled with the correct database support.
 
-  $dbs = array("mysql"=>"mysql_pconnect",
-               "mysql41"=>"mysqli_connect",
-               "mysqli"=>"mysqli_connect",
+  $dbs = array("mysqli"=>"mysqli_connect",
                "oci8"=>"OCILogon",
                "oci9"=>"OCILogin",
                "pgsql"=>"pg_connect");
