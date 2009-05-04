@@ -320,10 +320,13 @@ class hoursurvey extends atkNode
     $suppress = array();
     if (!is_array($col)||count($col)==0)
     {
-      // No collumns selected. Default->select all.
+      // No collumns selected. Default->select all, exept entrydate
       for($i=0,$_i=count($arr_col);$i<$_i;$i++)
       {
-        $col[]=$arr_col[$i];
+        if($arr_col[$i] != 'entrydate')
+        {
+          $col[]=$arr_col[$i];
+        }
       }
     }
     for($i=0,$_i=count($arr_col);$i<$_i;$i++)
