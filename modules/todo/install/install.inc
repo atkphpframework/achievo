@@ -4,7 +4,7 @@
   $setup->installNode("todo.todo_history");
   
   $setup->createIndex('todo','owner',array('fields'=>array('owner'=>array('sorting' => 'ascending',                                           
-                                                                         'length' => 15                                                      
+                                                                         'length' => ''                                                      
                                                                          ))));
                                                                          
   $setup->createIndex('todo','assigned_to',array('fields'=>array('assigned_to'=>array('sorting' => 'ascending',                                           
