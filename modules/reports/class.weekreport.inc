@@ -130,7 +130,7 @@ class weekreport extends atkNode
   function get_employee($user_id)
   {
     $db = &atkGetDb();
-    $sql = "SELECT * FROM person WHERE status='active' AND id='$user_id'";
+    $sql = "SELECT * FROM person WHERE status='active' AND id='".intval($user_id)."'";
     $record = $db->getrows($sql);
     return $record[0];
   }
@@ -644,15 +644,15 @@ class weekreport extends atkNode
         {
           $status = "approved";
         }
-        else 
+        else
         {
           $status = "locked";
         }
         if ($locks[$i]["userid"]=="" || $locks[$i]["userid"]==0)
         {
           // Lock is for all users
-          foreach($users_array as $uid)  
-          {        
+          foreach($users_array as $uid)
+          {
             $weekdata[$locks[$i]["period"]]["userdata"][$uid]["status"]=$status;
           }
         }
@@ -723,7 +723,7 @@ class weekreport extends atkNode
             {
               $cmpstatus = "approved";
             }
-            else 
+            else
             {
               $cmpstatus = "unlocked";
             }
@@ -770,7 +770,7 @@ class weekreport extends atkNode
       $totalhours = 0;
       $totalcontract = 0;
       $prevbalance = $prebalance["balance"];
-    
+
       foreach($rldata as $rec)
       {
         $totalhours += $rec["total"];
@@ -844,7 +844,7 @@ class weekreport extends atkNode
         $rl->render($this, $rldata, "", '"', '";', "\r\n", "1", "",$suppress);
       }
 
-    
+
   }
 }
 
