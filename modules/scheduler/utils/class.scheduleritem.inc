@@ -223,14 +223,14 @@ class schedulerItem
         if(!$showcategory)
           $style = 'style="color: '.$itemColors[$item["category"]]["fore"].';"';
         $tmp.=href(dispatch_url("scheduler.scheduler","view",array("atkselector"=>"scheduler_scheduler.id=".$item["id"],"scheduler_id"=>$item["id"],"itemdate"=>$item["startdate"])),
-                   $item["title"],SESSION_NESTED,false,$style);
+                   atk_htmlentities($item["title"]),SESSION_NESTED,false,$style);
       }
       else
       {
-        $tmp.=$item["title"];
+        $tmp.=atk_htmlentities($item["title"]);
       }
       if(array_key_exists("location",$item) && $item["location"]!="")
-        $tmp.=" (".$item["location"].")";
+        $tmp.=" (".atk_htmlentities($item["location"]).")";
     }
     return $tmp;
   }
