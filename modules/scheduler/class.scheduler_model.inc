@@ -551,6 +551,7 @@ class scheduler_model
                                                 "allday"=>1,
                                                 "all_users"=>1,
                                                 "recur"=>"once",
+                                                "holiday"=>true,
                                                 "startdate"=>mktime(0,0,0,$this->m_month,$this->m_day,$this->m_year),
                                                 "enddate"=>mktime(23,59,59,$this->m_month,$this->m_day,$this->m_year),
                                                 "title"=>$info["name"],
@@ -939,7 +940,7 @@ class scheduler_model
    */
   function _getSmallCalendar($day="",$month="",$year="",$monthNav=true,$showdaysnextmonth=false)
   {
-  	
+
     if($day=="" && $month=="" && $year=="")
     {
        $day = $this->m_day;
@@ -956,7 +957,7 @@ class scheduler_model
 			$weekstartday = $weekdays[1]['date'];
 			$weekendday = $weekdays[7]['date'];
 		}
-		
+
     atkimport("modules.utils.dateutil");
     $days = dateutil::short_daylist();
     for($i=0;$i<=6;$i++)

@@ -190,6 +190,7 @@ class schedulerItem
 
   function getDescription($item,$isAttendee,$showcategory)
   {
+    atk_var_dump($item,"SCHEDULER ITEM");
     /*
     owner = view private, edit, delete, view
     attendee = view private, view
@@ -217,7 +218,7 @@ class schedulerItem
         $action = "view";
       }
 
-      if($action!="" && !$this->isBirthday($item) && !$this->isTodo($item))
+      if($action!="" && !$this->isBirthday($item) && !$this->isTodo($item) && !$this->isHoliday($item))
       {
         $style = '';
         if(!$showcategory)
@@ -248,6 +249,11 @@ class schedulerItem
   function isTodo($item)
   {
     return (array_key_exists("todo",$item) && $item["todo"]!=''?true:false);
+  }
+
+  function isHoliday($item)
+  {
+    return (array_key_exists("holiday",$item) && $item["holiday"]!=''?true:false);
   }
 
   function getCategory($item)
