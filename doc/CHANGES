@@ -6,7 +6,7 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.4
 ----------------------
-+ In user preferences->pim we can't select the pim items that we don’t have 
++ In user preferences->pim we can't select the pim items that we donï¿½t have 
   access to. To add checking access right to pim item, add the following method 
   to your module:
   function getPimRights()
@@ -34,6 +34,7 @@ Changes in Achievo 1.4
   to the Achievo wiki for current information on how to use Achievo. [Guido]
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
   by the hours move function. [Guido]
+* Fixed showing all users in the weekreports. (Bug #1471) [Sandy]
 * Fixed integrity violation error when registering hours on an 'all users' 
   project, that did not have any members added to it. [Dennis, Sandy]
 * Fixed select page issue - project coordinator don't have access to project 
