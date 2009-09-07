@@ -35,6 +35,7 @@ Changes in Achievo 1.4
 - Removed the /contrib/phase_convert.pl script. This script is now replaced
   by the hours move function. [Guido]
 * Fixed showing all users in the weekreports. (Bug #1471) [Sandy]
+* Holidays shouldn't be clickable in the scheduler (Bug #971) [Sandy]
 * Fixed integrity violation error when registering hours on an 'all users' 
   project, that did not have any members added to it. [Dennis, Sandy]
 * Fixed select page issue - project coordinator don't have access to project 
