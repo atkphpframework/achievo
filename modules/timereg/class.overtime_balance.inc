@@ -342,6 +342,7 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
      */
     function getContractHours($begin, $end, $userid)
     {
+      static $user_contracts = array();
       // Convert the given begindate and enddate to "yyyymmdd" format so we can run calculations on them
       // in order to determine if a given date is earlier than, equal to or later than another date
       $begindate = dateutil::str2str($begin);
@@ -349,14 +350,24 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
 
       // Get a list of contracts that intersects with the given begin and end dates. The list of contracts
       // includes the amount of hours, the start- and enddate and the list of workdays for each contract.
-      $db = &atkGetDb();
-      $sql = "SELECT uc_hours, startdate, enddate, WorkingDays
-              FROM usercontract
-              WHERE userid = '$userid'
-              AND startdate <= '$end'
-              AND (enddate >= '$begin' OR enddate IS NULL)";
-      $contracts = $db->getRows($sql);
-
+      if(!array_key_exists($userid,$user_contracts))
+      {
+        $db = &atkGetDb();
+        $sql = "SELECT uc_hours, startdate, enddate, WorkingDays
+                FROM usercontract
+                WHERE userid = '$userid'";
+                /*
+                AND startdate <= '$end'
+                AND (enddate >= '$begin' OR enddate IS NULL)";
+                */
+        $contracts = $db->getRows($sql);
+        $user_contracts[$userid]=$contracts;
+      }
+      else
+      {
+        $contracts = $user_contracts[$userid];
+      }
+      
       // Start with an empty total
       $total = 0;
 
@@ -364,6 +375,8 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
       // amount of hours
       for ($i=0,$_i=count($contracts); $i<$_i; $i++)
       {
+         if($contracts[$i]['startdate']>=$end || ($contracts[$i]['enddate']<=$begin && $contracts[$i]['enddate']!='')) continue;
+         
          // Get an array of working days that are specified with this contract
          $workdays = $this->getWorkDays($contracts[$i]["WorkingDays"]);
 
@@ -390,7 +403,7 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
          // the number of weekly working days) and multiply it with the amount of weekly hours
          $total += ($numdays / $numworkdays) * $contracts[$i]["uc_hours"];
       }
-
+      atkdebug("Contract hours: $total");
       // If no contracts are found, we just return 0
       return $total;
     }
