@@ -403,7 +403,6 @@ $this->debuglog(array("function"=>"updateOvertimeBalance","userid"=>$userid, "da
          // the number of weekly working days) and multiply it with the amount of weekly hours
          $total += ($numdays / $numworkdays) * $contracts[$i]["uc_hours"];
       }
-      atkdebug("Contract hours: $total");
       // If no contracts are found, we just return 0
       return $total;
     }
