@@ -540,14 +540,14 @@ class hoursurvey extends atkNode
       if (moduleExists("billing"))
       {
         $billingRateNode = &atkGetNode("billing.billing_rate");
-        $projecttypeatt = &new atkManyToOneRelation('billing_projecttypeid', "billing.projecttype");
+        $projecttypeatt = new atkManyToOneRelation('billing_projecttypeid', "billing.projecttype");
         $projecttypeatt->m_ownerInstance = &$billingRateNode;
         $projecttypeatt->removeFlag(AF_RELATION_AUTOCOMPLETE);
         $data[] = array(atktext('billing_type','billing').':',$projecttypeatt->edit($dummyrec));
         $this->_addOr($data);
       }
 
-      $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization", AF_HIDE));
+      $organizationatt = &$hoursnode->add(new atkManyToOneRelation("organizationid", "organization.organization", AF_LARGE));
 
       if(atkconfig::get("timereg","timereg_contact_link",false))
       {
