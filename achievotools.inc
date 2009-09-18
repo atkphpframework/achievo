@@ -355,6 +355,7 @@
 
   function time_format($time, $displayzero=false)
   {
+    useattrib("atkdurationattribute");
     if ($time==0 && !$displayzero)
     {
       return "&nbsp;";
