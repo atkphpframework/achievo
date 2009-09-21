@@ -25,7 +25,6 @@
       $this->menuitem("projectsurvey", dispatch_url("reports.projectsurvey", "report"),"reports", array("reports.projectsurvey", "report"));
       $this->menuitem("weekreport", dispatch_url("reports.weekreport", "report"),"reports",array("reports.weekreport","report"));
       $this->menuitem("projectstatus", dispatch_url("reports.projectstatus", "report"), "reports", array("reports.projectstatus", "report"));
-      $this->menuitem("todo_report", dispatch_url("reports.todo_report", "report"), "reports", array("reports.projectstatus", "report"));
     }   
   }
 
