@@ -43,7 +43,7 @@ class todo extends atkNode
    */
   function todo($name="todo")
   {
-    $this->atkNode($name, NF_TRACK_CHANGES|NF_MRA);
+    $this->atkNode($name, NF_TRACK_CHANGES|NF_MRA|NF_NO_EXTENDED_SEARCH);
 
     $this->add(new atkNumberAttribute("id"                   , AF_AUTOKEY));
     $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_HIDE|AF_OBLIGATORY));
@@ -62,7 +62,7 @@ class todo extends atkNode
     $this->add(new atkTextAttribute("description"      , TEXT_LARGE, AF_HIDE_LIST));
     $this->add(new atkListAttribute("status"           , array("todo_new", "todo_rejected", "todo_in_progress","todo_on_hold","todo_completed"), array(1,2,3,4,5),AF_SEARCHABLE|AF_OBLIGATORY));
     if($name=="todo")
-      $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE));
+      $this->add(new atkOneToManyRelation("history","todo.todo_history","todoid",AF_HIDE_LIST|AF_CASCADE_DELETE),'history');
 
     $userid = atkArrayNvl(getUser(), "id");
     if($name=="todo_history")
@@ -73,10 +73,52 @@ class todo extends atkNode
     {
       $this->addFilter("(([table].private=0) OR ([table].private is null) OR ([table].private=1 and ([table].owner='".$userid."' OR [table].assigned_to='".$userid."')))");
     }
-    $this->addSecurityMap(array("complete", "mra_complete"),"edit");
+    $this->addSecurityMap(array("complete", "mra_complete","refresh_todos"),"edit");
+    //$this->addSecurityMap('refresh_todos',"admin");
     $this->setTable("todo");
     $this->setOrder("todo.status, todo.duedate, todo.priority");
 
+  }
+
+
+  public function renderPim()
+  {
+    $todonode = atkGetNode('todo.todo');
+    $todonode->addFilter("todo.status NOT IN (5,2)");
+    $todonode2 = clone($todonode);
+    $userid = atkGetUserId();
+
+    atkimport('atk.datagrid.atkdatagrid');
+    $todonode->addFilter("todo.assigned_to='$userid' AND todo.assigned_to <> 0  AND ((todo.private=0) OR (todo.private is null) OR (todo.private=1 and todo.owner='$userid'))");
+    $grid = atkDataGrid::create($todonode, 'todoassignedtome');
+    $grid->setEmbedded(false);
+    $grid->setBaseUrl(partial_url('todo.todo', 'refresh_todos', 'refresh_todos'));
+    $todo_assignedtome = $grid->render();
+    $todo_assignedtome.= '<br>'.href(dispatch_url("todo.todo","add",array("atkfilter"=>"assigned_to.id='$userid'")),atktext('add'),SESSION_NESTED);
+
+    $todo_assignedbyme = atktext("pim_assignedbyyou").":<br>";
+
+    $todonode2->addFilter("todo.owner='$userid' AND todo.assigned_to<>'$userid'");
+    $grid2 = atkDataGrid::create($todonode2, 'todoassignedbyme');
+    $grid2->setEmbedded(false);
+    $grid2->setBaseUrl(partial_url('todo.todo', 'refresh_todos', 'refresh_todos'));
+    $todo_assignedbyme.= $grid2->render();
+    $todo_assignedbyme.= '<br>'.href(dispatch_url("todo.todo","add"),atktext('add'),SESSION_NESTED);
+
+    $res = '<table border="0">';
+    $res.= '<tr>';
+    $res.= '<td valign="top">'.$todo_assignedtome.'</td>';
+    $res.= '</tr><tr><td>&nbsp;</td></tr><tr>';
+    $res.= '<td valign="top">'.$todo_assignedbyme.'</td>';
+    $res.= '</tr></table>';
+
+    return $res;
+  }
+
+  public function action_refresh_todos()
+  {
+    atkimport('atk.datagrid.atkdatagrid');
+    $this->getPage()->addContent(atkDataGrid::resume($this)->render());
   }
 
   /**
@@ -88,7 +130,7 @@ class todo extends atkNode
    */
   function recordActions($rec,&$actions,&$mraactions)
   {
-    if($rec['status']<>'5')
+    if($rec['status']<>'5' && $this->getType()!='todo_history')
     {
       if ($this->allowed("complete")) $actions["complete"]= session_url(dispatch_url($this->atknodetype(), "complete", array("todo_id"=>$rec["id"])));
       if ($this->allowed("mra_complete")) $mraactions[] = "mra_complete";
