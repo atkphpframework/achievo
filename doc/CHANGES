@@ -10,6 +10,11 @@ Changes in Achievo 1.4
 * Fixed bug in approving hours of a period that is locked for all users.
   (Bug #1191) [Sandy]
 * Updated pim todo's, they now use the atkDataGrid. [Sandy]
+* Fixed multiple security vulnerabilities:
+  - Remote file inclusion
+  - SQL Injection
+  - Cross Site Scripting (XSS)
+  Thanks to bonsai-sec.com and packetstormsecurity.org for reporting them!
 
 
 Changes in Achievo 1.4RC1
