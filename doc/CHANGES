@@ -15,7 +15,8 @@ Changes in Achievo 1.4
   - SQL Injection
   - Cross Site Scripting (XSS)
   Thanks to bonsai-sec.com and packetstormsecurity.org for reporting them! [Sandy]
-* Updated russian, ukranian, slovak translations [Sandy]
+* Updated Russian, Ukranian, Slovak, Polish, Brazilian Portuguese,
+  Spanish, German, Norwegian and French translations [Sandy]
 
 
 Changes in Achievo 1.4RC1
