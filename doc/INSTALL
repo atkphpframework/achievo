@@ -19,8 +19,8 @@ Requirements
 
 - A webserver capable of running php5 scripts
   (Apache is a good choice, http://www.apache.org)
-- PHP5 (http://www.php.net, version 5.1.0 or newer)
-- MySQL3+ (http://www.mysql.org)
+- PHP5 (http://www.php.net, version 5.2.0 or newer)
+- MySQL4.1+ (http://www.mysql.org)
 
 The following are requirements for optional features of Achievo:
 
