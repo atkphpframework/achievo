@@ -1,0 +1,26 @@
+<?php 
+// Achievo language file for Ukrainian.
+//
+// Module: docmanager
+// Language: Ukrainian (uk)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$ru = array (
+"accepted" => "Прийнято",
+"concept" => "Концепція",
+"confidential" => "Конфіденційно",
+"document" => "Документ",
+"documenttype" => "Тип документа",
+"documenttypes" => "Типи документів",
+"filename_already_in_use" => "Ім'я файлу вже використовується.",
+"generate" => "Создать",
+"give_new_filename" => "Введіть ім'я файлу",
+"internal" => "Внутрішній",
+"master" => "Головний",
+"menu_document_types" => "Типи документів",
+"permission_generate" => "Створити",
+"tab_documents" => "Документи",
+"template" => "Шаблон");
+?>
