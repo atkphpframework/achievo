@@ -72,7 +72,7 @@
   // validating the PHP configuration.
 
   // Some defines we need
-  define("REQUIRED_PHP", "5.0.0");
+  define("REQUIRED_PHP", "5.1.2");
   define("ACHIEVO_MIN_MEM","32");
 
   /**
