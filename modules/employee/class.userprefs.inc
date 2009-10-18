@@ -42,10 +42,11 @@ class userprefs extends atkNode
     }
     $themes = $this->getThemes();
     $this->add(new atkListAttribute("theme",$themes,$themes,AF_HIDE_ADD));
-    $this->add(new adminLangSelectAttribute("lng", AF_APPLY));
+    $this->add(new adminLangSelectAttribute("lng"));
 
     $this->setTable("person", "person");
     $this->setDescriptorTemplate('[userid]');
+    $this->addFilter('person.id = '.atkGetUser('id'));
   }
 
   /**
@@ -75,24 +76,24 @@ class userprefs extends atkNode
     );
     $this->add(new atkPasswordAttribute("password", false, AF_HIDE_LIST|AF_PASSWORD_NOVALIDATE, 40, $passwordrestrictions));
   }
-  
-  
+
+
   /**
    * Check rights for user settings, user can only edit his own settings
-   * 
+   *
    * @param string $action The action we want to allow
    * @param array $record The record for the action
    * @return boolean Are we allowed to execute the action
    */
   function allowed($action,$record="")
   {
-    global $ATK_VARS;
-    $userid = atkGetUser('id');
-    $selector = decodeKeyValueSet($ATK_VARS['atkselector']);
-    if(array_key_exists('person.id',$selector) && $selector['person.id']==$userid) return true;
-    return false;  
+    if(is_array($record))
+    {
+      return (strval($record['id'])==atkGetUser('id'));
+    }
+    return true;
   }
-  
+
 
   /**
    * Find available themes
@@ -121,25 +122,26 @@ class userprefs extends atkNode
   }
 
   /**
-   * Refresh screen when theme is changes
+   * Refresh screen when theme or language is changed
    *
    * @param array $record Record
    * @return boolean
    */
   function postUpdate($record)
   {
-    global $g_user, $g_sessionManager, $g_securityManager, $ATK_VARS;
+    global $ATK_VARS;
 
-    if($record["id"]==$g_user["id"])
+    if($record["id"]==atkGetUser('id'))
     {
+       atkMessageQueue::addMessage(atktext('profile_updated', 'employee'));
       // If the theme was updated, we must change it in the session (or you won't
       // see the update.
-      $g_sessionManager->globalVar("atkTheme", $record["theme"], true);
+      atkGetSessionManager()->globalVar("atkTheme", $record["theme"], true);
 
       // Also, if we edited userpreferences, then the current record
       // should be stored in the session as user record, so Achievo
       // will immediately start to use the new settings.
-      $g_securityManager->reloadUser();
+      atkGetSecurityManager()->reloadUser();
 
       // Also, we must refresh the screen if the theme or language is changed
       if (($record["theme"] != $record["atkorgrec"]["theme"]) || ($record["lng"] != $record["atkorgrec"]["lng"]))
