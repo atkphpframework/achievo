@@ -5,6 +5,12 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
 
+Changes in Achievo 1.4.1
+------------------------
+* Fixed problem with saving the user preferences. (Bug #1571) [Sandy]
+* Fixed problem in the hoursurvey. [Sandy]
+
+
 Changes in Achievo 1.4
 ----------------------
 * Fixed bug in approving hours of a period that is locked for all users.
