@@ -34,7 +34,7 @@
 
   /**
    * This class makes it possible to schedule a appointment.
-   * 
+   *
    * @author Sandy Pleyte <sandy@achievo.org>
    * @package achievo
    * @subpackage scheduler
@@ -137,7 +137,7 @@
       $this->add(new atkListAttribute("priority",array("","low","normal","high"),array(0,1,2,3),AF_LIST_NO_NULL_ITEM));
       $this->add(new atkBoolAttribute("private"));
       $this->add(new atkBoolAttribute("nonblocking"));
-      $this->add(new atkOneToManyRelation("alarms", "scheduler.scheduler_alarms", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "alarms"); // Disabled, not working yet
+      //$this->add(new atkOneToManyRelation("alarms", "scheduler.scheduler_alarms", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "alarms"); // Disabled, not working yet
       $this->add(new atkOneToManyRelation("notes", "scheduler.scheduler_notes", "scheduler_id", AF_HIDE_LIST|AF_HIDE_ADD|AF_CASCADE_DELETE), "notes");
       $this->add(new atkManyToOneRelation("owner", "employee.employee", AF_READONLY|AF_OBLIGATORY));
       $this->add(new atkBoolAttribute("owner_attendee"));
@@ -234,7 +234,7 @@
     }
 
     /**
-     * Override duration edit, place enddate and endtime hidden after 
+     * Override duration edit, place enddate and endtime hidden after
      * the duration dropdown.
      *
      * @param array $record Record
@@ -372,7 +372,7 @@
 
     /**
      * Check rights for an appointment
-     * 
+     *
      * owner = view private, edit, delete, view
      * attendee = view private, view
      * assistant = edit, delete, view
@@ -849,7 +849,7 @@
 
 
     /**
-     * Add owner as attendee and 
+     * Add owner as attendee and
      * recalculate the scheduler dates for the item
      *
      * @param array $rec Record
@@ -985,7 +985,7 @@
         }
       }
     }
-    
+
     /**
      * Delete all attendees
      *
