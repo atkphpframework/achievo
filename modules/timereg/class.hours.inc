@@ -845,6 +845,7 @@ class hours extends atkNode
     }
     if ($this->m_lockmode == "week")
     {
+      atkdebug('Locking: '.$this->m_lock);
       if ($this->m_lock=="individual" && $this->allowed("unlock"))
       {
         $tplvars['unlockurl']=session_url(dispatch_url($this->atknodetype(),"unlock",array("userid"=>$userid,"viewdate"=>$this->m_viewdate)),SESSION_NESTED);
@@ -1003,24 +1004,25 @@ class hours extends atkNode
     $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
                 AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
     list($result) = $db->getRows($sql);
+    $contract_hours = (float) $result['contract'];
 
     // get the total of time already registered this week
-    $query = "SELECT sum(time) as totaal
+    $query = "SELECT sum(time) as total
               FROM
                 hours
               WHERE
                 hours.userid = '$userid'
                 AND activitydate between '$start' and '$end'";
     list($res) = $db->getrows($query);
-
-    if ($res['contract']==0 || $result['totaal']==0)
+    $booked_hours = (float) $res['total'];
+    if ($contract_hours==0 || $booked_hours==0)
     {
       // either no contract in this period, or no hours booked at all..
       return false;
     }
     else
     {
-      return ($result["contract"] - $res["totaal"]<=0);
+      return ($contract_hours - $booked_hours<=0);
     }
   }
 
@@ -1063,9 +1065,9 @@ class hours extends atkNode
     $this->handleValidation($record,$mode);
     atkNode::validate($record, $mode);
   }
-  
+
   function handleValidation($record, $mode)
-  {    
+  {
     // when inserting multiple days at once, we don't break on invalid days
     // (we will just skip them later on).
     if ($record["activitydate"]["multi"]!=1)
