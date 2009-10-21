@@ -7,9 +7,14 @@ Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 
 Changes in Achievo 1.4.1
 ------------------------
-* Fixed problem with saving the user preferences. (Bug #1571) [Sandy]
-* Fixed problem in the hoursurvey. [Sandy]
-
+* Fixed bug with saving the user preferences. (Bug #1571) [Sandy]
+* Updated a value in the reports config that caused a crash
+  in the hoursurvey. [Sandy]
+* Fixed bug in sorting the hour survey report. (Bug #1581) [Sandy]
+* Fixed problem in scheduler with non existing field. [Sandy]
+* Fixed bug in calculating if a week is complete for showing 
+  the lock hours link in the time registration. (Bug #1591) [Sandy]
+* Updated PHP version number in the setup. [Sandy]
 
 Changes in Achievo 1.4
 ----------------------
@@ -26,7 +31,7 @@ Changes in Achievo 1.4
 
 
 Changes in Achievo 1.4RC1
-----------------------
+-------------------------
 + In user preferences->pim we can't select the pim items that we don't have 
   access to. To add checking access right to pim item, add the following method 
   to your module:
