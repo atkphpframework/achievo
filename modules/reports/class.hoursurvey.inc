@@ -142,7 +142,7 @@ class hoursurvey extends atkNode
   private $m_criteriaHandler;
   private $m_criteria;
   private $m_value;
-  
+
   function hoursurvey()
   {
     $this->atkNode("hoursurvey");
@@ -157,6 +157,7 @@ class hoursurvey extends atkNode
       if(!empty($property))
       {
         //We need to add the tablename before the attribute.
+        atkdebug("SET ORDER FOR: ".$itsOrderby);
         switch($itsOrderby)
         {
           //functionlevel has another table- AND fieldname
@@ -167,9 +168,26 @@ class hoursurvey extends atkNode
           case "employer_id":
             $itsOrderby = "employer_id.name";
             break;
-            //projectid has the table phaseid
+          //phaseid has the table hourbase
+          case "organizationid_AE_organizationid":
+            $itsOrderby = "projectid.customer";
+            break;
+          //phaseid has the table hourbase
+          case "userid_AE_userid":
+            $itsOrderby = $this->getTable().".userid";
+            break;
+          //phaseid has the table hourbase
+          case "activityid_AE_activityid":
+            $itsOrderby = $this->getTable().".activityid";
+            break;
+            //phaseid has the table hourbase
+          case "phaseid_AE_phaseid":
+            $itsOrderby = $this->getTable().".phaseid";
+            break;
+          //projectid has the table phaseid
           case "projectid":
-            $itsOrderby = "phaseid.".$itsOrderby;
+          case "projectid_AE_projectid":
+            $itsOrderby = "phaseid.projectid";
             break;
             //Other attributes have the table hours
           default:
@@ -198,22 +216,22 @@ class hoursurvey extends atkNode
     $page->register_style(moduleDir("reports")."style/printablereport.css", "print");
 
     $contentblocks = array();
-    
+
     $name = $this->setUpHandler();
 
     $externalHourSurveyColumns = atkHarvestModules("getHourSurveyColumns", "", true);
-    
+
     if (!empty($name))
     {
       $criteria = $this->m_criteriaHandler->loadCriteria($name);
     }
-    else 
+    else
     {
       $criteria = $this->m_value;
     }
-    
+
     $this->handleUser($criteria);
-    
+
     $orderby = $criteria['orderby'];
     $orderdirection = $criteria['orderdirection'];
     $subtotal = $criteria['subtotal'];
@@ -235,12 +253,12 @@ class hoursurvey extends atkNode
     $organizationid = $criteria['organizationid'];
     $department_name = $criteria['department_name'];
     $outputType = $criteria['outputType'];
-    
+
     if (moduleExists("billing"))
     {
       $billing_projecttypeid = $criteria['billing_projecttypeid'];
     }
-    
+
     if (moduleExists('advancedsecurity'))
     {
       $lowerlevels = $criteria["lowerlevels"];
@@ -278,7 +296,7 @@ class hoursurvey extends atkNode
     }
 
     $hoursnode = &atkGetNode($this->getHoursNodeName());
-    
+
     $hoursnode->m_postvars = $this->m_postvars; // Share postvars.
 
     $hoursnode->add(new functionLevelAttribute("functionlevel",AF_FORCE_LOAD));
@@ -415,7 +433,7 @@ class hoursurvey extends atkNode
       $content.=session_form();
 
       $content .= $this->getCriteriaHeader();
-      
+
       $this->_addHiddenFields($content);
 
       $current = unserialize(atkArrayNvl($this->m_postvars,'projects'));
@@ -753,7 +771,7 @@ class hoursurvey extends atkNode
       $data[] = array(atktext('aggregate','project').':',$boolattrib->edit($dummyrec));
 
       $data[] = array($this->getCriteriaFooter());
-      
+
       $buttons = array();
       $buttons[] = '<input type="submit" value="'.atktext("refresh").'">';
       $buttons[] = '<input type="button" name="printbutton" value="'.atkText("print").'" onClick=\'if (window.print) {var frame = parent.frames.main;if (frame) {frame.focus();frame.print();}}return false;\'>';
@@ -764,7 +782,7 @@ class hoursurvey extends atkNode
       $tbl->setColSpan($i,0,2);
 
       $content.=$tbl->render($data);
-      
+
       $content.='</form><br>';
       if (atkConfig::get("reports","report_hide_parameters", false))
         $contentblocks[] = '<div class="displaynone">'.$ui->renderBox(array("title"=>$title, "content"=>$content)).'</div>';
@@ -989,7 +1007,7 @@ class hoursurvey extends atkNode
         atkimport($mod_filename."filename");
         $filename = array("filename"=>filename::getFileName($startdate, $enddate,$organizationid,$projectid,$employer_id,$userid));
       }
-      else 
+      else
       {
         $filename = '';
       }
@@ -1260,51 +1278,51 @@ class hoursurvey extends atkNode
     list($record) = $node->selectDb($selector,"","","",$node->descriptorFields());
     return $node->descriptor($record);
   }
-  
+
   private function getCriteriaHeader()
   {
     $ui = &$this->getUi();
     return $ui->render('hoursurvey_header.tpl', array('saved_criteria'=>$this->m_criteria));
   }
-  
+
   private function getCriteriaFooter()
   {
     $ui = &$this->getUi();
     return $ui->render('hoursurvey_footer.tpl', array('saved_criteria'=>$this->m_criteria));
   }
-  
+
   private function setUpHandler()
   {
     /*@var $handler hourSurveyHandler*/
     $handler = &atknew('modules.reports.handlers.hoursurveyhandler');
-    
+
     $handler->m_postvars = &$this->m_postvars;
     $handler->m_node = &$this;
     $handler->m_action = $this->m_action;
     $handler->m_partial = $this->m_partial;
 
     $this->m_value = $handler->fetchCriteria();
-    
+
     /**
-     * If I save for all users, and the user or coordinator is set to myself, instead of saving 
+     * If I save for all users, and the user or coordinator is set to myself, instead of saving
      * me as the user, it would use the user that is logged in if someone else runs it.
      */
     if(!empty($this->m_postvars['save_criteria']) && $this->m_value['userid'] == atkGetUserId())
     {
-      $this->m_value['use_logged_user'] = true;  
+      $this->m_value['use_logged_user'] = true;
     }
-    
+
     $name = $handler->handleSavedCriteria($this->m_value);
-    
+
     $this->m_criteria = $handler->getSavedCriteria($name);
-    
+
     $this->m_criteriaHandler = &$handler;
-    
+
     return $name;
   }
 
   /**
-   * If I save for all users, and the user or coordinator is set to myself, instead of saving 
+   * If I save for all users, and the user or coordinator is set to myself, instead of saving
    * me as the user, it would use the user that is logged in if someone else runs it.
    *
    * @param array $record
