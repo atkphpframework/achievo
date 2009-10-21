@@ -701,10 +701,11 @@
   "yearly" => "Jaar",
   "youareinthearchive" => "Je bent in het archief.",
   "zipcode" => "Postcode",
-  "virtual_time_warning"=>"note that this setting does not affect hours already registered",
-  "show_active_phases" => "Show active phases",
-  "show_all_phases" => "Show all phases",
-  "show_nonactive_phases" => "Show nonactive phases",
+  "virtual_time_warning"=>"PS: deze instelling heeft geen effect op inmiddels geregistreerde uren",
+  "show_active_phases" => "Laat alleen actieve fases zien",
+  "show_all_phases" => "Laat alle fases zien",
+  "show_nonactive_phases" => "Laat de niet actieve fases zien",
+  "profile_updated"=> "Uw gebruikersintellingen zijn aangepast",
 );
 
 ?>
