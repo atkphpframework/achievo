@@ -5,7 +5,7 @@
   // Module: crm
   // Language: Slovak (sk)
   //
-  // Translated by:
+  // Translated by: www.butteland.com
   //   
   //
   // If you want to add a new language to achievo, please translate this
@@ -16,48 +16,48 @@
   // Translation Tool.
   //
   $sk = array(
-  "account" => "Account", // Missing string!!!
-  "actual cost" => "Actual costs", // Missing string!!!
-  "budget" => "Buget", // Missing string!!!
-  "campaign" => "Campaign", // Missing string!!!
-  "campaign_status" => "Campaign status", // Missing string!!!
-  "campaign_type" => "Campaign type", // Missing string!!!
-  "description" => "Description", // Missing string!!!
-  "end_date" => "Eind date", // Missing string!!!
-  "expected_costs" => "Expected_costs", // Missing string!!!
-  "expected_revenue" => "Expected revenue", // Missing string!!!
-  "former_name" => "Former name", // Missing string!!!
-  "industry" => "Industry", // Missing string!!!
-  "industry_name" => "Name", // Missing string!!!
-  "kind_of" => "Kinf of relation", // Missing string!!!
-  "last_viewed" => "Last viewed", // Missing string!!!
-  "lead" => "Lead", // Missing string!!!
-  "lead_description" => "Lead description", // Missing string!!!
-  "menu_campaign" => "Campaign", // Missing string!!!
-  "menu_campaigns" => "Campaigns", // Missing string!!!
-  "menu_campaign_status" => "Campaing status", // Missing string!!!
-  "menu_campaign_type" => "Campaign types", // Missing string!!!
-  "menu_lead" => "lead", // Missing string!!!
-  "menu_organization_status" => "Organization status", // Missing string!!!
-  "menu_rate" => "Rate", // Missing string!!!
-  "menu_relation_type" => "Relation types", // Missing string!!!
-  "menu_sales" => "Sales", // Missing string!!!
-  "objective" => "Objective", // Missing string!!!
-  "organization_relation" => "Organization relation", // Missing string!!!
-  "organization_status" => "Organization status", // Missing string!!!
-  "rate" => "Rate", // Missing string!!!
-  "rate_name" => "Name", // Missing string!!!
-  "relation_type" => "Relation type", // Missing string!!!
-  "relation_with" => "Relation with", // Missing string!!!
-  "source" => "Source", // Missing string!!!
-  "source_name" => "Name", // Missing string!!!
-  "start_date" => "Start date", // Missing string!!!
-  "status" => "Status", // Missing string!!!
-  "status_description" => "Status description", // Missing string!!!
-  "status_name" => "Name", // Missing string!!!
-  "title" => "Title", // Missing string!!!
-  "type" => "Type", // Missing string!!!
-  "type_name" => "Name", // Missing string!!!
+  "account" => "Účet", 
+  "actual cost" => "Aktuálne výdavky", 
+  "budget" => "Rozpočet", 
+  "campaign" => "Kampaň", 
+  "campaign_status" => "Status kampane", 
+  "campaign_type" => "Typ kampane", 
+  "description" => "Popis", 
+  "end_date" => "Končený dátum", 
+  "expected_costs" => "Očakávané výdaje", 
+  "expected_revenue" => "Očakávané príjmy", 
+  "former_name" => "Pôvodný názov", 
+  "industry" => "Odvetvie", 
+  "industry_name" => "Názov", 
+  "kind_of" => "Druh vzťahu", 
+  "last_viewed" => "Naposledy zobrazené", 
+  "lead" => "Podnet", 
+  "lead_description" => "Popis podnetu", 
+  "menu_campaign" => "Kampaň",
+  "menu_campaigns" => "Kampane", 
+  "menu_campaign_status" => "Status kampane", 
+  "menu_campaign_type" => "Typy kampaní", 
+  "menu_lead" => "Podnet (lead)", 
+  "menu_organization_status" => "Status organizácie",
+  "menu_rate" => "Rating", 
+  "menu_relation_type" => "Typy vzťahov", 
+  "menu_sales" => "Obchody", // Missing string!!!
+  "objective" => "Úloha", // Missing string!!!
+  "organization_relation" => "Vzťahy organizácií",
+  "organization_status" => "Status organizácií", 
+  "rate" => "Rating", 
+  "rate_name" => "Názov", 
+  "relation_type" => "Typ vzťahu", 
+  "relation_with" => "Vo vzťahu s",
+  "source" => "Zdroj",
+  "source_name" => "Názov",
+  "start_date" => "Začiatočný dátum", 
+  "status" => "Status", 
+  "status_description" => "Popis statusu", 
+  "status_name" => "Názov", 
+  "title" => "Nadpis", 
+  "type" => "Typ", 
+  "type_name" => "Názov", 
 );
 
 ?>
