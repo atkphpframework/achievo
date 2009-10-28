@@ -15,6 +15,8 @@ Changes in Achievo 1.4.1
 * Fixed bug in calculating if a week is complete for showing 
   the lock hours link in the time registration. (Bug #1591) [Sandy]
 * Updated PHP version number in the setup. [Sandy]
+* Fixed bug in saving the weekdays of a user contracts (Bug #1601) [Sandy]
+* Updated Dutch and Slovak translation. [Sandy]
 
 Changes in Achievo 1.4
 ----------------------
