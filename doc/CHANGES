@@ -4,6 +4,12 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.4.2
+------------------------
++ Added config for turning on the display of the employe
+  age in the scheduler birthday view. Default they are turned 
+  off. [Sandy]
+* Fixed German translation. [Sandy]
 
 Changes in Achievo 1.4.1
 ------------------------

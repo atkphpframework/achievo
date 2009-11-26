@@ -55,7 +55,14 @@ class scheduler_birthdayview extends scheduler_view
           foreach($users as $info)
           {
             $age=0;
-            $tmp.=sprintf("%02d-%02d: %s (%d)",$day,$month,$info["name"],$this->calculateAge($info["birthday"]))."<br>";
+            if(atkconfig::get('scheduler','birthday_show_age',false))
+            {
+              $tmp.=sprintf("%02d-%02d: %s (%d)",$day,$month,$info["name"],$this->calculateAge($info["birthday"]))."<br>";
+            }
+            else
+            {
+              $tmp.=sprintf("%02d-%02d: %s",$day,$month,$info["name"])."<br>";
+            }
           }
         }
         $tmp.="<br>";
@@ -65,17 +72,17 @@ class scheduler_birthdayview extends scheduler_view
 
     return $tmp;
   }
-  
+
   function calculateAge($birthdate)
   {
      if(!isset($birthdate["year"]) && $birthdate["year"]=="") return "-";
      $current_year = date("Y");
      if($birthdate["month"]<date("m")) // || ($birthdate["month"]==date("m") &&$birthdate["day"]<date("d")))
        $current_year+=1;
-     
+
      return ($current_year-$birthdate["year"]);
   }
-  
+
   /**
    * Birthday view doesn't need a selector
    */
@@ -83,8 +90,8 @@ class scheduler_birthdayview extends scheduler_view
   {
     return '';
   }
-  
-  
+
+
  /**
   * Render the view
   * @return string A renderd view
