@@ -20,7 +20,7 @@ Requirements
 - A webserver capable of running php5 scripts
   (Apache is a good choice, http://www.apache.org)
 - PHP5 (http://www.php.net, version 5.2.0 or newer)
-- MySQL4.1+ (http://www.mysql.org)
+- MySQL5+ (http://www.mysql.org)
 
 The following are requirements for optional features of Achievo:
 
@@ -70,7 +70,8 @@ have a working webserver with PHP support and a MySQL database installed.
    $ mysql --user=root --password=secret mysql
 
    mysql> create database achievo_1_4;
-   mysql> grant create,alter,select,insert,update,delete,lock tables,create view
+   mysql> grant create,alter,select,insert,update,delete,lock tables,
+          create view, drop, index 
           on achievo_1_4.* to achievo@localhost identified by 'secret';
    mysql> quit;
 
