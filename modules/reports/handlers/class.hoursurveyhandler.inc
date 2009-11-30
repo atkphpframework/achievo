@@ -145,7 +145,7 @@ class hourSurveyHandler extends atkAbstractSearchHandler
 
       if (moduleExists("billing"))
       {
-        $billing_projecttypepair = $g_sessionManager->pageVar("billing_projecttypeid");
+        $billing_projecttypepair = $sessionManager->pageVar("billing_projecttypeid");
         $billing_projecttypeid = (!empty($billing_projecttypepair)) ? atkArrayNvl(decodeKeyValuePair($billing_projecttypepair), "billing_projecttype.id", "") : "";
         $record['billing_projecttypeid'] = $billing_projecttypeid;
       }
