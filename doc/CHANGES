@@ -10,6 +10,9 @@ Changes in Achievo 1.4.2
   age in the scheduler birthday view. Default they are turned 
   off. [Sandy]
 * Fixed German translation. [Sandy]
+* Fixed Problem with sessionmanager and billing module. 
+  (Bug #1647) [Sandy,Lars]
+* Updated ATK to version 6.4.3
 
 Changes in Achievo 1.4.1
 ------------------------
