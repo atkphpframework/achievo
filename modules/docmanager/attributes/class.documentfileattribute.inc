@@ -69,6 +69,7 @@
       $this->m_originalurl = $this->m_url;
       $this->m_localpath = $localpath;
       $this->m_allowpathcustomization = $allowpathcustomization;
+      $this->setAllowedFileTypes(atkconfig::get('docmanager','docmanager_allowedfiletypes'));
     }
 
     /**
