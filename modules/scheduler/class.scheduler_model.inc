@@ -277,7 +277,7 @@ class scheduler_model
     {
       $legend.='<p style="margin: 0px;">
                  <span style="border: medium none ; background-color: '.$nrows[$i]["bgcolor"].'; color: '.$nrows[$i]["bgcolor"].';">&nbsp;&nbsp;&nbsp;</span>
-                   '.$nrows[$i]["description"].'
+                   '.htmlspecialchars($nrows[$i]["description"]).'
                 </p>';
     }
     $legend.='</div><br></div>';
@@ -847,7 +847,7 @@ class scheduler_model
           array_unshift($records, array(
               'id'        => 'g_'.$groups[$i]["id"],
               'firstname' => '',
-              'lastname'  => '<strong>'.$groups[$i]["name"].'</strong>',
+              'lastname'  => '<strong>'.htmlspecialchars($groups[$i]["name"]).'</strong>',
             ));
         }
       }
