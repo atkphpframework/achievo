@@ -4,6 +4,10 @@
 Bug numbers are references to bugs in http://www.achievo.org/bugzilla
 [names] are references to people in the AUTHORS file.
 
+Changes in Achievo 1.4.4
+------------------------
+* Fixed creating users when using MySQL Strict mode [Sandy]
+
 Changes in Achievo 1.4.3
 ------------------------
 * Fixed XSS in scheduler legenda [Sandy]
