@@ -221,8 +221,8 @@
         $projectcode = $parser->parse($record);
         if (atkConfig::get("project", "projectcode_autonumber", false))
         {
-          $result = $this->getDb()->getrows("SELECT abbreviation FROM project WHERE abbreviation LIKE '$prefix%' ORDER BY abbreviation DESC LIMIT 1");
-          $number = count($result) ? ((int)atk_substr($result[0]["abbreviation"], strlen($prefix)))+1 : 1;
+          $result = $this->getDb()->getrows("SELECT abbreviation FROM project WHERE abbreviation LIKE '$template%' ORDER BY abbreviation DESC LIMIT 1");
+          $number = count($result) ? ((int)atk_substr($result[0]["abbreviation"], atk_strlen($template), atk_strlen($result[0]["abbreviation"])-atk_strlen($template)))+1 : 1;
           $digits = atkConfig::get("project", "projectcode_autonumberdigits", 1);
           $projectcode .= sprintf("%0".$digits."d", $number);
         }
@@ -552,7 +552,7 @@
                                  hours, phase
                                WHERE
                                  hours.phaseid = phase.id
-                                 AND phase.projectid = ".$params["projectid"].
+                                 AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
                                 ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
                                 ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));
       $maxdate = array();

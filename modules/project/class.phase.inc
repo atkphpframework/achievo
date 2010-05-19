@@ -84,7 +84,7 @@
       if($rec['virtual_time']<>$rec['atkorgrec']['virtual_time'])
       {
         atkimport("atk.utils.atkmessagequeue");
-        atkMessageQueue::addMessage(atktext("virtual_time_warning"));        
+        atkMessageQueue::addMessage(atktext("virtual_time_warning"));
       }
       return true;
     }
@@ -140,8 +140,6 @@
         $sunday_val = "0";
         $saturday_val = "6";
         $workday_counter = 0;
-
-        $ptr_year = intval(date("Y", $start_date));
 
         for($day_val = $startdate; $day_val <= $enddate; $day_val+=$seconds_in_a_day)
         {
