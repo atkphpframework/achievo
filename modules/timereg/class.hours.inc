@@ -665,6 +665,32 @@ class hours extends atkNode
     }
     return $res;
   }
+  
+    /**
+     * Check rights for an hours record
+     *
+     * @param string $action The action we want to allow
+     * @param array $record The record for the action
+     * @return boolean Are we allowed to execute the action
+     */
+    function allowed($action,$record="")
+    {
+        atk_var_dump($record, "Allowed: ".$action);
+        if(is_array($record))
+        {
+            if($record['userid']['id'] == atkGetUserId() || 
+                  parent::allowed('any_user')) {
+              atkdebug('ALLOWED');
+              return true;
+          }
+          else {
+              atkdebug('NOT ALLOWED');
+              return false;
+          }
+        }
+        atkdebug('ALLOWED: '.print_r(parent::allowed($action,$record),true));
+        return parent::allowed($action,$record);
+    }
 
   /**
     * Function returns an array with filter-options that are used
@@ -910,6 +936,11 @@ class hours extends atkNode
     return true;
   }
 
+  /**
+   * Calculate new balance
+   * @param array $rec
+   * @param string $mode
+   */
   function calculateNewBalance($rec, $mode)
   {
     /*@var $balancenode overtime_balance*/
