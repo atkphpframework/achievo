@@ -1,0 +1,53 @@
+<?php 
+// Achievo language file for Ukrainian.
+//
+// Module: crm
+// Language: Ukrainian (uk)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$uk = array (
+"account" => "Рахунок",
+"actual cost" => "Фактичні витрати",
+"budget" => "Бюджет",
+"campaign" => "Кампанія",
+"campaign_status" => "Статус кампанії",
+"campaign_type" => "Тип кампанії",
+"description" => "Опис",
+"end_date" => "Дата завершення",
+"expected_costs" => "Очікувані расходи",
+"expected_revenue" => "Очікуваний доход",
+"former_name" => "Колишня назва",
+"industry" => "Галузь",
+"industry_name" => "Назва",
+"kind_of" => "Тип відношення",
+"last_viewed" => "Востаннє переглянуто",
+"lead" => "Пропозиція",
+"lead_description" => "Опис пропозиції",
+"menu_campaign" => "Кампанія",
+"menu_campaigns" => "Кампанії",
+"menu_campaign_status" => "Статус кампанії",
+"menu_campaign_type" => "Типи кампанії",
+"menu_lead" => "пропозиція",
+"menu_organization_status" => "Статус організації",
+"menu_rate" => "Ставка",
+"menu_relation_type" => "Типи відношень",
+"menu_sales" => "Продажі",
+"objective" => "Цільовий",
+"organization_relation" => "Відношення організації",
+"organization_status" => "Статус організації",
+"rate" => "Ставка",
+"rate_name" => "Назва",
+"relation_type" => "Тип відношення",
+"relation_with" => "Відношення з",
+"source" => "Джерело",
+"source_name" => "Назва",
+"start_date" => "Дата початку",
+"status" => "Статус",
+"status_description" => "Опис статусу",
+"status_name" => "Назва",
+"title" => "Заголовок",
+"type" => "Тип",
+"type_name" => "Назва");
+?>

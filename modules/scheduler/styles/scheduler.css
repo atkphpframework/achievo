@@ -1,0 +1,94 @@
+a.calendarItem:link
+
+{
+
+  font-weight: bold;
+
+}
+
+
+
+a.calendarItem:visited
+
+{
+
+  font-weight: bold;
+
+}
+
+
+
+a.calendarItemToday:link
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  font-weight: bold;
+
+}
+
+
+
+a.calendarItemToday:visited
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+  font-weight: bold;
+
+}
+
+
+
+
+
+.calendarToday
+
+{
+
+  border:1px solid;
+
+  border-color: #ff0000;
+
+}
+
+
+.calendarNormal
+{
+}
+
+.employees_checklist
+{
+	list-style: none;
+	max-height: 40em;
+	overflow: auto;
+	text-align: left;
+}
+
+.employees_checklist, .employees_checklist li
+{
+  margin-left: 0;
+  padding: 0;
+}
+
+.employees_checklist label
+{
+  display: block;
+}
+
+.employees_checklistheader
+{
+  background: #dddddd;
+  text-align: center;
+}
+
+.employees_checklist label:hover, .employees_checklist label.hover
+{
+  background: #ededed;
+}

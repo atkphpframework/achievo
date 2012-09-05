@@ -1,0 +1,137 @@
+Achievo crontab scripts
+=======================
+
+Achievo contains some scripts that you can run from cron to perform
+certain actions or checks.
+
+To be able to use these scripts, you need to have the php cgi-binary on your
+system.
+
+
+General instructions
+--------------------
+If you want to use one of the scripts, edit your crontab (crontab -e on
+most Unix systems), and add a line in the form of:
+
+0 9 * * tue   cd /var/www/achievo; /usr/bin/php runcron todo.reminder > /dev/null
+
+This will run the reminder.cron script from the todo module every Tuesday
+morning at 9 o'clock.
+
+(assuming your php binary is in /usr/bin and Achievo is installed in
+/var/www/, if this is not the case, change the values accordingly.)
+
+
+Available scripts
+-----------------
+Currently, the following scripts can be used from cron:
+
+* timereg.reminder
+
+   This script checks if all users have registered enough hours in the
+   previous week.
+   It compares the number of hours in the contract of that user with the
+   number of hours actually booked. If the number of booked hours is not
+   enough, an email reminder is sent to that user.
+
+   Note: This script always counts the hours in the previous week from
+   Monday to Sunday, regardless of the day on which you run the script. This
+   means you can run the script multiple times a week, so people will be
+   reminded more than once if they keep forgetting to register their hours.
+
+   Suggested run frequency: once or twice a week.
+   Suggested run time: Monday morning (and the second one on Wednesday
+                       morning)
+
+* timereg.reminder_hoursnotblocked
+
+   This script sends an email reminder if someone did not block his week
+   in the previous week. Both the person and the coordinator of his active
+   projects will receive an email when a previous week wasn't blocked.
+
+   Suggested run frequency: weekly
+   Suggested run time: Monday morning
+
+* todo.reminder
+
+   This script sends reminders to people if they have one or more todo's
+   open, that are due today, or that are overdue. A cc is sent to the owner
+   of the todo.
+   If a user has more than one todo assigned, the todos are grouped in a
+   single mail per owner, to prevent users from being spammed with lots
+   of todo reminders.
+
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+
+* employee.usercontracts
+
+   This script checks if there are any usercontracts are about to expire
+   in a specified amount of time. If such users are found an email is sent
+   to one (or more) specified mailaddresses. More information in configuration
+   file achievo/configs/employee.inc.php
+
+   Suggested run frequency: In mode 1: daily
+                            In mode 2: weekly
+   Suggested run time: In mode 1: daily at 12:00
+                       In mode 2: Monday morning
+
+* project.deliverables:
+
+   The deliverables script checks for deliverables that have neared or
+   reached the due date. If such a deliverable is found, an e-mail is sent
+   to the project coordinator of the project to which the deliverable
+   belongs.
+
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+
+* organization.contracts:
+
+   This script does two things
+   
+   First:
+   The script checks if there are any active contracts that have expired. 
+   If one or more of those contracts is found the status is changed to
+   the 'archived' status. Then the script checks if there are any active
+   projects linked to this contract and sets this status to 'nonactive'.
+   The script can be configured to check for an extra field for a specific 
+   value in the contract table selecting expired contracts.
+   
+   Second:
+   The script checks if there are any contracts that are not active (i.e.
+   archived or nonactive), then the scripts checks if there are any
+   active projects linked to this contract. If any, their status is also 
+   set to 'nonactive'.
+   
+   The new status for the contract and project is configurable.
+   It is possible to send a warning mail to a specified user when the cronjob 
+   performs such an action (configurable).   
+   The configuration file can be found at achievo/configs/organization.inc.php.
+   
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+
+* quotation.reminder
+
+   This script will inform the owner of quotations about quotations that are
+   about to expire.
+   
+   Suggested run frequency: daily
+   Suggested run time: in the morning, just before office opening time.
+
+Add-on modules
+--------------
+
+Add-on modules may have their own useful cron scripts. These are usually
+located in the cron subdirectory of the module. They can be run using
+runcron, like above.
+
+Example: suppose you have a module 'mymodule' with a file 'dailycheck.cron'
+in its cron/ subdirectory. You can run this script by adding this to your
+crontab:
+
+0 9 * * *   cd /var/www/achievo; /usr/bin/php runcron mymodule.dailycheck
+
+Note that the '.cron' extension of the filename does not need to be passed
+to the runcron script.
