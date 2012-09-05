@@ -1,0 +1,26 @@
+<?php 
+// Achievo language file for Russian.
+//
+// Module: docmanager
+// Language: Russian (ru)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$ru = array (
+"accepted" => "Принято",
+"concept" => "Концепция",
+"confidential" => "Конфиденциально",
+"document" => "Документ",
+"documenttype" => "Тип документа",
+"documenttypes" => "Типы документов",
+"filename_already_in_use" => "Имя файла уже используется.",
+"generate" => "Создать",
+"give_new_filename" => "Введите имя файла",
+"internal" => "Внутренний",
+"master" => "Главный",
+"menu_document_types" => "Типы документов",
+"permission_generate" => "Создать",
+"tab_documents" => "Документы",
+"template" => "Шаблон");
+?>

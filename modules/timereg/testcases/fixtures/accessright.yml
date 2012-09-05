@@ -1,0 +1,1288 @@
+accessright_1: 
+  node: crm.campaign
+  action: add
+  role_id: 1
+accessright_2: 
+  node: crm.campaign
+  action: add
+  role_id: 2
+accessright_3: 
+  node: crm.campaign
+  action: admin
+  role_id: 1
+accessright_4: 
+  node: crm.campaign
+  action: admin
+  role_id: 2
+accessright_5: 
+  node: crm.campaign
+  action: delete
+  role_id: 1
+accessright_6: 
+  node: crm.campaign
+  action: delete
+  role_id: 2
+accessright_7: 
+  node: crm.campaign
+  action: edit
+  role_id: 1
+accessright_8: 
+  node: crm.campaign
+  action: edit
+  role_id: 2
+accessright_9: 
+  node: crm.campaign_status
+  action: add
+  role_id: 1
+accessright_10: 
+  node: crm.campaign_status
+  action: add
+  role_id: 2
+accessright_11: 
+  node: crm.campaign_status
+  action: admin
+  role_id: 1
+accessright_12: 
+  node: crm.campaign_status
+  action: admin
+  role_id: 2
+accessright_13: 
+  node: crm.campaign_status
+  action: delete
+  role_id: 1
+accessright_14: 
+  node: crm.campaign_status
+  action: delete
+  role_id: 2
+accessright_15: 
+  node: crm.campaign_status
+  action: edit
+  role_id: 1
+accessright_16: 
+  node: crm.campaign_status
+  action: edit
+  role_id: 2
+accessright_17: 
+  node: crm.campaign_type
+  action: add
+  role_id: 1
+accessright_18: 
+  node: crm.campaign_type
+  action: add
+  role_id: 2
+accessright_19: 
+  node: crm.campaign_type
+  action: admin
+  role_id: 1
+accessright_20: 
+  node: crm.campaign_type
+  action: admin
+  role_id: 2
+accessright_21: 
+  node: crm.campaign_type
+  action: delete
+  role_id: 1
+accessright_22: 
+  node: crm.campaign_type
+  action: delete
+  role_id: 2
+accessright_23: 
+  node: crm.campaign_type
+  action: edit
+  role_id: 1
+accessright_24: 
+  node: crm.campaign_type
+  action: edit
+  role_id: 2
+accessright_25: 
+  node: crm.lead
+  action: add
+  role_id: 1
+accessright_26: 
+  node: crm.lead
+  action: add
+  role_id: 2
+accessright_27: 
+  node: crm.lead
+  action: admin
+  role_id: 1
+accessright_28: 
+  node: crm.lead
+  action: admin
+  role_id: 2
+accessright_29: 
+  node: crm.lead
+  action: convert
+  role_id: 1
+accessright_30: 
+  node: crm.lead
+  action: convert
+  role_id: 2
+accessright_31: 
+  node: crm.lead
+  action: delete
+  role_id: 1
+accessright_32: 
+  node: crm.lead
+  action: delete
+  role_id: 2
+accessright_33: 
+  node: crm.lead
+  action: edit
+  role_id: 1
+accessright_34: 
+  node: crm.lead
+  action: edit
+  role_id: 2
+accessright_35: 
+  node: docmanager.document
+  action: add
+  role_id: 1
+accessright_36: 
+  node: docmanager.document
+  action: add
+  role_id: 2
+accessright_37: 
+  node: docmanager.document
+  action: delete
+  role_id: 1
+accessright_38: 
+  node: docmanager.document
+  action: delete
+  role_id: 2
+accessright_39: 
+  node: docmanager.document
+  action: edit
+  role_id: 1
+accessright_40: 
+  node: docmanager.document
+  action: edit
+  role_id: 2
+accessright_41: 
+  node: docmanager.document
+  action: generate
+  role_id: 1
+accessright_42: 
+  node: docmanager.document
+  action: generate
+  role_id: 2
+accessright_43: 
+  node: docmanager.documenttype
+  action: add
+  role_id: 1
+accessright_44: 
+  node: docmanager.documenttype
+  action: add
+  role_id: 2
+accessright_45: 
+  node: docmanager.documenttype
+  action: admin
+  role_id: 1
+accessright_46: 
+  node: docmanager.documenttype
+  action: admin
+  role_id: 2
+accessright_47: 
+  node: docmanager.documenttype
+  action: delete
+  role_id: 1
+accessright_48: 
+  node: docmanager.documenttype
+  action: delete
+  role_id: 2
+accessright_49: 
+  node: docmanager.documenttype
+  action: edit
+  role_id: 1
+accessright_50: 
+  node: docmanager.documenttype
+  action: edit
+  role_id: 2
+accessright_51: 
+  node: employee.department
+  action: add
+  role_id: 1
+accessright_52: 
+  node: employee.department
+  action: add
+  role_id: 2
+accessright_53: 
+  node: employee.department
+  action: admin
+  role_id: 1
+accessright_54: 
+  node: employee.department
+  action: admin
+  role_id: 2
+accessright_55: 
+  node: employee.department
+  action: delete
+  role_id: 1
+accessright_56: 
+  node: employee.department
+  action: delete
+  role_id: 2
+accessright_57: 
+  node: employee.department
+  action: edit
+  role_id: 1
+accessright_58: 
+  node: employee.department
+  action: edit
+  role_id: 2
+accessright_59: 
+  node: employee.employee
+  action: add
+  role_id: 1
+accessright_60: 
+  node: employee.employee
+  action: add
+  role_id: 2
+accessright_61: 
+  node: employee.employee
+  action: admin
+  role_id: 1
+accessright_62: 
+  node: employee.employee
+  action: admin
+  role_id: 2
+accessright_63: 
+  node: employee.employee
+  action: delete
+  role_id: 1
+accessright_64: 
+  node: employee.employee
+  action: delete
+  role_id: 2
+accessright_65: 
+  node: employee.employee
+  action: edit
+  role_id: 1
+accessright_66: 
+  node: employee.employee
+  action: edit
+  role_id: 2
+accessright_67: 
+  node: employee.employee
+  action: stats
+  role_id: 1
+accessright_68: 
+  node: employee.employee
+  action: stats
+  role_id: 2
+accessright_69: 
+  node: employee.employee
+  action: view_all
+  role_id: 1
+accessright_70: 
+  node: employee.employee
+  action: view_all
+  role_id: 2
+accessright_71: 
+  node: employee.functionlevel
+  action: add
+  role_id: 1
+accessright_72: 
+  node: employee.functionlevel
+  action: add
+  role_id: 2
+accessright_73: 
+  node: employee.functionlevel
+  action: admin
+  role_id: 1
+accessright_74: 
+  node: employee.functionlevel
+  action: admin
+  role_id: 2
+accessright_75: 
+  node: employee.functionlevel
+  action: delete
+  role_id: 1
+accessright_76: 
+  node: employee.functionlevel
+  action: delete
+  role_id: 2
+accessright_77: 
+  node: employee.functionlevel
+  action: edit
+  role_id: 1
+accessright_78: 
+  node: employee.functionlevel
+  action: edit
+  role_id: 2
+accessright_79: 
+  node: employee.profile
+  action: add
+  role_id: 1
+accessright_80: 
+  node: employee.profile
+  action: add
+  role_id: 2
+accessright_81: 
+  node: employee.profile
+  action: admin
+  role_id: 1
+accessright_82: 
+  node: employee.profile
+  action: admin
+  role_id: 2
+accessright_83: 
+  node: employee.profile
+  action: delete
+  role_id: 1
+accessright_84: 
+  node: employee.profile
+  action: delete
+  role_id: 2
+accessright_85: 
+  node: employee.profile
+  action: edit
+  role_id: 1
+accessright_86: 
+  node: employee.profile
+  action: edit
+  role_id: 2
+accessright_87: 
+  node: employee.profile
+  action: grantall
+  role_id: 1
+accessright_88: 
+  node: employee.profile
+  action: grantall
+  role_id: 2
+accessright_89: 
+  node: employee.usercontracts
+  action: add
+  role_id: 1
+accessright_90: 
+  node: employee.usercontracts
+  action: add
+  role_id: 2
+accessright_91: 
+  node: employee.usercontracts
+  action: admin
+  role_id: 1
+accessright_92: 
+  node: employee.usercontracts
+  action: admin
+  role_id: 2
+accessright_93: 
+  node: employee.usercontracts
+  action: delete
+  role_id: 1
+accessright_94: 
+  node: employee.usercontracts
+  action: delete
+  role_id: 2
+accessright_95: 
+  node: employee.usercontracts
+  action: edit
+  role_id: 1
+accessright_96: 
+  node: employee.usercontracts
+  action: edit
+  role_id: 2
+accessright_97: 
+  node: employee.userprefs
+  action: edit
+  role_id: 1
+accessright_98: 
+  node: employee.userprefs
+  action: edit
+  role_id: 2
+accessright_99: 
+  node: notes.project_notes
+  action: add
+  role_id: 1
+accessright_100: 
+  node: notes.project_notes
+  action: add
+  role_id: 2
+accessright_101: 
+  node: notes.project_notes
+  action: admin
+  role_id: 1
+accessright_102: 
+  node: notes.project_notes
+  action: admin
+  role_id: 2
+accessright_103: 
+  node: notes.project_notes
+  action: delete
+  role_id: 1
+accessright_104: 
+  node: notes.project_notes
+  action: delete
+  role_id: 2
+accessright_105: 
+  node: notes.project_notes
+  action: edit
+  role_id: 1
+accessright_106: 
+  node: notes.project_notes
+  action: edit
+  role_id: 2
+accessright_107: 
+  node: organization.contact
+  action: add
+  role_id: 1
+accessright_108: 
+  node: organization.contact
+  action: add
+  role_id: 2
+accessright_109: 
+  node: organization.contact
+  action: admin
+  role_id: 1
+accessright_110: 
+  node: organization.contact
+  action: admin
+  role_id: 2
+accessright_111: 
+  node: organization.contact
+  action: delete
+  role_id: 1
+accessright_112: 
+  node: organization.contact
+  action: delete
+  role_id: 2
+accessright_113: 
+  node: organization.contact
+  action: edit
+  role_id: 1
+accessright_114: 
+  node: organization.contact
+  action: edit
+  role_id: 2
+accessright_115: 
+  node: organization.contracts
+  action: add
+  role_id: 1
+accessright_116: 
+  node: organization.contracts
+  action: add
+  role_id: 2
+accessright_117: 
+  node: organization.contracts
+  action: admin
+  role_id: 1
+accessright_118: 
+  node: organization.contracts
+  action: admin
+  role_id: 2
+accessright_119: 
+  node: organization.contracts
+  action: delete
+  role_id: 1
+accessright_120: 
+  node: organization.contracts
+  action: delete
+  role_id: 2
+accessright_121: 
+  node: organization.contracts
+  action: edit
+  role_id: 1
+accessright_122: 
+  node: organization.contracts
+  action: edit
+  role_id: 2
+accessright_123: 
+  node: organization.contracttype
+  action: add
+  role_id: 1
+accessright_124: 
+  node: organization.contracttype
+  action: add
+  role_id: 2
+accessright_125: 
+  node: organization.contracttype
+  action: admin
+  role_id: 1
+accessright_126: 
+  node: organization.contracttype
+  action: admin
+  role_id: 2
+accessright_127: 
+  node: organization.contracttype
+  action: delete
+  role_id: 1
+accessright_128: 
+  node: organization.contracttype
+  action: delete
+  role_id: 2
+accessright_129: 
+  node: organization.contracttype
+  action: edit
+  role_id: 1
+accessright_130: 
+  node: organization.contracttype
+  action: edit
+  role_id: 2
+accessright_131: 
+  node: organization.organization
+  action: add
+  role_id: 1
+accessright_132: 
+  node: organization.organization
+  action: add
+  role_id: 2
+accessright_133: 
+  node: organization.organization
+  action: admin
+  role_id: 1
+accessright_134: 
+  node: organization.organization
+  action: admin
+  role_id: 2
+accessright_135: 
+  node: organization.organization
+  action: delete
+  role_id: 1
+accessright_136: 
+  node: organization.organization
+  action: delete
+  role_id: 2
+accessright_137: 
+  node: organization.organization
+  action: document
+  role_id: 1
+accessright_138: 
+  node: organization.organization
+  action: document
+  role_id: 2
+accessright_139: 
+  node: organization.organization
+  action: edit
+  role_id: 1
+accessright_140: 
+  node: organization.organization
+  action: edit
+  role_id: 2
+accessright_141: 
+  node: project.activity
+  action: add
+  role_id: 1
+accessright_142: 
+  node: project.activity
+  action: add
+  role_id: 2
+accessright_143: 
+  node: project.activity
+  action: admin
+  role_id: 1
+accessright_144: 
+  node: project.activity
+  action: admin
+  role_id: 2
+accessright_145: 
+  node: project.activity
+  action: delete
+  role_id: 1
+accessright_146: 
+  node: project.activity
+  action: delete
+  role_id: 2
+accessright_147: 
+  node: project.activity
+  action: edit
+  role_id: 1
+accessright_148: 
+  node: project.activity
+  action: edit
+  role_id: 2
+accessright_149: 
+  node: project.activity
+  action: stats
+  role_id: 1
+accessright_150: 
+  node: project.activity
+  action: stats
+  role_id: 2
+accessright_151: 
+  node: project.deliverable
+  action: add
+  role_id: 1
+accessright_152: 
+  node: project.deliverable
+  action: add
+  role_id: 2
+accessright_153: 
+  node: project.deliverable
+  action: delete
+  role_id: 1
+accessright_154: 
+  node: project.deliverable
+  action: delete
+  role_id: 2
+accessright_155: 
+  node: project.deliverable
+  action: edit
+  role_id: 1
+accessright_156: 
+  node: project.deliverable
+  action: edit
+  role_id: 2
+accessright_157: 
+  node: project.mastergantt_colorconfig
+  action: admin
+  role_id: 1
+accessright_158: 
+  node: project.mastergantt_colorconfig
+  action: admin
+  role_id: 2
+accessright_159: 
+  node: project.mastergantt_colorconfig
+  action: edit
+  role_id: 1
+accessright_160: 
+  node: project.mastergantt_colorconfig
+  action: edit
+  role_id: 2
+accessright_161: 
+  node: project.phase
+  action: add
+  role_id: 1
+accessright_162: 
+  node: project.phase
+  action: add
+  role_id: 2
+accessright_163: 
+  node: project.phase
+  action: delete
+  role_id: 1
+accessright_164: 
+  node: project.phase
+  action: delete
+  role_id: 2
+accessright_165: 
+  node: project.phase
+  action: edit
+  role_id: 1
+accessright_166: 
+  node: project.phase
+  action: edit
+  role_id: 2
+accessright_167: 
+  node: project.project
+  action: add
+  role_id: 1
+accessright_168: 
+  node: project.project
+  action: add
+  role_id: 2
+accessright_169: 
+  node: project.project
+  action: admin
+  role_id: 1
+accessright_170: 
+  node: project.project
+  action: admin
+  role_id: 2
+accessright_171: 
+  node: project.project
+  action: any_project
+  role_id: 1
+accessright_172: 
+  node: project.project
+  action: changeabbreviation
+  role_id: 1
+accessright_173: 
+  node: project.project
+  action: changeabbreviation
+  role_id: 2
+accessright_174: 
+  node: project.project
+  action: delete
+  role_id: 1
+accessright_175: 
+  node: project.project
+  action: delete
+  role_id: 2
+accessright_176: 
+  node: project.project
+  action: edit
+  role_id: 1
+accessright_177: 
+  node: project.project
+  action: edit
+  role_id: 2
+accessright_178: 
+  node: project.project
+  action: initialplanning
+  role_id: 1
+accessright_179: 
+  node: project.project
+  action: initialplanning
+  role_id: 2
+accessright_180: 
+  node: project.project
+  action: planning
+  role_id: 1
+accessright_181: 
+  node: project.project
+  action: planning
+  role_id: 2
+accessright_182: 
+  node: project.project
+  action: stats
+  role_id: 1
+accessright_183: 
+  node: project.project
+  action: stats
+  role_id: 2
+accessright_184: 
+  node: project.project
+  action: tab_finance
+  role_id: 1
+accessright_185: 
+  node: project.project
+  action: tab_finance
+  role_id: 2
+accessright_186: 
+  node: project.project
+  action: tab_planning
+  role_id: 1
+accessright_187: 
+  node: project.project
+  action: tab_planning
+  role_id: 2
+accessright_188: 
+  node: project.role
+  action: add
+  role_id: 1
+accessright_189: 
+  node: project.role
+  action: add
+  role_id: 2
+accessright_190: 
+  node: project.role
+  action: admin
+  role_id: 1
+accessright_191: 
+  node: project.role
+  action: admin
+  role_id: 2
+accessright_192: 
+  node: project.role
+  action: delete
+  role_id: 1
+accessright_193: 
+  node: project.role
+  action: delete
+  role_id: 2
+accessright_194: 
+  node: project.role
+  action: edit
+  role_id: 1
+accessright_195: 
+  node: project.role
+  action: edit
+  role_id: 2
+accessright_196: 
+  node: project.tpl_phase
+  action: add
+  role_id: 1
+accessright_197: 
+  node: project.tpl_phase
+  action: add
+  role_id: 2
+accessright_198: 
+  node: project.tpl_phase
+  action: admin
+  role_id: 1
+accessright_199: 
+  node: project.tpl_phase
+  action: admin
+  role_id: 2
+accessright_200: 
+  node: project.tpl_phase
+  action: delete
+  role_id: 1
+accessright_201: 
+  node: project.tpl_phase
+  action: delete
+  role_id: 2
+accessright_202: 
+  node: project.tpl_phase
+  action: edit
+  role_id: 1
+accessright_203: 
+  node: project.tpl_phase
+  action: edit
+  role_id: 2
+accessright_204: 
+  node: project.tpl_project
+  action: add
+  role_id: 1
+accessright_205: 
+  node: project.tpl_project
+  action: add
+  role_id: 2
+accessright_206: 
+  node: project.tpl_project
+  action: admin
+  role_id: 1
+accessright_207: 
+  node: project.tpl_project
+  action: admin
+  role_id: 2
+accessright_208: 
+  node: project.tpl_project
+  action: delete
+  role_id: 1
+accessright_209: 
+  node: project.tpl_project
+  action: delete
+  role_id: 2
+accessright_210: 
+  node: project.tpl_project
+  action: edit
+  role_id: 1
+accessright_211: 
+  node: project.tpl_project
+  action: edit
+  role_id: 2
+accessright_212: 
+  node: quotation.payment
+  action: add
+  role_id: 1
+accessright_213: 
+  node: quotation.payment
+  action: add
+  role_id: 2
+accessright_214: 
+  node: quotation.payment
+  action: admin
+  role_id: 1
+accessright_215: 
+  node: quotation.payment
+  action: admin
+  role_id: 2
+accessright_216: 
+  node: quotation.payment
+  action: delete
+  role_id: 1
+accessright_217: 
+  node: quotation.payment
+  action: delete
+  role_id: 2
+accessright_218: 
+  node: quotation.payment
+  action: edit
+  role_id: 1
+accessright_219: 
+  node: quotation.payment
+  action: edit
+  role_id: 2
+accessright_220: 
+  node: quotation.quotation
+  action: add
+  role_id: 1
+accessright_221: 
+  node: quotation.quotation
+  action: add
+  role_id: 2
+accessright_222: 
+  node: quotation.quotation
+  action: admin
+  role_id: 1
+accessright_223: 
+  node: quotation.quotation
+  action: admin
+  role_id: 2
+accessright_224: 
+  node: quotation.quotation
+  action: delete
+  role_id: 1
+accessright_225: 
+  node: quotation.quotation
+  action: delete
+  role_id: 2
+accessright_226: 
+  node: quotation.quotation
+  action: edit
+  role_id: 1
+accessright_227: 
+  node: quotation.quotation
+  action: edit
+  role_id: 2
+accessright_228: 
+  node: reports.hoursurvey
+  action: report
+  role_id: 1
+accessright_229: 
+  node: reports.hoursurvey
+  action: report
+  role_id: 2
+accessright_230: 
+  node: reports.hoursurvey
+  action: view_all
+  role_id: 1
+accessright_231: 
+  node: reports.hoursurvey
+  action: view_all
+  role_id: 2
+accessright_232: 
+  node: reports.hoursurvey
+  action: view_managed
+  role_id: 1
+accessright_233: 
+  node: reports.hoursurvey
+  action: view_managed
+  role_id: 2
+accessright_234: 
+  node: reports.projectstatus
+  action: any_user
+  role_id: 1
+accessright_235: 
+  node: reports.projectstatus
+  action: any_user
+  role_id: 2
+accessright_236: 
+  node: reports.projectstatus
+  action: report
+  role_id: 1
+accessright_237: 
+  node: reports.projectstatus
+  action: report
+  role_id: 2
+accessright_238: 
+  node: reports.weekreport
+  action: report
+  role_id: 1
+accessright_239: 
+  node: reports.weekreport
+  action: report
+  role_id: 2
+accessright_240: 
+  node: reports.weekreport
+  action: view_all
+  role_id: 1
+accessright_241: 
+  node: reports.weekreport
+  action: view_all
+  role_id: 2
+accessright_242: 
+  node: reports.weekreport
+  action: view_managed
+  role_id: 1
+accessright_243: 
+  node: reports.weekreport
+  action: view_managed
+  role_id: 2
+accessright_244: 
+  node: scheduler.scheduler
+  action: add
+  role_id: 1
+accessright_245: 
+  node: scheduler.scheduler
+  action: add
+  role_id: 2
+accessright_246: 
+  node: scheduler.scheduler
+  action: admin
+  role_id: 1
+accessright_247: 
+  node: scheduler.scheduler
+  action: admin
+  role_id: 2
+accessright_248: 
+  node: scheduler.scheduler
+  action: all_non_private
+  role_id: 1
+accessright_249: 
+  node: scheduler.scheduler
+  action: all_non_private
+  role_id: 2
+accessright_250: 
+  node: scheduler.scheduler
+  action: delete
+  role_id: 1
+accessright_251: 
+  node: scheduler.scheduler
+  action: delete
+  role_id: 2
+accessright_252: 
+  node: scheduler.scheduler
+  action: edit
+  role_id: 1
+accessright_253: 
+  node: scheduler.scheduler
+  action: edit
+  role_id: 2
+accessright_254: 
+  node: scheduler.scheduler_category
+  action: add
+  role_id: 1
+accessright_255: 
+  node: scheduler.scheduler_category
+  action: add
+  role_id: 2
+accessright_256: 
+  node: scheduler.scheduler_category
+  action: admin
+  role_id: 1
+accessright_257: 
+  node: scheduler.scheduler_category
+  action: admin
+  role_id: 2
+accessright_258: 
+  node: scheduler.scheduler_category
+  action: delete
+  role_id: 1
+accessright_259: 
+  node: scheduler.scheduler_category
+  action: delete
+  role_id: 2
+accessright_260: 
+  node: scheduler.scheduler_category
+  action: edit
+  role_id: 1
+accessright_261: 
+  node: scheduler.scheduler_category
+  action: edit
+  role_id: 2
+accessright_262: 
+  node: scheduler.scheduler_email_template
+  action: admin
+  role_id: 1
+accessright_263: 
+  node: scheduler.scheduler_email_template
+  action: admin
+  role_id: 2
+accessright_264: 
+  node: scheduler.scheduler_email_template
+  action: edit
+  role_id: 1
+accessright_265: 
+  node: scheduler.scheduler_email_template
+  action: edit
+  role_id: 2
+accessright_266: 
+  node: scheduler.scheduler_holidays
+  action: add
+  role_id: 1
+accessright_267: 
+  node: scheduler.scheduler_holidays
+  action: add
+  role_id: 2
+accessright_268: 
+  node: scheduler.scheduler_holidays
+  action: admin
+  role_id: 1
+accessright_269: 
+  node: scheduler.scheduler_holidays
+  action: admin
+  role_id: 2
+accessright_270: 
+  node: scheduler.scheduler_holidays
+  action: delete
+  role_id: 1
+accessright_271: 
+  node: scheduler.scheduler_holidays
+  action: delete
+  role_id: 2
+accessright_272: 
+  node: scheduler.scheduler_holidays
+  action: edit
+  role_id: 1
+accessright_273: 
+  node: scheduler.scheduler_holidays
+  action: edit
+  role_id: 2
+accessright_274: 
+  node: timereg.hours
+  action: add
+  role_id: 1
+accessright_275: 
+  node: timereg.hours
+  action: add
+  role_id: 2
+accessright_276: 
+  node: timereg.hours
+  action: admin
+  role_id: 1
+accessright_277: 
+  node: timereg.hours
+  action: admin
+  role_id: 2
+accessright_278: 
+  node: timereg.hours
+  action: any_project
+  role_id: 1
+accessright_279: 
+  node: timereg.hours
+  action: any_user
+  role_id: 1
+accessright_280: 
+  node: timereg.hours
+  action: delete
+  role_id: 1
+accessright_281: 
+  node: timereg.hours
+  action: delete
+  role_id: 2
+accessright_282: 
+  node: timereg.hours
+  action: edit
+  role_id: 1
+accessright_283: 
+  node: timereg.hours
+  action: edit
+  role_id: 2
+accessright_284: 
+  node: timereg.hours
+  action: lock
+  role_id: 1
+accessright_285: 
+  node: timereg.hours
+  action: lock
+  role_id: 2
+accessright_286: 
+  node: timereg.hours
+  action: unlock
+  role_id: 1
+accessright_287: 
+  node: timereg.hours
+  action: unlock
+  role_id: 2
+accessright_288: 
+  node: timereg.hours_approve
+  action: add
+  role_id: 1
+accessright_289: 
+  node: timereg.hours_approve
+  action: add
+  role_id: 2
+accessright_290: 
+  node: timereg.hours_approve
+  action: admin
+  role_id: 1
+accessright_291: 
+  node: timereg.hours_approve
+  action: admin
+  role_id: 2
+accessright_292: 
+  node: timereg.hours_approve
+  action: any_user
+  role_id: 1
+accessright_293: 
+  node: timereg.hours_approve
+  action: approve
+  role_id: 1
+accessright_294: 
+  node: timereg.hours_approve
+  action: delete
+  role_id: 1
+accessright_295: 
+  node: timereg.hours_approve
+  action: delete
+  role_id: 2
+accessright_296: 
+  node: timereg.hours_approve
+  action: disapprove
+  role_id: 1
+accessright_297: 
+  node: timereg.hours_lock
+  action: add
+  role_id: 1
+accessright_298: 
+  node: timereg.hours_lock
+  action: add
+  role_id: 2
+accessright_299: 
+  node: timereg.hours_lock
+  action: admin
+  role_id: 1
+accessright_300: 
+  node: timereg.hours_lock
+  action: admin
+  role_id: 2
+accessright_301: 
+  node: timereg.hours_lock
+  action: delete
+  role_id: 1
+accessright_302: 
+  node: timereg.hours_lock
+  action: delete
+  role_id: 2
+accessright_303: 
+  node: timereg.overtime_balance
+  action: delete
+  role_id: 1
+accessright_304: 
+  node: timereg.overtime_balance
+  action: delete
+  role_id: 2
+accessright_305: 
+  node: timereg.overtime_balance
+  action: edit
+  role_id: 1
+accessright_306: 
+  node: timereg.overtime_balance
+  action: edit
+  role_id: 2
+accessright_307: 
+  node: timereg.workperiod
+  action: add
+  role_id: 1
+accessright_308: 
+  node: timereg.workperiod
+  action: add
+  role_id: 2
+accessright_309: 
+  node: timereg.workperiod
+  action: admin
+  role_id: 1
+accessright_310: 
+  node: timereg.workperiod
+  action: admin
+  role_id: 2
+accessright_311: 
+  node: timereg.workperiod
+  action: delete
+  role_id: 1
+accessright_312: 
+  node: timereg.workperiod
+  action: delete
+  role_id: 2
+accessright_313: 
+  node: timereg.workperiod
+  action: edit
+  role_id: 1
+accessright_314: 
+  node: timereg.workperiod
+  action: edit
+  role_id: 2
+accessright_315: 
+  node: todo.todo
+  action: add
+  role_id: 1
+accessright_316: 
+  node: todo.todo
+  action: add
+  role_id: 2
+accessright_317: 
+  node: todo.todo
+  action: admin
+  role_id: 1
+accessright_318: 
+  node: todo.todo
+  action: admin
+  role_id: 2
+accessright_319: 
+  node: todo.todo
+  action: delete
+  role_id: 1
+accessright_320: 
+  node: todo.todo
+  action: delete
+  role_id: 2
+accessright_321: 
+  node: todo.todo
+  action: edit
+  role_id: 1
+accessright_322: 
+  node: todo.todo
+  action: edit
+  role_id: 2

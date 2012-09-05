@@ -1,0 +1,53 @@
+<?php 
+// Achievo language file for Russian.
+//
+// Module: crm
+// Language: Russian (ru)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$ru = array (
+"account" => "Счет",
+"actual cost" => "Реальная стоимость",
+"budget" => "Бюджет",
+"campaign" => "Кампания",
+"campaign_status" => "Статус кампании",
+"campaign_type" => "Тип кампании",
+"description" => "Описание",
+"end_date" => "Конечная дата",
+"expected_costs" => "Ожидаемая стоимость",
+"expected_revenue" => "Ожидаемая выручка",
+"former_name" => "Бывшее название",
+"industry" => "Отрасль",
+"industry_name" => "Название",
+"kind_of" => "Тип отношения",
+"last_viewed" => "Последний просмотр",
+"lead" => "Предложение",
+"lead_description" => "Описание предожения",
+"menu_campaign" => "Кампания",
+"menu_campaigns" => "Кампании",
+"menu_campaign_status" => "Статус кампании",
+"menu_campaign_type" => "Типы кампании",
+"menu_lead" => "предложение",
+"menu_organization_status" => "Статус организации",
+"menu_rate" => "Ставка",
+"menu_relation_type" => "Типы отношений",
+"menu_sales" => "Продажи",
+"objective" => "Целевой",
+"organization_relation" => "Отношение к организации",
+"organization_status" => "Статус организации",
+"rate" => "Ставка",
+"rate_name" => "Название",
+"relation_type" => "Вид отношения",
+"relation_with" => "Отношение с",
+"source" => "Источник",
+"source_name" => "Название",
+"start_date" => "Дата начала",
+"status" => "Статус",
+"status_description" => "Описание статуса",
+"status_name" => "Название",
+"title" => "Заголовок",
+"type" => "Тип",
+"type_name" => "Название");
+?>

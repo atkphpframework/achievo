@@ -1,0 +1,5 @@
++ Added ability for external modules to set columns which should be copied
+  from the documenttype to the document when generating a document based
+  on a documenttype. [Guido]
++ Added documentcode and the feature to generate an custom initial code 
+  [dennisjan] 

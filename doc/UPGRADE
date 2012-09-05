@@ -1,0 +1,83 @@
+Upgrading Achievo
+=================
+
+Read this first
+---------------
+Depite our efforts to keep this UPGRADE file as accurate as possible, there
+might be situations in which the described procedure does not work.
+In this case send an email to sandy@achievo.org or visit our forums at
+http://www.achievo.org/forum and we will try to help you out.
+
+IMPORTANT
+---------
+Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE before
+attempting to upgrade. A good way to do the upgrade is to copy the entire
+database. For example, if your database is achievo_0_6, and you want to
+upgrade to Achievo 1.4, then copy the database to achievo_1_4. Then proceed
+with the instructions below.
+
+Support
+-------
+Upgrading is not always easy, especially if you need to upgrade to a version
+that is significantly newer than your current version. Ibuildings.nl can help
+with the conversion. For information about this kind of support, see:
+http://www.achievo.org/services/sponsor/
+
+
+General upgrade instructions
+============================
+
+These are the general upgrade instructions. Sometimes, additional information
+is provided for upgrading between certain versions. You will find this
+additional information at the end of this document.
+
+Upgrading the software usually consists of replacing the Achievo sourcecode
+with a newer version. It is usually possible to use the config file from your
+current Achievo installation, however, you might miss some config options that
+were added in a newer release. Therefor it is best to use the new configfile
+and just change the settings again.
+
+As of Achievo 0.9.2, a setup.php script is provided to upgrade Achievo
+databases. Take the following steps to perform the upgrade:
+
+1) Make sure the config.inc.php file is correct, especially the database
+   configuration and the administrator password.
+
+   Important: in order to upgrade your database, the databaseuser used by
+   Achievo needs to have the following privileges on the Achievo database:
+   select, insert, update, delete, lock tables, create, alter and create view.
+   It is ok to remove the create and alter table privileges after the upgrade
+   process is completed.
+
+2) Point your browser to the setup.php script. For example, browse to:
+
+   http://yourserver/achievo/setup.php (assuming Achievo is installed in the
+   directory 'achievo' in your webservers' document root.)
+
+   You will be presented with a login screen. You need to login as
+   administrator, with the password you specified in config.inc.php.
+
+3) The setup.php script will take you through the upgrade process. It will
+   verify if PHP is configured correctly to run this version of Achievo, and
+   migrate your database if necessary. Follow the directions on screen until
+   the script tells you that the upgrade is complete.
+
+
+Additional upgrade notes
+========================
+
+This section contains information that you should read when upgrading to or
+from a particular version of Achievo.
+
+Upgrading from Achievo 0.4.x
+----------------------------
+Since Achievo 0.4, the authentication and authorization processes have changed
+significantly. If you upgrade from an Achievo version 0.4.x, there are a few
+things to note:
+- All passwords are reset to 'default'. Users should change their passwords
+  after their first login.
+- Access rights can not be preserved between these versions. After the
+  upgrade, you should go the the Employees menu, and edit the Security
+  Profiles. By default, all users present in Achievo 0.4 are placed in the
+  'Default Group' profile.
+

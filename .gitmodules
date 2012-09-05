@@ -1,0 +1,3 @@
+[submodule "atk"]
+	path = atk
+	url = https://github.com/dalers/atk-6.4.4.git
