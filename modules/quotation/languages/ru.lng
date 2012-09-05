@@ -1,0 +1,49 @@
+<?php 
+// Achievo language file for Russian.
+//
+// Module: quotation
+// Language: Russian (ru)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$ru = array (
+"menu_quotation" => "Расценки",
+"quotation" => "Расценка",
+"quotation_accepted" => "Принято",
+"quotation_archiveexplanation" => "Закрытые расценки (отклоненные или на которые выставлен счет) спрятаны.",
+"quotation_billed" => "Выставлен счет",
+"quotation_called" => "Сделан звонок, ожидается",
+"quotation_completed" => "Завершено",
+"quotation_email" => "Почтой",
+"quotation_expire_date" => "Срок годности",
+"quotation_fax" => "Факсом",
+"quotation_hideclosed" => "Скрыть закрытые расценки.",
+"quotation_issue_date" => "Дата выставления расценки",
+"quotation_mail" => "Почтой",
+"quotation_method" => "Способ доставки",
+"quotation_new" => "Не доставлено",
+"quotation_nr" => "Номер расценки",
+"quotation_organization_id" => "Организация",
+"quotation_other" => "Другое",
+"quotation_owner" => "Владелец",
+"quotation_phone" => "По телефону",
+"quotation_prepaid" => "Предоплата",
+"quotation_prepaidcompleted" => "Предоплачено и завершено",
+"quotation_price" => "Цена",
+"quotation_rejected" => "Отвергнуто",
+"quotation_reminder_daysexpired" => "Количество дней с момента устаревания котировки",
+"quotation_reminder_daysleft" => "Количество дней до окончания срока годности расценки",
+"quotation_reminder_header" => "Данная расценка все еще открыта.",
+"quotation_reminder_summary" => "Детали расценки",
+"quotation_sent" => "Доставлено, отзыва пока нет",
+"quotation_set_accepted" => "Принято",
+"quotation_set_billed" => "Выставлен счет",
+"quotation_set_called" => "Сделан звонок",
+"quotation_set_completed" => "Завершено",
+"quotation_set_prepaid" => "Счет выставлен заранее",
+"quotation_set_prepaidcompleted" => "Завершено",
+"quotation_set_rejected" => "Отвергнуто",
+"quotation_set_sent" => "Доставлено",
+"quotation_showall" => "Щелкните здесь для показа всех расценок.");
+?>

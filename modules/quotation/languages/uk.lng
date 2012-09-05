@@ -1,0 +1,49 @@
+<?php 
+// Achievo language file for Ukrainian.
+//
+// Module: quotation
+// Language: Ukrainian (uk)
+//
+// Translated by:
+//   Mykhaylo Sorochan       <msorc@bigmir.net>
+
+$uk = array (
+"menu_quotation" => "Розцінки",
+"quotation" => "Розцінка",
+"quotation_accepted" => "Прийнятий",
+"quotation_archiveexplanation" => "Закриті розцінки (відхилені або виставлені) сховано.",
+"quotation_billed" => "Рахунок виставлено",
+"quotation_called" => "Зроблено дзвінок, в очікуванні",
+"quotation_completed" => "Завершено",
+"quotation_email" => "Поштою",
+"quotation_expire_date" => "Дата спливання",
+"quotation_fax" => "Факсом",
+"quotation_hideclosed" => "Сховати закриті розцінки.",
+"quotation_issue_date" => "Дата розцінки",
+"quotation_mail" => "Поштою",
+"quotation_method" => "Метод доставки",
+"quotation_new" => "Не доставлено",
+"quotation_nr" => "№ розцінки",
+"quotation_organization_id" => "Організація",
+"quotation_other" => "Інше",
+"quotation_owner" => "Власник",
+"quotation_phone" => "Телефоном",
+"quotation_prepaid" => "Предоплачено",
+"quotation_prepaidcompleted" => "Предоплачено та завершено",
+"quotation_price" => "Ціна",
+"quotation_rejected" => "Відхилено",
+"quotation_reminder_daysexpired" => "Кількість днів з моменту, як розцінка застаріла",
+"quotation_reminder_daysleft" => "Кількість днів перед тим, як розцінка застаріє",
+"quotation_reminder_header" => "Ця розцінка все ще відкрита.",
+"quotation_reminder_summary" => "Подробиці розцінки",
+"quotation_sent" => "Доставлено, відповіді що немає",
+"quotation_set_accepted" => "Прийнятий",
+"quotation_set_billed" => "Рахунок віставлено",
+"quotation_set_called" => "Зроблено дзвінок",
+"quotation_set_completed" => "Завершено",
+"quotation_set_prepaid" => "Рахунок виставлено ",
+"quotation_set_prepaidcompleted" => "Завершено",
+"quotation_set_rejected" => "Відхилено",
+"quotation_set_sent" => "Доставлено",
+"quotation_showall" => "Клацніть сюди, щоб показати всі розцінки.");
+?>

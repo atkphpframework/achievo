@@ -1,0 +1,6 @@
+Read the documentation in doc/UPGRADE before upgrading Achievo.
+
+WARNING: These upgrade files are for mysql only. For postgresql
+and oracle we don't have an upgrade procedure yet. You should
+be able to change these mysql scripts a bit and use them
+for oracle or postgresql though.

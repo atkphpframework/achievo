@@ -1,0 +1,37 @@
+<?php
+ 
+  if ($_SERVER["argv"][1]!="")
+  {    
+    if (strpos($_SERVER["argv"][1], "/")!==false ||
+        strpos($_SERVER["argv"][1], "..")!==false ||
+        strpos($_SERVER["argv"][1], "\\")!==false)
+    {
+      echo "possible hack attempt. exiting.\n";
+      exit;
+    }
+    else 
+    {      
+      list($module, $script)=explode(".", escapeshellcmd($_SERVER["argv"][1]));
+      
+      include_once("atk.inc");      
+      include_once("achievotools.inc");
+      atksession("default", false);
+
+      $filename = moduleDir($module)."cron/".$script.".cron";
+      if (file_exists($filename))
+      {        
+        
+        include_once($filename);
+      }
+      else
+      {
+        echo "Cron script does not exist: $filename\n";
+      }
+    }
+  }
+  else
+  {
+    echo "usage: php runcron modulename.cronscriptname\n";
+  }
+
+?>
