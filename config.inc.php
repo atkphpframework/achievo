@@ -120,71 +120,6 @@
   //
   $config_mail_sender = "achievo";
 
-
-  // -------------------------------------------
-  //            TIME REGISTRATION
-  // -------------------------------------------
-
-  // The number of projects/phases to show in the 'recent projects/phases'
-  // dropdown. Note: The more you specify here, the slower time registration
-  // and planning gets (due to some javascript issues).
-  //
-  $config_numberofrecentprojects = 10;
-
-  // The ammount of time that a user can book on a day before it is
-  // considered overtime. (visualization only, true overtime is
-  // calculated based on employee contracts.)
-  //
-  $config_overtimethreshold = 480;
-
-  // Default view in time registration. Can be "week" or "day"
-  //
-  $config_timereg_defaultview = "day";
-
-  // Number of lines of the 'remark' field for time entry. Defaults to a
-  // single line. (Regardless of this setting, the actual amount of text
-  // that can be entered is unlimited.)
-  $config_timereg_remark_lines = 1;
-
-  // Allow registration of time in the future. By default, this is false, so
-  // only time actually spent can be registered.
-  $config_timereg_allowfuture = false;
-
-  // Resolution for time registration. By default, time can be registered in
-  // steps of 15 minutes. You can increase or decrease this.
-  // You can specify a resolution in minutes or in hours.
-  // Examples: 1m, 5m, 10m, 20m, 30m, 1h, 2h etc.
-  //
-  $config_timereg_resolution = "15m";
-
-  // This variable indicates whether the user may directly register
-  // time on each day in a week when he is in weekview.
-  // If set to false, the user must first go to the dayview of a day,
-  // before he may register time.
-  //
-  $config_timereg_week_bookable = true;
-
-  // This variable indicates wheter users may lock their time
-  // registration for weeks in which they have not entered
-  // all hours.
-  //
-  $config_timereg_incompleteweeklock = false;
-
-  // The next value indicates how many weeks back the timereg_check cron
-  // script searches for incomplete time registrations.
-  //
-  $config_timereg_checkweeks = 5;
-
-  // The next value indicates if a fake startingpoint should be used by
-  // the overtime_balance node if no balance-records can be found to
-  // determine a new balance record. Possible values:
-  // String date: a date in the format YYYY-MM-DD.
-  // boolean true: the date is set to the 31st of dec of the former year.
-  // boolean false: no startingpoint is used.
-  //
-  $config_timereg_overtime_balance_use_startingpoint = false;
-
-
   // -------------------------------------------
   //             PROJECT MODULE
   // -------------------------------------------
@@ -245,18 +180,6 @@
   // 4 = First week with 4 days (ISO)
   // 7 = First full week
   $config_firstweekcontains = 4;
-
-
-  // -------------------------------------------
-  //            EXTERNAL MODULES
-  // -------------------------------------------
-
-  // Use the module function if you want to use Achievo modules.
-  // Specify the module name as first parameter, and the path where
-  // it can be found as the second parameter.
-  //
-  // module("somemodule","../achievo_modules/somemodule/");
-
 
   // -------------------------------------------
   //            END OF CONFIGURATION
