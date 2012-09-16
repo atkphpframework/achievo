@@ -213,7 +213,7 @@
       if (file_exists($filename))
       {
         // Modify the file rights:
-        chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0660);
+        chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0664);
 
         // Modify the file group if set in config:
         if (atkconfig::get("docmanager","docmanager_filegroup") != "")
