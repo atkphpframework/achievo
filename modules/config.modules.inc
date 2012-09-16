@@ -10,16 +10,12 @@
  *
  * @copyright (c)2008 Ibuildings B.V.
  * @license http://www.achievo.org/licensing Achievo Open Source License
- *
- * @version $Revision$
- * $Id$
  */
 
 /**
- * Turn on the default achievo modules, custom modules should be
- * added in the config.inc.php
+ * Core modules that can't be disabeld
  */
-  module("utils");
+module("utils");
   module("email_template");
   module("setup");
   module("employee");
@@ -27,14 +23,21 @@
   module("timereg");
   module("project");
   module("organization");
+  module("search");
+  module("pim");
+  module("graph");
+
+/**
+ * Core modules that can be turned off by commenting them
+ */
   module("notes");
   module("scheduler");
   module("todo");
   module("reports");
-  module("pim");
-  module("search");
-  module("graph");
   module("quotation");
   module("docmanager");
   module("crm");
-?>
+
+/**
+ * Set custom modules below here
+ */
