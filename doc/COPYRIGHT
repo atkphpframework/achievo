@@ -1,27 +1,92 @@
-Achievo Copyright and Licensing
-===============================
+Achievo is Copyright (c)2001-2012 by the original authors, including
+all related material (PHP, HTML, CSS, images, ...) 
 
-Achievo is copyright (c)2000-2004 Ibuildings.nl BV, Vlissingen, Netherlands.
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License v2 as published by
+the Free Software Foundation. See the License page in the Achievo project
+wiki for more information:
+https://github.com/atkphpframework/achievo/wiki/License
 
-Achievo is distributed according to the GNU General Public License, which
-can be found in the LICENSE file.
+You should have received a copy of the GNU General Public License v2
+along with this program (see file doc/LICENSE). The license can also be
+viewed at http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 
-There is a commercial, more powerful, version of Achievo's backend, ATK,
-available for building web applications and content management systems. 
-Information about ATK and pricing can be obtained from Ibuildings.nl
-(mail us at info@ibuildings.nl)
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License v2
+for more details.
 
+Achievo is a trademark of ibuildings.nl. See the Trademark and Logo Policy
+in the Achievo project wiki for more information:
+https://github.com/atkphpframework/achievo/wiki/Trademark-and-Logo-Policy
 
-Third party software
-====================
+Achievo, and by inclusion the ATK Framework, includes works under other
+copyright notices and distributed according to the terms of the GNU General
+Public License or a compatible license, including:
 
-Achievo uses modified versions of PHPLIB's database abstraction classes for
-database access. PHPLIB (http://phplib.netuse.de) is Copyright (c) 1998,1999 
-SH Online Dienst GmbH and made available under the Library General Public 
-License (LGPL). Included with permission of the authors.
+as part of Achievo:
 
-Achievo uses parts of the JpGraph graphics suite. JpGraph 
-(http://www.aditus.nu/jpgraph) is Copyright (c) 2001, 2002, 2003 Johan 
-Persson and made available under the Qt Free License (QPL 1.0), a copy of 
-which can be found in the modules/graph/jpgraph/ directory. Included with
-permission of the author.
+    JpGraph
+        http://www.jpgraph.net/
+        Copyright (c) 2001, 2002, 2003 Johan Persson
+        License: Q Public License 1.0 (see modules/graph/jpgraph/QPL.txt)
+        
+as part of the ATK Framework:
+
+    ADOdb Date Library
+        http://adodb.sourceforge.net/
+        License: BSD, LGPL
+
+    Crossbrowser DHTML Functions JavaScript Library
+        http://www.wallner-software.com
+        License: ad hoc (BSD-style)
+
+    DHTML JavaScript Calendar
+        http://www.dynarch.com/projects/calendar/
+        License: LGPL
+
+    FCKeditor
+        http://www.fckeditor.net/
+        License: GPL, LGPL, MPL
+
+    PEAR::Services_JSON
+        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
+        http://pear.php.net/package/Services_JSON
+        License: BSD
+
+    PhpCaptcha Class by Edward Eliot
+        http://www.ejeliot.com/
+        License: BSD
+
+    PHPLIB database abstraction classes (modified)
+        http://phplib.netuse.de
+        Copyright (c) 1998,1999 SH Online Dienst GmbH
+        License: LGPL
+
+    PHPMailer
+        http://phpmailer.sourceforge.net/
+        License: LGPL
+
+    Prototype JavaScript Framework
+        http://www.sergiopereira.com/articles/prototype.js.html
+        License: MIT
+
+    Prototype Window Library
+        http://prototype-window.xilinus.com/
+        License: ad hoc (MIT style)
+
+    Rico JavaScript Library
+        http://openrico.org/
+        License: Apache
+
+    Script.aculo.us JavaScript Library
+        http://script.aculo.us/
+        License: MIT
+
+    Simpletest Test Framework
+        http://www.lastcraft.com/simple_test.php
+        License: LGPL
+
+    Smarty
+        http://www.smarty.net/
+        License: LGPL

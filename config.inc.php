@@ -4,19 +4,21 @@
   //
   // Change this file to fit your needs before using Achievo.
   //
-
+  // This file should be used for global configurations. Module-specific
+  // configurations should be placed in configs/modulename.inc.php files
+  //
 
   // -------------------------------------------
   //           DATABASE CONFIGURATION
   // -------------------------------------------
 
-  // The database to use. Default is mysqli.
-  // mysql is currently the only officially supported database.
-  // Experimental: If you want to use PostgreSQL, change this value to
-  // "pgsql". For Oracle, use "oci8".
+  // The DBMS driver to use. MySQL is the only officially supported
+  // DBMS (mysqli is the default driver, but mysql can also be used)
+  // 
+  // Achievo has experimental status suport for PostgreSQL (use "pgsql")
+  // and Oracle (use "oci8").
+  //
   $config_db["default"]["driver"] = "mysqli";
-
-
 
   // The database configuration. Specify the hostname of the database server,
   // the database to use and the user/password.
@@ -56,8 +58,6 @@
   // the autocompletion feature (instead of dropdowns)
   //
   $config_manytoone_autocomplete_default = false;
-
-
 
   // -------------------------------------------
   //           SECURITY CONFIGURATION
@@ -103,8 +103,8 @@
   // will regenerate it's session id on each hit. This does not work
   // properly on some (usually older) PHP installations. If you experience
   // login trouble, set the next value to false.
+  //
   $config_session_regenerate = false;
-
 
   // -------------------------------------------
   //            MAIL CONFIGURATION
@@ -123,8 +123,9 @@
   // -------------------------------------------
   //             PROJECT MODULE
   // -------------------------------------------
-  // This variable indicated whether contacts in the project module are
-  // obligatory
+  // This variable indicated whether contacts in the project module
+  // are obligatory
+  //
   $config_project_contact_obligatory = false;
 
   // Use autocompletion for project selection?
@@ -137,10 +138,13 @@
   // is copied.
   // To disable this feature leave the dir_skel and dir_destination configs empty.
   // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
+  //
   $config_project_dir_skel = '';
   $config_project_dir_destination = '';
+  
   // You can specify which field of the project node you want to use for the
   // directoryname.
+  //
   $config_project_dir_name_template = '[abbreviation]';
   $config_project_formatmail = 'html';
   $config_project_sendto = 'sendto@domein.nl';
@@ -151,9 +155,8 @@
   // If you don't want a pim, set an URL in the config below to let PIM
   // redirect to the specified url. If not set or empty this feature is
   // disabled.
+  //
   $config_pim_redirect_to = "";
-
-
 
   // -------------------------------------------
   //             DOCMANAGER MODULE
@@ -164,7 +167,6 @@
         "quotation.quotation"=>array("dir"=>"./documents/quotations/", "url"=>"documents/quotations/"),
         );
 
-
   // -------------------------------------------
   //            GENERAL SETTINGS
   // -------------------------------------------
@@ -173,12 +175,14 @@
   // 0 = sunday
   // 1 = monday (ISO)
   // 3 = wednesday
+  //
   $config_startday = 1;
 
   // First week contains has 3 valid options
   // 1 = Starts on 1 january
   // 4 = First week with 4 days (ISO)
   // 7 = First full week
+  //
   $config_firstweekcontains = 4;
 
   // -------------------------------------------
@@ -189,7 +193,5 @@
   // Also, you should not change the atkconf.inc file, since that would
   // break Achievo.
   //
-
   include "atkconf.inc";
-
 ?>

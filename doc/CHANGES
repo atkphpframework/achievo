@@ -1,8 +1,12 @@
 + : new feature
 - : deprecated feature
 * : bugfix or changed code
-Bug numbers are references to bugs in http://www.achievo.org/bugzilla
-[names] are references to people in the AUTHORS file.
+
+Issue numbers are references to issues in the Achievo project issue tracker on GitHub:
+	https://github.com/atkphpframework/achievo/issues
+Bug numbers are references to bugs in the ibuildings Bugzilla bug tracker:
+	http://bugzilla.achievo.org
+[names] are references to contributors listed in the AUTHORS file.
 
 Changes in Achievo 1.4.5
 ------------------------
@@ -155,5 +159,5 @@ Changes in Achievo 1.4RC1
 
 Changes in prior versions
 -------------------------
-Changes in older ATK versions can be found at:
-http://websvn.ibuildings.nl/wsvn/achievo/achievo/trunk/doc/CHANGES
+Changes in older versions can be found by searching the Achievo Git repository at:
+https://github.com/atkphpframework/achievo
