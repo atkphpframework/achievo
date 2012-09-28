@@ -213,7 +213,13 @@
       if (file_exists($filename))
       {
         // Modify the file rights:
-        chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0664);
+        // Default file mode is 660 (re owner, gw group, no global)
+        // - change to 664 if you must have rw global rights, note that allowing
+        //   global access to files in the document store may present a potential
+        //   security violation.
+        insecure access to the document files.
+        be a security 
+        chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0660);
 
         // Modify the file group if set in config:
         if (atkconfig::get("docmanager","docmanager_filegroup") != "")
