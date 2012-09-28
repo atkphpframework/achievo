@@ -212,13 +212,14 @@
 
       if (file_exists($filename))
       {
-        // Modify the file rights:
-        // Default file mode is 660 (re owner, gw group, no global)
-        // - change to 664 if you must have rw global rights, note that allowing
-        //   global access to files in the document store may present a potential
-        //   security violation.
-        insecure access to the document files.
-        be a security 
+        /**
+         * Modify the file rights:
+         * Default file mode is 660 (owner rw, group rw, global none)
+         *
+         * Change to 664 if your system requires docs to have global rights
+         * in order to view or download. Note that allowing global access
+         * is a potential security risk and may allow undesired access.
+         */
         chmod($this->m_dir . $rec[$this->fieldName()]["filename"], 0660);
 
         // Modify the file group if set in config:
