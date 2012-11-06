@@ -55,11 +55,12 @@ In the event you have a problem:
 * Search the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/) and the [ibuildings Achievo/ATK wiki](http://www.achievo.org/wiki/).
 * Search the [Achievo/ATK forum](http://forum.achievo.org/).
 * Search the [Achievo GitHub project Issues](https://github.com/atkphpframework/achievo/issues) and [ibuildings legacy bug tracker](http://bugzilla.achievo.org/query.cgi).
-* Post a question to the [Achievo/ATK forum](http://forum.achievo.org/) (free account sign-up is required for posting). When posting to the forum, always include the following to help other Achievo users and developers give you the best response:
-** a summary of what you are trying to achieve and symptoms of the problem (what you think is going wrong, or not happening when it should)
-** your server operating system and version (e.g., FreeBSD 9.0, Ubunto 11.10, OpenSUSE 12.1, Windows 7, ...)
-** your web server and version (e.g., Apache 2.2.22)
-** your PHP version (e.g., PHP 5.3.10)
-** your MySQL server version (e.g., MySQL 5.5.20)
-** (optional) example code. Sometimes posting code is the simplest way to describe a technical problem you're having. If you are posting code, provide the simplest example that demonstrates your problem.
+* Post a question to the [Achievo/ATK forum](http://forum.achievo.org/) (free account sign-up is required for posting).
+
+To get the most informed response when posting to the forum try to include:
+
+* What are you trying to achieve?
+* What are the symptoms of your problem? Why do you think there *is* a problem?
+* What is your server? (OS (e.g. FreeBSD 9.1), web server (e.g. Apache 2.2.22), PHP (e.g. PHP 5.3.10), MySQL DBMS (e.g., MySQL 5.5.20)
+* Show example code (the simplest code that produces the symptoms)
 
