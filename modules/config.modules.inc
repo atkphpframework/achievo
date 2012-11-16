@@ -1,21 +1,15 @@
 <?php
 /**
- * This file is part of the Achievo distribution.
- * Detailed copyright and licensing information can be found
- * in the doc/COPYRIGHT and doc/LICENSE files which should be
- * included in the distribution.
  *
  * @package achievo
  * @subpackage modules
  *
- * @copyright (c)2008 Ibuildings B.V.
- * @license http://www.achievo.org/licensing Achievo Open Source License
  */
 
 /**
- * Core modules that can't be disabeld
+ * Core modules that must remain enabled
  */
-module("utils");
+  module("utils");
   module("email_template");
   module("setup");
   module("employee");
@@ -28,7 +22,7 @@ module("utils");
   module("graph");
 
 /**
- * Core modules that can be turned off by commenting them
+ * Core modules that can be disabled (by commenting)
  */
   module("notes");
   module("scheduler");
@@ -39,5 +33,5 @@ module("utils");
   module("crm");
 
 /**
- * Set custom modules below here
+ * Additional modules
  */

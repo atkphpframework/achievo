@@ -6,21 +6,33 @@
 
      Hello.
 
-     If you can read this text, one of two things might be the case:
+     If you are reading this, one of two things is likely the case:
 
-     1) You installed Achievo, and pointed your browser to the setup.php
+     1) You installed Achievo, pointed your browser to the setup.php
         script, and were expecting the Achievo setup screen to come up.
 
-        If this is the case, then the fact that you are reading this indicates
-        that either you don't have PHP installed, or it is not configured
-        correctly.
-        Please make sure your PHP-installation works, and come back
-        when you got it running. You might want to consult your system
-        administrator. If you can't get it to work, join the Achievo
-        forums at http://www.achievo.org/forum and we will try to help you out.
+        If this is the case, then the fact that you are reading this
+        indicates that either a) PHP is not installed on your server,
+        b) your server is not correctly configured for PHP, or c) PHP
+        is not correctly configured on your server.
+        
+        Please review your server installation and configuration, make
+        the appropriate corrections, and then return here. If you cannot
+        configure your server to work correctly, consult your system
+        administrator or other resource. You may also consider contacting
+        a web server support forum for your operating system or
+        distribution.
+        
+        You can also see the Achievo README.md for current Achievo
+        support information. If you join the Achievo forum and post a
+        question, a community member may be able to help and respond.
+        However, please understand there are many potential causes for
+        problems, and Achievo community members concentrate primarily on
+        Achievo itself - although someone may have expertise in the web
+        application server stack and operating system you are using.
 
-        You can ignore the rest of what you see below: this is programmers'
-        code, that you shouldn't be seeing in the first place.
+        Ignore the rest of what you see below: this is Achievo program
+        code that is visible because of your server problems.
 
      2) You are reading the source file setup.php with an editor.
         If you are a programmer or just interested in the source of this
@@ -60,11 +72,6 @@
    *
    * This script can be used to install the Achievo database, and/or upgrade
    * an existing database.
-   *
-   * @author Ivo Jansch <ivo@achievo.org>
-   * @version $Revision$
-   *
-   * $Id$
    *
    */
 

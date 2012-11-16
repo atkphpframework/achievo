@@ -23,7 +23,13 @@
   // Use autocomplete field instead of a project dropdown
   $config['project_selection_autocomplete']=false;
   
-  // The number of recents projects we show in the dropdown
+  // The number of projects/phases to show in the
+  // 'recent projects/phases' dropdown.
+  //
+  // Note: The greater the number of projects specified, the
+  // slower time registration and planning will be (due to some
+  // javascript issues).
+  //
   $config['numberofrecentprojects']=10;
   
   // When contacts needs to be obligatory, set this option to true
@@ -51,6 +57,5 @@
   
   // Receiver of the project dir creation mail
   $config['project_sendto']='';
-  
 
 ?>
