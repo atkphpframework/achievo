@@ -1,41 +1,33 @@
 Upgrading Achievo
 =================
-
 Read this first
 ---------------
-Depite our efforts to keep this UPGRADE file as accurate as possible, there
-might be situations in which the described procedure does not work.
-In this case send an email to sandy@achievo.org or visit our forums at
-http://www.achievo.org/forum and we will try to help you out.
+Despite our best efforts to keep this file as accurate as possible, 
+there might be situations in which the described procedure does not 
+work. If this happens, please see the Support section of the 
+../README.md file. 
 
 IMPORTANT
 ---------
-Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE before
-attempting to upgrade. A good way to do the upgrade is to copy the entire
-database. For example, if your database is achievo_0_6, and you want to
-upgrade to Achievo 1.4, then copy the database to achievo_1_4. Then proceed
-with the instructions below.
-
-Support
--------
-Upgrading is not always easy, especially if you need to upgrade to a version
-that is significantly newer than your current version. Ibuildings.nl can help
-with the conversion. For information about this kind of support, see:
-http://www.achievo.org/services/sponsor/
-
+Upgrading is never without risk. ALWAYS BACKUP YOUR ACHIEVO DATABASE 
+before attempting to upgrade (e.g. using mysqldump). A good way to do 
+the upgrade is to copy the entire database. For example, if your 
+database is achievo_0_6 and you want to upgrade to Achievo 1.4, copy the 
+achievo_0_6 database to achievo_1_4 and then proceed with the 
+instructions below. 
 
 General upgrade instructions
 ============================
+These are the general upgrade instructions. Sometimes, additional 
+information is provided for upgrading between certain versions. You will 
+find this additional information at the end of this document. 
 
-These are the general upgrade instructions. Sometimes, additional information
-is provided for upgrading between certain versions. You will find this
-additional information at the end of this document.
-
-Upgrading the software usually consists of replacing the Achievo sourcecode
-with a newer version. It is usually possible to use the config file from your
-current Achievo installation, however, you might miss some config options that
-were added in a newer release. Therefor it is best to use the new configfile
-and just change the settings again.
+Upgrading the software usually consists of replacing the Achievo 
+sourcecode with a newer version. It is usually possible to use the 
+config file from your current Achievo installation. However, by doing 
+this you might miss config options added in the newer release. 
+Therefore, the best practice is to use the new configfile and change the 
+necessary settings again (you may find diff'ing the config files useful).
 
 As of Achievo 0.9.2, a setup.php script is provided to upgrade Achievo
 databases. Take the following steps to perform the upgrade:
@@ -62,10 +54,8 @@ databases. Take the following steps to perform the upgrade:
    migrate your database if necessary. Follow the directions on screen until
    the script tells you that the upgrade is complete.
 
-
 Additional upgrade notes
 ========================
-
 This section contains information that you should read when upgrading to or
 from a particular version of Achievo.
 

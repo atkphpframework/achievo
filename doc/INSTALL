@@ -1,12 +1,10 @@
 Installing Achievo
 ==================
-
 Read this first
 ---------------
-Despite our efforts to keep this INSTALL file as accurate as possible, there
-might be situations in which the described procedure does not work.
-In this case send an email to sandy@achievo.org or visit our forums at
-http://www.achievo.org/forum and we will try to help you out.
+Despite our best efforts to keep this file as accurate as possible,
+there might be situations in which the described procedure does not work.
+If this happens, please see the Support section of the ../README.md file.
 
 Upgrading from an earlier version
 ---------------------------------
@@ -16,30 +14,26 @@ upgrade instructions.
 
 Requirements
 ------------
+- A webserver configured to support PHP (e.g. standard AMP stack) with
+PHP5 5.2.0+ and MySQL 5.0.0+
 
-- A webserver capable of running php5 scripts
-  (Apache is a good choice, http://www.apache.org)
-- PHP5 (http://www.php.net, version 5.2.0 or newer)
-- MySQL5+ (http://www.mysql.org)
+- The following are requirements for optional features of Achievo:
 
-The following are requirements for optional features of Achievo:
+    * There are several graphical charts in Achievo. For these to work, PHP
+        must be installed/compiled with GD support (http://www.php.net/gd)
 
-- There are several graphical charts in Achievo. For these to work, PHP should
-  be installed/compiled with GD support (http://www.php.net/gd).
+    * To make use of the OpenOffice document generator, both 'zip' and 'unzip'
+        binaries must be in the command search path.
 
-- To make use of the OpenOffice document generator, both the 'zip' and 'unzip'
-  binaries should be in the path.
-
-- To make use of the cronned reminder scripts, you must be able to setup cron
-  on the machine where you install Achievo.
+    * To make use of the cron reminder scripts, you must be able to configure
+        cron jobs on server where Achievo is installed.
 
 Installation Procedure
 ----------------------
-
-Note that this guide does not describe how to install a webserver or PHP
-or a database server. See the documentation for these programs on how to
-install those. This installation guide assumes that you already
-have a working webserver with PHP support and a MySQL database installed.
+This guide does not describe how to install a webserver or PHP or a 
+database server. See the documentation for these programs on how to 
+install those. This installation guide assumes that you already have a 
+working webserver with PHP support and a MySQL database installed. 
 
 1) Untar the entire achievo archive to a place where you can access it with
    your webserver.
@@ -122,5 +116,5 @@ have a working webserver with PHP support and a MySQL database installed.
    you everything you should do to make Achievo useable for your users.
 
 9) Achievo contains some useful cron scripts that can be run periodically from
-   a cron job. See the CRON file for available cron features and instructions.
+   a cron job. See the doc/CRON file for available cron features and instructions.
 

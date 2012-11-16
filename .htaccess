@@ -1,5 +1,5 @@
 ## Achievo .htaccess file
-## More info see: http://www.ibuildings.nl/wiki/Achievo/Howto/Developers/Speed_up_Achievo
+## More info see: https://github.com/atkphpframework/achievo/wiki/Performance-Tuning
 
 ############################################
 ## uncomment these lines for CGI mode
