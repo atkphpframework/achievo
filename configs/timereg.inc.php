@@ -58,7 +58,6 @@
    * Enter as string in the format YYYY-MM-DD
    * Leave empty to monitor all project weeks
    */
-
   $config["hoursnotblocked_from_date"] = "";
 
   /**
@@ -67,48 +66,103 @@
    */
   $config["timereg_contact_link"] = false;
   
-  // Default view (day or week)
-  $config['timereg_defaultview']='day';
+  /**
+   * Default view in time registration
+   * "week" or "day"
+   */
+  $config['timereg_defaultview']="day";
   
-  // Number of lines for the timereg remark field
+  /**
+   * Number of lines of the 'remark' field for time entry
+   * Defaults to a single line. Regardless of the setting here,
+   * the actual amount of text that can be entered is unlimited.
+   */
   $config['timereg_remark_lines']=1;
   
-  // Use duration dropdown by time registration
+  /**
+   * Use duration dropdown by time registration
+   */
   $config['use_duration']=true;
   
-  // Max bookable hours for a time registration
+  /**
+   * Max bookable hours for a time registration
+   */
   $config['max_bookable']=10;
   
-  // Time resolution in minutes
+  /**
+   * Resolution for time registration.
+   * By default, time can be registered in increments of 15
+   * minutes, which can be increased or decreased.
+   * You can specify the resolution in minutes or in hours.
+   * Examples: 1m, 5m, 10m, 20m, 30m, 1h, 2h etc.
+   */
   $config['timereg_resolution']="15m";
   
-  // Overtime threshold in minutes (default 10h = 600m)
+  /**
+   * Overtime threshold in minutes (default 10h = 600m)
+   * The amount of time that a user can book on a day before it is
+   * considered overtime (visualization only, true overtime is
+   * calculated based on employee contracts)
+   */
   $config['overtimethreshold']=600;
   
-  // Is it possible to lock incomplete weeks ?
+  /**
+   * Allow locking incomplete weeks
+   * This variable determines whether users may lock their time
+   * registration for weeks in which they have not entered
+   * all hours.
+   */
   $config['timereg_incompleteweeklock']=false;
   
-  // Allow future time registrations
+  /**
+   * Allow registration of time in the future. This is false by
+   * default, so that only time actually spent can be registered.
+   * Possible reasons to change are to allow registering vacations
+   * or medical appointments in advance.
+   */
   $config['timereg_allowfuture']=false;
   
-  
-  // Confirm hours are saved
+  /**
+   * Confirm hours are saved
+   */
   $config['hours_confirm_save']=false;
   
-  // Week bookable
+  /**
+   * Allow time registration on each day in a week in weekview.
+   * If set to false, the user must go to the dayview of a
+   * day first before they may register time.
+   */
   $config['timereg_week_bookable']=true;
   
-  // Lock week approval required ?
+  /**
+   * Require lock week approval
+   */
   $config['lock_week_approval_required']=false;
   
-  // Use startpoint for the overtime balance
+  /**
+   * Use startpoint for the overtime balance
+   * Specify if a fake startingpoint should be used by
+   * the overtime_balance node if no balance-records can be found to
+   * determine a new balance record.
+   *
+   * Possible values:
+   *    String date:   date in format YYYY-MM-DD.
+   *    Boolean true:  date is set to Dec 31 in former year
+   *    Boolean false: no startingpoint is used.
+   */
   $config['timereg_overtime_balance_use_startingpoint']=false;
 
-  // Turn Overtime debug on and it will write
-  // a log file into achievotmp/overtime.log
+  /**
+   * Enable Overtime Debug
+   * Enable to write log file to achievotmp/overtime.log
+   */
   $config['overtimebalancedebugging']=false;
   
-  // Check weeks in the reminder cron
+  /**
+   * Check weeks in the reminder cron
+   * Specify how many weeks back the timereg_check cron
+   * script searches for incomplete time registrations.
+   */
   $config['timereg_checkweeks']=true;
-  
+
 ?>

@@ -1,91 +1,69 @@
-Author
-------
-Ivo Jansch         <ivo at achievo.org>
-Sandy Pleyte       <sandy at achievo.org>
+The name by which a contributor is referred to in the doc/CHANGES file
+is given in []'s (if different from their first name).
 
+Programmers
+-----------
+The following individuals have contributed code to the Achievo project:
 
-Additional Development
-----------------------
-Peter Verhage      <peter at achievo.org>
-Wim Kosten         <wim at ibuildings.nl>
-Maurice Maas       <maurice at ibuildings.nl>
-Martin Roest       <martin at ibuildings.nl>
-Lineke Willems     <lineke at achievo.org>
-Boy Baukema        <boy at ibuildings.nl>
-
-
-Marketing and Support
----------------------
-Tom M. Schenkenberg <tom at achievo.org>
-Jeroen Stephan      <jeroen at ibuildings.nl>
-
-
-Sponsors
---------
-Achievo grows not only through contributions from the Open Source community,
-but also through financial donations from sponsors, who finance the
-development of new features.
-
-* Ibuildings.nl BV, Netherlands (http://www.ibuildings.nl) sponsors the
-  development of Achievo and sponsors Achievo's hosting and development
-  facilities (site, mailinglists, cvs etc).
-
-* Tryllian BV, Netherlands (http://www.tryllian.nl) sponsored the following
-  enhancements: hourlocking feature, employee week report, CSV export
-  function, employee contracts, the timereg_check cron script and various
-  hoursurvey improvements.
-
-* S&W Consultancy BV, Netherlands (http://www.s-w.nl) sponsored the following
-  enhancements: contactpersons per project, userinterface improvements,
-  improvements to the extended search feature, and several additional fields
-  for customers and projects.
-
-* Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
-  the billing feature.
-
-* Plan42 GMBH, Germany (http://www.plan42.de) sponsored the development
-  of the Deposit add-on module, some parts of the billing module, the
-  privilege to register time for any user and the limitation of time
-  registration to team-members only.
-
-* Prosa.dk, Denmark (http://www.prosa.dk) sponsored the development of the
-  weektimereg add-on module, the weekday stats and the multi-sort and
-  subtotals/aggregation for the hoursurvey report.
-
-* Kern8, The Netherlands (http://www.kern8.nl) sponsored the development
-  of cumulative usercontracts, the displaying of shortages in the employee
-  weekreport and the holidayreport add-on module.
-
-* Petrosys Pty, Australia (http://www.petrosys.com.au) sponsored the
-  fix for bug #269.
-
-* Langzaam Verkeer, Belgium (http://www.langzaamverkeer.be) sponsored the
-  overtime balance features, configurable overtime periods, time survey
-  date navigation, employee function levels, phase employee planning and
-  the detail planning tool.
-
-* Dataroomservices, The Netherlands (http://www.dataroomservices.nl) sponsored
-  the PDA mode, the configurable timereg confirmation message, the ability to
-  register based on time indication instead of duration and several
-  enhancements to employee management.
-
-* Veronica Digitaal, The Netherlands (http://www.veronicadigitaal.nl) sponsored
-  the ability to approve locked weeks and the employee department feature.
-
-* Waag Society, The Netherlands (http://www.waag.org) sponsored role based
-  security, and several enhancements to the time registration module.
-
-* ROC Zeeland, The Netherlands (http://www.roczeeland.nl} sponsored
-  
-* MOCH A/S, Denmark (http://www.moch.dk) sponsored several features of the
-  new scheduler module.
-
-To become a sponsor, please read http://www.achievo.org/services/sponsor/.
-
+Ajit Deshpande                         <ajit at pobox.com>
+Alexandre Carmel-Veilleux              <saruman at mondo-live.com>
+Andrei Dragomir                        <adragomir at iakt.rdsnet.ro>
+Boy Baukema                            <boy at ibuildings.nl>
+Brian Gillis                           <brian at thegillis.net>
+Bruno Meneuvrier                       <bruno at cameleons.net>
+Christian Lotz           [ChristianL]  <cl at plan42.de>
+Christian Nancy          [ChristianN]  <christian at gonetworkconsulting.com>  
+Dan Frame                              <dan_frame at jabil.com>
+Daniel Frame                           <dframe at tampabay.rr.com>
+Dennis Luitwieler                      <dennis at ibuildings.nl>
+Dennis-Jan Broerse       [dennisjan]   <dennisjan at ibuildings.nl>
+Harry School                           <harryschool at netscape.net>
+Herman Reintke                         <hreintke at tauri.nl>
+Ivo Jansch                             <ivo at achievo.org>
+Jaap Bouma                             <jaap at buyways.nl>
+Jakub Kahovec                          <jakub.kahovec at newton.cz>
+Jan Peter Hecking                      <jhecking at informatik.uni-rostock.de>
+Jason Kohles                           <jason at mediabang.com>
+Javier Ledesma                         <javier.ledesma at ubs.com>
+Jean-Charles Rogez                     <jean-charles.rogez at edfgdf.fr>
+Jeroen Latour                          <jlatour at calaquendi.net>
+Jeroen Stephan                         <jeroen at ibuildings.nl>
+Joachim N�bold                         <joachim.nuebold at syngenio.de>
+Jonas Lincoln                          <lincoln at unit.liu.se>
+Joop van de Wege                       <joopvandewege at mococo.nl>
+June Henriksen                         <juneih at linpro.no>
+Kevin Golding                          <kevin at caomhin.demon.co.uk>
+Lineke Willems                         <lineke at achievo.org>
+Lucas Smith                            <smith at dybnet.de>
+Maciej Maczynski                       <macmac at xdsnet.pl>
+Marcel van Rooijen                     <achievo at acha.nl>
+Martin ?                 [MartinAc]    <acmail at sebastian.nl>
+Martin Pruijssers
+Martin Roest                           <martin at ibuildings.nl>
+Matteo Bertini           [matteo]      <naufraghi at develer.com>
+Maurice Maas                           <maurice at ibuildings.nl>
+Michel Marti                           <michel.marti at ubs.com>
+Mike Izydorski                         <achievobug at mizydors.rubikon.pl>
+Paul Tiemann                           <pault at center7.com>
+Paul Verhoeff                          <paul at ibuildings.nl>
+Peter Verhage                          <peter at achievo.org>
+Rene Bakx                              <rene at ibuildings.nl>
+Roger Kristiansen                      <rogerk at linpro.no>
+Ruhshad Master                         <rmaster at csi-wireless.com>
+Sandy Pleyte                           <sandy at achievo.org>
+Sergio Fernandez                       <sergio.fernandez at agoratechnologies.com>
+Soh Kok Hong                           <kokhong at mobiwave.com>
+Stefan Leblanc                         <sleblanc at radicalhorizon.com>
+T. Luyben                              <tycho at e-lab.nl>
+Tobias Henle                           <t.henle at thiesen.com>
+Tom M. Schenkenberg                    <tom at achievo.org>
+Wayne T. Ethier                        <wte at websynergyinternet.com>
+Wim Kosten                             <wim at ibuildings.nl>
 
 Translators
 -----------
-The following people contributed a translation or updated an existing one:
+The following individuals have contributed either new translations or updates
+to existing translations:
 
 Braz. Portuguese: Armando M. Baratti   <ambaratti at aduaneiras.com.br>
                   Kevin Golding        <kevin at caomhin.demon.co.uk>
@@ -147,82 +125,122 @@ Spanish         : Jorge Ibsen          <jibsen at eso.org>
                   Ernesto Mendoza Blanco <ernesto at emb.com.mx>
 Swedish         : Thomas Karlsson      <thomas.karlsson at relea.se>
 
-
 Major Contributors
 ------------------
-We like to thank the following people especially, since they made
-significant contributions to the Achievo project.
+The following individuals and organizations have contributed significantly
+to the Achievo project for which we thank them.
 
-Stefan Niederhauser <sn at atelier-w.ch>
+Ibuildings
+
+    Achievo (and the ATK Framework used to build it) was created by
+    Ibuildings, who were responsible for development up to version 1.4.5 (after
+    which Ibuildings allowed the ATK community to assume responsibility). The
+    following Ibuildings staff are individually recognized for their efforts.
+
+    Author
+    ------
+    Ivo Jansch                         <ivo at egeniq.com>
+    Sandy Pleyte                       <sandy at achievo.org>
+    
+    Additional Development
+    ----------------------
+    Peter Verhage                      <peter at achievo.org>
+    Wim Kosten                         <wim at ibuildings.nl>
+    Maurice Maas                       <maurice at ibuildings.nl>
+    Martin Roest                       <martin at ibuildings.nl>
+    Lineke Willems                     <lineke at achievo.org>
+    Boy Baukema                        <boy at ibuildings.nl>
+    
+    Marketing and Support
+    ---------------------
+    Tom M. Schenkenberg                <tom at achievo.org>
+    Jeroen Stephan                     <jeroen at ibuildings.nl>
+
+Stefan Niederhauser                    <sn at atelier-w.ch>
 
   Stefan came up with the idea and design of the 'node' concept, which
   later became the basis of the ATK backend.
 
-William Rhee <willrhee at umich.edu>
+William Rhee                           <willrhee at umich.edu>
 
   William, of the University of Michigan, added Oracle 8i Support
   to Achievo.
 
-Marc van Agteren <mva at buzzmachines.com>
+Marc van Agteren                       <mva at buzzmachines.com>
 
-  Marc developed the initial version of the finance menu, during
-  an internship at ibuildings.nl.
+  Marc developed the initial version of the finance menu during his
+  internship at ibuildings.nl.
 
-Ludo Beumer <l.m.beumer at home.nl>
+Ludo Beumer                            <l.m.beumer at home.nl>
 
-  Ludo developed the initial version of the resource planning feature,
-  during an internship at ibuildings.nl.
+  Ludo developed the initial version of the resource planning feature
+  during his internship at ibuildings.nl.
 
+Sponsors
+--------
+The following individuals and organizations have contributed to Achievo
+development through their greatly appreciated sponsorship:
 
-Other Contributors
-------------------
-We received bugfixes and other contributions from the following people:
+	If you would like to sponsor Achievo development, please indicate
+	your interest in a post to the Achievo/ATK forum
+	http://forum.achievo.org/ (you will need to create a free profile
+	first, and please post in the Achievo Development Questions sub-forum).
 
-Alexandre Carmel-Veilleux             <saruman at mondo-live.com>
-Jan Peter Hecking                     <jhecking at informatik.uni-rostock.de>
-Jason Kohles                          <jason at mediabang.com>
-Javier Ledesma                        <javier.ledesma at ubs.com>
-T. Luyben                             <tycho at e-lab.nl>
-Martin Pruijssers
-Wayne T. Ethier                       <wte at websynergyinternet.com>
-Michel Marti                          <michel.marti at ubs.com>
-Paul Verhoeff                         <paul at ibuildings.nl>
-Lucas Smith                           <smith at dybnet.de>
-Daniel Frame                          <dframe at tampabay.rr.com>
-Jakub Kahovec                         <jakub.kahovec at newton.cz>
-Paul Tiemann                          <pault at center7.com>
-Tobias Henle                          <t.henle at thiesen.com>
-Andrei Dragomir                       <adragomir at iakt.rdsnet.ro>
-Harry School                          <harryschool at netscape.net>
-Sergio Fernandez                      <sergio.fernandez at agoratechnologies.com>
-Maciej Maczynski                      <macmac at xdsnet.pl>
-Dan Frame                             <dan_frame at jabil.com>
-Marcel van Rooijen                    <achievo at acha.nl>
-Herman Reintke                        <hreintke at tauri.nl>
-Jeroen Latour                         <jlatour at calaquendi.net>
-Soh Kok Hong                          <kokhong at mobiwave.com>
-Kevin Golding                         <kevin at caomhin.demon.co.uk>
-Joachim N�bold                      <joachim.nuebold at syngenio.de>
-Bruno Meneuvrier                      <bruno at cameleons.net>
-Ajit Deshpande                        <ajit at pobox.com>
-Jean-Charles Rogez                    <jean-charles.rogez at edfgdf.fr>
-Jonas Lincoln                         <lincoln at unit.liu.se>
-Jaap Bouma                            <jaap at buyways.nl>
-Martin ?                 [MartinAc]   <acmail at sebastian.nl>
-Mike Izydorski                        <achievobug at mizydors.rubikon.pl>
-Stefan Leblanc                        <sleblanc at radicalhorizon.com>
-Christian Lotz           [ChristianL] <cl at plan42.de>
-Joop van de Wege                      <joopvandewege at mococo.nl>
-Ruhshad Master                        <rmaster at csi-wireless.com>
-Brian Gillis                          <brian at thegillis.net>
-Rene Bakx                             <rene at ibuildings.nl>
-Dennis Luitwieler                     <dennis at ibuildings.nl>
-Christian Nancy          [ChristianN] <christian at gonetworkconsulting.com>  
-Dennis-Jan Broerse       [dennisjan]  <dennisjan at ibuildings.nl>
-Roger Kristiansen                     <rogerk at linpro.no>
-June Henriksen                        <juneih at linpro.no>
-Matteo Bertini           [matteo]     <naufraghi at develer.com>
+* Ibuildings.nl BV, Netherlands (http://www.ibuildings.nl) sponsored the
+  creation of Achievo and the ATK Framework, and currently sponsor the Achievo
+  website (http://www.achievo.org), the ATK Framework website
+  (http://www.atk-framework.com), and the Achievo/ATK forum
+  (http://forum.achievo.org). Ibuildings also host the legacy svn code
+  repository, bug tracker, and wiki.
 
+* Tryllian BV, Netherlands (http://www.tryllian.nl) sponsored the following
+  enhancements: hourlocking feature, employee week report, CSV export
+  function, employee contracts, the timereg_check cron script and various
+  hoursurvey improvements.
 
-Names between [] are the names they are refered by in the CHANGES file. (If
-different from their first name).
+* S&W Consultancy BV, Netherlands (http://www.s-w.nl) sponsored the following
+  enhancements: contactpersons per project, userinterface improvements,
+  improvements to the extended search feature, and several additional fields
+  for customers and projects.
+
+* Lilleborg AG, Norway (http://www.lilleborg.no) sponsored some parts of
+  the billing feature.
+
+* Plan42 GMBH, Germany (http://www.plan42.de) sponsored the development
+  of the Deposit add-on module, some parts of the billing module, the
+  privilege to register time for any user and the limitation of time
+  registration to team-members only.
+
+* Prosa.dk, Denmark (http://www.prosa.dk) sponsored the development of the
+  weektimereg add-on module, the weekday stats and the multi-sort and
+  subtotals/aggregation for the hoursurvey report.
+
+* Kern8, The Netherlands (http://www.kern8.nl) sponsored the development
+  of cumulative usercontracts, the displaying of shortages in the employee
+  weekreport and the holidayreport add-on module.
+
+* Petrosys Pty, Australia (http://www.petrosys.com.au) sponsored the
+  fix for bug #269.
+
+* Langzaam Verkeer, Belgium (http://www.langzaamverkeer.be) sponsored the
+  overtime balance features, configurable overtime periods, time survey
+  date navigation, employee function levels, phase employee planning and
+  the detail planning tool.
+
+* Dataroomservices, The Netherlands (http://www.dataroomservices.nl) sponsored
+  the PDA mode, the configurable timereg confirmation message, the ability to
+  register based on time indication instead of duration and several
+  enhancements to employee management.
+
+* Veronica Digitaal, The Netherlands (http://www.veronicadigitaal.nl) sponsored
+  the ability to approve locked weeks and the employee department feature.
+
+* Waag Society, The Netherlands (http://www.waag.org) sponsored role based
+  security, and several enhancements to the time registration module.
+
+* ROC Zeeland, The Netherlands (http://www.roczeeland.nl} sponsored
+  
+* MOCH A/S, Denmark (http://www.moch.dk) sponsored several features of the
+  new scheduler module.
+
+###
