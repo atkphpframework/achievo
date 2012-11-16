@@ -2,11 +2,41 @@
 - : deprecated feature
 * : bugfix or changed code
 
-Issue numbers are references to issues in the Achievo project issue tracker on GitHub:
-	https://github.com/atkphpframework/achievo/issues
+Issue numbers are references to issues in the Achievo project issue tracker
+  on GitHub: https://github.com/atkphpframework/achievo/issues
 Bug numbers are references to bugs in the ibuildings Bugzilla bug tracker:
 	http://bugzilla.achievo.org
 [names] are references to contributors listed in the AUTHORS file.
+
+* Please do not exceed 80 characters per line.
+* Latest changes go on top, different types of changes may be mixed.
+
+Changes in Achievo 1.5 (svn-master branch)
+----------------------------
++ Added New and Edit links to the contract field in projects. [Guido]
++ Added emplyee contract templates [Sandy]
++ Added feedbackmessage after saving userpreferences [Sandy]
++ Added weeknumber to timereg day view [Sandy]
+* Fixed problem with displaying non active employees in the project
+  team search. (Bug #1561) [Yury]
+* Fixed weekview date display. [Sandy]
+* Fixed typo's in some translations. [Guido]
+* Allow all GET and POST parameters in links to index.php. [Guido]
+
+Changes in Achievo 1.4.6-rc.2
+-----------------------------
+* Documentation updates (primarily to README.md)
+
+Changes in Achievo 1.4.6-rc.1
+-----------------------------
++ Added .gitignore [dalers]
+* Removed duplicated timereg configs from config.inc.php (duplicated in
+  /configs/modulename.inc.php) [klaaspeter]
+* Changed documentation to reflect Achievo now being a community-led
+  project [dalers]
+* Segregated optional from required modules in modules/config.modules.inc
+  [klaaspeter]
+* Corrections made to global nl language translations [klaaspeter]
 
 Changes in Achievo 1.4.5
 ------------------------
@@ -62,9 +92,8 @@ Changes in Achievo 1.4
 * Updated Russian, Ukranian, Slovak, Polish, Brazilian Portuguese,
   Spanish, German, Norwegian and French translations [Sandy]
 
-
 Changes in Achievo 1.4RC1
--------------------------
+----------------------
 + In user preferences->pim we can't select the pim items that we don't have 
   access to. To add checking access right to pim item, add the following method 
   to your module:
@@ -157,7 +186,1207 @@ Changes in Achievo 1.4RC1
 * Fixed fresh install of the person module so it installs completely
   instead of only installing until patch 6. [Dennis]
 
-Changes in prior versions
+Changes in Achievo 1.3.4
+------------------------
+* Fixed ability to copy projects in custom modules. [Dennis]
++ Added hours_approve_only_show_not_approved translation. [Guido]
+- Removed non-used 'organization' column from hoursurvey. [Guido]
+* Fixed validation of obligatory reason for blocked week disapproval. [Guido]
+* Fixed ability to block weeks in which no project hours are registered when
+  approve_period_per_coordinator is set to true in the configuration file.
+  [Guido]
+* Fixed timereg.reminder_hoursnotblocked cronjob sending emails when a week is
+  blocked for everyone. [Guido]
+* Fixed weekComplete check: If there were no contracts and/or
+  timeregistrations, a week still appeared to be completely
+  booked. [Dennis]
+* Fixed SQL error in reminder_hoursnotblocked cron. [Guido]
+* Fixed missing translations in emails sent to project coordinators
+  when one of their team members locks a week in the time registration.
+  [Guido]
+* Fixed timeout in reports when two employees are eachothers supervisor.
+  [Guido]
+* Made language field in employees, contact persons and userprefs non-
+  obligatory. This also fixes language field obligatory errors when saving
+  a node record that hides the language field. [Guido]
+* Fixed SQL error when using aggregation of certain columns in the
+  hours survey. [Guido]
+* Fixed filter on project selection page in time registration. [Guido]
+* Fixed spendhoursattribute displaying no virtual hours. [Guido]
+* Fixed phases having a readonly status field when adding/editing them from
+  a project page in which the phases list is set to show active or non
+  active phases onlye. [Guido]
+* Fixed moving hours. [Dennis]
+
+Changes in Achievo 1.3.3
+------------------------
+- Removed mcpuk file manager of the fckeditor in ATK because
+  it contains a security exploit. [Sandy]
+- Removed non-used 'organization' column from hoursurvey. [Guido]
+* Fixed weekComplete check: If there were no contracts and/or
+  timeregistrations, a week still appeared to be completely booked. [Dennis]
+
+Changes in Achievo 1.3.2
+------------------------
+* Fixed edit button of non recurring events in the scheduler. [Sandy]
+* Fixed saving of the duration of an event. [Sandy]
+* Fixed adding todos which caused an SQL error. [Dennis]
+* Fixed adding new contacts from the project screen. (bug #949) [Sandy]
+* Fixed adding new projects on 29 Feb. (bug #954) [Sandy]
+* Created workaroung for adding projects based on a phase
+  template, see ticket for more information. (bug #948) [Sandy]
+* Fixed SQL error when selecting activities that are also in
+  the selected template when adding a phase. [Sandy]
+* Fixed aggregation of unsorted columns [Guido,Jeroen]
+
+Changes in Achievo 1.3.1
+------------------------
+* Fixed SQL Error and interface problems in hours approval functionallity.
+  [Guido]
+* Fixed duplicated key error in the scheduler. [Sandy]
+* Fixed parse error in japanese language file. [Sandy]
+* Fixed fonts of Steelbue and Macoslike themes. [Sandy]
+
+Changes in Achievo 1.3
+----------------------
++ Added equal project/phase combination to project list. [Yury]
+* Fixed problem where adding multiple time registraions using a period of
+  time didn't work because the weekday filter selection was hidden. [Guido]
+* Fixed problem when editing scheduler notes/attendees. [Sandy]
+* Fixed version number in timereg/employee install file. [Yury]
+* Fixed sql error when subproject select in hoursurvey. (bug #927) [Yury] 
+* Fixed Error on 'approve week' page. (bug #936) [Yury]
+* Fixed deleting hours in hoursurvey report. [Yury]
+* Fixed problem with recurring events. [Sandy]
+
+Changes in Achievo 1.3RC2
 -------------------------
-Changes in older versions can be found by searching the Achievo Git repository at:
-https://github.com/atkphpframework/achievo
++ Added projects category field project and projects category filter
+  tohoursurvey. [Yury]
++ Added master/subproject support for project and hoursurvey. [Yury]
++ Added missing dirs for docmanager module. [Sandy]
++ Added missing documents tab for quotations. [Sandy]
++ Added executeSQL function to setup module, this makes it possible
+  to execute SQL queries for creating tables etc. This makes it
+  possible to use the atkMetaNode. [Sandy]
++ Active and archived contracts are now on seperate subtabs when viewing/editing an
+  organisation [Dennis]
++ Added import link for contacts. [Sandy]
+* Fixed ATK Bug with strange chars in the AJAX dropdowns. [Yury]
+* Fixed bug with obligatory fields in person table. [Sandy]
+* Removed some menu items when a user doens't have the rights
+  for it. [Sandy]
+* Removed contacts search from scheduler if the user doesn't
+  have the rights for it. [Sandy]
+* Fixed default userview database field size. [Sandy]
+* Fixed password restrictions in the userpreferences. [Sandy]
+* Fixed in the todo history, project id isn't obligatry. [Sandy] 
+* Fixed the Phase Template functionallty. (bug #885) [Sandy]
+* Fixed patch 6 of the timereg module so the update from
+  Achievo 1.0/1.1 works. (bug #874) [Sandy]
+* Fixed missing version update for person module. [Guido]
+* Enlarged the project name field to 200 chars. [Guido]
+* Fixed filter in Master-Gantt colors. [Sandy]
+* Fixed with adding contacts to a project. (bug #887) [Sandy]
+* Fixed problem with projectid in time registration. [Sandy]
+* Fixed translation of activeprojects. [Dennis]
+* Fixed moving hour registrations in the hoursurvey. [Dennis]
+* Updated  Dutch, Swedish, Danish and Finnish language files. [Sandy]
+
+Changes in Achievo 1.3RC1
+-------------------------
++ Added 'activate'/'archive' button to the contract edit page. Pressing to
+  this button the status of contract and projects change accordingly - from
+  active to archive, and from archive to active to both contract and all
+  projects, that link to this contract. [Ivo,Yury]
++ Added a new user-selector to the scheduler. You can now select multiple
+  users to compare agenda's with. Added current user selection as a stackvar.
+  [Edgar]
++ Added CSV import possibility to projects and employees.
++ Added ability to set the following password restrictions: minimum length,
+  minimum number of uppercase characters, minimum number of lowercase
+  charactes, minimum number of uppercase and lowercase characters together,
+  number of numbers and the number of special characters. This can be done
+  by setting the $config_password_minsize, $config_password_minupperchars,
+  $config_password_minlowerchars, $config_password_minalphabeticchars,
+  $config_password_minnumbers, $config_password_minspecialchars variables.
+  [Guido]
++ Added ability for users to select their own language. [Boy]
++ Added achievo_modern theme. [Norman,Boy]
++ Added the ability to globaly disallow specific pim items to be used.
+  [Guido]
++ Added description field to roles. [Guido]
++ Added patch for updating the user language with the default language
+  when it's not set. [Sandy]
++ Added patch for updating the user theme with the default theme when
+  it's not set or contains a depricated theme. (bug 665) [Sandy]
++ Added contractname to the contracts. This field will be used in
+  the project admin instead of the description field. (bug 475) [Sandy]
++ Added duration field for project phase to see how many workdays there
+  are in a phase. [Sandy]
++ Added the projectcode to project descriptors. [Guido]
++ Added ability to set a $config_projectnumbermodule to asssign a module
+  the task of generating project numbers (implemented in the
+  getInitialProjectcode() function). [Guido]
++ Added a basereport class which is a generic implementation of a report
+  having a filter interface with some attributes, a refresh button and
+  one or more output boxes which are shown after clicking the refresh
+  button. To use this class, just inherit, add filter attributes in the
+  constructor as you would with any other node, eventually write an
+  initial_values function and implement the
+  getContentElements($filterrecord) function. [Guido]
++ Added a customer (organization) relation to projects. [Guido]
++ Added filter attribute to allow filtering projects by their contactpersons.
+  [Guido]
++ Added organization type (customer / supplier) to organizations. The
+  admin view can also filter using this type attribute. [Guido]
++ Added export function to organization node. [Guido]
++ Fixed display function for the email field when in csv or plain mode.
+  [Guido]
++ Added a list of active and archived projects on seperate tabs to the
+  contactperson view / edit pages. [Guido]
++ Added project.billing_type column (still dirty and hardcoded, but only
+  active when the billing module is installed). [Guido]
++ Added a print button to the hour survey. [Guido]
++ Added a printerfriendly stylesheet to allow printing reports without
+  the filters and theme decorations taking up space and ink/toner. [Guido]
++ Added descriptor for user contracts. [Guido]
++ Added support for cascading deleting hour registrations when deleting
+  a phase. [Dennis]
++ Added filter and a column diff_planning to the projectstatus report.
+  [dennisjan]
++ Added new feature when you add a project and you want to copy a specific
+  documentstructure. [dennisjan]
++ Added config to use a startingpoint for overtime_balance hours, if no
+  records can be found to determine a new balance. [Dennis, Ivo]
++ Added Ajax functionality in hours node. [Dennis]
++ atkManyToOneRelations that have the AF_LARGE flag set are autocompletion
+  fields. [Dennis]
++ Added initial value for workperiod in hours node for autocompletion
+  fields. [Dennis]
++ Added a phase-template grid to the project node. From this grid phase
+  templates can be selected. [Dennis]
++ Time registration can now be locked per month. [Roger, June]
++ Achievo now supports $config_durationformat, which can be 0 (1:30 time
+  format) or 1 (1.5 decimal format). [Yury]
++ Added support for atkTab in the url (bug #741) [Yuri]
++ Added quotation module [Sandy]
++ Added docmanager module [Sandy]
++ Added CRM features [Sandy]
++ Added a new Scheduler module with:
+  + recurring events (bug #139) [Sandy]
+  + updated day, week and monthview [Sandy]
+  + new pim view [Sandy]
+  + a new birthday view [Sandy]
+  + new user configurations [Sandy]
++ Added configurable week startday [Sandy]
++ Added configurable first week of the year [Sandy]
++ Added debtorfield to organization. (bug #768) [Yuri]
++ Added check on any_project in select action. (Bug #753) [Matteo]
++ Added ability to register time on specific contacts by setting
+  'timereg_contact_link' timeregistration configuration option
+  to true. [Yury,Boy]
++ Added security rights for the planning and financial tabs. [Guido]
+* Bug fixed week report nameswitch wasn't working correctly [dennisjan]
+* When you have the right to see the hours of everyone, you will see now
+  all the hours from the persons wich you are allowed to see. [dennisjan]
+* Fixed bug in achievotools when time is 0 the function should return a
+  & nbsp; [dennisjan]
+* Fixed PHP notices. [Guido]
+* Replaced deprecated text() calls by atktext(). [Guido]
+* Fixed session problem with master gantt which in some cases would not
+  display because it thought the session had expired. [Guido]
+* $config_auth_usernode and config_auth_emailfield are now set. The
+  password mailing feature can now be enabled by setting
+  $config_auth_enablepasswordmailer = true; in config.inc.php. [Guido]
+* Bugfix: When selecting a new contact in a project it shouldn't show
+  the userid field. [Sandy,Ivo]
+* Added dutch and english tranlations of the adminpim text. [Guido]
+* Fixed a rendering bug in the calendar dayview which caused appointments
+  to be drawn not as long as they should be. A workaround for this problem
+  was already implemented for netscape/mozilla based browsers by not
+  showing the border around an appointment (which was causing this
+  problem). Internet Explorer 6 however, also seemed to affected by this
+  rendering bug, which is the reason for this change. Now the border around
+  the appointment is implemented differently (using CSS) and the exception
+  for netscape/mozilla users is removed. [Guido]
+* Removed deprecated atklayout usage. [Guido]
+* Replaced "-" options by "No value" options in the orderby feature of
+  the Hours survey. [Guido]
+* The list of activities in the time registration should not be translated.
+  (also prevents translation not found warnings). [Guido]
+* Fixed the login problem where you would see a login box in the menu and
+  top frame after logging in. This was caused by the menu and top pages
+  not being requested through a session_url. [Guido]
+* Menuitem urls should be passed through session_url. [Guido]
+* Fixed the project selector list on top of the project menu not being
+  populated sometimes. [Guido]
+* Updated the session expired screen using a relogin button instead of a
+  relogin link. [Guido]
+* Index.php now uses atkoutput instead of an evil(tm)(r)(c) echo() call
+  to send the frameset document to the browser. [Guido]
+* Removed duplicate </html> tag. [Guido]
+* Moved html from hours node to templates to make Achievo better
+  themable. [Boy]
+* Made top pass along centerpiece_links to top.tpl for those
+  that want to style their own centerpiece links. [Boy]
+* Fixed some html errors in the achievo_modern theme login template.
+  [Guido]
+* Partially fixed a problem where the loginform would keep posting the same
+  username and password regardless of wat you enter in the username and
+  password fields after having submitted the loginform once and submitting
+  it again when the achievo_modern theme is set to default. [Guido]
+* Sorted the list of languages in the user preferences language selector.
+  [Guido]
+* If "language_nl"-like language identifiers cannot be translated,
+  fallback to "nl" instead in the user preferences language selector.
+  [Guido]
+* Moved page refresh code from the language selector attribute to the
+  userprefs node. [Guido]
+* Optimized the getThemes function a little bit and moved it into the
+  userprefs node class. Themes without a themedef.inc file also won't
+  be included in the getThemes result anaymore. [Guido]
+* Changed the page refresh code so the userprefs edit page is loaded, not
+  the pim after refreshing (like the adminlangselectattribute's page
+  refresh code did). [Guido]
+* The page refresh code will now only be executed when the theme or
+  language is changed and won't cause you to be logged out under certain
+  circumstances. [Guido]
+* Updated version information. [Guido]
+* Consolidated all date fields to adhere to the format specified in the
+  language files. [Guido, Ivo]
+* Converted the role's description field into a multi-line text field.
+  [Guido]
+* Updated the Todo module with:
+  + Added Private field (for private todo's) [Sandy]
+  + Added completed field (dropdown with 0%,10%,20%..100%) [Sandy]
+    Also when you set completed to 100% it will automaticly set the status to
+    'completed'. [Sandy]
+  + Added closedate field (will be filled when the todo is completed for 100%
+    or the status is completed). [Sandy]
+  * 'assigned to' only shows active users in the dropdown (bug 667) [Sandy]
+  * When you create a private todo it's still possible to assign it to
+    somebody else. Only the owner and assigned to will see it. [Sandy]
+  * The admin screen has a new action completed, it will set the todo to 100%
+    and status 'completed' [Sandy]
+* Fixed 'SQL' error when using the todo or any related functionality when
+  logged in as administrator. [Guido]
+* Added "Change abbreviation" right to (dis)allow editing of a project's
+  abbreviation. [Guido]
+* Made theme selector in userpreferences also find module themes. [Boy]
+* When adding a pim item in the userpreferences it will only show the
+  items the user doens't has allready. [Sandy]
+* Fixed calculating start and end date of a project for the Project
+  planning gantt chart. (bug 526) [Sandy]
+* Contract shows now shows the non active projects too.
+  (bug 424) [ChristianL]
+* Todo's and Notes in the projectmenu now also checks the any_project
+  right. If the user doesn't have the right it will only show the projects
+  of which he is the coordinator. [Sandy]
+* Quoted userid in SQL in order to prevent SQL errors when logged in as
+  administrator. [Guido]
+* Added "Change abbreviation" right to (dis)allow editing of a project's
+  abbreviation. [Guido]
+* Added isEmpty function to projectPhaseAttribute to enable proper
+  obligatory field validation. [Guido]
+* Replaced addColumn with installNode call in timereg patch 8 to prevent an
+  error when upgrading from timereg patchversion 1. [Guido]
+* Only show the master gantt menuitem if you have rights to use it. [Guido]
+* Cleaned up getMenuItems function and made hoursadmin link unavailable
+  when you don't have rights to use it. [Guido]
+* hours_admin link was still shown when a user didn't have rights to use
+  it. [Guido]
+* Changed centerpiece form hard referenced links in top.tpl into a foreach
+  loop to make the contents of the centerpiece more controllable through
+  code. [Guido]
+* Only show the userprefs link when a user has rights to use it. [Guido]
+* Only return a search results containing view links if a user has rights
+  to use them. [Guido]
+* Made phase and project names clickable in select screens. [Guido]
+* Changed abbreviation field in projects into a projectcode field. [Guido]
+* Made projectcode visible and searchable in the project admin screen.
+  [Guido]
+* Fixed datejumper not working due to typo in sessionform reference in
+  hoursadmin. [Guido]
+* Currently selected date in time registration will be globally stored so
+  when you return to the time registration after using some other funcitons
+  of achievo, you will still be at the same date. [Guido]
+* Fixed todo admin / pim screens to treat 'private is null' records the
+  same as records where private=0. [Guido]
+* Moved arrays of month names (both short and long) into seperate
+  functions. [Guido]
+* Quoted values and added tablenames to columnnames in where clause to
+  prevent SQL errors in todo's. [Guido]
+* Percentages should not translate. [Guido]
+* Fixed security for complete and mra_complete actions. [Guido]
+* Fixed coding error causing no id to be passed to the complete action
+  when clicking recordlist action icon. [Guido]
+* Added void ($this->redirect) implementation to complete and mra_complete
+  actions (TODO: Implement these actions). [Guido]
+* Sort registrations by project abbreviation. [Guido]
+* Fixed html errors in organization view and edit screens. [Guido]
+* Show and sort project/phase lists by projectcode. [Guido]
+* Put the projectcode in front of the name. [Guido]
+* Fixed out-of-scope planned/booked filter value. [Guido]
+* Functionally decomposed the querying of planned hours on a project. [Guido]
+* Added missing classname to compare callback function reference in usort()
+  call. [Guido]
+* Fixed renderbox call (added missing $name="top" parameter). [Guido]
+* Added colon as seperator between projectcode and projectname in
+  descriptor. [Guido]
+* Fixed style problem where the first column would be stretched to almost
+  the full pagewidht, while other columns need that space much more than
+  the first column. [Guido]
+* Removed unneeded and deprecated text() calls. [Guido]
+* Fixed translation issues. [Guido]
+* Removed isholiday debugging (with emphasis on bugging). [Guido]
+* Fixed css syntax error and invalid negative padding-left value
+  in achievo_modern theme. [Guido]
+* Fixed security problem when adding/editing/deleting team members and
+  contact persons from projects. [Guido]
+* Replaced printerfriendly outputtype by css print media support. [Guido]
+* When printing a report which uses css print media support, the chosen
+  filters are now included in the printed output. [Guido]
+* Improved layout and ability to add extra columns from withing external
+  modules. [Guido]
+* Fixed a timereg delete problem where deleting a time registration causes
+  an SQL error. [Guido]
+* Fixed FCK editor not being entirely visible in the achievo_modern theme.
+  [Guido]
+* Displaying of projects for organization now uses the customer field of the
+  project to select the active projects and archived projects. [Lineke]
+* Usermail() in Achievotools now replaces bare LF with CRLF. [Dennis]
+* Dropdowns and lists displaying employee name now also display userid. [Ivo]
+* Userid's are no longer forced to lowercase. [Ivo]
+* Added dutch and english translation for duration field in phases. [Dennis]
+* Fixed: Store() function of spendHoursAttribute in project node, did not
+  return a boolean. [Dennis]
+* Fixed: preAdd() function in timereg.hours did not return a boolean. [Dennis]
+* Added support for AJAX in editform of achievo_modern theme. Added id field to
+  the TD. [Ivo,Dennis]
+* Userid's are no longer forced to lowercase. [Ivo]
+* Fixed: The basereport form now has an id field. [Dennis]
+* lng, theme and startday field in the person table are
+  nullable now. (bug #699) [Sandy]
+* Active projects is now a relation in stead of selectdb [dennisjan]
+* Added translation for add project. [dennisjan]
+* Added extra sort param for the todo node. [dennisjan]
+* Fixed filter bug for the diff column and displayzero set to true [dennisjan]
+* In project node changed from address to the default from address. [dennisjan]
+* Project node now uses the parseDirectoryName function of atkfileutils
+  [dennisjan]
+* Fixed: deleting of none-manual overtime_balance hours did not remove records
+  with the manual field set to NULL. [Dennis]
+* Fixed: Removed notice in overtime_balance node. [Dennis]
+* Fixed bug in usercontracts node: the flags are the fifth argument instead of
+  the 4th. [Dennis]
+* The overtime_balance calculation now also works if a user does not have a
+  contract with specified working days. [Dennis]
+* Fixed: If hourregistrations are made or edited in the past, the latest
+  manual correction was not searched for in the past, resulting sometimes
+  in an incorrect calculation of overtime_balance. [Dennis]
+* Remove contacts and members from the project_person table when
+  deleting a project. (bug #742) [Sandy]
+* Don't show complete option for todo's that are allready completed.
+  (bug #746) [Yuri]
+* Fixed sequence in the dropnode function of the
+  setup module. (bug #725) [Yuri]
+* Fixed descriptor of organization.contracts node [Dennis]
+* Fixed: projectstatus now also shows phases without a startdate
+  and/or enddate. [Dennis]
+* Fixed: fatal error in class.project.inc. [Dennis]
+* Fixed: Removed border from atkboolattribute in Internet Explorer.
+  [Dennis]
+* Fixed: javascript error when clicking on a column in the
+  weekreport. [dennis]
+* Fixed: startdate and enddate were not correctly determined in
+  the weekreport node. [Dennis]
+* Fixed: When using a graphAttribute on a page, the submit buttons did
+  not work in IE due to a subform added by the graphAttribute.
+  [Peter,Dennis]
+* Fixed: The stats tab in project node wasn't visible in the view action.
+  [Peter, Dennis]
+* Fixed: When using the graph module, PHP errors and deprecated messages
+  were visible to the user. Configured jpg-config.inc to hide these
+  messages. [Peter, Dennis]
+* Fixed: Link-Name of phase on select-page of the phasenode was broken and
+  caused a 'session expired' notice. [Dennis]
+* In the hours node, the viewuser dropdown can be configered by overriding
+  the functions viewuserFilter and viewuserOrderBy and uses the descriptor
+  template of the employee node. [Dennis]
+* The hoursnode that is used by the hoursurvey can be set to a different node
+  by overriding the function getHoursNodeName(). [Dennis]
+* Basereport now also supports autocompletion. [Dennis, Guido, Peter]
+* Fixed: initial user was always reset in the hoursnode. [Dennis]
+* Social security and bankaccount number fields are now hidden when adding a
+  new employee. [Ivo]
+* When adding a new project, the currently logged in user is now set as
+  the project coordinator by default. [Ivo]
+* Moved achievo_modern theme to new location. This should go unnoticed but
+  you may need to clear the achievotmp/themes dir when upgrading. [Ivo]
+* Preserved customer field when upgrading from 0.9.1. (bug #765) [Yuri]
+* Fixed bug in weekreport with locks (bug #790) [Sandy]
+* Fixed adding supervisors from the employee screen (bug #675)
+  [Peter, Sandy]
+* Fixed employee weekreport when using it as administrator. [Sandy] (bug #866)
+* Fixed problem with the 'Any Project' in the project
+  management. [Sandy] (bug #855)
+* Fixed Editing time registrations from hoursurvey [Sandy] (bug #852)
+* Fixed register time on other users [Sandy] (bug #850)
+
+Changes in Achievo 1.2.1
+---------------------------
++ Added $config_timereg_allowfuture setting for allowing time registration in
+  the future (false by default). [Ivo]
+* Fixed fatal error in activity stats. [Sandy]
+* Fixed bug in project start/enddates when data was converted from an
+  earlier Achievo version. [Ivo]
+* Projects/phases whose end date has expired can now still be used in time
+  registration. [Ivo]
+* Bugfix: Users with 'any user' privilege in timereg could no longer edit
+  other peoples timereg. [Ivo]
+* Fixed quick add of planning employees in a phase. Time was saved in
+  minutes instead of converted to minutes first. (bug #522) [Sandy]
+* Fixed SQL injection in employees node. (bug #624) [ChristianN]
+* Fixed the search box in the top frame. (bug #648) [Ivo]
+* When adding a phase it will check if the enddate isn't before
+  the startdate. (bug #439) [Sandy]
+* Fixed department criteria in Time Survey Report. (bug #656) [Sandy]
+
+Changes in Achievo 1.2
+---------------------------
+* Fixed bug with archived projects. [Sandy]
+* Updated dutch language file. [Guido]
+* Updated employee departments. [Sandy]
+* Updated employee stats and the reports. [Sandy]
+* Updated all deprecated getNode and text calls also rewrote the code
+  that used the deprecated layout class. [Sandy]
+
+Changes in Achievo 1.2RC1
+---------------------------
++ Added cronjob for checking expiration dates of usercontracts. [Dennis]
++ Added cronjob to check expired contracts and change their status.
+  The status of active linked projects is also changed
+  The cronjob also checks contracts that are not active (i.e. archived or
+  nonactive) and makes sure all linked projects have the status
+  'nonactive' [Dennis]
++ Added attributes (billing_type, aftercalculation and priceperhour) in
+  organization contracts. [Dennis]
++ Added installation support for PostgreSQL. [Peter]
++ Now possible to make the 'contact' field obligatory by changing a var in
+  config.inc.php. [Harrie]
++ Made chart height/width configurable. [Harrie]
++ Added ability to assign department to employee. [Harrie]
++ Hoursurvey is now able to search on department and functionlevel. [Harrie]
++ Made max bookable hours configurable. [Boy]
++ Added ability to approve locked weeks. [Boy]
++ Added ability to make a rate per projectphase and time. [Boy]
++ Added ability to book on times instead of hours. [Boy]
++ Added PDA mode for Achievo. [Boy]
++ Added feature to let the user confirm to something upon first
+  timeregistration to a project. [Boy]
++ Added banknumber and social security number to employee. [Boy]
++ Made hoursurvey display rates and costs per timeregistration. [Boy]
++ An employee can now have more than one security profile (role based
+  security). [Ivo]
++ Added vcard export for employees/contacts/organizations. [Ivo]
++ Added invoice address to organization. [Ivo]
++ Added Japanese language file. [James]
++ Added robots.txt file so Achievo installations do not get spidered. [Ivo]
++ Added deliverables feature to project management. [Ivo]
++ Added deliverables and phase dependencies to Gantt chart. [Ivo]
++ Added projectstatus report. [Ivo]
++ Added Master Gantt chart. [Ivo]
++ an e-mail will be sent to project coordinators as soon as an employee
+  registers time on a phase that hasn't started yet, or a phase that depens
+  on a non-complete deliverable.
++ Added an initials field to persons (contacts and employees). [Guido]
++ Added ability to configure initial status of a scheduled item in
+  calendar. [Dennis]
++ Added the ability to create direct links to Achievo by passing atknodetype,
+  atkaction and atkselector to index.php. [Ivo]
++ The user can now enter a remark for overtime balance corrections. [Ivo]
++ Pim items are now configurable in the user preferences. [Sandy]
++ Module can have multiple pim items. [Sandy]
++ Added edit link to Pim timeregistration and calendar. (bug #466) [Sandy]
++ Added a dropNode method to the setup class for deleting the database
+  and sequence (if using mysql). (bug #583) [Yuri, Sandy]
+* Contracts that have expired are automatically set to status 'archived' at
+  save-time. Also, its linked projects will be set to status 'nonactive'.
+  [Dennis]
+* When saving a contract with the status set to 'archived' the linked
+  projects are all set to status 'nonactive'. [Dennis]
+* Upgraded to ATK5 backend. [Ivo, Sandy, Dennis]
+* Improved themability. [Boy]
+* Fixed small bug in displaying the weeknumber on windows in the timereg
+  weekview. [Sandy]
+* Made role name obligatory. (bug #474) [Sandy]
+* Moved employee financial fields to separate 'finance' tab. [Ivo]
+* Title field for persons is now a dropdown instead of free input. [Ivo]
+* Fixed: postAdd in modules/calender/class.schedule.inc should return a
+  boolean. [Yury]
+* Fixed several Gantt chart bugs. [Ivo]
+* When editing a contract, a new project can be created which is then
+  automatically added to the contract. [Dennis]
+* When editing a contract, existing projects can be linked to the contract.
+  [Dennis]
+* Made some fields obligatory and some non-obligarory. [Dennis]
+* In contracts added option 'no_billing_period'. [Dennis]
+* In contracts added empty options for 'customer' and 'billing_period'.
+  [Dennis]
+* In contracts added javascript for dynamically hiding 'period_price' when
+  choosing 'no_billing_period'. [Dennis]
+* Fixed bug in setup module that installed patches in the wrong order if there
+  are 10 or more patches. [Dennis, Ivo]
+* Fixed: Error message appeared when deleting a phase. [Dennis]
+* Updated Italian language file. [Fabrizio]
+* Updated Danish language file. [Morten, Kent]
+* Updated Spanish language file. [Ernesto]
+* Updated Dutch language file. [Dennis]
+* Replaced some deprecated text() calls with atktext(). [Guido]
+* Resolved some php notices. [Guido]
+* Removed some unused atkdebug commands. [Guido]
+* Scheduler menuitem is no longer displayed for users withoutaccess. [Ivo]
+* Removed project edit/view link in select mode. [Sandy]
+* Updated JpGraph to version 1.20-3. [Sandy]
+
+Changes in Achievo 1.1.0
+------------------------
++ Session highjacking prevention is now configurable (default off). [Ivo]
++ Administrator pim now shows button for donations. [Ivo]
+* Removed requirement that php should be compiled with --enable-bcmath. [Ivo]
+* Fixed bug in recent project dropdown for projects without teammembers. [Ivo]
+* Fixed 2 PHP5 incompatibilities. [Brian]
+* Bugfix in phase display; it compared planned minutes to booked hours. [Ivo]
+* Gantt chart now displays phase bars according to phase start/enddates. [Ivo]
+
+Changed in Achievo 1.1RC3
+-------------------------
++ Contact person field in project edit screen can be made obligatory with
+  a config setting. [Harrie]
++ If only one search result is found, it is displayed directly. [Ivo]
++ Added bookmark icon (the 'swish' from achievo.org). [Ivo]
+* Fixed sql injection vulnerability in the login screen. (bug #368) [Sandy]
+* Fixed security bug with session hijacking. (bug #373) [Sandy]
+* Fixed problem with empty dropdowns. (bug #333) [Sandy]
+* Fixed bug in edit/add link when only one record was present. [Sandy]
+* Fixed bug in registering time. (bug #331) [Sandy]
+* Fixed the help popup. (bug #348) [Sandy]
+* Fixed bug in search module. (bug #369) [Sandy]
+* Fixed bug in postgresql detection. (bug #378) [Ivo]
+* Fixed bug in weekstamp generation on windows servers. (bug #48) [Joachim]
++ Added Slovak translation. [Danielk]
+* Updated Norwegian translation. [Olav]
+
+Changed in Achievo 1.1RC2
+-------------------------
+* Project contract dropdown only shows valid contracts. (bug #328) [Sandy, Ivo]
+* Removed the erroneous 'todate' column from timeregscreens. [Ivo]
+* Fixed possible date incompatibilities on Windows installs. (bug #337) [Ivo]
+* When the session expires after long period of inactivity, a message is 
+  displayed instead of an error message. (bug #325) [Ivo]
+* Gantt chart is now displayed again. (bug #332) [Ivo]
+* Updated the FAQ. (bug #329) [Ruhshad]
+* Updated German language file. [Udo,Christian]
+* Updated Spanish language file. [Jose]
+* Updated Russian language file and fixed charset problems. [Konstantin]
+
+Changes in Achievo 1.1RC1
+-------------------------
++ Added configurable overtime categories ('workperiods'). [Lineke]
++ Added overtime balance tracking to timereg and weekreport. [Lineke]
++ Added privilege to register time for other users. [Lineke]
++ Added the ability to limit time registration to project members only. [Ivo]
++ Added quick addition (by keyword search) of team members to project. [Ivo]
++ Added generic subtotalling and aggregation features to time survey. [Ivo]
++ Added easier date navigation to the time survey. [Lineke]
++ Added configurable function levels to employee admin. [Lineke]
++ The employee admin screen now visually indicates employees whose contract
+  is expired (red) or about to expire (orange). [Ivo]
++ Phases now visually indicate if the number of hours registered exceeds
+  the planning. [Sandy]
++ Added startdate/enddate to phases. [Ivo]
++ Estimated time per phase can now be detailed per employee. [Ivo]
++ Initially planned time for phases is now remembered. [Ivo]
++ Project screen now displays already booked hours per phase with clickthrough
+  to hoursurvey for details. (bug #224) [Sandy, Ivo]
++ Added multisort capability to ATK backend, and to time survey and
+  project admin screens. [Ivo]
++ Added archive feature to project and employee screens. [Ivo]
++ Added archive feature to organization contract screen. [ChristianL]
++ Added weekday stats to project- and employee stats. [Ivo]
++ Multiple projects can now be covered by an organization contract. [Lineke]
++ Added 'number' identifier to organization contracts. [ChristianL]
++ Added 'title' field to contact persons. [ChristianL]
+* Updated the support menu with new links to Achievo.org. [Ivo]
+* Fixed sorting by relations. (bug #269) [Ivo]
+* Improvements to Oracle 8i support. (bug #244) [Joop]
++ Size of the remark field can now be configured with 
+  $config_timereg_remark_lines. (bug #192) [Ivo]
+* Fixed bug in example cron lines for cron documentation (cron/README). [Ivo]
++ Todo duedate is now colored when expired/nearly expired. (bug #262) [Ivo]
+* Fixed bugs #250 and #290. [Ivo]
+* Fixed bug #285. [Sandy]
+* Added missing string identifiers to all language files. (bug #277) [Ivo]
++ Added Portuguese language file. [Pedro]
++ Added Polish language file. [Lech]
+* Updated German language file. (bug #279) [Christian]
+* Updated Brazilian Portuguese language file. [Wanderlei]
+* Updated Spanish language file. [Pavel]
+* Updated Swedish language file. [Thomas]
+* Updated Russian language file. [Maryia]
+* Updated Norwegian language file. [Bj?rn]
+* Updated Danish language file. [Morten]
+* Updated Italian language file. [Andrea]
+
+Changes in Achievo 1.0.4
+------------------------
++ Sender field of Achievo mails can now be configured with 
+  $config_mail_sender. [Ivo]
++ Added missing scheduler navigation links. (bug #247) [Sandy]
++ Added 'all users' option to the employee statistics. (bug #261) [Ivo]
+* Fixed bug in remark search in hoursurvey. [Ivo]
+* Fixed bug in display of locked weeks in employee weekreport. [Lineke]
+* Fixed bug in weeknumbers in the scheduler monthview. (bug #258) [Sandy]
+* Fixed problem with top frame layout. (bug #229) [Sandy]
+* Fixed missing userid field when using pop3 auth. (bug #274) [Ivo]
+* Updated adodb-time.inc.php to latest version. (bug #273) [Sandy]
+* Fixed bug when adding phases. [Sandy]
+* Fixed problem in 1 Phase Ganttchart. (part of bug #272) [Sandy]
++ Added Catalan language file. [Lluis]
+* Updated Italian language file. [Andrea]
+* Updated German language file. (bug #267 & #268) [Christian]
+
+Changes in Achievo 1.0.3
+------------------------
++ Added piecharts and textual stats for employees. [Ivo]
++ Added detail links to the hoursurvey to projectstats. [Ivo]
++ Added textual stats to the project stats. (bug #248) [Ivo]
++ Added 'grant all' privilege, which allows users to grant rights they do not
+  explicitly have themselves. [Ivo]
++ Added VAT number to organizations. (bug #252) [Ivo]
++ The resolution for time entry can now be configured. (bug #256) [Ivo]
++ The 'time survey' report can now be filtered by remark. [Ivo]
++ Added menu-item to manage contact persons. [Ivo]
+* Contacts found with the searchbox now show their company. (bug #227) [Ivo]
++ Added decimals to employee contracts. [S.Leblanc]
++ Roles that are not in use can now be deleted. (bug #236) [Ivo]
++ The employee weekreport now displays negative overtime (shortages). [Lineke]
+* Modified employee add screen so contracts will not be overlooked. [Ivo]
+* Employee contracts' enddate is now optional. [Ivo]
++ Added support for cumulative usercontracts. [Lineke]
++ Added birthdate field for employees. [Lineke]
+* Setup.php now accepts include_paths with only ".". (bug #237) [Mike]
+* The project stats page now has the project name in the title box. [Ivo]
+* Added several untranslated strings to the language files. [Nele]
+* Fixed bug when using the alphabetical indexes on pages > 1. [Ivo]
+* Updated Swedish language file. [Thomas]
+* Updated German language file. [Nele]
+* Updated French language file. [Hicham]
+* Updated Dutch language file. [Ivo]
+
+Changes in Achievo 1.0.2
+------------------------
++ Added second address field to organization mail and visit address. [Ivo]
+* The conversion script now warns the user if default contactpersons are
+  generated. [Ivo]
+* If add-on modules were activated before the Achievo db was installed,
+  database errors could occur. This is now fixed. [Ivo]
+* Upgrade patches can now report important information to the user. [Ivo]
+* Workaround of wrong patch version number in 1.0.1. [Ivo]
+* Fixed bug in formatting of negative time entries. [Ivo]
+* Updated German language file. [Stephan]
+
+Changes in Achievo 1.0.1
+------------------------
++ Separated mail and visit address for organizations. (bug #230) [Martin, Ivo]
+* Employee supervisor information is now properly converted. (bug #234) [Ivo]
+* Fixed bug when adding individual week locks. [Lineke]
+* Updated Spanish language file. [Daniel]
+* Added questions about extension modules to the FAQ. [Ivo]
+
+Changes in Achievo 1.0.0
+-------------------------
+* Fixed bug #213. [Ivo]
+* Fixed a few untranslated strings. (bug #224) [Martin, Ivo]
+* Updated Danish language file. [Junaid]
+
+Changes in Achievo 1.0RC3
+-------------------------
+* Fixed bug when setup.php was run with $config_auth_dropdown set to
+  true. (bug #180) [Sandy, Kevin]
+* Fixed several themes. (bug #200) [Kevin, Sandy, Ivo]
+* Fixed bug in schedule comparison. (bug #197) [Lineke]
+* Fixed project menu, notes disappeared when a project was selected. [Sandy]
++ Project edit has an extra tab with notes. [Sandy]
+* Fixed bugs #45, #92, #99, #172, #194, #210. [Ivo]
+* Fixed bug #207. [Sandy]
+* Fixed tiny bug in todo mailer. [Ivo]
+* Fixed conversion: Employees could be converted to contacts in some cases. [Ivo]
+* Updated German language file. [Nele]
+* Updated Brazilian-Portuguese language file. [Marcus]
+
+Changes in Achievo 1.0RC2
+-------------------------
+* Fixed logout problem. (bug #177) [Sandy]
+* Bugfixes for bugs #181, #183, #185, #187, #189. [Ivo]
+* Bugfix for bug #191. [Jaap]
+* Changed cron method so add-on modules can add custom crons. [Ivo]
+* Updated German language file. [Nele]
+
+Changes in Achievo 1.0RC1
+-------------------------
++ In employee management, inactive employees are now hidden by default. [Ivo]
++ Added fuzzy search box to the scheduler, to quickly add attendees. [Ivo]
++ Time registration now contains a link to the scheduler. [Ivo]
++ Time registration now shows a lock icon for locked weeks/days. [Ivo]
++ Achievo can now handle userpreferences per module. (bug #140) [Ivo]
++ There is now a userpref for the scheduler to set the default user. [Ivo]
+* Replaced the old projectplanning with a graphical ganttchart. [Ludo, Ivo]
++ The setup.php script detects and installs newly added modules. [Ivo]
++ The setup.php script detects and installs patches. [Ivo]
+* The setup.php script upgrades more nicely now. (bug #167) [Ivo]
++ The scheduler has a new privilege 'edit all appointments'. [Lineke]
++ Administrators will now get an administrator infopage after login. [Ivo]
+* Fixed bug in pim todo items. (bug #142) [Ivo]
+* Setup script timelimit has been set to infinite. (bug #146) [Ivo]
+* Fixed bug in scheduler afternoon/evening calculation. (bug #141) [Ivo]
+* Date picker now respects language file settings. (bug #130) [Ivo]
+* Fixed errormessage when deleting a person from a project. (bug #159) [Ivo]
+* The logged in user can no longer be deleted or deactivated. [Ivo]
++ Added Swedish language file. [Thomas]
+* Updated Dutch and English language files. [Ivo]
+* Updated French language file. [Timduru]
+* Updated Brazilian-Portuguese language file. [Geraldo, Marcus]
+* Updated Danish language file. [Morten]
+* Updated Norwegian language file. [Kjetil, Stian]
+- Removed the demo .sql files. (bug #165) [Ivo]
+
+Changes in Achievo 0.9.4
+------------------------
++ Added jpGraph graphs support. [Ivo]
++ Added statistical graphs for projects. [Ivo]
++ Hour entries can now be edited directly from the time survey (only your own
+  hours and only if the entries are not from locked weeks) (bug #22). [Ivo]  
++ View/edit/delete screens now show the active record in the title bar. [Ivo]
+* Fixed bug in 'recent projects' dropdown in projects menu. (bug #122) [Ivo]
+* Fixed php error message when deleting todo's. (bug #71) [Ivo]
+* When converting from an older version than 0.9.2, projects without a 
+  contact person now automatically get an auto-generated contact-person.
+  (bug #110) [Ivo]
+* Fixed sql error in weekreport when user was administrator. (bug #123) [Ivo]
+* Fixed bug in userpreferences. [Ivo]
+* Fixed bug that corrupted time registration enties for users with id's of
+  more than 1 digit. [Ivo]
+* Achievo should no longer generate notices when php error_reporting is set to
+  E_ALL. (bug #74) [Ivo]
+* Fixed bug in project filter (non-active projects were not editable). [Ivo]
+* Fixed bug in timreg_check cron script. [Ivo]
+* Fixed bug where scheduler could add wrong attendees. (bug #133) [Ivo]
+* Cleaned up project menu. (bug #138) [Ivo]
+* Added current record indication to the title of view-/edit- and delete 
+  screens. (bug #138) [Ivo]
+* Bugfixes for bugs #121, #128, #135, #136 and #137. [Ivo]
+* Updated English and Dutch languagefiles. [Ivo]
+
+Changes in Achievo 0.9.3
+------------------------
++ Added calendar popup to all date fields. [Ivo]
++ Newly added employee contracts now have default values depending on 
+  the previous contract of that employee. [Ivo]
+* Fixed bug: In new employee contracts, sunday was always selected. [Ivo]
+* Fixed bugs where wrong userid foreign key was used. (bug #113) 
+  [Jean-Charles, Ivo]
+* Setup.php now correctly checks PHP 4.1.0 requirement. (bug #112) [Kevin]
+* Setup.php now correctly detects Achievo 0.9 database. (bug #118) [Jonas]
+* Fixed bugs in 0.9.1 conversion script. (bug #117) [Ivo]
+* Fixed sql error in activitystats when no activity was selected. (bug #116)
+  [Jean-Charles]
+- Removed the redundant 'organization archive' feature. (bug #114) [Ivo]
+
+Changes in Achievo 0.9.2
+------------------------
+* Reorganised Achievo codebase. Everything is now located in modules. 
+  [Lineke, Ivo]
++ Added a cron script that sends reminders for todo's. [Ivo]
++ The search box in the top frame now works for contacts, projects and
+  customers. [Ivo]
+* Contactpersons and employees are generalized to 'person'. (Both stored in 
+  one table now) [Lineke]
++ Instead of one 'customer' and one 'contactperson', a project now has
+  multiple teammembers, each having a configurable 'role'. [Lineke]
++ In the hoursurvey, you can now filter hours using this role. [Ivo]
+* Renamed customer to organization (which can have multiple roles, one of
+  which could be 'Customer'). [Lineke]
++ Added 'state' field to organization and person. [Ivo]
++ Added 'function' field to person. [Lineke]
++ The project edit screen now uses tabs to devide the information. (bug #64)
+  [Ivo]
++ The project management menu now remembers the currently edited project,
+  so you can easily do other functions with the same project (stats, etc).
+  [Maurice]
+  Also, the last used projects are remembered in a dropdown. [Maurice]
+* Fixed numerous bugs in the scheduler. [Lineke]
++ Added attendees (which can be employees or contactpersons) feature to the
+  scheduler. [Lineke]
++ Added feature to compare schedules of employees for easy planning of 
+  meetings. [Lineke]
+* Achievo should now work with register_globals = Off. (bug #107) [Ivo]
++ Added initial version of setup.php, which can be used to install and/or 
+  upgrade the Achievo database. [Ivo]
+* In the 'security profiles' screen, you can no longer grant rights that you
+  don't have yourself. [Maurice]
+* In the 'security profiles' screen, the confusing 'Administration' right
+  has been renamed to 'Access'. (bug #100) [Ivo]
++ All screens have now default 'view' links for readonly access to the data,
+  which is enabled if the user has the 'Access' right. (bug #41) [Ivo]
++ In the employee contracts, you can now configure on which day people 
+  work. [Ivo]
++ Added PIM API. All modules can now add information to the PIM screen. [Ivo]
++ Added Search API. All modules can now return searchresults when using the 
+  search feature from the topframe.  [Ivo]
++ Implemented search feature for contactpersons and projects. [Ivo]
++ Added timeregistration feature to register multiple days at once (bug #21) 
+  [Ivo]
+* You can now no longer register time on nonactive project phases. (bug #51)
+  [Ivo]
++ Improved navigation in timeregistration (date jump) [Sandy]
+* Registering more than 24 hours per day is no longer possible. [Ajit]
+* Updated Brazilian-Portuguese, French, German, Spanish and Dutch language 
+  files.
++ Added a report for organizations which contains all information regarding 
+  the organization and the contacts. [Lineke]
+* Bugfix in IMAP authentication. [Soh]
+* Users now have a numerical id as primary key (the userid string is still 
+  present but no longer primary key). Module developers should take note of 
+  this. (Most Achievo modules still refer to the string userid but this will 
+  change in the future) [Lineke]
+* Bugfix for bug #56. [Kevin]
+* Bugfix for bug #9. [Ivo]
+- Removed about 80 unnecessary strings from the language files. In some
+  cases this unfortunately means that some strings have to be retranslated.
+  [Ivo]
+- Finance, Costregistration and Resource_planning modules have been 
+  deprecated and moved into separately downloadable add-on modules. [Ivo]
+
+Changes in Achievo 0.9.1
+------------------------
++ Added form based login, so Achievo should now work with php running as a 
+  cgi-binary.
++ Added todo history.
++ Added initial version of resource planning feature.
++ Added 'clickthrough' feature for more easy navigation between items.
++ Added 'multiselect' feature (for example the ability to delete more than one
+  record at the same time).
++ Added Chinese language file.
++ Added Danish langugae file.
++ Added 'default' screen to menuitems. (brings back 'one click' 
+  timeregistration)
++ Added a search box to the top frame (doesn't find anything yet though).
++ Added multiline select to extended search feature. (bug #30)
+* Changed include structure (include classes only when needed), resulting in 
+  better performance.
+* Achievo now works with allow_call_time_pass_reference = Off in php.ini.
+* Achievo no longer behaves weird when having multiple open browser windows.
+* Updated Spanish language file (bug #53)
+* Bugfixes for bugs #17, #27 and #40.
+* Several other bugfixes.
+
+Changes in Achievo 0.9.0
+------------------------
++ Re-enabled all 0.7.3 unstable features that were turned off for the stable
+  0.8.0 release: 
+  finance menu (billing)
+  cost registration 
+  scheduler 
+  postgres/oracle database install files.
++ Added a Personal Information Manager which is now the default startup 
+  screen.
+* Bugfixes to the scheduler.
+* Bugfixes to the billing section (still broken though).
+* Improvements to the ATK backend.
+* Made Achievo more 'session timeout' resistant.
+
+Changes in Achievo 0.8.5
+------------------------
+* Fixed bug in project todo view, where a sql error occurred when
+  pressing the save button. (bug #105 and #59)
+
+Changes in Achievo 0.8.4
+------------------------
+* Fixed bug in javascript include which caused date input to malfunction
+  on PHP versions older than 4.1.0. (bug #62 and #63)
+* Fixed bug: downloading fileversion of hoursurvey from an https server 
+  with IE6 should now work again. (bug #57)
+* Fixed sql error when editing hour entry that used a phase which was
+  deleted. (bug #15)
+* Fixed bug in INSTALL file, which talked about an old config.inc.php3.
+  (bug #80)
+
+Changes in Achievo 0.8.3
+------------------------
++ Hoursurvey now displays usernames in addition to userid's.
++ New feature in hoursurvey: select by supervisor.
++ Added Russian language files.
+* Replaced all php shorttags (<?).
+
+Changes in Achievo 0.8.2
+------------------------
+* Security bugfix: Achievo releases 0.7.0 to 0.9.2 contain a vulnerability 
+  that allows users to execute arbitrary code on any Achievo installation.
+  
+  Changes in Achievo 0.8.1
+------------------------
++ Added contrib/ directory for (unsupported) user contributed scripts and
+  utilities.
++ Added phase_convert.pl to contribs. (bug #19)
+* Updated the FAQ.
+* Updated Dutch, Finnish, German and Hungarian language files.
+* Time survey no longer forgets selected project (bugs #12 and #16)
+* Improved upgrade instructions (bug #7).
+* Fixed typo in languagefile keys (bug #10).
+* When userid is changed, relevant tables are updated (bug #37)
+* Fixed minor layout issue in project planning (bug #8)
+
+Changes in Achievo 0.8
+----------------------
+* Language files now generated by Achievo Translation Tool. 
+* Updated all source to reflect achievo.com -> achievo.org move.
+
+Changes in Achievo 0.8.RC2
+--------------------------
+* Updated Czech language file.
+* Updated Hungarian language file.
+* Updated Dutch language file.
+* Updated Spanish language file (now contains correct accents)
+  (not yet up to date with 0.8 strings though).
+* Fixed a bug where empty dates would not get stored correctly.
+* Workaround for bug in some Internet Explorer 5.5SP1 versions that have
+  security patch q299618.exe installed (which caused some urls to be
+  processed incorrectly).
+* Bugfix in achievo_mysql.sql: phase status now has a default status.
+
+Changes in Achievo 0.8.RC1
+--------------------------
++ Added supervisor to employees.
++ Added a few fields to customer administration (website, projects).
++ Added a few fields to project administration (contactperson, enddate,
+  fixed price).
++ Added a field to contact person (cellular)
++ Added multiple week check to time registration cron check script.
++ Created new options for extended search feature (and/or capability, option
+  to choose a searchtype per field).
++ Added tooltip support.
++ Added 'select all', 'select none' and 'invert selection' to profile editor.
++ Added colored mouseover selection bar to recordlists.
+* Fixed a Daylight Savings Time bug in time registration.
+* Fixed bug in previous/next day links in time registration.
+* Fixed validation of activities that have 'remark required' option checked.
+* Fixed bug in time registration that allowed hours to be booked on a locked 
+  week in some cases.
+* Fixed some small other bugs and typos.
+- Removed unstable 0.7.* features (costregistration, schedular, finance menu).
+
+Changes in Achievo 0.7.3
+------------------------
++ Added a scheduler/calendar (not fully functional yet).
++ Added todo functionality.
++ Added project notes.
++ Added cost registration feature.
++ Added hour locking feature.
++ Added employee week report.
++ Added configuration options for time registration.
++ Added CSV export function to hoursurvey.
++ Added finance menu (not fully functional yet).
++ Added employee contracts. 
++ Added cron script for checking incomplete timeregistration.
++ Added customer contracts.
++ Added an extended search feature for all views. 
++ Added alphabetical indexes to employee, customer and project views.
++ Added external module API.
++ Added Hungarian language files.
++ Added rainyd theme, which is now the default theme.
+* Updated German language files.
+* Replaced htmlentities() calls with htmlspecialchars().
+* Updated *.sql install and demo files.
+* Fixed some bugs.
+
+Changes in Achievo 0.7.2
+------------------------
++ Added support voor Oracle 8i databases.
++ Added context sensitive help feature.
++ Added pop3 authentication.
++ The logout feature is back.
+* Updated Italian language files.
+* Fixed some Internet Explorer 4 incompatibilities.
+* Fixed error messages in project planning for projects without phases.
+
+Changes in Achievo 0.7.1
+------------------------
+* Fixed a bug in postgresql support (outer joins).
+* Fixed a few bugs in the database install and demo files.
+* Fixed a bug in the frameset that confused Achievo's session manager.
++ New feature for themes: alternating row backgroundcolors.
+
+Changes in Achievo 0.7
+----------------------
++ Added support for the PostgreSQL database server.
+* Improvements to the atk backend: major performance improvements, 
+  a new module system and session support.
++ Support for submenu's. 
+- Achievo is now PHP4 based. PHP3 is no longer supported.
+
+Changes in Achievo 0.6.3
+------------------------
+* Updated Finnish language file
+* Small fix to prevent a warning with some php versions
+* Fixed bug in .sql files: employee table lacked a primary key
+* Fixed bug in hoursurvey that caused an empty list when sorting after a
+  refresh
++ Added an 'order by' option for printer friendly hoursurvey
+* Changed the order of Edit/Delete links on pages
+
+Changes in Achievo 0.6.2
+------------------------
+* Improved documentation (fixed bugs in INSTALL file)
++ Added FAQ document
+* Improved Italian language file
+* Workaround for a bug in php-4.0.4pl1 (http://www.php.net/bugs.php?id=8966)
+  that affected Achievo.
+
+Changes in Achievo 0.6.1
+------------------------
++ Added Finnish language file.
+* Fixed a bug with accessrights of project templates.
+* Fixed a bug in project planning that caused segfaults with php4.0.4
+
+Changes in Achievo 0.6
+----------------------
++ Added Norwegian language file.
++ Added German language file.
++ Time Registration now automatically selects the phase if a project
+  only has one phase.
+* Updated some language files.
+
+Changes in Achievo 0.5.11
+-------------------------
++ Added Spanish language file.
+* Fixed a bug with the Refresh button of project statistics.
+* Fixed a bug with handling of all date fields.
+* Fixed a bug in the accessrights of project templates.
+
+Changes in Achievo 0.5.10
+-------------------------
++ Added Brazilian-Portuguese language file.
++ Added automatic scrollbar to menu.
+- Disabled broken billing feature (won't be enabled until 0.7)
+* Bugfix in user preferencer: 'save' now doesn't close the window.
+* Bugfixes hoursurvey, projectstats and some small fixes in other files
+
+Changes in Achievo 0.5.9
+------------------------
+* Bugfixes in project administration.
+
+Changes in Achievo 0.5.8
+------------------------
++ Added previous/next day feature to houradmin
++ Better navigation in record lists (pagenumbers in addition to 
+  prev/next links)
++ Added Italian language file
++ Added Dutch language file
++ Better interface for project/phase editing.
++ Separation of project Statistics/Planning
+* Optimisations for project planning.
+* Bugfixes
+
+Changes in Achievo 0.5.7
+------------------------
++ Contactpersons per customer.
++ Project and employee 'active/nonactive' feature.
++ Output customisation for hoursurvey.
+* Improved activity/employee stats.
+* Fixed 0.4->0.6 convert script bugs, plus improved feedback.
+* Changed font sizes of most themes from ugly big to normal.
+* Bugfixes.
+
+Changes in Achievo 0.5.6
+------------------------
++ Hoursurvey.
++ Weekview in houradministration.
++ Convert script to convert 0.4.x databases to 0.5.6 databases.
++ Achievo Classic theme.
+* Bugfixes.
+* File/directories restructured.
+
+Changes in Achievo 0.5.5
+------------------------
+* Fixed a bug in atk javascript that prevented houradministration 
+  from working.
+* Fixed a bug in recent projects/phases dropdown that prevented
+  houradministration from working.
+
+Changes in Achievo 0.5.4
+------------------------
++ Security (login, profiles)
++ User preferences (select theme, change password)
++ Customer administration
++ Personal statistics
++ Ported last bits of old 0.4 code to atk
+* Lots of fixes
+
+Changes in Achievo 0.5.3
+------------------------
++ Theme support
++ Project Planning (Phases)
++ Ported more stuff to atk
+* Numerous fixes
+
+Changes in Achievo 0.5.2
+------------------------
+* Major enhancements to atk (again :) 
++ Search functionality for all node types
++ preliminary Oracle support (undocumented)
++ ported more old stuff to atk (again :)
+
+Changes in Achievo 0.5.1
+------------------------
+* Major enhancements to atk
++ query class
+* ported more old stuff to atk (also broke a lot of functionality)
++ more atkattributes (list and text)
++ many to one relations between nodes
++ many to many relations between nodes (not yet complete)
+* moved some layout related stuff to cascading style sheets
+
+Changes in Achievo 0.5
+----------------------
+* Major step towards new base code. Eventually all current features
+  will be ported to the new, more flexible, system. With the new system
+  it will be easier to implement new features and new modules. The 
+  application core logic is now separated into a separate codebase, 
+  called atk.
++ Hoursurvey now has a line with the total time.
+- config_activities is no longer used. If you don't want activitybased
+  projects, put in 1 'general' activity.
+* Rewrote some of the database queries.
+* Fixed some problems with the in_array function in PHP4
++ Added Spanish language file
++ Added French language file
++ Added Italian language file
+* Renamed config.inc to config.inc.php3 (to prevent webservers from
+  serving the .inc file as-is, which could reveal the database password)
+
+Changes in Achievo 0.4.2
+------------------------
+* Fixed some localization bugs (Jason Kohles)
+* Achievo now works under PHP4 (some incompatibilityproblems) (Ivo Jansch)
+
+Changes in Achievo 0.4.1
+------------------------
++ Added german language file (Michael Gaehwiler)
+* Users were unable to change their password. Fixed. (Jason Kohles)
+* Fixed an untranslated button (Jason Kohles)
+
+Changes in Achievo 0.4.0
+------------------------
+First public release, so everything is new. :-)

@@ -33,5 +33,5 @@
   module("crm");
 
 /**
- * Add new modules below here
+ * Additional modules
  */

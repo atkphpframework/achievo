@@ -128,18 +128,18 @@ Swedish         : Thomas Karlsson      <thomas.karlsson at relea.se>
 Major Contributors
 ------------------
 The following individuals and organizations have contributed significantly
-to the Achievo project and for this receive special recognition:
+to the Achievo project for which we thank them.
 
 Ibuildings
 
-    Ibuildings created Achievo (and the ATK Framework used to build Achievo)
-    and were responsible for development up to Achievo 1.4.5 (after which
-    Ibuildings allowed the Achievo community to assume responsibility). The
+    Achievo (and the ATK Framework used to build it) was created by
+    Ibuildings, who were responsible for development up to version 1.4.5 (after
+    which Ibuildings allowed the ATK community to assume responsibility). The
     following Ibuildings staff are individually recognized for their efforts.
 
     Author
     ------
-    Ivo Jansch                         <ivo at achievo.org>
+    Ivo Jansch                         <ivo at egeniq.com>
     Sandy Pleyte                       <sandy at achievo.org>
     
     Additional Development
@@ -187,8 +187,8 @@ development through their greatly appreciated sponsorship:
 	first, and please post in the Achievo Development Questions sub-forum).
 
 * Ibuildings.nl BV, Netherlands (http://www.ibuildings.nl) sponsored the
-  initial creation of Achievo and the ATK Framework, and currently sponsor
-  the Achievo website (http://www.achievo.org), the ATK Framework website
+  creation of Achievo and the ATK Framework, and currently sponsor the Achievo
+  website (http://www.achievo.org), the ATK Framework website
   (http://www.atk-framework.com), and the Achievo/ATK forum
   (http://forum.achievo.org). Ibuildings also host the legacy svn code
   repository, bug tracker, and wiki.

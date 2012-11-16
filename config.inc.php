@@ -12,21 +12,23 @@
   //           DATABASE CONFIGURATION
   // -------------------------------------------
 
-  // The DBMS driver to use. MySQL is the only officially supported
-  // DBMS (mysqli is the default driver, but mysql can also be used)
+  // MySQL is the only officially supported DBMS with the mysqli driver
+  //   (the mysql driver is also provided). PostgreSQL (pgsql) and Oracle
+  //   (oci8) drivers are also provided, but are not officially supported.
   // 
-  // Achievo has experimental status suport for PostgreSQL (use "pgsql")
-  // and Oracle (use "oci8").
-  //
+  // $config_db["default"]["host"]     = "localhost";
+  // $config_db["default"]["db"]       = "dbname";
+  // $config_db["default"]["user"]     = "username";
+  // $config_db["default"]["password"] = "password";
+  // $config_db["default"]["charset"]  = "utf8";
+  // $config_db["default"]["collate"]  = "utf8_general_ci";
+  
+  // system database
   $config_db["default"]["driver"] = "mysqli";
-
-  // The database configuration. Specify the hostname of the database server,
-  // the database to use and the user/password.
-  //
   $config_db["default"]["host"] = "localhost";
-  $config_db["default"]["db"]   = "achievo_1_4";
-  $config_db["default"]["user"] = "demo";
-  $config_db["default"]["password"] = "demo";
+  $config_db["default"]["db"]   = "achievo";
+  $config_db["default"]["user"] = "achievo";
+  $config_db["default"]["password"] = "achievo";
   $config_db["default"]["charset"] = "utf8";
   $config_db["default"]["collate"] = "utf8_general_ci";
   
@@ -54,8 +56,8 @@
   //  is 'achievo_modern'
   $config_menu_layout = "modern";
 
-  // This variable determines wether all manytoone dropdowns should have
-  // the autocompletion feature (instead of dropdowns)
+  // This variable determines whether all manytoone dropdowns should have
+  // the auto-completion feature (instead of dropdowns)
   //
   $config_manytoone_autocomplete_default = false;
 
@@ -99,7 +101,7 @@
   //
   $config_auth_dropdown = false;
 
-  // As an extra security measure, to prevent session highjacking, Achievo
+  // As an extra security measure to prevent session highjacking, Achievo
   // will regenerate it's session id on each hit. This does not work
   // properly on some (usually older) PHP installations. If you experience
   // login trouble, set the next value to false.
@@ -123,20 +125,21 @@
   // -------------------------------------------
   //             PROJECT MODULE
   // -------------------------------------------
-  // This variable indicated whether contacts in the project module
+  // This variable indicates whether contacts in the project module
   // are obligatory
   //
   $config_project_contact_obligatory = false;
 
-  // Use autocompletion for project selection?
+  // Use auto-completion for project selection?
   //
   $config_project_selection_autocomplete = false;
 
-  // Fill this config with a path relative to the achievo directory.
-  // When you add a project the skel will be copied to the destionation directory
-  // also a path relative to the achievo directory. And sends a mail when the skel
+  // Fill this config with a path relative to the achievo directory. When you
+  // add a project, the skel will be copied to the destination directory (also
+  // relative to the achievo directory), and an email will be sent when the skel
   // is copied.
-  // To disable this feature leave the dir_skel and dir_destination configs empty.
+  //
+  // To disable this feature, leave the dir_skel and dir_destination configs empty.
   // See also atk/utils/class.atkfileutils.inc function atkCopyDirRec
   //
   $config_project_dir_skel = '';
@@ -152,8 +155,8 @@
   // -------------------------------------------
   //             PIM MODULE
   // -------------------------------------------
-  // If you don't want a pim, set an URL in the config below to let PIM
-  // redirect to the specified url. If not set or empty this feature is
+  // If you don't want a PIM, set a URL in the config below to let PIM
+  // redirect to the specified URL. If not set or empty, this feature is
   // disabled.
   //
   $config_pim_redirect_to = "";
@@ -161,11 +164,11 @@
   // -------------------------------------------
   //             DOCMANAGER MODULE
   // -------------------------------------------
-  // If you a docmanager to other nodes add the node and file location here
+  // To add docmanager to other nodes, add the node and file location here
   $config_docmanageroptions = array(
-        "project.project"=>array("dir"=>"./documents/project/", "url"=>"documents/project/"),
-        "quotation.quotation"=>array("dir"=>"./documents/quotations/", "url"=>"documents/quotations/"),
-        );
+    "project.project"=>array("dir"=>"./documents/project/", "url"=>"documents/project/"),
+    "quotation.quotation"=>array("dir"=>"./documents/quotations/", "url"=>"documents/quotations/"),
+    );
 
   // -------------------------------------------
   //            GENERAL SETTINGS
@@ -189,9 +192,8 @@
   //            END OF CONFIGURATION
   // -------------------------------------------
 
-  // Leave this line in place, it configures the backend of Achievo.
-  // Also, you should not change the atkconf.inc file, since that would
-  // break Achievo.
+  // Leave this line in place, it configures the ATK backend. Also,
+  // do not edit the atkconf.inc file since that would break Achievo.
   //
   include "atkconf.inc";
 ?>

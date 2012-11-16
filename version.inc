@@ -1,4 +1,4 @@
 <?php
-  $achievo_version = "1.4.5";
+  $achievo_version = "1.4.6-rc2";
   $achievo_state   = "stable";
 ?>
