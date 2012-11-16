@@ -11,7 +11,7 @@ Bug numbers are references to bugs in the ibuildings Bugzilla bug tracker:
 * Please do not exceed 80 characters per line.
 * Latest changes go on top, different types of changes may be mixed.
 
-Changes in Achievo 1.5 (svn-master branch)
+Changes in svn-master branch (un-released, intended at the time for 1.5.0)
 ----------------------------
 + Added New and Edit links to the contract field in projects. [Guido]
 + Added emplyee contract templates [Sandy]
@@ -23,17 +23,16 @@ Changes in Achievo 1.5 (svn-master branch)
 * Fixed typo's in some translations. [Guido]
 * Allow all GET and POST parameters in links to index.php. [Guido]
 
-Changes in Achievo 1.4.6-rc.2
------------------------------
-* Documentation updates (primarily to README.md)
-
-Changes in Achievo 1.4.6-rc.1
+Changes in Achievo 1.4.6
 -----------------------------
 + Added .gitignore [dalers]
+* Fixed "error illegal string offset error" when weekreg selected in
+  Time Registration [dalers]
+* Updated documentation (to reflect community-led project and GitHub
+  hosting) [dalers]
+* Added all old releases to doc/CHANGES [dalers]
 * Removed duplicated timereg configs from config.inc.php (duplicated in
   /configs/modulename.inc.php) [klaaspeter]
-* Changed documentation to reflect Achievo now being a community-led
-  project [dalers]
 * Segregated optional from required modules in modules/config.modules.inc
   [klaaspeter]
 * Corrections made to global nl language translations [klaaspeter]
