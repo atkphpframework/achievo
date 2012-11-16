@@ -1,8 +1,8 @@
 Achievo
 =======
-Achievo is a web-based Business Support Services (BSS) application for organizations, built using [the ATK Framework](https://www.github.com/atkphpframework/atk). Achievo includes a rich set of core modules, including support for employees, projects (phases and activities), timesheets, organizations, contacts, CRM (customers, campaings and contracts), and document management. There are a wide variety of Add-on modules available for additional functionality, and you add Custom modules to provide more specific requirements. Achievo is stable and suitable for production. For more information, see the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki) and the [Achievo website](http://www.achievo.org).
+Achievo is a web-based Business Support Services (BSS) application for organizations, built using [the ATK Framework](https://www.github.com/atkphpframework/atk). Achievo includes a rich set of core modules, including support for employees, projects (phases and activities), timesheets, organizations, contacts, CRM (customers, campaings and contracts), and document management. There are a wide variety of Add-on modules available for additional functionality, and you can add or develop Custom modules for more more specific requirements. Achievo is stable and suitable for production. For more information, see the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki) and the [Achievo website](http://www.achievo.org).
 
-The purpose of the [Achievo project on GitHub](https://www.github.com/atkphpframework/achievo) is to create, as a community, the leading rapid-development environment for providing enterprise Business Support Services. Achievo was created by [ibuildings.nl](http://www.ibuildings.nl) and development is now carried on by its community, managed by the [GitHub atkphpframework group](https://www.github.com/atkphpframework/), with the endorsement and permission of [ibuildings.nl](http://www.ibuildings.nl).
+The purpose of the [Achievo project on GitHub](https://www.github.com/atkphpframework/achievo) is to create, as a community, the leading rapid-development environment for providing enterprise Business Support Services. Achievo was created by [ibuildings.nl](http://www.ibuildings.nl) and development is now carried on by the Achievo community, managed by the [GitHub atkphpframework group](https://www.github.com/atkphpframework/), with the endorsement and permission of [ibuildings.nl](http://www.ibuildings.nl).
 
 * Achievo is licensed under the terms of the GNU GPL v2. See the doc/COPYRIGHT and DOC/LICENSE files, and the [License page in the Achievo project wiki](https://github.com/atkphpframework/achievo/wiki/License) for more information.
 
@@ -10,7 +10,7 @@ The purpose of the [Achievo project on GitHub](https://www.github.com/atkphpfram
 
 To Get Started
 ==============
-Achievo can be hosted on a standard web application AMP stack (Apache/MySQL/PHP), and is compatible with current AMP stack versions (e.g. PHP 5.4.x, MySQL 5.5.x), although currently Achievo makes use of some deprecated PHP features.
+Achievo can be hosted on a standard web application AMP stack (Apache/MySQL/PHP), and is compatible with current AMP stack versions (e.g. PHP 5.4.x and MySQL 5.5.x, although currently Achievo makes use of some deprecated PHP features).
 
 The most convenient way to get started is to clone the [Achievo GitHub repository](https://github.com/atkphpframework/achievo) to your webserver.
 
@@ -18,11 +18,11 @@ The most convenient way to get started is to clone the [Achievo GitHub repositor
 $ git clone --recurse-submodules git://github.com/atkphpframework/achievo.git achievo
 </code>
 
-After cloning, the local master branch in the repo will contain the most recent release. Achievo is built using the ATK Framework and includes ATK as a submodule; the --recurse-submodules option tells Git to update the ATK submodule in the cloning, otherwise the atk/ directory will be empty and you will have to update submodules manually). You do not need a GitHub account to clone using the "git:" protocol.
+After cloning, the local master branch in the repo will contain the most recent release. Achievo is built using the ATK Framework and includes ATK as a submodule; the --recurse-submodules option tells Git to update the ATK submodule during the cloning, otherwise the atk/ directory will be empty and you will have to update submodules manually). You do not need a GitHub account to clone using the "git:" protocol.
 
-You can also download a zip archive of the [Achievo master branch](https://github.com/atkphpframework/achievo) and extract it to your webserver. However, in this case you will also need to download a zip archive of version 6.4.4 of the ATK Framework and extract it to your achievo/atk/ directory (currently from https://github.com/dalers/atk-6.4.4, although this will eventually be changed to the GitHub atkphpframework/atk project).
+You can also download a zip archive of the [Achievo master branch](https://github.com/atkphpframework/achievo) and extract it to your webserver. However, in this case you will also need to download a zip archive of version 6.4.4 of the ATK Framework and extract it to your achievo/atk/ directory (currently from https://github.com/dalers/atk-6.4.4, although this will eventually change to the GitHub  [ATK Framework project](https://github.com/atkphpframework/atk).
 
-Once you have Achievo on your server, review the doc/INSTALL and doc/README files. They should explain everything you need to complete the install. Also review the [Guided Tour](http://github.com/atkphpframework/achievo/wiki/Achievo-guided-tour) on the Achievo project wiki, which is a step-by-step tutorial for how to configure a new Achievo installation, and how to use Achievo's basic features.
+Once you have Achievo on your server or workstation, review the doc/INSTALL and doc/README files. These should explain everything you need to complete the install. Also review the [Guided Tour](http://github.com/atkphpframework/achievo/wiki/Achievo-guided-tour) on the Achievo project wiki, which is a step-by-step tutorial for configuring a new Achievo installation and using Achievo's basic features.
 
 Version Control and Issue Tracking
 ==================================
@@ -34,7 +34,7 @@ Communication Channels
 ======================
 Achievo users and developers discuss problems and solutions, keep each other informed, and generally help each other out, on the [Achievo/ATK forum](http://forum.achievo.org/). Please consider creating a free user profile on the forum; you will need a user profile to post or reply, (viewing does not require a profile), having a profile also enables you to be sent an email notice when someone replies to one of your posts (or creates a new post), and color-codes posts to show the ones you haven't read yet.
 
-If you create a new forum topic, be careful to submit it to the correct forum (Achievo, or ATK for low-level issues).
+If you create a new forum topic, be careful to submit it to the Achivo forum (generally use the ATK forum only when you are developing an Achievo module and you have a low-level issue relating to the ATK Framework).
 
 Developer Guidelines
 ====================
@@ -54,30 +54,26 @@ The Achievo project on GitHub was migrated from the ibuildings Subversion server
 
 The svn-master branch includes some commits made after the 1.4.5 release, which can be reviewed for merging or cherry picking into the develop (or other branch).
 
-<code>
-Achievo Repository Structure
-
-<==== ibuildings svn repository ====================================>
-     br1  ...   br(n)       trunk
-      |           |           |
-      |           |           |
-<==== GitHub atkphpframework/achievo repository ====================>
-      |           |           |
-   svn-br1     svn-br2   svn-master     release-1.4  master  develop
-                                            |           |       |
-                        tag release_1_4_5-->|           |       |
-                                            |-------->1.4.5     |
-                                            |           |------>|
-                                            |           |       |
-                                            |-------->1.4.6     |
-                                            |           |------>|
-                                            |           |       |
-                                            V           V       V
-</code>
+    <==== ibuildings svn repository ====================================>
+         br1  ...    brn       trunk
+          |           |           |
+          |           |           |
+    <==== GitHub atkphpframework/achievo repository ====================>
+          |           |           |
+       svn-br1 ... svn-brn    svn-master     release-1.4  master  develop
+                                                |           |       |
+                            tag release_1_4_5-->|           |       |
+                                                |-------->1.4.5     |
+                                                |           |------>|
+                                                |           |       |
+                                                |-------->1.4.6     |
+                                                |           |------>|
+                                                |           |       |
+                                                V           V       V
 
 Documentation
 =============
-Official project documentation (although still somewhat sparse) is in the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/), with valuable discussion topics in the [Achievo/ATK forum](http://forum.achievo.org/). The [Achievo website](http://www.achievo.org/) and [ATK Framework website](http://www.atk-framework.com/) are also valuable resources, as is the [ibuildings Achievo/ATK wiki](http://www.achievo.org/wiki/)(although detailed information may not be current, updated information is published on the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/)). The ATK Framework (used by Achievo) is  documented internally with PHPDoc comments, and the [ATK Framework API documentation](http://www.atk-framework.com/documentation/) can also be browsed on the [ATK Framework website](http://www.atk-framework.com/).
+Official project documentation (although still somewhat sparse) is in the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/), with valuable discussion topics in the [Achievo/ATK forum](http://forum.achievo.org/). The [Achievo website](http://www.achievo.org/) and [ATK Framework website](http://www.atk-framework.com/) are also valuable resources, as is the [ibuildings Achievo/ATK wiki](http://www.achievo.org/wiki/) (but may not be current, updated articles are published on the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/)). The ATK Framework (used by Achievo) is  documented internally with PHPDoc comments, and the [ATK Framework API documentation](http://www.atk-framework.com/documentation/) can also be browsed on the [ATK Framework website](http://www.atk-framework.com/).
 
 * [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/) 
 * [Achievo/ATK forum](http://forum.achievo.org/)
@@ -89,7 +85,7 @@ Support
 =======
 In the event you have a problem:
 
-* Review Achievo behavior using an unaltered production-release Achievo installation.
+* Review Achievo behavior using an un-modified Achievo installation.
 * Search the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/) and the [ibuildings Achievo/ATK wiki](http://www.achievo.org/wiki/).
 * Search the [Achievo/ATK forum](http://forum.achievo.org/).
 * Search the [Achievo GitHub project Issues](https://github.com/atkphpframework/achievo/issues) and [ibuildings legacy bug tracker](http://bugzilla.achievo.org/query.cgi).
@@ -99,6 +95,6 @@ To get the most informed response when posting to the forum try to include:
 
 * What are you trying to achieve?
 * What are the symptoms of your problem? Why do you think there *is* a problem?
-* What is your server? (OS (e.g. FreeBSD 9.1), web server (e.g. Apache 2.2.22), PHP (e.g. PHP 5.3.10), MySQL DBMS (e.g., MySQL 5.5.20)
-* Show example code (the simplest code that produces the symptoms)
+* What is your server (OS, web server, PHP and MySQL)? E.g. FreeBSD 9.1, Apache 2.2.22, PHP 5.3.10 and MySQL 5.5.20.
+* Include example code (the *simplest* code that demonstrates the symptoms).
 
