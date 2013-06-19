@@ -182,7 +182,7 @@
   "extrefnumhinttext" => "Reference number in external accounting software", // Missing string!!!
   "fax" => "Fax",
   "fgcolor" => "Colore Testo",
-  "firstname" => "Cognome",
+  "firstname" => "Nome",
   "firstselectproject" => "(Seleziona prima una fase)",
   "fixed_price" => "Prezzo fisso",
   "for" => "for", // Missing string!!!
@@ -246,7 +246,7 @@
   "language_sk" => "Slovak", // Missing string!!!
   "language_sv" => "Swedish", // Missing string!!!
   "language_zh" => "Chinese", // Missing string!!!
-  "lastname" => "Nome",
+  "lastname" => "Cognome",
   "last_modified_by" => "Last modified by", // Missing string!!!
   "last_modified_on" => "Last modified on", // Missing string!!!
   "link_contact_add" => "Nuovo Contatto",
