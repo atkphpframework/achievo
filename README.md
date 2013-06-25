@@ -60,16 +60,21 @@ The svn-master branch includes some commits made after the 1.4.5 release, which 
           |           |           |
     <==== GitHub atkphpframework/achievo repository ====================>
           |           |           |
-       svn-br1 ... svn-brn    svn-master     release-1.4  master  develop
-                                                |           |       |
-                            tag release_1_4_5-->|           |       |
-                                                |-------->1.4.5     |
-                                                |           |------>|
-                                                |           |       |
-                                                |-------->1.4.6     |
-                                                |           |------>|
-                                                |           |       |
-                                                V           V       V
+       svn-br1 ... svn-brn    svn-master     release-1.4  master   develop
+                                                |           |        |
+                            tag release_1_4_5-->|           |        |
+                                                |-------->1.4.5      |
+                                                |           |------->|
+                                                |           |        |
+                                                |-------->1.4.6      |
+                                                |           |------> |
+                                                |           |        |
+    <==== NEW DEVELOPMENT GOES IN develop BRANCH ======================>
+                                                |           |        |
+                                                |           |<-x.y.z-|
+                                                |           |        |
+                                                |           |        |
+                                                V           V        V
 
 Documentation
 =============
