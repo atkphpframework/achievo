@@ -18,7 +18,9 @@ The most convenient way to get started is to clone the [Achievo GitHub repositor
 $ git clone --recurse-submodules git://github.com/atkphpframework/achievo.git achievo
 </code>
 
-After cloning, the local master branch in the repo will contain the most recent release. Achievo is built using the ATK Framework and includes ATK as a submodule; the --recurse-submodules option tells Git to update the ATK submodule during the cloning, otherwise the atk/ directory will be empty and you will have to update submodules manually). You do not need a GitHub account to clone using the "git:" protocol.
+After cloning, the local master branch in the repo will contain the most recent release (i.e. deploy the master branch to run the lastest release). For most people, checkout the develop branch to develop with Achieveo, and include commits from developers made since the last release. 
+
+Achievo is built using the ATK Framework and includes ATK as a submodule; the --recurse-submodules option tells Git to update the ATK submodule during the cloning, otherwise the atk/ directory will be empty and you will have to update submodules manually). You do not need a GitHub account to clone using the "git:" protocol.
 
 You can also download a zip archive of the [Achievo master branch](https://github.com/atkphpframework/achievo) and extract it to your webserver. However, in this case you will also need to download a zip archive of version 6.4.4 of the ATK Framework and extract it to your achievo/atk/ directory (currently from https://github.com/dalers/atk-6.4.4, although this will eventually change to the GitHub  [ATK Framework project](https://github.com/atkphpframework/atk).
 
@@ -41,10 +43,10 @@ Developer Guidelines
 The Achievo project follows the Gitflow workflow using the Gitflow Fork & Pull model:
 * Fork the GitHub atkphpframework/achievo repo
 * Clone your fork locally
-* Create a local topic branch to work in (typically off a release branch or the develop branch)
+* Checkout the develop branch to work in, or create a local topic branch from either the develop branch or a release branch.
 * Develop and test your work
 * Push your topic branch to your GitHub clone
-* Issue a pull request to the atkframework group to have your changes integrated, indicating where your changes are to be merged (typically into either a release branch - as a maintenance release - or into the develop branch)
+* Issue a pull request to the atkframework group to have your changes merged, typically into the develop branch for on-going development.
 
 For more information, see [Developer Guidelines](https://github.com/atkphpframework/achievo/wiki/Developer-Guidelines) in the [GitHub Achievo project wiki](https://github.com/atkphpframework/achievo/wiki).
 
