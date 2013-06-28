@@ -78,7 +78,7 @@ The svn-master branch includes some commits made after the 1.4.5 release, which 
                                                 |           |        |
                                                 V           V        V
 
-Note - "svn-br1 ... svn-brn" means the many other branches in the svn repo besides master. I tried using "svn-branch(1) ... svn-branch(n)", but the diagram became too wide.
+Note - "svn-br1 ... svn-brn" means the many other branches in the svn repo besides trunk. I tried using "svn-branch(1) ... svn-branch(n)", but the diagram became too wide.
 
 =============
 Official project documentation (although still somewhat sparse) is in the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/), with valuable discussion topics in the [Achievo/ATK forum](http://forum.achievo.org/). The [Achievo website](http://www.achievo.org/) and [ATK Framework website](http://www.atk-framework.com/) are also valuable resources, as is the [ibuildings Achievo/ATK wiki](http://www.achievo.org/wiki/) (but may not be current, updated articles are published on the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki/)). The ATK Framework (used by Achievo) is  documented internally with PHPDoc comments, and the [ATK Framework API documentation](http://www.atk-framework.com/documentation/) can also be browsed on the [ATK Framework website](http://www.atk-framework.com/).
