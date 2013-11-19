@@ -201,7 +201,8 @@
     function postDelete($record)
     {
       $eventlog = &atkGetNode("crm.eventlog");
-      $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+	  if(!is_null($eventlog))
+        $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
       return true;
     }
 
