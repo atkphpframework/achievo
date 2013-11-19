@@ -33,7 +33,6 @@
   {
     function getNodes()
     {
-      registerNode("crm.sales",array("view"));
       registerNode("crm.campaign", array("admin", "add","edit","delete"));
       registerNode("crm.campaign_status", array("admin", "add","edit","delete"));
       registerNode("crm.campaign_type", array("admin", "add","edit","delete"));
@@ -42,7 +41,6 @@
 
     function getMenuItems()
     {
-      $this->menuitem('sales','','main',array('crm.sales','view'),500);
       $this->menuitem("campaigns",dispatch_url("crm.campaign", "admin"), "sales",array("crm.campaign", "admin"),100);
       $this->menuitem("leads",dispatch_url("crm.lead", "admin"), "sales",array("crm.lead", "admin"),100);
 
@@ -80,5 +78,3 @@
    // Add plugins dir for the last viewed plugin
   atkimport("atk.ui.atksmarty");
   atkSmarty::addPluginDir(moduleDir("crm")."plugins/");
-
-?>

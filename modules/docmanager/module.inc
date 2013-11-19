@@ -92,6 +92,7 @@
       $rel->setLocalKey("projecttpl_id");
       $rel->setRemoteKey("documenttype_id");
       $rel->setDestinationFilter("master='project.project'");
+      $node->add($rel);
     }
 
     function project_project_modifier($node)
@@ -120,4 +121,3 @@
     }
 
   }
-?>
