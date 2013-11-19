@@ -792,11 +792,12 @@ class hoursurvey extends atkNode
 
     /** Create filter array **/
     $filterarray = array();
-    $filterarray[] = $this->_addFilterArrayItem("activitydate", ">='$startdate'", $this->getTable());
-    $filterarray[] = $this->_addFilterArrayItem("activitydate", "<='$enddate'", $this->getTable());
+    $filterarray[] = $this->_addFilterArrayItem("activitydate", ">='".escapeSQL($startdate)."'", $this->getTable());
+    $filterarray[] = $this->_addFilterArrayItem("activitydate", "<='".escapeSQL($enddate)."'", $this->getTable());
+
 
     if(!empty($activity_id)&&$activity_id!="")
-      $filterarray[] = $this->_addFilterArrayItem("activityid","='$activity_id'",$this->getTable());
+      $filterarray[] = $this->_addFilterArrayItem("activityid","='".sprintf('%d',$activity_id)."'",$this->getTable());
 
     //If we use multi project, we don't take into account project/phase,
     //selected in other controls

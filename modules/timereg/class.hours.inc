@@ -554,7 +554,7 @@ class hours extends atkNode
 
     $this->setTable("hoursbase");
     $this->setLock();
-    $this->addFilter($this->getTable().".userid",$this->m_user);
+    $this->addFilter($this->getTable().".userid",$this->getDb()->escapeSQL($this->m_user));
 
     //we need to make sure the activitydate has the same value as $this->m_viewdate.
     $this->updatesessionrecordviewdate();
@@ -1032,8 +1032,8 @@ class hours extends atkNode
     $end = endOfWeek($date);
 
     // first get the total of contract hours
-    $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
-                AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
+    $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '".$db->escapeSQL($start)."'
+                AND (enddate > '".$db->escapeSQL($start)."' OR enddate IS NULL) AND userid = '".$db->escapeSQL($userid)."'";
     list($result) = $db->getRows($sql);
     $contract_hours = (float) $result['contract'];
 
@@ -1042,8 +1042,8 @@ class hours extends atkNode
               FROM
                 hours
               WHERE
-                hours.userid = '$userid'
-                AND activitydate between '$start' and '$end'";
+                hours.userid = '".$db->escapeSQL($userid)."'
+                AND activitydate between '".$db->escapeSQL($start)."' and '".$db->escapeSQL($end)."'";
     list($res) = $db->getrows($query);
     $booked_hours = (float) $res['total'];
     if ($contract_hours==0 || $booked_hours==0)

@@ -413,9 +413,9 @@
                                 hours, phase
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             " GROUP BY
                                 phase.name
                               ORDER BY
@@ -443,9 +443,9 @@
                               WHERE
                                 hours.phaseid = phase.id
                                 AND hours.userid = person.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             " GROUP BY
                                 person.id
                               ORDER BY
@@ -475,9 +475,9 @@
                                 hours, phase, activity
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             "   AND hours.activityid = activity.id
                               GROUP BY
                                 activity.name
@@ -509,9 +509,9 @@
                                 hours, phase, activity
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             "   AND hours.activityid = activity.id
                               GROUP BY
                                 date_format(hours.activitydate, '%w')
@@ -553,8 +553,8 @@
                                WHERE
                                  hours.phaseid = phase.id
                                  AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":""));
       $maxdate = array();
       $mindate = array();
       list ($maxyear, $maxmonth, $maxday) = explode("-", $range[0]["maximum"]);
@@ -589,7 +589,7 @@
       {
         case "month": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')"; break;
         case "week": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')"; break;
-        default: $groupbybystmt = "";
+        default: $groupbystmt = "";
       }
 
       $query = "SELECT
@@ -598,9 +598,9 @@
                   hours, phase
                 WHERE
                   hours.phaseid = phase.id
-                  AND phase.projectid = ".$params["projectid"].
-                  ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                  ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                  AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                  ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                  ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
               " GROUP BY
                   ".($groupbystmt==""?"activitydate":$groupbystmt);
       $data = $db->getrows($query);
