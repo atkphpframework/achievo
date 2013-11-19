@@ -32,6 +32,7 @@
       registerNode("employee.userprefs", array("edit"));
       registerNode("employee.functionlevel", array("admin", "add", "edit", "delete"));
       registerNode("employee.department", array("admin","add","edit","delete"));
+      registerNode("employee.tpl_contract", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
@@ -42,6 +43,7 @@
       $this->menuitem("employee_stats", dispatch_url("employee.employeestats", "stats"), "employeemanagement", array("employee.employee", "stats"));
       $this->menuitem("functionlevel_admin", dispatch_url("employee.functionlevel", "admin"), "employeemanagement", array("employee.functionlevel", "admin"));
       $this->menuitem("department_admin", dispatch_url("employee.department", "admin"), "employeemanagement", array("employee.department", "admin"));
+      $this->menuitem("tpl_contract_admin", dispatch_url("employee.tpl_contract", "admin"), "setup", array("employee.tpl_contract", "admin"));
 
       $this->menuitem("-","","main",true,620);
     }

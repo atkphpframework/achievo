@@ -706,6 +706,11 @@
   "profile_updated"=> "Your profile has been updated",
   "no_contract" => "No contract or contract expired",
   "contract_expires" => "Contract will expire within 14 days",
+  "menu_tpl_contract_admin" => "Employee contract templates",
+  "tpl_contract" => "Employee contract template",
+  "workingdays" => "Working days",
+  "workstarttime" => "Work start time",
+  "workendtime" => "Work end time",
 );
 
 ?>

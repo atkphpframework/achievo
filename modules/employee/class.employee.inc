@@ -23,6 +23,7 @@ useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
 useattrib("atkdateattribute");
 useattrib('employee.adminlangselectattribute');
+useattrib('employee.contracttemplateattribute');
 
 include_once (moduleDir("person")."class.person.inc");
 include_once (moduleDir("utils")."class.dateutil.inc");
@@ -95,6 +96,7 @@ class employee extends person
       $this->addPasswordAttribute();
 
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 50)); // discriminator.
+    $this->add(new contracttemplateAttribute("contract_template","employee.tpl_contract", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD));
 
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
 
