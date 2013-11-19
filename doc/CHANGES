@@ -25,6 +25,13 @@ Changes in develop due merge of branch "svn-master"
 * Fixed security issue in searchbox [Sandy]
 * Fixed warning for default setting in documentfileattribute [Sandy]
 * Fixed SQLInjection in hoursurvey [Sandy]
+* French translation updated [?]
+* Add flag parameter to contact constructor [Yury]
+* Made some core modules optional [Sandy]
+* Fixed ticket #17273 column 'current planning' is inline
+  editable now [Yury]
+* Fixed crm.lead delete error [Sandy]
+* Added legend to employee view [Sandy]
 
 Changes in Achievo 1.4.6
 -----------------------------
