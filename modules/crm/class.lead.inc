@@ -87,7 +87,7 @@ class lead extends atkNode
     $this->add(new atkUpdatedByAttribute("last_modified_by",AF_HIDE_LIST),"history");
     $this->add(new atkUpdateStampAttribute("last_modified_on",AF_HIDE_LIST),"history");
     
-    $this->setOrder("lastname");
+    $this->setOrder("crm_lead.lastname");
     $this->setTable("crm_lead");
     $this->setDescriptorTemplate('[name]');
   }
