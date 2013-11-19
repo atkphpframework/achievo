@@ -85,7 +85,7 @@
 
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST|AF_CASCADE_DELETE), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
-      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
+      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning")->setDestinationFilter("person.status='active'");
 
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
       $this->add(new atkListAttribute("timereg_limit", array("all_users", "members_only"), array(PRJ_TIMEREG_ALL_USERS, PRJ_TIMEREG_MEMBERS_ONLY), AF_LIST_NO_NULL_ITEM|AF_HIDE_ADD|AF_HIDE_LIST), "planning");
@@ -707,7 +707,7 @@
       {
 		  	$pids = implode(",", $this->get_user_projects());
         $filter = "project.coordinator='".atkGetUserId()."' OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS;
-		  	if(!empty($pids))
+        if(!empty($pids))
           $this->addFilter($filter." OR project.id IN ($pids)");
         else
           $this->addFilter($filter);
