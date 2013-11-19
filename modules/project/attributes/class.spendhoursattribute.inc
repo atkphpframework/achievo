@@ -22,7 +22,7 @@
   */
 /**
  * Phase dependency attribute
- * 
+ *
  * @package achievo
  * @subpackage project
  */
@@ -74,30 +74,33 @@
     {
       $value = $record[$this->fieldname()];
       $org = time_format(($value*60), true);
-      if ($value>0 && atkArrayNvl($record, $this->m_phaseid_field, "")!="")
+      if(moduleExists('reports'))
       {
-        /* @var $phaseattrib atkAttribute */
-        $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
-        $params["phaseid"] = "phase.id='".$phaseattrib->value2db($record)."'";
-        $params["startdate"] = "2000-01-01";
-        $params["enddate"] = date("Y-m-d");
-        if(isset($record["personid"]["id"]))
+        if ($value>0 && atkArrayNvl($record, $this->m_phaseid_field, "")!="")
         {
-          $params["userid"] = $record["personid"]["id"];
-        }
-        else
-        {
-          $params["userid"] = "all";
-        }
+          /* @var $phaseattrib atkAttribute */
+          $phaseattrib = $this->m_ownerInstance->m_attribList[$this->m_phaseid_field];
+          $params["phaseid"] = "phase.id='".$phaseattrib->value2db($record)."'";
+          $params["startdate"] = "2000-01-01";
+          $params["enddate"] = date("Y-m-d");
+          if(isset($record["personid"]["id"]))
+          {
+            $params["userid"] = $record["personid"]["id"];
+          }
+          else
+          {
+            $params["userid"] = "all";
+          }
 
-        $org = href(dispatch_url("reports.hoursurvey", "report", $params), $org, SESSION_NESTED, ($mode!="list"));
+          $org = href(dispatch_url("reports.hoursurvey", "report", $params), $org, SESSION_NESTED, ($mode!="list"));
+        }
       }
       return $org;
     }
 
     /**
      * No function, but is neccesary
-     * 
+     *
      * @param atkDb $db atkDb
      * @param array $record Record
      * @param string $type Type

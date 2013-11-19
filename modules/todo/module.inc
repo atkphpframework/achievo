@@ -22,6 +22,9 @@
    * @package achievo
    * @subpackage todo
    */
+
+  $modifiers[] = "project.project";
+
   class mod_todo extends achievoModule
   {
     function getNodes()
@@ -59,6 +62,13 @@
       include_once(moduleDir("todo")."pim.inc");
       return pimTodos();
     }
+
+    function project_project_modifier($node)
+    {
+      userelation('atkonetomanyrelation');
+      $node->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
+    }
+
   }
 
 ?>

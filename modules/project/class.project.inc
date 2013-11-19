@@ -14,7 +14,6 @@
   useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
   useattrib("atknumberattribute");
-  useattrib("docmanager.projectdocumentmanager");
 
 
   define("PRJ_TIMEREG_ALL_USERS", 0);
@@ -27,7 +26,7 @@
       global $ATK_VARS, $g_sessionManager;
 
       $this->atkNode($name,$flags|NF_EDITAFTERADD|NF_IMPORT);
-      if($name=="project")
+      if($name=="project" && moduleExists('crm'))
       {
         $listener = &atknew("modules.crm.listeners.eventlistener");
         $this->addListener($listener);
@@ -113,9 +112,8 @@
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW), "planning");
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD|AF_HIDE_SEARCH|AF_HIDE_VIEW));
 
-      $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
-      $this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
-      $this->add(new projectDocumentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
+      //$this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
+      //$this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
 
       $timeline = &new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]", "resolution"=>"auto"), "line", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT);
       $timeline->addDynamicParam("resolution", array("day", "week", "month", "auto"));

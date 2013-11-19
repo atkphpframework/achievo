@@ -15,8 +15,12 @@ class contact extends person
   function contact($name="contact", $flags=0)
   {
     $this->person($name,$flags|NF_IMPORT);
-    $listener = &atknew("modules.crm.listeners.eventlistener");
-    $this->addListener($listener);
+    // Add event listener when the crm module is turned on
+    if(moduleExists('crm'))
+    {
+      $listener = &atknew("modules.crm.listeners.eventlistener");
+      $this->addListener($listener);
+    }
     $this->remove("userid");
 
     $this->addFilter("person.role='contact'");
@@ -69,10 +73,17 @@ class contact extends person
     return $initial;
   }
 
+  /**
+   * When crm module exists, update user history records
+   * @param array $record Record
+   */
   function postDelete($record)
   {
-    $eventlog = &atkGetNode("crm.eventlog");
-    $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    if(moduleExists('crm'))
+    {
+      $eventlog = &atkGetNode("crm.eventlog");
+      $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    }
     return true;
   }
 
