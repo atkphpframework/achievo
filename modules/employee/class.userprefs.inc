@@ -133,7 +133,7 @@ class userprefs extends atkNode
 
     if($record["id"]==atkGetUser('id'))
     {
-       atkMessageQueue::addMessage(atktext('profile_updated', 'employee'));
+       atkMessageQueue::addMessage(atktext('profile_updated', 'employee'), AMQ_SUCCESS);
       // If the theme was updated, we must change it in the session (or you won't
       // see the update.
       atkGetSessionManager()->globalVar("atkTheme", $record["theme"], true);
