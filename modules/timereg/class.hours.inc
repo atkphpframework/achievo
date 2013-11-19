@@ -872,6 +872,15 @@ class hours extends atkNode
                       'dispatch'=>getDispatchFile(),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
                      );
+    $curdate = dateutil::stamp2str($weekdates[1]['stamp'],atktext('date_format_view')). ' - '.
+               dateutil::stamp2str($weekdates[7]['stamp'],atktext('date_format_view'));
+    if(dateutil::isISO8601())
+    {
+      $curdate.= ' ('.atktext('week').' '.dateutil::getWeeknumber(date('d',$viewtime),date('m',$viewtime),date('Y',$viewtime)).')';
+    }
+    $tplvars['curdate'] = $curdate;
+
+
     if ($weekdates[8]['date'] <= date("Y-m-d") || atkConfig::get("timereg","timereg_allowfuture", false))
     {
       $tplvars['nextweekurl']=session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[8]['date'])));
