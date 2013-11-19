@@ -50,11 +50,10 @@
 
   $position = $menu->getPosition();
   $scrolling = ($menu->getScrollable()==MENU_SCROLLABLE?FRAME_SCROLL_AUTO:FRAME_SCROLL_NO);
-  if(isset($ATK_VARS["atknodetype"]) && isset($ATK_VARS["atkaction"]))
+  $dispatchVars = array_merge($_GET, $_POST);
+  if (isset($dispatchVars['atknodetype']) && isset($dispatchVars['atkaction']))
   {
-    $destination = "dispatch.php?atknodetype=".$ATK_VARS["atknodetype"]."&atkaction=".$ATK_VARS["atkaction"];
-    if (isset($ATK_VARS["atkselector"])) $destination.="&atkselector=".$ATK_VARS["atkselector"];
-    if (isset($ATK_VARS["searchstring"])) $destination.="&searchstring=".$ATK_VARS["searchstring"];
+    $destination = dispatch_url('', '', $dispatchVars, 'dispatch.php');
   }
   else
   {
