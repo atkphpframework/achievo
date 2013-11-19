@@ -561,13 +561,13 @@ class hours extends atkNode
 
     if ($this->m_weekview!=1)
     {
-      if ($this->m_lock=="") $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
+      if ($this->m_lock=="" && !$this->hasFlag(NF_NO_ADD)) $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
       $this->addFilter("activitydate",$this->m_viewdate);
       $res[] = $handler->invoke("adminPage");
     }
     else
     {
-      if (atkconfig::get("timereg","timereg_week_bookable")==true && $this->m_lock=="") $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
+      if (atkconfig::get("timereg","timereg_week_bookable")==true && $this->m_lock=="" && !$this->hasFlag(NF_NO_ADD)) $res[] = $handler->invoke("addPage", $handler->getRejectInfo());
       $res[] = $this->weekview();
     }
 
