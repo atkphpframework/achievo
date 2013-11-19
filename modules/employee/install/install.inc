@@ -7,5 +7,6 @@
   $setup->installNode("employee.functionlevel");
   $setup->installNode("employee.department");
   $setup->installNode("employee.employeerole");
-  $setup->setVersion(25);
+  $setup->installNode("employee.tpl_contract");
+  $setup->setVersion(26);
 ?>
