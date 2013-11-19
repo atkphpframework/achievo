@@ -12,9 +12,9 @@ useattrib('atkboolattribute');
 
 class contact extends person
 {
-  function contact($name="contact")
+  function contact($name="contact", $flags=0)
   {
-    $this->person($name,NF_IMPORT);
+    $this->person($name,$flags|NF_IMPORT);
     $listener = &atknew("modules.crm.listeners.eventlistener");
     $this->addListener($listener);
     $this->remove("userid");
