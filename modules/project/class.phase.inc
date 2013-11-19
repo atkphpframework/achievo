@@ -74,6 +74,8 @@
       if($cascadingdeletehours)
         $this->add(new atkOneToManyRelation("hours","timereg.hours","phaseid",AF_HIDE|AF_CASCADE_DELETE));
 
+      $this->setEditableListAttributes(array("current_planning"));
+
       $this->addSecurityMap("view","project.admin");
       $this->setOrder("phase.startdate, phase.name");
       $this->setTable("phase","phase");
