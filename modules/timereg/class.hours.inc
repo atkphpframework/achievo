@@ -588,12 +588,19 @@ class hours extends atkNode
     $today = date('Y-m-d');
 
     $ui = &$this->getUi();
+    $curdate = atktext(atk_strtolower(date("l", $viewdatestamp)))." ".atktext(atk_strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp);
+    if(dateutil::isISO8601())
+    {
+      $curdate.= ' ('.atktext('week').' '.dateutil::getWeeknumber(date('d',$viewdatestamp),date('m',$viewdatestamp),date('Y',$viewdatestamp)).')';
+    }
+    
+    
     $tplvars = array( 'yesterdayurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday))),
                       'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>date('Y-m-d',$viewdatestamp),"weekview"=>1))),
                       'sessionform'=>session_form(),
                       'userselect'=>$this->getUserSelect(),
                       'datejumper'=>$this->getDateJumper(),
-                      'currentdate'=>atktext(atk_strtolower(date("l", $viewdatestamp)))." ".atktext(atk_strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
+                      'currentdate'=> $curdate,
                       'lockicon'=>Locking::getLockIcon($this->m_lock),
                      );
 
