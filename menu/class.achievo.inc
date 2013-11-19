@@ -26,10 +26,10 @@ class achievo extends atkFramesMenu
       $prj .= '<SELECT style="width: 150px" name="selectedproject" onchange="document.projectselectorform.submit();">';
       $prj .= '<OPTION value="0">' . atktext("project_select_none") . '</OPTION>';
       $selectedproject = atkArrayNvl($_REQUEST, "selectedproject");
-      for ($i=0,$_i=count($projects); $i<$_i; $i++)
+      foreach($projects as $project)
       {
-        $selected = ($selectedproject == $projects[$i]['projectid']) ? ' selected' : '';
-        $prj .= sprintf('<OPTION value="%d" %s>%s</OPTION>', $projects[$i]['projectid'], $selected, $projects[$i]['projectname']);
+        $selected = ($selectedproject == $project['projectid']) ? ' selected' : '';
+        $prj .= sprintf('<OPTION value="%d" %s>%s</OPTION>', $project['projectid'], $selected, $project['projectname']);
       }
       $prj .= '</SELECT></FORM>';
       return $prj;

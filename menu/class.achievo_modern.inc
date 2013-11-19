@@ -134,7 +134,7 @@ class achievo_modern extends atkPlainMenu
 
       if (count($projects) == 0)
       {
-        //updateSelectedProjects();
+        updateSelectedProjects();
         $projects = $sessionManager->getValue("selectedprj","globals");
       }
 
@@ -143,11 +143,11 @@ class achievo_modern extends atkPlainMenu
       $prj .= "<OPTION value=\"0\">".atktext("project_select_none")."</OPTION>";
 
       $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : null;
-      for ($i=0;$i < count($projects); $i++)
+      foreach($projects as $project)
       {
-        $prj .= "<OPTION value=\"".$projects[$i]['projectid']."\"";
-        if ($selectedproject == $projects[$i]['projectid']) $prj .=" selected";
-        $prj .= ">".$projects[$i]['projectname']."</OPTION>";
+        $prj .= "<OPTION value=\"".$project['projectid']."\"";
+        if ($selectedproject == $project['projectid']) $prj .=" selected";
+        $prj .= ">".$project['projectname']."</OPTION>";
       }
       $prj .="</SELECT></FORM>";
     }
