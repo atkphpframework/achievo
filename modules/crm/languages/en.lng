@@ -16,6 +16,7 @@
   // Translation Tool.
   //
   $en = array(
+  "crm_sales_view"=>"View sales menu",
   "account" => "Account",
   "actual cost" => "Actual costs",
   "budget" => "Buget",
@@ -23,7 +24,7 @@
   "campaign_status" => "Campaign status",
   "campaign_type" => "Campaign type",
   "description" => "Description",
-  "end_date" => "Eind date",
+  "end_date" => "End date",
   "expected_costs" => "Expected_costs",
   "expected_revenue" => "Expected revenue",
   "former_name" => "Former name",

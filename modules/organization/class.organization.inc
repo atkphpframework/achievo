@@ -32,84 +32,82 @@ class organization extends atkNode
   function organization()
   {
     $this->atkNode("organization", NF_EDITAFTERADD|NF_EXPORT);
-    $listener = &atknew("modules.crm.listeners.eventlistener");
-    $this->addListener($listener);
+    if(moduleExists('crm'))
+    {
+      $listener = &atknew("modules.crm.listeners.eventlistener");
+      $this->addListener($listener);
+    }
+    $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY),NULL,10);
+    $this->add(new atkAttribute("organizationcode", AF_SEARCHABLE),NULL,20);
+    $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100),NULL,30);
+    $this->add(new atkListAttribute("type", array("customer", "supplier"), "", AF_HIDE_LIST),NULL,40);
 
-    $this->add(new atkNumberAttribute("id" ,AF_AUTOKEY));
-    $this->add(new atkAttribute("organizationcode", AF_SEARCHABLE));
-    $this->add(new atkAttribute("name",AF_SEARCHABLE|AF_OBLIGATORY, 100));
-    $this->add(new atkListAttribute("type", array("customer", "supplier"), "", AF_HIDE_LIST));
-    //$this->add(new atkDummyAttribute("visitheader", "<b>".atktext("organization_visitaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
+    $this->add(new atkAttribute("visit_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,50);
+    $this->add(new atkAttribute("visit_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,60);
+    $this->add(new atkAttribute("visit_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20),NULL,70);
+    $this->add(new atkAttribute("visit_city", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,80);
+    $this->add(new atkAttribute("visit_state", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,90);
+    $this->add(new atkAttribute("visit_country", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,100);
 
-    // TODO FIXME: in future version 1.1, the fields for address should be renamed to visit_*.
-    // But in the 1.0 branch, we want to remain backwardscompatible.
-    $this->add(new atkAttribute("visit_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("visit_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("visit_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
-    $this->add(new atkAttribute("visit_city", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("visit_state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("visit_country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("mail_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,110);
+    $this->add(new atkAttribute("mail_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,120);
+    $this->add(new atkAttribute("mail_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20),NULL,130);
+    $this->add(new atkAttribute("mail_city", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,140);
+    $this->add(new atkAttribute("mail_state", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,150);
+    $this->add(new atkAttribute("mail_country", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,160);
 
-    //$this->add(new atkDummyAttribute("mailheader", "<b>".atktext("organization_mailaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
-    $this->add(new atkAttribute("mail_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("mail_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("mail_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
-    $this->add(new atkAttribute("mail_city", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("mail_state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("mail_country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-
-    //$this->add(new atkDummyAttribute("invoiceheader", "<b>".atktext("organization_invoiceaddress", "organization")."</b>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
-    $this->add(new atkAttribute("invoice_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("invoice_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("invoice_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20));
-    $this->add(new atkAttribute("invoice_city", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("invoice_state", AF_HIDE_LIST|AF_HIDE_ADD, 100));
-    $this->add(new atkAttribute("invoice_country", AF_HIDE_LIST|AF_HIDE_ADD, 100));
+    $this->add(new atkAttribute("invoice_address", AF_SEARCHABLE|AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,170);
+    $this->add(new atkAttribute("invoice_address2", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,180);
+    $this->add(new atkAttribute("invoice_zipcode", AF_HIDE_LIST|AF_HIDE_ADD, 20),NULL,190);
+    $this->add(new atkAttribute("invoice_city", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,200);
+    $this->add(new atkAttribute("invoice_state", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,210);
+    $this->add(new atkAttribute("invoice_country", AF_HIDE_LIST|AF_HIDE_ADD, 100),NULL,220);
 
     $this->add(new atkTabbedPane('address_tab',array('visit'=>array('visit_address','visit_address2','visit_zipcode','visit_city','visit_state','visit_country'),
                                                      'mail'=>array('mail_address','mail_address2','mail_zipcode','mail_city','mail_state','mail_country'),
-                                                     'invoice'=>array('invoice_address','invoice_address2','invoice_zipcode','invoice_city','invoice_state','invoice_country')),AF_HIDE_ADD|AF_HIDE_LIST));
+                                                     'invoice'=>array('invoice_address','invoice_address2','invoice_zipcode','invoice_city','invoice_state','invoice_country')),AF_HIDE_ADD|AF_HIDE_LIST),NULL,230);
 
-    $this->add(new atkDummyAttribute("divider", "<br>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL));
-    $this->add(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD, 20));
-    $this->add(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD, 20));
-    $this->add(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD, 50));
-    $this->add(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST, 100));
-    $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD, 30));
-    $this->add(new atkAttribute("bankaccount2", AF_HIDE_LIST|AF_HIDE_ADD, 30));
-    $this->add(new atkAttribute("bankaccount3", AF_HIDE_LIST|AF_HIDE_ADD, 30));
-    $this->add(new atkAttribute("bankaccount4", AF_HIDE_LIST|AF_HIDE_ADD, 30));
-    $this->add(new atkAttribute("vatnumber", AF_HIDE_LIST|AF_HIDE_ADD, 25));
-    $this->add(new atkAttribute("debtornumber", AF_HIDE_LIST|AF_HIDE_ADD, 30));
-    $this->add(new atkManyToOneRelation("member_of","organization.organization",AF_HIDE_LIST|AF_LARGE|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("status","crm.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("industry","crm.industry",AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkNumberAttribute("employees",AF_HIDE_LIST|AF_HIDE_ADD,5));
-    $this->add(new atkAttribute("revenue",AF_HIDE_LIST|AF_HIDE_ADD,5));
-    $this->add(new atkManyToOneRelation("rate","crm.rate",AF_HIDE_LIST|AF_READONLY|AF_HIDE_ADD));
-    $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST));
-    $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
-    $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts");
-    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project");
+    $this->add(new atkDummyAttribute("divider", "<br>", AF_HIDE_LIST|AF_HIDE_ADD|AF_NO_LABEL),NULL,240);
+    $this->add(new atkAttribute("phone",AF_SEARCHABLE|AF_HIDE_ADD, 20),NULL,250);
+    $this->add(new atkAttribute("fax",AF_SEARCHABLE|AF_HIDE_ADD, 20),NULL,260);
+    $this->add(new atkAttribute("email",AF_SEARCHABLE|AF_HIDE_ADD, 50),NULL,270);
+    $this->add(new atkAttribute("website",AF_HIDE_ADD|AF_HIDE_LIST, 100),NULL,280);
+    $this->add(new atkAttribute("bankaccount", AF_HIDE_LIST|AF_HIDE_ADD, 30),NULL,290);
+    $this->add(new atkAttribute("bankaccount2", AF_HIDE_LIST|AF_HIDE_ADD, 30),NULL,300);
+    $this->add(new atkAttribute("bankaccount3", AF_HIDE_LIST|AF_HIDE_ADD, 30),NULL,310);
+    $this->add(new atkAttribute("bankaccount4", AF_HIDE_LIST|AF_HIDE_ADD, 30),NULL,320);
+    $this->add(new atkAttribute("vatnumber", AF_HIDE_LIST|AF_HIDE_ADD, 25),NULL,330);
+    $this->add(new atkAttribute("debtornumber", AF_HIDE_LIST|AF_HIDE_ADD, 30),NULL,340);
+    $this->add(new atkManyToOneRelation("member_of","organization.organization",AF_HIDE_LIST|AF_LARGE|AF_HIDE_ADD),NULL,350);
+    //$this->add(new atkManyToOneRelation("status","crm.organization_status",AF_HIDE_LIST|AF_HIDE_ADD));
+    //$this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST|AF_HIDE_ADD));
+    //$this->add(new atkManyToOneRelation("industry","crm.industry",AF_HIDE_LIST|AF_HIDE_ADD));
+    $this->add(new atkNumberAttribute("employees",AF_HIDE_LIST|AF_HIDE_ADD,5),NULL,360);
+    $this->add(new atkAttribute("revenue",AF_HIDE_LIST|AF_HIDE_ADD,5),NULL,370);
 
-    $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL|AF_HIDE_ADD), 'contracts');
-    $activeContracts = &$this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST));
+    //$this->add(new atkManyToOneRelation("rate","crm.rate",AF_HIDE_LIST|AF_READONLY|AF_HIDE_ADD));
+
+    $this->add(new atkManyToOneRelation("assigned_to","employee.employee",AF_SEARCHABLE|AF_HIDE_ADD|AF_HIDE_LIST),NULL,380);
+    $this->add(new atkTextAttribute("remark", TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD),NULL,390);
+    $this->add(new atkOneToManyRelation("contactperson","organization.contact","company",AF_HIDE_LIST),"contacts",NULL,400);
+    $this->add(new atkTabbedPane("project_subtabs",array("activeprojects"=>array("projects"),"archivedprojects"=>array("archivedprojects")),AF_HIDE_ADD|AF_NO_LABEL),"project",410);
+
+    $this->add(new atkTabbedPane('contract_subtabs', array('activecontracts'=>array('contracts'),'archivedcontracts'=>array('archivedcontracts')), AF_HIDE_LIST|AF_NO_LABEL|AF_HIDE_ADD), 'contracts',420);
+    $activeContracts = &$this->add(new atkOneToManyRelation("contracts","organization.contracts","customer",AF_HIDE_LIST),NULL,430);
     $activeContracts->addDestinationFilter("contract.status='active'");
-    $archivedContracts = &$this->add(new atkOneToManyRelation("archivedcontracts","organization.contracts","customer",AF_HIDE_LIST));
+    $archivedContracts = &$this->add(new atkOneToManyRelation("archivedcontracts","organization.contracts","customer",AF_HIDE_LIST),NULL,440);
     $archivedContracts->addDestinationFilter("contract.status!='active'");
 
     $projectRelatie = new atkOneToManyRelation("projects", "project.project", "customer",AF_HIDE_LIST|AF_HIDE_ADD);
     $projectRelatie->addDestinationFilter("project.status='active'");
-    $this->add($projectRelatie);
-    $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD));
-    //$this->add(new atkTabbedPane("extra_subtabs",array("quotations"=>array("quotations")),AF_HIDE_ADD|AF_NO_LABEL),"extra");
-    $this->add(new atkOneToManyRelation("former_names","crm.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
-    $this->add(new atkOneToManyRelation("relation","crm.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
-    $this->add(new atkOneToManyRelation("quotations","quotation.quotation","organization_id",AF_HIDE_LIST),"extra");
+    $this->add($projectRelatie,NULL,450);
+    $this->add(new atkParserAttribute("archivedprojects", "see_below", AF_HIDE_LIST|AF_HIDE_ADD),NULL,460);
+    //$this->add(new atkOneToManyRelation("former_names","crm.former_name","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+    //$this->add(new atkOneToManyRelation("relation","crm.organization_relation","account",AF_HIDE_LIST|AF_HIDE_ADD),"extra");
+
     $this->add(new atkParserAttribute("vcard", href("?atkaction=vcard&id=[id]", atktext("vcard"), SESSION_NESTED), AF_NO_LABEL|AF_HIDE_ADD), NULL, 10000);
 
-    $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST));
+    $this->add(new atkDocumentAttribute("document",AF_HIDE_LIST),NULL,470);
 
     $this->add(new atkCreatedByAttribute("created_by",AF_HIDE_LIST),"history");
     $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");
@@ -267,8 +265,11 @@ class organization extends atkNode
 
   function postDelete($record)
   {
-    $eventlog = &atkGetNode("crm.eventlog");
-    $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    if(moduleExists('crm'))
+    {
+      $eventlog = &atkGetNode("crm.eventlog");
+      $eventlog->delete_event_history($this->atknodetype(),$record["atkprimkey"]);
+    }
     return true;
   }
 

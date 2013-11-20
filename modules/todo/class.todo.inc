@@ -91,7 +91,7 @@ class todo extends atkNode
     atkimport('atk.datagrid.atkdatagrid');
     $todonode->addFilter("todo.assigned_to='$userid' AND todo.assigned_to <> 0  AND ((todo.private=0) OR (todo.private is null) OR (todo.private=1 and todo.owner='$userid'))");
     $grid = atkDataGrid::create($todonode, 'todoassignedtome');
-    $grid->setEmbedded(false);
+    $grid->setEmbedded(true);
     $grid->setBaseUrl(partial_url('todo.todo', 'refresh_todos', 'refresh_todos'));
     $todo_assignedtome = $grid->render();
     $todo_assignedtome.= '<br>'.href(dispatch_url("todo.todo","add",array("atkfilter"=>"assigned_to.id='$userid'")),atktext('add'),SESSION_NESTED);
@@ -100,18 +100,28 @@ class todo extends atkNode
 
     $todonode2->addFilter("todo.owner='$userid' AND todo.assigned_to<>'$userid'");
     $grid2 = atkDataGrid::create($todonode2, 'todoassignedbyme');
-    $grid2->setEmbedded(false);
+    $grid2->setEmbedded(true);
     $grid2->setBaseUrl(partial_url('todo.todo', 'refresh_todos', 'refresh_todos'));
     $todo_assignedbyme.= $grid2->render();
     $todo_assignedbyme.= '<br>'.href(dispatch_url("todo.todo","add"),atktext('add'),SESSION_NESTED);
 
-    $res = '<table border="0">';
+    $res= '<table border="0">';
     $res.= '<tr>';
-    $res.= '<td valign="top">'.$todo_assignedtome.'</td>';
+    $res.= '<td valign="top">';
+    $res.= '<form id="'.($grid->getName().'_form').'" name="'.($grid->getName().'_form').'" method="post" action="'.atkSelf().'">';
+    $res.= session_form();
+    $res.= '<input type="hidden" name="atknodetype" value="'.$grid->getActionNode().'">';
+    $res.= $todo_assignedtome;
+    $res.= '</form></td>';
     $res.= '</tr><tr><td>&nbsp;</td></tr><tr>';
-    $res.= '<td valign="top">'.$todo_assignedbyme.'</td>';
+    $res.= '<td valign="top">';
+    $res.= '<form id="'.($grid2->getName().'_form').'" name="'.($grid2->getName().'_form').'" method="post" action="'.atkSelf().'">';
+    $res.= session_form();
+    $res.= '<input type="hidden" name="atknodetype" value="'.$grid2->getActionNode().'">';
+    $res.= $todo_assignedbyme;
+    $res.= '</form></td>';
     $res.= '</tr></table>';
-
+    
     return $res;
   }
 

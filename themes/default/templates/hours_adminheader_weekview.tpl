@@ -21,7 +21,7 @@
     </tr>
   </table>
 </form>
-
-<b>{atktext week} {$curdate}</b>
+<br/>
+<b>{$curdate}</b>
 {$lockicon} {if $locktext}({$locktext}){/if}
-<br><br><br>
+<br><br>

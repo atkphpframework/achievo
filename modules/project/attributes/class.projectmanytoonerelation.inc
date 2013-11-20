@@ -207,7 +207,7 @@
       $subquery = $db->createQuery();
       $subquery->addTable("hoursbase");
       $subquery->addField("phaseid");
-      $subquery->addCondition("hoursbase.userid='".$this->m_userid."'");
+      $subquery->addCondition("hoursbase.userid='".$db->escapeSQL($this->m_userid)."'");
       $subquery->addOrderBy("id DESC");
       
       $query = $db->createQuery();
@@ -225,7 +225,7 @@
       if (!$securityManager->allowed("timereg.hours", "any_project"))
       {
          $query->addJoin("project_person","","project_person.projectid = project.id",true);
-         $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
+         $query->addCondition("(project_person.personid = ".$db->escapeSQL($this->m_userid)." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
       
       $query->setLimit(0,atkconfig::get("project","numberofrecentprojects"));

@@ -157,9 +157,9 @@
   "emptimedistribution" => "Per emp",
   "enddate" => "Enddate",
   "enddate_expire_warning" => "If the enddate of this contract has expired, when saving the contract the status will automatically be set to 'archived'!<br />All linked projects will be set to status 'nonactive'!",
-  "ended_contracts_description" => "You recieve this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that isn't active. The status of the projects has been\naltered.\n\nThe following projecs have been altered:\n\n\n",
+  "ended_contracts_description" => "You receive this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that isn't active. The status of the projects has been\naltered.\n\nThe following projects have been altered:\n\n\n",
   "ended_contracts_subject" => "Ended contracts",
-  "ending_contracts_description" => "You recieve this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that has expired. The status of the projects has been\naltered.\n\nThe following projecs have been altered:\n\n\n",
+  "ending_contracts_description" => "You receive this email, because you are the coordinator of one or more of the projects mentioned \nin this email. These projects belong to a contract that has expired. The status of the projects has been\naltered.\n\nThe following projects have been altered:\n\n\n",
   "ending_contracts_subject" => "Ending contracts",
   "endtime" => "Endtime",
   "entity" => "Profile",
@@ -704,6 +704,13 @@
   "show_all_phases" => "Show all phases",
   "show_nonactive_phases" => "Show nonactive phases",
   "profile_updated"=> "Your profile has been updated",
+  "no_contract" => "No contract or contract expired",
+  "contract_expires" => "Contract will expire within 14 days",
+  "menu_tpl_contract_admin" => "Employee contract templates",
+  "tpl_contract" => "Employee contract template",
+  "workingdays" => "Working days",
+  "workstarttime" => "Work start time",
+  "workendtime" => "Work end time",
 );
 
 ?>

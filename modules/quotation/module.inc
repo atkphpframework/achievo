@@ -1,4 +1,5 @@
 <?php
+  $modifiers[] = "organization.organization";
 
   class mod_quotation extends achievoModule
   {
@@ -37,6 +38,16 @@
     {
       include_once(moduleDir("quotation")."pim.inc");
       return pimMyPipeline();
+    }
+
+  /**
+     * Modifier on  Organization node to show the quotations of an organization
+     * @param atkNode $node Node
+     */
+    function organization_organization_modifier($node)
+    {
+      userelation('atkonetomanyrelation');
+      $node->add(new atkOneToManyRelation("quotations","quotation.quotation","organization_id",AF_HIDE_LIST),"extra");
     }
 
   }

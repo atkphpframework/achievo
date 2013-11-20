@@ -18,6 +18,13 @@
   // Add the docmanager to any modules specified in the $config_docmanagernodes array
   if(!is_array($modifiers)) $modifiers = array();
   $modifiers = array_values(array_diff(array_merge($modifiers, atkconfig::get("docmanager","docmanagernodes", array())), array("project.project")));
+  if(moduleExists('project'))
+  {
+    $modifiers[] = "project.tpl_project";
+    $modifiers[] = "project.project";
+    $modifiers[] = "project.project_personcontact";
+  }
+  if(moduleExists('quotation')) $modifiers[] = "quotation.quotation";
 
   /**
    * Module file for the menu items and security
@@ -72,5 +79,45 @@
         $modifierfunctions[] = "addDocumentManager";
       return $modifierfunctions;
     }
+
+    /**
+     * Modifier on project.project node
+     *
+     * @param atkNode &$node Node
+     */
+    function project_tpl_project_modifier($node)
+    {
+      userelation("atkmanyboolrelation");
+      $rel = &$node->add(new atkManyBoolRelation("documenttypes", "docmanager.projecttpl_doctype", "docmanager.documenttype", AF_HIDE_LIST|AF_HIDE_ADD));
+      $rel->setLocalKey("projecttpl_id");
+      $rel->setRemoteKey("documenttype_id");
+      $rel->setDestinationFilter("master='project.project'");
+      $node->add($rel);
+    }
+
+    function project_project_modifier($node)
+    {
+      useattrib("docmanager.projectdocumentmanager");
+      $node->add(new projectDocumentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
+    }
+
+    /**
+     * Modifier on  Project person contact node
+     * @param atkNode $node Node
+     */
+    function project_project_personcontact_modifier($node)
+    {
+      useattrib("docmanager.relateddocument");
+      $node->add(new relatedDocument("document", "projectid"));
+    }
+
+    /**
+     * Modifuer on Quotation node
+     * @param atkNode $node node
+     */
+    function quotation_quotation_modifier($node)
+    {
+      $this->addDocumentManager($node);
+    }
+
   }
-?>

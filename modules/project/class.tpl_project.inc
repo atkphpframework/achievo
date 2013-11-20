@@ -17,10 +17,6 @@ class tpl_project extends atkNode
     $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_ADD));
     $this->add(new atkOneToManyRelation("tpl_project_phase","project.tpl_project_phase","projectid", AF_HIDE_ADD|AF_HIDE_LIST|AF_NOSORT));
     $this->add(new tpl_dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL));
-    $rel = &$this->add(new atkManyBoolRelation("documenttypes", "docmanager.projecttpl_doctype", "docmanager.documenttype", AF_HIDE_LIST|AF_HIDE_ADD));
-    $rel->setLocalKey("projecttpl_id");
-    $rel->setRemoteKey("documenttype_id");
-    $rel->setDestinationFilter("master='project.project'");
 
     $this->setTable("tpl_project","tpl_project");
     $this->setOrder("name");

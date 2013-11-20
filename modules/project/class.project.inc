@@ -14,7 +14,6 @@
   useattrib("atkfuzzysearchattribute");
   useattrib("atkdummyattribute");
   useattrib("atknumberattribute");
-  useattrib("docmanager.projectdocumentmanager");
 
 
   define("PRJ_TIMEREG_ALL_USERS", 0);
@@ -27,7 +26,7 @@
       global $ATK_VARS, $g_sessionManager;
 
       $this->atkNode($name,$flags|NF_EDITAFTERADD|NF_IMPORT);
-      if($name=="project")
+      if($name=="project" && moduleExists('crm'))
       {
         $listener = &atknew("modules.crm.listeners.eventlistener");
         $this->addListener($listener);
@@ -46,7 +45,7 @@
       $p_attr = &$this->add(new atkManyToOneRelation("master_project","project.projectselector",AF_RELATION_AUTOCOMPLETE|AF_HIDE_LIST|AF_HIDE_ADD));
       $p_attr->addDestinationFilter("project.id<>[id] AND (project.master_project=0 OR project.master_project IS NULL)");
 
-      $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST));
+      $this->add(new atkManyToOneRelation("contract_id","organization.contracts",AF_HIDE_ADD|AF_HIDE_LIST|AF_RELATION_AUTOLINK));
       $this->add(new atkTextAttribute("description",TEXT_LARGE, AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkAttribute("quotation_number", AF_HIDE_LIST|AF_HIDE_ADD));
       $this->add(new atkCurrencyAttribute("fixed_price",AF_HIDE_LIST|AF_HIDE_ADD, 13,"", 2), "finance");
@@ -86,7 +85,7 @@
 
       $this->add(new atkOneToManyRelation("members","project.project_personemployee", "projectid", AF_HIDE_LIST|AF_CASCADE_DELETE), "planning");
       $this->add(new atkDummyAttribute("hint", atktext("project_member_fuzzyhint"), AF_HIDE_LIST|AF_HIDE_VIEW|AF_HIDE_ADD), "planning");
-      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning");
+      $this->add(new atkFuzzySearchAttribute("member_add", "employee.employee", "storeMembers", "multiselect", AF_HIDE_ADD|AF_BLANK_LABEL), "planning")->setDestinationFilter("person.status='active'");
 
       // This is a listattrib and not a boolattrib, because more options may be added in the future.
       $this->add(new atkListAttribute("timereg_limit", array("all_users", "members_only"), array(PRJ_TIMEREG_ALL_USERS, PRJ_TIMEREG_MEMBERS_ONLY), AF_LIST_NO_NULL_ITEM|AF_HIDE_ADD|AF_HIDE_LIST), "planning");
@@ -113,9 +112,8 @@
       $this->add(new dependencyAttribute("dependencies",AF_HIDE_ADD|AF_HIDE_LIST|AF_BLANKLABEL|AF_HIDE_VIEW), "planning");
       $this->add(new projecttemplateAttribute("template","project.tpl_project", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD|AF_HIDE_SEARCH|AF_HIDE_VIEW));
 
-      $this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
-      $this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
-      $this->add(new projectDocumentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
+      //$this->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
+      //$this->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
 
       $timeline = &new dataGraphAttribute("timeline", "timeline", array("projectid"=>"[id]", "resolution"=>"auto"), "line", AF_HIDE_ADD|AF_HIDE_LIST|AF_HIDE_EDIT);
       $timeline->addDynamicParam("resolution", array("day", "week", "month", "auto"));
@@ -413,9 +411,9 @@
                                 hours, phase
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             " GROUP BY
                                 phase.name
                               ORDER BY
@@ -443,9 +441,9 @@
                               WHERE
                                 hours.phaseid = phase.id
                                 AND hours.userid = person.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             " GROUP BY
                                 person.id
                               ORDER BY
@@ -475,9 +473,9 @@
                                 hours, phase, activity
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             "   AND hours.activityid = activity.id
                               GROUP BY
                                 activity.name
@@ -509,9 +507,9 @@
                                 hours, phase, activity
                               WHERE
                                 hours.phaseid = phase.id
-                                AND phase.projectid = ".$params["projectid"].
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                                AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
                             "   AND hours.activityid = activity.id
                               GROUP BY
                                 date_format(hours.activitydate, '%w')
@@ -553,8 +551,8 @@
                                WHERE
                                  hours.phaseid = phase.id
                                  AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
-                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                                ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":""));
+                                ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                                ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":""));
       $maxdate = array();
       $mindate = array();
       list ($maxyear, $maxmonth, $maxday) = explode("-", $range[0]["maximum"]);
@@ -589,7 +587,7 @@
       {
         case "month": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%m')"; break;
         case "week": $groupbystmt = "DATE_FORMAT(activitydate,'%Y%V')"; break;
-        default: $groupbybystmt = "";
+        default: $groupbystmt = "";
       }
 
       $query = "SELECT
@@ -598,9 +596,9 @@
                   hours, phase
                 WHERE
                   hours.phaseid = phase.id
-                  AND phase.projectid = ".$params["projectid"].
-                  ($params["viewstart"]!=""?" AND hours.activitydate>='".$params["viewstart"]."'":"").
-                  ($params["viewend"]!=""?" AND hours.activitydate<='".$params["viewend"]."'":"").
+                  AND phase.projectid = ".sprintf('%d', (int)$params["projectid"]).
+                  ($params["viewstart"]!=""?" AND hours.activitydate>='".$db->escapeSQL($params["viewstart"])."'":"").
+                  ($params["viewend"]!=""?" AND hours.activitydate<='".$db->escapeSQL($params["viewend"])."'":"").
               " GROUP BY
                   ".($groupbystmt==""?"activitydate":$groupbystmt);
       $data = $db->getrows($query);
@@ -709,7 +707,7 @@
       {
 		  	$pids = implode(",", $this->get_user_projects());
         $filter = "project.coordinator='".atkGetUserId()."' OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS;
-		  	if(!empty($pids))
+        if(!empty($pids))
           $this->addFilter($filter." OR project.id IN ($pids)");
         else
           $this->addFilter($filter);
