@@ -41,8 +41,7 @@
 
     function getMenuItems()
     {
-      $this->menuitem("scheduler", dispatch_url("scheduler.scheduler","admin"),"main",true,300);
-      $this->menuitem("-","","main",true,320);
+      $this->menuitem("scheduler", dispatch_url("scheduler.scheduler","admin"),"main",array("scheduler.scheduler","admin"),500);
       $this->menuitem("scheduler_category", dispatch_url("scheduler.scheduler_category","admin"),"setup",array("scheduler.scheduler_category","admin"));
       $this->menuitem("scheduler_holidays", dispatch_url("scheduler.scheduler_holidays","admin"),"setup",array("scheduler.scheduler_holidays","admin"));
       $this->menuitem("scheduler_email_templates", dispatch_url("scheduler.scheduler_email_template","admin"),"setup", array("scheduler.scheduler_email_template","admin"));

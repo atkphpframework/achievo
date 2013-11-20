@@ -11,6 +11,14 @@ Bug numbers are references to bugs in the ibuildings Bugzilla bug tracker:
 * Please do not exceed 80 characters per line.
 * Latest changes go on top, different types of changes may be mixed.
 
+Changes in develop due merge of klaaspeter/achievo repository
+----------------------------
+* Several language file fixes [Klaaspeter]
+* Fix scheduler navigation entry [Klaaspeter]
+* Fix the navigations project <select> [PhrozenByte]
+* Remove crm module dependency in project.project [PhrozenByte]
+* timereg.hours doesn't ignore NF_NO_ADD anymore [PhrozenByte]
+
 Changes in develop due merge of branch "svn-master"
 ----------------------------
 + Added New and Edit links to the contract field in projects. [Guido]
