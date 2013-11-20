@@ -34,15 +34,15 @@ class Locking {
 
     if ($s_locks[$userid][$period]=="")
     {
+      $db = &atkGetDb();
       $query = "SELECT
                   period, userid
                 FROM
                   hours_lock
                 WHERE
-                  (userid = '$userid' OR userid IS NULL)
+                  (userid = '".$db->escapeSQL($userid)."' OR userid IS NULL)
                 AND
-                  period = '$period'";
-      $db = &atkGetDb();
+                  period = '".$db->escapeSQL($period)."'";
       $res = $db->getrows($query);
 
       if (count($res))
@@ -110,8 +110,8 @@ class Locking {
                 LEFT JOIN phase ON (hours.phaseid = phase.id)
                 LEFT JOIN project ON (project.id = phase.projectid)
                 LEFT JOIN person ON (project.coordinator = person.id)
-                WHERE hours.userid = '{$record['userid']['id']}'
-                AND DATE_FORMAT(activitydate,'{$dateformat}') = '{$record['period']}'
+                WHERE hours.userid = '".$db->escapeSQL($record['userid']['id'])."'
+                AND DATE_FORMAT(activitydate,'".$db->escapeSQL($dateformat)."') = '".$db->escapeSQL($record['period'])."'
                 AND coordinator IS NOT NULL");
     }
 
@@ -154,9 +154,10 @@ class Locking {
    */
   function unlockPeriod($period)
   {
+    $db = atkGetDb();
     $userid = atkArrayNvl(getUser(), "id");
     $locknode = &atkGetNode("timereg.hours_lock");
-    $locknode->deleteDb("hours_lock.period = '$period' AND hours_lock.userid = '$userid'");
+    $locknode->deleteDb("hours_lock.period = '".$db->escapeSQL($period)."' AND hours_lock.userid = '".$db->escapeSQL($userid)."'");
   }
 
 

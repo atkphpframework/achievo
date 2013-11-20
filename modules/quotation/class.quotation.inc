@@ -9,7 +9,6 @@
   useattrib("atkCreateStampAttribute");
   useattrib("atkupdatedbyattribute");
   useattrib("atkupdatestampattribute");
-  useattrib("docmanager.documentmanager");
 
   class quotation extends atkNode
   {
@@ -20,8 +19,11 @@
       global $g_sessionManager;
 
       $this->atkNode("quotation",NF_ADD_LINK);
-      $listener = &atknew("modules.crm.listeners.eventlistener");
-      $this->addListener($listener);
+      if(moduleExists('crm'))
+      {
+        $listener = &atknew("modules.crm.listeners.eventlistener");
+        $this->addListener($listener);
+      }
       $this->m_view = $g_sessionManager->pageVar("view"); // Can be 'all' or 'filtered'.
 
       if ($this->m_view=="") $this->m_view = "filtered";
@@ -98,9 +100,8 @@
       $this->add($percattrib);
 
       $this->add(new atkNumberAttribute("profit_expectance",AF_HIDE_ADD|AF_HIDE_EDIT|AF_TOTAL,10,2));
-      $this->add(new atkManyToOneRelation("campaign","crm.campaign",AF_HIDE_LIST));
-      $this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST));
-      $this->add(new documentManager("documents", AF_HIDE_LIST|AF_HIDE_SEARCH), "documents");
+      //$this->add(new atkManyToOneRelation("campaign","crm.campaign",AF_HIDE_LIST));
+      //$this->add(new atkManyToOneRelation("source","crm.source",AF_HIDE_LIST));
 
       $this->add(new atkCreatedByAttribute("created_by",AF_HIDE_LIST),"history");
       $this->add(new atkCreateStampAttribute("created_on",AF_HIDE_LIST),"history");

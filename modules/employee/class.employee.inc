@@ -23,6 +23,7 @@ useattrib("atkdummyattribute");
 useattrib("atkpasswordattribute");
 useattrib("atkdateattribute");
 useattrib('employee.adminlangselectattribute');
+useattrib('employee.contracttemplateattribute');
 
 include_once (moduleDir("person")."class.person.inc");
 include_once (moduleDir("utils")."class.dateutil.inc");
@@ -95,6 +96,7 @@ class employee extends person
       $this->addPasswordAttribute();
 
     $this->add(new atkAttribute("role", AF_OBLIGATORY|AF_READONLY|AF_HIDE, 50)); // discriminator.
+    $this->add(new contracttemplateAttribute("contract_template","employee.tpl_contract", AF_HIDE_LIST|AF_HIDE_EDIT|AF_FORCE_LOAD));
 
     $this->m_securityMap["deactivate"] = "edit"; // If you may edit, you may also deactivate.
 
@@ -156,26 +158,51 @@ class employee extends person
 
     if ($view=="active")
     {
-      return atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"nonactive")),
+      $ret = atktext("onlyactiverecordsareshown")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"nonactive")),
                                                            atktext('clicktoviewarchive', $this->m_module, $this->m_type))."<br>";
     }
     else
     {
-      return atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")),
+      $ret = atktext("youareinthearchive")." ".href(dispatch_url($this->atknodetype(),$this->m_action,array("view"=>"active")),
                                                     atktext('clicktoviewactiverecords', $this->m_module, $this->m_type))."<br>";
     }
+    $ret.= '<br/>'.$this->getLegend();
+    return $ret;
+    
+  }
+  
+  protected function getLegend()
+  {
+    $nrows = array();
+    $nrows[] = array('description' => atkText('no_contract'),
+                    'bgcolor' => COLOR_ERROR);
+    $nrows[] = array('description' => atkText('contract_expires'),
+                    'bgcolor' => COLOR_WARNING);
+    
+    $legend = '<div style="border: 1px solid black; background: white none repeat scroll 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial; font-size: 1em;">
+                 <dl><b>'.atktext("legend","scheduler").':</b></dl>
+               <div style="margin-left: 2em;">';
+    for ($i=0,$_i=count($nrows);$i<$_i;$i++)
+    {
+      $legend.='<p style="margin: 0px;">
+                 <span style="border: medium none ; background-color: '.$nrows[$i]["bgcolor"].'; color: '.$nrows[$i]["bgcolor"].';">&nbsp;&nbsp;&nbsp;</span>
+                   '.htmlspecialchars($nrows[$i]["description"]).'
+                </p>';
+    }
+    $legend.='</div><br></div>';
+    return $legend;
   }
 
   function recordActions($rec, &$actions, &$mraactions)
   {
     // Get the userid of the user currently logged in
-    $user = getUser();
+    $user = atkGetUser();
     $userid = atkArrayNvl($user, "id", -1);
 
     // Actve users may be deactivated, but not the logged in user.
     if ($rec["status"] == "active" && $rec["id"]!=$userid)
     {
-      $actions["deactivate"] = session_url(dispatch_url($this->atkNodeType(),"deactivate",array("atkselector"=>"[pk]")), SESSION_NESTED);
+      $actions["deactivate"] = atkSessionManager::sessionUrl(dispatch_url($this->atkNodeType(),"deactivate",array("atkselector"=>"[pk]")), SESSION_NESTED);
     }
 
     // Prevent users from deleting themselves when they are logged in.
@@ -379,6 +406,7 @@ class employee extends person
    */
   function getBirthdates()
   {
+    $birthdays = array();
     atkimport("atk.utils.atktmpfile");
     $file = new atkTmpFile("employee_birthdays.inc");
     if(!$file->exists())
@@ -387,7 +415,6 @@ class employee extends person
       $items = array();
       foreach($birthday_recs as $birthday)
       {
-
         $day = intval($birthday["birthdate"]["day"]);
         $month = intval($birthday["birthdate"]["month"]);
         $name = $birthday["firstname"]." ".$birthday["lastname"];

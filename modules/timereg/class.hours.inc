@@ -554,7 +554,7 @@ class hours extends atkNode
 
     $this->setTable("hoursbase");
     $this->setLock();
-    $this->addFilter($this->getTable().".userid",$this->m_user);
+    $this->addFilter($this->getTable().".userid",$this->getDb()->escapeSQL($this->m_user));
 
     //we need to make sure the activitydate has the same value as $this->m_viewdate.
     $this->updatesessionrecordviewdate();
@@ -588,12 +588,19 @@ class hours extends atkNode
     $today = date('Y-m-d');
 
     $ui = &$this->getUi();
+    $curdate = atktext(atk_strtolower(date("l", $viewdatestamp)))." ".atktext(atk_strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp);
+    if(dateutil::isISO8601())
+    {
+      $curdate.= ' ('.atktext('week').' '.dateutil::getWeeknumber(date('d',$viewdatestamp),date('m',$viewdatestamp),date('Y',$viewdatestamp)).')';
+    }
+    
+    
     $tplvars = array( 'yesterdayurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>$yesterday))),
                       'weekviewurl'=>session_url(dispatch_url($this->atknodetype(),$this->m_action,array("viewuser"=>$this->m_user,"viewdate"=>date('Y-m-d',$viewdatestamp),"weekview"=>1))),
                       'sessionform'=>session_form(),
                       'userselect'=>$this->getUserSelect(),
                       'datejumper'=>$this->getDateJumper(),
-                      'currentdate'=>atktext(atk_strtolower(date("l", $viewdatestamp)))." ".atktext(atk_strtolower(date("F", $viewdatestamp)))." ".date("d, Y", $viewdatestamp),
+                      'currentdate'=> $curdate,
                       'lockicon'=>Locking::getLockIcon($this->m_lock),
                      );
 
@@ -865,6 +872,15 @@ class hours extends atkNode
                       'dispatch'=>getDispatchFile(),
                       'locktext'=>($locks > 0 && $locks < 7) ? atktext("locked_partially") : null
                      );
+    $curdate = dateutil::stamp2str($weekdates[1]['stamp'],atktext('date_format_view')). ' - '.
+               dateutil::stamp2str($weekdates[7]['stamp'],atktext('date_format_view'));
+    if(dateutil::isISO8601())
+    {
+      $curdate.= ' ('.atktext('week').' '.dateutil::getWeeknumber(date('d',$viewtime),date('m',$viewtime),date('Y',$viewtime)).')';
+    }
+    $tplvars['curdate'] = $curdate;
+
+
     if ($weekdates[8]['date'] <= date("Y-m-d") || atkConfig::get("timereg","timereg_allowfuture", false))
     {
       $tplvars['nextweekurl']=session_url(dispatch_url($this->atknodetype(),$this->m_action,array("weekview"=>1,"viewdate"=>$weekdates[8]['date'])));
@@ -1032,8 +1048,8 @@ class hours extends atkNode
     $end = endOfWeek($date);
 
     // first get the total of contract hours
-    $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '$start'
-                AND (enddate > '$start' OR enddate IS NULL) AND userid = '$userid'";
+    $sql = "SELECT sum(uc_hours*60) as contract FROM usercontract WHERE startdate <= '".$db->escapeSQL($start)."'
+                AND (enddate > '".$db->escapeSQL($start)."' OR enddate IS NULL) AND userid = '".$db->escapeSQL($userid)."'";
     list($result) = $db->getRows($sql);
     $contract_hours = (float) $result['contract'];
 
@@ -1042,8 +1058,8 @@ class hours extends atkNode
               FROM
                 hours
               WHERE
-                hours.userid = '$userid'
-                AND activitydate between '$start' and '$end'";
+                hours.userid = '".$db->escapeSQL($userid)."'
+                AND activitydate between '".$db->escapeSQL($start)."' and '".$db->escapeSQL($end)."'";
     list($res) = $db->getrows($query);
     $booked_hours = (float) $res['total'];
     if ($contract_hours==0 || $booked_hours==0)

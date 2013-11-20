@@ -19,7 +19,7 @@ Changes in develop due merge of klaaspeter/achievo repository
 * Remove crm module dependency in project.project [PhrozenByte]
 * timereg.hours doesn't ignore NF_NO_ADD anymore [PhrozenByte]
 
-Changes in svn-master branch (un-released, intended at the time for 1.5.0)
+Changes in develop due merge of branch "svn-master"
 ----------------------------
 + Added New and Edit links to the contract field in projects. [Guido]
 + Added emplyee contract templates [Sandy]
@@ -30,6 +30,16 @@ Changes in svn-master branch (un-released, intended at the time for 1.5.0)
 * Fixed weekview date display. [Sandy]
 * Fixed typo's in some translations. [Guido]
 * Allow all GET and POST parameters in links to index.php. [Guido]
+* Fixed security issue in searchbox [Sandy]
+* Fixed warning for default setting in documentfileattribute [Sandy]
+* Fixed SQLInjection in hoursurvey [Sandy]
+* French translation updated [?]
+* Add flag parameter to contact constructor [Yury]
+* Made some core modules optional [Sandy]
+* Fixed ticket #17273 column 'current planning' is inline
+  editable now [Yury]
+* Fixed crm.lead delete error [Sandy]
+* Added legend to employee view [Sandy]
 
 Changes in Achievo 1.4.6
 -----------------------------
