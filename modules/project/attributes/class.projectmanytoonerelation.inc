@@ -204,22 +204,26 @@
       /* @var $db atkDb */
       $db = &atkGetDb();
       
+      /* Subquery to retrieve the most recently booked times / phases */
       $subquery = $db->createQuery();
       $subquery->addTable("hoursbase");
       $subquery->addField("phaseid");
+      $subquery->addField("id");
       $subquery->addCondition("hoursbase.userid='".$this->m_userid."'");
       $subquery->addOrderBy("id DESC");
+      $subquery->setLimit(0,atkconfig::get("project","numberofrecentprojects")*20);
       
+      /* Main query to retrieve the most recently booked projects */
       $query = $db->createQuery();
-
-      $query->addTable("phase");
 
       $query->addField("project.id");
       $query->addField("project.name");
       $query->addField("project.abbreviation");
       
+      $query->addTable("phase");
       $query->addJoin("project","","phase.projectid=project.id",false);
       $query->addJoin("(".$subquery->buildSelect().")","hours","phase.id=hours.phaseid",false);
+
       $query->addCondition("project.status='active'");
 
       if (!$securityManager->allowed("timereg.hours", "any_project"))
@@ -228,7 +232,9 @@
          $query->addCondition("(project_person.personid = ".$this->m_userid." OR project.timereg_limit = ".PRJ_TIMEREG_ALL_USERS.")");
       }
       
+      $query->addOrderBy("hours.id DESC");
       $query->setLimit(0,atkconfig::get("project","numberofrecentprojects"));
+
       $arr = $db->getrows($query->buildSelect(true));
 
       //we add the selected project id on top.
