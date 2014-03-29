@@ -6,7 +6,7 @@
   // Language: Deutsch (de)
   //
   // Translated by:
-  //   
+  //   Sascha Nemecek <nemecek@wienfluss.net>
   //
   // If you want to add a new language to achievo, please translate this
   // file and send it to translations@achievo.org
@@ -16,48 +16,49 @@
   // Translation Tool.
   //
   $de = array(
-  "account" => "Account", // Missing string!!!
-  "actual cost" => "Actual costs", // Missing string!!!
-  "budget" => "Buget", // Missing string!!!
-  "campaign" => "Campaign", // Missing string!!!
-  "campaign_status" => "Campaign status", // Missing string!!!
-  "campaign_type" => "Campaign type", // Missing string!!!
-  "description" => "Description", // Missing string!!!
-  "end_date" => "Eind date", // Missing string!!!
-  "expected_costs" => "Expected_costs", // Missing string!!!
-  "expected_revenue" => "Expected revenue", // Missing string!!!
-  "former_name" => "Former name", // Missing string!!!
-  "industry" => "Industry", // Missing string!!!
-  "industry_name" => "Name", // Missing string!!!
-  "kind_of" => "Kinf of relation", // Missing string!!!
-  "last_viewed" => "Last viewed", // Missing string!!!
-  "lead" => "Lead", // Missing string!!!
-  "lead_description" => "Lead description", // Missing string!!!
-  "menu_campaign" => "Campaign", // Missing string!!!
-  "menu_campaigns" => "Campaigns", // Missing string!!!
-  "menu_campaign_status" => "Campaing status", // Missing string!!!
-  "menu_campaign_type" => "Campaign types", // Missing string!!!
-  "menu_lead" => "lead", // Missing string!!!
-  "menu_organization_status" => "Organization status", // Missing string!!!
-  "menu_rate" => "Rate", // Missing string!!!
-  "menu_relation_type" => "Relation types", // Missing string!!!
-  "menu_sales" => "Sales", // Missing string!!!
-  "objective" => "Objective", // Missing string!!!
-  "organization_relation" => "Organization relation", // Missing string!!!
-  "organization_status" => "Organization status", // Missing string!!!
-  "rate" => "Rate", // Missing string!!!
-  "rate_name" => "Name", // Missing string!!!
-  "relation_type" => "Relation type", // Missing string!!!
-  "relation_with" => "Relation with", // Missing string!!!
-  "source" => "Source", // Missing string!!!
-  "source_name" => "Name", // Missing string!!!
-  "start_date" => "Start date", // Missing string!!!
-  "status" => "Status", // Missing string!!!
-  "status_description" => "Status description", // Missing string!!!
-  "status_name" => "Name", // Missing string!!!
-  "title" => "Title", // Missing string!!!
-  "type" => "Type", // Missing string!!!
-  "type_name" => "Name", // Missing string!!!
+  "account" => "Konto",
+  "actual cost" => "Ist-Kosten",
+  "budget" => "Budget",
+  "campaign" => "Kampagne",
+  "campaign_status" => "Kampagnenstatus",
+  "campaign_type" => "Kampagnenart",
+  "crm_sales_view"=>"Vertriebsmenü anzeigen",
+  "description" => "Beschreibung",
+  "end_date" => "Enddatum",
+  "expected_costs" => "Erwartete Kosten",
+  "expected_revenue" => "Erwartete Einnahmen",
+  "former_name" => "Früheren Namen",
+  "industry" => "Branche",
+  "industry_name" => "Branchenbezeichnung",
+  "kind_of" => "Verknüpfungsart",
+  "last_viewed" => "Zuletzt betrachtet",
+  "lead" => "Kundenkontakt",
+  "lead_description" => "Beschreibung",
+  "menu_campaign" => "Kampagne",
+  "menu_campaigns" => "Kampagnen",
+  "menu_campaign_status" => "Kampagnenstatus",
+  "menu_campaign_type" => "Kampagnenart",
+  "menu_lead" => "Kundenkontakt",
+  "menu_organization_status" => "Organisationsstatus",
+  "menu_rate" => "Rate",
+  "menu_relation_type" => "Beziehungsarten",
+  "menu_sales" => "Vertrieb",
+  "objective" => "Ziele",
+  "organization_relation" => "Verknüpfung",
+  "organization_status" => "Organisationsstatus",
+  "rate" => "Rate",
+  "rate_name" => "Name",
+  "relation_type" => "Beziehungsart",
+  "relation_with" => "Verknüpfung mit",
+  "source" => "Quelle",
+  "source_name" => "Name",
+  "start_date" => "Startdatum",
+  "status" => "Status",
+  "status_description" => "Statusbeschreibung",
+  "status_name" => "Statusbezeichnung",
+  "title" => "Titel",
+  "type" => "Typ",
+  "type_name" => "Name",
 );
 
 ?>
