@@ -24,7 +24,7 @@
   "campaign_type" => "Type de campagne", // Missing string!!!
   "description" => "Description", // Missing string!!!
   "end_date" => "Date de fin", // Missing string!!!
-  "expected_costs" => "Coûts prévus", // Missing string!!!
+  "expected_cost" => "Coûts prévus", // Missing string!!!
   "expected_revenue" => "Revenus prévus", // Missing string!!!
   "former_name" => "Ancien nom", // Missing string!!!
   "industry" => "Industrie", // Missing string!!!

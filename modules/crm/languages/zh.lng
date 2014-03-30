@@ -24,7 +24,7 @@
   "campaign_type" => "Campaign type", // Missing string!!!
   "description" => "Description", // Missing string!!!
   "end_date" => "Eind date", // Missing string!!!
-  "expected_costs" => "Expected_costs", // Missing string!!!
+  "expected_cost" => "Expected cost", // Missing string!!!
   "expected_revenue" => "Expected revenue", // Missing string!!!
   "former_name" => "Former name", // Missing string!!!
   "industry" => "Industry", // Missing string!!!

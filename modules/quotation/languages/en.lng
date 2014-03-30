@@ -17,6 +17,7 @@
   //
   $en = array(
   "menu_quotation" => "Quotations",
+  "profit_expectance" => "Profit expectance",
   "quotation" => "Quotation",
   "quotation_accepted" => "Accepted",
   "quotation_archiveexplanation" => "Closed quotations (billed or rejected) are hidden.",
@@ -58,7 +59,7 @@
   "quotation_showall" => "Click here to show all quotations.",
   "quotation_status_warning_null" => "Beware! no status has been selected!",
   "success_chance" => "Success chance percentage",
-  "profit_expectance" => "Profit expectance",
+  "term_of_notice" => "Term of notice",
 );
 
 ?>
