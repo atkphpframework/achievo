@@ -24,7 +24,7 @@
   "campaign_type" => "Campange type",
   "description" => "Omschrijving",
   "end_date" => "Eind datum",
-  "expected_costs" => "Verwachte kosten",
+  "expected_cost" => "Verwachte kosten",
   "expected_revenue" => "Verwachte opbrengst",
   "former_name" => "Vorige naam",
   "industry" => "Branche",

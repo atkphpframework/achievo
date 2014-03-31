@@ -24,7 +24,7 @@
   "campaign_type" => "Typ kampane", 
   "description" => "Popis", 
   "end_date" => "Končený dátum", 
-  "expected_costs" => "Očakávané výdaje", 
+  "expected_cost" => "Očakávané výdaje", 
   "expected_revenue" => "Očakávané príjmy", 
   "former_name" => "Pôvodný názov", 
   "industry" => "Odvetvie", 
