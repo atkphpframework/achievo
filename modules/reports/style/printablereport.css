@@ -1,15 +1,15 @@
 .stacktrace_end{
-  display: none;
+    display: none;
 }
 
 .contentblock{
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .content{
-  visibility: visible;
+    visibility: visible;
 }
 
 .displaynone{
-  display: none;
+    display: none;
 }

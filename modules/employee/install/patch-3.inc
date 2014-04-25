@@ -1,5 +1,3 @@
 <?php
-
-  $setup->alterColumn("usercontract", "enddate", "enddate", "date", true, 0);
-
+$setup->alterColumn("usercontract", "enddate", "enddate", "date", true, 0);
 ?>

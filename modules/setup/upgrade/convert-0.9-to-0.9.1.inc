@@ -1,18 +1,18 @@
 <?php
-  atkdebug("In convert-0.9-to-0.9.1.inc");
-  
-  $setup->addColumn("project", "abbreviation", "varchar(10)");  
-  
-  $setup->alterColumn("accessright", "node", "node", "varchar(50)", false);
-  $setup->addColumn("todo", "updated", "datetime");
+atkdebug("In convert-0.9-to-0.9.1.inc");
 
-  $db->query("CREATE TABLE employee_project (
+$setup->addColumn("project", "abbreviation", "varchar(10)");
+
+$setup->alterColumn("accessright", "node", "node", "varchar(50)", false);
+$setup->addColumn("todo", "updated", "datetime");
+
+$db->query("CREATE TABLE employee_project (
                    employeeid varchar(10) NOT NULL default '0',
                    projectid int(10) NOT NULL default '0',
                    PRIMARY KEY  (employeeid,projectid)
                 )");
 
-  $db->query("CREATE TABLE todo_history (
+$db->query("CREATE TABLE todo_history (
                    id int(10) DEFAULT '0' NOT NULL,
                    todoid int(10) DEFAULT '0' NOT NULL,
                    updated datetime DEFAULT '0000-00-00 00:00' NOT NULL,
@@ -27,5 +27,4 @@
                    priority tinyint(4) DEFAULT '0' NOT NULL,
                    PRIMARY KEY (id)
                 )");
-
 ?>

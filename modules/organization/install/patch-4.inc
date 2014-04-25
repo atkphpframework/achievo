@@ -1,5 +1,3 @@
 <?php
-
-  $setup->addColumn("organization", "vatnumber", "varchar(25)");
-
+$setup->addColumn("organization", "vatnumber", "varchar(25)");
 ?>

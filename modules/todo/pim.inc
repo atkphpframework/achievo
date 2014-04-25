@@ -15,15 +15,15 @@
  * $Id$
  */
 
-  /**
-   * Render todo's of the current user for the PIM screen
-   *
-   * @return string
-   */
-  function pimTodos()
-  {
+/**
+ * Render todo's of the current user for the PIM screen
+ *
+ * @return string
+ */
+function pimTodos()
+{
     $todonode = atkGetNode("todo.todo");
     return $todonode->renderPim();
-  }
+}
 
 ?>

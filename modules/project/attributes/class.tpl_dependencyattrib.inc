@@ -24,49 +24,50 @@ useattrib("project.dependencyattrib");
  */
 class tpl_dependencyAttribute extends dependencyAttribute
 {
-  /**
-   * Constructor
-   * @param $name Name of the attribute
-   * @param $flags Flags for this attribute
-   */
-  function tpl_dependencyAttribute($name, $flags=0)
-  {
-    /* base class constructor */
-    $this->dependencyAttribute($name, $flags);
-  }
 
-  /**
-   * Get phases of a project
-   *
-   * @param int $projectid Project id
-   * @return array
-   */
-  function getPhases($projectid)
-  {
-    $db = &atkGetDb();
+    /**
+     * Constructor
+     * @param $name Name of the attribute
+     * @param $flags Flags for this attribute
+     */
+    function tpl_dependencyAttribute($name, $flags = 0)
+    {
+        /* base class constructor */
+        $this->dependencyAttribute($name, $flags);
+    }
 
-    $query = "SELECT
+    /**
+     * Get phases of a project
+     *
+     * @param int $projectid Project id
+     * @return array
+     */
+    function getPhases($projectid)
+    {
+        $db = &atkGetDb();
+
+        $query = "SELECT
                 id, name
               FROM
                 tpl_phase, tpl_project_phase
               WHERE
                 id = phaseid
-                AND projectid = ".$projectid." ORDER BY name";
+                AND projectid = " . $projectid . " ORDER BY name";
 
-    $recs = $db->getrows($query);
-    return $recs;
-  }
+        $recs = $db->getrows($query);
+        return $recs;
+    }
 
-  /**
-   * Load function
-   *
-   * @param mixed $notused Not used
-   * @param array $rec Record
-   * @return array
-   */
-  function load($notused, $rec)
-  {
-    $query = "SELECT
+    /**
+     * Load function
+     *
+     * @param mixed $notused Not used
+     * @param array $rec Record
+     * @return array
+     */
+    function load($notused, $rec)
+    {
+        $query = "SELECT
                 phaseid_row as first,
                 ROW1.name as firstname,
                 phaseid_col as last,
@@ -74,55 +75,54 @@ class tpl_dependencyAttribute extends dependencyAttribute
               FROM
                 tpl_dependency, tpl_phase ROW1, tpl_phase COL1
               WHERE
-                projectid = ".$rec["id"]."
+                projectid = " . $rec["id"] . "
                 AND ROW1.id = phaseid_row
                 AND COL1.id = phaseid_col
                 ORDER BY phaseid_row";
 
-    $db = &atkGetDb();
-    return array("deps"=>$db->getrows($query));
-  }
+        $db = &atkGetDb();
+        return array("deps" => $db->getrows($query));
+    }
 
-  /**
-   * Store
-   *
-   * @param mixed $notused Not used
-   * @param array $rec Record
-   * @return boolean
-   */
-  function store($notused, $rec)
-  {
-    $db = &atkGetDb();
-
-    $values = $rec[$this->fieldName()];
-
-    // First delete deleted items.
-    $delarr = $values["del"];
-    if (is_array($delarr))
+    /**
+     * Store
+     *
+     * @param mixed $notused Not used
+     * @param array $rec Record
+     * @return boolean
+     */
+    function store($notused, $rec)
     {
-      for ($i=0;$i<count($delarr);$i++)
-      {
-        $delquery = "DELETE
+        $db = &atkGetDb();
+
+        $values = $rec[$this->fieldName()];
+
+        // First delete deleted items.
+        $delarr = $values["del"];
+        if (is_array($delarr)) {
+            for ($i = 0; $i < count($delarr); $i++) {
+                $delquery = "DELETE
                      FROM
                        tpl_dependency
-                     WHERE projectid = ".$rec["id"]."
-                       AND phaseid_row = ".$delarr[$i]["first"]."
-                       AND phaseid_col = ".$delarr[$i]["last"];
+                     WHERE projectid = " . $rec["id"] . "
+                       AND phaseid_row = " . $delarr[$i]["first"] . "
+                       AND phaseid_col = " . $delarr[$i]["last"];
 
-        $db->query($delquery);
-      }
-    }
+                $db->query($delquery);
+            }
+        }
 
-    // Now add a new item..
-    if ($values["first"]!="" && $values["last"]!="")
-    {
-      $query = "INSERT
+        // Now add a new item..
+        if ($values["first"] != "" && $values["last"] != "") {
+            $query = "INSERT
                   INTO tpl_dependency (projectid,phaseid_row,phaseid_col)
-                  VALUES (".$rec["id"].",".$values["first"].",".$values["last"].")";
+                  VALUES (" . $rec["id"] . "," . $values["first"] . "," . $values["last"] . ")";
 
-      $db->query($query);
+            $db->query($query);
+        }
+        return true;
     }
-    return true;
-  }
+
 }
+
 ?>

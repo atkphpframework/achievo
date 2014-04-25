@@ -14,7 +14,7 @@
  * @version $Revision$
  * $Id$
  */
-  
+
 /**
  * the timeCountAttribute can be added to the project node (or one of its 
  * derivatives), to add a pseudocolumn with the total number of hours spend
@@ -23,19 +23,20 @@
  * @package achievo
  * @subpackage project
  */
-  class timeCountAttribute extends atkAttribute
-  {
+class timeCountAttribute extends atkAttribute
+{
+
     /**
      * Constructor
      *
      * @param int $flags Flags
      */
-    function timeCountAttribute($flags=0)
+    function timeCountAttribute($flags = 0)
     {
-      $this->atkAttribute("timecount", $flags|AF_READONLY|AF_HIDE_ADD);
+        $this->atkAttribute("timecount", $flags | AF_READONLY | AF_HIDE_ADD);
     }
-    
-     /**
+
+    /**
      * Add field to query
      *
      * @param atkQuery $query ATK Query object
@@ -45,18 +46,17 @@
      * @param int $level Level
      * @param string $mode Mode
      */
-    function addToQuery(&$query, $tablename="", $fieldaliasprefix="", $rec="", $level, $mode)
+    function addToQuery(&$query, $tablename = "", $fieldaliasprefix = "", $rec = "", $level, $mode)
     {
-      if ($mode!="add"&&$mode!="update")
-      {
-        $query->addField("sum(hours.time)");        
-        $query->addJoin("phase","phase","phase.projectid = project.id",true);
-        $query->addJoin("hours","hours","hours.phaseid = phase.id",true);
-        
-        $query->addGroupBy("project.id");
-      }
+        if ($mode != "add" && $mode != "update") {
+            $query->addField("sum(hours.time)");
+            $query->addJoin("phase", "phase", "phase.projectid = project.id", true);
+            $query->addJoin("hours", "hours", "hours.phaseid = phase.id", true);
+
+            $query->addGroupBy("project.id");
+        }
     }
-    
+
     /**
      * Database to value
      *
@@ -64,10 +64,10 @@
      * @return int
      */
     function db2value($record)
-    {      
-      return $record["sum(hours.time)"];
+    {
+        return $record["sum(hours.time)"];
     }
-    
+
     /**
      * Display override
      *
@@ -77,10 +77,10 @@
      */
     function display($record, $mode)
     {
-      include_once("achievotools.inc");
-      return time_format($record[$this->fieldName()], true);
+        include_once("achievotools.inc");
+        return time_format($record[$this->fieldName()], true);
     }
-    
-  }
+
+}
 
 ?>

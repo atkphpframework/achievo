@@ -27,85 +27,84 @@ userelation("atkmanytoonerelation");
  */
 class phasetemplateAttribute extends atkManyToOneRelation
 {
-  /**
-   * Constructor
-   *
-   * @param string $name Attribute name
-   * @param string $target Target
-   * @param int $flags Flags
-   */
-  function phasetemplateAttribute($name, $target, $flags)
-  {
-    $this->atkManyToOneRelation($name, $target, $flags);
-  }
-  
-  /**
-   * Override of store fucntion
-   *
-   * @param atkDb $db Atk database
-   * @param array $record Record
-   * @param string $type Type
-   * @return boolean
-   */
-  function store($db, $record, $type)
-  {
-     if ($type == "add")
+
+    /**
+     * Constructor
+     *
+     * @param string $name Attribute name
+     * @param string $target Target
+     * @param int $flags Flags
+     */
+    function phasetemplateAttribute($name, $target, $flags)
     {
-      if ($record['template']['id']!="")
-      {
-        // Make sure we don't activities that don't exist allready
-        $query = "SELECT activityid FROM phase_activity WHERE phaseid='".$record['id']."'";
-        $rows = $db->getrows($query);
-        $where = '';
-        if(count($rows))
-        {
-          $where = "AND activityid NOT IN (";
-          for($i=0;$i<count($rows);$i++)
-          {
-            if($i>0) $where.=",";
-            $where.=$rows[$i]['activityid'];
-          }
-          $where.=")";
-        }
-        $query = "INSERT INTO phase_activity (activityid, phaseid) SELECT activityid, ".$record['id']." FROM tpl_phase_activity WHERE phaseid = ".$record['template']['id']." ".$where;
-        $db->query($query);
-      }
+        $this->atkManyToOneRelation($name, $target, $flags);
     }
-    return true;
-  }
-  
-  /**
-   * Database field type
-   *
-   * @return string
-   */
-  function dbFieldType()
-  {
-    return "";
-  }
-  
-  /**
-   * Post store
-   *
-   * @param string $mode Mode
-   * @return int
-   */
-  function storageType($mode)
-  {
-    return POSTSTORE;
-  }
-  
-  /**
-   * No load
-   *
-   * @param string $mode Mode
-   * @param boolean $searching Searching
-   * @return int
-   */
-  function loadType($mode, $searching=false)
-  {
-    return NOLOAD;
-  }
+
+    /**
+     * Override of store fucntion
+     *
+     * @param atkDb $db Atk database
+     * @param array $record Record
+     * @param string $type Type
+     * @return boolean
+     */
+    function store($db, $record, $type)
+    {
+        if ($type == "add") {
+            if ($record['template']['id'] != "") {
+                // Make sure we don't activities that don't exist allready
+                $query = "SELECT activityid FROM phase_activity WHERE phaseid='" . $record['id'] . "'";
+                $rows = $db->getrows($query);
+                $where = '';
+                if (count($rows)) {
+                    $where = "AND activityid NOT IN (";
+                    for ($i = 0; $i < count($rows); $i++) {
+                        if ($i > 0)
+                            $where.=",";
+                        $where.=$rows[$i]['activityid'];
+                    }
+                    $where.=")";
+                }
+                $query = "INSERT INTO phase_activity (activityid, phaseid) SELECT activityid, " . $record['id'] . " FROM tpl_phase_activity WHERE phaseid = " . $record['template']['id'] . " " . $where;
+                $db->query($query);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Database field type
+     *
+     * @return string
+     */
+    function dbFieldType()
+    {
+        return "";
+    }
+
+    /**
+     * Post store
+     *
+     * @param string $mode Mode
+     * @return int
+     */
+    function storageType($mode)
+    {
+        return POSTSTORE;
+    }
+
+    /**
+     * No load
+     *
+     * @param string $mode Mode
+     * @param boolean $searching Searching
+     * @return int
+     */
+    function loadType($mode, $searching = false)
+    {
+        return NOLOAD;
+    }
+
 }
 
 ?>

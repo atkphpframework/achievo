@@ -14,37 +14,39 @@
  * @version $Revision$
  * $Id$
  */
+$modifiers[] = "employee.userprefs";
 
-  $modifiers[] = "employee.userprefs";
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage pim
+ */
+class mod_pim extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage pim
-   */
-  class mod_pim extends achievoModule
-  {
     function getNodes()
     {
+        
     }
 
     function getMenuItems()
     {
+        
     }
 
     function pdaNodes()
     {
-      return array("pim"=>dispatch_url("pim.pim","pim"));
+        return array("pim" => dispatch_url("pim.pim", "pim"));
     }
 
     function userprefs_modifier(&$node)
     {
-      userelation("atkOneToManyRelation");
+        userelation("atkOneToManyRelation");
 
-      $node->add(new atkOneToManyRelation("pimitems","pim.userpimitems","userid",AF_FORCE_LOAD),"pim");
+        $node->add(new atkOneToManyRelation("pimitems", "pim.userpimitems", "userid", AF_FORCE_LOAD), "pim");
     }
 
-  }
+}
 
 ?>

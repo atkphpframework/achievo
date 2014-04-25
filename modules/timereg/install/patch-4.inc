@@ -1,4 +1,3 @@
 <?php
-
-  $setup->addColumn("hours", "starttime", "varchar(10)", false, 0);
+$setup->addColumn("hours", "starttime", "varchar(10)", false, 0);
 ?>

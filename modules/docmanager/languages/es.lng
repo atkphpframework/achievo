@@ -1,34 +1,34 @@
 <?php
-  // Achievo language file for Español.
-  //
-  // Module: docmanager
-  // Language: Español (es)
-  //
-  // Translated by:
-  //   dario
-  //
-  // If you want to add a new language to achievo, please translate this
-  // file and send it to translations@achievo.org
-  //
-  // To update an existing translation, mail an updated version to
-  // translations@achievo.org or request an account for the Achievo
-  // Translation Tool.
-  //
-  $en = array(
-  "accepted" => "Aceptado",
-  "concept" => "Concepto",
-  "confidential" => "Confidencial",
-  "document" => "Documento",
-  "documenttype" => "Tipo de documento",
-  "documenttypes" => "Tipos de documento",
-  "filename_already_in_use"=>"El nombre del archivo está en uso.",
-  "generate" => "Generar",
-  "give_new_filename"=>"Por favor, indique el nombre de archivo.",
-  "internal" => "Interno",
-  "master" => "Principal",
-  "menu_document_types" => "Tipos de documento",
-  "permission_generate" => "Generar",
-  "tab_documents" => "Documentos",
-  "template" => "Plantilla",
-  );
+// Achievo language file for Espaï¿½ol.
+//
+// Module: docmanager
+// Language: Espaï¿½ol (es)
+//
+// Translated by:
+//   dario
+//
+// If you want to add a new language to achievo, please translate this
+// file and send it to translations@achievo.org
+//
+// To update an existing translation, mail an updated version to
+// translations@achievo.org or request an account for the Achievo
+// Translation Tool.
+//
+$en = array(
+    "accepted" => "Aceptado",
+    "concept" => "Concepto",
+    "confidential" => "Confidencial",
+    "document" => "Documento",
+    "documenttype" => "Tipo de documento",
+    "documenttypes" => "Tipos de documento",
+    "filename_already_in_use" => "El nombre del archivo estï¿½ en uso.",
+    "generate" => "Generar",
+    "give_new_filename" => "Por favor, indique el nombre de archivo.",
+    "internal" => "Interno",
+    "master" => "Principal",
+    "menu_document_types" => "Tipos de documento",
+    "permission_generate" => "Generar",
+    "tab_documents" => "Documentos",
+    "template" => "Plantilla",
+);
 ?>

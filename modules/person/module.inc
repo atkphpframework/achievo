@@ -15,21 +15,25 @@
  * $Id$
  */
 
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage person
+ */
+class mod_person extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage person
-   */
-  class mod_person extends achievoModule
-  {
     function getNodes()
     {
+        
     }
 
     function getMenuItems()
     {
+        
     }
-  }
+
+}
+
 ?>

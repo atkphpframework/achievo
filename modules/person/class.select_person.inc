@@ -14,8 +14,7 @@
  * @version $Revision$
  * $Id$
  */
-
-include_once (moduleDir("person")."/class.person.inc");
+include_once (moduleDir("person") . "/class.person.inc");
 
 /**
  * Select person class
@@ -25,21 +24,22 @@ include_once (moduleDir("person")."/class.person.inc");
  */
 class select_person extends person
 {
-  /**
-   * Constructor
-   */
-  function select_person()
-  {
-    $this->person("select_person");
 
-    // for employees the nonactive ones must be filtered out.
-    $this->addFilter("(person.status <> 'nonactive' OR person.role <> 'employee')");
+    /**
+     * Constructor
+     */
+    function select_person()
+    {
+        $this->person("select_person");
 
-    $this->remove("role");
-    $this->remove("fax");
-    $this->add(new atkAttribute("role", AF_SEARCHABLE));
-    $this->setSecurityAlias("person.person");
-  }
+        // for employees the nonactive ones must be filtered out.
+        $this->addFilter("(person.status <> 'nonactive' OR person.role <> 'employee')");
+
+        $this->remove("role");
+        $this->remove("fax");
+        $this->add(new atkAttribute("role", AF_SEARCHABLE));
+        $this->setSecurityAlias("person.person");
+    }
 
 }
 

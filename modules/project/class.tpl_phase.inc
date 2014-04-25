@@ -1,31 +1,33 @@
 <?php
-
 useattrib("atktextattribute");
 useattrib("atknumberattribute");
 userelation("atkmanyboolrelation");
 
 class tpl_phase extends atkNode
 {
-  function tpl_phase()
-  {
-    $this->atkNode("tpl_phase",NF_EDITAFTERADD);
 
-    $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
-    $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_ADD));
+    function tpl_phase()
+    {
+        $this->atkNode("tpl_phase", NF_EDITAFTERADD);
 
-    $tmp = new atkManyBoolRelation("tpl_phase_activity", "project.tpl_phase_activity", "project.activity",AF_HIDE_LIST|AF_HIDE_ADD);
-    $tmp->m_localKey = "phaseid";
-    $tmp->m_remoteKey = "activityid";
-    $this->add($tmp);
+        $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("name", AF_OBLIGATORY | AF_SEARCHABLE, 50));
+        $this->add(new atkTextAttribute("description", TEXT_LARGE, AF_HIDE_ADD));
 
-    $this->setOrder("name");
-    $this->setTable("tpl_phase","tpl_phase");
-  }
+        $tmp = new atkManyBoolRelation("tpl_phase_activity", "project.tpl_phase_activity", "project.activity", AF_HIDE_LIST | AF_HIDE_ADD);
+        $tmp->m_localKey = "phaseid";
+        $tmp->m_remoteKey = "activityid";
+        $this->add($tmp);
 
-  function descriptor_def()
-  {
-    return "[name]";
-  }
+        $this->setOrder("name");
+        $this->setTable("tpl_phase", "tpl_phase");
+    }
+
+    function descriptor_def()
+    {
+        return "[name]";
+    }
+
 }
+
 ?>

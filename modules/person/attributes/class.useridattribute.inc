@@ -14,7 +14,6 @@
  * @version $Revision$
  * $Id$
  */
-
 atkimport("atk.attributes.atkattribute");
 
 /**
@@ -26,28 +25,29 @@ atkimport("atk.attributes.atkattribute");
  */
 class useridAttribute extends atkAttribute
 {
-  /**
-   * Constructor
-   *
-   * @param string $name Attribute name
-   * @param int $flags Flags
-   */
-  function useridAttribute($name, $flags=0)
-  {
-    $this->atkAttribute($name, $flags, 15);
-  }
 
-  /**
-   * Value 2 database
-   *
-   * @param array $rec Record
-   * @return string User id without spaces
-   */
-  function value2db($rec)
-  {
-    return escapeSQL(str_replace(" ", "_", $rec["userid"]));
-  }
+    /**
+     * Constructor
+     *
+     * @param string $name Attribute name
+     * @param int $flags Flags
+     */
+    function useridAttribute($name, $flags = 0)
+    {
+        $this->atkAttribute($name, $flags, 15);
+    }
+
+    /**
+     * Value 2 database
+     *
+     * @param array $rec Record
+     * @return string User id without spaces
+     */
+    function value2db($rec)
+    {
+        return escapeSQL(str_replace(" ", "_", $rec["userid"]));
+    }
+
 }
-
 
 ?>

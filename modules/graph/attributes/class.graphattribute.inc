@@ -14,28 +14,27 @@
  * @version $Revision$
  * $Id$
  */
+useattrib("atkattribute");
 
-  useattrib("atkattribute");
-
-  /**
-   * graphAttribute
-   *
-   * This is a JpGraph wrapper attribute. It features the possibility to add
-   * jpGraph graphs to any node. With the regular attribute flags AF_HIDE_*
-   * you can influence when to show the graph.
-   *
-   * All it takes to add a graph to a node is to add this attribute, and
-   * define a callback method in the node that collects the data and draws
-   * the actual graph.
-   * See the constructor method for instructions of how to add the attribute
-   * to a node.
-   *
-   * @author Ivo Jansch <ivo@achievo.org>
-   * @package achievo
-   * @subpackage graph
-   */
-  class graphAttribute extends atkAttribute
-  {
+/**
+ * graphAttribute
+ *
+ * This is a JpGraph wrapper attribute. It features the possibility to add
+ * jpGraph graphs to any node. With the regular attribute flags AF_HIDE_*
+ * you can influence when to show the graph.
+ *
+ * All it takes to add a graph to a node is to add this attribute, and
+ * define a callback method in the node that collects the data and draws
+ * the actual graph.
+ * See the constructor method for instructions of how to add the attribute
+ * to a node.
+ *
+ * @author Ivo Jansch <ivo@achievo.org>
+ * @package achievo
+ * @subpackage graph
+ */
+class graphAttribute extends atkAttribute
+{
     var $m_source = "";
     var $m_callback = "";
     var $m_params = array();
@@ -71,11 +70,11 @@
      *                 As of yet, there are no specific flags for this
      *                 attribute.
      */
-    function graphAttribute($name, $callback, $params=array(), $flags=0)
+    function graphAttribute($name, $callback, $params = array(), $flags = 0)
     {
-      $this->atkAttribute($name, $flags|AF_HIDE_SEARCH);
-      $this->m_callback = $callback;
-      $this->m_params = $params;
+        $this->atkAttribute($name, $flags | AF_HIDE_SEARCH);
+        $this->m_callback = $callback;
+        $this->m_params = $params;
     }
 
     /**
@@ -93,7 +92,7 @@
      */
     function setSource($node)
     {
-      $this->m_source = $node;
+        $this->m_source = $node;
     }
 
     /**
@@ -104,7 +103,7 @@
      */
     function addDynamicParam($paramname, $possiblevalues)
     {
-      $this->m_dynparams[$paramname] = $possiblevalues;
+        $this->m_dynparams[$paramname] = $possiblevalues;
     }
 
     /**
@@ -115,7 +114,7 @@
      */
     function getSource()
     {
-      return ($this->m_source==""?$this->m_ownerInstance->atkNodeType():$this->m_source);
+        return ($this->m_source == "" ? $this->m_ownerInstance->atkNodeType() : $this->m_source);
     }
 
     /**
@@ -128,7 +127,7 @@
      */
     function edit($record, $prefix, $mode)
     {
-      return $this->showGraph($record, false);
+        return $this->showGraph($record, false);
     }
 
     /**
@@ -140,7 +139,7 @@
      */
     function display($record, $mode)
     {
-      return $this->showGraph($record, false);
+        return $this->showGraph($record, false);
     }
 
     /**
@@ -150,47 +149,46 @@
      * @param boolean $addForm Add to form
      * @return string
      */
-    function showGraph($record=array(), $addForm=true)
+    function showGraph($record = array(), $addForm = true)
     {
-      $imgname = $this->fieldName();
-      $res = '<img name="'.$imgname.'" src="'.$this->_graphUrl($record).'">';
-      if (count($this->m_dynparams))
-      {
-        $res.="<script language=\"javascript\">\n";
+        $imgname = $this->fieldName();
+        $res = '<img name="' . $imgname . '" src="' . $this->_graphUrl($record) . '">';
+        if (count($this->m_dynparams)) {
+            $res.="<script language=\"javascript\">\n";
 
-        $decodedparams = $this->_parseParams($record);
+            $decodedparams = $this->_parseParams($record);
 
-        $paramelems = "";
-        foreach ($decodedparams as $paramname=>$value)
-        {
-          $res.= $imgname."_".$paramname." = '".$value."';\n";
-          $paramelems[]= $paramname."='+".$imgname."_".$paramname;
-        }
+            $paramelems = "";
+            foreach ($decodedparams as $paramname => $value) {
+                $res.= $imgname . "_" . $paramname . " = '" . $value . "';\n";
+                $paramelems[] = $paramname . "='+" . $imgname . "_" . $paramname;
+            }
 
-        $res.=" function ".$imgname."_refresh()
+            $res.=" function " . $imgname . "_refresh()
                 {
-                  document.".$imgname.".src = '".$this->_baseUrl().implode("+'&", $paramelems).";
+                  document." . $imgname . ".src = '" . $this->_baseUrl() . implode("+'&", $paramelems) . ";
                 }\n";
 
-        $res.='</script>';
-        if ($addForm) $res.='<form name="dummyform">';
-        foreach ($this->m_dynparams as $paramname=>$possiblevalues)
-        {
-          $res.= '<br />'.atktext($paramname).": ";
+            $res.='</script>';
+            if ($addForm)
+                $res.='<form name="dummyform">';
+            foreach ($this->m_dynparams as $paramname => $possiblevalues) {
+                $res.= '<br />' . atktext($paramname) . ": ";
 
-          for ($i=0, $_i=count($possiblevalues); $i<$_i; $i++)
-          {
-            $checked = ($possiblevalues[$i]==$this->m_params[$paramname]?"checked":"");
-            $res.= '<input type="radio" name="resolution" onClick="';
-            $res.= $imgname."_".$paramname."='".$possiblevalues[$i]."'; ".$imgname."_refresh();";
-            $res.= '" value="'.$possiblevalues[$i].'" '.$checked.'>'.
+                for ($i = 0, $_i = count($possiblevalues); $i < $_i; $i++) {
+                    $checked = ($possiblevalues[$i] == $this->m_params[$paramname]
+                                ? "checked" : "");
+                    $res.= '<input type="radio" name="resolution" onClick="';
+                    $res.= $imgname . "_" . $paramname . "='" . $possiblevalues[$i] . "'; " . $imgname . "_refresh();";
+                    $res.= '" value="' . $possiblevalues[$i] . '" ' . $checked . '>' .
                         atktext($possiblevalues[$i]);
-          }
+                }
+            }
+            if ($addForm)
+                $res.='</form>';
         }
-        if ($addForm) $res.='</form>';
-      }
 
-      return $res;
+        return $res;
     }
 
     /**
@@ -200,9 +198,9 @@
      * @return string
      * @access private
      */
-    function _graphUrl($record=array())
+    function _graphUrl($record = array())
     {
-      return $this->_baseUrl().$this->_paramsToUrl($record);
+        return $this->_baseUrl() . $this->_paramsToUrl($record);
     }
 
     /**
@@ -213,9 +211,9 @@
      */
     function _baseUrl()
     {
-      return session_url("graph.php?atknodetype=".$this->getSource().
-                         "&plotter=graph.".get_class($this).
-                         "&callback=".$this->m_callback, SESSION_NEW);
+        return session_url("graph.php?atknodetype=" . $this->getSource() .
+            "&plotter=graph." . get_class($this) .
+            "&callback=" . $this->m_callback, SESSION_NEW);
     }
 
     /**
@@ -225,35 +223,28 @@
      * @return string
      * @access private
      */
-    function _paramsToUrl($record=array())
+    function _paramsToUrl($record = array())
     {
-      $res = "";
+        $res = "";
 
-      $decodedparams = $this->_parseParams($record);
+        $decodedparams = $this->_parseParams($record);
 
-      if (count($decodedparams))
-      {
-        // Params can use [fieldnames] and [pk]
-        if (is_object($this->m_ownerInstance))
-        {
-          $record["pk"] = $this->m_ownerInstance->primaryKey($record);
-        }
-        foreach($decodedparams as $key=>$value)
-        {
-          if(is_array($value))
-          {
-            foreach($value as $value_key=>$value_value)
-            {
-              $res.="&".$key."%5B".$value_key."%5D=".urlencode($value_value);
+        if (count($decodedparams)) {
+            // Params can use [fieldnames] and [pk]
+            if (is_object($this->m_ownerInstance)) {
+                $record["pk"] = $this->m_ownerInstance->primaryKey($record);
             }
-          }
-          else
-          {
-            $res.="&".$key."=".urlencode(stringparse($value, $record));
-          }
+            foreach ($decodedparams as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $value_key => $value_value) {
+                        $res.="&" . $key . "%5B" . $value_key . "%5D=" . urlencode($value_value);
+                    }
+                } else {
+                    $res.="&" . $key . "=" . urlencode(stringparse($value, $record));
+                }
+            }
         }
-      }
-      return $res;
+        return $res;
     }
 
     /**
@@ -263,45 +254,83 @@
      * @return array
      * @access private
      */
-    function _parseParams($record=array())
+    function _parseParams($record = array())
     {
-      $res = array();
+        $res = array();
 
-      if (count($this->m_params))
-      {
-        // Params can use [fieldnames] and [pk]
-        if (is_object($this->m_ownerInstance))
-        {
-          $record["pk"] = $this->m_ownerInstance->primaryKey($record);
+        if (count($this->m_params)) {
+            // Params can use [fieldnames] and [pk]
+            if (is_object($this->m_ownerInstance)) {
+                $record["pk"] = $this->m_ownerInstance->primaryKey($record);
+            }
+            foreach ($this->m_params as $key => $value) {
+                $res[$key] = stringparse($value, $record);
+            }
         }
-        foreach($this->m_params as $key=>$value)
-        {
-          $res[$key] = stringparse($value, $record);
-        }
-      }
-      return $res;
+        return $res;
     }
 
     // Dummy methods to prevent loading/storing of data.
-    function load() {}
-    function store() {}
-    function addToQuery() {}
-    function dbFieldType() {}
-    function hide() {}
-    function search() {}
-    function getSearchModes() {}
-    function searchCondition() {}
-    function storageType() { return NOSTORE; }
-    function loadType() { return POSTLOAD; }
-  }
+    function load()
+    {
+        
+    }
 
-  /**
-   * Plotter companion class for graphAttribute.
-   * @package achievo
-   * @subpackage graph
-   */
-  class graphAttributePlotter
-  {
+    function store()
+    {
+        
+    }
+
+    function addToQuery()
+    {
+        
+    }
+
+    function dbFieldType()
+    {
+        
+    }
+
+    function hide()
+    {
+        
+    }
+
+    function search()
+    {
+        
+    }
+
+    function getSearchModes()
+    {
+        
+    }
+
+    function searchCondition()
+    {
+        
+    }
+
+    function storageType()
+    {
+        return NOSTORE;
+    }
+
+    function loadType()
+    {
+        return POSTLOAD;
+    }
+
+}
+
+/**
+ * Plotter companion class for graphAttribute.
+ * @package achievo
+ * @subpackage graph
+ */
+class graphAttributePlotter
+{
+
     /**
      * Plot method.
      * Called by the graph.php image wrapper, to perform the actual plot.
@@ -312,36 +341,30 @@
      */
     function plot($postvars)
     {
-      $res = false;
+        $res = false;
 
-      // Create node
-      $atknodetype = $postvars["atknodetype"];
-      $callback = $postvars["callback"];
-      $obj = &atkGetNode($atknodetype);
+        // Create node
+        $atknodetype = $postvars["atknodetype"];
+        $callback = $postvars["callback"];
+        $obj = &atkGetNode($atknodetype);
 
-      if (is_object($obj))
-      {
-        // We prepend graph_ to the callback as a security precaution.
-        // This prevents anyone from executing arbitrary methods.
-        // Only methods starting with graph_ can be executed as callback.
-        //
-        $method = "graph_".$callback;
-        if (method_exists($obj, $method))
-        {
-          $res = $obj->$method($postvars);
+        if (is_object($obj)) {
+            // We prepend graph_ to the callback as a security precaution.
+            // This prevents anyone from executing arbitrary methods.
+            // Only methods starting with graph_ can be executed as callback.
+            //
+        $method = "graph_" . $callback;
+            if (method_exists($obj, $method)) {
+                $res = $obj->$method($postvars);
+            } else {
+                atkerror("Graph: callback $method on source node " . $atknodetype . " does not exist.");
+            }
+        } else {
+            atkerror("Graph: source node " . $atknodetype . " not found.");
         }
-        else
-        {
-          atkerror("Graph: callback $method on source node ".$atknodetype." does not exist.");
-        }
-      }
-      else
-      {
-        atkerror("Graph: source node ".$atknodetype." not found.");
-      }
-      return $res;
-
+        return $res;
     }
-  }
+
+}
 
 ?>

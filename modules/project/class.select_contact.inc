@@ -1,28 +1,29 @@
 <?php
-
-include_once (moduleDir("organization")."/class.contact.inc");
+include_once (moduleDir("organization") . "/class.contact.inc");
 userelation("atkmanytoonerelation");
 
 class select_contact extends contact
 {
-  function select_contact()
-  {
-    $this->contact("select_contact");
-    $this->addFilter("person.role = 'contact'");
 
-    // Hide the role attribute
-    $attr = &$this->getAttribute("role");
-    $attr->addFlag(AF_HIDE);
+    function select_contact()
+    {
+        $this->contact("select_contact");
+        $this->addFilter("person.role = 'contact'");
 
-    $this->add(new atkManyToOneRelation("company","organization.organization", AF_RELATION_AUTOLINK));
+        // Hide the role attribute
+        $attr = &$this->getAttribute("role");
+        $attr->addFlag(AF_HIDE);
 
-    $this->setSecurityAlias("organization.contact");
-  }
+        $this->add(new atkManyToOneRelation("company", "organization.organization", AF_RELATION_AUTOLINK));
 
-  function descriptor_def()
-  {
-    return "[lastname], [firstname] ([company.name])";
-  }
+        $this->setSecurityAlias("organization.contact");
+    }
+
+    function descriptor_def()
+    {
+        return "[lastname], [firstname] ([company.name])";
+    }
+
 }
 
 ?>

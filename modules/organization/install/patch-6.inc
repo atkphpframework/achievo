@@ -1,5 +1,3 @@
 <?php
-
-  $setup->alterColumn("contract", "number", "contractnumber", "varchar(20)");
-
+$setup->alterColumn("contract", "number", "contractnumber", "varchar(20)");
 ?>

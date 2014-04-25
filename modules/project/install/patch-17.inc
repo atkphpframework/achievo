@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("project.project");
-  
+$setup->installNode("project.project");
 ?>

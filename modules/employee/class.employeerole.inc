@@ -14,25 +14,26 @@
  * @version $Revision$
  * $Id$
  */
-  userelation("atkmanytoonerelation");
+userelation("atkmanytoonerelation");
 
-  /**
-   * Class for managing employee roles
-   * @package achievo
-   * @subpackage employee
-   */
-  class employeerole extends atkNode
-  {
+/**
+ * Class for managing employee roles
+ * @package achievo
+ * @subpackage employee
+ */
+class employeerole extends atkNode
+{
+
     /**
      * Constructor
      */
     function employeerole()
     {
-      $this->atkNode("employeerole", NF_NO_EDIT);
-      $this->add(new atkManyToOneRelation("employee_id", "employee.employee", AF_PRIMARY));
-      $this->add(new atkManyToOneRelation("role_id", "employee.profile", AF_PRIMARY));
+        $this->atkNode("employeerole", NF_NO_EDIT);
+        $this->add(new atkManyToOneRelation("employee_id", "employee.employee", AF_PRIMARY));
+        $this->add(new atkManyToOneRelation("role_id", "employee.profile", AF_PRIMARY));
 
-      $this->setTable("employeerole");
+        $this->setTable("employeerole");
     }
 
     /**
@@ -43,7 +44,7 @@
      */
     function initial_values()
     {
-      return array();
+        return array();
     }
 
     /**
@@ -53,8 +54,9 @@
      */
     function descriptor_def()
     {
-      return "[id]";
+        return "[id]";
     }
-  }
+
+}
 
 ?>

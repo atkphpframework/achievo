@@ -1,5 +1,3 @@
 <?php
-
-  $setup->dropTable("quotation_quotation");        
-
+$setup->dropTable("quotation_quotation");
 ?>

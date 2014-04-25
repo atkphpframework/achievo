@@ -14,7 +14,7 @@
  * @version $Revision$
  * $Id$
  */
-  useattrib("atknumberattribute");
+useattrib("atknumberattribute");
 
 /**
  * This is a 'dummy' node which can only be used for retrieval
@@ -27,21 +27,23 @@
  * @package achievo
  * @subpackage employee
  */
-  class accessright extends atkNode
-  {
+class accessright extends atkNode
+{
+
     /**
      * Constuctor
      */
     function accessright()
     {
-      $this->atkNode("accessright", NF_READONLY);
+        $this->atkNode("accessright", NF_READONLY);
 
-      $this->add(new atkAttribute("node", AF_PRIMARY, 100));
-      $this->add(new atkAttribute("action", AF_PRIMARY, 25));
-      $this->add(new atkNumberAttribute("role_id", AF_PRIMARY, 10));
+        $this->add(new atkAttribute("node", AF_PRIMARY, 100));
+        $this->add(new atkAttribute("action", AF_PRIMARY, 25));
+        $this->add(new atkNumberAttribute("role_id", AF_PRIMARY, 10));
 
-      $this->setTable("accessright");
+        $this->setTable("accessright");
     }
-  }
+
+}
 
 ?>

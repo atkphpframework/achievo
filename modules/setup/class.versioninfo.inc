@@ -15,25 +15,26 @@
  * $Id$
  */
 
+/**
+ * Node for keeping track of moduleversions.
+ *
+ * @author Ivo Jansch <ivo@achievo.org>
+ * @package achievo
+ * @subpackage setup
+ */
+class versioninfo extends atkNode
+{
 
-  /**
-   * Node for keeping track of moduleversions.
-   *
-   * @author Ivo Jansch <ivo@achievo.org>
-   * @package achievo
-   * @subpackage setup
-   */
-  class versioninfo extends atkNode
-  {
     function versioninfo()
     {
-      $this->atkNode("versioninfo", NF_READONLY);
+        $this->atkNode("versioninfo", NF_READONLY);
 
-      $this->add(new atkAttribute("module" , AF_PRIMARY, 50));
-      $this->add(new atkAttribute("version", 0, 15));
+        $this->add(new atkAttribute("module", AF_PRIMARY, 50));
+        $this->add(new atkAttribute("version", 0, 15));
 
-      $this->setTable("versioninfo");
+        $this->setTable("versioninfo");
     }
-  }
+
+}
 
 ?>

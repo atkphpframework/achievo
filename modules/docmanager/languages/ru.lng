@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Achievo language file for Russian.
 //
 // Module: docmanager
@@ -7,20 +7,20 @@
 // Translated by:
 //   Mykhaylo Sorochan       <msorc@bigmir.net>
 
-$ru = array (
-"accepted" => "Принято",
-"concept" => "Концепция",
-"confidential" => "Конфиденциально",
-"document" => "Документ",
-"documenttype" => "Тип документа",
-"documenttypes" => "Типы документов",
-"filename_already_in_use" => "Имя файла уже используется.",
-"generate" => "Создать",
-"give_new_filename" => "Введите имя файла",
-"internal" => "Внутренний",
-"master" => "Главный",
-"menu_document_types" => "Типы документов",
-"permission_generate" => "Создать",
-"tab_documents" => "Документы",
-"template" => "Шаблон");
+$ru = array(
+    "accepted" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "concept" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "confidential" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "document" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "documenttype" => "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "documenttypes" => "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "filename_already_in_use" => "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.",
+    "generate" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "give_new_filename" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ",
+    "internal" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "master" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "menu_document_types" => "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "permission_generate" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "tab_documents" => "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+    "template" => "пїЅпїЅпїЅпїЅпїЅпїЅ");
 ?>

@@ -24,5 +24,5 @@ $config['docmanager_localdocumenttypepath'] = '';
 $config['docmanagernodes'] = array();
 
 // Default file types that are supported in the docmanager
-$config['docmanager_allowedfiletypes'] = array('doc' , 'odt', 'pdf' , 'xls' , 'ppt' , 'zip' , 'rar' , 'gif' , 'png' , 'jpeg' , 'txt' , 'jpg');
+$config['docmanager_allowedfiletypes'] = array('doc', 'odt', 'pdf', 'xls', 'ppt', 'zip', 'rar', 'gif', 'png', 'jpeg', 'txt', 'jpg');
 ?>

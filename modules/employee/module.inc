@@ -15,46 +15,47 @@
  * $Id$
  */
 
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage employee
+ */
+class mod_employee extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage employee
-   */
-  class mod_employee extends achievoModule
-  {
     function getNodes()
     {
-      registerNode("employee.profile", array("admin", "add", "edit", "delete" , "grantall"));
-      registerNode("employee.employee", array("admin", "add", "edit", "delete", "stats", "view_all"));
-      registerNode("employee.usercontracts", array("admin", "add", "edit", "delete"));
-      registerNode("employee.userprefs", array("edit"));
-      registerNode("employee.functionlevel", array("admin", "add", "edit", "delete"));
-      registerNode("employee.department", array("admin","add","edit","delete"));
-      registerNode("employee.tpl_contract", array("admin", "add", "edit", "delete"));
+        registerNode("employee.profile", array("admin", "add", "edit", "delete", "grantall"));
+        registerNode("employee.employee", array("admin", "add", "edit", "delete", "stats", "view_all"));
+        registerNode("employee.usercontracts", array("admin", "add", "edit", "delete"));
+        registerNode("employee.userprefs", array("edit"));
+        registerNode("employee.functionlevel", array("admin", "add", "edit", "delete"));
+        registerNode("employee.department", array("admin", "add", "edit", "delete"));
+        registerNode("employee.tpl_contract", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
     {
-      $this->menuitem("employeemanagement",dispatch_url("employee.employee", "admin"),"main",array("employee.employee", "admin"),600);
-      $this->menuitem("profile_admin", dispatch_url("employee.profile", "admin"), "employeemanagement", array("employee.profile", "admin"));
-      $this->menuitem("employee_admin", dispatch_url("employee.employee", "admin"), "employeemanagement", array("employee.employee", "admin"));
-      $this->menuitem("employee_stats", dispatch_url("employee.employeestats", "stats"), "employeemanagement", array("employee.employee", "stats"));
-      $this->menuitem("functionlevel_admin", dispatch_url("employee.functionlevel", "admin"), "employeemanagement", array("employee.functionlevel", "admin"));
-      $this->menuitem("department_admin", dispatch_url("employee.department", "admin"), "employeemanagement", array("employee.department", "admin"));
-      $this->menuitem("tpl_contract_admin", dispatch_url("employee.tpl_contract", "admin"), "setup", array("employee.tpl_contract", "admin"));
+        $this->menuitem("employeemanagement", dispatch_url("employee.employee", "admin"), "main", array("employee.employee", "admin"), 600);
+        $this->menuitem("profile_admin", dispatch_url("employee.profile", "admin"), "employeemanagement", array("employee.profile", "admin"));
+        $this->menuitem("employee_admin", dispatch_url("employee.employee", "admin"), "employeemanagement", array("employee.employee", "admin"));
+        $this->menuitem("employee_stats", dispatch_url("employee.employeestats", "stats"), "employeemanagement", array("employee.employee", "stats"));
+        $this->menuitem("functionlevel_admin", dispatch_url("employee.functionlevel", "admin"), "employeemanagement", array("employee.functionlevel", "admin"));
+        $this->menuitem("department_admin", dispatch_url("employee.department", "admin"), "employeemanagement", array("employee.department", "admin"));
+        $this->menuitem("tpl_contract_admin", dispatch_url("employee.tpl_contract", "admin"), "setup", array("employee.tpl_contract", "admin"));
 
-      $this->menuitem("-","","main",true,620);
+        $this->menuitem("-", "", "main", true, 620);
     }
 
-   /**
-    * Set dependencies for employee module
-    */
-   function getDependencies($mode)
+    /**
+     * Set dependencies for employee module
+     */
+    function getDependencies($mode)
     {
-      return array("person");
+        return array("person");
     }
-  }
+
+}
 
 ?>

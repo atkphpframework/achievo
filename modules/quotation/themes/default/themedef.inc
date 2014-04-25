@@ -1,3 +1,3 @@
 <?php
-  $theme["recordlist_icons"] = "scan 'icons/recordlist/'";
+$theme["recordlist_icons"] = "scan 'icons/recordlist/'";
 ?>

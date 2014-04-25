@@ -2,27 +2,27 @@
 
 <holidays country="nl" redday="7">
 
-	<holiday type="weekend" name="Nieuwjaarsdag" month="1" day="1"/>
+    <holiday type="weekend" name="Nieuwjaarsdag" month="1" day="1"/>
 
-	<holiday type="weekend" name="1e Paasdag" special="Easter" offset="0"/>
+    <holiday type="weekend" name="1e Paasdag" special="Easter" offset="0"/>
 
-	<holiday type="weekend" name="2e Paasdag" special="Easter" offset="1"/>
+    <holiday type="weekend" name="2e Paasdag" special="Easter" offset="1"/>
 
-	<holiday type="weekend" name="Hemelvaartsdag" special="Easter" offset="39"/>
+    <holiday type="weekend" name="Hemelvaartsdag" special="Easter" offset="39"/>
 
-	<holiday type="info" name="Dag na hemelvaart" special="Easter" offset="40"/>
+    <holiday type="info" name="Dag na hemelvaart" special="Easter" offset="40"/>
 
-	<holiday type="weekend" name="Pinksteren" special="Easter" offset="49"/>
+    <holiday type="weekend" name="Pinksteren" special="Easter" offset="49"/>
 
-	<holiday type="weekend" name="2e Pinksteren" special="Easter" offset="50"/>
+    <holiday type="weekend" name="2e Pinksteren" special="Easter" offset="50"/>
 
-	<holiday type="weekend" name="Koninginnedag" month="4" day="30"/>
+    <holiday type="weekend" name="Koninginnedag" month="4" day="30"/>
 
-	<holiday type="info" name="Bevrijdingsdag" month="5" day="5"/>
+    <holiday type="info" name="Bevrijdingsdag" month="5" day="5"/>
 
-	<holiday type="weekend" name="1e Kerstdag" month="12" day="25"/>
+    <holiday type="weekend" name="1e Kerstdag" month="12" day="25"/>
 
-	<holiday type="weekend" name="2e kerstdag" month="12" day="26"/>	
+    <holiday type="weekend" name="2e kerstdag" month="12" day="26"/>	
 
 </holidays>
 

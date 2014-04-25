@@ -14,27 +14,29 @@
  * @version $Revision$
  * $Id$
  */
-  useattrib("atktextattribute");
-  useattrib("atknumberattribute");
+useattrib("atktextattribute");
+useattrib("atknumberattribute");
+
 /**
  * Class for managing function levels
  * @package achievo
  * @subpackage employee
  */
-  class functionlevel extends atkNode
-  {
+class functionlevel extends atkNode
+{
+
     /**
      * Constructor
      */
     function functionlevel()
     {
-      $this->atkNode("functionlevel");
-      $this->add(new atkNumberAttribute("id",AF_AUTOKEY));
-      $this->add(new atkAttribute("name",AF_OBLIGATORY|AF_SEARCHABLE, 50));
-      $this->add(new atkTextAttribute("description", 0, AF_HIDE_LIST));
+        $this->atkNode("functionlevel");
+        $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("name", AF_OBLIGATORY | AF_SEARCHABLE, 50));
+        $this->add(new atkTextAttribute("description", 0, AF_HIDE_LIST));
 
-      $this->setTable("functionlevel","functionlevel");
-      $this->setOrder("name");
+        $this->setTable("functionlevel", "functionlevel");
+        $this->setOrder("name");
     }
 
     /**
@@ -44,8 +46,9 @@
      */
     function descriptor_def()
     {
-      return "[name]";
+        return "[name]";
     }
-  }
+
+}
 
 ?>
