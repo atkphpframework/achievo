@@ -15,13 +15,15 @@
  * $Id$
  */
 
-
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage utils
-   */
-  class mod_utils extends achievoModule {}
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage utils
+ */
+class mod_utils extends achievoModule
+{
+    
+}
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 $setup->addColumn("todo", "closedate", "date");
 $setup->addColumn("todo", "completed", "int(10)");
 $setup->addColumn("todo", "private", "int(1)");

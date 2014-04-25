@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("project.mastergantt_colorconfig");
-
+$setup->installNode("project.mastergantt_colorconfig");
 ?>

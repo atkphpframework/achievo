@@ -1,3 +1,3 @@
 <?php
-  $setup->alterColumn("usercontract","workingdays","workingdays", "text",true);
+$setup->alterColumn("usercontract", "workingdays", "workingdays", "text", true);
 ?>

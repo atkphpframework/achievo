@@ -1,3 +1,3 @@
 <?php
-   $setup->addColumn("person", "title", "varchar(20)");
+$setup->addColumn("person", "title", "varchar(20)");
 ?>

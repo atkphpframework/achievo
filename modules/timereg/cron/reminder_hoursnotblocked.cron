@@ -1,179 +1,173 @@
 <?php
- /*
-  * @version $Revision$
-  * @Author Ivo Jansch <ivo@achievo.org>
-  *
-  * Sends an email reminder if someone did not block his week
-  * in the previous week.
-  *
-  * $Id$
-  *
-  */
+/*
+ * @version $Revision$
+ * @Author Ivo Jansch <ivo@achievo.org>
+ *
+ * Sends an email reminder if someone did not block his week
+ * in the previous week.
+ *
+ * $Id$
+ *
+ */
 
-  $today = date("Y-m-d");
-  $year = substr($today,0,4);
-  $month = substr($today,5,2);
-  $day = substr($today,8,2);
-  $incomplete_weeks = array();
+$today = date("Y-m-d");
+$year = substr($today, 0, 4);
+$month = substr($today, 5, 2);
+$day = substr($today, 8, 2);
+$incomplete_weeks = array();
 
-  $db = &atkGetDb();
+$db = &atkGetDb();
 
-  require_once(atkconfig("atkroot")."atk/utils/adodb-time.inc.php");
+require_once(atkconfig("atkroot") . "atk/utils/adodb-time.inc.php");
 
-  $emailaddress_collector = new email_address_collector();
-  get_not_locked_weeks($emailaddress_collector);
+$emailaddress_collector = new email_address_collector();
+get_not_locked_weeks($emailaddress_collector);
 
-
-  /**
-   * Gets locked weeks and adds them to the collector. This is the main function
-   * calling all other functions in the script.
-   *
-   * @param email_address_collector $emailaddress_collector
-   */
-  function get_not_locked_weeks(&$emailaddress_collector)
-  {
+/**
+ * Gets locked weeks and adds them to the collector. This is the main function
+ * calling all other functions in the script.
+ *
+ * @param email_address_collector $emailaddress_collector
+ */
+function get_not_locked_weeks(&$emailaddress_collector)
+{
     $projects = get_projects_with_employees();
 
-    foreach($projects as $p)
-    {
-      // get weeknumbers that should be locked
-      $startdate = "{$p['startdate']['year']}-{$p['startdate']['month']}-{$p['startdate']['day']}";
+    foreach ($projects as $p) {
+        // get weeknumbers that should be locked
+        $startdate = "{$p['startdate']['year']}-{$p['startdate']['month']}-{$p['startdate']['day']}";
 
-      $bottomlimit_date = atkconfig::get("timereg","hoursnotblocked_from_date");
-      if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($startdate) < strtotime($bottomlimit_date))
-        $startdate = $bottomlimit_date;
+        $bottomlimit_date = atkconfig::get("timereg", "hoursnotblocked_from_date");
+        if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($startdate) < strtotime($bottomlimit_date))
+            $startdate = $bottomlimit_date;
 
-      $enddate = "{$p['enddate']['year']}-{$p['enddate']['month']}-{$p['enddate']['day']}";
-      if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($enddate) < strtotime($bottomlimit_date))
-        continue;
+        $enddate = "{$p['enddate']['year']}-{$p['enddate']['month']}-{$p['enddate']['day']}";
+        if (is_string($bottomlimit_date) && $bottomlimit_date != "" && strtotime($enddate) < strtotime($bottomlimit_date))
+            continue;
 
-      $weeknumbers = project_dates_to_weeknumbers($startdate,$enddate);
+        $weeknumbers = project_dates_to_weeknumbers($startdate, $enddate);
 
-      // get all the employees for this project
-      $project_employees = array();
-      foreach($p['members'] as $project_member)
-        $project_employees[] = $project_member['personid']['id'];
+        // get all the employees for this project
+        $project_employees = array();
+        foreach ($p['members'] as $project_member)
+            $project_employees[] = $project_member['personid']['id'];
 
-      // check for every employee if the hours are locked for the given week
-      $missing_locks = check_for_employee_nonblocked_weeks($project_employees,$weeknumbers);
+        // check for every employee if the hours are locked for the given week
+        $missing_locks = check_for_employee_nonblocked_weeks($project_employees, $weeknumbers);
 
-      // add employees to collector
-      foreach($missing_locks as $person_id => $weeks)
-      {
-        $emailaddress_collector->add_person_emailaddress($person_id,$weeks,false);
-      }
+        // add employees to collector
+        foreach ($missing_locks as $person_id => $weeks) {
+            $emailaddress_collector->add_person_emailaddress($person_id, $weeks, false);
+        }
 
-      // add coordinator to collector
-      $emailaddress_collector->add_person_emailaddress($p['coordinator']['id'],$missing_locks,true);
+        // add coordinator to collector
+        $emailaddress_collector->add_person_emailaddress($p['coordinator']['id'], $missing_locks, true);
     }
 
     do_send_mails($emailaddress_collector);
-  }
+}
 
-  /**
-   * Checks in database if persons in $employees have not blocked one or more
-   * weeks defined in $weeks.
-   *
-   * @param array $employees An array with employee id's
-   * @param array $weeks     An array with weeknumbers, in the format 'YYYYWW'
-   * @return array           Array with employees and weeks they have not yet blocked
-   */
-  function check_for_employee_nonblocked_weeks($employees,$weeks)
-  {
+/**
+ * Checks in database if persons in $employees have not blocked one or more
+ * weeks defined in $weeks.
+ *
+ * @param array $employees An array with employee id's
+ * @param array $weeks     An array with weeknumbers, in the format 'YYYYWW'
+ * @return array           Array with employees and weeks they have not yet blocked
+ */
+function check_for_employee_nonblocked_weeks($employees, $weeks)
+{
     $db = &atkGetDb();
 
     $return_array = array();
 
-    foreach($employees as $personid)
-    {
-      $result = $db->getRows("SELECT period FROM hours_lock WHERE (userid = '$personid' OR userid IS NULL) AND period IN ('".implode("','",$weeks)."')");
+    foreach ($employees as $personid) {
+        $result = $db->getRows("SELECT period FROM hours_lock WHERE (userid = '$personid' OR userid IS NULL) AND period IN ('" . implode("','", $weeks) . "')");
 
-      // now, see if there are weeknumbers missing in the returned array
-      $weeknumbers_locked = array();
+        // now, see if there are weeknumbers missing in the returned array
+        $weeknumbers_locked = array();
 
-      foreach($result as $row)
-        $weeknumbers_locked[] = $row['period'];
+        foreach ($result as $row)
+            $weeknumbers_locked[] = $row['period'];
 
-      $locks_missing = array_diff($weeks,$weeknumbers_locked);
+        $locks_missing = array_diff($weeks, $weeknumbers_locked);
 
-      if (is_array($locks_missing) && sizeof($locks_missing) > 0)
-        $return_array[$personid] = $locks_missing;
+        if (is_array($locks_missing) && sizeof($locks_missing) > 0)
+            $return_array[$personid] = $locks_missing;
     }
 
     return $return_array;
-  }
+}
 
-  /**
-   * Returns the date for 'today last week'
-   *
-   * @return string date of last week (counted from 'today'), in the format YYYY-MM-DD
-   */
+/**
+ * Returns the date for 'today last week'
+ *
+ * @return string date of last week (counted from 'today'), in the format YYYY-MM-DD
+ */
+function get_lastweek_date()
+{
+    return date("Y-m-d", strtotime("last monday"));
+}
 
-  function get_lastweek_date()
-  {
-    return date("Y-m-d",strtotime("last monday"));
-  }
-
-  /**
-   * Gets projects from database with employees that should register
-   * time on it.
-   */
-  function get_projects_with_employees()
-  {
+/**
+ * Gets projects from database with employees that should register
+ * time on it.
+ */
+function get_projects_with_employees()
+{
     $project_node = &getNode("project.project");
-    $records = $project_node->selectDb("project.startdate < '".get_lastweek_date()."'","","","",array("id","name","abbreviation","coordinator","members","startdate","enddate"));
+    $records = $project_node->selectDb("project.startdate < '" . get_lastweek_date() . "'", "", "", "", array("id", "name", "abbreviation", "coordinator", "members", "startdate", "enddate"));
     return $records;
-  }
+}
 
-  /**
-   * Return an array with weeknumbers that should have time registered
-   * on them.
-   *
-   * @param string $project_startdate Project startdate in the format YYYY-MM-DD
-   * @param string $project_enddate   Project enddate in the format YYYY-MM-DD
-   * @return array An array with weeknumbers, for example: Array ('200618','200619',....);
-   */
-  function project_dates_to_weeknumbers($project_startdate,$project_enddate)
-  {
+/**
+ * Return an array with weeknumbers that should have time registered
+ * on them.
+ *
+ * @param string $project_startdate Project startdate in the format YYYY-MM-DD
+ * @param string $project_enddate   Project enddate in the format YYYY-MM-DD
+ * @return array An array with weeknumbers, for example: Array ('200618','200619',....);
+ */
+function project_dates_to_weeknumbers($project_startdate, $project_enddate)
+{
     $return_array = array();
 
     $datepointer = strtotime($project_startdate);
     $loop_until = strtotime($project_enddate);
 
     if ($loop_until > strtotime(get_lastweek_date()))
-      $loop_until = strtotime(get_lastweek_date());
+        $loop_until = strtotime(get_lastweek_date());
 
-    while($datepointer < $loop_until)
-    {
-      $return_array[] = strftime("%Y%V",$datepointer);
-      $datepointer += 3600 * 24 * 7;
+    while ($datepointer < $loop_until) {
+        $return_array[] = strftime("%Y%V", $datepointer);
+        $datepointer += 3600 * 24 * 7;
     }
 
     return $return_array;
-  }
+}
 
-  /**
-   * Sends mails to the persons in the email_address_collector
-   *
-   * @param email_address_collector $email_address_collector
-   */
-  function do_send_mails(&$email_address_collector)
-  {
+/**
+ * Sends mails to the persons in the email_address_collector
+ *
+ * @param email_address_collector $email_address_collector
+ */
+function do_send_mails(&$email_address_collector)
+{
     // send mails to employees
     $employeedata = $email_address_collector->get_employee_data();
 
-    foreach($employeedata as $personid => $weekdata)
-      sendmail_to_employee($personid,$weekdata);
+    foreach ($employeedata as $personid => $weekdata)
+        sendmail_to_employee($personid, $weekdata);
 
     // send mails to coordinators
     $coordinatordata = $email_address_collector->get_coordinator_data();
 
-    foreach($coordinatordata as $personid => $data)
-      sendmail_to_coordinator($personid,$data);
-  }
+    foreach ($coordinatordata as $personid => $data)
+        sendmail_to_coordinator($personid, $data);
+}
 
-  function sendmail_to_employee($personid,$weekdata)
-  {
+function sendmail_to_employee($personid, $weekdata)
+{
     $weekdata = flatten_weekdata($weekdata);
     $personNode = &getNode("person.person");
     $employee_details = array_pop($personNode->selectDb($personNode->m_table . ".id='$personid'"));
@@ -182,16 +176,16 @@
     // get mail subject, body and 'from' e-mail address
     $mailbody = atktext('timereg_reminder_hoursnotblocked_employeemail_mailbody') . "\n\n";
 
-    foreach($weekdata as $w)
-      $mailbody .= atktext('week') . ": " . $w . "\n";
+    foreach ($weekdata as $w)
+        $mailbody .= atktext('week') . ": " . $w . "\n";
 
     $mailsubject = atktext('timereg_reminder_hoursnotblocked_employeemail_mailsubject');
 //    echo("Sending mail to $to_email with mailbody:\n$mailbody\n---------\n\n");
-    usermail($to_email,$mailsubject,$mailbody,"");
-  }
+    usermail($to_email, $mailsubject, $mailbody, "");
+}
 
-  function sendmail_to_coordinator($coordinatorid,$coordinatordata)
-  {
+function sendmail_to_coordinator($coordinatorid, $coordinatordata)
+{
     $coordinatordata = flatten_coordinator_data($coordinatordata);
 
     $personNode = &getNode("person.person");
@@ -199,88 +193,87 @@
     $coor_email = $coor_details['email'];
 
     // get mail subject, body and 'from' e-mail address
-    $mailbody = atktext('timereg_reminder_hoursnotblocked_coormail_mailbody')."\n\n";
+    $mailbody = atktext('timereg_reminder_hoursnotblocked_coormail_mailbody') . "\n\n";
     $mailsubject = atktext('timereg_reminder_hoursnotblocked_coormail_mailsubject');
 
-    foreach($coordinatordata as $employeeid => $weekdata)
-    {
-      // get details for employee $employeeid
-      $employee_details = array_pop($personNode->selectDb($personNode->m_table . ".id='$employeeid'"));
-      $employee_userid = $employee_details['userid'];
-      $employee_firstname = $employee_details['firstname'];
-      $employee_lastname = $employee_details['lastname'];
+    foreach ($coordinatordata as $employeeid => $weekdata) {
+        // get details for employee $employeeid
+        $employee_details = array_pop($personNode->selectDb($personNode->m_table . ".id='$employeeid'"));
+        $employee_userid = $employee_details['userid'];
+        $employee_firstname = $employee_details['firstname'];
+        $employee_lastname = $employee_details['lastname'];
 
-      $mailbody .= "$employee_firstname $employee_lastname ($employee_userid):\n";
-      $mailbody .= (sizeof($weekdata) > 1 ? atktext('weeks') : atktext('week')) . ": " . implode(",",$weekdata) . "\n\n";
+        $mailbody .= "$employee_firstname $employee_lastname ($employee_userid):\n";
+        $mailbody .= (sizeof($weekdata) > 1 ? atktext('weeks') : atktext('week')) . ": " . implode(",", $weekdata) . "\n\n";
     }
 //    echo("Sending mail to $coor_email with mailbody:\n$mailbody\n---------\n\n");
-    usermail($coor_email,$mailsubject,$mailbody,"");
-  }
+    usermail($coor_email, $mailsubject, $mailbody, "");
+}
 
-  function flatten_weekdata($weekdata)
-  {
+function flatten_weekdata($weekdata)
+{
     $flattened_array = array();
 
-    for($i=0,$_i=sizeof($weekdata);$i<$_i;$i++)
-      $flattened_array = array_merge($flattened_array,$weekdata[$i]);
+    for ($i = 0, $_i = sizeof($weekdata); $i < $_i; $i++)
+        $flattened_array = array_merge($flattened_array, $weekdata[$i]);
 
     sort($flattened_array);
     return array_unique($flattened_array);
-  }
+}
 
-  function flatten_coordinator_data($cdata)
-  {
+function flatten_coordinator_data($cdata)
+{
     $flat_array = array();
 
-    for($i=0,$_i=sizeof($cdata);$i<$_i;$i++)
-    {
-      foreach($cdata[$i] as $employee_id => $weekdata)
-      {
-        if (array_key_exists($employee_id,$flat_array))
-          $flat_array[$employee_id] = array_merge($flat_array[$employee_id],$weekdata);
-        else
-          $flat_array[$employee_id] = $weekdata;
+    for ($i = 0, $_i = sizeof($cdata); $i < $_i; $i++) {
+        foreach ($cdata[$i] as $employee_id => $weekdata) {
+            if (array_key_exists($employee_id, $flat_array))
+                $flat_array[$employee_id] = array_merge($flat_array[$employee_id], $weekdata);
+            else
+                $flat_array[$employee_id] = $weekdata;
 
-        sort($flat_array[$employee_id]);
-        $flat_array[$employee_id] = array_unique($flat_array[$employee_id]);
-      }
+            sort($flat_array[$employee_id]);
+            $flat_array[$employee_id] = array_unique($flat_array[$employee_id]);
+        }
     }
 
     return $flat_array;
-  }
+}
 
-  class email_address_collector
-  {
+class email_address_collector
+{
     var $employee_data = array();
     var $coordinator_data = array();
 
-    function add_person_emailaddress($personid,$data,$is_coordinator=false)
+    function add_person_emailaddress($personid, $data, $is_coordinator = false)
     {
-      $datapool = &$this->employee_data;
+        $datapool = &$this->employee_data;
 
-      if ($is_coordinator)
-        $datapool = &$this->coordinator_data;
+        if ($is_coordinator)
+            $datapool = &$this->coordinator_data;
 
-      if (!array_key_exists($personid,$datapool))
-        $datapool[$personid] = array();
+        if (!array_key_exists($personid, $datapool))
+            $datapool[$personid] = array();
 
-      $datapool[$personid][] = $data;
+        $datapool[$personid][] = $data;
     }
 
-    function get_employee_data($employee_id='')
+    function get_employee_data($employee_id = '')
     {
-      if ($employee_id != '')
-        return $this->employee_data[$employee_id];
-      else
-        return $this->employee_data;
+        if ($employee_id != '')
+            return $this->employee_data[$employee_id];
+        else
+            return $this->employee_data;
     }
 
-    function get_coordinator_data($coordinator_id='')
+    function get_coordinator_data($coordinator_id = '')
     {
-      if ($coordinator_id != '')
-        return $this->coordinator_data[$coordinator_id];
-      else
-        return $this->coordinator_data;
+        if ($coordinator_id != '')
+            return $this->coordinator_data[$coordinator_id];
+        else
+            return $this->coordinator_data;
     }
-  }
+
+}
+
 ?>

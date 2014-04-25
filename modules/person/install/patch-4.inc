@@ -1,5 +1,3 @@
 <?php
-
-  $setup->addColumn("person", "initials", "varchar(50)");
-
+$setup->addColumn("person", "initials", "varchar(50)");
 ?>

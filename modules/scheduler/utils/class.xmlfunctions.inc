@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Achievo distribution.
  * Detailed copyright and licensing information can be found
@@ -17,23 +18,26 @@
  */
 class xmlfunctions
 {
-  function xmlfunctions()
-  {
-  }
-  
-  function exportXML($holidays)
-  {
-    if(count($holidays)==0) return "";
-    return "<xml>
+
+    function xmlfunctions()
+    {
+        
+    }
+
+    function exportXML($holidays)
+    {
+        if (count($holidays) == 0)
+            return "";
+        return "<xml>
               <test>dit is een test</test>
             </xml>";
-    
-  }
-  
-  function importXML()
-  {
-  } 
-}
+    }
 
+    function importXML()
+    {
+        
+    }
+
+}
 
 ?>

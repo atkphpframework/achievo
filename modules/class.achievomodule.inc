@@ -14,24 +14,24 @@
  * @version $Revision$
  * $Id$
  */
+define("DEP_INSTALL", 1);
+define("DEP_RUN", 2);
+define("DEP_ALL", DEP_INSTALL | DEP_RUN);
 
-  define("DEP_INSTALL", 1);
-  define("DEP_RUN"    , 2);
-  define("DEP_ALL"    , DEP_INSTALL|DEP_RUN);
+/**
+ * Extension to the standard atkModule, with an extra API
+ * specially for some Achievo functions.
+ *
+ * @author Ivo Jansch <ivo@achievo.org>
+ * @package achievo
+ * @subpackage modules
+ */
+class achievoModule extends atkModule
+{
 
-  /**
-   * Extension to the standard atkModule, with an extra API
-   * specially for some Achievo functions.
-   *
-   * @author Ivo Jansch <ivo@achievo.org>
-   * @package achievo
-   * @subpackage modules
-   */
-  class achievoModule extends atkModule
-  {
-    function achievoModule($name="")
+    function achievoModule($name = "")
     {
-      $this->atkModule($name);
+        $this->atkModule($name);
     }
 
     /**
@@ -50,7 +50,7 @@
      */
     function getPimItems()
     {
-      return array();
+        return array();
     }
 
     /**
@@ -70,7 +70,7 @@
      */
     function search($expression)
     {
-      return array();
+        return array();
     }
 
     /**
@@ -98,28 +98,29 @@
      */
     function getDependencies($mode)
     {
-      return array();
+        return array();
     }
 
     function recLinks($recordset, $nodetype)
     {
-      $node = &atkGetNode($nodetype);
+        $node = &atkGetNode($nodetype);
 
-      $res = array();
+        $res = array();
 
-      $node = &atkGetNode($nodetype);
-      $allowedaction = $node->allowed("edit") ? "edit" : ($node->allowed("view") ? "view" : "");
-      if (!empty($allowedaction))
-      {
-        for($i=0, $_i=count($recordset); $i<$_i; $i++)
-        {
-          $item["title"] = $node->descriptor($recordset[$i]);
-          $item["url"] = dispatch_url($nodetype, $allowedaction, array("atkselector"=>$node->primaryKey($recordset[$i])));
-          $res[] = $item;
+        $node = &atkGetNode($nodetype);
+        $allowedaction = $node->allowed("edit") ? "edit" : ($node->allowed("view")
+                    ? "view" : "");
+        if (!empty($allowedaction)) {
+            for ($i = 0, $_i = count($recordset); $i < $_i; $i++) {
+                $item["title"] = $node->descriptor($recordset[$i]);
+                $item["url"] = dispatch_url($nodetype, $allowedaction, array("atkselector" => $node->primaryKey($recordset[$i])));
+                $res[] = $item;
+            }
         }
-      }
 
-      return $res;
+        return $res;
     }
-  }
+
+}
+
 ?>

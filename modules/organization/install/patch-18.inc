@@ -1,6 +1,4 @@
 <?php
-  //Added debtornumber field 
-  $setup->addColumn('organization', 'debtornumber','varchar(30)'); 
-  
-
+//Added debtornumber field 
+$setup->addColumn('organization', 'debtornumber', 'varchar(30)');
 ?>

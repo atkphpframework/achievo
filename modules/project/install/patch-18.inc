@@ -1,3 +1,3 @@
 <?php
-  $setup->installNode("project.phase");
+$setup->installNode("project.phase");
 ?>

@@ -15,7 +15,6 @@
  * @version $Revision$
  * $Id$
  */
-
 userelation("atkmanytoonerelation");
 
 /**
@@ -28,23 +27,24 @@ userelation("atkmanytoonerelation");
  */
 class former_name extends atkNode
 {
-  /**
-   * Constructor
-   *
-   * @return void
-   */
-  function former_name()
-  {
-    $this->atkNode("former_name",NF_MRA|NF_ADD_LINK);
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("former_name",AF_OBLIGATORY));
-    $this->add(new atkManyToOneRelation("account","organization.organization",AF_RELATION_AUTOLINK));
 
-    $this->setSecurityAlias("organization.organization");
-    $this->setOrder("former_name");
-    $this->setTable("crm_former_name");
-    $this->setDescriptorTemplate('[former_name]');
-  }
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    function former_name()
+    {
+        $this->atkNode("former_name", NF_MRA | NF_ADD_LINK);
+        $this->add(new atkAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("former_name", AF_OBLIGATORY));
+        $this->add(new atkManyToOneRelation("account", "organization.organization", AF_RELATION_AUTOLINK));
+
+        $this->setSecurityAlias("organization.organization");
+        $this->setOrder("former_name");
+        $this->setTable("crm_former_name");
+        $this->setDescriptorTemplate('[former_name]');
+    }
 
 }
 

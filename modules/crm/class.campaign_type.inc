@@ -16,7 +16,6 @@
  * $Id$
  */
 
-
 /**
  * Class for managing campaign types
  * 
@@ -28,21 +27,21 @@
 class campaign_type extends atkNode
 {
 
-  /**
-   * Constructor
-   *
-   * @return void
-   */
-  function campaign_type()
-  {
-    $this->atkNode("campaign_type",NF_MRA|NF_ADD_LINK);
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("type_name",AF_OBLIGATORY));
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    function campaign_type()
+    {
+        $this->atkNode("campaign_type", NF_MRA | NF_ADD_LINK);
+        $this->add(new atkAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("type_name", AF_OBLIGATORY));
 
-    $this->setOrder("type_name");
-    $this->setTable("crm_campaign_type");
-    $this->setDescriptorTemplate('[type_name]');
-  }
+        $this->setOrder("type_name");
+        $this->setTable("crm_campaign_type");
+        $this->setDescriptorTemplate('[type_name]');
+    }
 
 }
 

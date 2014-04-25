@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("employee.department");
-
+$setup->installNode("employee.department");
 ?>

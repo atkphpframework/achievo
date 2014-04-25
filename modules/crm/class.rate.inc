@@ -27,24 +27,23 @@
 class rate extends atkNode
 {
 
-  /**
-   * Constructor
-   *
-   * @return void
-   */
-  function rate()
-  {
-    $this->atkNode("rate",NF_MRA|NF_ADD_LINK);
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("rate_name",AF_OBLIGATORY));
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    function rate()
+    {
+        $this->atkNode("rate", NF_MRA | NF_ADD_LINK);
+        $this->add(new atkAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("rate_name", AF_OBLIGATORY));
 
-    $this->setSecurityAlias("organization.organization");
-    $this->setOrder("rate_name");
-    $this->setTable("crm_rate");
-    $this->setDescriptorTemplate('[rate_name]');
-  }
+        $this->setSecurityAlias("organization.organization");
+        $this->setOrder("rate_name");
+        $this->setTable("crm_rate");
+        $this->setDescriptorTemplate('[rate_name]');
+    }
+
 }
-
-
 
 ?>

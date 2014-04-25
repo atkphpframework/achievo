@@ -1,5 +1,3 @@
 <?php
-
-  $setup->addColumn("person", "lng", "varchar(3)");  
-
+$setup->addColumn("person", "lng", "varchar(3)");
 ?>

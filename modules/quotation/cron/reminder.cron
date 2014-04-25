@@ -1,99 +1,92 @@
 <?php
- /*  
-  * Sends an email reminder if someone forget an offerte
-  *
-  * @version $Revision$
-  * @author Ivo Jansch <ivo@achievo.org>
-  * 
-  * $Id$
-  *
-  */  
- 
- 	$db = &atkGetDb();
-  // Select quotations that are still open but need to be handled with 5 days, or which have already been
-  // expired.
-  $sql = "SELECT b.*, a.email, a.firstname, a.lastname, c.name, to_days(b.expire_date)-to_days(now()) AS daysleft 
+/*
+ * Sends an email reminder if someone forget an offerte
+ *
+ * @version $Revision$
+ * @author Ivo Jansch <ivo@achievo.org>
+ * 
+ * $Id$
+ *
+ */
+
+$db = &atkGetDb();
+// Select quotations that are still open but need to be handled with 5 days, or which have already been
+// expired.
+$sql = "SELECT b.*, a.email, a.firstname, a.lastname, c.name, to_days(b.expire_date)-to_days(now()) AS daysleft 
           FROM 
             quotation_quotation b,person a,organization c 
           WHERE 
             to_days(b.expire_date)-to_days(now())<=5 AND b.status IN ('sent', 'new', 'called')
-            AND a.status='active' AND b.owner=a.id AND c.id=b.organization_id";  
-    
-  $quotations = $db->getrows($sql);  
-  
-  //var_dump($quotations);
-  
-  foreach($quotations as $record)
-  {
-    $open = ($record["status"] == "new" || $record["status"] == "sent" || $record["status"] == "called");
-    $days_left = $record["daysleft"];    
-    
-    $to = $record["email"];
-    
-    if ($days_left<=5 && $open)
-    {
-    	$subject = atktext("quotation", "quotation")." ".$record["quotation_nr"]." (".$record["title"].")";
-    	$body = atktext("reminder_header", "quotation")."\n";
-      if ($days_left>=0)
-      {
-	      $body.= atktext("reminder_daysleft", "quotation").": ".$days_left."\n\n";
-      }
-      else
-      {
-        $body.= atktext("reminder_daysexpired", "quotation").": ".abs($days_left)."\n\n";
-      }
-      
-      $title = atktext("reminder_summary", "quotation");
-      $body.= $title."\n".str_repeat("-", strlen($title))."\n";
-      
-      $summary = new quotation_summary();
+            AND a.status='active' AND b.owner=a.id AND c.id=b.organization_id";
 
-      $summary->addLine("quotation_nr", $record["quotation_nr"]);    	
-    	$summary->addLine("owner", $record["lastname"].", ".$record["firstname"]);
-    	$summary->addLine("organization_id", $record["name"]);
-    	$summary->addLine("contact", $record["contact"]);
-    	$summary->addLine("issue_date", $record["issue_date"]);
-    	$summary->addLine("expire_date", $record["expire_date"]);
-    	$summary->addLine("status", text($record["status"], "quotation"));
-    	$summary->addLine("title", $record["title"]);
-    	$summary->addLine("price", $record["price"]);    	
-    	$summary->addLine("description", "");
-    	
-    	$body.=$summary->getText();
-    	
-    	//description can be multiline so we render it separately.
-    	$body.= $record["description"]."\n";
-    	
+$quotations = $db->getrows($sql);
+
+//var_dump($quotations);
+
+foreach ($quotations as $record) {
+    $open = ($record["status"] == "new" || $record["status"] == "sent" || $record["status"] == "called");
+    $days_left = $record["daysleft"];
+
+    $to = $record["email"];
+
+    if ($days_left <= 5 && $open) {
+        $subject = atktext("quotation", "quotation") . " " . $record["quotation_nr"] . " (" . $record["title"] . ")";
+        $body = atktext("reminder_header", "quotation") . "\n";
+        if ($days_left >= 0) {
+            $body.= atktext("reminder_daysleft", "quotation") . ": " . $days_left . "\n\n";
+        } else {
+            $body.= atktext("reminder_daysexpired", "quotation") . ": " . abs($days_left) . "\n\n";
+        }
+
+        $title = atktext("reminder_summary", "quotation");
+        $body.= $title . "\n" . str_repeat("-", strlen($title)) . "\n";
+
+        $summary = new quotation_summary();
+
+        $summary->addLine("quotation_nr", $record["quotation_nr"]);
+        $summary->addLine("owner", $record["lastname"] . ", " . $record["firstname"]);
+        $summary->addLine("organization_id", $record["name"]);
+        $summary->addLine("contact", $record["contact"]);
+        $summary->addLine("issue_date", $record["issue_date"]);
+        $summary->addLine("expire_date", $record["expire_date"]);
+        $summary->addLine("status", text($record["status"], "quotation"));
+        $summary->addLine("title", $record["title"]);
+        $summary->addLine("price", $record["price"]);
+        $summary->addLine("description", "");
+
+        $body.=$summary->getText();
+
+        //description can be multiline so we render it separately.
+        $body.= $record["description"] . "\n";
+
 //      $body.= "\n\nClick the link below to edit the quotation:\n";
 //      $body.= "http://nikita/webapps/achievo/".dispatch_url("quotation.quotation", "edit", array("atkselector"=>"quotation.id='".$record["id"]."'"));
-	    usermail($to, $subject, $body);
-	     
+        usermail($to, $subject, $body);
     }
-  }
-  
-  class quotation_summary
-  {
+}
+
+class quotation_summary
+{
     var $m_items = array();
     var $m_maxfieldlength = 0;
-    
+
     function addLine($field, $value)
     {
-      $label = atktext($field, "quotation");
-      $this->m_maxfieldlength = max($this->m_maxfieldlength, strlen($label));
-      $this->m_items[] = array("label"=>$label, "value"=>$value);
+        $label = atktext($field, "quotation");
+        $this->m_maxfieldlength = max($this->m_maxfieldlength, strlen($label));
+        $this->m_items[] = array("label" => $label, "value" => $value);
     }
-    
+
     function getText()
     {
-      $res = "";
-      for ($i=0, $_i=count($this->m_items); $i<$_i; $i++)
-      {
-        $label = $this->m_items[$i]["label"];
-        $value = $this->m_items[$i]["value"];
-        $res.=atktext($label).str_repeat(" ", $this->m_maxfieldlength-strlen($label)).": ".$value."\n";
-      }
-      return $res;
+        $res = "";
+        for ($i = 0, $_i = count($this->m_items); $i < $_i; $i++) {
+            $label = $this->m_items[$i]["label"];
+            $value = $this->m_items[$i]["value"];
+            $res.=atktext($label) . str_repeat(" ", $this->m_maxfieldlength - strlen($label)) . ": " . $value . "\n";
+        }
+        return $res;
     }
-  }
-      
+
+}
 ?>	

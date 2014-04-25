@@ -7,9 +7,6 @@
 //
 // Copyright (c) Aditus Consulting. All rights reserved.
 //========================================================================
-
-
-
 //------------------------------------------------------------------------
 // Directories for cache and font directory. 
 //
@@ -40,9 +37,9 @@
 // DEFINE("TTF_DIR","/usr/X11R6/lib/X11/fonts/truetype/");
 // DEFINE("MBTTF_DIR","/usr/share/fonts/ja/TrueType/");
 
-DEFINE("TTF_DIR",'./modules/graph/fonts/');
-DEFINE("CACHE_DIR",atkconfig('atktempdir').'graph/');
-  
+DEFINE("TTF_DIR", './modules/graph/fonts/');
+DEFINE("CACHE_DIR", atkconfig('atktempdir') . 'graph/');
+
 
 
 
@@ -57,32 +54,31 @@ DEFINE("CACHE_DIR",atkconfig('atktempdir').'graph/');
 // Note: The default setting is to create a subdirectory in the 
 // directory from where the image script is executed and store all files
 // there. As ususal this directory must be writeable by the PHP process.
-DEFINE("CSIMCACHE_DIR","csimcache/"); 
-DEFINE("CSIMCACHE_HTTP_DIR","csimcache/");
+DEFINE("CSIMCACHE_DIR", "csimcache/");
+DEFINE("CSIMCACHE_HTTP_DIR", "csimcache/");
 
 //------------------------------------------------------------------------
 // Defines for font setup
 //------------------------------------------------------------------------
-
 // Actual name of the TTF file used together with FF_CHINESE aka FF_BIG5
 // This is the TTF file being used when the font family is specified as
 // either FF_CHINESE or FF_BIG5
-DEFINE('CHINESE_TTF_FONT','bkai00mp.ttf');
+DEFINE('CHINESE_TTF_FONT', 'bkai00mp.ttf');
 
 // Special unicode greek language support
-DEFINE("LANGUAGE_GREEK",false);
+DEFINE("LANGUAGE_GREEK", false);
 
 // If you are setting this config to true the conversion of greek characters
 // will assume that the input text is windows 1251 
-DEFINE("GREEK_FROM_WINDOWS",false);
+DEFINE("GREEK_FROM_WINDOWS", false);
 
 // Special unicode cyrillic language support
-DEFINE("LANGUAGE_CYRILLIC",false);
+DEFINE("LANGUAGE_CYRILLIC", false);
 
 // If you are setting this config to true the conversion
 // will assume that the input text is windows 1251, if
 // false it will assume koi8-r
-DEFINE("CYRILLIC_FROM_WINDOWS",false);
+DEFINE("CYRILLIC_FROM_WINDOWS", false);
 
 // The following constant is used to auto-detect
 // whether cyrillic conversion is really necessary
@@ -112,30 +108,29 @@ DEFINE("CYRILLIC_FROM_WINDOWS",false);
 DEFINE('LANGUAGE_CHARSET', 'utf-8');
 
 // Japanese TrueType font used with FF_MINCHO, FF_PMINCHO, FF_GOTHIC, FF_PGOTHIC
-DEFINE('MINCHO_TTF_FONT','ipam.ttf');
-DEFINE('PMINCHO_TTF_FONT','ipamp.ttf');
-DEFINE('GOTHIC_TTF_FONT','ipag.ttf');
-DEFINE('PGOTHIC_TTF_FONT','ipagp.ttf');
+DEFINE('MINCHO_TTF_FONT', 'ipam.ttf');
+DEFINE('PMINCHO_TTF_FONT', 'ipamp.ttf');
+DEFINE('GOTHIC_TTF_FONT', 'ipag.ttf');
+DEFINE('PGOTHIC_TTF_FONT', 'ipagp.ttf');
 
 // Assume that Japanese text have been entered in EUC-JP encoding.
 // If this define is true then conversion from EUC-JP to UTF8 is done 
 // automatically in the library using the mbstring module in PHP.
-DEFINE('ASSUME_EUCJP_ENCODING',false);
+DEFINE('ASSUME_EUCJP_ENCODING', false);
 
 //------------------------------------------------------------------------
 // Various JpGraph Settings. Adjust accordingly to your
 // preferences. Note that cache functionality is turned off by
 // default (Enable by setting USE_CACHE to true)
 //------------------------------------------------------------------------
-
 // Deafult locale for error messages.
 // This defaults to English = 'en'
-DEFINE('DEFAULT_ERR_LOCALE','en');
+DEFINE('DEFAULT_ERR_LOCALE', 'en');
 
 // Deafult graphic format set to "auto" which will automatically
 // choose the best available format in the order png,gif,jpeg
 // (The supported format depends on what your PHP installation supports)
-DEFINE("DEFAULT_GFORMAT","auto");
+DEFINE("DEFAULT_GFORMAT", "auto");
 
 // Should the cache be used at all? By setting this to false no
 // files will be generated in the cache directory.  
@@ -143,32 +138,32 @@ DEFINE("DEFAULT_GFORMAT","auto");
 // false will still create the image in the cache directory
 // just not use it. By setting USE_CACHE=false no files will even
 // be generated in the cache directory.
-DEFINE("USE_CACHE",false);
+DEFINE("USE_CACHE", false);
 
 // Should we try to find an image in the cache before generating it? 
 // Set this define to false to bypass the reading of the cache and always
 // regenerate the image. Note that even if reading the cache is 
 // disabled the cached will still be updated with the newly generated
 // image. Set also "USE_CACHE" below.
-DEFINE("READ_CACHE",false);
+DEFINE("READ_CACHE", false);
 
 // Determine if the error handler should be image based or purely
 // text based. Image based makes it easier since the script will
 // always return an image even in case of errors.
-DEFINE("USE_IMAGE_ERROR_HANDLER",true);
+DEFINE("USE_IMAGE_ERROR_HANDLER", true);
 
 // Should the library examin the global php_errmsg string and convert
 // any error in it to a graphical representation. This is handy for the
 // occasions when, for example, header files cannot be found and this results
 // in the graph not being created and just a "red-cross" image would be seen.
 // This should be turned off for a production site.
-DEFINE("CATCH_PHPERRMSG",true);
+DEFINE("CATCH_PHPERRMSG", true);
 
 // Determine if the library should also setup the default PHP
 // error handler to generate a graphic error mesage. This is useful
 // during development to be able to see the error message as an image
 // instead as a "red-cross" in a page where an image is expected.
-DEFINE("INSTALL_PHP_ERR_HANDLER",false);
+DEFINE("INSTALL_PHP_ERR_HANDLER", false);
 
 // If the color palette is full should JpGraph try to allocate
 // the closest match? If you plan on using background images or
@@ -179,55 +174,52 @@ DEFINE("INSTALL_PHP_ERR_HANDLER",false);
 // Note1: This does only apply to paletted images, not truecolor 
 // images since they don't have the limitations of maximum number
 // of colors.
-DEFINE("USE_APPROX_COLORS",true);
+DEFINE("USE_APPROX_COLORS", true);
 
 // Should usage of deprecated functions and parameters give a fatal error?
 // (Useful to check if code is future proof.)
-DEFINE("ERR_DEPRECATED",true);
+DEFINE("ERR_DEPRECATED", true);
 
 // Should the time taken to generate each picture be branded to the lower
 // left in corner in each generated image? Useful for performace measurements
 // generating graphs
-DEFINE("BRAND_TIMING",false);
+DEFINE("BRAND_TIMING", false);
 
 // What format should be used for the timing string?
-DEFINE("BRAND_TIME_FORMAT","(%01.3fs)");
+DEFINE("BRAND_TIME_FORMAT", "(%01.3fs)");
 
 //------------------------------------------------------------------------
 // The following constants should rarely have to be changed !
 //------------------------------------------------------------------------
-
 // What group should the cached file belong to
 // (Set to "" will give the default group for the "PHP-user")
 // Please note that the Apache user must be a member of the
 // specified group since otherwise it is impossible for Apache
 // to set the specified group.
-DEFINE("CACHE_FILE_GROUP","wwwadmin");
+DEFINE("CACHE_FILE_GROUP", "wwwadmin");
 
 // What permissions should the cached file have
 // (Set to "" will give the default persmissions for the "PHP-user")
-DEFINE("CACHE_FILE_MOD",0664);
+DEFINE("CACHE_FILE_MOD", 0664);
 
 // Decide if we should use the bresenham circle algorithm or the
 // built in Arc(). Bresenham gives better visual apperance of circles 
 // but is more CPU intensive and slower then the built in Arc() function
 // in GD. Turned off by default for speed
-DEFINE("USE_BRESENHAM",false);
+DEFINE("USE_BRESENHAM", false);
 
 // Special file name to indicate that we only want to calc
 // the image map in the call to Graph::Stroke() used
 // internally from the GetHTMLCSIM() method.
-DEFINE("_CSIM_SPECIALFILE","_csim_special_");
+DEFINE("_CSIM_SPECIALFILE", "_csim_special_");
 
 // HTTP GET argument that is used with image map
 // to indicate to the script to just generate the image
 // and not the full CSIM HTML page.
-DEFINE("_CSIM_DISPLAY","_jpg_csimd");
+DEFINE("_CSIM_DISPLAY", "_jpg_csimd");
 
 // Special filename for Graph::Stroke(). If this filename is given
 // then the image will NOT be streamed to browser of file. Instead the
 // Stroke call will return the handler for the created GD image.
-DEFINE("_IMG_HANDLER","__handle");
-
-
+DEFINE("_IMG_HANDLER", "__handle");
 ?>

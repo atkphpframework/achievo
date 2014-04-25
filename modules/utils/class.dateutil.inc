@@ -14,10 +14,9 @@
  * @version $Revision$
  * $Id$
  */
-  define("ONEDAY", 24*60*60);
-  define("ONEWEEK", ONEDAY*7);
-  require_once(atkConfig("atkroot")."atk/utils/adodb-time.inc.php");
-
+define("ONEDAY", 24 * 60 * 60);
+define("ONEWEEK", ONEDAY * 7);
+require_once(atkConfig("atkroot") . "atk/utils/adodb-time.inc.php");
 
 /**
  * Static class with date functions
@@ -25,8 +24,9 @@
  * @package achievo
  * @subpackage utils
  */
-  class dateutil
-  {
+class dateutil
+{
+
     /**
      * Return the difference (in number of days) between two dates.
      * If $start is beyond $end, the difference will be negative.
@@ -36,11 +36,12 @@
      */
     function date_diff($start, $end)
     {
-      if ($start==""||$end=="") return 0;
+        if ($start == "" || $end == "")
+            return 0;
 
-      $d1 = adodb_mktime(12,0,0,substr($start,4,2), substr($start,6,2), substr($start,0,4));
-      $d2 = adodb_mktime(12,0,0,substr($end,4,2), substr($end,6,2), substr($end,0,4));
-      return floor(($d2-$d1)/(60*60*24));
+        $d1 = adodb_mktime(12, 0, 0, substr($start, 4, 2), substr($start, 6, 2), substr($start, 0, 4));
+        $d2 = adodb_mktime(12, 0, 0, substr($end, 4, 2), substr($end, 6, 2), substr($end, 0, 4));
+        return floor(($d2 - $d1) / (60 * 60 * 24));
     }
 
     /**
@@ -50,10 +51,11 @@
      * @param string $format Date format
      * @return string
      */
-    function arr2str($arrdate, $format="Ymd")
+    function arr2str($arrdate, $format = "Ymd")
     {
-      if (!is_array($arrdate)) return "";
-      return dateutil::stamp2str(dateutil::arr2stamp($arrdate), $format);
+        if (!is_array($arrdate))
+            return "";
+        return dateutil::stamp2str(dateutil::arr2stamp($arrdate), $format);
     }
 
     /**
@@ -64,31 +66,26 @@
      */
     function str2arr($strdate)
     {
-      // parse dates in the common formats yyyymmdd and yyyy-mm-dd
-      if ( strlen($strdate) == 8 ) 
-			{
-        return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,4,2), "day"=>substr($strdate,6,2));
-      } 
-			elseif ( strlen($strdate) == 10 ) 
-			{
-        return array("year"=>substr($strdate,0,4), "month"=>substr($strdate,5,2), "day"=>substr($strdate,8,2));
-      } 
-			else 
-			{
-        return array(); 
-			}
+        // parse dates in the common formats yyyymmdd and yyyy-mm-dd
+        if (strlen($strdate) == 8) {
+            return array("year" => substr($strdate, 0, 4), "month" => substr($strdate, 4, 2), "day" => substr($strdate, 6, 2));
+        } elseif (strlen($strdate) == 10) {
+            return array("year" => substr($strdate, 0, 4), "month" => substr($strdate, 5, 2), "day" => substr($strdate, 8, 2));
+        } else {
+            return array();
+        }
     }
-		
+
     /**
      * Date string to formatted string
      *
      * @param string $strdate Date string
      * @return formatted string
      */
-    function str2str($strdate, $format="Ymd")
+    function str2str($strdate, $format = "Ymd")
     {
-      return dateutil::arr2str(dateutil::str2arr($strdate), $format);
-     } 
+        return dateutil::arr2str(dateutil::str2arr($strdate), $format);
+    }
 
     /**
      * Date string to timestamp
@@ -98,7 +95,7 @@
      */
     function str2stamp($strdate)
     {
-      return dateutil::arr2stamp(dateutil::str2arr($strdate));
+        return dateutil::arr2stamp(dateutil::str2arr($strdate));
     }
 
     /**
@@ -109,7 +106,7 @@
      */
     function arr2stamp($arrdate)
     {
-      return adodb_mktime(12,0,0,$arrdate["month"],$arrdate["day"],$arrdate["year"]);
+        return adodb_mktime(12, 0, 0, $arrdate["month"], $arrdate["day"], $arrdate["year"]);
     }
 
     /**
@@ -119,9 +116,9 @@
      * @param string $format Date format
      * @return string
      */
-    function stamp2str($timestamp, $format="Ymd")
+    function stamp2str($timestamp, $format = "Ymd")
     {
-      return date($format, $timestamp);
+        return date($format, $timestamp);
     }
 
     /**
@@ -132,7 +129,7 @@
      */
     function stamp2arr($timestamp)
     {
-      return dateutil::str2arr(dateutil::stamp2str($timestamp));
+        return dateutil::str2arr(dateutil::stamp2str($timestamp));
     }
 
     /**
@@ -142,7 +139,7 @@
      */
     function monthlist()
     {
-      return array(1=>"january", 2=>"february", 3=>"march", 4=>"april", 5=>"may", 6=>"june", 7=>"july", 8=>"august", 9=>"september", 10=>"october", 11=>"november", 12=>"december");
+        return array(1 => "january", 2 => "february", 3 => "march", 4 => "april", 5 => "may", 6 => "june", 7 => "july", 8 => "august", 9 => "september", 10 => "october", 11 => "november", 12 => "december");
     }
 
     /**
@@ -153,8 +150,8 @@
      */
     function monthname($monthnumber)
     {
-      $months = dateutil::monthlist();
-      return $months[$monthnumber];
+        $months = dateutil::monthlist();
+        return $months[$monthnumber];
     }
 
     /**
@@ -164,7 +161,7 @@
      */
     function short_monthlist()
     {
-      return array(1=>"jan", 2=>"feb", 3=>"mar", 4=>"apr", 5=>"may", 6=>"jun", 7=>"jul", 8=>"aug", 9=>"sep", 10=>"oct", 11=>"nov", 12=>"dec");
+        return array(1 => "jan", 2 => "feb", 3 => "mar", 4 => "apr", 5 => "may", 6 => "jun", 7 => "jul", 8 => "aug", 9 => "sep", 10 => "oct", 11 => "nov", 12 => "dec");
     }
 
     /**
@@ -174,7 +171,7 @@
      */
     function short_daylist()
     {
-      return array(0=>"sun",1=>"mon",2=>"tue",3=>"wed",4=>"thu",5=>"fri",6=>"sat");
+        return array(0 => "sun", 1 => "mon", 2 => "tue", 3 => "wed", 4 => "thu", 5 => "fri", 6 => "sat");
     }
 
     /**
@@ -185,8 +182,8 @@
      */
     function short_monthname($monthnumber)
     {
-      $months = dateutil::short_monthlist();
-      return $months[$monthnumber];
+        $months = dateutil::short_monthlist();
+        return $months[$monthnumber];
     }
 
     /**
@@ -198,10 +195,11 @@
      */
     function startOfWeek($strdate)
     {
-      $viewtime = adodb_mktime(0,0,0,substr($strdate,4,2),substr($strdate,6,2),substr($strdate,0,4));
-      $weekday = strftime("%w",$viewtime);
-      if ($weekday==0) $weekday=7;
-      return date("Ymd" ,$viewtime-(86400*($weekday-1)));
+        $viewtime = adodb_mktime(0, 0, 0, substr($strdate, 4, 2), substr($strdate, 6, 2), substr($strdate, 0, 4));
+        $weekday = strftime("%w", $viewtime);
+        if ($weekday == 0)
+            $weekday = 7;
+        return date("Ymd", $viewtime - (86400 * ($weekday - 1)));
     }
 
     /**
@@ -213,10 +211,11 @@
      */
     function endOfWeek($strdate)
     {
-      $viewtime = adodb_mktime(0,0,0,substr($strdate,4,2),substr($strdate,6,2),substr($strdate,0,4));
-      $weekday = strftime("%w",$viewtime);
-      if ($weekday==0) $weekday=7;
-      return date("Ymd" ,$viewtime-(86400*($weekday-7)));
+        $viewtime = adodb_mktime(0, 0, 0, substr($strdate, 4, 2), substr($strdate, 6, 2), substr($strdate, 0, 4));
+        $weekday = strftime("%w", $viewtime);
+        if ($weekday == 0)
+            $weekday = 7;
+        return date("Ymd", $viewtime - (86400 * ($weekday - 7)));
     }
 
     /**
@@ -230,36 +229,34 @@
      */
     function weeksBetween($strstart, $strend)
     {
-      // Initialize the weekdata array
-      $weekdata = array();
+        // Initialize the weekdata array
+        $weekdata = array();
 
-      // First fill the weeks and start/end dates..
-      $startstamp = dateUtil::str2stamp($strstart);
-      $endstamp = dateUtil::str2stamp($strend);
+        // First fill the weeks and start/end dates..
+        $startstamp = dateUtil::str2stamp($strstart);
+        $endstamp = dateUtil::str2stamp($strend);
 
-      // Calculate the number of dates between the selected start and end date
-      $nrofdays = dateUtil::date_diff($strstart, $strend);
+        // Calculate the number of dates between the selected start and end date
+        $nrofdays = dateUtil::date_diff($strstart, $strend);
 
-      // Loop through the days, starting at the day selected as "from"
-      for ($i = 0; $i <= $nrofdays; $i++)
-      {
-        // Calculate the current day depending on the startdate and iterator
-        $curstamp = $startstamp + (ONEDAY * $i);
+        // Loop through the days, starting at the day selected as "from"
+        for ($i = 0; $i <= $nrofdays; $i++) {
+            // Calculate the current day depending on the startdate and iterator
+            $curstamp = $startstamp + (ONEDAY * $i);
 
-        // If the day is a monday, then register the weekid, startdate and
-        // enddate of the week in the weekdata array and jump one week ahead
-        if (strftime("%w",$curstamp)==1)
-        {
-          $key = weekstamp($curstamp);
-          $weekdata[$key]["week"] = $key;
-          $weekdata[$key]["startdate"] = date("Ymd",$curstamp);
-          $weekdata[$key]["enddate"] = date("Ymd",$curstamp+(6*ONEDAY));
-          $i+=6;
+            // If the day is a monday, then register the weekid, startdate and
+            // enddate of the week in the weekdata array and jump one week ahead
+            if (strftime("%w", $curstamp) == 1) {
+                $key = weekstamp($curstamp);
+                $weekdata[$key]["week"] = $key;
+                $weekdata[$key]["startdate"] = date("Ymd", $curstamp);
+                $weekdata[$key]["enddate"] = date("Ymd", $curstamp + (6 * ONEDAY));
+                $i+=6;
+            }
         }
-      }
 
-      // Return the array containing the weekid, start- and enddate for each week within the given from and to dates
-      return $weekdata;
+        // Return the array containing the weekid, start- and enddate for each week within the given from and to dates
+        return $weekdata;
     }
 
     /**
@@ -270,28 +267,27 @@
      */
     function daysBetween($strstart, $strend)
     {
-      // Initialize the weekdata array
-      $daydata = array();
+        // Initialize the weekdata array
+        $daydata = array();
 
-      // First fill the weeks and start/end dates..
-      $startstamp = dateUtil::str2stamp($strstart);
-      $endstamp   = dateUtil::str2stamp($strend);
+        // First fill the weeks and start/end dates..
+        $startstamp = dateUtil::str2stamp($strstart);
+        $endstamp = dateUtil::str2stamp($strend);
 
-      // Calculate the number of days between the selected start and end date
-      $nrofdays = dateUtil::date_diff($strstart, $strend);
+        // Calculate the number of days between the selected start and end date
+        $nrofdays = dateUtil::date_diff($strstart, $strend);
 
-      // Loop through the days, starting at the day selected as "from"
-      for ($i = 0; $i <= $nrofdays; $i++)
-      {
-        // Calculate the current day depending on the startdate and iterator
-        $curstamp = $startstamp + (ONEDAY * $i);
+        // Loop through the days, starting at the day selected as "from"
+        for ($i = 0; $i <= $nrofdays; $i++) {
+            // Calculate the current day depending on the startdate and iterator
+            $curstamp = $startstamp + (ONEDAY * $i);
 
-        $key = date("Ymd",$curstamp);
-        $daydata[$key]["date"] = $key;
-      }
+            $key = date("Ymd", $curstamp);
+            $daydata[$key]["date"] = $key;
+        }
 
-      // Return the array containing the dayid, and date for each day within the given from and to dates
-      return $daydata;
+        // Return the array containing the dayid, and date for each day within the given from and to dates
+        return $daydata;
     }
 
     /**
@@ -308,62 +304,63 @@
      */
     function lastDayOfMonth($day, $month, $year)
     {
-      // Get the timestamp for the 1. day of the month
-      $firstOfMonth = mktime(0,0,0,$month,1,$year);
-      // Get the timestamp for the last day of the month
-      $lastOfMonth = ($firstOfMonth - 86400) + date("t", $firstOfMonth) * 86400;
-      // Get the day of the week for the last day in the month
-      $lastOfMonth_DayOfWeek = date("w", $lastOfMonth);
+        // Get the timestamp for the 1. day of the month
+        $firstOfMonth = mktime(0, 0, 0, $month, 1, $year);
+        // Get the timestamp for the last day of the month
+        $lastOfMonth = ($firstOfMonth - 86400) + date("t", $firstOfMonth) * 86400;
+        // Get the day of the week for the last day in the month
+        $lastOfMonth_DayOfWeek = date("w", $lastOfMonth);
 
-      // Is the last of the month on the same day of day of week?
-      if ($lastOfMonth_DayOfWeek == $day) {
-      // If so, return the timestamp
-      return $lastOfMonth;
-      } else {
-      // Iterate from the last of the month until we have a match
-      for ($tempDate = $lastOfMonth; date("w", $tempDate) <> $day; $tempDate = $tempDate - 86400) {
-      }
-      return $tempDate;
-      }
+        // Is the last of the month on the same day of day of week?
+        if ($lastOfMonth_DayOfWeek == $day) {
+            // If so, return the timestamp
+            return $lastOfMonth;
+        } else {
+            // Iterate from the last of the month until we have a match
+            for ($tempDate = $lastOfMonth; date("w", $tempDate) <> $day; $tempDate = $tempDate - 86400) {
+                
+            }
+            return $tempDate;
+        }
     }
-		
-		/**
-		 * Check if the given year is a leap year
-		 * @return boolean
-		 * @param object $year[optional]
-		 */
-		function isLeapYear ( $year = '' ) 
-		{
-      if ( empty ( $year ) )
-      $year = strftime ( '%Y', time () );
 
-      if ( strlen ( $year ) != 4 || preg_match ( '/\D/', $year ) )
-        return false;
+    /**
+     * Check if the given year is a leap year
+     * @return boolean
+     * @param object $year[optional]
+     */
+    function isLeapYear($year = '')
+    {
+        if (empty($year))
+            $year = strftime('%Y', time());
 
-       return ( ( $year % 4 == 0 && $year % 100 != 0 ) || $year % 400 == 0 );
+        if (strlen($year) != 4 || preg_match('/\D/', $year))
+            return false;
+
+        return ( ( $year % 4 == 0 && $year % 100 != 0 ) || $year % 400 == 0 );
     }
-		
-		/**
-		 * Check if we have an ISO8601 week
-		 * @return boolean
-		 */
-		function isISO8601()
-		{
-			return (atkconfig("startday",1)==1 &&
-		          atkconfig("firstweekcontains",4)==4);
-		}
-		
-	/**
-	 * Calculate the weeknumber for an ISO8601 date
-	 * based on pear/Date/Calc.php 
-	 * @return int
-	 * @param int $day
-	 * @param int $month
-	 * @param int $year
-	 */
-  function getWeeknumber($day,$month,$year)
-	{
-		 $mnth = array (0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+
+    /**
+     * Check if we have an ISO8601 week
+     * @return boolean
+     */
+    function isISO8601()
+    {
+        return (atkconfig("startday", 1) == 1 &&
+            atkconfig("firstweekcontains", 4) == 4);
+    }
+
+    /**
+     * Calculate the weeknumber for an ISO8601 date
+     * based on pear/Date/Calc.php 
+     * @return int
+     * @param int $day
+     * @param int $month
+     * @param int $year
+     */
+    function getWeeknumber($day, $month, $year)
+    {
+        $mnth = array(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
         $y_isleap = dateutil::isLeapYear($year);
         $y_1_isleap = dateutil::isLeapYear($year - 1);
         $day_of_year_number = $day + $mnth[$month - 1];
@@ -379,20 +376,20 @@
         $h = $day_of_year_number + ($jan1_weekday - 1);
         $weekday = 1 + intval(($h - 1) % 7);
         // find if Y M D falls in YearNumber Y-1, WeekNumber 52 or
-        if ($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4){
+        if ($day_of_year_number <= (8 - $jan1_weekday) && $jan1_weekday > 4) {
             $yearnumber = $year - 1;
             if ($jan1_weekday == 5 || ($jan1_weekday == 6 && $y_1_isleap)) {
                 $weeknumber = 53;
             } else {
                 $weeknumber = 52;
-            }   
+            }
         } else {
-        	     $yearnumber = $year;
+            $yearnumber = $year;
         }
         // find if Y M D falls in YearNumber Y+1, WeekNumber 1
         if ($yearnumber == $year) {
             if ($y_isleap) {
-                $i = 366;   
+                $i = 366;
             } else {
                 $i = 365;
             }
@@ -411,12 +408,11 @@
         }
         // put it all together
         if ($weeknumber < 10) {
-            $weeknumber = '0'.$weeknumber;
+            $weeknumber = '0' . $weeknumber;
         }
-        return $weeknumber;		
-	  }
-		
+        return $weeknumber;
+    }
 
-  }
+}
 
 ?>

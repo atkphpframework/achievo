@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("quotation.quotation");
-
+$setup->installNode("quotation.quotation");
 ?>

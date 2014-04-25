@@ -16,8 +16,6 @@
  * $Id$
  */
 
-
-
 /**
  * Class for managing company industries
  * 
@@ -29,25 +27,23 @@
 class industry extends atkNode
 {
 
-  /**
-   * Constructor
-   *
-   * @return void
-   */
-  function industry()
-  {
-    $this->atkNode("industry",NF_MRA|NF_ADD_LINK);
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("industry_name",AF_OBLIGATORY));
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    function industry()
+    {
+        $this->atkNode("industry", NF_MRA | NF_ADD_LINK);
+        $this->add(new atkAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("industry_name", AF_OBLIGATORY));
 
-    $this->setSecurityAlias("organization.organization");
-    $this->setOrder("industry_name");
-    $this->setTable("crm_industry");
-    $this->setDescriptorTemplate('[industry_name]');
-  }
+        $this->setSecurityAlias("organization.organization");
+        $this->setOrder("industry_name");
+        $this->setTable("crm_industry");
+        $this->setDescriptorTemplate('[industry_name]');
+    }
 
 }
-
-
 
 ?>

@@ -16,26 +16,30 @@
  * $Id$
  */
 
+/**
+ * Module file for the menu items and security
+ * 
+ * @author Sandy Pleyte <sandy@achievo.org>
+ * @package achievo
+ * @subpackage crm
+ * @since 1.3.0
+ */
+class mod_email_template extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   * 
-   * @author Sandy Pleyte <sandy@achievo.org>
-   * @package achievo
-   * @subpackage crm
-   * @since 1.3.0
-   */
-  class mod_email_template extends achievoModule
-  {
     function getNodes()
     {
+        
     }
 
     function getMenuItems()
     {
+        
     }
-  }
-  // Add plugins dir for the resource plugin
-  atkimport("atk.ui.atksmarty");
-  atkSmarty::addPluginDir(moduleDir("email_template")."plugins/");
+
+}
+
+// Add plugins dir for the resource plugin
+atkimport("atk.ui.atksmarty");
+atkSmarty::addPluginDir(moduleDir("email_template") . "plugins/");
 ?>

@@ -1,5 +1,3 @@
 <?php
-  
-  $setup->addColumn("activity", "overtimecompensation", "int(1)", true, "0");  
-
+$setup->addColumn("activity", "overtimecompensation", "int(1)", true, "0");
 ?>

@@ -1,5 +1,3 @@
 <?php
-
-  $setup->dropColumn("person", "target_declarability");  
-
+$setup->dropColumn("person", "target_declarability");
 ?>

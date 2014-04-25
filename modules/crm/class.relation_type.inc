@@ -26,24 +26,24 @@
  */
 class relation_type extends atkNode
 {
-  /**
-   * Constructor
-   *
-   * @return void
-   */
-  function relation_type()
-  {
-    $this->atkNode("relation_type",NF_MRA|NF_ADD_LINK);
-    $this->add(new atkAttribute("id",AF_AUTOKEY));
-    $this->add(new atkAttribute("type_name"));
 
-    $this->setSecurityAlias("organization.organization");
-    $this->setOrder("type_name");
-    $this->setTable("crm_relation_type");
-    $this->setDescriptorTemplate('[type_name]');
-  }
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    function relation_type()
+    {
+        $this->atkNode("relation_type", NF_MRA | NF_ADD_LINK);
+        $this->add(new atkAttribute("id", AF_AUTOKEY));
+        $this->add(new atkAttribute("type_name"));
+
+        $this->setSecurityAlias("organization.organization");
+        $this->setOrder("type_name");
+        $this->setTable("crm_relation_type");
+        $this->setDescriptorTemplate('[type_name]');
+    }
+
 }
-
-
 
 ?>

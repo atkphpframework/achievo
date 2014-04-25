@@ -1,3 +1,3 @@
 <?php
-  $setup->addColumn("scheduler_userpreferences", "showemployeebirthdays", "int(1)");
+$setup->addColumn("scheduler_userpreferences", "showemployeebirthdays", "int(1)");
 ?>

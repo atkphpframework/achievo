@@ -1,5 +1,3 @@
 <?php
-
-  $setup->addColumn("phase", "dependsondeliverable", "int(10)", true);
-
+$setup->addColumn("phase", "dependsondeliverable", "int(10)", true);
 ?>

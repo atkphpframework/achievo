@@ -14,35 +14,32 @@
  * @version $Revision$
  * $Id$
  */
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage notes
+ */
+$modifiers[] = "project.project";
 
+class mod_notes extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage notes
-   */
-
-  $modifiers[] = "project.project";
-  class mod_notes extends achievoModule
-  {
     function getNodes()
     {
-      registerNode("notes.project_notes", array("admin", "add", "edit", "delete"));
+        registerNode("notes.project_notes", array("admin", "add", "edit", "delete"));
     }
 
     function getMenuItems()
     {
-      $this->menuitem("-","","projectmanagement");
-      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : 0;
-      if ($selectedproject == 0)
-      {
-        $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "admin"), "projectmanagement", array("notes.project_notes", "admin"));
-      }
-      else
-      {
-        $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("notes.project_notes", "admin"));
-      }
+        $this->menuitem("-", "", "projectmanagement");
+        $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"]
+                : 0;
+        if ($selectedproject == 0) {
+            $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "admin"), "projectmanagement", array("notes.project_notes", "admin"));
+        } else {
+            $this->menuitem("project_notesview", dispatch_url("notes.project_notesview", "edit", array("atkselector" => "project.id=" . $selectedproject)), "projectmanagement", array("notes.project_notes", "admin"));
+        }
     }
 
     /**
@@ -53,15 +50,15 @@
      */
     function getDependencies($mode)
     {
-      return array("project");
+        return array("project");
     }
 
     function project_project_modifier($node)
     {
-      userelation('atkonetomanyrelation');
-      $node->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "notes");
+        userelation('atkonetomanyrelation');
+        $node->add(new atkOneToManyRelation("notes", "notes.project_notes", "projectid", AF_HIDE_LIST | AF_HIDE_SEARCH), "notes");
     }
 
-  }
+}
 
 ?>

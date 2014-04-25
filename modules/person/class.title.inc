@@ -14,49 +14,51 @@
  * @version $Revision$
  * $Id$
  */
-
 useattrib("atknumberattribute");
- /**
-  * The node class for managing titles
-  * @package achievo
-  * @subpackage person
-  */
- class title extends atkNode
- {
-   /**
-    * Constructor
-    */
-   function title()
-   {
-     $this->atkNode("title");
-     $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
 
-     $this->add(new atkAttribute("title", 0, 25));
+/**
+ * The node class for managing titles
+ * @package achievo
+ * @subpackage person
+ */
+class title extends atkNode
+{
 
-     $this->setTable("title");
-     $this->setSecurityAlias("organization.contact");
-   }
+    /**
+     * Constructor
+     */
+    function title()
+    {
+        $this->atkNode("title");
+        $this->add(new atkNumberAttribute("id", AF_AUTOKEY));
 
-   /**
-    * Set up default values for this node
-    * @return array Associative array where the key is
-    *               the attribute name, and value is the
-    *               default value.
-    */
-   function initial_values()
-   {
-     return array();
-   }
+        $this->add(new atkAttribute("title", 0, 25));
 
-   /**
-    * Return record descriptor (for use in relations etc.)
-    * @return String A template containing fieldnames between brackets.
-    * @todo: replace this with proper descriptor fields.
-    */
-   function descriptor_def()
-   {
-     return "[title]";
-   }
- }
+        $this->setTable("title");
+        $this->setSecurityAlias("organization.contact");
+    }
+
+    /**
+     * Set up default values for this node
+     * @return array Associative array where the key is
+     *               the attribute name, and value is the
+     *               default value.
+     */
+    function initial_values()
+    {
+        return array();
+    }
+
+    /**
+     * Return record descriptor (for use in relations etc.)
+     * @return String A template containing fieldnames between brackets.
+     * @todo: replace this with proper descriptor fields.
+     */
+    function descriptor_def()
+    {
+        return "[title]";
+    }
+
+}
 
 ?>

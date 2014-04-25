@@ -14,61 +14,56 @@
  * @version $Revision$
  * $Id$
  */
+/**
+ * Module file for the menu items and security
+ *
+ * @package achievo
+ * @subpackage todo
+ */
+$modifiers[] = "project.project";
 
+class mod_todo extends achievoModule
+{
 
-  /**
-   * Module file for the menu items and security
-   *
-   * @package achievo
-   * @subpackage todo
-   */
-
-  $modifiers[] = "project.project";
-
-  class mod_todo extends achievoModule
-  {
     function getNodes()
     {
-      registerNode("todo.todo", array("admin", "add", "edit", "delete"));
-      registerNode("todo.todo_history",array('view'));
+        registerNode("todo.todo", array("admin", "add", "edit", "delete"));
+        registerNode("todo.todo_history", array('view'));
     }
 
     function getMenuItems()
     {
-      $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"] : 0;
-      if ($selectedproject == 0)
-      {
-        $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "admin"), "projectmanagement", array("todo.todo", "admin"));
-      }
-      else
-      {
-        $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "edit", array("atkselector" => "project.id=".$selectedproject)), "projectmanagement", array("todo.todo", "admin"));
-      }
+        $selectedproject = array_key_exists("selectedproject", $_REQUEST) ? $_REQUEST["selectedproject"]
+                : 0;
+        if ($selectedproject == 0) {
+            $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "admin"), "projectmanagement", array("todo.todo", "admin"));
+        } else {
+            $this->menuitem("project_todoview", dispatch_url("todo.project_todoview", "edit", array("atkselector" => "project.id=" . $selectedproject)), "projectmanagement", array("todo.todo", "admin"));
+        }
     }
 
     function getDependencies($mode)
     {
-      return array("project");
+        return array("project");
     }
-
 
     function getPimItems()
     {
-      return array("todos"=>"getTodo");
+        return array("todos" => "getTodo");
     }
 
     function getTodo()
     {
-      include_once(moduleDir("todo")."pim.inc");
-      return pimTodos();
+        include_once(moduleDir("todo") . "pim.inc");
+        return pimTodos();
     }
 
     function project_project_modifier($node)
     {
-      userelation('atkonetomanyrelation');
-      $node->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST|AF_HIDE_SEARCH), "todos");
+        userelation('atkonetomanyrelation');
+        $node->add(new atkOneToManyRelation("todos", "todo.todo", "projectid", AF_HIDE_LIST | AF_HIDE_SEARCH), "todos");
     }
 
-  }
+}
 
 ?>

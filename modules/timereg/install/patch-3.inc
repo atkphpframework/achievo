@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("timereg.hours_approve");
-
+$setup->installNode("timereg.hours_approve");
 ?>

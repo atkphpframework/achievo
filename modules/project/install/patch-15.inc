@@ -1,5 +1,3 @@
 <?php
-
-  $setup->alterColumn("role", "description", "description", "text");
-
+$setup->alterColumn("role", "description", "description", "text");
 ?>

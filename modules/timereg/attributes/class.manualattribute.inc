@@ -1,21 +1,23 @@
 <?php
 
-  class manualAttribute extends atkAttribute 
-  {
-    function manualAttribute($name, $flags=0)
+class manualAttribute extends atkAttribute
+{
+
+    function manualAttribute($name, $flags = 0)
     {
-      $this->atkAttribute($name, $flags);
+        $this->atkAttribute($name, $flags);
     }
-    
+
     function needsUpdate($record)
     {
-      return true;
+        return true;
     }
-    
+
     function value2db($rec)
     {
-      return 1;
+        return 1;
     }
-  }
+
+}
 
 ?>

@@ -1,5 +1,3 @@
 <?php
-
-  $setup->installNode("project.role");
-
+$setup->installNode("project.role");
 ?>

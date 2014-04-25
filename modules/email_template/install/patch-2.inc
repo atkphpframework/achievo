@@ -1,5 +1,3 @@
 <?php
-
- $setup->addColumn("email_template", "lastupdatedon", "timestamp", false, 0);
-
+$setup->addColumn("email_template", "lastupdatedon", "timestamp", false, 0);
 ?>

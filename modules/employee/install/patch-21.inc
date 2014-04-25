@@ -1,5 +1,3 @@
 <?php
-
-   $setup->addColumn('person', 'creditor_id','int(11)');
-
+$setup->addColumn('person', 'creditor_id', 'int(11)');
 ?>
