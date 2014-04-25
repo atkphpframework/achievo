@@ -147,15 +147,6 @@ $config_project_formatmail = 'html';
 $config_project_sendto = 'sendto@domein.nl';
 
 // -------------------------------------------
-//             PIM MODULE
-// -------------------------------------------
-// If you don't want a PIM, set a URL in the config below to let PIM
-// redirect to the specified URL. If not set or empty, this feature is
-// disabled.
-//
-$config_pim_redirect_to = "";
-
-// -------------------------------------------
 //             DOCMANAGER MODULE
 // -------------------------------------------
 // To add docmanager to other nodes, add the node and file location here
