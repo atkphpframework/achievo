@@ -40,9 +40,8 @@ class pim extends atkNode
     function action_pim(&$handler)
     {
         $url = atkconfig::get('pim', 'pim_redirect_to');
-        if ($url != "" && is_array($url)) {
-            $param = atkconfig::get('pim', 'pim_redirect_to');
-            header("Location: " . session_url(dispatch_url($param[0], $param[1])));
+        if (is_array($url) && !empty($url)) {
+            header("Location: " . session_url(dispatch_url($url[0], $url[1])));
             return;
         }
 
