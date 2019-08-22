@@ -1,3 +1,12 @@
+> :exclamation: :exclamation: **END OF LIFE NOTICE** :exclamation: :exclamation:
+>
+> Development of Achieve has stopped a very long time ago. This repository exists for historical reasons only and is thus archived. We highly discourage using Achievo now. **Achievo has known security issues!** It won't work with recent PHP versions either. Please consider switching to another BSS application.
+>
+> If you're not looking for Achievo, but the ATK Framework it is based on, we got good news for you. [@Sintattica](https://github.com/Sintattica/atk) took over development and is still supporting it as an Open Source project. We highly recommend switching to their code base.
+>
+> :exclamation: :exclamation: **END OF LIFE NOTICE** :exclamation: :exclamation:
+
+
 Achievo
 =======
 Achievo is a web-based Business Support Services (BSS) application for organizations, built using [the ATK Framework](https://www.github.com/atkphpframework/atk). Achievo includes a rich set of core modules, including support for employees, projects (phases and activities), timesheets, organizations, contacts, CRM (customers, campaings and contracts), and document management. There are a wide variety of Add-on modules available for additional functionality, and you can add or develop Custom modules for more more specific requirements. Achievo is stable and suitable for production. For more information, see the [Achievo GitHub project wiki](https://github.com/atkphpframework/achievo/wiki) and the [Achievo website](http://www.achievo.org).
